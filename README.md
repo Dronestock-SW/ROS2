@@ -4,19 +4,15 @@
 
 ## 접속 정보
 - Jetson Orin Nano (JetPack 6.2 / Ubuntu 22.04 / ROS2 Humble)
-- SSH: `ssh user@100.110.163.94` (Tailscale — 팀원은 Tailscale 설치 + 네트워크 초대 필요)
+- SSH: ssh user@100.110.163.94 (Tailscale — 팀원은 Tailscale 설치 + 네트워크 초대 필요)
 
 ## 빌드 방법
-```bash
-cd ~/drone_ws
-colcon build
-source install/setup.bash
-```
+cd ~/drone_ws 후 colcon build, 그다음 source install/setup.bash
 
 ## 브랜치 규칙
-- `main`: 항상 빌드되는 상태 유지. 직접 push 금지, PR로만 병합
-- 작업 브랜치: `feat/작업ID-설명` (예: `feat/W1-02-uwb-node`)
-- 커밋 메시지: `작업ID: 내용` (예: `W1-02: uwb_node 초안`)
+- main: 항상 빌드되는 상태 유지. 직접 push 금지, PR로만 병합
+- 작업 브랜치: feat/작업ID-설명 (예: feat/W1-02-uwb-node)
+- 커밋 메시지: 작업ID: 내용 (예: W1-02: uwb_node 초안)
 
 ## 역할
 - A: ROS2 / 자율주행 로직
