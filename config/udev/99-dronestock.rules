@@ -1,0 +1,33 @@
+# Dronestock 1호기 — 장치 고정 이름 udev 규칙 (roadmap Phase 0)
+#
+# 목적: USB 재연결 순서에 따라 /dev/ttyUSB0, /dev/ttyACM0 번호가 바뀌어도
+#       노드/파라미터가 항상 같은 심볼릭 링크(/dev/lidar 등)를 잡도록 고정한다.
+#
+# 이 파일은 리포지토리의 원본(source of truth)이다. 실제 적용은 /etc/udev/rules.d 로
+# 복사해야 하며, 그 명령은 sudo가 필요하다 (README/문서의 적용 절차 참조).
+#
+# 새 장치의 식별값을 채우는 방법 (장치를 연결한 뒤):
+#   udevadm info -a -n /dev/ttyUSB0 | grep -E 'idVendor|idProduct|serial'
+# 로 idVendor/idProduct/serial 을 읽어 아래 TODO 줄에 기입한다.
+
+# --- LiDAR: YDLIDAR T-mini Pro (확인 완료 2026-07-24) ---
+# CP2102 USB-UART. Tmini.yaml 은 port: /dev/ttyUSB0 로 설정되어 있으나,
+# 이 규칙 적용 후에는 파라미터를 port: /dev/lidar 로 바꾸는 것을 권장한다.
+# 주의: 이 CP2102는 serial=="0001" 로, 프로그래밍되지 않은 기본값이다.
+#       만약 TFmini/UWB 등 다른 장치도 동일 칩(10c4:ea60, serial 0001)을 쓰면
+#       serial만으로 구분이 불가하다. 그 경우 serial 매칭을 빼고
+#       KERNELS=="<USB 포트경로>" (udevadm 로 확인) 로 포트 위치 기반 매칭으로 전환한다.
+SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", ATTRS{serial}=="0001", SYMLINK+="lidar", MODE="0660", GROUP="dialout"
+
+# --- Pixhawk: Holybro Pixhawk 6C Mini / PX4 (TODO: 미연결로 식별값 미확보) ---
+# PX4 FMU는 보통 /dev/ttyACM* 로 잡힌다. 연결 후 위 udevadm 명령으로 값 확인해 채울 것.
+# SUBSYSTEM=="tty", ATTRS{idVendor}=="____", ATTRS{idProduct}=="____", SYMLINK+="pixhawk", MODE="0660", GROUP="dialout"
+
+# --- 하방 거리계: Benewake TFmini Plus (TODO: 미연결로 식별값 미확보) ---
+# USB-TTL 어댑터 종류(CP210x/CH340/FTDI)에 따라 VID:PID가 달라진다. 연결 후 확인해 채울 것.
+# SUBSYSTEM=="tty", ATTRS{idVendor}=="____", ATTRS{idProduct}=="____", SYMLINK+="tfmini", MODE="0660", GROUP="dialout"
+
+# --- UWB 태그: Qorvo DWM3000EVB (TODO: 출력 인터페이스 미확인 — 담당자 확인 대기) ---
+# 태그의 출력 인터페이스(USB 시리얼 여부)와 데이터 포맷이 아직 미확정이다.
+# 인터페이스 확인 후 규칙을 채운다. USB 시리얼일 경우 예시 형태:
+# SUBSYSTEM=="tty", ATTRS{idVendor}=="____", ATTRS{idProduct}=="____", SYMLINK+="uwb", MODE="0660", GROUP="dialout"
