@@ -4,30 +4,52 @@
 #       노드/파라미터가 항상 같은 심볼릭 링크(/dev/lidar 등)를 잡도록 고정한다.
 #
 # 이 파일은 리포지토리의 원본(source of truth)이다. 실제 적용은 /etc/udev/rules.d 로
-# 복사해야 하며, 그 명령은 sudo가 필요하다 (README/문서의 적용 절차 참조).
+# 복사해야 하며, 그 명령은 sudo가 필요하다 (아래 적용 절차 참조).
 #
-# 새 장치의 식별값을 채우는 방법 (장치를 연결한 뒤):
+# 적용 절차:
+#   sudo cp config/udev/99-dronestock.rules /etc/udev/rules.d/
+#   sudo udevadm control --reload-rules && sudo udevadm trigger
+#   ls -l /dev/lidar /dev/uwb        # 두 링크가 서로 다른 ttyUSB* 를 가리키면 성공
+#
+# ★ 이 규칙은 USB 포트 위치(KERNELS)로 장치를 구분한다 — serial 매칭이 아니다.
+#   이유: LiDAR와 UWB 태그가 둘 다 CP2102(10c4:ea60)이고 serial이 똑같이 "0001"이다.
+#   프로그래밍되지 않은 공장 기본값이라 VID:PID:serial 조합으로는 구분이 불가능하다.
+#   (2026-07-29 UWB 태그 연결 시 실제로 충돌 확인됨)
+#
+# ★ 따라서 각 장치를 꽂는 USB 잭이 고정되어야 한다. 잭을 바꿔 꽂으면 링크가 뒤바뀐다.
+#   조립·재배선 시 아래 포트 배치표를 지킬 것.
+#
+#   포트 배치 (Jetson Orin Nano Super, 내장 Realtek 허브 1-2 하위)
+#   ┌──────────────┬──────────┬─────────────────────────────┐
+#   │ USB 포트경로 │ 심볼릭링크│ 장치                        │
+#   ├──────────────┼──────────┼─────────────────────────────┤
+#   │ 1-2.4        │ /dev/lidar│ YDLIDAR T-mini Pro          │
+#   │ 1-2.1        │ /dev/uwb  │ Qorvo DWM3000EVB (UWB 태그) │
+#   └──────────────┴──────────┴─────────────────────────────┘
+#
+# 포트경로 확인 방법 (장치를 연결한 뒤):
+#   udevadm info -a -n /dev/ttyUSB0 | grep -m3 -E 'KERNELS=="1-'
+# 출력의 "1-2.4" 형태 값이 포트경로다. VID/PID/serial 은 아래로 확인한다:
 #   udevadm info -a -n /dev/ttyUSB0 | grep -E 'idVendor|idProduct|serial'
-# 로 idVendor/idProduct/serial 을 읽어 아래 TODO 줄에 기입한다.
 
-# --- LiDAR: YDLIDAR T-mini Pro (확인 완료 2026-07-24) ---
-# CP2102 USB-UART. Tmini.yaml 은 port: /dev/ttyUSB0 로 설정되어 있으나,
-# 이 규칙 적용 후에는 파라미터를 port: /dev/lidar 로 바꾸는 것을 권장한다.
-# 주의: 이 CP2102는 serial=="0001" 로, 프로그래밍되지 않은 기본값이다.
-#       만약 TFmini/UWB 등 다른 장치도 동일 칩(10c4:ea60, serial 0001)을 쓰면
-#       serial만으로 구분이 불가하다. 그 경우 serial 매칭을 빼고
-#       KERNELS=="<USB 포트경로>" (udevadm 로 확인) 로 포트 위치 기반 매칭으로 전환한다.
-SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", ATTRS{serial}=="0001", SYMLINK+="lidar", MODE="0660", GROUP="dialout"
+# --- LiDAR: YDLIDAR T-mini Pro (포트 고정 2026-07-29) ---
+# CP2102 USB-UART, 230400 8N1. Tmini.yaml 의 port 파라미터를 /dev/lidar 로 바꿀 것.
+SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", KERNELS=="1-2.4", SYMLINK+="lidar", MODE="0660", GROUP="dialout"
 
-# --- Pixhawk: Holybro Pixhawk 6C Mini / PX4 (TODO: 미연결로 식별값 미확보) ---
-# PX4 FMU는 보통 /dev/ttyACM* 로 잡힌다. 연결 후 위 udevadm 명령으로 값 확인해 채울 것.
+# --- UWB 태그: Qorvo DWM3000EVB (인터페이스 확인 완료 2026-07-29) ---
+# CP2102 USB-UART, 921600 8N1 raw. JSON 한 줄/샘플, "type":"uwb_pose", 약 12Hz.
+# 주의: 포트 위치 매칭이므로 잭을 바꿔 꽂으면 /dev/lidar 와 뒤바뀐다.
+#       /uwb_pose 노드는 포트를 연 뒤 첫 줄의 "type":"uwb_pose" 를 확인하고,
+#       아니면 즉시 에러를 내야 한다 (LiDAR 포트를 UWB로 오인한 채 비행 금지).
+SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", KERNELS=="1-2.1", SYMLINK+="uwb", MODE="0660", GROUP="dialout"
+
+# --- Pixhawk: Holybro Pixhawk 6C Mini / PX4 (TODO: 식별값 미확보) ---
+# PX4 FMU는 /dev/ttyACM* 로 잡히며 VID:PID가 CP2102와 겹치지 않는다.
+# 따라서 포트 위치가 아니라 VID/PID 매칭으로 충분하다. 연결 후 값 확인해 채울 것.
 # SUBSYSTEM=="tty", ATTRS{idVendor}=="____", ATTRS{idProduct}=="____", SYMLINK+="pixhawk", MODE="0660", GROUP="dialout"
 
-# --- 하방 거리계: Benewake TFmini Plus (TODO: 미연결로 식별값 미확보) ---
-# USB-TTL 어댑터 종류(CP210x/CH340/FTDI)에 따라 VID:PID가 달라진다. 연결 후 확인해 채울 것.
+# --- 하방 거리계: Benewake TFmini Plus (해당 없음 — PX4 직결) ---
+# roadmap 결정 10에 따라 TFmini Plus는 PX4에 직결되어 EKF2 rangefinder로 들어간다.
+# companion USB에 꽂지 않으므로 udev 규칙이 필요 없다.
+# 디버깅 목적으로 USB-TTL 어댑터를 임시로 물릴 때만 아래를 채워 쓴다.
 # SUBSYSTEM=="tty", ATTRS{idVendor}=="____", ATTRS{idProduct}=="____", SYMLINK+="tfmini", MODE="0660", GROUP="dialout"
-
-# --- UWB 태그: Qorvo DWM3000EVB (TODO: 출력 인터페이스 미확인 — 담당자 확인 대기) ---
-# 태그의 출력 인터페이스(USB 시리얼 여부)와 데이터 포맷이 아직 미확정이다.
-# 인터페이스 확인 후 규칙을 채운다. USB 시리얼일 경우 예시 형태:
-# SUBSYSTEM=="tty", ATTRS{idVendor}=="____", ATTRS{idProduct}=="____", SYMLINK+="uwb", MODE="0660", GROUP="dialout"
