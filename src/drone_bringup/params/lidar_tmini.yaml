@@ -1,0 +1,35 @@
+# YDLIDAR T-mini Pro 파라미터 — Dronestock 1호기
+#
+# 제조사 코드(src/ydlidar_ros2_driver)의 params/Tmini.yaml 사본이다.
+# 제조사 코드는 별도 저장소라 우리 수정이 기록되지 않으므로, 우리 설정은 여기에 둔다.
+#
+# 우리가 바꾼 값은 port 하나뿐이다. 나머지는 제조사 기본값과 동일하다.
+#   port: /dev/ttyUSB0 → /dev/lidar
+#   이유: LiDAR와 UWB 태그가 같은 USB 변환 칩이라 ttyUSB 번호가 부팅마다 뒤바뀐다.
+#         udev 규칙(config/udev/99-dronestock.rules)이 만드는 고정 이름을 쓴다.
+
+ydlidar_ros2_driver_node:
+  ros__parameters:
+    port: /dev/lidar
+    frame_id: laser_frame
+    ignore_array: ""
+    baudrate: 230400
+    lidar_type: 1
+    device_type: 0
+    intensity: true
+    intensity_bit: 8
+    isSingleChannel: false
+    frequency: 10.0
+    sample_rate: 4
+    abnormal_check_count: 4
+    fixed_resolution: true
+    reversion: true
+    inverted: true
+    auto_reconnect: true
+    support_motor_dtr: false
+    angle_max: 180.0
+    angle_min: -180.0
+    range_max: 12.0
+    range_min: 0.03
+    invalid_range_is_inf: false
+    debug: false

@@ -3,9 +3,13 @@
 <package format="3">
   <name>drone_bringup</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
+  <description>Dronestock 1호기 기동 패키지 — launch와 파라미터를 모아 둔다</description>
   <maintainer email="user@todo.todo">user</maintainer>
   <license>TODO: License declaration</license>
+
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+  <exec_depend>ydlidar_ros2_driver</exec_depend>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>
