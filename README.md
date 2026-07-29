@@ -27,9 +27,15 @@ ros2 launch drone_bringup lidar.launch.py
 별도 저장소라 우리 수정이 이 저장소에 기록되지 않기 때문이다.
 
 ## 브랜치 규칙
-- main: 항상 빌드되는 상태 유지. 직접 push 금지, PR로만 병합
+현재는 1인 개발이라 main에 직접 push 한다. 리뷰할 사람이 없는 PR은 절차 비용만 남는다.
+
+- main: 항상 빌드되는 상태 유지
+- 커밋 메시지: "Phase/작업ID: 내용" (예: "Phase 0: uwb_node 초안")
+
+**협업자가 합류하면 아래로 전환한다.**
+
+- main 직접 push 금지, PR로만 병합
 - 작업 브랜치: feat/작업ID-설명 (예: feat/W1-02-uwb-node)
-- 커밋 메시지: 작업ID: 내용 (예: W1-02: uwb_node 초안)
 
 ## 역할
 - A: ROS2 / 자율주행 로직
