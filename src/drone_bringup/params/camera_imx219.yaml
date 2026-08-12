@@ -1,0 +1,59 @@
+# CSI 카메라(ArduCAM B0191 / IMX219) 파라미터 — Dronestock 1호기
+#
+# gscam 노드에게 "카메라를 어떻게 열지"를 알려주는 값이다.
+# 노드 이름/네임스페이스가 바뀌어도 적용되도록 최상위 키는 `/**` 를 쓴다.
+#
+# ★ nvarguscamerasrc 를 반드시 거쳐야 한다.
+#   이유: IMX219 센서 출력은 RG10(10비트 Bayer RAW)이라 그대로는 그림이 아니다.
+#         Jetson의 ISP(nvargus-daemon)가 디베이어·화이트밸런스를 처리해야 BGR이 된다.
+#         cv2.VideoCapture(0) 나 v4l2_camera 로 열면 멈춘다 (2026-08-12 실측 확인).
+#
+# ★ 해상도는 1640x1232 @30fps 로 고정한다.
+#   이유 1 (화각): IMX219에서 30fps 이상 모드 중 전체 화각을 유지하는 유일한 모드다.
+#                  1920x1080·1280x720 은 센서 중앙 크롭이라 시야가 좁아져 마커를 놓친다.
+#   이유 2 (성능): 캡처+ArUco 검출 실측 33.4ms/프레임. 30fps 예산 33.3ms 에 맞는다.
+#                  1920x1080 은 55.9ms 가 걸려 초당 30장 중 18장만 처리됐다.
+#
+#   실측표 (2026-08-12, 120프레임 측정)
+#   ┌──────────────┬──────────┬───────────┬─────────┬──────┐
+#   │ 해상도       │ 실효 fps │ 캡처+검출 │ 예산    │ 판정 │
+#   ├──────────────┼──────────┼───────────┼─────────┼──────┤
+#   │ 1280x720@60  │ 59.7     │ 16.7ms    │ 16.7ms  │ 빠듯 │
+#   │ 1640x1232@30 │ 29.9     │ 33.4ms    │ 33.3ms  │ 채택 │
+#   │ 1920x1080@30 │ 17.9     │ 55.9ms    │ 33.3ms  │ 탈락 │
+#   └──────────────┴──────────┴───────────┴─────────┴──────┘
+
+/**:
+  ros__parameters:
+    # GStreamer 파이프라인. gscam 이 뒤에 appsink 를 자동으로 붙인다.
+    #   nvarguscamerasrc : ISP 경유 (필수)
+    #   nvvidconv        : GPU 메모리(NVMM) → CPU 메모리로 이동
+    #   videoconvert     : gscam이 뒤에 붙이는 RGB 요구 caps 로 맞춰준다
+    gscam_config: "nvarguscamerasrc sensor-id=0 ! video/x-raw(memory:NVMM),width=1640,height=1232,framerate=30/1 ! nvvidconv ! video/x-raw,format=BGRx ! videoconvert"
+
+    # gscam은 rgb8 / mono8 / jpeg 만 받는다. bgr8 을 넣으면 FATAL 후 죽는다 (2026-08-12 확인).
+    # 구독하는 쪽에서 cv_bridge 로 순서를 바꾼다:
+    #   bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
+    image_encoding: rgb8
+
+    camera_name: imx219
+
+    # TF 프레임 이름. 카메라는 전방(선반을 마주봄) 장착이다.
+    # base_link → camera_link 변환은 장착 위치 실측 후 별도로 정의한다.
+    frame_id: camera_link
+
+    # 최신 프레임 우선. 밀린 프레임은 버린다.
+    # 이유: 마커 정렬은 "지금 어디 있나"가 중요하다. 0.1초 전 사진으로 제어하면 흔들린다.
+    sync_sink: false
+
+    # 타임스탬프는 수신 시각을 쓴다.
+    # 이유: nvargus의 GStreamer 시계는 ROS 시계와 기준점이 달라 그대로 쓰면 어긋난다.
+    use_gst_timestamps: false
+
+    # 카메라가 끊겨도 노드를 죽이지 않고 다시 연다.
+    reopen_on_eof: true
+
+    # camera_info_url: 캘리브레이션 완료 후 아래 줄의 주석을 푼다.
+    #   지금 넣으면 파일이 없어서 기동할 때마다 경고가 뜬다.
+    #   ★ 렌즈 초점을 확정한 뒤에 캘리브레이션할 것 — 초점을 바꾸면 값이 전부 무효가 된다.
+    # camera_info_url: "package://drone_bringup/params/camera_imx219_calib.yaml"
