@@ -94,7 +94,7 @@ EKF2는 Pixhawk 6C Mini 하드웨어가 아니라 **그 위에 올라간 PX4 펌
 - [x] UWB 앵커 4기 자체 제작 + 설치 + 좌표계 검증 (멀티 태그 지원 확인)
 - [ ] TFmini Plus → PX4 EKF rangefinder 융합 설정
 - [ ] PMW3901 → PX4 직결 배선 + 파라미터 설정 (결정 8)
-- [ ] UWB 태그 → /uwb_pose 발행 노드 (인터페이스 확정: /dev/uwb, 921600 8N1, JSON 약 12Hz)
+- [ ] UWB 태그 → /uwb_pose 발행 노드 (인터페이스 확정: /dev/uwb, 921600 8N1, JSON 약 43Hz — HW 파트 상향 완료로 EKF2 권장 30~50Hz 충족)
 - [ ] UWB fix 확보 — 잔차 RMS 0.44m로 `fix:false` 지속. HW 파트 담당(센서측 필터·캘리브레이션) 대기 중
 - [ ] udev rule 장치 고정 이름 — /dev/lidar·/dev/uwb 규칙 작성 완료, 적용(sudo)과 /dev/pixhawk 미완
 - [ ] ROS_DOMAIN_ID=1 설정을 1호기 .bashrc에 고정 (결정 7)

@@ -9,7 +9,8 @@
 # 적용 절차:
 #   sudo cp config/udev/99-dronestock.rules /etc/udev/rules.d/
 #   sudo udevadm control --reload-rules && sudo udevadm trigger
-#   ls -l /dev/lidar /dev/uwb        # 두 링크가 서로 다른 ttyUSB* 를 가리키면 성공
+#   ls -l /dev/lidar /dev/uwb /dev/pixhawk   # 세 링크가 모두 서면 성공
+#                                    # lidar·uwb 는 서로 다른 ttyUSB* 를 가리켜야 한다
 #
 # ★ 이 규칙은 USB 포트 위치(KERNELS)로 장치를 구분한다 — serial 매칭이 아니다.
 #   이유: LiDAR와 UWB 태그가 둘 다 CP2102(10c4:ea60)이고 serial이 똑같이 "0001"이다.
@@ -20,12 +21,15 @@
 #   조립·재배선 시 아래 포트 배치표를 지킬 것.
 #
 #   포트 배치 (Jetson Orin Nano Super, 내장 Realtek 허브 1-2 하위)
-#   ┌──────────────┬──────────┬─────────────────────────────┐
-#   │ USB 포트경로 │ 심볼릭링크│ 장치                        │
-#   ├──────────────┼──────────┼─────────────────────────────┤
-#   │ 1-2.4        │ /dev/lidar│ YDLIDAR T-mini Pro          │
-#   │ 1-2.1        │ /dev/uwb  │ Qorvo DWM3000EVB (UWB 태그) │
-#   └──────────────┴──────────┴─────────────────────────────┘
+#   ┌──────────────┬────────────┬─────────────────────────────┐
+#   │ USB 포트경로 │ 심볼릭링크 │ 장치                        │
+#   ├──────────────┼────────────┼─────────────────────────────┤
+#   │ 1-2.4        │ /dev/lidar │ YDLIDAR T-mini Pro          │
+#   │ 1-2.1        │ /dev/uwb   │ Qorvo DWM3000EVB (UWB 태그) │
+#   │ 무관         │ /dev/pixhawk│ Pixhawk 6C Mini (VID/PID)  │
+#   └──────────────┴────────────┴─────────────────────────────┘
+#   Pixhawk만 포트 무관이다 — VID:PID가 유일해서 위치로 구분할 필요가 없다.
+#   (참고로 현재 1-2.3 에 꽂혀 있으나 규칙은 이 값을 쓰지 않는다)
 #
 # 포트경로 확인 방법 (장치를 연결한 뒤):
 #   udevadm info -a -n /dev/ttyUSB0 | grep -m3 -E 'KERNELS=="1-'
@@ -37,16 +41,35 @@
 SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", KERNELS=="1-2.4", SYMLINK+="lidar", MODE="0660", GROUP="dialout"
 
 # --- UWB 태그: Qorvo DWM3000EVB (인터페이스 확인 완료 2026-07-29) ---
-# CP2102 USB-UART, 921600 8N1 raw. JSON 한 줄/샘플, "type":"uwb_pose", 약 12Hz.
+# CP2102 USB-UART, 921600 8N1 raw. JSON 한 줄/샘플, "type":"uwb_pose".
+#
+# 갱신율: pose_interval_ms 중앙값 23ms → 약 43Hz (2026-07-30 정지 상태 230샘플 실측).
+#   최대 55ms 까지 튄다. 이전 주석의 "약 12Hz" 는 HW 파트 상향 전 값이다.
+#   오측이 아니라 실제로 개선된 것이다 — EKF2 권장 30~50Hz 를 이제 만족한다.
+#
+# 줄 종류가 둘이다 — 파서는 필드 존재 여부로 분기해야 한다:
+#   기본 줄 (필드 12개)  : type,seq,t,fix,x,y,xy_control_*,hybrid_source,
+#                          pose_interval_ms,range_cycle_ms,reason
+#   확장 줄 (필드 93개)  : 위 + 앵커별 거리(raw_r1~4)·보정·잔차·품질·타이밍.
+#                          약 10줄에 1번 섞여 나온다 (실측 23/230).
+#   → /uwb_pose 노드는 기본 줄만으로 동작해야 한다. raw_r* 를 필수로 요구하지 말 것.
+#
+# 앵커 배제는 정상 동작이다 — 진단 대상이 아니다.
+#   태그가 각 위치마다 불안정한 앵커 1기를 빼고 3기로 푼다. 태그 펌웨어의 설계다.
+#   그 흔적: adaptive_excluded_mask, solve_anchor_mask, range_weight_a* 가 낮은 값.
+#   이유: SW 파트는 태그가 낸 x, y 를 그대로 받는다. 배제 로직은 HW 파트 소관이라
+#         companion 쪽에서 재구현·보정·경고를 하지 않는다.
+#
 # 주의: 포트 위치 매칭이므로 잭을 바꿔 꽂으면 /dev/lidar 와 뒤바뀐다.
 #       /uwb_pose 노드는 포트를 연 뒤 첫 줄의 "type":"uwb_pose" 를 확인하고,
 #       아니면 즉시 에러를 내야 한다 (LiDAR 포트를 UWB로 오인한 채 비행 금지).
 SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", KERNELS=="1-2.1", SYMLINK+="uwb", MODE="0660", GROUP="dialout"
 
-# --- Pixhawk: Holybro Pixhawk 6C Mini / PX4 (TODO: 식별값 미확보) ---
-# PX4 FMU는 /dev/ttyACM* 로 잡히며 VID:PID가 CP2102와 겹치지 않는다.
-# 따라서 포트 위치가 아니라 VID/PID 매칭으로 충분하다. 연결 후 값 확인해 채울 것.
-# SUBSYSTEM=="tty", ATTRS{idVendor}=="____", ATTRS{idProduct}=="____", SYMLINK+="pixhawk", MODE="0660", GROUP="dialout"
+# --- Pixhawk: Holybro Pixhawk 6C Mini / PX4 (식별값 확인 완료 2026-07-30) ---
+# ttyACM으로 잡히고 VID:PID(3185:0038, Auterion PX4 FMU v6C.x)가 CP2102와 겹치지 않는다.
+# 따라서 포트 위치 매칭이 필요 없다 — 어느 USB 잭에 꽂아도 /dev/pixhawk 가 선다.
+# serial은 "0"으로 미프로그래밍 상태지만 VID:PID가 유일하므로 구분에 쓰지 않는다.
+SUBSYSTEM=="tty", ATTRS{idVendor}=="3185", ATTRS{idProduct}=="0038", SYMLINK+="pixhawk", MODE="0660", GROUP="dialout"
 
 # --- 하방 거리계: Benewake TFmini Plus (해당 없음 — PX4 직결) ---
 # roadmap 결정 10에 따라 TFmini Plus는 PX4에 직결되어 EKF2 rangefinder로 들어간다.
