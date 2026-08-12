@@ -98,6 +98,8 @@ EKF2는 Pixhawk 6C Mini 하드웨어가 아니라 **그 위에 올라간 PX4 펌
 - [ ] UWB fix 확보 — 잔차 RMS 0.44m로 `fix:false` 지속. HW 파트 담당(센서측 필터·캘리브레이션) 대기 중
 - [ ] udev rule 장치 고정 이름 — /dev/lidar·/dev/uwb 규칙 작성 완료, 적용(sudo)과 /dev/pixhawk 미완
 - [ ] ROS_DOMAIN_ID=1 설정을 1호기 .bashrc에 고정 (결정 7)
+- [x] CSI 카메라(IMX219) → /camera/image_raw 발행 (gscam, rgb8 1640x1232, 30.1Hz 실측)
+- [ ] 카메라 렌즈 초점 조정 → 캘리브레이션 → /camera/camera_info 실값 발행. 초점은 HW 파트 담당이며 캘리브레이션보다 반드시 먼저다 (초점을 바꾸면 캘리브레이션 값이 무효)
 
 ### Phase 1 — 안정 비행 베이스라인 (1호기, tether)
 - 이륙 시퀀스 자동화: arm → 상승 → Loiter 진입 (PMW3901+TFmini 융합 상태에서)

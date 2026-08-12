@@ -18,7 +18,8 @@ apt 패키지는 git이 추적하지 않는다. 이 문서가 유일한 설치 �
 | 2026-08-12 | `cv-bridge`, `image-transport`, `image-transport-plugins`, `camera-info-manager`, `camera-calibration`, `image-proc` | 카메라 영상 처리·캘리브레이션 | Phase 3 |
 | 2026-08-12 | `ros-humble-gscam` | CSI 카메라를 ROS2 topic으로 발행 | Phase 3 |
 
-카메라 패키지는 설치만 해둔 상태다. Phase 3 전까지 launch에 넣지 않는다.
+카메라는 2026-08-12에 launch까지 붙었다. `/camera/image_raw`가 30Hz로 나온다.
+남은 것은 캘리브레이션이며, 그 앞에 렌즈 초점 조정(HW 파트)이 선행 조건이다.
 
 ## 절차
 
@@ -36,7 +37,7 @@ sudo /opt/ros/humble/lib/mavros/install_geographiclib_datasets.sh
 이유: MAVROS는 고도 변환에 EGM96 지오이드 데이터를 필수로 읽는다.
 확인: `ls /usr/share/GeographicLib/geoids/egm96-5.pgm`
 
-### 3. 카메라 영상 (Phase 3용, 지금은 설치만)
+### 3. 카메라 영상
 ```bash
 sudo apt install -y ros-humble-cv-bridge ros-humble-image-transport \
   ros-humble-image-transport-plugins ros-humble-camera-info-manager \
@@ -68,6 +69,7 @@ sudo udevadm control --reload-rules && sudo udevadm trigger
 | `ls /usr/share/GeographicLib/geoids/` | egm96-5.pgm |
 | `ls -l /dev/lidar /dev/uwb /dev/pixhawk` | 세 링크 모두 존재 |
 | `ls /dev/video0` | 존재 (CSI CAM0) |
+| `ros2 launch drone_bringup camera.launch.py` | `/camera/image_raw` 30Hz, rgb8 1640x1232 |
 | `echo $ROS_DOMAIN_ID` | 1호기 = 1, 2호기 = 2 |
 
 셸 환경변수(`ROS_DOMAIN_ID`, `source`)는 `~/.bashrc`에 있다.
@@ -78,5 +80,6 @@ sudo udevadm control --reload-rules && sudo udevadm trigger
 | 항목 | 상태 | 언제 |
 |---|---|---|
 | rosdep 초기화 (`rosdep update`) | 캐시 없음 | 소스 빌드 의존성이 늘어날 때 |
-| `package.xml`에 카메라 의존성 선언 | 미선언 | Phase 3에서 launch가 실제로 쓸 때 |
-| 카메라 내부 파라미터 캘리브레이션 | 미실시 | Phase 3 착수 시 |
+| 카메라 렌즈 초점 조정 | 미실시 (HW 파트) | 캘리브레이션보다 먼저 |
+| 카메라 내부 파라미터 캘리브레이션 | 미실시 | 초점 확정 직후 |
+| `base_link → camera_link` TF | 미정의 | 장착 위치 실측 후 |
