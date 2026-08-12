@@ -246,6 +246,26 @@ topic을 파일로 녹화·재생하는 도구. 같은 상황을 여러 번 돌�
 ### RViz2
 ROS2 데이터 시각화 도구. `/scan` 점군, TF 좌표계, 경로 등을 3D로 그려 눈으로 확인한다.
 
+### cv_bridge
+ROS2의 영상 메시지(`sensor_msgs/Image`)와 OpenCV 이미지 사이를 변환해주는 라이브러리.
+- 비유: 같은 사진을 ROS2용 봉투와 OpenCV용 봉투에 바꿔 담는 도구.
+- 우리 프로젝트: Phase 3에서 마커 검출 코드가 topic 영상을 OpenCV로 받을 때 쓴다.
+
+### image_transport
+영상 topic을 압축해서 주고받게 해주는 계층. 같은 topic에 `raw`, `compressed` 등 여러 형식을 함께 제공한다.
+- 비유: 같은 영상을 원본 파일과 압축 파일로 동시에 내보내고, 받는 쪽이 골라 받게 하는 것.
+- 우리 프로젝트: 원본 영상은 대역폭이 크다. 압축본은 디버깅용 원격 확인에 쓴다. LoRa로는 보내지 않는다(대용량 금지 규칙).
+
+### camera_info / camera_info_manager
+`camera_info` = 카메라 내부 파라미터(초점거리 fx·fy, 중심 cx·cy, 왜곡계수)를 담은 메시지. `camera_info_manager` = 그 값을 YAML로 저장·배포하는 패키지.
+- 비유: 렌즈의 신분증. 이 값이 없으면 영상 속 크기를 실제 거리로 환산할 수 없다.
+- 우리 프로젝트: `solvePnP`로 마커 pose를 뽑으려면 필수. 캘리브레이션으로 만들어 YAML로 보관한다.
+
+### gscam
+GStreamer 파이프라인의 영상을 ROS2 topic으로 발행해주는 패키지.
+- 비유: 카메라 전용 배관(GStreamer)을 ROS2 수도관에 연결하는 어댑터.
+- 우리 프로젝트: IMX219는 CSI 카메라라 Jetson ISP(`nvarguscamerasrc`)를 거쳐야 한다. USB 카메라용 `v4l2_camera`로는 이 경로를 못 타서 gscam을 쓴다.
+
 ## 통신 / 미들웨어
 
 ### MAVLink / MAVROS
@@ -299,6 +319,14 @@ USB 장치가 꽂힐 때 하는 자기소개 3종. VID = 제조사 번호, PID =
 ### /dev/serial/by-id, /dev/serial/by-path
 udev 규칙을 안 써도 리눅스가 자동으로 만들어주는 별명 폴더. `by-id`는 VID·PID·serial 기준, `by-path`는 포트 위치 기준이다.
 - 우리 프로젝트: `by-id`는 두 장치의 이름이 똑같아 충돌해 하나만 살아남는다 — serial 충돌의 증거로 볼 수 있다. `by-path`는 정상 동작하지만 이름이 길고 사람이 읽을 수 없어, 같은 정보를 udev 규칙으로 `/dev/lidar`·`/dev/uwb`로 바꿔 쓴다.
+
+### CSI (MIPI CSI-2) / nvarguscamerasrc
+CSI = 카메라 전용 고속 배선 규격. 보드의 리본 케이블 커넥터로 직결한다. USB가 아니다.
+- 비유: USB가 아무나 드나드는 공용 출입구라면, CSI는 카메라만 쓰는 전용 통로다.
+- USB와의 차이: 열거 순서 문제가 없다. 어느 커넥터가 몇 번 장치인지 device tree에 미리 고정돼 있어, 재부팅해도 `/dev/video0`이 그대로다. **따라서 CSI 카메라에는 udev 규칙이 필요 없다.**
+- 대신 생기는 제약: device tree에 정의된 커넥터에만 꽂아야 한다. 다른 커넥터에 꽂으면 장치가 아예 안 뜬다.
+- `nvarguscamerasrc`: Jetson의 ISP(영상 신호 처리기)를 거쳐 CSI 영상을 꺼내는 GStreamer 요소. CSI 카메라는 이 경로를 타야 한다.
+- 우리 프로젝트: IMX219를 CAM0에 고정. `imx219 9-0010`, `/dev/video0`. 배치는 equipment_inventory 참조.
 
 ### dialout 그룹
 시리얼 포트를 열 수 있는 사용자 그룹. 전화 접속 모뎀 시절부터 내려온 이름이다.
