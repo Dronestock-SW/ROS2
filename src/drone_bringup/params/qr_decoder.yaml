@@ -1,0 +1,16 @@
+# QR 코드 디코더 파라미터 — Dronestock 1호기
+#
+# qr_decoder_node에게 ROI 여백과 미검출 경고 기준을 알려주는 값이다.
+
+/**:
+  ros__parameters:
+    # ROI(관심 영역) 크롭 시 직전 검출 박스 바깥으로 더 넣는 여백(px).
+    # 너무 작으면 드론이 조금만 움직여도 QR이 ROI 밖으로 빠져 매 프레임
+    # 전체 프레임 재탐색으로 떨어진다. 너무 크면 ROI 최적화 효과가 준다.
+    roi_margin_px: 60
+
+    # 이 프레임 수만큼 연속으로 QR을 못 찾으면 경고 로그를 남긴다.
+    miss_warn_threshold: 15
+
+    # 처리 Hz를 로그로 찍는 주기(초). 매 프레임 찍으면 로그가 넘쳐서 묶어 찍는다.
+    hz_log_interval_sec: 1.0

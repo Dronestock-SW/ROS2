@@ -76,3 +76,11 @@ SUBSYSTEM=="tty", ATTRS{idVendor}=="3185", ATTRS{idProduct}=="0038", SYMLINK+="p
 # companion USB에 꽂지 않으므로 udev 규칙이 필요 없다.
 # 디버깅 목적으로 USB-TTL 어댑터를 임시로 물릴 때만 아래를 채워 쓴다.
 # SUBSYSTEM=="tty", ATTRS{idVendor}=="____", ATTRS{idProduct}=="____", SYMLINK+="tfmini", MODE="0660", GROUP="dialout"
+
+# --- QR 리더기: DYSCAN DE2110 (Sense Mode 확인 완료 2026-08-23) ---
+# USB HID 키보드 웨지 모드(VID:PID = ac90:3002)로 동작한다. 디코딩된 문자열을
+# 키 입력처럼 흘려보내므로, 커널은 이걸 tty가 아니라 input 이벤트 장치로 잡는다
+# (/dev/input/eventN). 기본 권한이 root:input이라 dialout 그룹만으로는 못 읽는다.
+#
+# 포트 위치가 아니라 VID:PID로 구분한다 — 이 장치는 다른 CP2102 장치와 안 겹친다.
+SUBSYSTEM=="input", ATTRS{idVendor}=="ac90", ATTRS{idProduct}=="3002", MODE="0660", GROUP="dialout", SYMLINK+="input/qr_reader"

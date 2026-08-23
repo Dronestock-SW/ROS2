@@ -28,6 +28,8 @@ setup(
     },
     entry_points={
         'console_scripts': [
+            'qr_decoder_node = drone_bringup.qr_decoder_node:main',
+            'qr_reader_node = drone_bringup.qr_reader_node:main',
         ],
     },
 )
