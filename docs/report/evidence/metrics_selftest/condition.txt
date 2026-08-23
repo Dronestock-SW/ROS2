@@ -1,0 +1,23 @@
+# 측정 조건 기록
+기록일시    : 2026-08-16T16:52:36+09:00
+프로파일    : light
+기록길이(초): 20
+꼬리표      : selftest
+대상토픽    : /scan /camera/camera_info
+제외토픽    : /uwb_pose
+ROS_DISTRO  : humble
+ROS_DOMAIN_ID: 1
+호스트      : user-desktop / 5.15.148-tegra
+
+## 기록 시점에 떠 있던 노드
+/gscam_node
+/launch_ros_5816
+/static_tf_pub_laser
+/ydlidar_ros2_driver_node
+
+## 아래는 사람이 손으로 채운다 (03_metrics_plan.md 8장 참조)
+앵커 설치 높이 : [확인필요]
+태그 장착 높이 : [확인필요]
+측정 위치      : [확인필요]
+조도           : [확인필요]
+비고           : 

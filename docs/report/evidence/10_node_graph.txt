@@ -1,0 +1,116 @@
+# 증빙: 실행 가능한 launch 전부 동시 기동 → 노드 그래프 / 토픽 리스트
+# 수집일시: 2026-08-16T16:35:33+09:00
+# 라벨: 01_sw_status.md 1.2 노드-토픽 목록 / 05_architecture.md 전체 다이어그램
+
+기동 대상: lidar.launch.py + camera.launch.py (저장소의 launch 2개 전부)
+
+===== ros2 node list =====
+/gscam_node
+/launch_ros_5149
+/static_tf_pub_laser
+/ydlidar_ros2_driver_node
+
+===== ros2 topic list -t =====
+/camera/camera_info [sensor_msgs/msg/CameraInfo]
+/camera/image_raw [sensor_msgs/msg/Image]
+/camera/image_raw/compressed [sensor_msgs/msg/CompressedImage]
+/camera/image_raw/compressedDepth [sensor_msgs/msg/CompressedImage]
+/camera/image_raw/theora [theora_image_transport/msg/Packet]
+/parameter_events [rcl_interfaces/msg/ParameterEvent]
+/point_cloud [sensor_msgs/msg/PointCloud]
+/rosout [rcl_interfaces/msg/Log]
+/scan [sensor_msgs/msg/LaserScan]
+/tf_static [tf2_msgs/msg/TFMessage]
+/ydlidar_ros2_driver_node/transition_event [lifecycle_msgs/msg/TransitionEvent]
+
+===== ros2 node info /ydlidar_ros2_driver_node =====
+/ydlidar_ros2_driver_node
+  Subscribers:
+    /parameter_events: rcl_interfaces/msg/ParameterEvent
+  Publishers:
+    /parameter_events: rcl_interfaces/msg/ParameterEvent
+    /point_cloud: sensor_msgs/msg/PointCloud
+    /rosout: rcl_interfaces/msg/Log
+    /scan: sensor_msgs/msg/LaserScan
+  Service Servers:
+    /start_scan: std_srvs/srv/Empty
+    /stop_scan: std_srvs/srv/Empty
+    /ydlidar_ros2_driver_node/describe_parameters: rcl_interfaces/srv/DescribeParameters
+    /ydlidar_ros2_driver_node/get_parameter_types: rcl_interfaces/srv/GetParameterTypes
+    /ydlidar_ros2_driver_node/get_parameters: rcl_interfaces/srv/GetParameters
+    /ydlidar_ros2_driver_node/list_parameters: rcl_interfaces/srv/ListParameters
+    /ydlidar_ros2_driver_node/set_parameters: rcl_interfaces/srv/SetParameters
+    /ydlidar_ros2_driver_node/set_parameters_atomically: rcl_interfaces/srv/SetParametersAtomically
+  Service Clients:
+
+  Action Servers:
+
+  Action Clients:
+
+
+===== ros2 node info /gscam_node =====
+/gscam_node
+  Subscribers:
+    /parameter_events: rcl_interfaces/msg/ParameterEvent
+  Publishers:
+    /camera/camera_info: sensor_msgs/msg/CameraInfo
+    /camera/image_raw: sensor_msgs/msg/Image
+    /camera/image_raw/compressed: sensor_msgs/msg/CompressedImage
+    /camera/image_raw/compressedDepth: sensor_msgs/msg/CompressedImage
+    /camera/image_raw/theora: theora_image_transport/msg/Packet
+    /parameter_events: rcl_interfaces/msg/ParameterEvent
+    /rosout: rcl_interfaces/msg/Log
+  Service Servers:
+    /gscam_node/describe_parameters: rcl_interfaces/srv/DescribeParameters
+    /gscam_node/get_parameter_types: rcl_interfaces/srv/GetParameterTypes
+    /gscam_node/get_parameters: rcl_interfaces/srv/GetParameters
+    /gscam_node/list_parameters: rcl_interfaces/srv/ListParameters
+    /gscam_node/set_parameters: rcl_interfaces/srv/SetParameters
+    /gscam_node/set_parameters_atomically: rcl_interfaces/srv/SetParametersAtomically
+    /set_camera_info: sensor_msgs/srv/SetCameraInfo
+  Service Clients:
+
+  Action Servers:
+
+  Action Clients:
+
+
+===== ros2 service list =====
+/gscam_node/describe_parameters
+/gscam_node/get_parameter_types
+/gscam_node/get_parameters
+/gscam_node/list_parameters
+/gscam_node/set_parameters
+/gscam_node/set_parameters_atomically
+/launch_ros_5149/describe_parameters
+/launch_ros_5149/get_parameter_types
+/launch_ros_5149/get_parameters
+/launch_ros_5149/list_parameters
+/launch_ros_5149/set_parameters
+/launch_ros_5149/set_parameters_atomically
+/set_camera_info
+/start_scan
+/static_tf_pub_laser/describe_parameters
+/static_tf_pub_laser/get_parameter_types
+/static_tf_pub_laser/get_parameters
+/static_tf_pub_laser/list_parameters
+/static_tf_pub_laser/set_parameters
+/static_tf_pub_laser/set_parameters_atomically
+/stop_scan
+/ydlidar_ros2_driver_node/change_state
+/ydlidar_ros2_driver_node/describe_parameters
+/ydlidar_ros2_driver_node/get_parameter_types
+/ydlidar_ros2_driver_node/get_parameters
+/ydlidar_ros2_driver_node/list_parameters
+/ydlidar_ros2_driver_node/set_parameters
+/ydlidar_ros2_driver_node/set_parameters_atomically
+
+===== ros2 topic hz /scan (5초) =====
+	min: 0.100s max: 0.101s std dev: 0.00046s window: 11
+average rate: 9.963
+	min: 0.100s max: 0.101s std dev: 0.00045s window: 21
+
+===== ros2 topic hz /camera/image_raw (5초) =====
+	min: 0.028s max: 0.068s std dev: 0.00870s window: 57
+average rate: 28.034
+	min: 0.028s max: 0.068s std dev: 0.00849s window: 86

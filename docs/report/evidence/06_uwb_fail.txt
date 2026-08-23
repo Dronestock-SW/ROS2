@@ -1,0 +1,32 @@
+# 증빙: UWB 태그 연결 확인 — 실패(장치 미연결 + 노드 미구현)
+# 수집일시: 2026-08-16T16:34:06+09:00
+# 라벨: 01_sw_status.md 2장 측위-UWB / 04_evidence_index.md D-05
+
+$ ls -l /dev/uwb
+ls: '/dev/uwb'에 접근할 수 없음: 그런 파일이나 디렉터리가 없습니다
+
+$ lsusb | grep 10c4:ea60   (CP2102 = LiDAR/UWB 공용 칩)
+Bus 001 Device 006: ID 10c4:ea60 Silicon Labs CP210x UART Bridge
+→ CP2102 장치가 1개만 열거된다. LiDAR(/dev/lidar -> ttyUSB0) 하나뿐이며 UWB 태그는 미연결.
+
+$ ls /dev/ttyUSB*
+/dev/ttyUSB0
+
+$ grep -n uwb /etc/udev/rules.d/99-dronestock.rules   (설치된 규칙)
+12:#   ls -l /dev/lidar /dev/uwb        # 두 링크가 서로 다른 ttyUSB* 를 가리키면 성공
+27:#   │ 1-2.1        │ /dev/uwb  │ Qorvo DWM3000EVB (UWB 태그) │
+40:# CP2102 USB-UART, 921600 8N1 raw. JSON 한 줄/샘플, "type":"uwb_pose", 약 12Hz.
+42:#       /uwb_pose 노드는 포트를 연 뒤 첫 줄의 "type":"uwb_pose" 를 확인하고,
+44:SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", KERNELS=="1-2.1", SYMLINK+="uwb", MODE="0660", GROUP="dialout"
+
+$ ros2 topic list | grep -i uwb
+(출력 없음 = /uwb_pose 토픽 없음)
+
+$ ls src/
+drone_bringup
+ydlidar_ros2_driver
+(drone_uwb 패키지 없음 = uwb_node 미구현)
+
+## 판정
+- 실패 사유 2개: (1) UWB 태그 미연결 (2) uwb_node 코드 미작성
+- 설계 문서만 존재: docs/uwb_node_design.md (git 미추적 상태)

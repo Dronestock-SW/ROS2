@@ -1,0 +1,38 @@
+# 증빙: MAVROS / Pixhawk heartbeat 확인 — 실패(장치 미연결)
+# 수집일시: 2026-08-16T16:34:27+09:00
+# 라벨: 01_sw_status.md 2장 비행제어연동 / 04_evidence_index.md D-06
+
+$ ls -l /dev/pixhawk /dev/ttyACM*
+ls: '/dev/pixhawk'에 접근할 수 없음: 그런 파일이나 디렉터리가 없습니다
+ls: '/dev/ttyACM*'에 접근할 수 없음: 그런 파일이나 디렉터리가 없습니다
+
+$ lsusb | grep 3185   (Auterion PX4 FMU v6C VID)
+(출력 없음 = Pixhawk USB 미연결)
+
+$ grep -n pixhawk /etc/udev/rules.d/99-dronestock.rules   (설치된 규칙)
+49:# SUBSYSTEM=="tty", ATTRS{idVendor}=="____", ATTRS{idProduct}=="____", SYMLINK+="pixhawk", MODE="0660", GROUP="dialout"
+→ 설치된 규칙에는 Pixhawk 항목이 주석 처리된 구버전이다.
+   저장소 원본(config/udev/99-dronestock.rules 72행)에는 활성 규칙이 있으나 /etc 에 미반영.
+
+$ ros2 pkg list | grep mavros   (패키지 설치 여부)
+mavros
+mavros_extras
+mavros_msgs
+
+$ ls /usr/share/GeographicLib/geoids/
+egm96-5.pgm
+egm96-5.pgm.aux.xml
+egm96-5.wld
+
+$ ls src/drone_bringup/launch/   (MAVROS launch 존재 여부)
+camera.launch.py
+lidar.launch.py
+(mavros launch 없음 = 저장소에 MAVROS 기동 구성 미작성)
+
+## 판정
+- MAVROS 2.14.0 apt 설치는 확인됨. geoid 데이터셋도 존재.
+- 그러나 (1) Pixhawk 미연결 (2) 저장소에 MAVROS launch/파라미터 없음 → heartbeat 실행 확인 불가.
+- roadmap.md 90~93행은 'Pixhawk 6C Mini heartbeat (MAVROS connected)'를 [x]로 표시하나,
+  그 확인의 로그/커밋 근거는 저장소에 없다. 재현하려면 기체 연결 후 아래를 실행한다:
+    ros2 run mavros mavros_node --ros-args -p fcu_url:=/dev/pixhawk:115200
+    ros2 topic echo /mavros/state --once

@@ -1,0 +1,12 @@
+# 증빙: colcon 빌드
+# 수집일시: 2026-08-16T16:31:15+09:00
+# 라벨: 01_sw_status.md §1.1 패키지 구성 / 02_timeline_wbs.md 빌드 가능 상태
+
+$ colcon build --symlink-install
+Starting >>> ydlidar_ros2_driver
+Finished <<< ydlidar_ros2_driver [3.04s]
+Starting >>> drone_bringup
+Finished <<< drone_bringup [3.43s]
+
+Summary: 2 packages finished [7.60s]
+종료코드: 0

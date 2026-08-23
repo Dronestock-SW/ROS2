@@ -1,0 +1,25 @@
+# 증빙: QR/마커 인식 — 실패(코드·패키지 모두 없음)
+# 수집일시: 2026-08-16T16:34:43+09:00
+# 라벨: 01_sw_status.md 2장 인식-QR / 03_metrics_plan.md QR 지표 / 04_evidence_index.md D-07
+
+$ grep -rniE 'qr|aruco|apriltag|solvepnp' src/drone_bringup/  (우리 코드 전수)
+src/drone_bringup/launch/camera.launch.py:13:    이 이름은 Phase 3에 쓸 aruco_opencv 의 기본값(cam_base_topic: camera/image_raw)과
+src/drone_bringup/params/camera_imx219.yaml:14:#   이유 2 (성능): 캡처+ArUco 검출 실측 33.4ms/프레임. 30fps 예산 33.3ms 에 맞는다.
+
+$ ros2 pkg list | grep -E 'aruco|apriltag|zbar|qr'
+(출력 없음 = 관련 ROS2 패키지 미설치)
+
+$ python3 -c 'import cv2; print(cv2.__version__); print(hasattr(cv2,"QRCodeDetector"), hasattr(cv2,"aruco"))'
+opencv 4.5.4
+QRCodeDetector: True
+aruco: True
+
+$ python3 -c 'import pyzbar'
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+ModuleNotFoundError: No module named 'pyzbar'
+
+## 판정
+- QR/마커 인식 코드는 저장소에 한 줄도 없다. roadmap Phase 3 범위이며 미착수.
+- OpenCV는 Python에서 사용 가능하나, ROS2 노드로 감싼 것이 없다.
+- 카메라 캘리브레이션(camera_info) 미완이라 solvePnP 기반 거리·각도 산출은 현재 불가.
