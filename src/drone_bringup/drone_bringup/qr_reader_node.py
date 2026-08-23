@@ -5,6 +5,10 @@ DE2110은 Sense Mode(2026-08-23 설정 완료)로 동작한다 — 버튼 없이
 udev가 만든 /dev/input/qr_reader(config/udev/99-dronestock.rules)를 evdev로
 읽어 문자로 재조립하고 /qr_reader/data 로 발행한다.
 
+★ Sense Mode는 USB 전원이 붙어있는 동안만 유지된다(glossary.md의
+"Sense Mode / Manual Mode" 함정 참조). 드론 전원을 켤 때마다 Sense Mode
+설정 QR을 다시 스캔해야 한다 — 비행 전 체크리스트 항목이다.
+
 /qr_reader/data 는 qr_decoder_node의 /qr_code/data 와 다른 topic이다:
     qr_decoder_node = 카메라(IMX219)+pyzbar, 비주얼 서보잉 위치 실험용.
     이 노드          = DYSCAN 전용 스캐너, 재고 데이터 판독용(glossary QR 코드 항목).
