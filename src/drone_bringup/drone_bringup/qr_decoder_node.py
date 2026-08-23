@@ -50,6 +50,12 @@ class QrDecoderNode(Node):
         self._miss_warn_threshold = self.get_parameter('miss_warn_threshold').value
         self._hz_log_interval = self.get_parameter('hz_log_interval_sec').value
 
+        if self._miss_warn_threshold <= 0:
+            self.get_logger().warn(
+                f'miss_warn_threshold={self._miss_warn_threshold}는 0 이하라 무효 — '
+                '미검출 경고를 비활성화한다')
+            self._miss_warn_threshold = None
+
         self._bridge = CvBridge()
         self._last_bbox = None  # (x, y, w, h) 직전 검출 위치. None이면 전체 프레임 탐색
         self._miss_streak = 0
@@ -80,7 +86,7 @@ class QrDecoderNode(Node):
         else:
             self._last_bbox = None
             self._miss_streak += 1
-            if self._miss_streak % self._miss_warn_threshold == 0:
+            if self._miss_warn_threshold and self._miss_streak % self._miss_warn_threshold == 0:
                 self.get_logger().warn(f'QR {self._miss_streak}프레임 연속 미검출')
 
         self._record_proc_time(time.monotonic() - t0)

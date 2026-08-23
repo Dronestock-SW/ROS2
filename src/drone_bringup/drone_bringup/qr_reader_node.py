@@ -12,7 +12,8 @@ USB 재연결 자동 복구:
     실측 — 그때는 "Sense Mode가 재연결 시 풀린다"고 오판했는데, 실은
     이 死 파일디스크립터 버그였다. 재연결 후 노드만 새로 띄우면 버튼 없이도
     바로 인식됐다). 이제 OSError를 잡으면 DEVICE_PATH가 다시 열릴 때까지
-    재시도한다.
+    재시도한다. 기동 시점(udev가 아직 장치를 안 만들었을 때)도 같은
+    재시도 경로를 탄다 — __init__에서 바로 크래시하지 않는다.
 
 /qr_reader/data 는 qr_decoder_node의 /qr_code/data 와 다른 topic이다:
     qr_decoder_node = 카메라(IMX219)+pyzbar, 비주얼 서보잉 위치 실험용.
@@ -82,8 +83,9 @@ class QrReaderNode(Node):
         self._srv = self.create_service(SetBool, '~/set_enabled', self._on_set_enabled)
 
         self._closed = False
-        self._device = evdev.InputDevice(DEVICE_PATH)
-        self._device.grab()
+        self._device = None
+        self._device_lock = threading.Lock()
+        self._open_device(log_wait=True)  # 기동 시점에 장치가 아직 없어도 재시도하며 대기
 
         self._thread = threading.Thread(target=self._read_loop, daemon=True)
         self._thread.start()
@@ -98,29 +100,52 @@ class QrReaderNode(Node):
         self.get_logger().info(f'qr_reader_node enabled={request.data}')
         return response
 
+    def _open_device(self, log_wait=False):
+        """DEVICE_PATH가 열리고 grab될 때까지 재시도한다(self._closed 될 때까지 블로킹)."""
+        waited = False
+        while not self._closed:
+            device = None
+            try:
+                device = evdev.InputDevice(DEVICE_PATH)
+                device.grab()
+                with self._device_lock:
+                    if self._closed:  # destroy_node()가 grab 도중에 이미 지나갔다
+                        device.ungrab()
+                        device.close()
+                        return
+                    self._device = device
+                if waited:
+                    self.get_logger().info(f'{DEVICE_PATH} 연결 성공')
+                return
+            except OSError:
+                if device is not None:
+                    device.close()  # open은 됐는데 grab만 실패한 경우 fd 누수 방지
+                if log_wait and not waited:
+                    self.get_logger().warn(f'{DEVICE_PATH} 연결 대기 중 — 재시도한다')
+                    waited = True
+                time.sleep(_RECONNECT_INTERVAL_SEC)
+
     def _read_loop(self):
         while not self._closed:
             try:
-                for event in self._device.read_loop():
-                    if event.type == evdev.ecodes.EV_KEY:
+                with self._device_lock:
+                    device = self._device
+                for event in device.read_loop():
+                    if event.type != evdev.ecodes.EV_KEY:
+                        continue
+                    try:
                         self._handle_key(event.code, event.value)
+                    except Exception:
+                        self.get_logger().error(
+                            f'키 이벤트 처리 중 예외 — 계속 읽는다: code={event.code}',
+                            exc_info=True)
             except OSError:
                 if self._closed:
                     return  # destroy_node()가 device.close()를 불러 깨어난 정상 종료
                 self.get_logger().warn(f'{DEVICE_PATH} 연결 끊김 — 재연결 대기 중')
-                self._reconnect()
-
-    def _reconnect(self):
-        self._buf.clear()
-        self._shift = False
-        while not self._closed:
-            try:
-                self._device = evdev.InputDevice(DEVICE_PATH)
-                self._device.grab()
-                self.get_logger().info(f'{DEVICE_PATH} 재연결 성공')
-                return
-            except OSError:
-                time.sleep(_RECONNECT_INTERVAL_SEC)
+                self._buf.clear()
+                self._shift = False
+                self._open_device()
 
     def _handle_key(self, code, value):
         if code in _SHIFT_KEYS:
@@ -138,6 +163,8 @@ class QrReaderNode(Node):
         pair = _KEYMAP.get(code)
         if pair is not None:
             self._buf.append(pair[1] if self._shift else pair[0])
+        else:
+            self.get_logger().warn(f'매핑 안 된 keycode={code} 무시됨 — 데이터 유실 가능')
 
     def _emit_line(self):
         payload = ''.join(self._buf)
@@ -157,14 +184,17 @@ class QrReaderNode(Node):
 
     def destroy_node(self):
         self._closed = True
-        try:
-            self._device.ungrab()
-        except OSError:
-            pass
-        try:
-            self._device.close()  # 블로킹 중인 read_loop()을 OSError로 깨운다
-        except OSError:
-            pass
+        with self._device_lock:
+            device = self._device
+        if device is not None:
+            try:
+                device.ungrab()
+            except OSError:
+                pass
+            try:
+                device.close()  # 블로킹 중인 read_loop()을 OSError로 깨운다
+            except OSError:
+                pass
         super().destroy_node()
 
 

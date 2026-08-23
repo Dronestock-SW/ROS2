@@ -16,7 +16,9 @@
   <exec_depend>std_msgs</exec_depend>
   <exec_depend>cv_bridge</exec_depend>
   <exec_depend>std_srvs</exec_depend>
-  <!-- pyzbar, evdev: rosdep 키 미등록. apt install python3-pyzbar python3-evdev 로 수동 설치(2026-08-23). -->
+  <!-- pyzbar, evdev: rosdep 키 미등록 — apt install python3-pyzbar python3-evdev 로 수동 설치(2026-08-23).
+       이 두 exec_depend 때문에 `rosdep install --from-paths src --ignore-src`가 그대로는 실패한다.
+       실행할 땐 반드시 --skip-keys "python3-pyzbar python3-evdev" 를 붙일 것. -->
   <exec_depend>python3-pyzbar</exec_depend>
   <exec_depend>python3-evdev</exec_depend>
 
