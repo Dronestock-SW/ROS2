@@ -5,9 +5,14 @@ DE2110은 Sense Mode(2026-08-23 설정 완료)로 동작한다 — 버튼 없이
 udev가 만든 /dev/input/qr_reader(config/udev/99-dronestock.rules)를 evdev로
 읽어 문자로 재조립하고 /qr_reader/data 로 발행한다.
 
-★ Sense Mode는 USB 전원이 붙어있는 동안만 유지된다(glossary.md의
-"Sense Mode / Manual Mode" 함정 참조). 드론 전원을 켤 때마다 Sense Mode
-설정 QR을 다시 스캔해야 한다 — 비행 전 체크리스트 항목이다.
+USB 재연결 자동 복구:
+    스캐너가 evdev 장치를 물고 있는 도중 USB가 뽑히면 read_loop()이
+    OSError를 던진다. 예전엔 여기서 스레드가 조용히 끝나버려서 노드는
+    살아있는데 死장치를 붙든 채 아무 것도 못 읽는 상태가 됐다(2026-08-23
+    실측 — 그때는 "Sense Mode가 재연결 시 풀린다"고 오판했는데, 실은
+    이 死 파일디스크립터 버그였다. 재연결 후 노드만 새로 띄우면 버튼 없이도
+    바로 인식됐다). 이제 OSError를 잡으면 DEVICE_PATH가 다시 열릴 때까지
+    재시도한다.
 
 /qr_reader/data 는 qr_decoder_node의 /qr_code/data 와 다른 topic이다:
     qr_decoder_node = 카메라(IMX219)+pyzbar, 비주얼 서보잉 위치 실험용.
@@ -30,6 +35,7 @@ on/off:
 """
 
 import threading
+import time
 
 import evdev
 import rclpy
@@ -38,6 +44,7 @@ from std_msgs.msg import String
 from std_srvs.srv import SetBool
 
 DEVICE_PATH = '/dev/input/qr_reader'
+_RECONNECT_INTERVAL_SEC = 1.0
 
 # US 배열 evdev keycode -> (평상시 문자, Shift 문자).
 # 스캐너 Data Format이 GBK/Unicode든 재고 태그는 영숫자 위주라 이 정도만 다룬다.
@@ -74,6 +81,7 @@ class QrReaderNode(Node):
         self._pub = self.create_publisher(String, '/qr_reader/data', 10)
         self._srv = self.create_service(SetBool, '~/set_enabled', self._on_set_enabled)
 
+        self._closed = False
         self._device = evdev.InputDevice(DEVICE_PATH)
         self._device.grab()
 
@@ -91,13 +99,28 @@ class QrReaderNode(Node):
         return response
 
     def _read_loop(self):
-        try:
-            for event in self._device.read_loop():
-                if event.type == evdev.ecodes.EV_KEY:
-                    self._handle_key(event.code, event.value)
-        except OSError:
-            # destroy_node()가 device.close()를 부르면 여기서 빠져나온다 — 정상 종료.
-            pass
+        while not self._closed:
+            try:
+                for event in self._device.read_loop():
+                    if event.type == evdev.ecodes.EV_KEY:
+                        self._handle_key(event.code, event.value)
+            except OSError:
+                if self._closed:
+                    return  # destroy_node()가 device.close()를 불러 깨어난 정상 종료
+                self.get_logger().warn(f'{DEVICE_PATH} 연결 끊김 — 재연결 대기 중')
+                self._reconnect()
+
+    def _reconnect(self):
+        self._buf.clear()
+        self._shift = False
+        while not self._closed:
+            try:
+                self._device = evdev.InputDevice(DEVICE_PATH)
+                self._device.grab()
+                self.get_logger().info(f'{DEVICE_PATH} 재연결 성공')
+                return
+            except OSError:
+                time.sleep(_RECONNECT_INTERVAL_SEC)
 
     def _handle_key(self, code, value):
         if code in _SHIFT_KEYS:
@@ -133,6 +156,7 @@ class QrReaderNode(Node):
         self.get_logger().info(f'QR 읽음: {payload}')
 
     def destroy_node(self):
+        self._closed = True
         try:
             self._device.ungrab()
         except OSError:
