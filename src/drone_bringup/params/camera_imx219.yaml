@@ -53,7 +53,6 @@
     # 카메라가 끊겨도 노드를 죽이지 않고 다시 연다.
     reopen_on_eof: true
 
-    # camera_info_url: 캘리브레이션 완료 후 아래 줄의 주석을 푼다.
-    #   지금 넣으면 파일이 없어서 기동할 때마다 경고가 뜬다.
-    #   ★ 렌즈 초점을 확정한 뒤에 캘리브레이션할 것 — 초점을 바꾸면 값이 전부 무효가 된다.
-    # camera_info_url: "package://drone_bringup/params/camera_imx219_calib.yaml"
+    # 캘리브레이션 완료 (2026-08-30, 체커보드 9x6 22mm, 74샘플).
+    #   ★ 이후 렌즈 초점을 다시 만지면 이 값 전부 무효가 된다 — 재캘리브레이션 필요.
+    camera_info_url: "package://drone_bringup/params/camera_imx219_calib.yaml"
