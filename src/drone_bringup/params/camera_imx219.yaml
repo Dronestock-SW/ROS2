@@ -27,9 +27,10 @@
   ros__parameters:
     # GStreamer 파이프라인. gscam 이 뒤에 appsink 를 자동으로 붙인다.
     #   nvarguscamerasrc : ISP 경유 (필수)
-    #   nvvidconv        : GPU 메모리(NVMM) → CPU 메모리로 이동
+    #   nvvidconv        : GPU 메모리(NVMM) → CPU 메모리로 이동. flip-method=2 로 180도 회전
+    #                      (IMX219가 물리적으로 뒤집혀 장착돼 화면이 상하반전 — 2026-09-13 확인)
     #   videoconvert     : gscam이 뒤에 붙이는 RGB 요구 caps 로 맞춰준다
-    gscam_config: "nvarguscamerasrc sensor-id=0 ! video/x-raw(memory:NVMM),width=1640,height=1232,framerate=30/1 ! nvvidconv ! video/x-raw,format=BGRx ! videoconvert"
+    gscam_config: "nvarguscamerasrc sensor-id=0 ! video/x-raw(memory:NVMM),width=1640,height=1232,framerate=30/1 ! nvvidconv flip-method=2 ! video/x-raw,format=BGRx ! videoconvert"
 
     # gscam은 rgb8 / mono8 / jpeg 만 받는다. bgr8 을 넣으면 FATAL 후 죽는다 (2026-08-12 확인).
     # 구독하는 쪽에서 cv_bridge 로 순서를 바꾼다:
@@ -53,6 +54,6 @@
     # 카메라가 끊겨도 노드를 죽이지 않고 다시 연다.
     reopen_on_eof: true
 
-    # 캘리브레이션 완료 (2026-08-30, 체커보드 9x6 22mm, 74샘플).
-    #   ★ 이후 렌즈 초점을 다시 만지면 이 값 전부 무효가 된다 — 재캘리브레이션 필요.
+    # 재캘리브레이션 완료 (2026-09-13, flip-method=2 반영 후, 체커보드 9x6 22mm, 55샘플).
+    #   ★ 이후 렌즈 초점이나 flip-method를 다시 만지면 이 값 전부 무효가 된다 — 재캘리브레이션 필요.
     camera_info_url: "package://drone_bringup/params/camera_imx219_calib.yaml"
