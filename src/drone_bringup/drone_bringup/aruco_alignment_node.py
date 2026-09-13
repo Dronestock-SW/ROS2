@@ -15,9 +15,21 @@
     별도로(실측 길이 ÷ 시간 = 하드코딩된 값) 처리하기로 함.
 
 목표값(임시, 튜닝 가능 — params_file로 덮어쓸 수 있다):
-    target_distance_m = 0.175  (QR 안정 거리 15~20cm의 중간값)
+    target_distance_m = 0.20  (2026-09-13 변경. 근거는 아래 "목표거리 재검토" 참조)
     lateral_tolerance_m = 0.03
     distance_tolerance_m = 0.02
+
+목표거리 재검토(2026-09-13, 0.175 → 0.20):
+    159mm 마커 기준 d_min(검출에 필요한 최소거리, 여백 1모듈 가정) ≈ 18.8cm임을
+    calib fy로 계산 후 실측 확인함(카메라 앞에서 마커를 천천히 접근시켜 검출
+    끊기는 지점 관찰). 손 떨림 있는 상태로는 18~18.6cm 부근에서 검출이
+    간헐적으로 끊겼고, 손 떨림 최소화하니 18.6cm까지는 끊김 없이 검출됨.
+    즉 17.5cm 목표는 d_min보다 가까워 애초에 성립 불가능했다.
+    0.20(20cm)은 QR 안정 상한(15~20cm의 위쪽 끝)과 ArUco 안정 하한(18.6~18.8cm)이
+    겹치는 지점이라 골랐다 — distance_tolerance_m=0.02를 감안해도 허용 하한이
+    18cm라 여전히 타이트하다. 이 값은 사람 손으로 든 마커 기준이고, 실제 드론
+    호버링 안정성(프롭워시 포함)은 아직 비행 실측 전이라 미확인 — 이게 기대만큼
+    안정적이지 않으면 중첩 마커(큰 마커 안에 작은 마커) 방식으로 전환 검토 필요.
 
 실행:
     ros2 run drone_bringup aruco_alignment_node
@@ -36,7 +48,7 @@ class ArucoAlignmentNode(Node):
     def __init__(self):
         super().__init__('aruco_alignment_node')
 
-        self.declare_parameter('target_distance_m', 0.175)
+        self.declare_parameter('target_distance_m', 0.20)
         self.declare_parameter('lateral_tolerance_m', 0.03)
         self.declare_parameter('distance_tolerance_m', 0.02)
         self.declare_parameter('marker_id', -1)  # -1이면 처음 보이는 마커 아무거나
