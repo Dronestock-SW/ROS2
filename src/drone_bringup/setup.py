@@ -32,6 +32,8 @@ setup(
             'qr_reader_node = drone_bringup.qr_reader_node:main',
             'qr_fallback_node = drone_bringup.qr_fallback_node:main',
             'qr_parser_node = drone_bringup.qr_parser_node:main',
+            'aruco_alignment_node = drone_bringup.aruco_alignment_node:main',
+            'aruco_servo_node = drone_bringup.aruco_servo_node:main',
         ],
     },
 )
