@@ -1,0 +1,68 @@
+{
+  "scope": "offline contract review, no runtime or network started",
+  "bundle_sha256": "5dd97e663e450d60b8a88ca00b79d9a950db5094cb07ee6863a65e96d24f528b",
+  "results": {
+    "queue_latest_only": true,
+    "failed_poll_preserves_last_success": true,
+    "get_example_omissions": {
+      "launch_authorized": false,
+      "anchor_layout_valid": false,
+      "anchors_count": 0
+    },
+    "revision_change_resets_index": true,
+    "xy_only_without_quality": {
+      "pose_quality": "POSITION_ONLY",
+      "resolver_usable": false,
+      "reason": "pose_quality:POSITION_ONLY"
+    },
+    "telemetry_missing_frame": true,
+    "telemetry_hides_tag_layout": {
+      "server_id": "server-new",
+      "actual_tag_id": "tag-old",
+      "sent_id": "server-new",
+      "sent_synced": true
+    },
+    "return_reports_route_waypoint": {
+      "fsm_target": "HOME",
+      "sent_waypoint": "P1"
+    },
+    "ack_not_retried_after_leaving_return": true,
+    "qr_flush_strips_local_keys": true,
+    "qr_rejection_consumes_buffer": true,
+    "a1_a2_angle_from_our_x_deg": -4.2327622764292645,
+    "a1_a2_a1_a3_angle_deg": 94.23276227642927
+  },
+  "anchor_reference": {
+    "source": "docs/uwb_anchor_survey.md (local uncommitted survey record)",
+    "source_sha256": "ada0e832595b8869a38a6f7f512518cb7f5cff449de8061d179b30445e0d8f66",
+    "survey_date": "2026-09-06",
+    "coordinate_frame": "uwb_map",
+    "origin_xy": "A1",
+    "positive_y": "A1 to A3",
+    "positive_x": "right perpendicular to positive y",
+    "unit": "meter",
+    "anchors": {
+      "A1": [
+        0.0,
+        0.0,
+        2.2
+      ],
+      "A2": [
+        5.81,
+        -0.43,
+        2.2
+      ],
+      "A3": [
+        0.0,
+        4.63,
+        2.2
+      ],
+      "A4": [
+        6.11,
+        4.357,
+        2.2
+      ]
+    },
+    "qualification": "Provisional coordinates from user-reported survey; no new measurement or independent verification."
+  }
+}
