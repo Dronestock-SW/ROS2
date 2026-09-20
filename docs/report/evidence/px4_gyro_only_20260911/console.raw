@@ -1,0 +1,159 @@
+
+NuttShell (NSH) NuttX-11.0.0
+nsh> [K
+nsh> [Klistener sensor_gyro -n 1
+
+TOPIC: sensor_gyro 2 instances
+
+Instance 0:
+ sensor_gyro
+    timestamp: 854042276 (0.000426 seconds ago)
+    timestamp_sample: 854042182 (94 us before timestamp)
+    device_id: 6684682 (Type: 0x66, SPI:1 (0x00))
+    x: 1.34188
+    y: -1.21192
+    z: 1.11320
+    temperature: nan
+    error_count: 0
+    clip_counter: [0, 0, 0]
+    samples: 3
+
+
+Instance 1:
+ sensor_gyro
+    timestamp: 854054884 (0.001040 seconds ago)
+    timestamp_sample: 854054793 (91 us before timestamp)
+    device_id: 2490378 (Type: 0x26, SPI:1 (0x00))
+    x: 1.34101
+    y: -1.35573
+    z: 0.77077
+    temperature: 35.17512
+    error_count: 0
+    clip_counter: [0, 0, 0]
+    samples: 10
+
+nsh> [Klistener sensor_gyro -n 1
+
+TOPIC: sensor_gyro 2 instances
+
+Instance 0:
+ sensor_gyro
+    timestamp: 854277874 (0.000071 seconds ago)
+    timestamp_sample: 854277764 (110 us before timestamp)
+    device_id: 6684682 (Type: 0x66, SPI:1 (0x00))
+    x: -0.03195
+    y: 0.28549
+    z: -0.05681
+    temperature: nan
+    error_count: 0
+    clip_counter: [0, 0, 0]
+    samples: 3
+
+
+Instance 1:
+ sensor_gyro
+    timestamp: 854289949 (0.000833 seconds ago)
+    timestamp_sample: 854289854 (95 us before timestamp)
+    device_id: 2490378 (Type: 0x26, SPI:1 (0x00))
+    x: -0.02763
+    y: 0.23514
+    z: -0.07903
+    temperature: 35.22343
+    error_count: 0
+    clip_counter: [0, 0, 0]
+    samples: 10
+
+nsh> [Klistener sensor_gyro -n 1
+
+TOPIC: sensor_gyro 2 instances
+
+Instance 0:
+ sensor_gyro
+    timestamp: 854511859 (0.000841 seconds ago)
+    timestamp_sample: 854511753 (106 us before timestamp)
+    device_id: 6684682 (Type: 0x66, SPI:1 (0x00))
+    x: -0.13351
+    y: 0.14665
+    z: -0.08735
+    temperature: nan
+    error_count: 0
+    clip_counter: [0, 0, 0]
+    samples: 3
+
+
+Instance 1:
+ sensor_gyro
+    timestamp: 854526255 (0.000843 seconds ago)
+    timestamp_sample: 854526165 (90 us before timestamp)
+    device_id: 2490378 (Type: 0x26, SPI:1 (0x00))
+    x: -0.15351
+    y: 0.22197
+    z: -0.09673
+    temperature: 35.17512
+    error_count: 0
+    clip_counter: [0, 0, 0]
+    samples: 10
+
+nsh> [Klistener sensor_gyro -n 1
+
+TOPIC: sensor_gyro 2 instances
+
+Instance 0:
+ sensor_gyro
+    timestamp: 854745892 (0.001106 seconds ago)
+    timestamp_sample: 854745789 (103 us before timestamp)
+    device_id: 6684682 (Type: 0x66, SPI:1 (0x00))
+    x: -0.06498
+    y: 0.07243
+    z: -0.06959
+    temperature: nan
+    error_count: 0
+    clip_counter: [0, 0, 0]
+    samples: 3
+
+
+Instance 1:
+ sensor_gyro
+    timestamp: 854760066 (0.001000 seconds ago)
+    timestamp_sample: 854759975 (91 us before timestamp)
+    device_id: 2490378 (Type: 0x26, SPI:1 (0x00))
+    x: -0.10897
+    y: 0.09206
+    z: -0.01388
+    temperature: 35.21739
+    error_count: 0
+    clip_counter: [0, 0, 0]
+    samples: 10
+
+nsh> [Klistener sensor_gyro -n 1
+
+TOPIC: sensor_gyro 2 instances
+
+Instance 0:
+ sensor_gyro
+    timestamp: 854979928 (0.000118 seconds ago)
+    timestamp_sample: 854979824 (104 us before timestamp)
+    device_id: 6684682 (Type: 0x66, SPI:1 (0x00))
+    x: -0.04261
+    y: 0.05361
+    z: -0.01952
+    temperature: nan
+    error_count: 0
+    clip_counter: [0, 0, 0]
+    samples: 3
+
+
+Instance 1:
+ sensor_gyro
+    timestamp: 854995127 (0.000568 seconds ago)
+    timestamp_sample: 854995036 (91 us before timestamp)
+    device_id: 2490378 (Type: 0x26, SPI:1 (0x00))
+    x: 0.00430
+    y: -0.00403
+    z: -0.03605
+    temperature: 35.14493
+    error_count: 0
+    clip_counter: [0, 0, 0]
+    samples: 10
+
+nsh> [K

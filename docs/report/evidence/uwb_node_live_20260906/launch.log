@@ -1,0 +1,18 @@
+[INFO] [launch]: All log files can be found below /home/user/.ros/log/2026-09-06-17-50-45-161301-user-desktop-26447
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [uwb_node-1]: process started with pid [26448]
+[INFO] [uwb_px4_bridge-2]: process started with pid [26450]
+[uwb_node-1] [INFO] [1788684646.179035942] [uwb_node]: UWB source=raw_ranges, frame=uwb_map
+[INFO] [uwb_node-1]: process has finished cleanly [pid 26448]
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT) again, ignoring...
+[INFO] [uwb_px4_bridge-2]: sending signal 'SIGINT' to process[uwb_px4_bridge-2]
+[uwb_px4_bridge-2] Traceback (most recent call last):
+[uwb_px4_bridge-2]   File "/home/user/drone_ws/install/drone_uwb/lib/drone_uwb/uwb_px4_bridge", line 33, in <module>
+[uwb_px4_bridge-2]     sys.exit(load_entry_point('drone-uwb', 'console_scripts', 'uwb_px4_bridge')())
+[uwb_px4_bridge-2]   File "/home/user/drone_ws/build/drone_uwb/drone_uwb/bridge.py", line 127, in main
+[uwb_px4_bridge-2]     node.destroy_node()
+[uwb_px4_bridge-2]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/node.py", line 1696, in destroy_node
+[uwb_px4_bridge-2]     self.__node.destroy_when_not_in_use()
+[uwb_px4_bridge-2] KeyboardInterrupt
+[ERROR] [uwb_px4_bridge-2]: process has died [pid 26450, exit code -2, cmd '/home/user/drone_ws/install/drone_uwb/lib/drone_uwb/uwb_px4_bridge --ros-args --params-file /home/user/drone_ws/install/drone_uwb/share/drone_uwb/config/uwb.yaml'].

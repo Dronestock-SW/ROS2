@@ -1,0 +1,156 @@
+{
+  "capture_window": {
+    "host_start_monotonic_ns": 2876995353512,
+    "host_end_monotonic_ns": 2936996902207,
+    "requested_seconds": 60,
+    "requested_pair_rate_hz": 5,
+    "interrupted": false,
+    "sensor_rate_changed": false,
+    "px4_parameters_written": false
+  },
+  "method": "PX4 uORB sensor_accel / sensor_gyro console snapshots",
+  "frame": "FRD board: x forward, y right, z down",
+  "unaltered_console_saved": "console.raw",
+  "native_rate_samples_all_captured": false,
+  "software_filter_or_bias_correction_applied": false,
+  "stationary_condition_confirmed_by_user": false,
+  "queries": 600,
+  "sensors": {
+    "imu0_accel": {
+      "count": 300,
+      "device_id": 6946826,
+      "first_sample_us": 2894046546,
+      "last_sample_us": 2953844515,
+      "sample_span_s": 59.797969,
+      "snapshot_rate_hz": 5.000169821821206,
+      "max_snapshot_gap_ms": 205.69799999999998,
+      "duplicate_sample_times": 0,
+      "backward_sample_times": 0,
+      "mean_xyz": [
+        -0.11821526666666664,
+        0.13410050000000004,
+        -9.738666800000015
+      ],
+      "stddev_xyz": [
+        0.02520698348200796,
+        0.031782258805031466,
+        0.0339149198302655
+      ],
+      "min_xyz": [
+        -0.18315,
+        0.04668,
+        -9.8294
+      ],
+      "max_xyz": [
+        -0.02873,
+        0.22266,
+        -9.63367
+      ],
+      "error_count_first": 0,
+      "error_count_last": 0,
+      "observed_snapshots_with_clipping": 0
+    },
+    "imu0_gyro": {
+      "count": 300,
+      "device_id": 6684682,
+      "first_sample_us": 2894087311,
+      "last_sample_us": 2953888311,
+      "sample_span_s": 59.801,
+      "snapshot_rate_hz": 4.999916389358037,
+      "max_snapshot_gap_ms": 208.57999999999998,
+      "duplicate_sample_times": 0,
+      "backward_sample_times": 0,
+      "mean_xyz": [
+        -0.0013071666666666663,
+        0.0006342333333333339,
+        0.0007938666666666674
+      ],
+      "stddev_xyz": [
+        0.01229415659187549,
+        0.012412359743909383,
+        0.01360627052926538
+      ],
+      "min_xyz": [
+        -0.03763,
+        -0.04367,
+        -0.04012
+      ],
+      "max_xyz": [
+        0.03657,
+        0.0316,
+        0.04332
+      ],
+      "error_count_first": 0,
+      "error_count_last": 0,
+      "observed_snapshots_with_clipping": 0
+    },
+    "imu1_accel": {
+      "count": 300,
+      "device_id": 2490378,
+      "first_sample_us": 2894060304,
+      "last_sample_us": 2953859866,
+      "sample_span_s": 59.799562,
+      "snapshot_rate_hz": 5.000036622341816,
+      "max_snapshot_gap_ms": 207.554,
+      "duplicate_sample_times": 0,
+      "backward_sample_times": 0,
+      "mean_xyz": [
+        0.0168976,
+        0.14673150000000004,
+        -9.8427874
+      ],
+      "stddev_xyz": [
+        0.01002515706809624,
+        0.011117772712343661,
+        0.013512884662671634
+      ],
+      "min_xyz": [
+        -0.01125,
+        0.1154,
+        -9.89955
+      ],
+      "max_xyz": [
+        0.05075,
+        0.17693,
+        -9.79875
+      ],
+      "error_count_first": 0,
+      "error_count_last": 0,
+      "observed_snapshots_with_clipping": 0
+    },
+    "imu1_gyro": {
+      "count": 300,
+      "device_id": 2490378,
+      "first_sample_us": 2894100315,
+      "last_sample_us": 2953903626,
+      "sample_span_s": 59.803311,
+      "snapshot_rate_hz": 4.999723175862286,
+      "max_snapshot_gap_ms": 210.05599999999998,
+      "duplicate_sample_times": 0,
+      "backward_sample_times": 0,
+      "mean_xyz": [
+        -0.010398366666666667,
+        -0.012839999999999999,
+        -0.002920233333333333
+      ],
+      "stddev_xyz": [
+        0.0010562999884292123,
+        0.001201347576682119,
+        0.00100325318118387
+      ],
+      "min_xyz": [
+        -0.01389,
+        -0.01645,
+        -0.00615
+      ],
+      "max_xyz": [
+        -0.00567,
+        -0.00913,
+        0.00037
+      ],
+      "error_count_first": 0,
+      "error_count_last": 0,
+      "observed_snapshots_with_clipping": 0
+    }
+  }
+}

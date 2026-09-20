@@ -1,0 +1,388 @@
+{
+  "utc": "2026-09-06T08:43:55.912768+00:00",
+  "duration_s": 30.012202247,
+  "body_x_along_a1_a3_user_confirmed": true,
+  "parameters": {
+    "EKF2_EV_CTRL": 0,
+    "EKF2_EV_DELAY": 0.0,
+    "EKF2_EV_NOISE_MD": 0,
+    "EKF2_EVP_NOISE": 0.10000000149011612,
+    "EKF2_MAG_TYPE": 0,
+    "SENS_BOARD_ROT": 0,
+    "EKF2_EV_POS_X": 0.0,
+    "EKF2_EV_POS_Y": 0.0,
+    "EKF2_EV_POS_Z": 0.0
+  },
+  "topics": {
+    "/mavros/state": {
+      "count": 30,
+      "rate_over_window_hz": 0.9995934238047719,
+      "rate_between_first_last_hz": 1.000037835638378,
+      "median_gap_ms": 999.771873,
+      "max_gap_ms": 1002.0408000000001,
+      "gaps_over_twice_median": 0
+    },
+    "/mavros/imu/data_raw": {
+      "count": 1494,
+      "rate_over_window_hz": 49.77975250547764,
+      "rate_between_first_last_hz": 50.0274438074998,
+      "median_gap_ms": 20.608269,
+      "max_gap_ms": 44.383278999999995,
+      "gaps_over_twice_median": 1
+    },
+    "/mavros/imu/data": {
+      "count": 1493,
+      "rate_over_window_hz": 49.74643272468415,
+      "rate_between_first_last_hz": 50.02906234169643,
+      "median_gap_ms": 20.410646999999997,
+      "max_gap_ms": 61.668674,
+      "gaps_over_twice_median": 1
+    },
+    "/mavros/local_position/odom": {
+      "count": 896,
+      "rate_over_window_hz": 29.854523590969187,
+      "rate_between_first_last_hz": 30.01935342113684,
+      "median_gap_ms": 33.163616,
+      "max_gap_ms": 53.073114,
+      "gaps_over_twice_median": 0
+    },
+    "/scan": {
+      "count": 0,
+      "rate_over_window_hz": 0.0,
+      "rate_between_first_last_hz": null,
+      "median_gap_ms": null,
+      "max_gap_ms": null,
+      "gaps_over_twice_median": 0
+    },
+    "/uwb_pose": {
+      "count": 0,
+      "rate_over_window_hz": 0.0,
+      "rate_between_first_last_hz": null,
+      "median_gap_ms": null,
+      "max_gap_ms": null,
+      "gaps_over_twice_median": 0
+    },
+    "/uwb/status": {
+      "count": 0,
+      "rate_over_window_hz": 0.0,
+      "rate_between_first_last_hz": null,
+      "median_gap_ms": null,
+      "max_gap_ms": null,
+      "gaps_over_twice_median": 0
+    },
+    "/uwb/bridge_status": {
+      "count": 0,
+      "rate_over_window_hz": 0.0,
+      "rate_between_first_last_hz": null,
+      "median_gap_ms": null,
+      "max_gap_ms": null,
+      "gaps_over_twice_median": 0
+    },
+    "/mavros/vision_pose/pose_cov": {
+      "count": 0,
+      "rate_over_window_hz": 0.0,
+      "rate_between_first_last_hz": null,
+      "median_gap_ms": null,
+      "max_gap_ms": null,
+      "gaps_over_twice_median": 0
+    }
+  },
+  "last_messages": {
+    "/mavros/imu/data_raw": {
+      "header": {
+        "stamp": {
+          "sec": 1788684235,
+          "nanosec": 904546584
+        },
+        "frame_id": "base_link"
+      },
+      "orientation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+      },
+      "orientation_covariance": [
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "angular_velocity": {
+        "x": -0.004746424965560436,
+        "y": 0.0032613356597721572,
+        "z": -0.0018922830931842331
+      },
+      "angular_velocity_covariance": [
+        1.2184696791468346e-07,
+        0.0,
+        0.0,
+        0.0,
+        1.2184696791468346e-07,
+        0.0,
+        0.0,
+        0.0,
+        1.2184696791468346e-07
+      ],
+      "linear_acceleration": {
+        "x": -0.8166627883911133,
+        "y": 0.0650939866900456,
+        "z": 9.73416805267334
+      },
+      "linear_acceleration_covariance": [
+        8.999999999999999e-08,
+        0.0,
+        0.0,
+        0.0,
+        8.999999999999999e-08,
+        0.0,
+        0.0,
+        0.0,
+        8.999999999999999e-08
+      ]
+    },
+    "/mavros/imu/data": {
+      "header": {
+        "stamp": {
+          "sec": 1788684235,
+          "nanosec": 884480256
+        },
+        "frame_id": "base_link"
+      },
+      "orientation": {
+        "x": 0.026741900108558012,
+        "y": -0.03268569366412109,
+        "z": -0.7023785327058135,
+        "w": -0.7105497193750934
+      },
+      "orientation_covariance": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "angular_velocity": {
+        "x": 0.0005644108168780804,
+        "y": -0.0019133085152134297,
+        "z": 0.0013578822836279871
+      },
+      "angular_velocity_covariance": [
+        1.2184696791468346e-07,
+        0.0,
+        0.0,
+        0.0,
+        1.2184696791468346e-07,
+        0.0,
+        0.0,
+        0.0,
+        1.2184696791468346e-07
+      ],
+      "linear_acceleration": {
+        "x": -0.8207904696464539,
+        "y": 0.0778815671801579,
+        "z": 9.762443542480469
+      },
+      "linear_acceleration_covariance": [
+        8.999999999999999e-08,
+        0.0,
+        0.0,
+        0.0,
+        8.999999999999999e-08,
+        0.0,
+        0.0,
+        0.0,
+        8.999999999999999e-08
+      ]
+    },
+    "/mavros/local_position/odom": {
+      "header": {
+        "stamp": {
+          "sec": 1788684235,
+          "nanosec": 880480256
+        },
+        "frame_id": "map"
+      },
+      "child_frame_id": "base_link",
+      "pose": {
+        "pose": {
+          "position": {
+            "x": 37.62162399291992,
+            "y": 47.97559356689453,
+            "z": 3.746264934539795
+          },
+          "orientation": {
+            "x": 0.02674728436845528,
+            "y": -0.032680909996815104,
+            "z": -0.7023726377446503,
+            "w": -0.7105556986299535
+          }
+        },
+        "covariance": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "twist": {
+        "twist": {
+          "linear": {
+            "x": 0.007758188527473214,
+            "y": 0.0011361730655213016,
+            "z": -0.0018701609128262077
+          },
+          "angular": {
+            "x": 0.0012264191173017025,
+            "y": 0.000993787311017513,
+            "z": -0.001393355429172516
+          }
+        },
+        "covariance": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "/mavros/state": {
+      "header": {
+        "stamp": {
+          "sec": 1788684235,
+          "nanosec": 556527618
+        },
+        "frame_id": ""
+      },
+      "connected": true,
+      "armed": false,
+      "guided": true,
+      "manual_input": false,
+      "mode": "AUTO.LOITER",
+      "system_status": 0
+    }
+  },
+  "nodes": [
+    [
+      "uwb_readonly_bench_probe",
+      "/"
+    ],
+    [
+      "mavros_node",
+      "/mavros"
+    ],
+    [
+      "mavros_router",
+      "/mavros"
+    ],
+    [
+      "mavros",
+      "/mavros"
+    ],
+    [
+      "transform_listener_impl_aaaab6570ad8",
+      "/mavros"
+    ],
+    [
+      "imu",
+      "/mavros"
+    ],
+    [
+      "local_position",
+      "/mavros"
+    ],
+    [
+      "param",
+      "/mavros"
+    ],
+    [
+      "sys",
+      "/mavros"
+    ],
+    [
+      "time",
+      "/mavros"
+    ]
+  ],
+  "heading": {
+    "count": 1493,
+    "mean_yaw_enu_deg": 89.4163043933594,
+    "stddev_deg": 0.037657728092425624,
+    "span_deg": 0.16145668514387784,
+    "provisional_uwb_to_enu_rotation_deg": -0.5836956066406174,
+    "independently_verified": false
+  }
+}

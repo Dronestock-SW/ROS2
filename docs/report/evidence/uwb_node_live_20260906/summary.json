@@ -1,0 +1,63 @@
+{
+  "cycles": 2536,
+  "accepted": 2411,
+  "cycle_rate_hz": 42.29577858781929,
+  "max_receive_gap_ms": 55.074529,
+  "seq_missing": 0,
+  "accepted_mean_xy_m": [
+    1.9591284668369613,
+    1.8647202322958825
+  ],
+  "accepted_stddev_xy_m": [
+    0.011218940677626089,
+    0.01106596616272924
+  ],
+  "reference_point_confirmed_for_this_capture": false,
+  "flight_fusion_enabled": false,
+  "tag_configuration_written": false,
+  "last_status": {
+    "counts": {
+      "json_messages": 2548,
+      "cycles": 2536,
+      "status_unavailable": 96,
+      "status": 12,
+      "warming_up": 29,
+      "accepted": 2411
+    },
+    "last_decision": "accepted",
+    "connected": true,
+    "cycle_age_s": 0.00514856,
+    "watchdog_ok": true,
+    "source_mode": "raw_ranges",
+    "layout_id": "warehouse-irregular-z2p2-20260906",
+    "frame_id": "uwb_map",
+    "tag_status": {
+      "type": "uwb_raw_status",
+      "schema": 1,
+      "event": "heartbeat",
+      "tag_id": "5",
+      "firmware": "uwb-tag-for-jetson-v1.8-raw-xy",
+      "uwb_ready": true,
+      "serial_baud": 921600,
+      "anchor_count": 4,
+      "anchor_order": [
+        "A1",
+        "A2",
+        "A3",
+        "A4"
+      ],
+      "anchor_layout_id": "warehouse-5x4p5-z2p2-v2",
+      "clock_domain": "esp32_monotonic_boot_us",
+      "temporal_filter_applied": false,
+      "raw_xy_method": "linear_ls_unfiltered_equal_anchor_z",
+      "display_ready": true,
+      "lora_ready": true,
+      "lora_frequency_hz": 915000000,
+      "lora_good_fix_period_ms": 500,
+      "lora_bad_fix_period_ms": 250
+    },
+    "timestamp_method": "approximate_mean_report_read_time",
+    "timestamp_calibrated": false,
+    "framing_overflows": 0
+  }
+}

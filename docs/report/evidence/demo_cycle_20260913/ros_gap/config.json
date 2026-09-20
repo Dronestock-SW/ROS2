@@ -1,0 +1,13 @@
+{
+  "frame_id": "uwb_map",
+  "approach_enter_m": 0.5,
+  "approach_exit_m": 0.6,
+  "arrival_enter_m": 0.15,
+  "arrival_exit_m": 0.2,
+  "arrival_speed_m_s": 0.1,
+  "settle_s": 1.0,
+  "pose_timeout_s": 0.2,
+  "uwb_timeout_s": 0.25,
+  "recovery_s": 0.5,
+  "recovery_samples": 3
+}

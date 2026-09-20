@@ -3,7 +3,7 @@
 > 본 문서가 기술 방향의 유일한 기준이다.
 > 일정 제약 없음 — 판단 기준은 "아키텍처로서 옳은가".
 > 단, 각 Phase 종료 시 반드시 "동작하는(나는) 상태"를 유지한다 (통합 리스크 관리).
-> 최종 갱신: 2026-07-27 (결정 10 추가 — 상태추정 단일화)
+> 최종 갱신: 2026-09-13 (공용 데모 기준 추가)
 
 ## 시스템 개요 (군집 재고조사)
 
@@ -91,11 +91,25 @@ EKF2는 Pixhawk 6C Mini 하드웨어가 아니라 **그 위에 올라간 PX4 펌
 - [x] Jetson 환경 (JetPack 6.2 / ROS2 Humble / Tailscale / VS Code Remote / Claude Code)
 - [x] T-mini Pro → /scan 발행 (10Hz)
 - [x] Pixhawk 6C Mini heartbeat (PX4 탑재, MAVROS connected)
-- [x] UWB 앵커 4기 자체 제작 + 설치 + 좌표계 검증 (멀티 태그 지원 확인)
-- [ ] TFmini Plus → PX4 EKF rangefinder 융합 설정
-- [ ] PMW3901 → PX4 직결 배선 + 파라미터 설정 (결정 8)
-- [ ] UWB 태그 → /uwb_pose 발행 노드 (인터페이스 확정: /dev/uwb, 921600 8N1, JSON 약 43Hz — HW 파트 상향 완료로 EKF2 권장 30~50Hz 충족)
-- [ ] UWB fix 확보 — 잔차 RMS 0.44m로 `fix:false` 지속. HW 파트 담당(센서측 필터·캘리브레이션) 대기 중
+- [x] UWB 앵커 4기 자체 제작 + 설치 (멀티 태그 지원 확인)
+- [x] UWB 실측 거리와 방향으로 잠정 좌표 산출 — [앵커 실측값](uwb_anchor_survey.md)
+  현재 배치는 불규칙하다. 직사각형을 가정하지 않는다.
+  이유: 2026-09-06 실측이 기존 5×4.5m 설정과 다르다.
+- [ ] UWB 새 앵커 좌표를 태그에 반영하고 독립 기준점으로 검증
+- [ ] TFmini Plus → PX4 EKF rangefinder 융합 설정 — 미입고로 보류
+- [ ] PMW3901 → PX4 직결 배선 + 파라미터 설정 (결정 8) — 미입고로 보류
+- [x] UWB 태그 → /uwb_pose 관측 노드 구현·지상 수신 확인
+  실측 앵커 좌표로 RAW 거리를 계산한다. 태그 x·y 모드도 제공한다.
+  [설계](uwb_node_design.md) / [실기 결과](report/uwb_integration_20260906.md)
+- [ ] UWB 태그 배치 갱신·다점 거리 교정·동적 검증
+  v1.8 RAW 계약에는 구형 `fix` 조건을 적용하지 않는다.
+  이유: 현재 RAW 거리·좌표 유효 필드가 별도 계약이다.
+- [ ] UWB→PX4 방향·원점·시각·장착 위치 검증 후 EKF2 융합
+  브리지는 구현했다. 기본 전달은 비활성이다.
+  방향 값은 측정했으나 독립 이동 검증은 남아 있다.
+  태그·FC는 현재 분리 시험 중이다.
+  장착 예정치는 위 30cm, 앞 5~7cm다. 고정 후 실측한다.
+  2026-09-06 사용자 요청으로 문서화 후 중단했다.
 - [ ] udev rule 장치 고정 이름 — /dev/lidar·/dev/uwb 규칙 작성 완료, 적용(sudo)과 /dev/pixhawk 미완
 - [ ] ROS_DOMAIN_ID=1 설정을 1호기 .bashrc에 고정 (결정 7)
 - [x] CSI 카메라(IMX219) → /camera/image_raw 발행 (gscam, rgb8 1640x1232, 30.1Hz 실측)
@@ -129,6 +143,18 @@ EKF2는 Pixhawk 6C Mini 하드웨어가 아니라 **그 위에 올라간 PX4 펌
 - BT 기반 다중 목표 순회 (선반 N개 스캔)
 - 지상국: 다중 드론 LoRa 수신 + /mission_result 스키마 확정 + 웹 재접속
 - 야간 자동 재고 파악 실증 — "밤사이, 재고가 파악됩니다"
+
+## 장비 도착 전 개발
+
+장비 도착 전 시험에는 [공용 데모](demo_design.md)를 쓴다.
+고정 z·가상 위치·UWB 공백을 재사용한다.
+도착·공백·복구 판단을 데모 노드로 구현했다.
+[임무 상태 기준](demo_mission_design.md)을 따른다.
+데모 실행은 Phase 비행 완료 판정을 대신하지 않는다.
+이유: 가상 경로에는 비행 물리가 없기 때문이다.
+다음 개발 후보는 수평 이동·감속·정지다.
+[제어 조사 결과](report/next_horizontal_control_research_20260913.md)에 근거와 검증안을 정리했다.
+SITL 목표 높이는 기존 데모의 1.2m를 활용하는 안이다.
 
 ## 폐기/보류 항목
 

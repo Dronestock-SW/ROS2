@@ -1,0 +1,11 @@
+{
+  "baseline/accepted.csv": "05e1f9b8a659beecde44fa49f8afbe70301b9edc8e764cbd01a16acb7f1ceeee",
+  "baseline/decisions.jsonl": "1aa5ce5e1a697586030366bb9ae37e87e797e847f3e7c7e6e2783466559beef7",
+  "baseline/summary.json": "6aa457f4a32268ba287d0a57fa52dd095e27f609328cfe2a84497e712ec7bbcc",
+  "legacy_tag_xy/accepted.csv": "631a6c0844e685cf2b8a1036cda8b2a5531f1a888129592b0ec9305db2c77fb7",
+  "legacy_tag_xy/decisions.jsonl": "2f549b72a1794aae56ad2503effc6af00e197aad76b3e6e3152e43882c82e92f",
+  "legacy_tag_xy/summary.json": "ea93153019aeb89141542bf8c09e9e9fe667341c917de0aaf74ebb818b3831b8",
+  "obstructed/accepted.csv": "ecc09979f808dc998212c5a61cc4dcda4eaffcba38333cb9bd8efbe11f2cc72b",
+  "obstructed/decisions.jsonl": "df1d0596be10de4b32e2982c77258524561bc499657c5a1517d3ed86c803af1b",
+  "obstructed/summary.json": "072a10a2bc89333e79f05102a30779c2cffc76955b2a5093f253f14791777116"
+}

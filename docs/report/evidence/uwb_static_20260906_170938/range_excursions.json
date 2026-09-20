@@ -1,0 +1,130 @@
+{
+  "anchor": "A4",
+  "diagnostic_rule": "Range exceeds the capture median by more than 0.50m; descriptive counting only, not an applied filter or a calibrated rejection threshold.",
+  "median_range_m": 4.80218,
+  "diagnostic_threshold_m": 5.30218,
+  "sample_count_above_threshold": 63,
+  "fraction_above_threshold": 0.024803149606299212,
+  "events": [
+    {
+      "first_seq": 246475,
+      "last_seq": 246476,
+      "start_cycle_relative_s": 17.140528,
+      "end_cycle_relative_s": 17.162788,
+      "sample_count": 2,
+      "min_range_m": 5.36168,
+      "max_range_m": 5.41289,
+      "retry_samples": 0
+    },
+    {
+      "first_seq": 246478,
+      "last_seq": 246480,
+      "start_cycle_relative_s": 17.226259,
+      "end_cycle_relative_s": 17.270767,
+      "sample_count": 3,
+      "min_range_m": 5.63084,
+      "max_range_m": 5.95847,
+      "retry_samples": 0
+    },
+    {
+      "first_seq": 246488,
+      "last_seq": 246495,
+      "start_cycle_relative_s": 17.454269,
+      "end_cycle_relative_s": 17.610065,
+      "sample_count": 8,
+      "min_range_m": 5.48866,
+      "max_range_m": 6.12476,
+      "retry_samples": 0
+    },
+    {
+      "first_seq": 246505,
+      "last_seq": 246512,
+      "start_cycle_relative_s": 17.854885,
+      "end_cycle_relative_s": 18.010688,
+      "sample_count": 8,
+      "min_range_m": 5.63821,
+      "max_range_m": 6.21316,
+      "retry_samples": 0
+    },
+    {
+      "first_seq": 246514,
+      "last_seq": 246514,
+      "start_cycle_relative_s": 18.055198,
+      "end_cycle_relative_s": 18.055198,
+      "sample_count": 1,
+      "min_range_m": 5.87943,
+      "max_range_m": 5.87943,
+      "retry_samples": 0
+    },
+    {
+      "first_seq": 246516,
+      "last_seq": 246528,
+      "start_cycle_relative_s": 18.105783,
+      "end_cycle_relative_s": 18.391512,
+      "sample_count": 13,
+      "min_range_m": 5.32066,
+      "max_range_m": 6.2079,
+      "retry_samples": 0
+    },
+    {
+      "first_seq": 246530,
+      "last_seq": 246533,
+      "start_cycle_relative_s": 18.441746,
+      "end_cycle_relative_s": 18.508518,
+      "sample_count": 4,
+      "min_range_m": 5.33719,
+      "max_range_m": 5.46879,
+      "retry_samples": 0
+    },
+    {
+      "first_seq": 246535,
+      "last_seq": 246548,
+      "start_cycle_relative_s": 18.55303,
+      "end_cycle_relative_s": 18.866643,
+      "sample_count": 14,
+      "min_range_m": 5.3675,
+      "max_range_m": 6.14964,
+      "retry_samples": 0
+    },
+    {
+      "first_seq": 246555,
+      "last_seq": 246555,
+      "start_cycle_relative_s": 19.022437,
+      "end_cycle_relative_s": 19.022437,
+      "sample_count": 1,
+      "min_range_m": 5.43798,
+      "max_range_m": 5.43798,
+      "retry_samples": 0
+    },
+    {
+      "first_seq": 246561,
+      "last_seq": 246569,
+      "start_cycle_relative_s": 19.162022,
+      "end_cycle_relative_s": 19.356877,
+      "sample_count": 9,
+      "min_range_m": 5.44425,
+      "max_range_m": 6.07549,
+      "retry_samples": 0
+    }
+  ],
+  "peak": {
+    "seq": 246511,
+    "host_received_utc": "2026-09-06T08:09:56.992205+00:00",
+    "cycle_relative_s": 17.988427,
+    "range_m": 6.21316,
+    "failure": "ok",
+    "attempt_count": 1,
+    "survey_x_m": 1.4488876820326555,
+    "survey_y_m": 1.3017891396353778,
+    "survey_radial_difference_m": 0.744357749437197
+  },
+  "cause": "The user reported a person/object passing through or obscuring the path during the identified interval. Obstruction is a plausible contributor; the range log alone does not independently establish the propagation mechanism or exact obstruction times.",
+  "samples_removed": 0,
+  "user_reported_context": {
+    "source": "Follow-up user response about the 17–19s excursion interval",
+    "user_response": "사람·물체가 지나가거나 가렸어요",
+    "obstruction_reported": true,
+    "tag_movement_confirmed": false,
+    "recorded_at": "2026-09-06T17:17:13.537964+09:00"
+  }
+}

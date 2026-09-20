@@ -1,0 +1,196 @@
+{
+  "updated_at": "2026-09-06T17:01:48.112534+09:00",
+  "layout_type": "irregular, explicitly confirmed by user",
+  "rectangle_assumption": false,
+  "user_reported_distances_m": {
+    "A1_A2": 5.83,
+    "A1_A3": 4.63,
+    "A1_A4": 7.5,
+    "A2_A3": 7.7,
+    "A3_A4": 6.12,
+    "A2_A4": 4.8
+  },
+  "anchor_z_m_prior_user_report": 2.2,
+  "reference_xy_m": {
+    "A1": [
+      0,
+      0
+    ],
+    "A3": [
+      0,
+      4.63
+    ]
+  },
+  "positive_x_definition": "Right when looking from A1 toward A3; z points up.",
+  "A2_candidates_xy_m": [
+    [
+      5.8102027071690925,
+      -0.43032700908323007
+    ],
+    [
+      -5.8102027071690925,
+      -0.43032700908323007
+    ]
+  ],
+  "A2_x_side_confirmed": true,
+  "A2_reconstructed_distances_m": {
+    "A1_A2": 5.82611678849142,
+    "A2_A3": 7.704892272916752
+  },
+  "A4_candidates_xy_m": [
+    [
+      6.110227024200994,
+      4.357349538815547
+    ],
+    [
+      -6.110227024200994,
+      4.357349538815547
+    ]
+  ],
+  "full_layout_ready_for_configuration": true,
+  "remaining_checks": [
+    "Survey measurement method, antenna endpoints and independent reference checks",
+    "Apply the survey-derived anchor coordinates in the tag and verify new raw XY output"
+  ],
+  "measurement_uncertainty": "Distances are approximate user reports; precision and antenna endpoints not independently verified.",
+  "device_settings_changed": false,
+  "A4_x_side_confirmed": true,
+  "A4_reconstructed_distances_m": {
+    "A1_A4": 7.5047564444618855,
+    "A3_A4": 6.116307101614522
+  },
+  "predicted_A2_A4_m": {
+    "same_side": 4.771396584162558,
+    "opposite_sides": 12.843825591311257
+  },
+  "triangle_seed_candidates_xy_m": {
+    "A2": [
+      [
+        5.8150460470868826,
+        -0.4173002159827226
+      ],
+      [
+        -5.8150460470868826,
+        -0.4173002159827226
+      ]
+    ],
+    "A4": [
+      [
+        6.113349288433385,
+        4.344762419006479
+      ],
+      [
+        -6.113349288433385,
+        4.344762419006479
+      ]
+    ]
+  },
+  "same_side_supported_by_distances": true,
+  "absolute_left_right_not_yet_confirmed": false,
+  "fit_method": "Equal-weight nonlinear least squares of inter-anchor distance residuals. A1=(0,0), A3=(0,4.63) held fixed. No right-angle or rectangular constraints. Distance uncertainties are unknown.",
+  "positive_side_fit_xy_m": {
+    "A1": [
+      0.0,
+      0.0
+    ],
+    "A2": [
+      5.8102027071690925,
+      -0.43032700908323007
+    ],
+    "A3": [
+      0.0,
+      4.63
+    ],
+    "A4": [
+      6.110227024200994,
+      4.357349538815547
+    ]
+  },
+  "negative_side_fit_xy_m": {
+    "A1": [
+      -0.0,
+      0.0
+    ],
+    "A2": [
+      -5.8102027071690925,
+      -0.43032700908323007
+    ],
+    "A3": [
+      -0.0,
+      4.63
+    ],
+    "A4": [
+      -6.110227024200994,
+      4.357349538815547
+    ]
+  },
+  "distance_fit_checks": [
+    {
+      "pair": "A1_A2",
+      "reported_m": 5.83,
+      "computed_m": 5.82611678849142,
+      "computed_minus_reported_m": -0.0038832115085805086
+    },
+    {
+      "pair": "A1_A3",
+      "reported_m": 4.63,
+      "computed_m": 4.63,
+      "computed_minus_reported_m": 0.0
+    },
+    {
+      "pair": "A1_A4",
+      "reported_m": 7.5,
+      "computed_m": 7.5047564444618855,
+      "computed_minus_reported_m": 0.004756444461885501
+    },
+    {
+      "pair": "A2_A3",
+      "reported_m": 7.7,
+      "computed_m": 7.704892272916752,
+      "computed_minus_reported_m": 0.004892272916752205
+    },
+    {
+      "pair": "A3_A4",
+      "reported_m": 6.12,
+      "computed_m": 6.116307101614522,
+      "computed_minus_reported_m": -0.0036928983854780384
+    },
+    {
+      "pair": "A2_A4",
+      "reported_m": 4.8,
+      "computed_m": 4.797067991816503,
+      "computed_minus_reported_m": -0.002932008183496926
+    }
+  ],
+  "max_abs_distance_fit_residual_m": 0.004892272916752205,
+  "selected_side": "positive_x",
+  "selected_coordinates_xyz_m": {
+    "A1": [
+      0.0,
+      0.0,
+      2.2
+    ],
+    "A2": [
+      5.8102027071690925,
+      -0.43032700908323007,
+      2.2
+    ],
+    "A3": [
+      0.0,
+      4.63,
+      2.2
+    ],
+    "A4": [
+      6.110227024200994,
+      4.357349538815547,
+      2.2
+    ]
+  },
+  "orientation_source": "A2는 우측 A4는 우상단",
+  "orientation_record": "manual_checks.json: irregular_anchor_orientation_confirmation",
+  "coordinate_status": "Provisional survey-derived coordinates with orientation confirmed by user; independent accuracy validation pending.",
+  "configuration_readiness_scope": "A complete provisional coordinate set is available for tag configuration review. It has not been applied to the tag.",
+  "applied_to_tag": false,
+  "tag_reference_frame_confirmed": true,
+  "tag_reference_frame_confirmation_source": "User: 네, 그 기준으로 측정했어요; see manual_checks.json"
+}
