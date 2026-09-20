@@ -1,0 +1,38 @@
+# 증빙: 통신 모듈 (Tailscale / LoRa / 웹 API 경계 토픽)
+# 수집일시: 2026-08-16T16:35:05+09:00
+# 라벨: 01_sw_status.md 2장 통신 / 04_evidence_index.md D-08
+
+$ tailscale status
+100.110.163.94  user-desktop     bmavk15@  linux    -                                                              
+100.74.22.57    desktop-hma7hv7  bmavk15@  windows  active; direct 203.247.40.182:41641, tx 22142172 rx 346422692  
+100.91.185.43   desktop-pp84mcu  bmavk15@  windows  offline, last seen 1h ago                                      
+
+# Health check:
+#     - enabling connmark rules: adding [-m conntrack --ctstate ESTABLISHED,RELATED -m connmark ! --mark 0x0/0xff0000 -j CONNMARK --restore-mark --nfmask 0xff0000 --ctmask 0xff0000] in mangle/PREROUTING: running [/usr/sbin/iptables -t mangle -I PREROUTING 1 -m conntrack --ctstate ESTABLISHED,RELATED -m connmark ! --mark 0x0/0xff0000 -j CONNMARK --restore-mark --nfmask 0xff0000 --ctmask 0xff0000 --wait]: exit status 2: iptables v1.8.7 (legacy): Couldn't load match `connmark':No such file or directory
+
+Try `iptables -h' or 'iptables --help' for more information.
+
+
+$ tailscale ip -4
+100.110.163.94
+
+$ systemctl is-active tailscaled
+active
+
+$ grep -rniE 'lora|sx127|sx126|rfm9' src/ config/ --include=* 2>/dev/null   (LoRa 관련 코드)
+(출력 없음 = LoRa 송신 코드 없음)
+
+$ grep -rn 'target_pose\|target_valid\|flight_state\|system_log\|mission_result' src/
+(출력 없음 = 웹 API 경계 토픽은 문서 계약만 있고 구현 없음)
+
+$ echo $ROS_DOMAIN_ID  /  grep ROS ~/.bashrc
+ROS_DOMAIN_ID=1
+120:export ROS_DOMAIN_ID=1
+121:source /opt/ros/humble/setup.bash
+122:source ~/drone_ws/install/setup.bash
+
+## 판정
+- Tailscale: 실동작 확인 (개발 채널).
+- ROS_DOMAIN_ID=1: .bashrc 고정 확인 → roadmap Phase 0 미체크 항목이나 실제로는 적용되어 있다.
+- LoRa: 코드 없음. Phase 1 범위.
+- 웹 API 경계 토픽 5종: 구현 없음. 문서(roadmap.md 76~86행) 계약만 존재.

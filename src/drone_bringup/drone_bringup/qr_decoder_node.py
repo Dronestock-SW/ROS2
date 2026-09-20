@@ -20,6 +20,13 @@ watchdog:
     (docs/glossary.md의 watchdog 항목과 같은 설계 — 조용히 못 찾는 상태가
     가장 늦게 발견되는 고장이다)
 
+on/off:
+    ~/set_enabled(std_srvs/SetBool)로 켜고 끈다. off면 cv_bridge 변환·
+    pyzbar 디코딩 자체를 건너뛴다(qr_reader_node와 달리 이 노드는 처리
+    비용이 프레임당 100ms대라 CPU를 실제로 아껴야 한다). qr_fallback_node가
+    DE2110 리더기 연속 실패 시에만 켜는 폴백 경로로 쓴다
+    (docs/glossary.md의 폴백 항목 참조).
+
 실행:
     ros2 run drone_bringup qr_decoder_node
     ros2 run drone_bringup qr_decoder_node --ros-args --params-file \
@@ -35,6 +42,7 @@ from rclpy.node import Node
 from rclpy.qos import qos_profile_sensor_data
 from sensor_msgs.msg import Image
 from std_msgs.msg import String
+from std_srvs.srv import SetBool
 
 
 class QrDecoderNode(Node):
@@ -56,6 +64,7 @@ class QrDecoderNode(Node):
                 '미검출 경고를 비활성화한다')
             self._miss_warn_threshold = None
 
+        self._enabled = True
         self._bridge = CvBridge()
         self._last_bbox = None  # (x, y, w, h) 직전 검출 위치. None이면 전체 프레임 탐색
         self._miss_streak = 0
@@ -66,12 +75,25 @@ class QrDecoderNode(Node):
         self._sub = self.create_subscription(
             Image, '/camera/image_raw', self._on_image, qos_profile_sensor_data)
         self._pub = self.create_publisher(String, '/qr_code/data', 10)
+        self._srv = self.create_service(SetBool, '~/set_enabled', self._on_set_enabled)
 
         self.get_logger().info(
             f'qr_decoder_node 시작 — roi_margin={self._roi_margin}px, '
             f'miss_warn_threshold={self._miss_warn_threshold}프레임')
 
+    def _on_set_enabled(self, request, response):
+        self._enabled = request.data
+        if not self._enabled:
+            self._last_bbox = None  # 꺼진 동안 프레임이 바뀔 테니 ROI는 버린다
+        response.success = True
+        response.message = f'enabled={request.data}'
+        self.get_logger().info(f'qr_decoder_node enabled={request.data}')
+        return response
+
     def _on_image(self, msg):
+        if not self._enabled:
+            return
+
         t0 = time.monotonic()
 
         # pyzbar는 3채널 numpy 배열을 받으면 첫 채널만 떼어 그레이스케일로

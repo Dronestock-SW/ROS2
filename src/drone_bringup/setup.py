@@ -30,6 +30,8 @@ setup(
         'console_scripts': [
             'qr_decoder_node = drone_bringup.qr_decoder_node:main',
             'qr_reader_node = drone_bringup.qr_reader_node:main',
+            'qr_fallback_node = drone_bringup.qr_fallback_node:main',
+            'qr_parser_node = drone_bringup.qr_parser_node:main',
         ],
     },
 )

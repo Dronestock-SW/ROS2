@@ -1,0 +1,210 @@
+# 증빙: LiDAR (YDLIDAR T-mini Pro) launch 기동 + /scan 발행
+# 수집일시: 2026-08-16T16:31:41+09:00
+# 라벨: 01_sw_status.md §2 측위-LiDAR / §1.3 launch / 05_architecture.md lidar 경로
+
+$ ros2 launch drone_bringup lidar.launch.py   (백그라운드 기동)
+[INFO] [launch]: All log files can be found below /home/user/.ros/log/2026-08-16-16-31-42-133535-user-desktop-4504
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [ydlidar_ros2_driver_node-1]: process started with pid [4522]
+[INFO] [static_transform_publisher-2]: process started with pid [4524]
+[static_transform_publisher-2] [WARN] [1786865502.911961470] []: Old-style arguments are deprecated; see --help for new-style arguments
+[ydlidar_ros2_driver_node-1] [0m[INFO] [1786865502.953367623] [ydlidar_ros2_driver_node]: [YDLIDAR INFO] Current ROS Driver Version: 1.0.1
+[ydlidar_ros2_driver_node-1] [0m
+[ydlidar_ros2_driver_node-1] [2026-08-16 16:31:42][info] SDK initializing
+[ydlidar_ros2_driver_node-1] [2026-08-16 16:31:42][info] SDK has been initialized
+[ydlidar_ros2_driver_node-1] [2026-08-16 16:31:42][info] SDK Version: 1.2.20
+[ydlidar_ros2_driver_node-1] [2026-08-16 16:31:42][info] Connect elapsed time 15 ms
+[ydlidar_ros2_driver_node-1] [2026-08-16 16:31:42][info] Lidar successfully connected [/dev/lidar:230400]
+[static_transform_publisher-2] [INFO] [1786865502.977159779] [static_tf_pub_laser]: Spinning until stopped - publishing transform
+[static_transform_publisher-2] translation: ('0.000000', '0.000000', '0.020000')
+[static_transform_publisher-2] rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+[static_transform_publisher-2] from 'base_link' to 'laser_frame'
+[ydlidar_ros2_driver_node-1] [2026-08-16 16:31:43][info] Lidar running correctly! The health status good
+[ydlidar_ros2_driver_node-1] [2026-08-16 16:31:43][info] Current Lidar Model Code 150
+[ydlidar_ros2_driver_node-1] [2026-08-16 16:31:43][info] Baseplate device info
+[ydlidar_ros2_driver_node-1] Firmware version: 1.1
+[ydlidar_ros2_driver_node-1] Hardware version: 2
+[ydlidar_ros2_driver_node-1] Model: Tmini Pro
+[ydlidar_ros2_driver_node-1] Serial: 2026010700095010
+[ydlidar_ros2_driver_node-1] [2026-08-16 16:31:43][info] Current scan frequency: 6.00Hz
+[ydlidar_ros2_driver_node-1] [2026-08-16 16:31:43][info] Current scan frequency: 10.00Hz
+[ydlidar_ros2_driver_node-1] [2026-08-16 16:31:43][info] Check status, Elapsed time 548 ms
+[ydlidar_ros2_driver_node-1] [2026-08-16 16:31:43][info] Lidar init success, elapsed time [564]ms
+[ydlidar_ros2_driver_node-1] [2026-08-16 16:31:45][info] [YDLIDAR] Create thread 0xB500E8E0
+[ydlidar_ros2_driver_node-1] [2026-08-16 16:31:46][info] Successed to start the lidar, elapsed time 2849 ms
+[ydlidar_ros2_driver_node-1] [2026-08-16 16:31:46][info] Scan Frequency: 10.00Hz
+[ydlidar_ros2_driver_node-1] [2026-08-16 16:31:46][info] Fixed Size: 430
+[ydlidar_ros2_driver_node-1] [2026-08-16 16:31:46][info] Sample Rate: 4.00K
+[ydlidar_ros2_driver_node-1] [2026-08-16 16:31:46][info] Successed to check the lidar, elapsed time 1 ms
+[ydlidar_ros2_driver_node-1] [2026-08-16 16:31:46][info] Lidar has started!
+[ydlidar_ros2_driver_node-1] [0;31m[2026-08-16 16:31:46][error] Checksum error 0x00EE != 0x44CD
+[ydlidar_ros2_driver_node-1] [0m[0;31m[2026-08-16 16:31:46][error] Checksum error 0x00EE != 0x44CD
+[ydlidar_ros2_driver_node-1] [0m[2026-08-16 16:31:46][info] The intensity has been automatically adjusted to[0]bit
+[ydlidar_ros2_driver_node-1] [0;31m[2026-08-16 16:31:46][error] Checksum error 0xF5FA != 0x53EA
+[ydlidar_ros2_driver_node-1] [0m[0;31m[2026-08-16 16:31:46][error] Checksum error 0xB26C != 0x44CD
+[ydlidar_ros2_driver_node-1] [0m[2026-08-16 16:31:46][info] The intensity has been automatically adjusted to[16]bit
+[ydlidar_ros2_driver_node-1] [0;31m[2026-08-16 16:31:46][error] Checksum error 0xC595 != 0x53EA
+[ydlidar_ros2_driver_node-1] [0m[0;31m[2026-08-16 16:31:46][error] Checksum error 0xBE9B != 0x44CD
+[ydlidar_ros2_driver_node-1] [0m[2026-08-16 16:31:46][info] The intensity has been automatically adjusted to[8]bit
+[ydlidar_ros2_driver_node-1] [0;33m[2026-08-16 16:31:46][warn] [YDLIDAR]: Real points 640 > fixed points 430
+
+===== ros2 node list =====
+
+===== ros2 topic list -t =====
+/parameter_events [rcl_interfaces/msg/ParameterEvent]
+/point_cloud [sensor_msgs/msg/PointCloud]
+/rosout [rcl_interfaces/msg/Log]
+/scan [sensor_msgs/msg/LaserScan]
+/tf_static [tf2_msgs/msg/TFMessage]
+/ydlidar_ros2_driver_node/transition_event [lifecycle_msgs/msg/TransitionEvent]
+
+===== ros2 topic info /scan --verbose =====
+Type: sensor_msgs/msg/LaserScan
+
+Publisher count: 1
+
+Node name: ydlidar_ros2_driver_node
+Node namespace: /
+Topic type: sensor_msgs/msg/LaserScan
+Endpoint type: PUBLISHER
+GID: 01.0f.a4.b4.aa.11.8f.c5.00.00.00.00.00.00.12.03.00.00.00.00.00.00.00.00
+QoS profile:
+  Reliability: BEST_EFFORT
+  History (Depth): UNKNOWN
+  Durability: VOLATILE
+  Lifespan: Infinite
+  Deadline: Infinite
+  Liveliness: AUTOMATIC
+  Liveliness lease duration: Infinite
+
+Subscription count: 0
+
+
+===== ros2 topic hz /scan (10초) =====
+average rate: 9.968
+	min: 0.099s max: 0.102s std dev: 0.00075s window: 21
+average rate: 9.970
+	min: 0.099s max: 0.102s std dev: 0.00070s window: 31
+average rate: 9.970
+	min: 0.099s max: 0.102s std dev: 0.00063s window: 41
+average rate: 9.968
+	min: 0.099s max: 0.102s std dev: 0.00059s window: 51
+average rate: 9.968
+	min: 0.099s max: 0.102s std dev: 0.00059s window: 61
+average rate: 9.964
+	min: 0.098s max: 0.103s std dev: 0.00092s window: 71
+
+===== ros2 topic echo /scan --once (헤더/파라미터만 발췌) =====
+header:
+  stamp:
+    sec: 1786865530
+    nanosec: 442285000
+  frame_id: laser_frame
+angle_min: -3.1415927410125732
+angle_max: 3.1415927410125732
+angle_increment: 0.014646119438111782
+time_increment: 0.0002519449917599559
+scan_time: 0.1007779985666275
+range_min: 0.029999999329447746
+range_max: 12.0
+ranges:
+- 0.0
+- 0.30399999022483826
+- 0.31200000643730164
+- 0.3050000071525574
+- 0.0
+- 0.3009999990463257
+- 0.296999990940094
+
+===== ros2 param list /ydlidar_ros2_driver_node =====
+/launch_ros_4504:
+  use_sim_time
+/static_tf_pub_laser:
+  child_frame_id
+  frame_id
+  qos_overrides./parameter_events.publisher.depth
+  qos_overrides./parameter_events.publisher.durability
+  qos_overrides./parameter_events.publisher.history
+  qos_overrides./parameter_events.publisher.reliability
+  qos_overrides./tf_static.publisher.depth
+  qos_overrides./tf_static.publisher.history
+  qos_overrides./tf_static.publisher.reliability
+  rotation.w
+  rotation.x
+  rotation.y
+  rotation.z
+  translation.x
+  translation.y
+  translation.z
+  use_sim_time
+/ydlidar_ros2_driver_node:
+  abnormal_check_count
+  angle_max
+  angle_min
+  auto_reconnect
+  baudrate
+  debug
+  device_type
+  fixed_resolution
+  frame_id
+  frequency
+  ignore_array
+  intensity
+  intensity_bit
+  invalid_range_is_inf
+  inverted
+  isSingleChannel
+  lidar_type
+  m1_mode
+  m2_mode
+  m3_mode
+  port
+  qos_overrides./parameter_events.publisher.depth
+  qos_overrides./parameter_events.publisher.durability
+  qos_overrides./parameter_events.publisher.history
+  qos_overrides./parameter_events.publisher.reliability
+  range_max
+  range_min
+  reversion
+  sample_rate
+  support_motor_dtr
+  use_sim_time
+
+===== ros2 param dump /ydlidar_ros2_driver_node =====
+/ydlidar_ros2_driver_node:
+  ros__parameters:
+    abnormal_check_count: 4
+    angle_max: 180.0
+    angle_min: -180.0
+    auto_reconnect: true
+    baudrate: 230400
+    debug: false
+    device_type: 0
+    fixed_resolution: true
+    frame_id: laser_frame
+    frequency: 10.0
+    ignore_array: ''
+    intensity: true
+    intensity_bit: 8
+    invalid_range_is_inf: false
+    inverted: true
+    isSingleChannel: false
+    lidar_type: 1
+    m1_mode: 0
+    m2_mode: 0
+    m3_mode: 1
+    port: /dev/lidar
+    qos_overrides:
+      /parameter_events:
+        publisher:
+          depth: 1000
+          durability: volatile
+          history: keep_last
+          reliability: reliable
+    range_max: 12.0
+    range_min: 0.03
+    reversion: true
+    sample_rate: 4
+    support_motor_dtr: false
+    use_sim_time: false
+
