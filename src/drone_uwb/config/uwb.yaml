@@ -10,10 +10,10 @@ uwb_node:
     max_report_span_s: 0.04
     max_queue_s: 0.15
     max_pair_residual_m: 0.15
-    range_step_margin_m: 0.15
-    max_speed_m_s: 2.0
+    range_step_margin_m: 0.20
+    max_speed_m_s: 1.20
     history_timeout_s: 0.5
-    recovery_samples: 5
+    recovery_samples: 3
     clock_warmup_samples: 30
     clock_window_s: 5.0
     xy_stddev_m: 0.30
