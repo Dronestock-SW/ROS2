@@ -28,9 +28,12 @@
 """
 
 import json
+import math
+import time
 
 import rclpy
 from geometry_msgs.msg import TwistStamped
+from rclpy.clock import Clock, ClockType
 from rclpy.node import Node
 from std_msgs.msg import String
 
@@ -40,6 +43,7 @@ class ArucoServoNode(Node):
     def __init__(self):
         super().__init__('aruco_servo_node')
 
+        self.declare_parameter('error_timeout_sec', 0.5)
         self.declare_parameter('kp_lateral', 0.6)
         self.declare_parameter('kp_distance', 0.6)
         self.declare_parameter('max_speed_mps', 0.15)  # roadmap 서보잉 속도 상한(10~15cm/s)
@@ -48,10 +52,19 @@ class ArucoServoNode(Node):
         self._kp_distance = self.get_parameter('kp_distance').value
         self._max_speed = self.get_parameter('max_speed_mps').value
 
+        self._timeout = self.get_parameter('error_timeout_sec').value
+        if not math.isfinite(self._timeout) or self._timeout <= 0:
+            raise ValueError('error_timeout_sec must be positive and finite')
+        self._last_valid = None
+
         self._sub = self.create_subscription(
             String, '/aruco_alignment/error', self._on_error, 10)
         self._pub = self.create_publisher(
             TwistStamped, '/aruco_alignment/velocity_suggestion', 10)
+
+        self._steady_clock = Clock(clock_type=ClockType.STEADY_TIME)
+        self._timer = self.create_timer(
+            0.05, self._check_timeout, clock=self._steady_clock)
 
         self.get_logger().info(
             f'aruco_servo_node 시작 (PX4 미연결, 제안값만 발행) — '
@@ -59,25 +72,45 @@ class ArucoServoNode(Node):
             f'max_speed={self._max_speed}m/s')
 
     def _on_error(self, msg):
-        data = json.loads(msg.data)
+        try:
+            data = json.loads(msg.data)
+            if not isinstance(data, dict) or data.get('valid') is not True:
+                raise ValueError('invalid observation')
+            lateral = data['lateral_error_m']
+            distance = data['distance_error_m']
+            aligned = data['aligned']
+            if not isinstance(aligned, bool):
+                raise ValueError('invalid aligned flag')
+            for value in (lateral, distance):
+                if (isinstance(value, bool) or not isinstance(value, (int, float))
+                        or not math.isfinite(value)):
+                    raise ValueError('invalid error value')
+        except (ValueError, KeyError, TypeError):
+            self._last_valid = None
+            self._publish_velocity()
+            return
 
+        self._last_valid = time.monotonic()
+        if aligned:
+            self._publish_velocity()
+        else:
+            self._publish_velocity(
+                self._clamp(-self._kp_distance * distance),
+                self._clamp(-self._kp_lateral * lateral))
+
+    def _publish_velocity(self, vx=0.0, vy=0.0):
         cmd = TwistStamped()
         cmd.header.stamp = self.get_clock().now().to_msg()
         cmd.header.frame_id = 'base_link'
-
-        if data['aligned']:
-            # 정렬 완료 — 속도 0 (그대로 유지)
-            self._pub.publish(cmd)
-            return
-
-        vy = self._clamp(-self._kp_lateral * data['lateral_error_m'])
-        vx = self._clamp(-self._kp_distance * data['distance_error_m'])
-
         cmd.twist.linear.x = vx
         cmd.twist.linear.y = vy
         self._pub.publish(cmd)
 
-        self.get_logger().info(f'제안 속도: vx={vx:+.3f}m/s vy={vy:+.3f}m/s')
+    def _check_timeout(self):
+        # Monotonic time also expires when ROS simulation time is paused.
+        if (self._last_valid is None
+                or time.monotonic() - self._last_valid >= self._timeout):
+            self._publish_velocity()
 
     def _clamp(self, v):
         return max(-self._max_speed, min(self._max_speed, v))

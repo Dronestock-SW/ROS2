@@ -1,0 +1,61 @@
+# ArUco 연구용 라벨 시험 절차
+이 문서는 100mm 라벨의 시험 순서다.
+출력물을 받은 뒤 카메라 시험 전에 읽는다.
+
+## 1. 출력 크기 설정
+검은 정사각형을 재고 설정에 반영한다.
+
+| 항목 | 값 |
+|---|---|
+| 시험 설정 | `src/drone_bringup/params/aruco_tracker_100mm_test.yaml` |
+| `marker_size` | 실측 한 변 길이. 단위 m |
+| 예시 | 100mm이면 `0.100` |
+| 기존 기본 설정 | 159mm. 변경하지 않음 |
+
+## 2. 실행
+workspace 루트에서 실행한다.
+카메라가 이미 실행 중이면 아래 명령을 쓴다.
+이 환경은 패키지 검색 경로를 명시해야 한다.
+
+```bash
+source install/setup.bash
+export AMENT_PREFIX_PATH="$PWD/install/drone_bringup:${AMENT_PREFIX_PATH:-}"
+ros2 launch drone_bringup aruco_servoing.launch.py \
+  aruco_params_file:="$PWD/src/drone_bringup/params/aruco_tracker_100mm_test.yaml"
+```
+
+카메라도 실행하려면 `start_camera:=true`를 덧붙인다.
+카메라를 중복 실행하지 않는다. 장치를 동시에 열 수 없다.
+QR 디코더는 별도 터미널에서 실행한다.
+
+```bash
+source install/setup.bash
+export AMENT_PREFIX_PATH="$PWD/install/drone_bringup:${AMENT_PREFIX_PATH:-}"
+ros2 run drone_bringup qr_decoder_node
+```
+
+## 3. 확인
+20cm는 시험 시작 거리다. 비행 거리는 미확정이다.
+
+| 조작 | 확인할 결과 |
+|---|---|
+| 두 표식을 카메라에 보여줌 | `/aruco_detections`, `/qr_code/data` 확인 |
+| 마커를 좌우·앞뒤로 이동 | `/aruco_alignment/error` 값 변화 |
+| 마커를 가림 | `valid=false`, 속도 제안값 0 |
+| 검출 노드를 종료 | 마지막 유효 오차 수신 후 0.5초에 만료 |
+| 마커를 다시 보여줌 | 유효 오차 수신 후 속도 제안 재개 |
+
+만료 검사는 0.05초 주기로 실행한다.
+실제 발행 시점에는 실행 지연이 더해질 수 있다.
+`error_timeout_sec` 기본값은 0.5초다.
+`valid`가 없는 구형 오차 메시지는 무효로 처리한다.
+
+## 4. 결과의 범위
+속도 제안값은 PX4에 연결하지 않았다.
+0속도 제안은 실제 기체의 정지를 보장하지 않는다.
+
+좌표축과 부호는 실기 검증 전이다.
+현재 목표는 ArUco 중심이다.
+옆의 QR이 함께 보이는지는 출력물로 확인한다.
+제안 노드 자체가 종료되는 경우도 있다.
+실제 제어 수신부에도 입력 만료 처리가 필요하다.

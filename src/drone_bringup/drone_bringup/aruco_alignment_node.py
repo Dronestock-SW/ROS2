@@ -11,8 +11,7 @@
 좌표계:
     카메라가 드론 정면에 장착돼 있다(equipment_inventory.md, position: front).
     ArUco pose의 x(좌우)·z(거리)만 쓴다. y(상하)는 다루지 않는다 — companion은
-    z(고도) 직접 제어 금지(altitude_policy.md)라서, 상하 정렬은 이 노드 밖에서
-    별도로(실측 길이 ÷ 시간 = 하드코딩된 값) 처리하기로 함.
+    z(고도) 직접 제어 금지(altitude_policy.md)다. 고도·자세는 PX4가 담당한다.
 
 목표값(임시, 튜닝 가능 — params_file로 덮어쓸 수 있다):
     target_distance_m = 0.20  (2026-09-13 변경. 근거는 아래 "목표거리 재검토" 참조)
@@ -36,6 +35,7 @@
 """
 
 import json
+import math
 
 import rclpy
 from aruco_opencv_msgs.msg import ArucoDetection
@@ -74,15 +74,21 @@ class ArucoAlignmentNode(Node):
             self._miss_streak += 1
             if self._miss_streak % 30 == 0:
                 self.get_logger().warn(f'마커 {self._miss_streak}프레임 연속 미검출')
+            self._publish_invalid('marker_missing')
             return
         self._miss_streak = 0
 
         lateral_error = marker.pose.position.x
         distance_error = marker.pose.position.z - self._target_distance
+        if not (math.isfinite(lateral_error) and math.isfinite(distance_error)
+                and marker.pose.position.z > 0):
+            self._publish_invalid('invalid_pose')
+            return
         aligned = (abs(lateral_error) <= self._lateral_tol
                    and abs(distance_error) <= self._distance_tol)
 
         payload = {
+            'valid': True,
             'marker_id': marker.marker_id,
             'lateral_error_m': round(lateral_error, 4),
             'distance_error_m': round(distance_error, 4),
@@ -92,6 +98,12 @@ class ArucoAlignmentNode(Node):
         self.get_logger().info(
             f'id={marker.marker_id} 좌우오차={lateral_error:+.3f}m '
             f'거리오차={distance_error:+.3f}m aligned={aligned}')
+
+    def _publish_invalid(self, reason):
+        self._pub.publish(String(data=json.dumps({
+            'valid': False, 'aligned': False, 'reason': reason,
+            'marker_id': self._marker_id,
+        })))
 
     def _pick_marker(self, markers):
         if not markers:
