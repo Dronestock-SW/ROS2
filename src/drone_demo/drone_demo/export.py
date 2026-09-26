@@ -60,12 +60,15 @@ def main():
     parser.add_argument('--output', type=Path, required=True, help='new directory; never overwritten')
     parser.add_argument('--config', default='')
     parser.add_argument('--scenario', choices=('stationary', 'move', 'gap'))
-    parser.add_argument('--fixed-z-m', type=float)
+    parser.add_argument('--z-min-m', type=float)
+    parser.add_argument('--z-max-m', type=float)
+    parser.add_argument('--z-period-s', type=float)
     parser.add_argument('--duration-s', type=float)
     args = parser.parse_args()
     try:
         inputs = load_inputs(args.config, scenario=args.scenario,
-                             fixed_z_m=args.fixed_z_m, duration_s=args.duration_s)
+                             z_min_m=args.z_min_m, z_max_m=args.z_max_m,
+                             z_period_s=args.z_period_s, duration_s=args.duration_s)
         summary = write_demo(args.output, *inputs)
     except (ValueError, TypeError, OSError) as exc:
         parser.exit(2, str(exc) + '\n')

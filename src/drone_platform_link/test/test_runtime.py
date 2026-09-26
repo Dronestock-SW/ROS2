@@ -11,6 +11,7 @@ import pytest
 from websockets.asyncio.server import serve
 
 from drone_platform_link.runtime import Config, Runtime, fetch_mission, presence_payload
+from drone_platform_link.telemetry import Observations
 
 
 def config(tmp_path, server='http://127.0.0.1:8001', **extra):
@@ -30,6 +31,23 @@ def test_presence_never_fabricates_sensor_or_flight_state(tmp_path):
     assert 'mission_db_id' not in first  # Receiving an assignment isn't executing it.
     assert second['telemetry_seq'] > first['telemetry_seq']
     assert first['sent_at_ms'] == first['t']
+
+
+def test_observations_are_fresh_and_flight_stays_disabled(tmp_path):
+    import time
+    observations = Observations()
+    observations.receive_pose(1.2, 3.4, 'uwb_map', time.time_ns())
+    observations.receive_battery(0.63, 15.2)
+    sent = presence_payload(config(tmp_path), 1, observations)
+    assert sent['x'] == 1.2 and sent['y'] == 3.4 and sent['fix'] is True
+    assert sent['battery'] == 63 and sent['battery_voltage'] == 15.2
+    assert sent['flight_control_enabled'] is False
+    observations.pose = (1.2, 3.4, time.time_ns(), time.monotonic() - 1)
+    observations.battery = (63, 15.2, time.monotonic() - 4)
+    stale = presence_payload(config(tmp_path), 2, observations)
+    assert stale['fix'] is False and stale['x'] is None and stale['battery'] is None
+    observations.receive_pose(4, 5, 'wrong_frame', time.time_ns())
+    assert observations.fields()['x'] is None
 
 
 @pytest.mark.parametrize('origin', [

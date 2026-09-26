@@ -65,7 +65,8 @@ def main():
         assert child.returncode == 0, output
         assert statuses and truths and observations and targets and raw, output
         assert all(s['demo'] and not s['z_measured'] for s in statuses)
-        assert all(m.pose.position.z == 1.2 for m in truths)
+        assert all(0.2 <= m.pose.position.z <= 2.2 for m in truths)
+        assert max(m.pose.position.z for m in truths) - min(m.pose.position.z for m in truths) > 1.0
         assert all(m.pose.pose.position.z == 0 and m.pose.covariance[14] == 1e6 for m in observations)
         assert all(m['demo'] for m in raw)
         assert all(not 160 <= m['seq'] < 200 for m in raw if m['type'] == 'uwb_raw_cycle')

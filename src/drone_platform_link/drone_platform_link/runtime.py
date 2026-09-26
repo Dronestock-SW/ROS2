@@ -18,6 +18,7 @@ from urllib.request import HTTPRedirectHandler, ProxyHandler, Request, build_ope
 import uuid
 
 from websockets.asyncio.client import connect
+from .telemetry import Observations
 
 
 LOG = logging.getLogger('dronestock-companion')
@@ -100,10 +101,10 @@ def fetch_mission(config):
     return payload
 
 
-def presence_payload(config, sequence):
+def presence_payload(config, sequence, observations=None):
     """Unknown sensor/flight values stay null; presence isn't flight readiness."""
     timestamp = int(time.time() * 1000)
-    return {
+    payload = {
         'contract_version': '1.0',
         'type': 'telemetry',
         'telemetry_source': 'companion',
@@ -132,6 +133,9 @@ def presence_payload(config, sequence):
         'active_waypoint_index': None,
         'active_waypoint_id': None,
     }
+    if observations is not None:
+        payload.update(observations.fields())
+    return payload
 
 
 def atomic_json(path, value):
@@ -148,6 +152,7 @@ def error_code(exc):
 class Runtime:
     def __init__(self, config):
         self.config = config
+        self.observations = Observations()
         self.started = time.time()
         self.mission = None
         self.mission_at = None
@@ -226,7 +231,7 @@ class Runtime:
                                 receiver.result()
                                 raise ConnectionError('websocket_closed')
                             self.sequence += 1
-                            payload = presence_payload(self.config, self.sequence)
+                            payload = presence_payload(self.config, self.sequence, self.observations)
                             await asyncio.wait_for(ws.send(json.dumps(payload)), timeout=2)
                             self.ws_sent += 1
                             self.ws_sent_at = time.time()
@@ -309,11 +314,16 @@ class Runtime:
 
 
 async def async_main(config):
+    from .ros_monitor import start
+    observations = Observations()
+    start(observations)
     stop = asyncio.Event()
     loop = asyncio.get_running_loop()
     for signum in (signal.SIGTERM, signal.SIGINT):
         loop.add_signal_handler(signum, stop.set)
-    await Runtime(config).run(stop)
+    runtime = Runtime(config)
+    runtime.observations = observations
+    await runtime.run(stop)
 
 
 def main():

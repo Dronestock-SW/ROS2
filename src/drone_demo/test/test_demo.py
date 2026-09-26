@@ -8,6 +8,7 @@ import pytest
 from drone_demo.core import DemoConfig, DemoRun
 from drone_demo.export import write_demo
 from drone_demo.node import observation_message, require_demo_environment
+from drone_demo.z_gate import DemoZGate
 from drone_uwb.core import Processor, Settings
 
 
@@ -21,20 +22,21 @@ def samples(config):
     return [run.sample(i) for i in range(config.sample_count)]
 
 
-def test_demo_height_changes_distances_but_never_becomes_uwb_altitude():
-    measured_ranges = []
-    for height in (0.3, 1.2, 2.8):
-        config = replace(CONFIG, scenario='stationary', fixed_z_m=height,
-                         duration_s=2.0, range_noise_stddev_m=0.0)
-        row = samples(config)[-1]
-        assert row['truth_xyz_m'] == [2.09, 1.68, height]
-        assert row['observation']['x'] == pytest.approx(2.09, abs=1e-10)
-        assert row['observation']['y'] == pytest.approx(1.68, abs=1e-10)
-        message = observation_message(row['observation'], 'uwb_map')
-        assert message.pose.pose.position.z == 0.0
-        assert message.pose.covariance[14] == 1e6
-        measured_ranges.append(row['received'][-1]['message']['raw_slant_m'][0])
-    assert len(set(measured_ranges)) == 3
+def test_demo_sine_height_bounds_and_uwb_altitude_stays_unobserved():
+    config = replace(CONFIG, scenario='stationary', duration_s=8.0,
+                     range_noise_stddev_m=0.0)
+    rows = samples(config)
+    for index, expected in ((0, 1.2), (80, 2.2), (160, 1.2), (240, 0.2)):
+        row = rows[index]
+        assert row['truth_xyz_m'][2] == pytest.approx(expected)
+        assert row['z_source'] == 'demo_sine'
+        assert row['z_measured'] is False
+        if row['observation']:
+            message = observation_message(row['observation'], 'uwb_map')
+            assert message.pose.pose.position.z == 0.0
+            assert message.pose.covariance[14] == 1e6
+    assert all(0.2 - 1e-12 <= row['truth_xyz_m'][2] <= 2.2 + 1e-12 for row in rows)
+    assert rows[0]['received'][-1]['message']['raw_slant_m'][0] != rows[80]['received'][-1]['message']['raw_slant_m'][0]
 
 
 def test_gap_has_no_received_messages_or_observations_then_recovers():
@@ -45,7 +47,7 @@ def test_gap_has_no_received_messages_or_observations_then_recovers():
     assert all(r['decision'] == 'demo_gap' for r in gap)
     assert gap[-1]['truth_xyz_m'] != gap[0]['truth_xyz_m']
     assert any(r['observation'] for r in rows if r['time_s'] > 5.0)
-    assert rows[-1]['truth_xyz_m'] == [3.09, 2.68, 1.2]
+    assert rows[-1]['truth_xyz_m'][:2] == [3.09, 2.68]
     assert rows[-1]['trajectory_phase'] == 'ARRIVED'
 
 
@@ -81,9 +83,19 @@ def test_ros_publisher_refuses_non_demo_domain(domain):
 
 
 @pytest.mark.parametrize('changes', [
-    {'fixed_z_m': float('nan')}, {'rate_hz': 0.0}, {'speed_m_s': -1.0},
+    {'z_min_m': float('nan')}, {'z_max_m': 0.1}, {'z_period_s': 0.0}, {'rate_hz': 0.0}, {'speed_m_s': -1.0},
     {'duration_s': 0.0}, {'seed': True}, {'target_xy_m': [1, float('inf')]},
 ])
 def test_invalid_fixture_config_fails_before_publishing(changes):
     with pytest.raises(ValueError):
         replace(CONFIG, **changes)
+
+
+def test_real_tof_gate_latches_after_valid_measurement():
+    gate = DemoZGate()
+    assert not gate.observe(float('nan'), 0.1, 4.0)
+    assert not gate.observe(0.05, 0.1, 4.0)
+    assert gate.observe(1.2, 0.1, 4.0)
+    assert gate.reason == 'real_tof_detected'
+    assert gate.observe(float('nan'), 0.1, 4.0)
+    assert DemoZGate(enabled=False).blocked

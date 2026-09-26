@@ -4,7 +4,7 @@
 
 ## 1. 실행 범위 확인
 
-서비스는 임무를 수신하고 연결 상태를 보낸다.
+서비스는 임무를 수신하고 관측 상태를 보낸다.
 현재 모드는 `communication_only`다.
 
 | 항목 | 설정·동작 |
@@ -14,7 +14,9 @@
 | 웹 기체 ID | `5` |
 | 임무 수신 | GET `/api/drones/5/companion-mission/`, 정상 시 2Hz |
 | 상태 송신 | WS `/ws/drones/5/`, 목표 10Hz |
-| 미측정 센서·FC 값 | null. 위치 유효성은 false |
+| UWB 위치 | `/uwb_pose`의 `uwb_map` x·y. 500ms 이내 값만 유효 |
+| 배터리 | `/mavros/battery`의 잔량·전압. 3초 이내 값만 전송 |
+| 미측정 FC 값 | null. 비행 제어는 false |
 | 연결 복구 | 실패 시 1~30초 간격으로 재시도 |
 | 프로세스 복구 | 종료 시 systemd가 3초 뒤 재시작 |
 | 자동 실행 | 사용자 서비스 활성화와 `Linger=yes` |
@@ -26,10 +28,13 @@ Platform 임무 API -- GET --> companion -- 최신 임무 --> mission.json
 Platform WS       <-- 연결 상태 -- companion -- 통신 상태 --> status.json
 ```
 
-실제 위치와 FC 상태는 아직 연결하지 않았다.
+위치는 UWB 태그의 수평 관측값이다. PX4 기체 위치가 아니다.
+배터리 데이터가 없거나 신선하지 않으면 null로 보낸다.
+FC 상태는 아직 연결하지 않았다.
 서버 앵커 값과 기존 설치 기록도 다르다.
 이유: [연결 시험](report/platform_connection_20260913.md)에서 차이를 확인했다.
-웹 좌표·태그 설정·ROS2/PX4 연동은 별도 작업이다.
+웹 좌표·태그 설정·PX4 제어 연동은 별도 작업이다.
+서버 좌표와 UWB 좌표가 일치하는지 검증하기 전에는 웹의 위치 점을 운용 기준으로 사용하지 않는다.
 WS 송신 성공만으로 화면 반영을 확정하지 않는다.
 이유: 서버 저장과 브라우저 표시는 별도로 확인해야 한다.
 
@@ -45,6 +50,8 @@ python3 src/drone_platform_link/deploy/install_user_service.py
 설치기는 사용자 디렉터리만 사용한다.
 기존 환경 설정 파일은 유지한다.
 코드를 수정한 뒤에도 위 명령으로 다시 배치한다.
+실행 환경은 `/opt/ros/humble/setup.bash`와 `~/drone_ws/install/setup.bash`를 읽는다.
+UWB 노드와 MAVROS가 실행 중이어야 실제 값이 들어온다.
 시스템 Python 패키지는 변경하지 않는다.
 `websockets 13.1`을 별도 경로에 둔다.
 다운로드 파일은 고정 SHA256으로 검사한다.

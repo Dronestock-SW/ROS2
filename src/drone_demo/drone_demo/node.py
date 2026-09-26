@@ -11,8 +11,10 @@ from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
 from rclpy.qos import DurabilityPolicy, QoSProfile, qos_profile_sensor_data
 from std_msgs.msg import String
+from sensor_msgs.msg import Range
 
 from .core import DemoRun, load_inputs
+from .z_gate import DemoZGate
 
 
 def require_demo_environment(environ):
@@ -54,6 +56,9 @@ class DemoNode(Node):
         descriptor = ParameterDescriptor(read_only=True)
         for name, default in (('config_file', ''), ('scenario', '')):
             self.declare_parameter(name, default, descriptor)
+        self.declare_parameter('synthetic_z_enabled', True, descriptor)
+        self.declare_parameter('real_tof_topic', '/tof/range', descriptor)
+        self.z_gate = DemoZGate(self.get_parameter('synthetic_z_enabled').value)
         config, layout, settings = load_inputs(
             self.get_parameter('config_file').value,
             scenario=self.get_parameter('scenario').value or None)
@@ -65,16 +70,30 @@ class DemoNode(Node):
             PoseWithCovarianceStamped, '/uwb_pose', qos_profile_sensor_data)
         self.raw_pub = self.create_publisher(String, '/uwb/raw', qos_profile_sensor_data)
         self.status_pub = self.create_publisher(String, '/demo_status', 10)
+        self.tof_sub = self.create_subscription(
+            Range, self.get_parameter('real_tof_topic').value,
+            self.on_real_tof, qos_profile_sensor_data)
         self.started_ns = time.monotonic_ns()
         self.last_index = -1
         self.last_phase = None
         self.finished = False
         self.timer = self.create_timer(1/config.rate_hz, self.tick)
         self.get_logger().info(
-            f'DEMO ONLY: {config.scenario}, fixed z={config.fixed_z_m} m, '
+            f'DEMO ONLY: {config.scenario}, sine z={config.z_min_m}..{config.z_max_m} m, '
             f'domain 99, {config.duration_s} s. No flight interface.')
 
+    def on_real_tof(self, message):
+        if self.z_gate.observe(message.range, message.min_range, message.max_range):
+            if not self.finished:
+                self.get_logger().warn('Real ToF detected; stopping demo publishers.')
+                self.timer.cancel()
+                self.finished = True
+
     def tick(self):
+        if self.z_gate.blocked:
+            self.timer.cancel()
+            self.finished = True
+            return
         mono_ns = time.monotonic_ns()
         elapsed = (mono_ns - self.started_ns) / 1e9
         if elapsed >= self.run.config.duration_s:
