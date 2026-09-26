@@ -84,7 +84,15 @@ ROS_DOMAIN_ID=99 ROS_LOCALHOST_ONLY=1 \
 데모 위치를 EKF2 관측 입력에 연결하지 않는다.
 이유: 생성기의 정답을 센서 측정으로 오인하게 한다.
 
-## 4. 값 바꾸기
+## 4. 실제 ToF 연결 시 데모 차단
+
+실제 `sensor_msgs/Range` 측정을 데모의 `/tof/range`에 연결한다.
+유효한 측정값을 받으면 데모 발행이 종료된다.
+토픽 이름이 다르면 `real_tof_topic:=<토픽>`으로 지정한다.
+연결 전 임시 차단은 `synthetic_z_enabled:=false`를 쓴다.
+DOMAIN_ID 99 밖의 측정은 데모에서 자동 감지할 수 없다.
+
+## 5. 값 바꾸기
 
 설정 파일 하나에서 임시값을 관리한다.
 [기본 설정](../src/drone_demo/config/demo.json)을 수정한다.
@@ -94,7 +102,7 @@ ROS_DOMAIN_ID=99 ROS_LOCALHOST_ONLY=1 \
 
 ```bash
 ros2 run drone_demo demo_export \
-  --scenario stationary --fixed-z-m 1.0 --duration-s 60 \
+  --scenario stationary --z-min-m 0.2 --z-max-m 2.2 --z-period-s 8 --duration-s 60 \
   --output /tmp/drone_demo_stationary_60s
 ```
 

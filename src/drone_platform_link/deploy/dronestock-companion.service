@@ -1,5 +1,5 @@
 [Unit]
-Description=DroneStock Platform communication only
+Description=DroneStock Platform telemetry and mission reception
 StartLimitIntervalSec=0
 
 [Service]
@@ -11,7 +11,7 @@ Environment=PYTHONUTF8=1
 Environment=PYTHONUNBUFFERED=1
 Environment=PYTHONDONTWRITEBYTECODE=1
 Environment=ROS_DOMAIN_ID=1
-ExecStart=/usr/bin/python3 -m drone_platform_link.runtime
+ExecStart=/bin/bash -c 'source /opt/ros/humble/setup.bash && source %h/drone_ws/install/setup.bash && exec /usr/bin/python3 -m drone_platform_link.runtime'
 Restart=always
 RestartSec=3
 TimeoutStopSec=10

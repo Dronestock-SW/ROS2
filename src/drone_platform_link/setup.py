@@ -12,7 +12,7 @@ setup(
     ],
     install_requires=['setuptools', 'websockets==13.1'],
     maintainer='Dronestock', maintainer_email='user@todo.todo',
-    description='Platform mission reception and communication presence only.',
+    description='Platform mission reception and read-only ROS telemetry.',
     license='Proprietary',
     entry_points={'console_scripts': ['platform_link = drone_platform_link.runtime:main']},
 )

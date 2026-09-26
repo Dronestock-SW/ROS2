@@ -1,6 +1,8 @@
 {
   "scenario": "move",
-  "fixed_z_m": 1.2,
+  "z_min_m": 0.2,
+  "z_max_m": 2.2,
+  "z_period_s": 8.0,
   "start_xy_m": [2.09, 1.68],
   "target_xy_m": [3.09, 2.68],
   "rate_hz": 40.0,

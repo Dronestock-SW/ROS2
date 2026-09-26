@@ -11,7 +11,9 @@ from drone_uwb.core import Decision, Processor, Settings
 @dataclass(frozen=True)
 class DemoConfig:
     scenario: str
-    fixed_z_m: float
+    z_min_m: float
+    z_max_m: float
+    z_period_s: float
     start_xy_m: list
     target_xy_m: list
     rate_hz: float
@@ -42,6 +44,8 @@ class DemoConfig:
                 raise ValueError(field.name + ' must be finite and nonnegative')
         if not 1 <= self.rate_hz <= 100:
             raise ValueError('rate_hz must be in [1, 100]')
+        if not self.z_min_m < self.z_max_m or self.z_period_s <= 0:
+            raise ValueError('z bounds must increase and z_period_s must be positive')
         if self.duration_s <= 0 or self.speed_m_s <= 0:
             raise ValueError('duration_s and speed_m_s must be positive')
         if self.scenario == 'gap' and not (
@@ -87,12 +91,18 @@ class DemoRun:
     def target_xyz(self):
         c = self.config
         xy = c.start_xy_m if c.scenario == 'stationary' else c.target_xy_m
-        return [*xy, c.fixed_z_m]
+        return [*xy, self.z_at(c.duration_s)]
+
+    def z_at(self, time_s):
+        c = self.config
+        midpoint = (c.z_min_m + c.z_max_m) / 2
+        amplitude = (c.z_max_m - c.z_min_m) / 2
+        return midpoint + amplitude * math.sin(2 * math.pi * time_s / c.z_period_s)
 
     def truth_at(self, time_s):
         c = self.config
         if c.scenario == 'stationary':
-            return [*c.start_xy_m, c.fixed_z_m], 'STATIONARY'
+            return [*c.start_xy_m, self.z_at(time_s)], 'STATIONARY'
         dx = c.target_xy_m[0] - c.start_xy_m[0]
         dy = c.target_xy_m[1] - c.start_xy_m[1]
         distance = math.hypot(dx, dy)
@@ -101,7 +111,7 @@ class DemoRun:
         phase = ('ARRIVED' if fraction == 1.0 else
                  'WAITING' if time_s < c.start_hold_s else 'MOVING')
         return [c.start_xy_m[0] + fraction * dx,
-                c.start_xy_m[1] + fraction * dy, c.fixed_z_m], phase
+                c.start_xy_m[1] + fraction * dy, self.z_at(time_s)], phase
 
     def sample(self, index, mono_ns=None, ros_ns=None):
         if type(index) is not int or not self.last_index < index < self.config.sample_count:
@@ -156,7 +166,7 @@ class DemoRun:
             reference = self.truth_at(observation_t)[0][:2]
         return {'demo': True, 'schema': 1, 'time_s': t, 'seq': index,
                 'scenario': c.scenario, 'frame_id': self.layout['coordinate_frame'],
-                'z_source': 'demo_fixed', 'z_measured': False,
+                'z_source': 'demo_sine', 'z_measured': False,
                 'truth_xyz_m': truth, 'target_xyz_m': self.target_xyz,
                 'trajectory_phase': phase, 'uwb_available': not in_gap,
                 'decision': decision.reason, 'observation': observation,
