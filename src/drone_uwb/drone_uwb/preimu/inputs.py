@@ -37,8 +37,9 @@ class Cycle:
 
 
 class InputValidator:
-    def __init__(self, settings):
+    def __init__(self, settings, require_recent_status=True):
         self.settings = settings
+        self.require_recent_status = require_recent_status
         self.status = None
         self.status_ns = None
         self.reset()
@@ -53,10 +54,14 @@ class InputValidator:
         self.reset()
 
     def on_status(self, msg, mono_ns):
+        # The supplied RAW-only source omits clock_domain. Its firmware identifier defines it.
+        domain = msg.get('clock_domain')
+        clock_known = (domain == 'esp32_monotonic_boot_us'
+                       or (domain is None and msg.get('firmware') == 'uwb-tag-jetson-raw-v1'))
         valid = (msg.get('uwb_ready') is True
                  and msg.get('anchor_order') == ANCHOR_ORDER
                  and msg.get('anchor_count') == 4
-                 and msg.get('clock_domain') == 'esp32_monotonic_boot_us'
+                 and clock_known
                  and msg.get('temporal_filter_applied') is False)
         if not valid:
             self.disconnect()
@@ -70,7 +75,9 @@ class InputValidator:
 
     def on_cycle(self, msg, mono_ns, ros_ns):
         s = self.settings
-        if self.status_ns is None or not 0 <= (mono_ns - self.status_ns) / 1e9 <= s.status_timeout_s:
+        # A recorded boot status can be latched for a file session; live callers retain timeout behavior.
+        if self.status_ns is None or (self.require_recent_status
+                and not 0 <= (mono_ns - self.status_ns) / 1e9 <= s.status_timeout_s):
             raise InvalidInput('status_unavailable')
         try:
             seq, start, end, mask = (msg[k] for k in ('seq', 'cycle_start_us', 'cycle_end_us', 'valid_mask'))
@@ -92,6 +99,9 @@ class InputValidator:
         self.last_seq, self.last_end_us = seq, end
         if (end - start) / 1e6 > s.max_cycle_s:
             raise InvalidInput('cycle_too_long')
+        if 'cycle_duration_us' in msg and (not integer(msg['cycle_duration_us'])
+                                         or msg['cycle_duration_us'] != end - start):
+            raise InvalidInput('cycle_duration_mismatch')
         try:
             values, failures, samples = (msg[k] for k in ('raw_slant_m', 'failure', 'sample_time_us'))
         except KeyError:

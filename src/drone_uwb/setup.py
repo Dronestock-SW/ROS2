@@ -18,5 +18,6 @@ setup(
         'uwb_px4_bridge = drone_uwb.bridge:main',
         'uwb_replay = drone_uwb.replay:main',
         'uwb_bench_probe = drone_uwb.bench_probe:main',
+        'uwb_pipeline = drone_uwb.preimu.runner:main',
     ]},
 )
