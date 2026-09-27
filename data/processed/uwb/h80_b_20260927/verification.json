@@ -1,0 +1,46 @@
+{
+  "date": "2026-09-27",
+  "pytest": {
+    "command": "PYTHONPATH=src/drone_uwb python -m pytest src/drone_uwb/test -q",
+    "passed": 86,
+    "failed": 0
+  },
+  "build": {
+    "command": "colcon --log-base /tmp/uwb_h80_b_20260927/log build --symlink-install --packages-select drone_uwb --build-base /tmp/uwb_h80_b_20260927/build --install-base /tmp/uwb_h80_b_20260927/install",
+    "passed": true,
+    "installed_cli_help_passed": true
+  },
+  "replay_checks": {
+    "results.jsonl": true,
+    "positions.csv": true,
+    "summary.json": true,
+    "A_all_2540_exactly_equal_to_previous_run": true
+  },
+  "hardware_tests": "not_run",
+  "SITL_tests": "not_run",
+  "flight_valid": false,
+  "external_output_allowed": false,
+  "archive_sha256": {
+    "anchors.json": "2d4d9d79d4a3fd772018e53d46659201041a76022c727b55c2506dd39b188407",
+    "benchmark_manifest.json": "2f6327838fe4a31ca07f14641c9d2b2c41cdb77489282aeb31b90b44b72fa401",
+    "calibration.json": "460d94899a6ac93f1a59f0342208362006c5ad9bcbdaa9b9c3d4eba3b11b3305",
+    "config.json": "29846f1c4496f43771a5af89904efaa70b2453b8e19801429957cce74b900cfe",
+    "h80_b_comparison.pdf": "12749e8267bca45610f32e4bb3a718b5a7374ee1cc03a78c11fe0c3b3a9d15fd",
+    "h80_b_comparison.png": "9ffcba5210eed55b883954aa1c6332ac58a5756d7f3e5df012a8fb4ded7c6520",
+    "manifest.json": "5ae690d8cde2f6a9e438454673fa47550fbb4971c4c1333ec2b0604740fb08cb",
+    "positions.csv": "c7107c415dbb88b6db51a77953c1eff0c7ee290c7ba5bdb15eb506012eab1eb3",
+    "replay_checks.json": "b764e6bb46d7bdc90d5b9f1bcb36a5adf55f3806960d4596f23e8d7c4ce54df1",
+    "results.jsonl": "9978fb2f8a634fb02b8636f8a9352fc56e9421627fd3da18047e56909dc17604",
+    "summary.json": "c789e1af9afb9747a211d844dd2785d4061329c37717559edfca2f975e2338ad",
+    "synthetic_results.jsonl": "beb3eb263499407b18bc3d64cd255a48f55749b99d8dece25964820c085feccd",
+    "synthetic_summary.json": "78600645ba2f4a559b8937403aeb39c61907b1e852477190f0ed896b6744e1d7",
+    "timing_summary.json": "905f4451c792cae40d0ed938092b660407ebed6d00da2776eb89d595bac76e0e",
+    "timings.jsonl": "8377f1e0e6391717d3f9f0bf318e5a9814030e30eb0a01064ca6b35618b25c50",
+    "post_reorganization_manifest.json": "2c5bdb6def6f7b28b84d4ea6fd5b86b01ac1bfc9f85772495b7867b813df023d"
+  },
+  "post_reorganization": {
+    "pytest_passed": 86,
+    "deterministic_files_equal": true,
+    "manifest": "post_reorganization_manifest.json"
+  }
+}

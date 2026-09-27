@@ -9,6 +9,7 @@
 
 | 문서 | 확인 범위 |
 |---|---|
+| [B H80 구현·A 비교](report/uwb_h80_b_20260927.md) | 실측 정지 A/B 비교·동적 합성·86개 테스트·재생 검증 |
 | [perfect_holdv2 설정 보관](report/perfect_holdv2_20260927.md) | 1,095개 파라미터. 27일 ULog와 공통 990개 중 차이 11개 |
 | [9월 27일 Position 위치 유지](report/position_hold_20260927.md) | 두 구간 29.28초. 추종 오차·센서 융합·종료 사건 |
 | [27일 비행 로그 등록](report/flight_log_20260927.md) | 원격 ULog 수집, Position 구간·센서 추출·원본 해시 |

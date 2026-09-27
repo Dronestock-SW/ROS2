@@ -1,0 +1,10 @@
+{
+  "script_sha256": "44fa8227c00c5cdd280f96dffd8ee946adb2d28331e90a21d8af2aaa6ca14992",
+  "config_sha256": "29846f1c4496f43771a5af89904efaa70b2453b8e19801429957cce74b900cfe",
+  "outputs": {
+    "synthetic_summary.json": "78600645ba2f4a559b8937403aeb39c61907b1e852477190f0ed896b6744e1d7",
+    "synthetic_results.jsonl": "beb3eb263499407b18bc3d64cd255a48f55749b99d8dece25964820c085feccd",
+    "h80_b_comparison.pdf": "12749e8267bca45610f32e4bb3a718b5a7374ee1cc03a78c11fe0c3b3a9d15fd",
+    "h80_b_comparison.png": "9ffcba5210eed55b883954aa1c6332ac58a5756d7f3e5df012a8fb4ded7c6520"
+  }
+}

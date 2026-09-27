@@ -20,6 +20,7 @@ setup(
         'uwb_bench_probe = drone_uwb.integration.bench_probe:main',
         'uwb_pipeline = drone_uwb.processing.runner:main',
         'uwb_static_a = drone_uwb.processing.experiments.static_a:main',
+        'uwb_h80_b = drone_uwb.processing.experiments.h80_b:main',
         'uwb_baseline_a = drone_uwb.processing.experiments.baseline_a:main',
     ]},
 )

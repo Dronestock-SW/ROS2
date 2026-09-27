@@ -1,0 +1,173 @@
+{
+  "scope": "synthetic_algorithm_check",
+  "seed": 7,
+  "settings": {
+    "window_s": 0.8,
+    "min_samples_per_anchor": 3,
+    "min_samples_total": 12,
+    "required_anchor_count": 4,
+    "sigma_r_m": 0.08,
+    "huber_m": 0.12,
+    "h80_irls_iterations": 8,
+    "max_scaled_condition": 1000000.0,
+    "reset_gap_s": 0.15,
+    "max_extrapolation_s": 0.04,
+    "max_range_m": 80.0
+  },
+  "duration_s": 8,
+  "scheduled_rate_hz": 40,
+  "A_height_source": "exact_simulator_height_per_range",
+  "noise_sigma_m": {
+    "linear_clean": 0,
+    "direction_reversal": 0.02,
+    "other": 0.03
+  },
+  "persistent_A2_bias_m": 0.35,
+  "spike_A2_m": 0.6,
+  "external_output_allowed": false,
+  "cases": [
+    {
+      "case": "linear_clean",
+      "scheduled_ticks": 320,
+      "A_coverage": 1.0,
+      "B_coverage": 0.99375,
+      "paired_count": 318,
+      "paired": {
+        "A": {
+          "count": 318,
+          "rmse_m": 0.0024973021281193882,
+          "p95_m": 0.002595432750170016,
+          "max_m": 0.0025979460975933573
+        },
+        "B": {
+          "count": 318,
+          "rmse_m": 2.1097361002163224e-15,
+          "p95_m": 3.462907403455564e-15,
+          "max_m": 9.328516420481494e-15
+        }
+      }
+    },
+    {
+      "case": "static_noise",
+      "scheduled_ticks": 320,
+      "A_coverage": 1.0,
+      "B_coverage": 0.99375,
+      "paired_count": 318,
+      "paired": {
+        "A": {
+          "count": 318,
+          "rmse_m": 0.029883584405029487,
+          "p95_m": 0.04948085014690519,
+          "max_m": 0.07218966968507452
+        },
+        "B": {
+          "count": 318,
+          "rmse_m": 0.012443385532281746,
+          "p95_m": 0.021578413882988912,
+          "max_m": 0.03410263256589164
+        }
+      }
+    },
+    {
+      "case": "spikes",
+      "scheduled_ticks": 320,
+      "A_coverage": 1.0,
+      "B_coverage": 0.99375,
+      "paired_count": 318,
+      "paired": {
+        "A": {
+          "count": 318,
+          "rmse_m": 0.0834112771457971,
+          "p95_m": 0.10852796193114987,
+          "max_m": 0.38424075407912694
+        },
+        "B": {
+          "count": 318,
+          "rmse_m": 0.012337955822608868,
+          "p95_m": 0.02084248277120226,
+          "max_m": 0.044272279223586404
+        }
+      }
+    },
+    {
+      "case": "persistent_bias",
+      "scheduled_ticks": 320,
+      "A_coverage": 1.0,
+      "B_coverage": 0.99375,
+      "paired_count": 318,
+      "paired": {
+        "A": {
+          "count": 318,
+          "rmse_m": 0.14277805097443577,
+          "p95_m": 0.22632616965043198,
+          "max_m": 0.24409741071638
+        },
+        "B": {
+          "count": 318,
+          "rmse_m": 0.11248416396054683,
+          "p95_m": 0.18712134413753378,
+          "max_m": 0.2351542435952671
+        }
+      }
+    },
+    {
+      "case": "direction_reversal",
+      "scheduled_ticks": 320,
+      "A_coverage": 1.0,
+      "B_coverage": 0.99375,
+      "paired_count": 318,
+      "paired": {
+        "A": {
+          "count": 318,
+          "rmse_m": 0.02042275219679615,
+          "p95_m": 0.034824356918595034,
+          "max_m": 0.05287148891549742
+        },
+        "B": {
+          "count": 318,
+          "rmse_m": 0.030345866168272877,
+          "p95_m": 0.08444167953914494,
+          "max_m": 0.14457374276703058
+        }
+      },
+      "B_velocity_sign_change_after_turn_s": 0.41999999999999993,
+      "delay_definition": "First fitted vx < 0 after t=4s; noisy scenario, not end-to-end transport latency.",
+      "turn_window": {
+        "A": {
+          "count": 32,
+          "rmse_m": 0.020990807593155723,
+          "p95_m": 0.0354500114608142,
+          "max_m": 0.042447742956336174
+        },
+        "B": {
+          "count": 32,
+          "rmse_m": 0.0927850546943936,
+          "p95_m": 0.14258733157034365,
+          "max_m": 0.14457374276703058
+        }
+      }
+    },
+    {
+      "case": "gap",
+      "scheduled_ticks": 320,
+      "A_coverage": 0.96875,
+      "B_coverage": 0.95625,
+      "paired_count": 306,
+      "paired": {
+        "A": {
+          "count": 306,
+          "rmse_m": 0.028997271170997273,
+          "p95_m": 0.04785561421952243,
+          "max_m": 0.08047479281787108
+        },
+        "B": {
+          "count": 306,
+          "rmse_m": 0.012210542450850197,
+          "p95_m": 0.02006768141588944,
+          "max_m": 0.0465256577656427
+        }
+      },
+      "recovery_after_first_return_s": 0.04999999999999982
+    }
+  ]
+}
