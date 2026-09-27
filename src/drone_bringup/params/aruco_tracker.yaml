@@ -1,0 +1,22 @@
+# ArUco 검출 파라미터 — Dronestock 1호기 (Phase 3)
+#
+# aruco_opencv 패키지(ros-humble-aruco-opencv)의 aruco_tracker 노드용 override.
+# 지정 안 한 값은 패키지 기본값(/opt/ros/humble/share/aruco_opencv/config/aruco_tracker.yaml)을 따른다.
+
+/**:
+  ros__parameters:
+    # gscam_node가 이미 camera/image_raw 아래에 발행 중이다(camera.launch.py 참조).
+    # 이 값이 패키지 기본값과 같아서 명시 안 해도 되지만, 어떤 카메라를 보는지
+    # 문서화 목적으로 남겨둔다.
+    cam_base_topic: camera/image_raw
+
+    # 마커 생성 스크립트(scratchpad/generate_aruco_marker.py)가 DICT_4X4_50으로
+    # 만들었으므로 맞춘다.
+    marker_dict: 4X4_50
+
+    # camera_imx219_calib.yaml(재캘리브레이션 완료분)로 별도 배포되는 raw 이미지라
+    # rectify 안 된 상태 — aruco_opencv가 camera_info로 내부에서 왜곡 보정한다.
+    image_is_rectified: false
+
+    # 실측 완료 (2026-09-13, aruco_id0.png 인쇄 후 자로 측정): 159mm.
+    marker_size: 0.159

@@ -26,6 +26,13 @@ ros2 launch drone_bringup lidar.launch.py
 (`src/ydlidar_ros2_driver`)는 수정하지 않는다 — 제조사 새 버전과 충돌하고,
 별도 저장소라 우리 수정이 이 저장소에 기록되지 않기 때문이다.
 
+## Gazebo 가상 시험 준비
+
+[시뮬레이터 Gazebo 준비](docs/report/gazebo_preparation_20260920.md)에
+UWB·ToF·IMU 융합 논의를 기록했다.
+가상 운동, PC 사양, 다음 확인 항목을 정리했다.
+설치나 시험을 완료했다는 기록은 아니다.
+
 ## 브랜치 규칙
 현재는 1인 개발이라 main에 직접 push 한다. 리뷰할 사람이 없는 PR은 절차 비용만 남는다.
 

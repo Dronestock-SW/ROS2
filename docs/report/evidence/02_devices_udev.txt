@@ -1,0 +1,84 @@
+# 증빙: 장치 노드 / udev 규칙 적용 상태
+# 수집일시: 2026-08-16T16:31:04+09:00
+# 라벨: 01_sw_status.md §2 측위·인식 모듈 실기 검증 / 04 증빙 D-01~D-04
+
+$ ls -l /dev/lidar /dev/uwb /dev/pixhawk /dev/video0
+ls: '/dev/uwb'에 접근할 수 없음: 그런 파일이나 디렉터리가 없습니다
+ls: '/dev/pixhawk'에 접근할 수 없음: 그런 파일이나 디렉터리가 없습니다
+lrwxrwxrwx  1 root root      7 Jan  1  1970 /dev/lidar -> ttyUSB0
+crw-rw----+ 1 root video 81, 0 Jan  1  1970 /dev/video0
+
+$ ls -l /dev/ttyUSB* /dev/ttyACM*
+ls: '/dev/ttyACM*'에 접근할 수 없음: 그런 파일이나 디렉터리가 없습니다
+crw-rw---- 1 root dialout 188, 0 Jan  1  1970 /dev/ttyUSB0
+
+$ ls -l /etc/udev/rules.d/99-dronestock.rules
+-rw-r--r-- 1 root root 4149 Jul 29 14:40 /etc/udev/rules.d/99-dronestock.rules
+
+$ diff config/udev/99-dronestock.rules /etc/udev/rules.d/99-dronestock.rules  (차이 없으면 출력 없음)
+12,13c12
+< #   ls -l /dev/lidar /dev/uwb /dev/pixhawk   # 세 링크가 모두 서면 성공
+< #                                    # lidar·uwb 는 서로 다른 ttyUSB* 를 가리켜야 한다
+---
+> #   ls -l /dev/lidar /dev/uwb        # 두 링크가 서로 다른 ttyUSB* 를 가리키면 성공
+24,32c23,28
+< #   ┌──────────────┬────────────┬─────────────────────────────┐
+< #   │ USB 포트경로 │ 심볼릭링크 │ 장치                        │
+< #   ├──────────────┼────────────┼─────────────────────────────┤
+< #   │ 1-2.4        │ /dev/lidar │ YDLIDAR T-mini Pro          │
+< #   │ 1-2.1        │ /dev/uwb   │ Qorvo DWM3000EVB (UWB 태그) │
+< #   │ 무관         │ /dev/pixhawk│ Pixhawk 6C Mini (VID/PID)  │
+< #   └──────────────┴────────────┴─────────────────────────────┘
+< #   Pixhawk만 포트 무관이다 — VID:PID가 유일해서 위치로 구분할 필요가 없다.
+< #   (참고로 현재 1-2.3 에 꽂혀 있으나 규칙은 이 값을 쓰지 않는다)
+---
+> #   ┌──────────────┬──────────┬─────────────────────────────┐
+> #   │ USB 포트경로 │ 심볼릭링크│ 장치                        │
+> #   ├──────────────┼──────────┼─────────────────────────────┤
+> #   │ 1-2.4        │ /dev/lidar│ YDLIDAR T-mini Pro          │
+> #   │ 1-2.1        │ /dev/uwb  │ Qorvo DWM3000EVB (UWB 태그) │
+> #   └──────────────┴──────────┴─────────────────────────────┘
+44,62c40
+< # CP2102 USB-UART, 921600 8N1 raw. JSON 한 줄/샘플, "type":"uwb_pose".
+< #
+< # 갱신율: pose_interval_ms 중앙값 23ms → 약 43Hz (2026-07-30 정지 상태 230샘플 실측).
+< #   최대 55ms 까지 튄다. 이전 주석의 "약 12Hz" 는 HW 파트 상향 전 값이다.
+< #   오측이 아니라 실제로 개선된 것이다 — EKF2 권장 30~50Hz 를 이제 만족한다.
+< #
+< # 줄 종류가 둘이다 — 파서는 필드 존재 여부로 분기해야 한다:
+< #   기본 줄 (필드 12개)  : type,seq,t,fix,x,y,xy_control_*,hybrid_source,
+< #                          pose_interval_ms,range_cycle_ms,reason
+< #   확장 줄 (필드 93개)  : 위 + 앵커별 거리(raw_r1~4)·보정·잔차·품질·타이밍.
+< #                          약 10줄에 1번 섞여 나온다 (실측 23/230).
+< #   → /uwb_pose 노드는 기본 줄만으로 동작해야 한다. raw_r* 를 필수로 요구하지 말 것.
+< #
+< # 앵커 배제는 정상 동작이다 — 진단 대상이 아니다.
+< #   태그가 각 위치마다 불안정한 앵커 1기를 빼고 3기로 푼다. 태그 펌웨어의 설계다.
+< #   그 흔적: adaptive_excluded_mask, solve_anchor_mask, range_weight_a* 가 낮은 값.
+< #   이유: SW 파트는 태그가 낸 x, y 를 그대로 받는다. 배제 로직은 HW 파트 소관이라
+< #         companion 쪽에서 재구현·보정·경고를 하지 않는다.
+< #
+---
+> # CP2102 USB-UART, 921600 8N1 raw. JSON 한 줄/샘플, "type":"uwb_pose", 약 12Hz.
+68,72c46,49
+< # --- Pixhawk: Holybro Pixhawk 6C Mini / PX4 (식별값 확인 완료 2026-07-30) ---
+< # ttyACM으로 잡히고 VID:PID(3185:0038, Auterion PX4 FMU v6C.x)가 CP2102와 겹치지 않는다.
+< # 따라서 포트 위치 매칭이 필요 없다 — 어느 USB 잭에 꽂아도 /dev/pixhawk 가 선다.
+< # serial은 "0"으로 미프로그래밍 상태지만 VID:PID가 유일하므로 구분에 쓰지 않는다.
+< SUBSYSTEM=="tty", ATTRS{idVendor}=="3185", ATTRS{idProduct}=="0038", SYMLINK+="pixhawk", MODE="0660", GROUP="dialout"
+---
+> # --- Pixhawk: Holybro Pixhawk 6C Mini / PX4 (TODO: 식별값 미확보) ---
+> # PX4 FMU는 /dev/ttyACM* 로 잡히며 VID:PID가 CP2102와 겹치지 않는다.
+> # 따라서 포트 위치가 아니라 VID/PID 매칭으로 충분하다. 연결 후 값 확인해 채울 것.
+> # SUBSYSTEM=="tty", ATTRS{idVendor}=="____", ATTRS{idProduct}=="____", SYMLINK+="pixhawk", MODE="0660", GROUP="dialout"
+(diff 종료코드: 1)
+
+$ lsusb
+Bus 002 Device 002: ID 0bda:0489 Realtek Semiconductor Corp. 4-Port USB 3.0 Hub
+Bus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+Bus 001 Device 003: ID 13d3:3549 IMC Networks Bluetooth Radio
+Bus 001 Device 006: ID 10c4:ea60 Silicon Labs CP210x UART Bridge
+Bus 001 Device 005: ID 1a2c:0e24 China Resource Semico Co., Ltd USB Keyboard
+Bus 001 Device 004: ID 12cf:0c05 DEXIN MADCATZ R.A.T. 8+ gaming mouse
+Bus 001 Device 002: ID 0bda:5489 Realtek Semiconductor Corp. 4-Port USB 2.0 Hub
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub

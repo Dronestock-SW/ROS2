@@ -1,0 +1,65 @@
+# 증빙: 개발환경 버전
+# 수집일시: 2026-08-16T16:30:59+09:00
+# 라벨: 01_sw_status.md §1.4 외부 의존성/개발환경 버전
+
+$ lsb_release -a
+Distributor ID:	Ubuntu
+Description:	Ubuntu 22.04.5 LTS
+Release:	22.04
+Codename:	jammy
+
+$ uname -a
+Linux user-desktop 5.15.148-tegra #1 SMP PREEMPT Thu Sep 18 15:08:33 PDT 2025 aarch64 aarch64 aarch64 GNU/Linux
+
+$ cat /etc/nv_tegra_release
+# R36 (release), REVISION: 4.7, GCID: 42132812, BOARD: generic, EABI: aarch64, DATE: Thu Sep 18 22:54:44 UTC 2025
+# KERNEL_VARIANT: oot
+TARGET_USERSPACE_LIB_DIR=nvidia
+TARGET_USERSPACE_LIB_DIR_PATH=usr/lib/aarch64-linux-gnu/nvidia
+
+$ echo $ROS_DISTRO / $ROS_DOMAIN_ID
+ROS_DISTRO=humble
+ROS_DOMAIN_ID=1
+
+$ python3 --version
+Python 3.10.12
+
+$ dpkg -l | grep ros-humble- (SW 관련분)
+ros-humble-camera-calibration 3.0.9-1jammy.20260725.160028
+ros-humble-camera-calibration-parsers 3.1.13-1jammy.20260725.161705
+ros-humble-camera-info-manager 3.1.13-1jammy.20260725.162258
+ros-humble-cv-bridge 3.2.1-1jammy.20260717.004638
+ros-humble-gscam 2.0.2-1jammy.20260725.191932
+ros-humble-image-proc 3.0.9-1jammy.20260725.191932
+ros-humble-image-transport 3.1.13-1jammy.20260725.160823
+ros-humble-image-transport-plugins 2.5.5-1jammy.20260725.203802
+ros-humble-mavros 2.14.0-1jammy.20260608.191037
+ros-humble-mavros-extras 2.14.0-1jammy.20260608.200936
+ros-humble-mavros-msgs 2.14.0-1jammy.20260605.140341
+ros-humble-ros-base 0.10.0-1jammy.20260607.150006
+
+$ colcon version-check
+colcon-argcomplete 0.3.3: up-to-date
+colcon-bash 0.5.0: up-to-date
+colcon-cd 0.2.1: local version is newer than latest release (0.1.1)
+colcon-cmake 0.2.30: up-to-date
+colcon-core 0.21.0: newer version available (0.21.1)
+colcon-defaults 0.2.9: up-to-date
+colcon-devtools 0.3.0: up-to-date
+colcon-installed-package-information 0.2.1: up-to-date
+colcon-library-path 0.2.1: up-to-date
+colcon-metadata 0.2.5: up-to-date
+colcon-mixin 0.2.3: up-to-date
+colcon-notification 0.3.1: up-to-date
+colcon-output 0.2.14: up-to-date
+colcon-override-check 0.0.1: up-to-date
+colcon-package-information 0.4.1: up-to-date
+colcon-package-selection 0.2.10: up-to-date
+colcon-parallel-executor 0.3.0: newer version available (0.4.0)
+colcon-pkg-config 0.1.0: up-to-date
+colcon-powershell 0.5.0: up-to-date
+colcon-python-setup-py 0.2.9: up-to-date
+colcon-recursive-crawl 0.2.3: up-to-date
+colcon-ros 0.5.0: up-to-date
+colcon-test-result 0.3.8: up-to-date
+colcon-zsh 0.5.0: up-to-date

@@ -1,0 +1,153 @@
+# 증빙: CSI 카메라(IMX219) launch 기동 + /camera/image_raw 발행
+# 수집일시: 2026-08-16T16:32:42+09:00
+# 라벨: 01_sw_status.md §2 인식-카메라 / §1.3 launch / 05_architecture.md camera 경로
+
+$ ros2 launch drone_bringup camera.launch.py   (백그라운드 기동)
+[INFO] [launch]: All log files can be found below /home/user/.ros/log/2026-08-16-16-32-43-116249-user-desktop-4720
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [gscam_node-1]: process started with pid [4722]
+[gscam_node-1] [37;1m2026-08-16 16:32:43.341 [31;1m[[37;1mRTPS_TRANSPORT_SHM[31;1m Error] [37mFailed init_port fastrtps_port7661: open_and_lock_file failed[34;1m -> Function [36mopen_port_internal[m
+[gscam_node-1] [INFO] [1786865563.372986951] [gscam_node]: Using gstreamer config from rosparam: "nvarguscamerasrc sensor-id=0 ! video/x-raw(memory:NVMM),width=1640,height=1232,framerate=30/1 ! nvvidconv ! video/x-raw,format=BGRx ! videoconvert"
+[gscam_node-1] [INFO] [1786865563.373686030] [gscam_node]: using default calibration URL
+[gscam_node-1] [INFO] [1786865563.373737582] [gscam_node]: camera calibration URL: file:///home/user/.ros/camera_info/imx219.yaml
+[gscam_node-1] [ERROR] [1786865563.373962577] [camera_calibration_parsers]: Unable to open camera calibration file [/home/user/.ros/camera_info/imx219.yaml]
+[gscam_node-1] [WARN] [1786865563.374139218] [gscam_node]: Camera calibration file /home/user/.ros/camera_info/imx219.yaml not found
+[gscam_node-1] [INFO] [1786865563.374173747] [gscam_node]: Loaded camera calibration from 
+[gscam_node-1] [INFO] [1786865564.365342435] [gscam_node]: Time offset: 1786862409.373875
+[gscam_node-1] [INFO] [1786865565.451878226] [gscam_node]: Publishing stream...
+[gscam_node-1] [INFO] [1786865565.452483640] [gscam_node]: Started stream.
+[gscam_node-1] GST_ARGUS: Creating output stream
+[gscam_node-1] CONSUMER: Waiting until producer is connected...
+[gscam_node-1] GST_ARGUS: Available Sensor modes :
+[gscam_node-1] GST_ARGUS: 3280 x 2464 FR = 21.000000 fps Duration = 47619048 ; Analog Gain range min 1.000000, max 10.625000; Exposure Range min 13000, max 683709000;
+[gscam_node-1] 
+[gscam_node-1] GST_ARGUS: 3280 x 1848 FR = 28.000001 fps Duration = 35714284 ; Analog Gain range min 1.000000, max 10.625000; Exposure Range min 13000, max 683709000;
+[gscam_node-1] 
+[gscam_node-1] GST_ARGUS: 1920 x 1080 FR = 29.999999 fps Duration = 33333334 ; Analog Gain range min 1.000000, max 10.625000; Exposure Range min 13000, max 683709000;
+[gscam_node-1] 
+[gscam_node-1] GST_ARGUS: 1640 x 1232 FR = 29.999999 fps Duration = 33333334 ; Analog Gain range min 1.000000, max 10.625000; Exposure Range min 13000, max 683709000;
+[gscam_node-1] 
+[gscam_node-1] GST_ARGUS: 1280 x 720 FR = 59.999999 fps Duration = 16666667 ; Analog Gain range min 1.000000, max 10.625000; Exposure Range min 13000, max 683709000;
+[gscam_node-1] 
+[gscam_node-1] GST_ARGUS: Running with following settings:
+[gscam_node-1]    Camera index = 0 
+[gscam_node-1]    Camera mode  = 3 
+[gscam_node-1]    Output Stream W = 1640 H = 1232 
+[gscam_node-1]    seconds to Run    = 0 
+[gscam_node-1]    Frame Rate = 29.999999 
+[gscam_node-1] GST_ARGUS: Setup Complete, Starting captures for 0 seconds
+[gscam_node-1] GST_ARGUS: Starting repeat capture requests.
+[gscam_node-1] CONSUMER: Producer has connected; continuing.
+
+===== ros2 node list =====
+/gscam_node
+/static_tf_pub_laser
+
+===== ros2 topic list -t =====
+/camera/camera_info [sensor_msgs/msg/CameraInfo]
+/camera/image_raw [sensor_msgs/msg/Image]
+/camera/image_raw/compressed [sensor_msgs/msg/CompressedImage]
+/camera/image_raw/compressedDepth [sensor_msgs/msg/CompressedImage]
+/camera/image_raw/theora [theora_image_transport/msg/Packet]
+/parameter_events [rcl_interfaces/msg/ParameterEvent]
+/rosout [rcl_interfaces/msg/Log]
+/tf_static [tf2_msgs/msg/TFMessage]
+
+===== ros2 topic hz /camera/image_raw (10초) =====
+average rate: 23.180
+	min: 0.030s max: 0.134s std dev: 0.02354s window: 48
+average rate: 19.015
+	min: 0.030s max: 0.302s std dev: 0.04614s window: 59
+average rate: 18.860
+	min: 0.030s max: 0.302s std dev: 0.04188s window: 78
+average rate: 20.061
+	min: 0.028s max: 0.302s std dev: 0.03774s window: 105
+average rate: 21.649
+	min: 0.028s max: 0.302s std dev: 0.03400s window: 135
+
+===== ros2 topic echo /camera/image_raw --once --field header / 이미지 메타 =====
+[37;1m2026-08-16 16:33:10.344 [31;1m[[37;1mRTPS_TRANSPORT_SHM[31;1m Error] [37mFailed init_port fastrtps_port7661: open_and_lock_file failed[34;1m -> Function [36mopen_port_internal[m
+header:
+  stamp:
+    sec: 1786865591
+    nanosec: 324007672
+  frame_id: camera_link
+height: 1232
+width: 1640
+encoding: rgb8
+is_bigendian: 0
+step: 4920
+data: '<sequence type: uint8, length: 6061440>'
+---
+
+===== ros2 topic echo /camera/camera_info --once =====
+[37;1m2026-08-16 16:33:12.443 [31;1m[[37;1mRTPS_TRANSPORT_SHM[31;1m Error] [37mFailed init_port fastrtps_port7661: open_and_lock_file failed[34;1m -> Function [36mopen_port_internal[m
+header:
+  stamp:
+    sec: 1786865593
+    nanosec: 85585737
+  frame_id: camera_link
+height: 0
+width: 0
+distortion_model: ''
+d: []
+k:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+r:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+
+===== ros2 param dump /gscam_node =====
+[37;1m2026-08-16 16:33:14.126 [31;1m[[37;1mRTPS_TRANSPORT_SHM[31;1m Error] [37mFailed init_port fastrtps_port7661: open_and_lock_file failed[34;1m -> Function [36mopen_port_internal[m
+/gscam_node:
+  ros__parameters:
+    camera:
+      image_raw:
+        enable_pub_plugins:
+        - image_transport/compressedDepth
+        - image_transport/compressed
+        - image_transport/raw
+        - image_transport/theora
+        format: jpeg
+        jpeg_quality: 95
+        png_level: 3
+        tiff:
+          res_unit: inch
+          xdpi: -1
+          ydpi: -1
+    camera_info_url: ''
+    camera_name: imx219
+    frame_id: camera_link
+    gscam_config: nvarguscamerasrc sensor-id=0 ! video/x-raw(memory:NVMM),width=1640,height=1232,framerate=30/1
+      ! nvvidconv ! video/x-raw,format=BGRx ! videoconvert
+    image_encoding: rgb8
+    preroll: false
+    qos_overrides:
+      /parameter_events:
+        publisher:
+          depth: 1000
+          durability: volatile
+          history: keep_last
+          reliability: reliable
+    reopen_on_eof: true
+    sync_sink: false
+    use_gst_timestamps: false
+    use_sensor_data_qos: false
+    use_sim_time: false
+
+[gscam_node-1] [INFO] [1786865597.291336857] [rclcpp]: signal_handler(SIGINT/SIGTERM)
