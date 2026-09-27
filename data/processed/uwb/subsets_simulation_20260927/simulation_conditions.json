@@ -1,0 +1,54 @@
+{
+  "duration_s": 8,
+  "rate_hz": 40,
+  "seed": 7,
+  "sample_offsets_us": [
+    4000,
+    8000,
+    12000,
+    16000
+  ],
+  "reference_offset_us": 20000,
+  "z_m": "1.1 + 0.02 * time_s",
+  "height_source": "exact_simulator_per_sample",
+  "range_noise_sigma_m": {
+    "linear_clean": 0,
+    "direction_reversal": 0.02,
+    "other": 0.03
+  },
+  "injected_and_subtracted_bias_m": [
+    -0.14,
+    0.2,
+    -0.17,
+    -0.06
+  ],
+  "spike": {
+    "anchor": "A2",
+    "additional_m": 0.6,
+    "cycle_rule": "seq % 20 == 10"
+  },
+  "persistent_bias": {
+    "anchor": "A2",
+    "additional_m": 0.35,
+    "interval_s": [
+      2,
+      6
+    ]
+  },
+  "gap": {
+    "missing_seq_inclusive": [
+      120,
+      129
+    ],
+    "scheduled_duration_s": 0.25
+  },
+  "trajectories": {
+    "linear_clean": "x=.7+.25*t; y=1.4+.07*t",
+    "gap": "x=.7+.25*t; y=1.4+.07*t",
+    "direction_reversal": "x=.7+.6*min(t,8-t); y=1.8",
+    "other": "x=.7; y=1.8"
+  },
+  "physics_engine": false,
+  "tof_sensor_model": false,
+  "external_output_allowed": false
+}
