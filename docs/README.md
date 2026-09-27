@@ -9,6 +9,8 @@
 
 | 문서 | 확인 범위 |
 |---|---|
+| [Gazebo UWB 비교 준비](report/uwb_gazebo_shadow_20260927.md) | WLS·경로 기록·여섯 조건 재생·WSL 버전 확인. 실제 Gazebo 연동은 대기 |
+| [Gazebo UWB 경로 비교 절차](uwb_gazebo_shadow_runbook.md) | ROS 없이 경로 수집·잡음/가중치/단절 조건 비교 |
 | [27일 ULog의 B/C 입력 준비](report/uwb_flight_inputs_20260927.md) | 거리·자세 원본 추출·C 준비 프로파일·동시 UWB 없음 확인 |
 | [C/D 시뮬레이터 실행](report/uwb_cd_simulation_20260927.md) | 여섯 합성 상황·1,920주기·경로/오차/출력률 그림. Gazebo 미실시 |
 | [C/D 구현·A/B 비교](report/uwb_subsets_cd_20260927.md) | 균등 조합·strict 교점 구현. 정지·합성·117개 테스트·재생 검증 |
