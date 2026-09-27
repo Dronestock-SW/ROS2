@@ -14,10 +14,12 @@ setup(
     description='UWB horizontal observations for PX4 EKF2.',
     license='Proprietary',
     entry_points={'console_scripts': [
-        'uwb_node = drone_uwb.node:main',
-        'uwb_px4_bridge = drone_uwb.bridge:main',
-        'uwb_replay = drone_uwb.replay:main',
-        'uwb_bench_probe = drone_uwb.bench_probe:main',
-        'uwb_pipeline = drone_uwb.preimu.runner:main',
+        'uwb_node = drone_uwb.integration.node:main',
+        'uwb_px4_bridge = drone_uwb.integration.bridge:main',
+        'uwb_replay = drone_uwb.integration.replay:main',
+        'uwb_bench_probe = drone_uwb.integration.bench_probe:main',
+        'uwb_pipeline = drone_uwb.processing.runner:main',
+        'uwb_static_a = drone_uwb.processing.experiments.static_a:main',
+        'uwb_baseline_a = drone_uwb.processing.experiments.baseline_a:main',
     ]},
 )

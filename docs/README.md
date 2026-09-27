@@ -9,6 +9,11 @@
 
 | 문서 | 확인 범위 |
 |---|---|
+| [27일 비행 로그 등록](report/flight_log_20260927.md) | 원격 ULog 수집, Position 구간·센서 추출·원본 해시 |
+| [UWB 자료 정리 확인](report/uwb_data_reorganization_20260927.md) | 코드·데이터 분리, 원본 해시, 회귀·빌드·재생 검증 |
+| [현재 구현 현황·수동 호버링 보고](report/implementation_status_20260927.md) | Position 호버링 성공 보고, UWB 구현·검증·비행 연결 구분 |
+| [실측 1분 로그 A 계산](report/uwb_baseline_a_static_20260926.md) | 수기 기준점으로 정지 기록 재계산. 편향 후보 산출·별도 평가 |
+| [A 기준선 계산](report/uwb_baseline_a_20260926.md) | 파일 계산기·합성 371개 위치·재현성·9월 26일 실측 연결 조건 |
 | [기능별 커밋 전 확인](report/feature_uwb_commit_check_20260926.md) | 커밋 범위, pytest 80개, 합성 재생·H80 검사 재실행 |
 | [H80 입력·로그·샘플 확인](report/uwb_h80_readiness_20260926.md) | GitHub 병합, 기존 UWB·새 비행 로그, A/H80 합성 비교 |
 | [UWB 비교 시험 명세 작성](report/uwb_specs_20260926.md) | 17개 기능의 입출력·아키텍처·비교 절차. 구현·시험 미실시 |
@@ -26,6 +31,10 @@
 
 | 문서 | 읽는 때 |
 |---|---|
+| [UWB 코드·자료 분류](uwb_data_layout.md) | 수신·보정 책임과 활용 원본·결과 폴더 |
+| [UWB 모듈 입출력 사전](uwb_module_api.md) | 파라미터·출력·단위·실패·기본값 |
+| [UWB 자료 실행 절차](uwb_data_runbook.md) | 새 수신 기록·정지 계산·호환 경로 |
+| [UWB·MAVROS 파라미터 API](uwb_mavros_parameter_api.md) | 위치 전달·설정 조회 경로와 9월 26일 ULog 설정 확인 |
 | [UWB 기능별 프로젝트 명세](specs/uwb/README.md) | 아이디어별 구현 준비·동일 자료 비교·모델 선정 |
 | [UWB 파이프라인 기준](uwb_pipeline_design.md) | 모듈 경계·입출력·닫힌 게이트 확인 |
 | [UWB 파이프라인 실행](uwb_pipeline_runbook.md) | 합성 자료 생성·동일 입력 재생 |

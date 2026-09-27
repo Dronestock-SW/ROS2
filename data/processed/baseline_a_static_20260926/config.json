@@ -1,0 +1,49 @@
+{
+  "scope": "static_reference_trial",
+  "tag_id": "5",
+  "firmware": "uwb-tag-for-jetson-v1.8-raw-xy",
+  "files": {
+    "calibration_raw": {
+      "path": "docs/report/evidence/uwb_static_20260906_161636/received.jsonl",
+      "sha256": "823ed62d07d7408e841f4de7c07b67854aa0d18d650c47509fd565aadfdc2bc2"
+    },
+    "calibration_metadata": {
+      "path": "docs/report/evidence/uwb_static_20260906_161636/metadata.json",
+      "sha256": "c2d2b77d5e6fc8c046d0c7a6af5c6446216a6653e399ceed5d942b14b2829ebe"
+    },
+    "calibration_frame_confirmation": {
+      "path": "docs/report/evidence/uwb_static_20260906_161636/manual_checks.json",
+      "sha256": "5a25fe227b7c1872f49e2ac2a3801c7adfd863313d5c2975b5fdfd7b1b08b6e8"
+    },
+    "evaluation_raw": {
+      "path": "docs/report/evidence/uwb_static_20260906_170938/received.jsonl",
+      "sha256": "5ee6df9ce510bb98a781a6548997aa7f3403506a5f0a67a981cada61051ff466"
+    },
+    "evaluation_metadata": {
+      "path": "docs/report/evidence/uwb_static_20260906_170938/metadata.json",
+      "sha256": "3d57ee908977ab6fe9e1b1b25d494443864db2501070d79b4458cd733eb732d2"
+    },
+    "evaluation_manual_checks": {
+      "path": "docs/report/evidence/uwb_static_20260906_170938/manual_checks.json",
+      "sha256": "403a98f43348a7ad92479113aeca48f739a89b0266f938e894e74168e02b88f9"
+    },
+    "excursion_annotation": {
+      "path": "docs/report/evidence/uwb_static_20260906_170938/range_excursions.json",
+      "sha256": "ad66c24443dc1568017b9394e62d366e047805e8c541fd9cf1129d060cd648ce"
+    },
+    "anchors": {
+      "path": "src/drone_uwb/config/anchors_20260906.json",
+      "sha256": "0ec5124ceba41e686d8eeb5ce2df391cb6dbef258dd4861697d889bd18a58e92"
+    }
+  },
+  "minimum_calibration_samples": 100,
+  "solver": {
+    "max_iterations": 40,
+    "step_tol_m": 1e-07,
+    "condition_max": 1000000.0
+  },
+  "calibration_method": "mean_raw_minus_reference_range",
+  "height_source": "manual_capture_reference",
+  "production_calibration_confirmed": false,
+  "note": "Use the first capture only to estimate bias, then lock and evaluate the second. No evaluation ranges or evaluation XY enter bias estimation. Manual reference measurements have not been independently verified."
+}

@@ -84,3 +84,9 @@ UWB 연동은 HW팀 정비로 보류했다.
 | /tfmini_range | TFmini 하방 거리 (고도) |
 | /safety_stop | 장애물 정지 신호 |
 | /flight_state | Pixhawk 상태 |
+
+## UWB 개발 자료
+
+[활용 데이터](data/README.md)와 [코드·자료 분류 기준](docs/uwb_data_layout.md)을 따른다.
+수신은 `acquisition/`, 보정은 `processing/`, ROS 연결은 `integration/`에 둔다.
+[모듈 입출력](docs/uwb_module_api.md)과 [재실행 절차](docs/uwb_data_runbook.md)를 참고한다.

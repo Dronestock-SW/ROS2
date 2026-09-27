@@ -1,15 +1,1 @@
-{
-  "anchor_polygon.json": "0ab64691c006bb0a78844d912e7b5edcca19c747618e027d0845be9f36d6728b",
-  "anchor_polygon.png": "0da14fb897ce4102a6e8d2d8bd743c16bc37ccd20d7eae3d28b3610cecc75c61",
-  "anchor_polygon.svg": "327f9f0715421edbc83d2144261d60813c1b627f431672edabdfeaf2d5667e34",
-  "manual_checks.json": "5a25fe227b7c1872f49e2ac2a3801c7adfd863313d5c2975b5fdfd7b1b08b6e8",
-  "measurements.csv": "86e7d739faff3be39d851f06bdcbe0968233975415254e7f79ffc5147418c681",
-  "metadata.json": "c2d2b77d5e6fc8c046d0c7a6af5c6446216a6653e399ceed5d942b14b2829ebe",
-  "received.jsonl": "823ed62d07d7408e841f4de7c07b67854aa0d18d650c47509fd565aadfdc2bc2",
-  "recomputed_irregular.csv": "a15cc79ce7ca6168a35379f86f1acb18fd60422005435bbaf3d277ff7431b008",
-  "recomputed_irregular_summary.json": "84b6eb5fa432fcc645e8d4815706d53ad866a05d6fcdb343ae0330b7d0cb1021",
-  "result.md": "d748324f0f21cb2b8bcf313890f1b6c81d7066c09affd7ecd9ae971afeefd250",
-  "serial.raw": "6500ab889e46dd1a4650b08d0eeeedd071887b8433376097f37a7dd19fd91f8c",
-  "summary.json": "063ed37347c0bb7e94bdffbc14ab76be347d2d5bbf170ce426aa45527154ed3e",
-  "survey_solution.json": "99dfe2cd98e6e0006c4f33751cf42f04f0520406a50e499125934cdfcd5a5c3a"
-}
+../../../../data/raw/uwb/uwb_static_20260906_161636/sha256.json

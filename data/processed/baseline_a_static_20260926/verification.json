@@ -1,0 +1,49 @@
+{
+  "date": "2026-09-26",
+  "scope": "conditional static-reference measured UWB trial",
+  "tests": {
+    "command": "source /opt/ros/humble/setup.bash; PYTHONPATH=src/drone_uwb python3 -m pytest -q src/drone_uwb/test",
+    "passed": 66,
+    "new_static_cases": 8
+  },
+  "build": {
+    "package": "drone_uwb",
+    "result": "passed",
+    "symlink_install": true,
+    "base": "/tmp/uwb_a_static_20260926"
+  },
+  "replay": {
+    "result": "passed",
+    "identical_files": [
+      "results.jsonl",
+      "summary.json",
+      "calibration.json",
+      "positions.csv"
+    ],
+    "executed_from_installed_module": true
+  },
+  "source_and_output_checks": {
+    "input_hashes_match": true,
+    "code_hashes_match": true,
+    "original_captures_preserved": true,
+    "calibration_evaluation_distinct": true
+  },
+  "run_directory": "/home/pgyxn/uwb_pipeline_runs/20260926_baseline_a_static_verified",
+  "replay_directory": "/home/pgyxn/uwb_pipeline_runs/20260926_baseline_a_static_replay",
+  "plot": {
+    "script": "src/drone_uwb/tools/plot_static_a.py",
+    "script_sha256": "c3b954cb544e5d59f17a9ae32fead58ff8e22345b6bcdcaa223e17066d4c2036",
+    "visually_checked": true,
+    "artifacts": {
+      "static_a_comparison.png": "535cf509e8d78d51116fe590c8990160f13ac6d1720f253ba20087b7dda1564d",
+      "static_a_comparison.pdf": "35de831993b36648fec20f3bad04a3895239ecf8dd6cc9b4aef09527a52b5302"
+    }
+  },
+  "not_run": [
+    "ToF/attitude fusion",
+    "flight or dynamic positioning",
+    "multi-position calibration",
+    "H80 or other model comparison"
+  ],
+  "no_flight_output": true
+}

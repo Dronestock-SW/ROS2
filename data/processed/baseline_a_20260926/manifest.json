@@ -1,0 +1,47 @@
+{
+  "code_sha256": {
+    "__init__.py": "bce381df9833e7d090082cd0b4b8c0589b6e79e7e666e959824aaf43d6a93d18",
+    "bench_probe.py": "66f4ec8f3759fb2c137245774631bb574793cfedf2a4fd6b6a390a1f5c29bcb5",
+    "bridge.py": "693cefc389a8d736f7bd25cc8b98e83e5a5318b15fc8f9dba39dcb73df571380",
+    "core.py": "56caacfdd44c4f21a13aa1d344b0eb588f49bf692a73f29c8764539828556ebe",
+    "frames.py": "7c8e4db3f7002b1eeca3eea6609774e81d2d90cf252b4790aebbe5b111fbddc7",
+    "node.py": "0781d413b548aaf45e73a085d95bbfa6bc29f80048000246423595faebac1086",
+    "preimu/__init__.py": "a537059b25fb0c44e5fb0480c31c0f0914e9526f31f602acf6ecae16551d1a6e",
+    "preimu/clock.py": "160a3a2b01c47ca7055f57d39d66b43686df14febdf7cb61def980c75901b04c",
+    "preimu/experiments/__init__.py": "87ecfc8ec9f28fac31a259e70ad582f887a1f9cc85176894846f16cc082e6dea",
+    "preimu/experiments/baseline_a.py": "d8949eb791b2d5ac171c1ce6453f72ce269e752d49bc05737d6cd973d8a2fb68",
+    "preimu/experiments/uniform_xy.py": "4985f00206f845bc3e3cf6183b9de263fc6d93634eba9eebb1eb87e45cb1b04b",
+    "preimu/h80.py": "af2863a56e4e38d3416623b9042c726c3685afd517b3d4cef304fc1c54b9281d",
+    "preimu/height.py": "8da35b238e6ae3c3392326836e00431d30632ec0772ee7b730a30da1690987d7",
+    "preimu/inputs.py": "8bafc26fd37105b553b990ff56d7f4ac7a6751552fa4a8ae85586958240965a0",
+    "preimu/pipeline.py": "9bc72166bbeea5174589725bbe132e466183608487b3d8bbb5d2bfb9718e8c87",
+    "preimu/qs10.py": "ee7e666f031bd6ec591d0d100197d551a8e7eb2a574c84d2adb88106f6f00c54",
+    "preimu/ranges.py": "c8b3a85fa3408868c6d5bceee247749e04afda5da5746b18b9a953144d095052",
+    "preimu/rawxy.py": "b676423f44e827a7eebf5085badc6f8203d83b3ccdbbc7e973eaf33beb20024b",
+    "preimu/runner.py": "c44e056cd8c7b7e2d6700e86de0ed51dd5c9ffea4be36f78f238fc7a5e1cfbb6",
+    "preimu/sensors.py": "dbeb2c12628e56716c52ce6a4a73b0050dfbc084eee7a15628ee9aff3a8b85d6",
+    "preimu/settings.py": "bd5fb0409879249e7f3e38ef7f3342c1d2848b12ede431f121534784cf8e036b",
+    "preimu/simulator.py": "b33d4f37b135226a0f1c0144a2a235a88568aa8b26926d5dd31cc7bd48871e2b",
+    "preimu/transform.py": "aafc6331881da03e822592f39739fd1e55eb7be86c30b8c34bf3283e31b014fa",
+    "replay.py": "91e6bb74a97ec088b673d7a967c4b261326852fc82d4f2bd1684740ef3b58595",
+    "serial_io.py": "bb6350ab4d65deff1b56fd8c7940079c5e831af17bab9f2b34bb9e28f2e75eda"
+  },
+  "artifacts_sha256": {
+    "anchors.json": "2d4d9d79d4a3fd772018e53d46659201041a76022c727b55c2506dd39b188407",
+    "config.json": "975682ec6698ae2b32876eb210a41c939dfe9d485957db3ed0a69ddfef75521f",
+    "input.jsonl": "9a07f42e128db8088ed4b0d2f7315c7159d6ef4154c4904176e56d19acfce796",
+    "positions.csv": "60dc6a4f96e3815a06b53fe0625e92228c37ab6f6a428a2882778fae7af42d7a",
+    "reference.json": "17248cf18dc3291376f4c64b6e3e931a1822b100a4f70a42d39cb93cc96a3e1d",
+    "results.jsonl": "2155b57f64249082e0a0fae9d98df38e9fb8cda2f01d951fe28dc96d93643fe9",
+    "summary.json": "9dc6b2125b9adc484609ea9ee2763b659a981c5db2453bba4cffec96355f493f"
+  },
+  "clock_settings": {
+    "clock_min_samples": 30,
+    "clock_window_s": 10.0,
+    "clock_alpha_min_span_s": 5.0,
+    "clock_scale_tolerance": 0.001,
+    "clock_residual_p95_max_s": 0.05,
+    "max_report_span_s": 0.04,
+    "max_queue_s": 0.15
+  }
+}

@@ -1,12 +1,1 @@
-{
-  "manual_checks.json": "403a98f43348a7ad92479113aeca48f739a89b0266f938e894e74168e02b88f9",
-  "measurements.csv": "7fadef1d1652e1f25c5c07610b3abb6e1c91d8ee35c960375ccd8711da94f247",
-  "metadata.json": "3d57ee908977ab6fe9e1b1b25d494443864db2501070d79b4458cd733eb732d2",
-  "range_excursions.json": "ad66c24443dc1568017b9394e62d366e047805e8c541fd9cf1129d060cd648ce",
-  "received.jsonl": "5ee6df9ce510bb98a781a6548997aa7f3403506a5f0a67a981cada61051ff466",
-  "result.md": "7240a59d83a8d9decda56fb94692de69e3d968dce46df1a1e2ff43b5c4a7bdd0",
-  "serial.raw": "948d34ffe5e2057e995c4744ec61e70aa936187f913c1b57371e6435f61a2258",
-  "static_repeat.png": "16cb76ae50bca23fa93f04897a3c5628ba3774545291a7d02184cddef71290ba",
-  "summary.json": "6a557324623a53176a12a625491debae6e69f2ec73eb5a07947f928753b7af9b",
-  "unparsed.jsonl": "a9b291757a453571af4fa6d1062af0c9eb7d12580cfbb760c930abc3b976e998"
-}
+../../../../data/raw/uwb/uwb_static_20260906_170938/sha256.json

@@ -204,3 +204,11 @@ ESP32 태그 ─ USB UART 921600 ─▶ uwb_node ─ /uwb_pose(x,y) ─▶ uwb_p
 | 앵커별 거리 표준편차(A1/A2/A3/A4) | 0.334 / 0.024 / 0.012 / 0.018 m |
 
 잔차만으로는 어느 좌표가 맞는지 판정할 수 없다. 줄자로 재측정해야 한다. 태그 상태 메시지의 `anchor_layout_id`는 `warehouse-5x4p5-z2p2-v2`이고, 저장소 좌표의 `layout_id`는 `warehouse-irregular-z2p2-20260906`이다.
+
+## 2026-09-27 구현 경로 갱신
+
+위 비교표는 당시 구조의 기록이다.
+현재 수신·보정·ROS 연결은 별도 폴더에 있다.
+새 수신 파일은 `record_directory/raw/`에 쓴다.
+판정·상태는 `record_directory/processed/`에 쓴다.
+[현재 모듈 계약](uwb_module_api.md)을 구현 기준으로 쓴다.

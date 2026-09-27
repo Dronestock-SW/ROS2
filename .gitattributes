@@ -1,0 +1,2 @@
+# Preserve recorded bytes and archived evidence, including original line endings.
+data/** -text -whitespace

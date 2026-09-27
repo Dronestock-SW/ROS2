@@ -1,0 +1,313 @@
+[
+  {
+    "recorded_at": "2026-09-06T16:23:58.274521+09:00",
+    "reported_after_capture": true,
+    "anchor": "A2",
+    "user_message": "432",
+    "interpreted_unit": "cm, from immediately preceding request",
+    "user_reported_slant_m": 4.32,
+    "source": "User response to request for direct tag-to-A2 tape measurement",
+    "same_tag_position_assumed": true,
+    "measurement_method_and_antenna_endpoints_independently_verified": false,
+    "prior_capture_mean_slant_m": 4.5929459415712595,
+    "prior_capture_mean_minus_user_reported_m": 0.2729459415712592,
+    "document_geometry_expected_slant_m": 3.508646462669045,
+    "user_reported_minus_document_geometry_m": 0.8113535373309553,
+    "next_check": "User measurement of the actual A1-to-A2 separation; document assumes 5.0m",
+    "correction_applied": false
+  },
+  {
+    "recorded_at": "2026-09-06T16:27:22.417657+09:00",
+    "reported_after_capture": true,
+    "kind": "anchor_layout_followup",
+    "user_message": "지금 a1이(0,0)이고 a2가(0, 5.83m)정도 나오네",
+    "user_reported_xy_m": {
+      "A1": [
+        0,
+        0
+      ],
+      "A2": [
+        0,
+        5.83
+      ]
+    },
+    "A2_distance_is_approximate": true,
+    "A3_A4_in_this_frame": null,
+    "prior_document_xy_m": {
+      "A1": [
+        0,
+        0
+      ],
+      "A2": [
+        5,
+        0
+      ],
+      "A3": [
+        0,
+        4.5
+      ],
+      "A4": [
+        5,
+        4.5
+      ]
+    },
+    "prior_anchor_height_m": 2.2,
+    "tag_firmware_layout_id_at_capture": "warehouse-5x4p5-z2p2-v2",
+    "user_frame_to_firmware_frame_alignment_verified": false,
+    "reference_tag_xy_in_new_frame_verified": false,
+    "previous_xy_error_interpretation": "The prior 0.871m difference is a direct numerical comparison with an unverified common frame; it is not a validated position-accuracy result.",
+    "next_check": "A3 position in the same user coordinate frame, then A4 and reference tag coordinates.",
+    "firmware_or_px4_settings_changed": false
+  },
+  {
+    "recorded_at": "2026-09-06T16:28:47.990764+09:00",
+    "reported_after_capture": true,
+    "kind": "anchor_separation_followup",
+    "user_message": "a1 <-> A3(4.63m) 차이나네",
+    "anchor_pair": [
+      "A1",
+      "A3"
+    ],
+    "user_reported_separation_m": 4.63,
+    "source": "User report; not independently remeasured",
+    "same_anchor_height_m_prior_report": 2.2,
+    "A3_xy_not_yet_confirmed": true,
+    "A3_on_positive_x_axis_confirmed": false,
+    "A1_A2_A3_right_angle_confirmed": false,
+    "conditional_A3_xy_m_if_positive_x_and_right_angle": [
+      4.63,
+      0
+    ],
+    "A4_xy_not_yet_confirmed": true,
+    "next_check": "Confirm A3 lies on the positive x-axis perpendicular to A1-to-A2.",
+    "firmware_or_px4_settings_changed": false
+  },
+  {
+    "recorded_at": "2026-09-06T16:30:27.069483+09:00",
+    "reported_after_capture": true,
+    "kind": "anchor_axis_clarification",
+    "user_message": "A1(0,0), A3(0, 4.63)",
+    "latest_user_reported_xy_m": {
+      "A1": [
+        0,
+        0
+      ],
+      "A3": [
+        0,
+        4.63
+      ]
+    },
+    "supersedes_A3_positive_x_hypothesis": true,
+    "earlier_user_reported_A2_xy_m": [
+      0,
+      5.83
+    ],
+    "A2_axis_needs_clarification": true,
+    "A2_was_not_automatically_swapped": true,
+    "conditional_A2_xy_to_confirm_m": [
+      5.83,
+      0
+    ],
+    "A4_xy_not_yet_confirmed": true,
+    "next_check": "Confirm whether A2 is (5.83m,0) or remains on the same positive y-axis as A3.",
+    "firmware_or_px4_settings_changed": false
+  },
+  {
+    "recorded_at": "2026-09-06T16:33:06.412849+09:00",
+    "reported_after_capture": true,
+    "kind": "anchor_separation_followup",
+    "user_message": "a1부터 A4까지는 또 7.50M야",
+    "anchor_pair": [
+      "A1",
+      "A4"
+    ],
+    "user_reported_separation_m": 7.5,
+    "source": "User report; not independently remeasured",
+    "rectangle_hypothesis_side_lengths_m": [
+      5.83,
+      4.63
+    ],
+    "rectangle_hypothesis_diagonal_m": 7.44485056935329,
+    "reported_minus_rectangle_diagonal_m": 0.05514943064671041,
+    "A2_axis_confirmed": false,
+    "A4_opposite_corner_confirmed": false,
+    "rectangle_confirmed": false,
+    "conditional_rectangle_xy_m": {
+      "A1": [
+        0,
+        0
+      ],
+      "A2": [
+        5.83,
+        0
+      ],
+      "A3": [
+        0,
+        4.63
+      ],
+      "A4": [
+        5.83,
+        4.63
+      ]
+    },
+    "next_check": "Confirm the four-corner layout including the A2 axis and whether A4 is opposite A1.",
+    "firmware_or_px4_settings_changed": false
+  },
+  {
+    "recorded_at": "2026-09-06T16:35:36.234513+09:00",
+    "reported_after_capture": true,
+    "kind": "nonrectangular_layout_clarification",
+    "user_message": "이게 사각형이 아님 그냥 그렇게 됐다",
+    "rectangle_hypothesis_rejected": true,
+    "right_angle_hypothesis_not_to_be_used": true,
+    "previous_rectangle_coordinates_not_to_be_used": {
+      "A2": [
+        5.83,
+        0
+      ],
+      "A4": [
+        5.83,
+        4.63
+      ]
+    },
+    "retained_reference_xy_m": {
+      "A1": [
+        0,
+        0
+      ],
+      "A3": [
+        0,
+        4.63
+      ]
+    },
+    "retained_user_reported_anchor_separations_m": {
+      "A1_A2": 5.83,
+      "A1_A3": 4.63,
+      "A1_A4": 7.5
+    },
+    "all_anchor_heights_m_prior_user_report": 2.2,
+    "next_check": "Measure the direct A2-to-A3 distance.",
+    "subsequent_checks": [
+      "A3-to-A4 distance",
+      "A2-to-A4 distance for consistency and relative-side verification",
+      "Left/right placement viewed from A1 toward A3 to resolve coordinate signs",
+      "Reference tag coordinates in the same frame"
+    ],
+    "prior_xy_error_remains_unvalidated": true,
+    "firmware_or_px4_settings_changed": false
+  },
+  {
+    "recorded_at": "2026-09-06T16:42:20.405870+09:00",
+    "reported_after_capture": true,
+    "kind": "irregular_anchor_distance_followup",
+    "user_message": "7.7M야 사각형아니야 기억해",
+    "anchor_pair": [
+      "A2",
+      "A3"
+    ],
+    "user_reported_separation_m": 7.7,
+    "irregular_layout_reaffirmed": true,
+    "rectangle_hypothesis_rejected": true,
+    "A2_candidates_xy_m": [
+      [
+        5.8150460470868826,
+        -0.4173002159827226
+      ],
+      [
+        -5.8150460470868826,
+        -0.4173002159827226
+      ]
+    ],
+    "x_side_not_yet_confirmed": true,
+    "source": "Three user-reported distances; equal anchor heights 2.2m from prior user report. No rectangular assumption.",
+    "next_check": "Measure A3-to-A4 direct distance.",
+    "durable_project_reference": "docs/uwb_anchor_survey.md",
+    "firmware_or_px4_settings_changed": false
+  },
+  {
+    "recorded_at": "2026-09-06T16:45:24.102824+09:00",
+    "reported_after_capture": true,
+    "kind": "irregular_anchor_distance_followup",
+    "user_message": "둘은 6.12M차이나",
+    "anchor_pair": [
+      "A3",
+      "A4"
+    ],
+    "user_reported_separation_m": 6.12,
+    "source": "User response to direct A3-to-A4 distance request",
+    "rectangle_assumption": false,
+    "A4_candidates_xy_m": [
+      [
+        6.113349288433385,
+        4.344762419006479
+      ],
+      [
+        -6.113349288433385,
+        4.344762419006479
+      ]
+    ],
+    "x_side_not_yet_confirmed": true,
+    "predicted_A2_A4_m": {
+      "same_side": 4.771396584162558,
+      "opposite_sides": 12.843825591311257
+    },
+    "next_check": "Measure the direct A2-to-A4 distance.",
+    "firmware_or_px4_settings_changed": false
+  },
+  {
+    "recorded_at": "2026-09-06T16:51:24.837325+09:00",
+    "reported_after_capture": true,
+    "kind": "irregular_anchor_distance_followup",
+    "user_message": "4.80M정도나오네",
+    "anchor_pair": [
+      "A2",
+      "A4"
+    ],
+    "user_reported_separation_m": 4.8,
+    "approximate": true,
+    "source": "User response to direct A2-to-A4 distance request",
+    "rectangle_assumption": false,
+    "five_distance_prediction_same_side_m": 4.771396584162558,
+    "reported_minus_prediction_m": 0.028603415837442192,
+    "same_side_supported_by_distances": true,
+    "absolute_left_right_not_yet_confirmed": true,
+    "next_check": "User reports whether A2 and A4 are right or left when viewed from A1 toward A3.",
+    "firmware_or_px4_settings_changed": false
+  },
+  {
+    "recorded_at": "2026-09-06T16:59:41.806965+09:00",
+    "reported_after_capture": true,
+    "kind": "irregular_anchor_orientation_confirmation",
+    "user_message": "A2는 우측 A4는 우상단",
+    "view_direction": "From A1 looking toward A3, the defined positive y direction",
+    "A2_reported_direction": "right",
+    "A4_reported_direction": "upper right",
+    "selected_side": "positive_x",
+    "A2_x_side_confirmed": true,
+    "A4_x_side_confirmed": true,
+    "rectangle_assumption": false,
+    "source": "User response to the anchor left/right placement question; not independently surveyed",
+    "tag_reference_frame_confirmed": false,
+    "next_check": "Confirm whether tag x=2.09m is perpendicular right from the A1-A3 line and y=1.68m is along A1 toward A3.",
+    "firmware_or_px4_settings_changed": false
+  },
+  {
+    "recorded_at": "2026-09-06T17:01:48.112534+09:00",
+    "reported_after_capture": true,
+    "kind": "tag_reference_coordinate_frame_confirmation",
+    "question": "앞서 태그 위치를 x=209cm, y=168cm로 알려주셨죠. A1에서 A3 방향으로 168cm 간 다음, 그 선에서 직각으로 오른쪽 209cm 간 위치인가요?",
+    "user_message": "네, 그 기준으로 측정했어요",
+    "reference_xy_m": [
+      2.09,
+      1.68
+    ],
+    "reference_z_m_prior_user_report": 1.19,
+    "x_definition": "Perpendicular right from the A1-A3 baseline",
+    "y_definition": "Distance along A1 toward A3",
+    "common_frame_confirmed_by_user": true,
+    "independent_reference_verified": false,
+    "measurement_tool_and_antenna_endpoints_verified": false,
+    "firmware_or_px4_settings_changed": false,
+    "next_step": "Apply survey-derived anchor coordinates in tag firmware, then repeat a 60-second static capture at the same physical reference point."
+  }
+]

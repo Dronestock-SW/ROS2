@@ -1,0 +1,118 @@
+{
+  "checked_on": "2026-09-27",
+  "source_file": "log_7_2026-9-26-12-31-34.ulg",
+  "sha256": "1b55df16dc04cf2f7f5188c0948173d125caf897bf7b3c65ca8493dbc650f70b",
+  "firmware_git_hash": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+  "release_bytes": [
+    1,
+    17,
+    0,
+    255
+  ],
+  "hardware": "PX4_FMU_V6C",
+  "initial_parameters": {
+    "EKF2_EV_CTRL": 0,
+    "EKF2_EV_DELAY": 0.0,
+    "EKF2_EV_NOISE_MD": 0,
+    "EKF2_EVP_NOISE": 0.10000000149011612,
+    "EKF2_EV_POS_X": 0.0,
+    "EKF2_EV_POS_Y": 0.0,
+    "EKF2_EV_POS_Z": 0.0,
+    "EKF2_GPS_CTRL": 7,
+    "EKF2_OF_CTRL": 1,
+    "EKF2_RNG_CTRL": 1,
+    "EKF2_HGT_REF": 1
+  },
+  "changed_parameters": [],
+  "estimator_status_flags": [
+    {
+      "instance": 0,
+      "samples": 192,
+      "values": {
+        "cs_gnss_pos": {
+          "0": 192
+        },
+        "cs_opt_flow": {
+          "1": 192
+        },
+        "cs_rng_hgt": {
+          "0": 58,
+          "1": 134
+        },
+        "cs_baro_hgt": {
+          "1": 192
+        },
+        "cs_gps_hgt": {
+          "0": 192
+        },
+        "cs_ev_pos": {
+          "0": 192
+        },
+        "cs_ev_hgt": {
+          "0": 192
+        },
+        "cs_ev_vel": {
+          "0": 192
+        },
+        "cs_ev_yaw": {
+          "0": 192
+        }
+      }
+    },
+    {
+      "instance": 1,
+      "samples": 201,
+      "values": {
+        "cs_gnss_pos": {
+          "0": 201
+        },
+        "cs_opt_flow": {
+          "1": 201
+        },
+        "cs_rng_hgt": {
+          "0": 70,
+          "1": 131
+        },
+        "cs_baro_hgt": {
+          "1": 201
+        },
+        "cs_gps_hgt": {
+          "0": 201
+        },
+        "cs_ev_pos": {
+          "0": 201
+        },
+        "cs_ev_hgt": {
+          "0": 201
+        },
+        "cs_ev_vel": {
+          "0": 201
+        },
+        "cs_ev_yaw": {
+          "0": 201
+        }
+      }
+    }
+  ],
+  "vehicle_status": [
+    {
+      "instance": 0,
+      "samples": 137,
+      "values": {
+        "nav_state": {
+          "1": 137
+        },
+        "nav_state_user_intention": {
+          "1": 137
+        },
+        "arming_state": {
+          "1": 1,
+          "2": 136
+        }
+      }
+    }
+  ],
+  "live_fcu_queried": false,
+  "settings_changed": false,
+  "same_as_reported_position_hover_confirmed": false
+}

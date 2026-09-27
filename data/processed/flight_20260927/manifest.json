@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "source_sha256": "896a3f021f0b2eb9fd943e7960e2add8dfff67bcfe15541c442fac175146690f",
+  "source_path": "data/raw/flight/20260927/log_23_2026-9-27-13-34-50.ulg",
+  "extractor": "src/drone_uwb/tools/audit_h80_inputs.py:audit_ulog",
+  "extractor_sha256": "a624dd493764e002d804518dd4e6d091548ee753313a58783b1cd5e91ba88351",
+  "artifacts_sha256": {
+    "distance_sensor.csv": "90e3274101432ea3cc198b76085f1b7e1ee72b939f28f7058e281dd75a4dbbc4",
+    "vehicle_status.csv": "054f0ee1c9d588619b877867a15cc8faafef2398d0519264aa4d49eec8438510",
+    "summary.json": "e93c825d974680fbef1bcc28fa92083489b9165074e568c0f282722b0ab98df0",
+    "vehicle_attitude.csv": "c2a87e665de3ee857b8a96513d4a199c4a0b0a08e482555d325b5e4f40ff42e2"
+  }
+}

@@ -49,9 +49,9 @@ ros2 launch drone_uwb uwb.launch.py \
 | `/uwb/status` | 상태 대기·통과·거부 횟수 |
 | `/uwb_pose` | `uwb_map`의 새 x·y 관측 |
 | `/uwb/bridge_status` | 기본 `gate=disabled`, 발행 0개 |
-| `serial.raw` | 읽은 시리얼 바이트 |
-| `received.jsonl` | 메시지와 companion 수신 시각 |
-| `decisions.jsonl` | 주기별 처리 사유와 관측 |
+| `raw/serial.raw` | 읽은 시리얼 바이트 |
+| `raw/received.jsonl` | 메시지와 companion 수신 시각 |
+| `processed/decisions.jsonl` | 주기별 처리 사유와 관측 |
 
 상태 메시지 대기와 초기 30개 준비 구간이 있다.
 이 시간의 미발행을 통신 실패와 구분한다.
@@ -87,7 +87,7 @@ ros2 run drone_uwb uwb_bench_probe \
 기준점 좌표는 해당 기록에서 확인한 경우에만 넣는다.
 
 ```bash
-ros2 run drone_uwb uwb_replay /tmp/uwb_bench_run_01/received.jsonl \
+ros2 run drone_uwb uwb_replay /tmp/uwb_bench_run_01/raw/received.jsonl \
   --layout src/drone_uwb/config/anchors_20260906.json \
   --settings src/drone_uwb/config/uwb.yaml \
   --output /tmp/uwb_replay_01
@@ -118,3 +118,10 @@ ros2 run drone_uwb uwb_replay /tmp/uwb_bench_run_01/received.jsonl \
 확인 플래그만 켜서 검증을 대신하지 않는다.
 이유: 숫자 입력만으로 현장 정렬이 완료되지는 않는다.
 자세·고도 제어와 센서 융합은 PX4가 담당한다.
+
+## 2026-09-27 기록 경로 변경
+
+새 세션은 `raw/`와 `processed/`를 나눈다.
+이전 기록의 파일 위치는 그대로 읽을 수 있다.
+새 세션 경로는 미리 만들지 않는다.
+[자료 실행 절차](uwb_data_runbook.md)에 전체 구조를 적었다.
