@@ -13,6 +13,12 @@ UWB 수신과 A 계산은 저장소 코드·시험 기록으로 확인했다.
 보고된 Position 성공 시험과 같은 로그로 취급하지 않는다.
 [파라미터 API와 추출 근거](../uwb_mavros_parameter_api.md)를 참고한다.
 
+후속 확인에서 27일 ULog의 Position 구간을 분석했다.
+광학흐름·거리 융합과 위치 유지 수치를 확인했다.
+[로그 분석](position_hold_20260927.md)과
+[perfect_holdv2 설정 비교](perfect_holdv2_20260927.md)를 함께 읽는다.
+아래 미확인 항목은 최초 보고 당시의 범위다.
+
 ```text
 비행 기반
   수동 Position 호버링 성공 [사용자 보고]

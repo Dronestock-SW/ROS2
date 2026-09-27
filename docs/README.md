@@ -9,6 +9,8 @@
 
 | 문서 | 확인 범위 |
 |---|---|
+| [perfect_holdv2 설정 보관](report/perfect_holdv2_20260927.md) | 1,095개 파라미터. 27일 ULog와 공통 990개 중 차이 11개 |
+| [9월 27일 Position 위치 유지](report/position_hold_20260927.md) | 두 구간 29.28초. 추종 오차·센서 융합·종료 사건 |
 | [27일 비행 로그 등록](report/flight_log_20260927.md) | 원격 ULog 수집, Position 구간·센서 추출·원본 해시 |
 | [UWB 자료 정리 확인](report/uwb_data_reorganization_20260927.md) | 코드·데이터 분리, 원본 해시, 회귀·빌드·재생 검증 |
 | [현재 구현 현황·수동 호버링 보고](report/implementation_status_20260927.md) | Position 호버링 성공 보고, UWB 구현·검증·비행 연결 구분 |
@@ -31,6 +33,7 @@
 
 | 문서 | 읽는 때 |
 |---|---|
+| [Position 로그 분석 절차](position_hold_audit_runbook.md) | 새 ULog의 위치 유지 성능 비교 |
 | [UWB 코드·자료 분류](uwb_data_layout.md) | 수신·보정 책임과 활용 원본·결과 폴더 |
 | [UWB 모듈 입출력 사전](uwb_module_api.md) | 파라미터·출력·단위·실패·기본값 |
 | [UWB 자료 실행 절차](uwb_data_runbook.md) | 새 수신 기록·정지 계산·호환 경로 |

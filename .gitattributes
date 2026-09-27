@@ -1,2 +1,3 @@
 # Preserve recorded bytes and archived evidence, including original line endings.
 data/** -text -whitespace
+perfect_holdv2.params -text -whitespace

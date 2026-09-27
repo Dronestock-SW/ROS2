@@ -7,6 +7,10 @@
 기술 방향은 [로드맵](docs/roadmap.md)을 따른다.
 구 8주 WBS는 현재 기준이 아니다.
 
+- [위치 유지 참고 설정](docs/report/perfect_holdv2_20260927.md):
+  `perfect_holdv2.params` 원본과 27일 ULog 비교.
+- [27일 Position 위치 유지](docs/report/position_hold_20260927.md):
+  두 구간의 추종 오차·속도와 분석 도구.
 - [기본 설정 확인](docs/report/setup_status_20260921.md):
   2026-09-21 `pgyxn` 계정·저장소·설치 상태.
 - [UWB 참고 자료와 코드 상태](docs/uwb_h80_qs10_reference.md):
