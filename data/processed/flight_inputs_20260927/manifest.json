@@ -1,0 +1,8 @@
+{
+  "input_sha256": "896a3f021f0b2eb9fd943e7960e2add8dfff67bcfe15541c442fac175146690f",
+  "code_sha256": "a232a04cfd0f8cda3c83fe3e68cac22733d7e924617dbd9223c4cd11bc4e6d38",
+  "output_sha256": {
+    "native_sensor_events.jsonl": "3fdc22bd8b9fdb6b7ad872408f3b41f4efbea8f22e0aee580e5fcb2ac80051d8",
+    "readiness.json": "d20c07e9f626fd78248a1a43374a9a4f92d39ea10275367fde1e9b0753b916d2"
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "distance_records": 71,
+  "usable_distance_records": 58,
+  "distance_reasons": {
+    "ok": 58,
+    "invalid_distance": 13
+  },
+  "distance_record_gaps": {
+    "interval_count": 70,
+    "median_s": 1.0150994999999998,
+    "max_s": 1.015298,
+    "nonpositive": 0
+  },
+  "distance_unknown_quality": 58,
+  "distance_unknown_variance": 71,
+  "attitude_records": 1417,
+  "usable_attitude_records": 1417,
+  "attitude_record_gaps": {
+    "interval_count": 1416,
+    "median_s": 0.049571,
+    "max_s": 0.060088,
+    "nonpositive": 0
+  },
+  "nav_state_counts": {
+    "1": 88,
+    "2": 58
+  },
+  "observed_position_intervals": [
+    {
+      "start_us": 41248825,
+      "end_us": 48809807,
+      "duration_s": 7.560982
+    },
+    {
+      "start_us": 52604815,
+      "end_us": 74323795,
+      "duration_s": 21.71898
+    }
+  ],
+  "ABC_flight_comparison_ready": false,
+  "blocked_reasons": [
+    "missing_synchronous_uwb_raw",
+    "fc_uwb_clock_mapping_unconfirmed",
+    "sensor_mount_and_antenna_offsets_unconfirmed",
+    "warehouse_frame_alignment_unconfirmed",
+    "distance_sensor_model_unconfirmed"
+  ],
+  "antenna_height_calculated": false,
+  "position_accuracy_evaluated": false,
+  "external_output_allowed": false,
+  "flight_valid": false,
+  "input_file": "data/raw/flight/20260927/log_23_2026-9-27-13-34-50.ulg",
+  "input_sha256": "896a3f021f0b2eb9fd943e7960e2add8dfff67bcfe15541c442fac175146690f",
+  "duration_s": 70.908608,
+  "firmware": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+  "raw_uwb_field_matches": [],
+  "parameters": {
+    "EKF2_EV_CTRL": 0,
+    "EKF2_OF_CTRL": 1,
+    "EKF2_RNG_CTRL": 1,
+    "EKF2_HGT_REF": 0,
+    "SENS_EN_TF02PRO": 1,
+    "SENS_TFMINI_CFG": 0,
+    "EKF2_RNG_POS_X": 0.0,
+    "EKF2_RNG_POS_Y": 0.0,
+    "EKF2_RNG_POS_Z": 0.0
+  },
+  "sensor_model_note": "Driver parameter configuration is evidence, not physical device identification."
+}

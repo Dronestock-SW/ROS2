@@ -9,6 +9,7 @@
 
 | 문서 | 확인 범위 |
 |---|---|
+| [27일 ULog의 B/C 입력 준비](report/uwb_flight_inputs_20260927.md) | 거리·자세 원본 추출·C 준비 프로파일·동시 UWB 없음 확인 |
 | [C/D 시뮬레이터 실행](report/uwb_cd_simulation_20260927.md) | 여섯 합성 상황·1,920주기·경로/오차/출력률 그림. Gazebo 미실시 |
 | [C/D 구현·A/B 비교](report/uwb_subsets_cd_20260927.md) | 균등 조합·strict 교점 구현. 정지·합성·117개 테스트·재생 검증 |
 | [C 세 앵커 조합 명세](specs/uwb/06_anchor_triplets.md) | 네 후보·균등 결합 구현 계약과 후속 시험 범위 |
