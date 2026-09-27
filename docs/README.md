@@ -9,18 +9,16 @@
 
 | 문서 | 확인 범위 |
 |---|---|
+| [기능별 커밋 전 통합 확인](report/uwb_commit_review_20260927.md) | 8개 커밋 구분·142개 테스트·전체 빌드·남은 검증 |
 | [UWB·장비 Gazebo 구성](report/uwb_gazebo_equipment_20260927.md) | 사용자 WSL의 새 시험장·PX4 시작 확인. 센서별 수신·가상 UWB 실행은 후속 검증 |
-| [Gazebo UWB 구현 구조](uwb_gazebo_architecture.md) | 설정표·모델 생성·센서·PX4·가상 UWB의 역할을 이해할 때 |
-| [Gazebo 앵커·장비 적용 절차](uwb_gazebo_equipment_runbook.md) | 새 센서 기체와 앵커 월드 생성·설치·가상 RAW 수신 |
 | [Gazebo UWB 비교 준비](report/uwb_gazebo_shadow_20260927.md) | WLS·경로 기록·여섯 조건 재생·WSL 버전 확인. 실제 Gazebo 연동은 대기 |
-| [Gazebo UWB 경로 비교 절차](uwb_gazebo_shadow_runbook.md) | ROS 없이 경로 수집·잡음/가중치/단절 조건 비교 |
-| [27일 ULog의 B/C 입력 준비](report/uwb_flight_inputs_20260927.md) | 거리·자세 원본 추출·C 준비 프로파일·동시 UWB 없음 확인 |
-| [C/D 시뮬레이터 실행](report/uwb_cd_simulation_20260927.md) | 여섯 합성 상황·1,920주기·경로/오차/출력률 그림. Gazebo 미실시 |
-| [C/D 구현·A/B 비교](report/uwb_subsets_cd_20260927.md) | 균등 조합·strict 교점 구현. 정지·합성·117개 테스트·재생 검증 |
-| [C 세 앵커 조합 명세](specs/uwb/06_anchor_triplets.md) | 네 후보·균등 결합 구현 계약과 후속 시험 범위 |
-| [B H80 구현·A 비교](report/uwb_h80_b_20260927.md) | 실측 정지 A/B 비교·동적 합성·86개 테스트·재생 검증 |
 | [perfect_holdv2 설정 보관](report/perfect_holdv2_20260927.md) | 1,095개 파라미터. 27일 ULog와 공통 990개 중 차이 11개 |
 | [9월 27일 Position 위치 유지](report/position_hold_20260927.md) | 두 구간 29.28초. 추종 오차·센서 융합·종료 사건 |
+| [C/D 시뮬레이터 실행](report/uwb_cd_simulation_20260927.md) | 여섯 합성 상황·1,920주기·경로/오차/출력률 그림. Gazebo 미실시 |
+| [C/D 구현·A/B 비교](report/uwb_subsets_cd_20260927.md) | 균등 조합·strict 교점 구현. 정지·합성·117개 테스트·재생 검증 |
+| [27일 ULog의 B/C 입력 준비](report/uwb_flight_inputs_20260927.md) | 거리·자세 원본 추출·C 준비 프로파일·동시 UWB 없음 확인 |
+| [B H80 구현·A 비교](report/uwb_h80_b_20260927.md) | 실측 정지 A/B 비교·동적 합성·86개 테스트·재생 검증 |
+| [C 세 앵커 조합 명세](specs/uwb/06_anchor_triplets.md) | 네 후보·균등 결합 구현 계약과 후속 시험 범위 |
 | [27일 비행 로그 등록](report/flight_log_20260927.md) | 원격 ULog 수집, Position 구간·센서 추출·원본 해시 |
 | [UWB 자료 정리 확인](report/uwb_data_reorganization_20260927.md) | 코드·데이터 분리, 원본 해시, 회귀·빌드·재생 검증 |
 | [현재 구현 현황·수동 호버링 보고](report/implementation_status_20260927.md) | Position 호버링 성공 보고, UWB 구현·검증·비행 연결 구분 |
@@ -43,6 +41,9 @@
 
 | 문서 | 읽는 때 |
 |---|---|
+| [Gazebo UWB 구현 구조](uwb_gazebo_architecture.md) | 설정표·모델 생성·센서·PX4·가상 UWB의 역할을 이해할 때 |
+| [Gazebo 앵커·장비 적용 절차](uwb_gazebo_equipment_runbook.md) | 새 센서 기체와 앵커 월드 생성·설치·가상 RAW 수신 |
+| [Gazebo UWB 경로 비교 절차](uwb_gazebo_shadow_runbook.md) | ROS 없이 경로 수집·잡음/가중치/단절 조건 비교 |
 | [Position 로그 분석 절차](position_hold_audit_runbook.md) | 새 ULog의 위치 유지 성능 비교 |
 | [UWB 코드·자료 분류](uwb_data_layout.md) | 수신·보정 책임과 활용 원본·결과 폴더 |
 | [UWB 모듈 입출력 사전](uwb_module_api.md) | 파라미터·출력·단위·실패·기본값 |

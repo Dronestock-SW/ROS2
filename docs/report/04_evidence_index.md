@@ -2,7 +2,7 @@
 
 > 이 문서는 `docs/report/evidence/` 에 수집한 실행 출력의 색인이다.
 > 보고서 각 항목에 어떤 파일을 첨부할지 고를 때 읽는다.
-> 색인 갱신: 2026-09-21. 장비·수집 방식은 기록별로 구분한다.
+> 색인 갱신: 2026-09-27. 장비·수집 방식은 기록별로 구분한다.
 
 ## 후속 증빙
 
@@ -10,6 +10,14 @@
 
 | 기록일 | 자료 | 출처·범위 |
 |---|---|---|
+| 2026-09-27 | [C/D 시뮬레이터 검증](../../data/processed/uwb/subsets_simulation_20260927/verification.json) | 여섯 합성 상황·28개 관련 테스트·이전 동일 조건 결과 일치. Gazebo 미실시 |
+| 2026-09-27 | [C/D 검증](../../data/processed/uwb/subsets_cd_20260927/verification.json) | pytest 117개·빌드·A/B 보존·재생. 정지·합성 비교. 비행 미실시 |
+| 2026-09-27 | [27일 입력 준비 검증](../../data/processed/flight_inputs_20260927/verification.json) | pytest 89개·센서 추출 재생·빌드. 높이·비행 위치 계산 아님 |
+| 2026-09-27 | [B H80 검증](../../data/processed/uwb/h80_b_20260927/verification.json) | pytest 86개·빌드·A 보존·재생. 정지 실측과 합성 비교 |
+| 2026-09-27 | [MAVROS API·ULog 파라미터](evidence/mavros_parameter_api_20260927/ulog_parameters.json) | 9월 26일 파일의 설정·융합 플래그·모드. 현재 FC 조회 아님 |
+| 2026-09-27 | [수동 Position 호버링 보고](implementation_status_20260927.md) | 사용자 성공 보고. 연결된 비행 로그의 독립 대조 미실시 |
+| 2026-09-26 | [실측 정지 A 검증](evidence/baseline_a_static_20260926/verification.json) | pytest 66개·빌드·재생 확인. 수기 기준점 기반 파일 시험 |
+| 2026-09-26 | [합성 A 검증](evidence/baseline_a_20260926/verification.json) | pytest 58개·빌드·재생 확인. 당시 합성 실행 범위 |
 | 2026-09-21 | [UWB 파이프라인 검증](evidence/uwb_pipeline_20260921.json) | 합성 1,202개 입력·재생 일치·pytest 38개. 좌표 계산 닫힘 |
 | 2026-09-21 | [Gazebo·SITL 출력 발췌](evidence/gazebo_sitl_20260921_user_excerpt.md) | 사용자가 제공한 Windows/WSL 출력. 작성자의 직접 실행·전체 ULog 아님 |
 | 2026-09-21 | [Gazebo·SITL 결과](gazebo_sitl_20260921.md) | 위 출력과 화면에 따른 완료 판정·미검증 항목 |

@@ -28,6 +28,27 @@ RAW·보정 거리·좌표를 서로 다른 필드로 전달한다.
 ToF 결합 실행기는 시계 대응이 끝난 envelope가 필요하다.
 단순 필드 추가로 UWB·ULog의 동기화가 성립하지 않는다.
 
+## Gazebo 경로 비교와 WLS
+
+별도 Python 실행 경로이며 비행 출력은 없다.
+
+| 호출 | 입력 | 출력·실패 |
+|---|---|---|
+| `integration.gazebo_rig.build` | PX4 모델 경로·앵커·장비·시험 설정·새 출력 폴더 | 원본 모델을 읽어 별도 기체·월드·trial·해시 생성 |
+| `integration.gazebo_rig.install_assets` | 생성 폴더·PX4 모델 경로 | 새 이름만 설치. 기존 이름은 거부 |
+| `processing.gazebo_geometry.tag_position` | 기체 월드 위치·단위 wxyz quaternion·몸체 FLU 장착 위치 m | `p_tag = p_body + R_WB*l_tag` |
+| `processing.gazebo_geometry.VirtualRanges.sample` | 증가하는 시뮬레이션 시각·기체 pose | 가상 RAW와 별도 정답. 중복/역행·자세 오류 거부 |
+| `integration.gazebo_ranges` CLI | Gazebo 위치 토픽·기체 이름·trial 설정·출력 경로 | Gazebo StringMsg 안의 `sim_uwb_cycle`와 JSONL. MAVLink 송신 없음 |
+| `processing.weighted_xy.solve_weighted_xy` | 앵커 `(4,3)` m, 보정 거리 4개 m, 높이 scalar/4개 m, 거리 공분산 `(4,4)` m² | `ok/reason`, XY·잔차·RMS·가중 비용·조건부 XY 공분산. 행렬·기하·수렴 실패 구분 |
+| `integration.gazebo_capture.pose_record` | Gazebo `Pose_V`, 최상위 모델 이름 | `gazebo_sim_us` 시각·XYZ·자세. 이름 미일치/중복은 None |
+| `processing.experiments.gazebo_trial.run` | 위치 JSONL 경로, 설정 JSON 경로, 새 출력 경로 | A/B/C/D/WLS 결과·요약·설정·원본 복사·해시 |
+| `processing.experiments.gazebo_scenarios.run_scenarios` | 같은 입력·기본 설정·새 출력 경로 | 여섯 조건과 전체 비교 JSON. 잡음·WLS sigma·고장 조건은 시나리오 값 적용 |
+
+시각 중복·역행·출처 혼합은 거부한다.
+출력 폴더 재사용도 거부한다.
+실측 수신 JSONL을 Gazebo 위치 JSONL로 간주하지 않는다.
+자세한 형식·설정은 [실행 절차](uwb_gazebo_shadow_runbook.md)를 따른다.
+
 ## 수신·공통 모듈
 
 수신부는 원본 내용을 보정하지 않는다.
@@ -73,6 +94,14 @@ ToF 결합 실행기는 시계 대응이 끝난 envelope가 필요하다.
 | `height.median3` | 유한값 3개 | 중앙값 float | 개수·값 오류 `ValueError` |
 | `observations.solve_xy` | anchors(4,3), ranges[4], indices | XY[2], 최대 쌍 잔차 m | 동일 앵커 높이 전제. 퇴화 배치 `InvalidSample` |
 | `rawxy.solve_raw_xy` | anchors, ranges, indices, z_ant m, settings | `RawXY` | valid/x/y/mask/rms_m/max_m/condition/reason |
+| `range_solver.solve_slant_xy` | anchors(N,3), ranges[N], 높이 스칼라 또는 [N], required_count=4, 반복 설정 | `RangeFit`: 위치·잔차·조건수·반복 수 | required_count는 3 또는 4. A는 반드시 4 |
+| `triplets.make_triplets` | 앵커 ID 네 개 | 정렬된 네 조합 | A1~A4 이외·중복 거부 |
+| `triplets.solve_triplet_xy` | 세 앵커·거리·높이·settings dict | fit dict | rank·수렴·수치 실패 보존 |
+| `triplets.make_candidates` | 지도(4,3), 보정 거리[4], 높이, t_ref_us, anchor_ids, obs_ids, settings dict | C의 네 후보·균등 결합·남은 앵커 잔차 | 하나라도 실패하면 결합 차단 |
+| `intersections.circle_intersections` | 중심 XY 두 개, 반지름 두 개 m, DSettings | 교점 0/1/2개·분기·수치 정리 여부 | 분리·포함·중심 중복 구분 |
+| `intersections.select_intersection` | 교점, 세 번째 앵커·거리·높이, tie_margin_m | 선택 위치·세 번째 거리 잔차 | 동률이면 ambiguous_intersection |
+| `intersections.make_candidates` | C와 같은 지도·보정 거리·높이·시각·ID, DSettings | D의 12슬롯·네 묶음·결합·투영 진단 | strict만 구현. 실패 슬롯도 보존 |
+| `candidate_fusion.uniform_fuse` | candidates, required_ids, t_ref_us | xy_m·ID별 weights·dispersion_m2·관측 ID | 중복·필수 ID 누락·무효·과거 후보 거부 |
 | `h80.fit_h80` | anchors, idx[N], s[N] 초, r[N] m, t_ref_s, settings | `H80Fit` | ok/reason, x0/y0/x1/y1, 잔차·조건수·표본수 |
 | `qs10.solve_q_s10` | H80과 같은 관측, z_ant m, init[4], settings | `QFit` | ok/reason, 위치 계수·bias[4]·잔차·cost |
 | `transform.validate_rotation` | matrix(3,3), tolerance=1e-9 | 회전 ndarray | 직교·det 검사 실패 `ValueError` |
@@ -109,6 +138,15 @@ H80/Q_S10의 x1·y1은 창으로 정규화한 위치 계수다.
 | `experiments.static_a.estimate_bias` | rows, anchors, reference_xyz_m, minimum_samples=100 | bias_m과 산출 근거 |
 | `experiments.static_a.calculate` | rows, anchors, height_m, bias_m, solver_settings | 차감 전후 fits. 평가 XY는 받지 않음 |
 | `experiments.static_a.run` | config_path, root, output | summary와 결과 파일. 교정·평가 같은 입력 거부 |
+| `experiments.h80_b.read_events` | path, tag_id, firmware | 수신 순서의 cycle·실패·boot 이벤트. 파일 세션 메타데이터 사전 확인 |
+| `experiments.h80_b.H80Window` | anchors(4,3), bias_m[4], BSettings | 독립 0.8초 거리 창. 높이가 다른 앵커 배치는 거부 |
+| `H80Window.process` | Cycle, input_line | ok/reason, xy_m, velocity_m_s, fit, 표본수·나이·출처 |
+| `H80Window.reset` | reason 문자열 | 과거 표본·시간 상태 폐기 |
+| `experiments.h80_b.run` | config_path, root, output | A/B 결과·가용률·paired 오차·별도 시간 기록·manifest |
+| `experiments.subset_comparison.calculate` | 수신 events, anchors, height_m, bias_m, config | 같은 주기의 A/B/C 또는 A/B/C/D 결과·시간·건수 |
+| `experiments.subset_comparison.evaluate` | results, reference_xy, excursion_interval, models | 모델별 가용률·쌍별/전체 공통 시각 오차 |
+| `experiments.subset_comparison.run` | config_path, root, 새 output | 결과·후보·CSV·평가·manifest. 입력 해시·교정 분리·이전 A/B 검사 |
+| `experiments.flight_inputs.run` | ulog_path, 새 output 경로 | 원래 PX4 시계·자세 형식의 센서 JSONL·준비 상태. pyulog 필요 |
 | `integration.recording.open_record_files` | 새 directory, metadata dict | raw/received/decisions/status 스트림 dict. 호출자가 close |
 | `integration.node.UwbNode` | ROS 설정, UART, 앵커 JSON | `/uwb/raw`, `/uwb/status`, `/uwb_pose`. 기록은 별도 하위 폴더 |
 | `integration.frames.gate` | BridgeSettings, connected, state_age_s, params, param_age_s | `ready` 또는 차단 사유 str |
@@ -120,6 +158,52 @@ H80/Q_S10의 x1·y1은 창으로 정규화한 위치 계수다.
 ROS 파라미터와 MAVROS 상세는
 [기존 API 문서](uwb_mavros_parameter_api.md)를 따른다.
 웹 API를 이번에 추가하지 않았다.
+
+B의 CLI는 `uwb_h80_b`다.
+`--config`, `--root`, `--output`을 받는다.
+실제 적용값과 완료 범위는 [B 기록](report/uwb_h80_b_20260927.md)에 있다.
+공통 H80 함수는 기본 세 앵커도 허용한다.
+BSettings는 네 앵커를 요구한다.
+`fit.coefficients`의 순서는 `[x0,y0,x1,y1,q0,q1,q2]`다.
+`rank`, `condition`, `converged`를 함께 반환한다.
+같은 높이의 앵커·0.8초 이내 과거 표본을 요구한다.
+`current_frame_rms_m`은 별도 기하 진단이다.
+그 값으로 B의 결과를 거부하지 않는다.
+
+27일 ULog 준비 모듈은 표준 ZSample을 만들지 않는다.
+원본 `px4_boot_us`, `FRD_body_to_NED_earth`를 유지한다.
+거리 표본의 측정시각·분산이 미상이면 null을 남긴다.
+변환 전 자료를 기존 `SensorInputs`에 바로 넣지 않는다.
+그 클래스가 요구하는 host 시계·창고 좌표와 다르기 때문이다.
+[센서 준비 기록](report/uwb_flight_inputs_20260927.md)을 따른다.
+
+C/D의 CLI는 `uwb_subset_compare`다.
+`--config`, `--root`, `--output`을 받는다.
+설정의 `models`는 `["C"]` 또는 `["C","D"]`다.
+A/B도 같은 실행에서 항상 함께 계산한다.
+첫 프로파일은 기존 정지 자료를 읽는 실행기다.
+27일 ULog와 자동으로 결합하는 실행기는 아니다.
+[C/D 시험 기록](report/uwb_subsets_cd_20260927.md)에 적용값이 있다.
+
+C/D의 `heights`는 m 단위다.
+스칼라 또는 관측별 길이 4 배열을 받는다.
+관측 시각과 높이 정렬은 호출자가 수행한다.
+`t_ref_us` 기본값 0은 함수 단위 시험용이다.
+파일 실행기는 주기 종료 시각과 원본 행별 관측 ID를 준다.
+실측 연결에서도 생략하지 않아야 계보를 보존할 수 있다.
+후보의 `dispersion_m2`는 평균 주위 산포다.
+이를 위치 정확도 공분산으로 취급하지 않는다.
+
+| C/D 기본 설정 | 값 |
+|---|---|
+| C 반복·수렴·조건수 | 40회 / 1e-7m / 1e6 |
+| 공통 거리 범위 | 0 초과, 80m 이하 |
+| D 교점 정책 | strict |
+| D 동률 폭 | 1e-6m |
+| D 최소 수평 거리 | 1e-4m |
+| D 수치 허용오차 | 1e-10m² |
+| D 최소 중심 간격 | 1e-6m |
+| 결합 | C 네 후보, D 묶음별 세 슬롯·최종 네 후보 모두 요구 |
 
 ## 설정 기본값
 
