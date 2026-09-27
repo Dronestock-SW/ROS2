@@ -9,6 +9,8 @@
 
 | 문서 | 확인 범위 |
 |---|---|
+| [C/D 구현·A/B 비교](report/uwb_subsets_cd_20260927.md) | 균등 조합·strict 교점 구현. 정지·합성·117개 테스트·재생 검증 |
+| [C 세 앵커 조합 명세](specs/uwb/06_anchor_triplets.md) | 네 후보·균등 결합 구현 계약과 후속 시험 범위 |
 | [B H80 구현·A 비교](report/uwb_h80_b_20260927.md) | 실측 정지 A/B 비교·동적 합성·86개 테스트·재생 검증 |
 | [perfect_holdv2 설정 보관](report/perfect_holdv2_20260927.md) | 1,095개 파라미터. 27일 ULog와 공통 990개 중 차이 11개 |
 | [9월 27일 Position 위치 유지](report/position_hold_20260927.md) | 두 구간 29.28초. 추종 오차·센서 융합·종료 사건 |

@@ -8,6 +8,11 @@
 성공하면 중간 슬롯 12개와 묶음 위치 네 개가 생긴다.
 서로 다른 독립 측정 12개가 생기는 것은 아니다.
 Li 등 2017년 논문의 구조를 참고한 새 시험안이다.
+2026-09-27에 `strict_uniform4`를 구현했다.
+반지름 확장 없이 실제 교점이 있을 때 계산한다.
+2,540주기 중 405개 위치를 출력했다.
+[C/D 결과](../../report/uwb_subsets_cd_20260927.md)에 실패 원인을 기록했다.
+논문의 확장·신뢰구간까지 재현한 구현은 아니다.
 
 ## 입출력
 
@@ -23,12 +28,16 @@ Li 등 2017년 논문의 구조를 참고한 새 시험안이다.
 
 | 파라미터 | 단위·범위 | 초기 상태 |
 |---|---|---|
-| `intersection_policy` | strict/bounded_expansion | strict 기준선 |
+| `intersection_policy` | strict/bounded_expansion | strict 구현. bounded_expansion은 미구현 |
 | `expansion_limit_m`, `expansion_step_m` | m, 양수 | 확장 variant에서 필수. 미확정 |
-| `tie_margin_m` | m, 0 이상 | 교점 점수 동률 판정. 미확정 |
-| `min_horizontal_range_m` | m, 양수 | 불안정 투영 방지. 미확정 |
-| `numeric_tolerance_m2` | m² | 부동소수점 오차 한정. 명시 필요 |
+| `tie_margin_m` | m, 0 이상 | 1e-6. 잔차 절댓값 점수의 동률 판정 |
+| `min_horizontal_range_m` | m, 양수 | 1e-4. 불안정 투영 방지 |
+| `numeric_tolerance_m2` | m² | 1e-10. 부동소수점 오차 정리 한정 |
+| `min_center_separation_m` | m, 양수 | 1e-6. 원 중심 중복 판정 |
 | `group_fusion` | mean | 논문 구조 기준선 |
+
+이 값은 첫 비교 설정이다. 운용값은 미선정이다.
+입출력 구상 중 sigma는 확장 시험용이며 아직 받지 않는다.
 
 ## 처리 구조와 산식
 
@@ -41,7 +50,7 @@ Li 등 2017년 논문의 구조를 참고한 새 시험안이다.
 ```
 
 ```text
-h_i^2 = r_cal_i^2 - (z_ant-az_i)^2
+h_i^2 = r_cal_i^2 - (z_i-az_i)^2
 D = norm(center_B-center_A)
 a = (h_A^2-h_B^2+D^2)/(2*D)
 v = h_A^2-a^2
@@ -54,6 +63,9 @@ p_plus/minus = center_A + a*unit_AB ± sqrt(v)*perp(unit_AB)
 동률이면 ambiguous로 남긴다. 정답 좌표로 고르지 않는다.
 묶음 안의 세 교점을 평균한 뒤 네 묶음을 결합한다.
 실패 슬롯을 복제해 12개를 채우지 않는다.
+현재 구현은 세 슬롯이 모두 성공해야 묶음을 출력한다.
+최종 평균도 네 묶음이 모두 성공해야 출력한다.
+부분 성공 후보와 실패 슬롯은 로그에 함께 보존한다.
 
 확장 variant는 최대 확장량과 중단 조건을 명시한다.
 원본 거리와 가공 거리를 둘 다 기록한다.
@@ -79,3 +91,21 @@ M08에서 독립 후보 수로 공분산을 줄이지 않는다.
 
 근거: [Li 등, 2017, 3.4절 식 (19)·(20)](https://www.mdpi.com/1424-8220/17/4/795).
 논문의 일반식을 네 앵커에 대입한 구성이다.
+
+## 구현과 확인 결과
+
+`processing/intersections.py`가 D 수식을 소유한다.
+파일 실행과 결합은 C와 같은 모듈을 사용한다.
+
+| 함수 | 실제 입출력 |
+|---|---|
+| `circle_intersections` | 중심 두 개·반지름·DSettings → 교점·분기·수치 정리 여부 |
+| `select_intersection` | 교점·세 번째 앵커·사거리·높이·동률 폭 → 선택·잔차·모호 상태 |
+| `make_candidates` | 지도·네 거리·높이·시각·관측 ID → 12슬롯·네 후보·결합 |
+
+교차·접선·분리·포함·동률·투영 실패를 시험했다.
+무잡음 정지 입력의 12슬롯과 위치 일치를 확인했다.
+실측 실패 2,135주기는 A1–A4 원의 분리 때문이었다.
+같은 시각 A/D RMSE는 21.27/20.07cm다.
+가용률은 15.94%로 첫 방식의 적용 한계가 컸다.
+반지름 확장·실측 이동·비행 전달은 미실시다.

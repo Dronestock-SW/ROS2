@@ -1,0 +1,10 @@
+{
+  "script_sha256": "64bfacd971445e9c400b4686b5f94282da78ed4477c6a89e8ef7d3ebd3b7586c",
+  "trajectory_script_sha256": "44fa8227c00c5cdd280f96dffd8ee946adb2d28331e90a21d8af2aaa6ca14992",
+  "outputs": {
+    "subsets_comparison.pdf": "0937204d731f128a52b031f064659af004b2e9a67aef1dde635fa626c3d07e30",
+    "subsets_comparison.png": "c072275eae3c7fa97ba68179c861d279513b6835c3e207bff563cbdaf5a03330",
+    "synthetic_results.jsonl": "fc1f49ac3d93cf377e006f457d3abb96d5e1619efa70e344d852b74acd9bdf62",
+    "synthetic_summary.json": "db8dd7cd98ca5cdc1ebb1064cc955a33c09c379af7a1bd57c603d1eb6b456ab6"
+  }
+}

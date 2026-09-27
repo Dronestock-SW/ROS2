@@ -7,7 +7,20 @@
 M06 또는 M07이 만든 후보를 같은 조건에서 결합한다.
 0.7·0.3·0.03은 대화에서 나온 시험 후보값이다.
 GNSS 공통 상수나 검증된 계수로 취급하지 않는다.
-현재 구현은 없으며 [공통 규격](00_interfaces.md)을 따른다.
+`processing/candidate_fusion.py`에 균등 결합을 구현했다.
+품질·상하위 가중은 설계 단계다.
+확장 인터페이스는 [공통 규격](00_interfaces.md)을 따른다.
+2026-09-27 C 착수 명세에서 첫 결합 정책을 정했다.
+`C_uniform4`는 `policy=uniform`, `min_candidate_count=4`다.
+네 후보 중 하나라도 실패하면 결합을 차단한다.
+상세 범위는 [C 명세](06_anchor_triplets.md)를 따른다.
+D는 세 슬롯 결합과 네 묶음 결합에 같은 함수를 쓴다.
+[C/D 완료 기록](../../report/uwb_subsets_cd_20260927.md)에 결과를 남겼다.
+
+현재 `uniform_fuse(candidates, required_ids, t_ref_us)`는
+필수 ID·유효성·동일 시각을 검사한다.
+평균 XY·ID별 가중치·산포·공유 관측 ID를 반환한다.
+아래 품질 점수와 순위 계산은 아직 실행하지 않는다.
 
 ## 입출력
 

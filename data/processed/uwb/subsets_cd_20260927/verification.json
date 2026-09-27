@@ -1,0 +1,64 @@
+{
+  "date": "2026-09-27",
+  "scope": "offline C uniform4 and D strict_uniform4 implementation",
+  "pytest": {
+    "command": "PYTHONPATH=src/drone_uwb python -m pytest src/drone_uwb/test -q",
+    "passed": 117,
+    "failed": 0,
+    "reported_seconds": 13.68
+  },
+  "build": {
+    "command": "colcon --log-base /tmp/uwb_subsets_cd_20260927/log build --symlink-install --packages-select drone_uwb --build-base /tmp/uwb_subsets_cd_20260927/build --install-base /tmp/uwb_subsets_cd_20260927/install",
+    "exit_code": 0
+  },
+  "installed_cli": {
+    "command": "ros2 run drone_uwb uwb_subset_compare --help",
+    "exit_code": 0
+  },
+  "deterministic_replay": {
+    "results.jsonl": true,
+    "summary.json": true,
+    "positions.csv": true
+  },
+  "prior_A_B_exactly_preserved": true,
+  "input_hashes_verified": true,
+  "source_hashes_verified": true,
+  "archived_output_hashes_verified": true,
+  "measured_initial_directory": "/home/pgyxn/uwb_pipeline_runs/20260927_subsets_cd_initial",
+  "measured_replay_directory": "/home/pgyxn/uwb_pipeline_runs/20260927_subsets_cd_replay",
+  "synthetic_cases": [
+    "linear_clean",
+    "static_noise",
+    "spikes",
+    "persistent_bias",
+    "direction_reversal",
+    "gap"
+  ],
+  "checks_not_run": [
+    "same-flight UWB and ToF integration",
+    "hardware output",
+    "SITL integration",
+    "flight validation",
+    "independent multi-position calibration",
+    "bounded radius expansion",
+    "quality-weighted candidate fusion",
+    "exhaustive multi-anchor bias sweep"
+  ],
+  "archive_sha256": {
+    "anchors.json": "2d4d9d79d4a3fd772018e53d46659201041a76022c727b55c2506dd39b188407",
+    "benchmark_manifest.json": "2b6d5a3582a0ac92f60cd4c09752c8f140a3292576b4014518e78a315a4bd923",
+    "calibration.json": "460d94899a6ac93f1a59f0342208362006c5ad9bcbdaa9b9c3d4eba3b11b3305",
+    "config.json": "2360a6fce29b6361c81e20d872012485ec5900df32038042909304e0c753fe28",
+    "failure_diagnostics.json": "3ff1eea2a406ca821ac3bbb2e9f4136f4f905f88df7b736f0b4a1a5ed757249d",
+    "manifest.json": "9aa5a82ce9209a798a9690a04e26f591d3d925c1ef44bcbe973a17b9b95b5061",
+    "positions.csv": "f060eb9e1e7ea324663c080ad7a50ac79dc2bf7638c68aa7a94613ed9af42694",
+    "results.jsonl": "4eb35228efc286501bc3c6de7842f659d20adb84a3243909a5f8841f7a6e2c44",
+    "subsets_comparison.pdf": "0937204d731f128a52b031f064659af004b2e9a67aef1dde635fa626c3d07e30",
+    "subsets_comparison.png": "c072275eae3c7fa97ba68179c861d279513b6835c3e207bff563cbdaf5a03330",
+    "summary.json": "31f6269f4ea8e9f14bd540538df9ba74dd9bfbad0e8bb5e46b10d292401ff69e",
+    "synthetic_results.jsonl": "fc1f49ac3d93cf377e006f457d3abb96d5e1619efa70e344d852b74acd9bdf62",
+    "synthetic_summary.json": "db8dd7cd98ca5cdc1ebb1064cc955a33c09c379af7a1bd57c603d1eb6b456ab6",
+    "timing_summary.json": "7cdde35cb4cf50d580dfcca0626d01c00a6de8a8da4da3b4712635231e4e3350",
+    "timings.jsonl": "ac3ea5f405eef8262f4c35b57048492acb16684c4258bb442e9a6cdd95a3a89f"
+  }
+}

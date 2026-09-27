@@ -1,0 +1,52 @@
+{
+  "source_results_sha256": "4eb35228efc286501bc3c6de7842f659d20adb84a3243909a5f8841f7a6e2c44",
+  "C_failed_candidates": {
+    "S124:iteration_limit": 29
+  },
+  "C_failed_frame_count": 29,
+  "C_failed_seq": [
+    246479,
+    246480,
+    246489,
+    246490,
+    246492,
+    246493,
+    246507,
+    246509,
+    246510,
+    246512,
+    246518,
+    246520,
+    246521,
+    246522,
+    246524,
+    246525,
+    246527,
+    246538,
+    246540,
+    246541,
+    246542,
+    246543,
+    246544,
+    246563,
+    246564,
+    246566,
+    246567,
+    246568,
+    246569
+  ],
+  "C_failures_all_within_reported_excursion": true,
+  "D_unique_pair_failures_by_frame": {
+    "A1:A4:separate_circles": 2135
+  },
+  "D_failed_frame_count": 2135,
+  "D_slot_failure_count": 4270,
+  "D_A1_A4_radius_sum_minus_center_distance_m": {
+    "definition": "h_A1+h_A4-norm(anchor_A4_xy-anchor_A1_xy)",
+    "failed_unique_frame_count": 2135,
+    "min": -0.2683302556258784,
+    "median": -0.08916586096382151,
+    "max": -0.00019472951311616526
+  },
+  "limitation": "Slot reuse is counted separately from unique failed pairs and failed frames. No radius expansion."
+}

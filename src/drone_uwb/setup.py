@@ -21,6 +21,7 @@ setup(
         'uwb_pipeline = drone_uwb.processing.runner:main',
         'uwb_static_a = drone_uwb.processing.experiments.static_a:main',
         'uwb_h80_b = drone_uwb.processing.experiments.h80_b:main',
+        'uwb_subset_compare = drone_uwb.processing.experiments.subset_comparison:main',
         'uwb_baseline_a = drone_uwb.processing.experiments.baseline_a:main',
     ]},
 )
