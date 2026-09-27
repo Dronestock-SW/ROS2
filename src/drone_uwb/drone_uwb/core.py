@@ -73,10 +73,10 @@ class Settings:
     max_report_span_s: float = 0.04
     max_queue_s: float = 0.15
     max_pair_residual_m: float = 0.15
-    range_step_margin_m: float = 0.15
-    max_speed_m_s: float = 2.0
+    range_step_margin_m: float = 0.20  # handoff v1.2 section 10A range gate: 0.20 m + 1.20 m/s * dt
+    max_speed_m_s: float = 1.20
     history_timeout_s: float = 0.5
-    recovery_samples: int = 5
+    recovery_samples: int = 3  # handoff v1.2: 3 confirmations before a new range is trusted
     clock_warmup_samples: int = 30
     clock_window_s: float = 5.0
     xy_stddev_m: float = 0.30

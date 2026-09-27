@@ -59,8 +59,18 @@ class PreimuSettings:
     warmup_s: float = 0.10
     bias_detect_m: float = 0.08
     bias_hold_s: float = 0.80
-    # Validity guards. CANDIDATE: residual limits are not in the handoff.
-    residual_rms_max_m: float = 0.12
+    # Range gate before H80 (handoff v1.2 section 10A): |r[k] - r_accepted| <= margin + speed * dt.
+    range_gate_margin_m: float = 0.20
+    range_gate_speed_m_s: float = 1.20
+    range_reacquire_cluster_m: float = 0.15
+    range_reacquire_confirm: int = 3
+    # Position gate after H80/Q candidates (section 10A): |p_cand - p_accepted| <= margin + speed * dt.
+    position_gate_margin_m: float = 0.08
+    position_gate_speed_m_s: float = 0.80
+    position_reacquire_cluster_m: float = 0.12
+    position_reacquire_confirm: int = 3
+    # Validity guards. residual_rms_max_m is the section 10A max fit RMS; residual_max_max_m is a CANDIDATE.
+    residual_rms_max_m: float = 0.10
     residual_max_max_m: float = 0.30
     # Safety default: hold time counts as "no valid coordinate" (handoff section 13).
     failed_after_s: float = 0.5

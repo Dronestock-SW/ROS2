@@ -1,0 +1,58 @@
+{
+  "date": "2026-09-21",
+  "scope": "offline pipeline only; synthetic ToF/UWB/attitude; no Gazebo, hardware or flight validation",
+  "simulation_directory": "/home/pgyxn/uwb_pipeline_runs/20260921_simulation",
+  "replay_directory": "/home/pgyxn/uwb_pipeline_runs/20260921_replay",
+  "event_counts": {
+    "uwb_raw_status": 1,
+    "tof_sample": 400,
+    "attitude_sample": 400,
+    "uwb_raw_cycle": 400,
+    "pipeline_tick": 1
+  },
+  "cycle_input_accepted": 400,
+  "clock_ready_cycles": 371,
+  "position_calculation_gate_closed": true,
+  "external_output_gate_closed": true,
+  "all_coordinates_null": true,
+  "all_valid_false": true,
+  "same_diagnostic_bytes": true,
+  "last_history_counts": [
+    32,
+    32,
+    32,
+    32
+  ],
+  "last_sensor_sources": {
+    "tof_sample": "simulation",
+    "attitude_sample": "simulation"
+  },
+  "final_tick": {
+    "input_age_s": 0.6,
+    "input_stale": true
+  },
+  "artifacts": {
+    "input.jsonl": {
+      "bytes": 392832,
+      "sha256": "9a07f42e128db8088ed4b0d2f7315c7159d6ef4154c4904176e56d19acfce796"
+    },
+    "diagnostics.jsonl": {
+      "bytes": 1540466,
+      "sha256": "eea210839626137cdb63d35bf1849632f619357c62b18e0f0f0cd6f75e61bcf0"
+    },
+    "summary.json": {
+      "bytes": 3295,
+      "sha256": "2e513d2b1dbbae483c76a552672729945a40ce2cd00f102b5d377540bb51703f"
+    }
+  },
+  "pytest": {
+    "command": "PYTHONPATH=src/drone_uwb python -m pytest -q src/drone_uwb/test",
+    "passed": 38,
+    "result_source": "observed tool stdout; 38 passed in 1.43s"
+  },
+  "build": {
+    "command": "source /opt/ros/humble/setup.bash; colcon build --symlink-install",
+    "packages_finished": 5,
+    "warning": "ydlidar_ros2_driver: unused callback parameters; no build errors"
+  }
+}
