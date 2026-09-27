@@ -1,0 +1,62 @@
+{
+  "source_file": "log_23_2026-9-27-13-34-50.ulg",
+  "source_sha256": "896a3f021f0b2eb9fd943e7960e2add8dfff67bcfe15541c442fac175146690f",
+  "source_firmware": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+  "mode": "POSCTL",
+  "max_status_age_s": 1,
+  "units": "normalized_command_not_newtons",
+  "thrust_vector_norm": {
+    "count": 1464,
+    "median": 0.32102876901626587,
+    "mean": 0.3207635283470154,
+    "p05": 0.31664716005325316,
+    "p95": 0.3241556644439697
+  },
+  "valid_hover_estimate": {
+    "count": 215,
+    "median": 0.32089051604270935,
+    "mean": 0.3208673596382141,
+    "p05": 0.3193026304244995,
+    "p95": 0.32216838002204895
+  },
+  "motor_controls": {
+    "0": {
+      "count": 292,
+      "median": 0.33412107825279236,
+      "mean": 0.33328914642333984,
+      "p05": 0.3107295036315918,
+      "p95": 0.35546992272138594
+    },
+    "1": {
+      "count": 292,
+      "median": 0.3094565272331238,
+      "mean": 0.3107006549835205,
+      "p05": 0.28959173560142515,
+      "p95": 0.3340494602918625
+    },
+    "2": {
+      "count": 292,
+      "median": 0.32693052291870117,
+      "mean": 0.32622450590133667,
+      "p05": 0.3122127681970596,
+      "p95": 0.3382007345557213
+    },
+    "3": {
+      "count": 292,
+      "median": 0.3133149743080139,
+      "mean": 0.3128073215484619,
+      "p05": 0.2996172621846199,
+      "p95": 0.3265027433633804
+    }
+  },
+  "esc_topics_present": [],
+  "initial_parameters": {
+    "MPC_THR_HOVER": 0.3499999940395355,
+    "MPC_USE_HTE": 1,
+    "THR_MDL_FAC": 0.0,
+    "EKF2_IMU_POS_X": 0.0,
+    "EKF2_RNG_POS_X": 0.0
+  },
+  "motor_force_curve_identified": false,
+  "parameters_applied": false
+}

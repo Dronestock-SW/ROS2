@@ -9,6 +9,9 @@
 
 | 문서 | 확인 범위 |
 |---|---|
+| [UWB·장비 Gazebo 구성](report/uwb_gazebo_equipment_20260927.md) | 사용자 WSL의 새 시험장·PX4 시작 확인. 센서별 수신·가상 UWB 실행은 후속 검증 |
+| [Gazebo UWB 구현 구조](uwb_gazebo_architecture.md) | 설정표·모델 생성·센서·PX4·가상 UWB의 역할을 이해할 때 |
+| [Gazebo 앵커·장비 적용 절차](uwb_gazebo_equipment_runbook.md) | 새 센서 기체와 앵커 월드 생성·설치·가상 RAW 수신 |
 | [Gazebo UWB 비교 준비](report/uwb_gazebo_shadow_20260927.md) | WLS·경로 기록·여섯 조건 재생·WSL 버전 확인. 실제 Gazebo 연동은 대기 |
 | [Gazebo UWB 경로 비교 절차](uwb_gazebo_shadow_runbook.md) | ROS 없이 경로 수집·잡음/가중치/단절 조건 비교 |
 | [27일 ULog의 B/C 입력 준비](report/uwb_flight_inputs_20260927.md) | 거리·자세 원본 추출·C 준비 프로파일·동시 UWB 없음 확인 |

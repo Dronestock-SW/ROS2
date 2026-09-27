@@ -2,9 +2,34 @@
 
 이 문서는 설치를 마친 시험 PC의 실행 절차다. 시뮬레이터를 다시 켤 때 읽는다.
 
-기준일: 2026-09-21. Windows 11 + WSL Ubuntu 22.04 대상이다.
+갱신일: 2026-09-27. Windows 11 + WSL Ubuntu 22.04 대상이다.
 설치 결과와 확인 한계는 [시험 기록](report/gazebo_sitl_20260921.md)에 있다.
-UWB 연동은 HW팀 정비가 끝날 때까지 보류한다.
+사용자 요청으로 [가상 UWB 비교](uwb_gazebo_shadow_runbook.md)를 준비한다.
+9월 21일 실물 연동 보류와 구분한다.
+가상 UWB 관측의 PX4 전달·융합은 아직 검증하지 않았다.
+
+## 현재 목표와 진행 순서
+
+목표는 사용자 앵커·센서 배치를 가상 공간에 넣고 UWB 계산 후보를 비교하는 것이다.
+그 뒤 선정한 위치 관측을 PX4에 연결해 가상 호버링을 시험한다.
+Gazebo는 가상 기체·환경·센서를, PX4 SITL은 가상 비행제어기를 담당한다.
+Python 도구는 가상 UWB 거리 생성·기록과 계산 후보 비교를 담당한다.
+
+```text
+WSL Ubuntu 진입 → Python 계산·통신 모듈 확인
+  → 준비한 앵커·장비 모델 적용 → 가상 센서 데이터 수신
+  → 같은 입력으로 A/B/C/D 비교 → 위치 관측의 PX4 융합·호버링 시험
+```
+
+현재는 사용자 WSL에서 수정 시험장과 PX4의 시작을 확인한 단계다.
+로그에 `Gazebo world is ready`와 `gz_bridge`의 새 모델 이름이 있다.
+PX4 시작 스크립트도 완료됐다.
+다음은 센서별 메시지 확인과 가상 UWB 프로그램 연결이다.
+명령은 [장비 절차](uwb_gazebo_equipment_runbook.md) 4절부터 따른다.
+모델 파일 설치와 실제 센서 수신 성공은 구분한다.
+사용자가 명령의 목적을 이해하며 진행하도록 다음 순서로 안내한다.
+목적 → 입력할 셸 → 명령 → 예상 출력 → 다음 단계 순서다.
+셸이 다르면 먼저 진입만 확인한 뒤 다음 명령을 안내한다.
 
 ## 1. 명령을 넣을 창 구분
 
@@ -20,6 +45,23 @@ UWB 연동은 HW팀 정비가 끝날 때까지 보류한다.
 `~/github/PX4-Autopilot`은 WSL 안의 경로다.
 PowerShell의 `~`는 Windows 사용자 폴더다.
 두 셸에서 같은 문자열이 같은 폴더를 가리키지 않는다.
+
+창 제목이 Windows PowerShell이어도 WSL에 들어가면 같은 창에서 Ubuntu를 사용한다.
+명령 입력 위치는 창 제목이 아니라 마지막 줄의 프롬프트로 판단한다.
+VS Code가 SSH로 연결한 `pgyxn@user-desktop`은 코드 준비 작업공간이다.
+사용자 Windows PC의 `dronestock` WSL과 다른 환경이다.
+
+| 명령 | 목적 |
+|---|---|
+| `wsl -d Ubuntu-22.04` | 설치된 Ubuntu 환경에 진입. 재설치 명령이 아님 |
+| `sudo apt update` | Ubuntu 설치 가능 패키지 목록 갱신 |
+| `sudo apt install -y python3-numpy` | 시스템 Python의 배열·수치 계산 라이브러리 설치 |
+| `/usr/bin/python3 -c "..."` | 시스템 Python으로 짧은 코드 실행. 현재는 모듈 로딩 확인에 사용 |
+| `make -j2 px4_sitl gz_x500_lidar_down` | 기존 기본 모델로 PX4 SITL 빌드·실행. Python 모듈 검사와 별도 단계 |
+
+PowerShell에서 `sudo` 비활성화나 `/usr/bin/python3`를 찾지 못했다는 오류가 나면
+Windows 설정을 바꾸기 전에 WSL Ubuntu 진입 여부를 확인한다.
+이 작업에 필요한 것은 Ubuntu의 `sudo`와 Python이다.
 
 ## 2. WSL 진입 — PowerShell
 
@@ -176,8 +218,11 @@ listener distance_sensor
 
 ## 7. 재개 전에 버전·경로 기록
 
-PX4의 정확한 커밋은 아직 수집하지 않았다.
-기본 시험을 다시 할 때 아래 출력도 보관한다.
+27일 사용자 출력에서 짧은 커밋을 확인했다.
+`git describe`는 `v1.18.0-beta1-700-gc4e4ef98e9`다.
+Gazebo 출력은 `8.15.0`이다.
+`/opt/ros`는 없으며 다른 설치 경로는 미확인이다.
+전체 커밋과 Python 버전은 아래 명령으로 보관한다.
 
 WSL Ubuntu 셸에서 실행한다. `pxh>` 명령이 아니다.
 
@@ -202,6 +247,30 @@ Get-ChildItem HKCU:\Software\Microsoft\Windows\CurrentVersion\Lxss |
 WSL의 `~/github`를 `/mnt/d`로 옮기는 절차가 아니다.
 파일 이동이나 배포판 삭제는 이 실행 절차에 필요하지 않다.
 
+### 가상 UWB 비교 연결 준비
+
+별도 WSL 창에서 Gazebo 통신을 조회한다.
+실행 중인 `pxh>` 창은 그대로 둔다.
+새 PowerShell에서 `wsl -d Ubuntu-22.04`를 실행한다.
+이후 Ubuntu 셸에 아래를 입력한다.
+
+```bash
+gz topic -l
+/usr/bin/python3 -c "from gz.transport13 import Node; from gz.msgs10.pose_v_pb2 import Pose_V; import numpy; print('Gazebo Python OK')"
+```
+
+첫 명령은 현재 Gazebo 통신 항목을 나열한다.
+두 번째는 위치 기록에 쓸 Python 모듈을 확인한다.
+출력 또는 오류 전문을 보관한다.
+2026-09-27 사용자 출력에서 `default / x500_lidar_down_0`의 토픽 이름을 확인했다.
+Gazebo Python 두 모듈은 로딩됐고 `numpy`에서 실패했다.
+후속 사용자 출력에서 Ubuntu의 `python3-numpy` 설치 완료를 확인했다.
+이후 같은 검사에서 `Gazebo Python OK` 출력을 받았다.
+세 모듈 로딩은 확인됐다. 센서 메시지 수신은 아직 미확인이다.
+설치 명령은 [장비 적용 절차](uwb_gazebo_equipment_runbook.md)의 0절을 따른다.
+PX4·Gazebo 기본 실행과 이 조회에는 ROS가 필요하지 않다.
+프로젝트 ROS 2 노드 실행은 별도 환경이 필요하다.
+
 ## 8. 다시 오류가 날 때
 
 실패한 단계의 출력부터 보존한다.
@@ -210,9 +279,18 @@ WSL의 `~/github`를 `/mnt/d`로 옮기는 절차가 아니다.
 |---|---|
 | `source`·`export`를 찾지 못함 | PowerShell인지 확인하고 2절로 이동 |
 | PX4 폴더·make 대상 없음 | WSL 계정과 `~/github/PX4-Autopilot` 확인 |
+| `PX4 server already running for instance 0` | 같은 번호의 PX4가 실행 중이다. 모듈 확인 중에는 기존 실행을 유지하고 별도 Ubuntu 셸에서 확인 명령만 실행 |
 | Protobuf 헤더 버전 오류 | 아래의 버전과 CMake 경로를 함께 확인 |
 | `No connection to the GCS` | 현재 WSL IP와 수동 UDP 링크 확인 |
 | WSL `0x8007274c` | 실행 작업을 종료한 뒤 PowerShell에서 `wsl --shutdown`, 다시 진입 |
+
+중복 실행 오류 뒤 `ninja`와 `make`가 실패했다고 표시될 수 있다.
+2026-09-27 사용자 출력에서는 컴파일이 아니라 PX4 실행 단계가 중단됐다.
+이 출력만으로 기존 PX4·Gazebo의 정상 동작까지 판정하지 않는다.
+재시작이 필요할 때는 기존 PX4 실행 창에서 `Ctrl+C`로 정상 종료한다.
+그 뒤 실행 명령을 한 창에서 한 번만 사용한다.
+[PX4 공식 실행 안내](https://github.com/PX4/PX4-user_guide/blob/main/en/dev_setup/building_px4.md)도 이 종료 방법을 설명한다.
+새 장비 모델로 전환할 때는 [장비 적용 절차](uwb_gazebo_equipment_runbook.md)의 3절을 따른다.
 
 `wsl --shutdown`은 다른 WSL 작업도 종료한다.
 응답이 계속 없으면 Windows를 재시작한다.

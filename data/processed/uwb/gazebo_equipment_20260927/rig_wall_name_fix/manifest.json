@@ -1,0 +1,28 @@
+{
+  "native_source_sha256": {
+    "models/x500_base/model.sdf": "e807dca3406f7cd5cb3d545898601c3ec17e0e5242e25cf467a69df1812cf436",
+    "models/x500/model.sdf": "cb76a4afd439f253a8c516b1fcd3528f80347619cfa46bebb620557054fbf125",
+    "models/x500_lidar_down/model.sdf": "c67aab62d4019618eaa0704797af814432141d132378751d0bdf7303b07462c0",
+    "models/optical_flow/model.sdf": "78fda3c14b93f2675fa802998b78db743d4765ce20656361f155b05bd1ef48d1",
+    "models/lidar_2d_v2/model.sdf": "e0dedbb9e00b2ed0f18eec02c0cbad6f2a2b3bf4ab4181c2c04e9e80311d3ea1",
+    "models/mono_cam/model.sdf": "405f2f9d973b6b75379a418865ee18b3d27f936322d85e17beced04bdd09ef6e",
+    "worlds/default.sdf": "457a363a22c437b788a4aaf1e2335aa149efce4e5b988cdc108065663cd879b2",
+    "server.config": "60871c73e32ecde05e008aaf995e1b9c09906ca3dacb143c595522c68d399172"
+  },
+  "mount_status": "horizontal_user_report_20260927; vertical_and_camera_flow_unconfirmed",
+  "native_total_mass_kg": 2.535307692307691,
+  "native_mass_inertia_scale": 0.788858885281714,
+  "simulated_total_mass_kg": 2.000000000000001,
+  "real_total_mass_kg": null,
+  "flight_verified": false,
+  "gazebo_runtime_verified": false,
+  "outputs_sha256": {
+    "LICENSE-PX4-gazebo-models": "5fcb2a52fc0390cc8c7eccaa0cde9316c810f38811efb357e1ede7858e26e289",
+    "anchors.json": "2d4d9d79d4a3fd772018e53d46659201041a76022c727b55c2506dd39b188407",
+    "equipment.json": "f33f79853ac6e84e01ba0d90e124e44c1942620cd8013dd2fc56567710616d7b",
+    "models/dronestock_x500/model.config": "4ec7b4111faefc8de28db5aead0e223393fd5d637a6a395f5f8d644becb43850",
+    "models/dronestock_x500/model.sdf": "218e59bb8a262ae60cef8a0478a72427626286ca21eed03674e5b9bd2498bb24",
+    "trial.json": "38ab27fac63c8e333e8bc094f7e47ca76b1248f2bdf1f7107a97aac561e2f557",
+    "worlds/dronestock_uwb.sdf": "b44110bd592b6efe7f5d4f0b28b4cd893643c2165e8d1338656655dee00c7c87"
+  }
+}

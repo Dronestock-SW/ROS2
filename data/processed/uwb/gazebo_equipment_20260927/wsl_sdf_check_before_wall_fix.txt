@@ -1,0 +1,43 @@
+dronestock@DESKTOP-0C8GRSK:~/uwb_sim/uwb-gazebo-equipment$ export GZ_SIM_RESOURCE_PATH="$HOME/github/PX4-Autopilot/Tools/simulation/gz/models:${GZ_SIM_RESOURCE_PATH:-}"
+dronestock@DESKTOP-0C8GRSK:~/uwb_sim/uwb-gazebo-equipment$ gz sdf -k runs/equipment_01/models/dronestock_x500/model.sdf
+Warning [Utils.cc:132] [/sdf/model[@name="dronestock_x500"]/link[@name="base_link"]/sensor[@name="air_pressure_sensor"]/gz_frame_id:/home/dronestock/uwb_sim/uwb-gazebo-equipment/runs/equipment_01/models/dronestock_x500/model.sdf:L219]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+Warning [Utils.cc:132] [/sdf/model[@name="dronestock_x500"]/link[@name="base_link"]/sensor[@name="magnetometer_sensor"]/gz_frame_id:/home/dronestock/uwb_sim/uwb-gazebo-equipment/runs/equipment_01/models/dronestock_x500/model.sdf:L232]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+Warning [Utils.cc:132] [/sdf/model[@name="dronestock_x500"]/link[@name="base_link"]/sensor[@name="imu_sensor"]/gz_frame_id:/home/dronestock/uwb_sim/uwb-gazebo-equipment/runs/equipment_01/models/dronestock_x500/model.sdf:L254]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+Warning [Utils.cc:132] [/sdf/model[@name="dronestock_x500"]/link[@name="base_link"]/sensor[@name="navsat_sensor"]/gz_frame_id:/home/dronestock/uwb_sim/uwb-gazebo-equipment/runs/equipment_01/models/dronestock_x500/model.sdf:L302]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+Warning [Utils.cc:132] [/sdf/model[@name="dronestock_x500"]/link[@name="lidar_sensor_link"]/sensor[@name="lidar"]/gz_frame_id:/home/dronestock/uwb_sim/uwb-gazebo-equipment/runs/equipment_01/models/dronestock_x500/model.sdf:L687]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+Warning [Utils.cc:132] [/sdf/model[@name="dronestock_x500"]/link[@name="flow_link"]/sensor[@name="flow_camera"]/gz_frame_id:/home/dronestock/uwb_sim/uwb-gazebo-equipment/runs/equipment_01/models/dronestock_x500/model.sdf:L785]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+Warning [Utils.cc:132] [/sdf/model[@name="dronestock_x500"]/link[@name="flow_link"]/sensor[@name="optical_flow"]/gz_frame_id:/home/dronestock/uwb_sim/uwb-gazebo-equipment/runs/equipment_01/models/dronestock_x500/model.sdf:L803]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+Warning [Utils.cc:132] [/sdf/model[@name="dronestock_x500"]/link[@name="link"]/sensor[@name="lidar_2d_v2"]/gz_frame_id:/home/dronestock/uwb_sim/uwb-gazebo-equipment/runs/equipment_01/models/dronestock_x500/model.sdf:L829]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+Warning [Utils.cc:132] [/sdf/model[@name="dronestock_x500"]/link[@name="camera_link"]/sensor[@name="camera"]/gz_frame_id:/home/dronestock/uwb_sim/uwb-gazebo-equipment/runs/equipment_01/models/dronestock_x500/model.sdf:L916]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+Warning [Utils.cc:132] [/sdf/model[@name="dronestock_x500"]/link[@name="base_link"]/sensor[@name="air_pressure_sensor"]/gz_frame_id:/home/dronestock/uwb_sim/uwb-gazebo-equipment/runs/equipment_01/models/dronestock_x500/model.sdf:L219]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+Warning [Utils.cc:132] [/sdf/model[@name="dronestock_x500"]/link[@name="base_link"]/sensor[@name="magnetometer_sensor"]/gz_frame_id:/home/dronestock/uwb_sim/uwb-gazebo-equipment/runs/equipment_01/models/dronestock_x500/model.sdf:L232]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+Warning [Utils.cc:132] [/sdf/model[@name="dronestock_x500"]/link[@name="base_link"]/sensor[@name="imu_sensor"]/gz_frame_id:/home/dronestock/uwb_sim/uwb-gazebo-equipment/runs/equipment_01/models/dronestock_x500/model.sdf:L254]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+Warning [Utils.cc:132] [/sdf/model[@name="dronestock_x500"]/link[@name="base_link"]/sensor[@name="navsat_sensor"]/gz_frame_id:/home/dronestock/uwb_sim/uwb-gazebo-equipment/runs/equipment_01/models/dronestock_x500/model.sdf:L302]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+Warning [Utils.cc:132] [/sdf/model[@name="dronestock_x500"]/link[@name="lidar_sensor_link"]/sensor[@name="lidar"]/gz_frame_id:/home/dronestock/uwb_sim/uwb-gazebo-equipment/runs/equipment_01/models/dronestock_x500/model.sdf:L687]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+Warning [Utils.cc:132] [/sdf/model[@name="dronestock_x500"]/link[@name="flow_link"]/sensor[@name="flow_camera"]/gz_frame_id:/home/dronestock/uwb_sim/uwb-gazebo-equipment/runs/equipment_01/models/dronestock_x500/model.sdf:L785]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+Warning [Utils.cc:132] [/sdf/model[@name="dronestock_x500"]/link[@name="flow_link"]/sensor[@name="optical_flow"]/gz_frame_id:/home/dronestock/uwb_sim/uwb-gazebo-equipment/runs/equipment_01/models/dronestock_x500/model.sdf:L803]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+Warning [Utils.cc:132] [/sdf/model[@name="dronestock_x500"]/link[@name="link"]/sensor[@name="lidar_2d_v2"]/gz_frame_id:/home/dronestock/uwb_sim/uwb-gazebo-equipment/runs/equipment_01/models/dronestock_x500/model.sdf:L829]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+Warning [Utils.cc:132] [/sdf/model[@name="dronestock_x500"]/link[@name="camera_link"]/sensor[@name="camera"]/gz_frame_id:/home/dronestock/uwb_sim/uwb-gazebo-equipment/runs/equipment_01/models/dronestock_x500/model.sdf:L916]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+Valid.
+dronestock@DESKTOP-0C8GRSK:~/uwb_sim/uwb-gazebo-equipment$ gz sdf -k runs/equipment_01/worlds/dronestock_uwb.sdf
+Error [Utils.cc:176] Error: Non-unique names detected in <link name='obstacle'>
+  <visual name='wall'>
+    <pose>0 0 0 0 0 0</pose>
+    <geometry>
+      <box>
+        <size>0.14999999999999999 10 3</size>
+      </box>
+    </geometry>
+    <material>
+      <ambient>0.600000024 0.600000024 0.699999988 1</ambient>
+      <diffuse>0.600000024 0.600000024 0.699999988 1</diffuse>
+    </material>
+  </visual>
+  <collision name='wall'>
+    <geometry>
+      <box>
+        <size>0.14999999999999999 10 3</size>
+      </box>
+    </geometry>
+  </collision>
+</link>

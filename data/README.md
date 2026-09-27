@@ -5,6 +5,7 @@ UWB 수신·보정과 26일 비행 분석에 쓸 자료 색인이다.
 
 | 경로 | 내용 |
 |---|---|
+| [Gazebo 앵커·장비 구성](processed/uwb/gazebo_equipment_20260927/) | 장착 배치·센서 SDF·실제 로그 추력 검토. 실제 Gazebo 실행 자료 아님 |
 | [Gazebo 연결용 합성 입력 검증](processed/uwb/gazebo_shadow_fixture_20260927/) | 합성 위치 320개로 여섯 조건 비교. 실제 Gazebo 기록 아님 |
 | [27일 센서 입력 준비](processed/flight_inputs_20260927/) | PX4 원본 시계·좌표 유지. 안테나 높이·UWB 위치 계산 전 단계 |
 | [C/D 시뮬레이션](processed/uwb/subsets_simulation_20260927/) | 여섯 합성 상황·경로·오차·출력률·실행 조건 |

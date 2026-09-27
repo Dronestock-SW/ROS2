@@ -1,0 +1,64 @@
+dronestock@DESKTOP-0C8GRSK:~/github/PX4-Autopilot$ PX4_SYS_AUTOSTART=4016 \
+PX4_SIM_MODEL=gz_dronestock_x500 \
+PX4_GZ_WORLD=dronestock_uwb \
+PX4_GZ_MODEL_POSE="2.09,1.68,0.24,0,0,0" \
+./build/px4_sitl_default/bin/px4
+
+______  __   __    ___
+| ___ \ \ \ / /   /   |
+| |_/ /  \ V /   / /| |
+|  __/   /   \  / /_| |
+| |     / /^\ \ \___  |
+\_|     \/   \/     |_/
+
+px4 starting.
+
+INFO  [px4] startup script: /bin/sh etc/init.d-posix/rcS 0
+env SYS_AUTOSTART: 4016
+INFO  [param] selected parameter default file fs/parameters.bson
+INFO  [param] importing from 'fs/parameters.bson'
+INFO  [parameters] BSON document size 145 bytes, decoded 145 bytes (INT32:6, FLOAT:1)
+INFO  [param] selected parameter backup file fs/parameters_backup.bson
+INFO  [dataman] data manager file './fs/dataman' size is 1208528 bytes
+INFO  [init] Gazebo simulator 8.15.0
+INFO  [init] Starting gazebo with world: /home/dronestock/github/PX4-Autopilot/Tools/simulation/gz/worlds/dronestock_uwb.sdf
+INFO  [init] Starting gz gui
+INFO  [init] Waiting for Gazebo world...
+INFO  [init] Waiting for Gazebo world...
+INFO  [init] Gazebo world is ready
+INFO  [init] Gazebo model pose: 2.09 1.68 0.24 0 0 0
+INFO  [init] Spawning Gazebo model
+Warning [Utils.cc:132] [/sdf/model[@name="dronestock_x500"]/link[@name="base_link"]/sensor[@name="air_pressure_sensor"]/gz_frame_id:/home/dronestock/github/PX4-Autopilot/Tools/simulation/gz/models/dronestock_x500/model.sdf:L219]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+Warning [Utils.cc:132] [/sdf/model[@name="dronestock_x500"]/link[@name="base_link"]/sensor[@name="magnetometer_sensor"]/gz_frame_id:/home/dronestock/github/PX4-Autopilot/Tools/simulation/gz/models/dronestock_x500/model.sdf:L232]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+Warning [Utils.cc:132] [/sdf/model[@name="dronestock_x500"]/link[@name="base_link"]/sensor[@name="imu_sensor"]/gz_frame_id:/home/dronestock/github/PX4-Autopilot/Tools/simulation/gz/models/dronestock_x500/model.sdf:L254]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+Warning [Utils.cc:132] [/sdf/model[@name="dronestock_x500"]/link[@name="base_link"]/sensor[@name="navsat_sensor"]/gz_frame_id:/home/dronestock/github/PX4-Autopilot/Tools/simulation/gz/models/dronestock_x500/model.sdf:L302]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+Warning [Utils.cc:132] [/sdf/model[@name="dronestock_x500"]/link[@name="lidar_sensor_link"]/sensor[@name="lidar"]/gz_frame_id:/home/dronestock/github/PX4-Autopilot/Tools/simulation/gz/models/dronestock_x500/model.sdf:L687]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+Warning [Utils.cc:132] [/sdf/model[@name="dronestock_x500"]/link[@name="flow_link"]/sensor[@name="flow_camera"]/gz_frame_id:/home/dronestock/github/PX4-Autopilot/Tools/simulation/gz/models/dronestock_x500/model.sdf:L785]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+Warning [Utils.cc:132] [/sdf/model[@name="dronestock_x500"]/link[@name="flow_link"]/sensor[@name="optical_flow"]/gz_frame_id:/home/dronestock/github/PX4-Autopilot/Tools/simulation/gz/models/dronestock_x500/model.sdf:L803]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+Warning [Utils.cc:132] [/sdf/model[@name="dronestock_x500"]/link[@name="link"]/sensor[@name="lidar_2d_v2"]/gz_frame_id:/home/dronestock/github/PX4-Autopilot/Tools/simulation/gz/models/dronestock_x500/model.sdf:L829]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+Warning [Utils.cc:132] [/sdf/model[@name="dronestock_x500"]/link[@name="camera_link"]/sensor[@name="camera"]/gz_frame_id:/home/dronestock/github/PX4-Autopilot/Tools/simulation/gz/models/dronestock_x500/model.sdf:L916]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+INFO  [gz_bridge] world: dronestock_uwb, model: dronestock_x500_0
+INFO  [lockstep_scheduler] setting initial absolute time to 2280000 us
+INFO  [init] Setting camera to follow dronestock_x500_0
+INFO  [init] Camera follow offset set to -2.0, -2.0, 2.0
+INFO  [commander] LED: open /dev/led0 failed (22)
+WARN  [health_and_arming_checks] Preflight Fail: no valid barometer data
+WARN  [health_and_arming_checks] Preflight Fail: system power unavailable
+WARN  [health_and_arming_checks] Preflight Fail: No connection to the GCS
+INFO  [tone_alarm] home set
+INFO  [vision_target_estimator] VTE for static target init
+INFO  [uxrce_dds_client] init UDP agent IP:127.0.0.1, port:8888
+INFO  [mavlink] mode: Normal, data rate: 4000000 B/s on udp port 18570 remote port 14550
+INFO  [mavlink] mode: Onboard, data rate: 4000000 B/s on udp port 14580 remote port 14540
+INFO  [mavlink] mode: Onboard, data rate: 4000 B/s on udp port 14280 remote port 14030
+INFO  [mavlink] mode: Gimbal, data rate: 400000 B/s on udp port 13030 remote port 13280
+INFO  [logger] logger started (mode=all)
+INFO  [logger] Max log file size: 1024 MiB
+INFO  [logger] Start file log (type: full)
+INFO  [logger] [logger] ./fs/log/2026-09-27/12_52_37.ulg
+INFO  [logger] Opened full log file: ./fs/log/2026-09-27/12_52_37.ulg
+INFO  [mavlink] MAVLink only on localhost (set param MAV_{i}_BROADCAST = 1 to enable network)
+INFO  [mavlink] MAVLink only on localhost (set param MAV_{i}_BROADCAST = 1 to enable network)
+INFO  [px4] Startup script returned successfully
+pxh> WARN  [health_and_arming_checks] Preflight Fail: No connection to the GCS
+WARN  [health_and_arming_checks] Preflight Fail: No connection to the GCS
