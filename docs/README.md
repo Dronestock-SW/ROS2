@@ -87,3 +87,7 @@
 - [Gazebo 목표 이동 실행 절차](uwb_gazebo_navigation_runbook.md)
 - [데모 임무 상태 판단 기준](demo_mission_design.md)
 - [Gazebo 수평 목표 연결 구조](uwb_gazebo_target_adapter.md)
+- [Gazebo 이상 시험 갱신본 제작 기록](report/uwb_gazebo_fault_bundle_20261002.md)
+- [Gazebo 이상·복구 평가 확인 기록](report/uwb_gazebo_fault_evaluation_20261002.md)
+- [Gazebo UWB 이상 주입 시험](uwb_gazebo_fault_trials.md)
+- [Gazebo 비행 기록의 독립 평가](uwb_gazebo_flight_evaluation.md)

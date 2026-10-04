@@ -1,0 +1,8 @@
+{
+  "confirmed": false,
+  "px4_to_gazebo_offset_us": null,
+  "uncertainty_us": null,
+  "valid_start_px4_us": null,
+  "valid_end_px4_us": null,
+  "evidence": ""
+}

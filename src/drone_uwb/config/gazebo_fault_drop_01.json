@@ -1,0 +1,8 @@
+{
+  "schema": 1,
+  "clock_domain": "gazebo_sim_us",
+  "origin": "first_recorded_pose",
+  "scenarios": [
+    {"id": "uwb_gap_01", "type": "drop_all", "start_s": 8.0, "end_s": 9.0}
+  ]
+}

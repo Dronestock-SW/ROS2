@@ -1,0 +1,18 @@
+{
+  "start_sim_us": null,
+  "end_sim_us": null,
+  "model": "dronestock_x500_0",
+  "max_truth_gap_s": 0.1,
+  "max_px4_bracket_s": 0.1,
+  "max_clock_uncertainty_us": 10000,
+  "positioning_target_m": 0.07,
+  "min_observation_coverage": 0.95,
+  "max_observation_gap_s": 0.15,
+  "max_observation_latency_s": 0.15,
+  "arrival_enter_m": 0.15,
+  "arrival_exit_m": 0.2,
+  "arrival_speed_m_s": 0.1,
+  "settle_s": 1.0,
+  "recovery_window_s": 2.0,
+  "recovery_settle_s": 0.5
+}
