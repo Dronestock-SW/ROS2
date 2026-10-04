@@ -38,6 +38,8 @@ ros2 run drone_bringup qr_decoder_node
 25cm가 목표거리다 (`target_distance_m` 기본값). 허용 범위는 23~27cm다.
 
 하한은 21.1cm다. ArUco를 화면 중앙에 정렬하면 그 아래부터 QR 우측이 잘린다.
+2026-10-04 실측 21.2cm로 확인했다(817표본). 계산과 0.1cm 차이다.
+17.8cm 아래는 어떤 조건에서도 0%다. 과접근 안전 한계로 쓴다.
 상한은 실측 47.4cm다. 25cm에서 2배 가까이 떨어져 있어 제약이 안 된다.
 산출 근거는 `aruco_alignment_node.py`의 "목표거리 재검토" 참조.
 
