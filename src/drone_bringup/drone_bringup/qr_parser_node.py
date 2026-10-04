@@ -14,6 +14,17 @@ qr_fallback_node가 리더기(DE2110)/카메라 어느 쪽에서 읽었든 통�
 zone/shelf/slot 값은 전부 문자열이다(웹 팀 확인, 2026-08-30) — 숫자로
 캐스팅하지 않는다.
 
+raw_qr_data 동봉:
+    정규화한 필드와 함께 원문 문자열을 raw_qr_data 로 실어 보낸다.
+    플랫폼 API v1의 POST /api/drones/{id}/scan/ 이 원문을 요구하는데,
+    정규화본에서는 역산할 수 없기 때문이다 — 이 노드가 공백·키 순서를
+    정리하고 없는 필드를 빈 문자열로 채우므로 원래 문자열이 남지 않는다.
+    여기서 버리면 그 스캔의 원문은 영구히 사라진다.
+
+    중복 판정에는 쓰지 않는다. 같은 라벨을 두 번 읽어 공백만 달라도
+    같은 관측으로 봐야 한다 — 판정은 정규화본으로 한다
+    (qr_record_store.py 참조).
+
 스키마 불일치 처리:
     "schema" 필드가 없거나 EXPECTED_SCHEMA와 다르면 발행하지 않고 경고만
     남긴다. 웹 쪽이 스키마를 버전업하면 여기서 바로 드러난다 — 조용히
@@ -79,6 +90,9 @@ class QrParserNode(Node):
         parsed = {'schema': schema, 'code': code, 'name': name}
         for field in _OPTIONAL_FIELDS:
             parsed[field] = item.get(field, '') or ''
+        # 정규화 과정에서 사라지는 원문을 그대로 붙인다. item 안에 같은 이름의
+        # 필드가 들어 있어도 이 값이 이긴다 — 원문은 이 노드가 받은 문자열이다.
+        parsed['raw_qr_data'] = msg.data
 
         self._pub.publish(String(data=json.dumps(parsed, ensure_ascii=False)))
         self.get_logger().info(f'QR 파싱: code={code} zone={parsed["zone"]!r}')
