@@ -13,7 +13,8 @@
 | A~H 단계, 패키지·설정·시험 대응표 | [저장소 구조와 작업 위치](reference/repository_layout.md) |
 | 현재 앵커 배치 | [6.3×4.6m 직사각형 좌표](reference/uwb_anchor_layout.md) |
 | 앵커 배치 변경·검증 | [2026-10-04 배치 고정 기록](report/uwb_anchor_rectangle_20261004.md) |
-| 관련 문서의 현재 기준·z 확인 상태 | [관련 문서 동기화](report/uwb_related_reference_sync_20261004.md) |
+| 관련 문서의 현재 기준 동기화 | [관련 문서 동기화](report/uwb_related_reference_sync_20261004.md) |
+| 가상 고도 제거·실측 ToF 표시 | [2026-10-04 수정 기록](report/demo_measured_tof_20261004.md) |
 | 이번 정리의 이동표·검증·남은 작업 | [2026-10-04 모듈 정리 기록](report/repository_modularization_20261004.md) |
 | 기술 방향·고도 책임·용어·장비 | 루트의 `roadmap.md`, `altitude_policy.md`, `glossary.md`, `equipment_inventory.md` |
 | 구조·책임·처리 흐름 | [architecture/](architecture/) |
@@ -78,7 +79,7 @@ Windows에서는 심볼릭 링크를 지원하는 WSL 체크아웃을 쓴다.
 | [companion 설치](runbooks/companion_setup.md) | 재설치·빌드 준비 |
 | [Gazebo WSL 재실행](runbooks/gazebo_wsl_runbook.md) | Windows·Ubuntu·PX4 창별 명령과 QGroundControl 연결 |
 | [UWB 지상 시험](runbooks/uwb_bench_procedure.md) | 실물 수신 시험 |
-| [공용 데모 절차](runbooks/demo_procedure.md) | 장비 도착 전 기능 시험 |
+| [공용 데모 절차](runbooks/demo_procedure.md) | XY 기능 시험·실측 ToF 거리 표시 |
 
 ## 설계·사전·외부 검토 자료
 

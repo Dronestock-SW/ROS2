@@ -1,137 +1,106 @@
-# 공용 데모 기준
-이 문서는 장비 없이 쓰는 데모의 기준이다.
-새 기능에 시험 입력을 연결할 때 읽는다.
+# 공용 XY 데모 기준
+
+XY 시험 입력과 실측 ToF 표시의 기준이다.
+데모 또는 센서 표시를 연결할 때 읽는다.
 
 ## 범위
 
-데모 입력을 한 패키지에서 가져다 쓴다.
-패키지 이름은 `drone_demo`다.
-실행 순서는 [데모 실행 절차](../runbooks/demo_procedure.md)를 따른다.
-도착·수신 공백 판단은 [임무 상태 기준](demo_mission_design.md)을 따른다.
+공용 데모에서 드론의 가상 고도를 제거했다.
+2026-10-04 사용자가 ToF 실측 가능을 확인했다.
+실행은 [데모 절차](../runbooks/demo_procedure.md)를 따른다.
+도착 판정은 [임무 상태 기준](demo_mission_design.md)을 따른다.
 
 ```text
-데모 설정 + 기존 앵커 좌표
-              |
-         가상 이동 경로
-          /          \
- 데모 위치·목표점   가상 UWB 거리
-                         |
-                  기존 UWB 전처리
-                         |
-                    /uwb_pose
-          \              /
-            개발 중인 기능
+config/demo.json
+    |
+    +-- XY 경로·목표 ---------> /demo_pose, /target_pose
+    |
+    +-- XY 잡음·공백 ---------> /uwb_pose (demo_xy)
+
+실측 ToF 토픽 (sensor_msgs/Range)
+    |
+    +-- 거리·시각·수신 나이 ---> /demo_status.tof
+                                  |
+                          미수신·노후: null
 ```
 
-가상 이동은 시간에 맞춘 직선 이동이다.
-목표점은 데모가 함께 제공한다.
-제어기의 행동으로 이동하는 물리 모델은 아니다.
-EKF2·보상·비행 안정성 검증은 SITL에서 한다.
-이유: 이 데모에는 추력·관성·자세 동역학이 없다.
+XY 관측은 표시·도착·수신 공백 시험용이다.
+실제 RAW 처리기를 실행한 결과가 아니다.
+가상 z가 필요했던 사선거리 생성도 제거했다.
+`/uwb/raw` 발행과 `received.jsonl` 생성은 종료했다.
+실제 RAW 검증은 [UWB 재생 절차](../runbooks/uwb_data_runbook.md)를 따른다.
+별도 Gazebo·수식 단위시험은 재현용으로 유지한다.
 
-## 공용 설정
+## 설정
 
-임시값은 `config/demo.json`에서 바꾼다.
+[설정 파일](../../src/drone_demo/config/demo.json)에서 XY를 조정한다.
 
-| 항목 | 첫 기본값 | 의미 |
+| 항목 | 기본값 | 의미 |
 |---|---|---|
-| `z_min_m` / `z_max_m` | 0.2m / 2.2m | 가상 z 범위. 실측값 아님 |
-| `z_period_s` | 8초 | 사인 파형 한 주기 |
-| `start_xy_m` | [2.09, 1.68]m | 기존 기준점에서 가져온 시작 위치 |
-| `target_xy_m` | [3.09, 2.68]m | 임의의 시험 목표점 |
-| `rate_hz` | 40Hz | 가상 거리 주기. 실측 측정률 아님 |
-| `duration_s` | 12초 | 실행 뒤 자동 종료 |
+| `start_xy_m` | [2.09, 1.68]m | 시작 위치 |
+| `target_xy_m` | [3.09, 2.68]m | 시험 목표 |
+| `rate_hz` | 40Hz | 데모 입력 주기 |
+| `duration_s` | 12초 | 자동 종료 시간 |
 | `start_hold_s` | 2초 | 이동 전 대기 |
-| `speed_m_s` | 0.25m/s | 가상 경로의 이동 속도 |
-| `range_noise_stddev_m` | 0.02m | 예시 거리 잡음. 실측 교정값 아님 |
-| `seed` | 7 | 동일 입력 재현용 값 |
-| 앵커 높이 | 2.2m | 기존 잠정 배치 파일 사용 |
+| `speed_m_s` | 0.25m/s | 지정 경로의 이동 속도 |
+| `xy_noise_stddev_m` | 0.02m | XY 각 축의 예시 잡음 |
+| `seed` | 7 | 입력 재현용 난수 seed |
+| `real_tof_topic` | `/tof/range` | 실측 Range 구독 인자 |
+| `tof_timeout_s` | 0.2초 | 거리 표시의 만료 시간 |
 
-z는 1.2m에서 시작해 2.2m, 0.2m를 순서대로 지난다.
-식은 1.2 + sin(2πt/8) m이다.
-실제 ToF 측정이나 PX4 고도 추정값이 아니다.
-유효한 `sensor_msgs/Range` 입력이 `/tof/range`에 들어오면
-데모 노드는 가상 위치·목표·UWB 발행을 모두 종료한다.
-토픽은 `real_tof_topic` 실행 인자로 바꿀 수 있다.
-수동 차단에는 `synthetic_z_enabled:=false`를 쓴다.
+`z_min_m`, `z_max_m`, `z_period_s`는 제거했다.
+`synthetic_z_enabled` 실행 인자도 제거했다.
+기존 설정의 `range_noise_stddev_m`은 XY 잡음으로 교체한다.
+새 설정의 숫자는 센서 교정값이 아니다.
 
-앵커는 [현재 직사각형 배치](../reference/uwb_anchor_layout.md)를 사용한다.
-가로 6.3m, 세로 4.6m, 높이 2.2m다.
-데모와 수신 노드는 같은 기준 파일을 읽는다.
-비행 허용 구역은 별도 설정으로 유지한다.
+앵커 XY는 [6.3×4.6m 직사각형](../reference/uwb_anchor_layout.md)이다.
+앵커 설치 높이 2.2m와 드론의 고도는 별개의 값이다.
+데모는 배치의 좌표계만 공유하고 거리를 합성하지 않는다.
 
-## 시나리오
+## 입력과 출력
 
-한 설정에서 세 가지 입력을 재현한다.
+DOMAIN_ID 99와 `ROS_LOCALHOST_ONLY=1`을 사용한다.
+이유: 데모 목표와 실기 임무 입력을 분리해야 한다.
 
-| 이름 | 위치 변화 | UWB 입력 |
+| 경계 | 메시지 | 의미 |
 |---|---|---|
-| `stationary` | 시작 위치 유지 | 연속 거리. 목표도 시작 위치 |
-| `move` | 2초 후 목표까지 직선 이동 | 연속 거리 |
-| `gap` | `move`와 같은 경로 | 4초 이상, 5초 미만에 수신 중단 |
+| `/demo_pose` | `PoseStamped` | 지정한 XY 경로. z=0 자리값 |
+| `/target_pose` | `PoseStamped` | XY 목표. z=0 자리값 |
+| `/uwb_pose` | `PoseWithCovarianceStamped` | 잡음·공백을 넣은 XY 시험 관측 |
+| `real_tof_topic` | `sensor_msgs/Range` | 원래 센서 시각·frame·거리·측정 범위 |
+| `/demo_status` | `String` JSON | schema 2. XY 출처와 ToF 상태 |
 
-수신 공백에는 새 UWB 좌표를 발행하지 않는다.
-가상 위치는 데모의 정답으로만 계속 나온다.
-그 정답을 공백 보완 추정 결과로 해석하지 않는다.
-이유: 센서 없이도 생성기가 알고 있는 값이다.
+`/uwb_pose`의 z·회전 분산은 1e6이다.
+위치 메시지의 좌표계는 `uwb_map`이다.
+상태는 `z_m=null`, `z_source=unobserved`를 기록한다.
+ToF 거리와 지도 높이를 같은 숫자로 채우지 않는다.
+이유: 자세·바닥·장착 오프셋 보정이 필요하다.
 
-## ROS2 입력 계약
+ToF가 유효하면 `tof.available=true`와 `range_m`을 기록한다.
+측정 시각은 0보다 크고 미래가 아니어야 한다.
+센서 frame과 유한한 측정 범위를 요구한다.
+중복·과거 표본은 신선도를 갱신하지 않는다.
+미수신·잘못된 입력·시간 초과에는 값을 null로 둔다.
+신선도는 측정 시각과 수신 후 단조 시계로 확인한다.
+ToF 수신은 XY 데모를 종료하지 않는다.
 
-ROS2 데모는 DOMAIN_ID 99에서만 실행한다.
-1호기·2호기의 DOMAIN_ID 1·2와 구분한다.
-같은 PC의 시험 노드는 `ROS_LOCALHOST_ONLY=1`을 쓴다.
-이유: 가상 목표가 실기 임무 입력과 섞이지 않게 한다.
+`/target_pose`는 transient local QoS로 저장 발행한다.
+`/uwb_pose`와 ToF 구독은 sensor data QoS다.
+MAVROS·PX4 제어기는 이 데모에서 실행하지 않는다.
 
-| Topic | 메시지 | 값의 의미 |
+## 시나리오와 파일 계약
+
+| 시나리오 | 경로 | XY 시험 관측 |
 |---|---|---|
-| `/demo_pose` | `PoseStamped` | 생성기가 아는 위치. z는 가상 사인 파형 |
-| `/target_pose` | `PoseStamped` | 데모 목표. 고도 제어 명령 아님 |
-| `/uwb/raw` | `String` JSON | 가상 RAW 계약. `demo=true` 포함 |
-| `/uwb_pose` | `PoseWithCovarianceStamped` | 기존 전처리를 통과한 x·y |
-| `/demo_status` | `String` JSON | 시나리오·시간·거부 사유·출처 |
+| `stationary` | 시작점 유지, 목표도 시작점 | 연속 |
+| `move` | 2초 뒤 직선 이동 | 연속 |
+| `gap` | move와 같음 | 4초 이상, 5초 미만 공백 |
 
-모든 위치의 좌표계는 `uwb_map`이다.
-이는 PX4 ENU와 정렬했다는 뜻이 아니다.
-`/uwb_pose`의 z는 미관측 자리값 0이다.
-z·회전 분산은 기존 노드와 같은 1e6이다.
-임시 높이를 UWB의 고도 관측으로 넣지 않는다.
-이유: 같은 높이의 앵커로 계산하는 관측은 x·y다.
+JSONL은 `truth_xy_m`과 `target_xy_m`을 사용한다.
+과거 `truth_xyz_m`·`target_xyz_m`은 새 출력에 없다.
+CSV도 XY만 기록한다.
+`demo_export`는 센서에 접속하지 않는다.
+실측 ToF를 포함한 상태는 ROS의 `/demo_status`에서 읽는다.
+과거 시험 파일은 당시 계약으로 보존한다.
 
-`/target_pose`는 목표를 한 번 저장 발행한다.
-늦게 연결한 구독자는 transient local QoS를 쓴다.
-`/uwb_pose`와 `/uwb/raw`는 sensor data QoS다.
-나머지 데모 상태는 reliable QoS다.
-
-MAVROS·PX4 브리지는 이 데모에서 기동하지 않는다.
-시리얼 포트와 서버에도 접속하지 않는다.
-이유: 개발용 입력 생성에 실기 연결은 필요 없다.
-
-## 다음 단계에서 가져다 쓸 부분
-
-입력 출처를 필요한 시점에 하나씩 교체한다.
-
-| 개발 단계 | 데모에서 재사용 | 실제 입력으로 전환할 때 |
-|---|---|---|
-| 거리·목표 판정 | 데모 위치와 목표 | 현재 위치는 PX4 추정값 사용 |
-| UWB 공백 대응 | `gap`와 상태 기록 | 실제 수신 나이·결손으로 교체 |
-| UWB 전처리 | 기존 `Processor`와 가상 RAW | 실제 `uwb_node`로 교체 |
-| 고도 표시 | 가상 z, `demo_sine` 출처 표시 | 검증한 PX4 고도와 출처 사용 |
-| LiDAR 기능 | 입력 연결 자리를 추후 추가 | 실제 T-mini Pro `/scan` 사용 |
-| IMU·EKF2·보상 검증 | 시나리오와 평가 조건 | PX4 SITL의 물리·센서 모델 사용 |
-
-이번 버전은 IMU·LiDAR 값을 만들지 않는다.
-없는 센서의 신뢰도를 숫자로 채우지도 않는다.
-이유: 해당 측정과 모델은 아직 연결하지 않았다.
-T-mini Pro의 수평 스캔을 하방 고도로 쓰지 않는다.
-이유: 측정 평면과 높이 방향이 다르다.
-
-## 근거
-
-프로젝트의 기존 제어 책임을 유지한다.
-
-- [로드맵](../roadmap.md) 결정 2·4·7·10.
-- [고도 원칙](../altitude_policy.md).
-- [기존 앵커 좌표](../reference/uwb_anchor_survey.md).
-- [9월 13일 서버 수신값](../report/platform_connection_20260913.md).
-- [ROS2 Humble Domain ID 공식 원문](https://github.com/ros2/ros2_documentation/blob/humble/source/Concepts/Intermediate/About-Domain-ID.rst).
-- [ROS2 Humble QoS 공식 원문](https://github.com/ros2/ros2_documentation/blob/humble/source/Concepts/Intermediate/About-Quality-of-Service-Settings.rst).
+고도 제어와 후보정 입력은 [고도 원칙](../altitude_policy.md)을 따른다.

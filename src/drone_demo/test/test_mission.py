@@ -37,12 +37,12 @@ def test_full_generated_scenarios(scenario):
     config = replace(DEMO, scenario=scenario)
     run = DemoRun(config, LAYOUT)
     m = MissionMonitor(CONFIG)
-    m.set_target(*run.target_xyz[:2], 'uwb_map')
+    m.set_target(*run.target_xy, 'uwb_map')
     states = []
     for i in range(config.sample_count):
         sample = run.sample(i)
         t = sample['time_s']
-        m.update('pose', *sample['truth_xyz_m'][:2], 1_000_000_000+round(t*1e9), t, 0, 'uwb_map')
+        m.update('pose', *sample['truth_xy_m'], 1_000_000_000+round(t*1e9), t, 0, 'uwb_map')
         if sample['observation']:
             obs = sample['observation']
             m.update('uwb', obs['x'], obs['y'], obs['stamp_ns'], t, 0.01, 'uwb_map')

@@ -9,6 +9,8 @@ A를 기준선으로 두고 모델별 개선을 검증하는 단계다.
 현재 XY 배치는 [6.3×4.6m 직사각형](../reference/uwb_anchor_layout.md)이다.
 아래 표의 비정형·HW 참고 좌표는 당시 비교용이다.
 현재 코드 위치는 [단계별 위치표](../reference/repository_layout.md)를 따른다.
+2026-10-04 사용자가 ToF 실측 가능을 확인했다.
+드론 가상 고도 제거는 [현재 고도 원칙](../altitude_policy.md)을 따른다.
 
 ## 1. 목표와 범위
 

@@ -15,8 +15,8 @@ def argument(name):
 def generate_launch_description():
     source = Node(package='drone_demo', executable='demo_node', output='screen', parameters=[{
         'config_file': argument('config_file'), 'scenario': argument('scenario'),
-        'synthetic_z_enabled': ParameterValue(LaunchConfiguration('synthetic_z_enabled'), value_type=bool),
         'real_tof_topic': argument('real_tof_topic'),
+        'tof_timeout_s': ParameterValue(LaunchConfiguration('tof_timeout_s'), value_type=float),
     }])
     monitor = Node(package='drone_demo', executable='demo_mission_node', output='screen', parameters=[{
         'mission_config': argument('mission_config'), 'record_directory': argument('record_directory'),
@@ -24,8 +24,8 @@ def generate_launch_description():
     return LaunchDescription([
         DeclareLaunchArgument('scenario', default_value='gap'),
         DeclareLaunchArgument('config_file', default_value=''),
-        DeclareLaunchArgument('synthetic_z_enabled', default_value='true'),
         DeclareLaunchArgument('real_tof_topic', default_value='/tof/range'),
+        DeclareLaunchArgument('tof_timeout_s', default_value='0.2'),
         DeclareLaunchArgument('mission_config', default_value=''),
         DeclareLaunchArgument('record_directory', default_value=''),
         RegisterEventHandler(OnProcessExit(target_action=source, on_exit=[

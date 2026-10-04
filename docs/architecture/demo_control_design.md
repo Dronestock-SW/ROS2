@@ -39,7 +39,7 @@ MAVROS와 실제 PX4를 연결하지 않는다.
 
 | 설정 | 기본값 | 의미 |
 |---|---:|---|
-| 가상 z | 0.2~2.2m, 8초 주기 | 기존 데모 높이 |
+| 고도 | 생성하지 않음 | 실측 ToF·PX4 입력을 별도로 사용 |
 | `speed_m_s` | 0.25m/s | 합성 수평 속력 상한 |
 | `start_hold_s` | 2초 | 모형의 초기 정지 구간 |
 | `kp_xy_s_inv` | 0.5/s | 위치 오차를 속도로 변환 |
@@ -76,7 +76,7 @@ PX4의 ENU와 정합했다는 뜻은 아니다.
 
 | Topic | 형식 | 역할 |
 |---|---|---|
-| `/demo_pose` | `PoseStamped` | 모형의 현재 위치. z=1.2m |
+| `/demo_pose` | `PoseStamped` | 모형의 XY 위치. z=0 미관측 자리값 |
 | `/target_pose` | `PoseStamped` | 기존 데모 목표 |
 | `/uwb/raw`, `/uwb_pose` | 기존 형식 | 가상 거리와 전처리 관측 |
 | `/demo_mission_state` | `String` JSON | 기존 임무 상태 판단 |

@@ -38,7 +38,7 @@ UWB는 새 관측이 들어오는지만 확인한다.
 |---|---|---|
 | `/target_pose` | `PoseStamped` | 목표 x·y. 동일 좌표 재수신은 유지 |
 | `/demo_pose` | `PoseStamped` | 데모 위치. 연속 두 표본으로 속력 계산 |
-| `/uwb_pose` | `PoseWithCovarianceStamped` | 전처리를 통과한 관측의 시각 |
+| `/uwb_pose` | `PoseWithCovarianceStamped` | XY 시험 관측의 시각 |
 | `/demo_mission_state` | `String` JSON | 상태·사유·거리·속력·입력 나이 |
 
 좌표계는 `uwb_map`이어야 한다.
@@ -47,6 +47,8 @@ UWB는 새 관측이 들어오는지만 확인한다.
 NaN과 무한대 좌표도 거부한다.
 이유: 거리·속력을 유한한 수로 계산할 수 없다.
 
+공용 데모는 XY만 생성한다. 가상 z는 제거했다.
+실측 ToF는 별도의 하방거리 표시로 기록한다.
 현재 z는 판단에 사용하지 않는다.
 고도 제어 명령도 만들지 않는다.
 이유: 이번 개발은 수평 위치의 상태 판단이다.

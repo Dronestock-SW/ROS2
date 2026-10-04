@@ -10,12 +10,12 @@ def generate_launch_description():
     return LaunchDescription([
         DeclareLaunchArgument('config_file', default_value=''),
         DeclareLaunchArgument('scenario', default_value=''),
-        DeclareLaunchArgument('synthetic_z_enabled', default_value='true'),
         DeclareLaunchArgument('real_tof_topic', default_value='/tof/range'),
+        DeclareLaunchArgument('tof_timeout_s', default_value='0.2'),
         Node(package='drone_demo', executable='demo_node', output='screen', parameters=[{
             'config_file': ParameterValue(LaunchConfiguration('config_file'), value_type=str),
             'scenario': ParameterValue(LaunchConfiguration('scenario'), value_type=str),
-            'synthetic_z_enabled': ParameterValue(LaunchConfiguration('synthetic_z_enabled'), value_type=bool),
             'real_tof_topic': ParameterValue(LaunchConfiguration('real_tof_topic'), value_type=str),
+            'tof_timeout_s': ParameterValue(LaunchConfiguration('tof_timeout_s'), value_type=float),
         }]),
     ])

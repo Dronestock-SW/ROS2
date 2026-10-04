@@ -14,21 +14,20 @@ def run_scenario(config, layout, uwb_settings, mission_config, output):
     output.mkdir(parents=True, exist_ok=False)
     demo = DemoRun(config, layout, uwb_settings)
     monitor = MissionMonitor(mission_config)
-    monitor.set_target(*demo.target_xyz[:2], layout['coordinate_frame'])
+    monitor.set_target(*demo.target_xy, layout['coordinate_frame'])
     transitions = []
     previous = None
     with (output / 'mission_state.jsonl').open('x', encoding='utf-8') as log:
         for index in range(config.sample_count):
             sample = demo.sample(index)
             t = sample['time_s']
-            monitor.update('pose', *sample['truth_xyz_m'][:2],
+            monitor.update('pose', *sample['truth_xy_m'],
                            1_000_000_000+round(t*1e9), t, 0.0, sample['frame_id'])
             if sample['observation']:
                 obs = sample['observation']
-                # Use the generator's receive clock and the processor's mapped stamp.
-                received = sample['received'][-1]['host_received_ros_ns']
+                # XY fixtures have no transport delay or hardware clock mapping.
                 monitor.update('uwb', obs['x'], obs['y'], obs['stamp_ns'], t,
-                               (received-obs['stamp_ns'])/1e9, sample['frame_id'])
+                               0.0, sample['frame_id'])
             state = monitor.evaluate(t)
             state['demo_time_s'] = t
             log.write(json.dumps(state, allow_nan=False) + '\n')

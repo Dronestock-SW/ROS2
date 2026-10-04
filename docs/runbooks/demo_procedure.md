@@ -1,6 +1,6 @@
 # 공용 데모 실행 절차
 이 문서는 `drone_demo` 실행 순서다.
-장비 없이 새 기능에 시험 입력을 넣을 때 읽는다.
+XY 시험과 실측 ToF 표시를 연결할 때 읽는다.
 
 ## 1. 빌드
 
@@ -32,7 +32,6 @@ ros2 run drone_demo demo_export \
 |---|---|
 | `poses.csv` | 위치·목표·공백을 표로 보기 |
 | `samples.jsonl` | 데모 위치와 처리 결과 읽기 |
-| `received.jsonl` | 기존 `uwb_replay` 입력으로 쓰기 |
 | `summary.json` | 설정·출처·처리 수·데모 오차 확인 |
 
 ```bash
@@ -40,7 +39,8 @@ head -8 /tmp/drone_demo_gap/poses.csv
 cat /tmp/drone_demo_gap/summary.json
 ```
 
-`warming_up`은 초기 시각 정합 준비 상태다.
+`demo_xy`는 XY 시험 관측을 생성한 상태다.
+가상 고도·사선거리·`received.jsonl`은 생성하지 않는다.
 `demo_gap`은 설정한 수신 공백이다.
 관측이 없으면 CSV의 UWB x·y 칸이 비어 있다.
 그 행의 데모 위치는 정답이며 관측이 아니다.
@@ -84,13 +84,28 @@ ROS_DOMAIN_ID=99 ROS_LOCALHOST_ONLY=1 \
 데모 위치를 EKF2 관측 입력에 연결하지 않는다.
 이유: 생성기의 정답을 센서 측정으로 오인하게 한다.
 
-## 4. 실제 ToF 연결 시 데모 차단
+## 4. 실측 ToF 거리 표시
 
-실제 `sensor_msgs/Range` 측정을 데모의 `/tof/range`에 연결한다.
-유효한 측정값을 받으면 데모 발행이 종료된다.
-토픽 이름이 다르면 `real_tof_topic:=<토픽>`으로 지정한다.
-연결 전 임시 차단은 `synthetic_z_enabled:=false`를 쓴다.
-DOMAIN_ID 99 밖의 측정은 데모에서 자동 감지할 수 없다.
+실제 `sensor_msgs/Range` 토픽을 `real_tof_topic`으로 지정한다.
+센서 메시지에는 측정 시각·frame·거리 범위가 필요하다.
+측정 시계는 ROS 노드와 대응해야 한다.
+
+```bash
+ROS_DOMAIN_ID=99 ROS_LOCALHOST_ONLY=1 \
+  ros2 launch drone_demo demo.launch.py \
+  real_tof_topic:=/tof/range tof_timeout_s:=0.2
+```
+
+`/demo_status`의 `tof.range_m`에서 하방거리를 확인한다.
+미수신·오류·0.2초 초과 표본은 null이다.
+`tof.reason`에서 사유를 확인한다.
+실측 입력이 들어와도 XY 데모는 계속 실행된다.
+DOMAIN_ID 99 밖의 센서는 별도 연결이 필요하다.
+이 저장소 변경만으로 장치 토픽이 연결되지는 않는다.
+
+ToF 거리를 `/demo_pose.z`에 대입하지 않는다.
+이유: 광축 거리와 지도 높이는 서로 다른 값이다.
+실제 비행 고도는 PX4 추정 출력을 사용한다.
 
 ## 5. 값 바꾸기
 
@@ -102,7 +117,7 @@ DOMAIN_ID 99 밖의 측정은 데모에서 자동 감지할 수 없다.
 
 ```bash
 ros2 run drone_demo demo_export \
-  --scenario stationary --z-min-m 0.2 --z-max-m 2.2 --z-period-s 8 --duration-s 60 \
+  --scenario stationary --duration-s 60 \
   --output /tmp/drone_demo_stationary_60s
 ```
 
@@ -112,7 +127,7 @@ ros2 run drone_demo demo_export \
 cp src/drone_demo/config/demo.json /tmp/my_drone_demo.json
 ```
 
-복사본의 z·목표·기간을 고친 뒤 실행한다.
+복사본의 XY·잡음·기간을 고친 뒤 실행한다.
 
 ```bash
 ROS_DOMAIN_ID=99 ROS_LOCALHOST_ONLY=1 \
@@ -120,22 +135,10 @@ ROS_DOMAIN_ID=99 ROS_LOCALHOST_ONLY=1 \
   config_file:=/tmp/my_drone_demo.json
 ```
 
-## 5. 기존 UWB 재생기에 사용
-
-데모 RAW도 실제 수집 파일과 같은 입력 형식을 쓴다.
-
-```bash
-ros2 run drone_uwb uwb_replay \
-  /tmp/drone_demo_gap/received.jsonl \
-  --layout src/drone_uwb/config/anchors/anchors_20261004.json \
-  --settings src/drone_uwb/config/runtime/uwb.yaml \
-  --output /tmp/drone_demo_gap_replay
-```
-
-움직이는 경로에 단일 `--reference`를 넣지 않는다.
-이유: 정지 기준점 하나로 이동 정확도를 잴 수 없다.
-데모 오차는 `summary.json`의 정답 비교를 본다.
-이는 실물의 정확도 검증 수치가 아니다.
+가상 고도 설정과 `--z-*` 인자는 더 이상 제공하지 않는다.
+구 설정은 현재 `demo.json`을 기준으로 다시 작성한다.
+실제 UWB RAW 재생은 [자료 실행 절차](uwb_data_runbook.md)를 따른다.
+XY 데모 파일은 RAW 재생 입력이 아니다.
 
 ## 6. 실측 입력으로 전환
 
@@ -146,6 +149,7 @@ ros2 run drone_uwb uwb_replay \
 | 거리·도착 조건 | `/demo_pose`, `/target_pose` |
 | 수신 공백 처리 | `gap`, `/demo_status`, `/uwb_pose` |
 | 실제 UWB | 실기 DOMAIN_ID의 기존 `uwb_node` |
+| 실제 하방거리 표시 | `real_tof_topic`의 실측 Range |
 | 실제 현재 위치·고도 | 검증한 PX4 추정 출력 |
 | 실제 LiDAR | T-mini Pro의 `/scan` |
 | 비행·EKF2·보상 학습 | 별도 PX4 SITL 단계 |
@@ -209,3 +213,6 @@ python3 -m pytest -q src/drone_demo/test
 ROS_DOMAIN_ID=99 ROS_LOCALHOST_ONLY=1 \
   python3 src/drone_demo/test/check_ros_topics.py --mission
 ```
+
+ROS 연결 시험은 `/demo/test_tof_range`에 시험 표본을 발행한다.
+실물 ToF 검증과 구분한다.

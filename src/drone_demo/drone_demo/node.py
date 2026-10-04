@@ -14,7 +14,7 @@ from std_msgs.msg import String
 from sensor_msgs.msg import Range
 
 from .core import DemoRun, load_inputs
-from .z_gate import DemoZGate
+from .tof_readout import TofReadout
 
 
 def require_demo_environment(environ):
@@ -22,11 +22,13 @@ def require_demo_environment(environ):
         raise ValueError('Use ROS_DOMAIN_ID=99 ROS_LOCALHOST_ONLY=1 for demo inputs.')
 
 
-def pose_message(xyz, stamp, frame):
+def pose_message(xy, stamp, frame):
     message = PoseStamped()
     message.header.stamp = stamp
     message.header.frame_id = frame
-    message.pose.position.x, message.pose.position.y, message.pose.position.z = map(float, xyz)
+    message.pose.position.x, message.pose.position.y = map(float, xy)
+    # PoseStamped requires z; zero is an unobserved placeholder, never a height.
+    message.pose.position.z = 0.0
     message.pose.orientation.w = 1.0
     return message
 
@@ -56,9 +58,9 @@ class DemoNode(Node):
         descriptor = ParameterDescriptor(read_only=True)
         for name, default in (('config_file', ''), ('scenario', '')):
             self.declare_parameter(name, default, descriptor)
-        self.declare_parameter('synthetic_z_enabled', True, descriptor)
         self.declare_parameter('real_tof_topic', '/tof/range', descriptor)
-        self.z_gate = DemoZGate(self.get_parameter('synthetic_z_enabled').value)
+        self.declare_parameter('tof_timeout_s', 0.2, descriptor)
+        self.tof = TofReadout(self.get_parameter('tof_timeout_s').value)
         config, layout, settings = load_inputs(
             self.get_parameter('config_file').value,
             scenario=self.get_parameter('scenario').value or None)
@@ -68,7 +70,6 @@ class DemoNode(Node):
             PoseStamped, '/target_pose', QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL))
         self.uwb_pub = self.create_publisher(
             PoseWithCovarianceStamped, '/uwb_pose', qos_profile_sensor_data)
-        self.raw_pub = self.create_publisher(String, '/uwb/raw', qos_profile_sensor_data)
         self.status_pub = self.create_publisher(String, '/demo_status', 10)
         self.tof_sub = self.create_subscription(
             Range, self.get_parameter('real_tof_topic').value,
@@ -79,21 +80,16 @@ class DemoNode(Node):
         self.finished = False
         self.timer = self.create_timer(1/config.rate_hz, self.tick)
         self.get_logger().info(
-            f'DEMO ONLY: {config.scenario}, sine z={config.z_min_m}..{config.z_max_m} m, '
+            f'DEMO ONLY: {config.scenario}, XY only; ToF readout requires measured input, '
             f'domain 99, {config.duration_s} s. No flight interface.')
 
     def on_real_tof(self, message):
-        if self.z_gate.observe(message.range, message.min_range, message.max_range):
-            if not self.finished:
-                self.get_logger().warn('Real ToF detected; stopping demo publishers.')
-                self.timer.cancel()
-                self.finished = True
+        stamp_ns = message.header.stamp.sec * 1_000_000_000 + message.header.stamp.nanosec
+        self.tof.observe(message.range, message.min_range, message.max_range,
+                         stamp_ns, message.header.frame_id, time.monotonic_ns(),
+                         self.get_clock().now().nanoseconds)
 
     def tick(self):
-        if self.z_gate.blocked:
-            self.timer.cancel()
-            self.finished = True
-            return
         mono_ns = time.monotonic_ns()
         elapsed = (mono_ns - self.started_ns) / 1e9
         if elapsed >= self.run.config.duration_s:
@@ -108,14 +104,14 @@ class DemoNode(Node):
         sample = self.run.sample(index, mono_ns, stamp.nanoseconds)
         if self.last_index < 0:
             self.target_pub.publish(pose_message(
-                sample['target_xyz_m'], stamp.to_msg(), sample['frame_id']))
+                sample['target_xy_m'], stamp.to_msg(), sample['frame_id']))
         self.last_index = index
-        self.truth_pub.publish(pose_message(sample['truth_xyz_m'], stamp.to_msg(), sample['frame_id']))
-        for record in sample['received']:
-            self.raw_pub.publish(String(data=json.dumps(record['message'], allow_nan=False)))
+        self.truth_pub.publish(pose_message(sample['truth_xy_m'], stamp.to_msg(), sample['frame_id']))
         if sample['observation']:
             self.uwb_pub.publish(observation_message(sample['observation'], sample['frame_id']))
-        status = {k: v for k, v in sample.items() if k not in ('received', 'observation')}
+        status = {k: v for k, v in sample.items() if k != 'observation'}
+        status['tof'] = self.tof.snapshot(mono_ns, stamp.nanoseconds)
+        status['tof']['topic'] = self.get_parameter('real_tof_topic').value
         status['uwb_observation_published'] = sample['observation'] is not None
         self.status_pub.publish(String(data=json.dumps(status, allow_nan=False)))
         phase = (sample['trajectory_phase'], sample['uwb_available'])

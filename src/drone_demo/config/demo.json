@@ -1,15 +1,12 @@
 {
   "scenario": "move",
-  "z_min_m": 0.2,
-  "z_max_m": 2.2,
-  "z_period_s": 8.0,
   "start_xy_m": [2.09, 1.68],
   "target_xy_m": [3.09, 2.68],
   "rate_hz": 40.0,
   "duration_s": 12.0,
   "start_hold_s": 2.0,
   "speed_m_s": 0.25,
-  "range_noise_stddev_m": 0.02,
+  "xy_noise_stddev_m": 0.02,
   "gap_start_s": 4.0,
   "gap_duration_s": 1.0,
   "seed": 7

@@ -106,6 +106,7 @@ HW 앵커 A1~A4 <-> ESP32 RAW JSONL
 | 기존 PX4 브리지 | `uwb_px4_bridge` → `integration/ros/bridge.py` | `mavros_uwb.yaml`의 기존 기본 전달 비활성 유지 |
 | 파일 파이프라인 | `uwb_pipeline` → `processing/runner.py` → `pipeline.py` | 원본·진단 기록. 계산·외부 출력 게이트 닫힘 |
 | 파일 모델 비교 | `uwb_static_a`, `uwb_h80_b`, `uwb_subset_compare`, `uwb_baseline_a` | 별도 파일 결과. 명령 이름 유지 |
+| 공용 XY 데모 | `drone_demo/core.py`, `node.py`, `tof_readout.py` | XY 경로·공백과 실측 ToF 하방거리 표시. 가상 고도·RAW 생성 없음 |
 | Gazebo/SITL | `integration/gazebo/gazebo_live_shadow.py` + `integration/sitl/` | 기존 명시적 CLI 옵션·연결 조건 유지. 실제 실행은 이번 검증에서 미실시 |
 | 독립 평가 | `drone_demo/flight_evaluation.py` | 기록 종료 후 정답 대조. 정답을 관측 계산에 넣지 않음 |
 
