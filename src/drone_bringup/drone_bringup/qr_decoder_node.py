@@ -200,7 +200,10 @@ def main(args=None):
         pass
     finally:
         node.destroy_node()
-        rclpy.shutdown()
+        # ros2 launch 의 SIGINT 는 rclpy 가 먼저 shutdown 해서, 무조건 부르면
+        # "rcl_shutdown already called" 로 exit code 1 이 된다.
+        if rclpy.ok():
+            rclpy.shutdown()
 
 
 if __name__ == '__main__':
