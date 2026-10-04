@@ -1,0 +1,12 @@
+Starting >>> drone_uwb
+Starting >>> drone_bringup
+Starting >>> drone_platform_link
+Starting >>> ydlidar_ros2_driver
+Finished <<< ydlidar_ros2_driver [3.13s]
+Finished <<< drone_bringup [4.89s]
+Finished <<< drone_uwb [5.51s]
+Starting >>> drone_demo
+Finished <<< drone_platform_link [5.51s]
+Finished <<< drone_demo [3.35s]
+
+Summary: 5 packages finished [11.8s]

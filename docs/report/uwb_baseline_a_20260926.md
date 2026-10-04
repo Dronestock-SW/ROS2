@@ -139,7 +139,7 @@ A 전용 실행기를 기존 기록 파이프라인과 분리했다.
 | [baseline_a.py](../../src/drone_uwb/drone_uwb/preimu/experiments/baseline_a.py) | 입력 재생·Z 선택·계산·별도 평가 |
 | [실행 설정](../../src/drone_uwb/config/baseline_a_simulation_20260921.json) | 입력·지도 해시와 합성 조건 |
 | [평가 기준](../../src/drone_uwb/config/baseline_a_reference_20260921.json) | 평가기에만 전달할 XY |
-| [회귀 테스트](../../src/drone_uwb/test/test_baseline_a.py) | 수식·누락·재생·자료 분리 검증 |
+| [회귀 테스트](../../src/drone_uwb/test/experiments/test_baseline_a.py) | 수식·누락·재생·자료 분리 검증 |
 
 | 출력 파일 | 사람이 확인할 내용 |
 |---|---|
