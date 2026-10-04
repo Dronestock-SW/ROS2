@@ -94,3 +94,8 @@
 
 현재 코드의 유무는 최근 기록과 함께 확인한다.
 8월의 미구현 표시는 이후 구현을 반영하지 않는다.
+
+## 2026-10-04 기능별 반영
+
+- [Windows UWB 재시작과 첫 실시간 기록](report/uwb_windows_restart_20261002.md)
+- [Windows UWB 시뮬레이션 재개 기록](report/uwb_windows_resume_20261002_140858.md)

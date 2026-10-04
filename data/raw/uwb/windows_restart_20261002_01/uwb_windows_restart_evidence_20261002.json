@@ -1,0 +1,238 @@
+{
+  "recorded_at_kst": "2026-10-02T14:37:31.581473+09:00",
+  "user_authorized_restart": true,
+  "restarted": true,
+  "first_capture": {
+    "exit_codes": {
+      "monitor": 0,
+      "raw": 0
+    },
+    "elapsed_wall_s": 48.683,
+    "monitor_capture": {
+      "source": "gazebo_sitl_observer_live",
+      "topics": {
+        "raw": "/dronestock/sim/uwb/ranges",
+        "tof": "/world/dronestock_uwb/model/dronestock_x500_0/link/lidar_sensor_link/sensor/lidar/scan",
+        "imu": "/world/dronestock_uwb/model/dronestock_x500_0/link/base_link/sensor/imu_sensor/imu",
+        "clock": "/world/dronestock_uwb/clock"
+      },
+      "config_path": "runs/equipment_02/trial.json",
+      "height_profile_path": "src/drone_uwb/config/gazebo_sensor_height_profile.json",
+      "first_sim_us": 127732000,
+      "last_sim_us": 157780000,
+      "counters": {
+        "tof_recorded": 3036,
+        "clock_recorded": 7590,
+        "imu_recorded": 7589,
+        "raw_recorded": 812,
+        "processed": 812,
+        "odometry_not_sent": 812,
+        "odometry_reason:model_rejected:orientation_alignment_unconfirmed": 811,
+        "B_failed": 2,
+        "A_failed": 812,
+        "C_failed": 812,
+        "D_failed": 812,
+        "WLS_failed": 812,
+        "B_ok": 810,
+        "odometry_reason:capture_stopped": 1
+      },
+      "stop_reason": "duration_complete",
+      "observation_send_requested": false,
+      "flight_valid": false,
+      "observations_sent": 0,
+      "external_output_allowed": false,
+      "sitl_mode": "timesync",
+      "fusion_verified": false,
+      "truth_used": false,
+      "cleanup_errors": []
+    },
+    "raw_capture": {
+      "source": "simulation",
+      "model": "dronestock_x500_0",
+      "input_topic": "/world/dronestock_uwb/dynamic_pose/info",
+      "output_topic": "/dronestock/sim/uwb/ranges",
+      "counters": {
+        "published": 939,
+        "recorded": 939,
+        "rate_filtered": 1083
+      },
+      "stop_reason": "duration_complete",
+      "start_sim_us": 127732000,
+      "end_sim_us": 162696000,
+      "effective_rate_hz": 26.827594096785266,
+      "publisher_success_rate_hz": 26.827594096785266,
+      "fault_plan_provided": false,
+      "cleanup_error": null,
+      "external_output_allowed": false,
+      "flight_valid": false
+    },
+    "navigation_summary": {
+      "phase": "WAITING",
+      "reason": "inputs_missing",
+      "commands_sent": 0,
+      "command_attempts": 0,
+      "completed_legs": 0,
+      "resolved_targets": [],
+      "route_completed": false,
+      "landing_verified": false,
+      "flight_valid": false,
+      "fusion_verified": false
+    }
+  },
+  "runtime_imports": {
+    "verified": true,
+    "records": [
+      {
+        "python": "/home/dronestock/.venvs/px4/bin/python",
+        "PYTHONPATH": "/home/dronestock/uwb_sim/windows_resume_20261002_140858/uwb-gazebo-equipment/src/drone_uwb:/home/dronestock/uwb_sim/windows_resume_20261002_140858/uwb-gazebo-equipment/src/drone_demo",
+        "exit_code": 1,
+        "stdout": "",
+        "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\nModuleNotFoundError: No module named 'gz'\n"
+      },
+      {
+        "python": "/home/dronestock/.venvs/px4/bin/python",
+        "PYTHONPATH": "/home/dronestock/uwb_sim/windows_resume_20261002_140858/uwb-gazebo-equipment/src/drone_uwb:/home/dronestock/uwb_sim/windows_resume_20261002_140858/uwb-gazebo-equipment/src/drone_demo:/usr/lib/python3/dist-packages",
+        "exit_code": 0,
+        "stdout": "{\"result\": \"Navigation runtime imports OK\", \"python\": \"/home/dronestock/.venvs/px4/bin/python\", \"numpy\": \"1.21.5\", \"mavutil\": \"/home/dronestock/.venvs/px4/lib/python3.10/site-packages/pymavlink/mavutil.py\"}\n",
+        "stderr": ""
+      },
+      {
+        "command": "sitl_navigation --help",
+        "exit_code": 0,
+        "stdout": "usage: sitl_navigation.py [-h] --navigation-settings NAVIGATION_SETTINGS\n                          --navigation-plan NAVIGATION_PLAN --mission-config\n                          MISSION_CONFIG [--navigation-mode {monitor,send}]\n\nOne MAVLink owner: live UWB observations plus a bounded SITL waypoint trial.\nStart already airborne in PX4 Hold. This adapter never arms or takes off. PX4\nowns all flight control. No Gazebo truth enters navigation decisions.\n\noptions:\n  -h, --help            show this help message and exit\n  --navigation-settings NAVIGATION_SETTINGS\n  --navigation-plan NAVIGATION_PLAN\n  --mission-config MISSION_CONFIG\n  --navigation-mode {monitor,send}\n\nRemaining arguments are passed to drone_uwb.integration.gazebo_live_shadow.\n",
+        "stderr": ""
+      }
+    ],
+    "runtime_environment": {
+      "PYTHONPATH": "/home/dronestock/uwb_sim/windows_resume_20261002_140858/uwb-gazebo-equipment/src/drone_uwb:/home/dronestock/uwb_sim/windows_resume_20261002_140858/uwb-gazebo-equipment/src/drone_demo:/usr/lib/python3/dist-packages",
+      "PYTHONUTF8": "1",
+      "PYTHONUNBUFFERED": "1"
+    }
+  },
+  "b_stationary_diagnostic": {
+    "scope": "single stationary ground live Gazebo record; original B H80 0.8 s window; not independent dynamic final evaluation",
+    "valid_outputs": 810,
+    "processed_raw_denominator": 812,
+    "availability": 0.9975369458128078,
+    "rmse_m": 0.013976600749206878,
+    "median_m": 0.011775158513889585,
+    "p95_m": 0.02432830889749467,
+    "max_m": 0.0374888903629602,
+    "ge_7cm_samples": 0,
+    "coverage_denominator_is_received_raw": true,
+    "expected_raw_in_common_interval": 812,
+    "raw_missing_in_common_interval": 0,
+    "dynamic_verified": false,
+    "independent_7cm_target_verified": false
+  },
+  "mavlink_event_counts": {
+    "TIMESYNC": 932,
+    "LOCAL_POSITION_NED": 908,
+    "ODOMETRY": 908,
+    "EXTENDED_SYS_STATE": 63,
+    "POSITION_TARGET_LOCAL_NED": 303,
+    "observation": 812,
+    "HEARTBEAT": 30,
+    "ESTIMATOR_STATUS": 295,
+    "parameter_read_requests": 21,
+    "PARAM_VALUE": 231,
+    "COMMAND_ACK": 25,
+    "GPS_GLOBAL_ORIGIN": 21
+  },
+  "timesync_actions": {
+    "ignored": 637,
+    "responded": 295
+  },
+  "parameters_received": {
+    "EKF2_EV_CTRL": 0,
+    "EKF2_EV_NOISE_MD": 0,
+    "EKF2_EV_DELAY": 0.0,
+    "EKF2_EV_POS_X": 0.0,
+    "EKF2_EV_POS_Y": 0.0,
+    "EKF2_EV_POS_Z": 0.0,
+    "EKF2_EVP_NOISE": 0.10000000149011612,
+    "EKF2_GPS_CTRL": 7,
+    "EKF2_OF_CTRL": 1,
+    "EKF2_RNG_CTRL": 1,
+    "EKF2_HGT_REF": 1
+  },
+  "odometry_reset_counters": [
+    11
+  ],
+  "height_reasons": {
+    "orientation_alignment_unconfirmed": 812
+  },
+  "observation_send_count": 0,
+  "navigation_command_count": 0,
+  "ekf_fusion_verified": false,
+  "navigation_verified": false,
+  "source_run_directory": "/home/dronestock/uwb_sim/windows_resume_20261002_140858/uwb-gazebo-equipment/runs/restart_20261002_01",
+  "simulator_kept_running": true,
+  "px4_ulog_finalized": false,
+  "final_runtime_status": {
+    "recorded_at_kst": "2026-10-02T14:39:28.915192+09:00",
+    "commands": {
+      "px4": {
+        "exit_code": 0,
+        "stdout": "430 ./build/px4_sitl_default/bin/px4\n",
+        "stderr": ""
+      },
+      "memory": {
+        "exit_code": 0,
+        "stdout": "               total        used        free      shared  buff/cache   available\nMem:           15951        4119       10180          31        1651       11561\nSwap:           4096           0        4096\n",
+        "stderr": ""
+      },
+      "udp": {
+        "exit_code": 0,
+        "stdout": "State  Recv-Q Send-Q  Local Address:Port  Peer Address:PortProcess                        \nUNCONN 0      0             0.0.0.0:13030      0.0.0.0:*    users:((\"px4\",pid=430,fd=35)) \nUNCONN 0      0             0.0.0.0:14280      0.0.0.0:*    users:((\"px4\",pid=430,fd=34)) \nUNCONN 0      0             0.0.0.0:14580      0.0.0.0:*    users:((\"px4\",pid=430,fd=33)) \nUNCONN 0      0       127.0.0.53%lo:53         0.0.0.0:*                                  \nUNCONN 0      0      10.255.255.254:53         0.0.0.0:*                                  \nUNCONN 0      0           127.0.0.1:323        0.0.0.0:*                                  \nUNCONN 0      0             0.0.0.0:10317      0.0.0.0:*    users:((\"px4\",pid=430,fd=19)) \nUNCONN 0      0             0.0.0.0:10317      0.0.0.0:*    users:((\"ruby\",pid=641,fd=20))\nUNCONN 0      0             0.0.0.0:10317      0.0.0.0:*    users:((\"ruby\",pid=642,fd=20))\nUNCONN 0      0             0.0.0.0:10318      0.0.0.0:*    users:((\"px4\",pid=430,fd=22)) \nUNCONN 0      0             0.0.0.0:10318      0.0.0.0:*    users:((\"ruby\",pid=641,fd=23))\nUNCONN 0      0             0.0.0.0:10318      0.0.0.0:*    users:((\"ruby\",pid=642,fd=23))\nUNCONN 0      0             0.0.0.0:18570      0.0.0.0:*    users:((\"px4\",pid=430,fd=31)) \nUNCONN 0      0               [::1]:323           [::]:*                                  \n",
+        "stderr": ""
+      },
+      "gazebo": {
+        "exit_code": 0,
+        "stdout": "641 gz sim --verbose=1 -r -s /home/dronestock/github/PX4-Autopilot/Tools/simulation/gz/worlds/dronestock_uwb.sdf              \n642 gz sim -g              \n",
+        "stderr": ""
+      },
+      "px4_commit": {
+        "exit_code": 0,
+        "stdout": "c4e4ef98e9d75063bf3d53ebb2716221ee7505ae\n",
+        "stderr": ""
+      }
+    },
+    "px4_cwd": "/home/dronestock/github/PX4-Autopilot/build/px4_sitl_default/rootfs",
+    "live_ulog_path": "/home/dronestock/github/PX4-Autopilot/build/px4_sitl_default/rootfs/fs/log/2026-10-02/05_29_43.ulg",
+    "snapshot_path": "/home/dronestock/uwb_sim/windows_resume_20261002_140858/uwb-gazebo-equipment/runs/restart_20261002_01/px4_current_ulog_snapshot.ulg",
+    "snapshot_bytes": 120787931,
+    "snapshot_sha256": "96c37fd4914e65e1132db827738c410cce85e6250568563577c871d4e656e0ab",
+    "ulog_finalized": false,
+    "snapshot_scope": "read-only prefix of the running SITL logger file; simulation remains running",
+    "trial_sha256": "38ab27fac63c8e333e8bc094f7e47ca76b1248f2bdf1f7107a97aac561e2f557"
+  },
+  "restart_records_archive_without_ulog": "uwb_windows_restart_records_20261002.zip",
+  "final_live_check": {
+    "checked_at_kst": "2026-10-02T14:48:47.303656+09:00",
+    "processes": "    PID    PPID ELAPSED   RSS COMMAND\n    430     332    1137 21776 ./build/px4_sitl_default/bin/px4\n    641     331    1132 3264596 gz sim --verbose=1 -r -s /home/dronestock/github/PX4-Autopilot/Tools/simulation/gz/worlds/dronestock_uwb.sdf\n    642     331    1132 3883640 gz sim -g\n",
+    "memory": {
+      "MemTotal_KiB": 16334444,
+      "MemAvailable_KiB": 8846304,
+      "SwapTotal_KiB": 4194304,
+      "SwapFree_KiB": 4194304
+    }
+  },
+  "remote_archive_and_document_verification": {
+    "archive_sha256": "6d50ec1686124490f8566c5acd15747f0c729d054c4639117bc4f3a10e3790de",
+    "archive_members": 40,
+    "archive_testzip": "passed",
+    "doc_changes": [
+      {
+        "path": "/home/pgyxn/github/ROS2/docs/README.md",
+        "before_sha256": "795afb65fb13b26b0cb1735e14623b98c556011e726dc088eb5d3b86652cb578",
+        "after_sha256": "eda84a9bea54247f4a18609eb55ca4a0f31818dec48ce1dd43cac76f5aedb77f"
+      },
+      {
+        "path": "/home/pgyxn/github/ROS2/docs/uwb_windows_handoff.md",
+        "before_sha256": "a0d7bd0245aadf5c31f25c18b3b201d7de0aad1cb2291c35a59e0e8285168020",
+        "after_sha256": "0c0762704f87d0c375db14fe9db69f7362e296306155c537ccab6b8c306038a6"
+      }
+    ]
+  }
+}
