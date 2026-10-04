@@ -1,0 +1,135 @@
+{
+  "cwd": "/tmp",
+  "share": "/home/pgyxn/github/ROS2/install/drone_uwb/share/drone_uwb",
+  "configurations_checked": 40,
+  "configurations": [
+    "/home/pgyxn/github/ROS2/install/drone_uwb/share/drone_uwb/config/anchors_20260906.json",
+    "/home/pgyxn/github/ROS2/install/drone_uwb/share/drone_uwb/config/anchors/anchors_20260906.json",
+    "/home/pgyxn/github/ROS2/install/drone_uwb/share/drone_uwb/config/baseline_a_reference_20260921.json",
+    "/home/pgyxn/github/ROS2/install/drone_uwb/share/drone_uwb/config/replay/baseline_a_reference_20260921.json",
+    "/home/pgyxn/github/ROS2/install/drone_uwb/share/drone_uwb/config/baseline_a_simulation_20260921.json",
+    "/home/pgyxn/github/ROS2/install/drone_uwb/share/drone_uwb/config/replay/baseline_a_simulation_20260921.json",
+    "/home/pgyxn/github/ROS2/install/drone_uwb/share/drone_uwb/config/baseline_a_static_20260906.json",
+    "/home/pgyxn/github/ROS2/install/drone_uwb/share/drone_uwb/config/replay/baseline_a_static_20260906.json",
+    "/home/pgyxn/github/ROS2/install/drone_uwb/share/drone_uwb/config/c_flight_inputs_20260927.json",
+    "/home/pgyxn/github/ROS2/install/drone_uwb/share/drone_uwb/config/replay/c_flight_inputs_20260927.json",
+    "/home/pgyxn/github/ROS2/install/drone_uwb/share/drone_uwb/config/gazebo_dynamic_path_20260928.json",
+    "/home/pgyxn/github/ROS2/install/drone_uwb/share/drone_uwb/config/gazebo/scenarios/gazebo_dynamic_path_20260928.json",
+    "/home/pgyxn/github/ROS2/install/drone_uwb/share/drone_uwb/config/gazebo_dynamic_path_eval_20260928.json",
+    "/home/pgyxn/github/ROS2/install/drone_uwb/share/drone_uwb/config/gazebo/scenarios/gazebo_dynamic_path_eval_20260928.json",
+    "/home/pgyxn/github/ROS2/install/drone_uwb/share/drone_uwb/config/gazebo_equipment.json",
+    "/home/pgyxn/github/ROS2/install/drone_uwb/share/drone_uwb/config/gazebo/gazebo_equipment.json",
+    "/home/pgyxn/github/ROS2/install/drone_uwb/share/drone_uwb/config/gazebo_fault_bias_01.json",
+    "/home/pgyxn/github/ROS2/install/drone_uwb/share/drone_uwb/config/gazebo/scenarios/gazebo_fault_bias_01.json",
+    "/home/pgyxn/github/ROS2/install/drone_uwb/share/drone_uwb/config/gazebo_fault_drop_01.json",
+    "/home/pgyxn/github/ROS2/install/drone_uwb/share/drone_uwb/config/gazebo/scenarios/gazebo_fault_drop_01.json",
+    "/home/pgyxn/github/ROS2/install/drone_uwb/share/drone_uwb/config/gazebo_sensor_height_profile.json",
+    "/home/pgyxn/github/ROS2/install/drone_uwb/share/drone_uwb/config/gazebo/gazebo_sensor_height_profile.json",
+    "/home/pgyxn/github/ROS2/install/drone_uwb/share/drone_uwb/config/gazebo_shadow.json",
+    "/home/pgyxn/github/ROS2/install/drone_uwb/share/drone_uwb/config/gazebo/gazebo_shadow.json",
+    "/home/pgyxn/github/ROS2/install/drone_uwb/share/drone_uwb/config/gazebo_sitl_observer.json",
+    "/home/pgyxn/github/ROS2/install/drone_uwb/share/drone_uwb/config/sitl/gazebo_sitl_observer.json",
+    "/home/pgyxn/github/ROS2/install/drone_uwb/share/drone_uwb/config/gazebo_sitl_odometry.json",
+    "/home/pgyxn/github/ROS2/install/drone_uwb/share/drone_uwb/config/sitl/gazebo_sitl_odometry.json",
+    "/home/pgyxn/github/ROS2/install/drone_uwb/share/drone_uwb/config/gazebo_sitl_target.json",
+    "/home/pgyxn/github/ROS2/install/drone_uwb/share/drone_uwb/config/sitl/gazebo_sitl_target.json",
+    "/home/pgyxn/github/ROS2/install/drone_uwb/share/drone_uwb/config/h80_b_static_20260906.json",
+    "/home/pgyxn/github/ROS2/install/drone_uwb/share/drone_uwb/config/replay/h80_b_static_20260906.json",
+    "/home/pgyxn/github/ROS2/install/drone_uwb/share/drone_uwb/config/mavros_uwb.yaml",
+    "/home/pgyxn/github/ROS2/install/drone_uwb/share/drone_uwb/config/runtime/mavros_uwb.yaml",
+    "/home/pgyxn/github/ROS2/install/drone_uwb/share/drone_uwb/config/preimu_pipeline.json",
+    "/home/pgyxn/github/ROS2/install/drone_uwb/share/drone_uwb/config/pipeline/preimu_pipeline.json",
+    "/home/pgyxn/github/ROS2/install/drone_uwb/share/drone_uwb/config/subsets_cd_static_20260906.json",
+    "/home/pgyxn/github/ROS2/install/drone_uwb/share/drone_uwb/config/replay/subsets_cd_static_20260906.json",
+    "/home/pgyxn/github/ROS2/install/drone_uwb/share/drone_uwb/config/uwb.yaml",
+    "/home/pgyxn/github/ROS2/install/drone_uwb/share/drone_uwb/config/runtime/uwb.yaml"
+  ],
+  "alias_pairs": 55,
+  "commands": [
+    {
+      "command": [
+        "ros2",
+        "run",
+        "drone_uwb",
+        "uwb_replay",
+        "--help"
+      ],
+      "returncode": 0,
+      "usage_present": true,
+      "stderr": ""
+    },
+    {
+      "command": [
+        "ros2",
+        "run",
+        "drone_uwb",
+        "uwb_pipeline",
+        "--help"
+      ],
+      "returncode": 0,
+      "usage_present": true,
+      "stderr": ""
+    },
+    {
+      "command": [
+        "ros2",
+        "run",
+        "drone_uwb",
+        "uwb_static_a",
+        "--help"
+      ],
+      "returncode": 0,
+      "usage_present": true,
+      "stderr": ""
+    },
+    {
+      "command": [
+        "ros2",
+        "run",
+        "drone_uwb",
+        "uwb_h80_b",
+        "--help"
+      ],
+      "returncode": 0,
+      "usage_present": true,
+      "stderr": ""
+    },
+    {
+      "command": [
+        "ros2",
+        "run",
+        "drone_uwb",
+        "uwb_subset_compare",
+        "--help"
+      ],
+      "returncode": 0,
+      "usage_present": true,
+      "stderr": ""
+    },
+    {
+      "command": [
+        "ros2",
+        "run",
+        "drone_uwb",
+        "uwb_baseline_a",
+        "--help"
+      ],
+      "returncode": 0,
+      "usage_present": true,
+      "stderr": ""
+    },
+    {
+      "command": [
+        "ros2",
+        "launch",
+        "drone_uwb",
+        "uwb.launch.py",
+        "--show-args"
+      ],
+      "returncode": 0,
+      "stdout": "Arguments (pass arguments as '<name>:=<value>'):\n\n    'config':\n        no description given\n        (default: '/home/pgyxn/github/ROS2/install/drone_uwb/share/drone_uwb/config/uwb.yaml')\n\n    'record_directory':\n        no description given\n        (default: '')\n\n    'stop_after_s':\n        no description given\n        (default: '0.0')\n",
+      "stderr": ""
+    }
+  ],
+  "module_file": "/home/pgyxn/github/ROS2/build/drone_uwb/drone_uwb/processing/solvers/h80.py"
+}

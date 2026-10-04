@@ -20,9 +20,9 @@ import numpy as np
 
 from drone_demo.flight_metrics import error_stats
 from drone_demo.flight_fault_evaluation import fault_reports
-from drone_uwb.integration.gazebo_faults import RangeFaultPlan
-from drone_uwb.integration.sitl_odometry_contract import SITLOdometrySettings
-from drone_uwb.processing.gazebo_geometry import tag_position
+from drone_uwb.integration.gazebo.gazebo_faults import RangeFaultPlan
+from drone_uwb.integration.sitl.sitl_odometry_contract import SITLOdometrySettings
+from drone_uwb.processing.geometry.gazebo_geometry import tag_position
 from drone_uwb.processing.experiments.gazebo_trial import validate_config
 
 

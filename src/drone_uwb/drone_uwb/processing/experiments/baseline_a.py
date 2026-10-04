@@ -15,11 +15,11 @@ from pathlib import Path
 import numpy as np
 
 from drone_uwb.contracts.protocol import InvalidSample, decode_line, finite, integer
-from drone_uwb.processing.clock import ClockMap
-from drone_uwb.processing.height import tof_to_fc_height
+from drone_uwb.processing.timing.clock import ClockMap
+from drone_uwb.processing.geometry.height import tof_to_fc_height
 from drone_uwb.acquisition.validation import InputValidator, InvalidInput
 from drone_uwb.processing.runner import json_line, require_finite_json
-from drone_uwb.processing.sensors import SensorInputs
+from drone_uwb.processing.timing.sensors import SensorInputs
 from drone_uwb.processing.settings import PreimuSettings
 from drone_uwb.processing.experiments.uniform_xy import solve_uniform_xy
 

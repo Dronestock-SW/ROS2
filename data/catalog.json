@@ -346,6 +346,14 @@
       "role": "position_mode_attitude_and_distance_record",
       "bytes": 2839356,
       "sha256": "896a3f021f0b2eb9fd943e7960e2add8dfff67bcfe15541c442fac175146690f"
+    },
+    {
+      "path": "data/raw/flight/20260927/perfect_holdv2.params",
+      "legacy_path": "perfect_holdv2.params",
+      "kind": "raw",
+      "role": "px4_parameter_reference",
+      "bytes": 36977,
+      "sha256": "389b802cb7cecad0c71c4f70745c9c125959da9e3fe146cfb22ca44725c8fd46"
     }
   ],
   "policy": {

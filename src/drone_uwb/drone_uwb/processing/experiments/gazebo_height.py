@@ -7,8 +7,8 @@ import math
 
 import numpy as np
 
-from drone_uwb.processing.gazebo_geometry import rotation_world_body
-from drone_uwb.processing.height import tof_to_fc_height
+from drone_uwb.processing.geometry.gazebo_geometry import rotation_world_body
+from drone_uwb.processing.geometry.height import tof_to_fc_height
 
 
 def _stream(rows, kind):

@@ -192,7 +192,7 @@ LiDAR의 이번 스캔과 직전 스캔(또는 지도)을 겹쳐 맞춰보고, "
   H80은 최근 거리들을 모아 수평 위치를 계산한다.
   Q_S10은 높이 입력과 임시 거리 편향을 함께 사용한다.
 - 비유: 최근 기록을 함께 읽는 계산과 복구용 재검산이다.
-- 우리 프로젝트: [UWB 참고 자료](uwb_h80_qs10_reference.md)를 따른다.
+- 우리 프로젝트: [UWB 참고 자료](reference/uwb_h80_qs10_reference.md)를 따른다.
   H80 창은 기본 0.8초다.
   Q_S10의 복구 조건과 실시간 높이 연결은 검증 대상이다.
 
@@ -222,7 +222,7 @@ LiDAR의 이번 스캔과 직전 스캔(또는 지도)을 겹쳐 맞춰보고, "
 - 우리 프로젝트: UWB 결과의 출처·시각·사용 여부를 적는다.
   `null`은 계산값 없음이며 0m가 아니다.
   현재 파이프라인의 `valid=false`는 사용 보류다.
-  자세한 필드는 [파이프라인 기준](uwb_pipeline_design.md)에 있다.
+  자세한 필드는 [파이프라인 기준](architecture/uwb_pipeline_design.md)에 있다.
 
 ### 계산 게이트
 - 정의: 수식 함수를 실행할지 정하는 경계다.
@@ -477,7 +477,7 @@ MAVLink = 드론 업계 표준 통신 언어(Pixhawk가 말하는 말). MAVROS =
 끊겨 도착하는 시리얼 글자 조각을 줄바꿈(`\n`) 기준으로 다시 한 줄로 맞추는 작업.
 - 비유: 우편함에 반쪽씩 들어온 편지를 마침표가 나올 때까지 모아 붙이는 것.
 - 왜 필요한가: 시리얼에는 "한 줄"이라는 개념이 없다. 읽을 때마다 조각이 임의 길이로 온다. 조각 상태로 JSON 파싱을 시도하면 매번 실패한다.
-- 우리 프로젝트: uwb_node가 버퍼에 이어 붙이고 `\n`이 나올 때만 잘라 파싱한다. 버퍼에 상한을 두고(줄바꿈이 영영 안 오는 고장 대비), 포트를 연 직후 첫 줄은 잘려 있을 수 있으므로 버린다. [uwb_node_design.md](uwb_node_design.md) 참조.
+- 우리 프로젝트: uwb_node가 버퍼에 이어 붙이고 `\n`이 나올 때만 잘라 파싱한다. 버퍼에 상한을 두고(줄바꿈이 영영 안 오는 고장 대비), 포트를 연 직후 첫 줄은 잘려 있을 수 있으므로 버린다. [uwb_node_design.md](architecture/uwb_node_design.md) 참조.
 
 ### watchdog (감시 타이머)
 정해진 시간 안에 소식이 없으면 이상으로 판단하는 타이머.
@@ -591,14 +591,14 @@ topic 이름 앞에 접두어를 붙여 구분하는 방식(/d1/scan, /d2/scan).
 ## 웹 연동 계약
 
 이 절은 companion–Platform 계약 검토에 쓴다.
-상대 회신은 [v1 검토](companion_platform_api_v1_review.md)를 본다.
+상대 회신은 [v1 검토](reference/companion_platform_api_v1_review.md)를 본다.
 
 ### API / 엔드포인트
 - 정의: 프로그램끼리 요청·응답하는 약속이다.
   엔드포인트는 요청 방식과 주소의 조합이다.
 - 비유: 접수 창구마다 정한 신청서와 처리 규칙이다.
 - 우리 프로젝트: 임무 GET과 결과 POST를 검토한다.
-  [필드 사전](companion_platform_api_dictionary.md)에 계약을 적는다.
+  [필드 사전](reference/companion_platform_api_dictionary.md)에 계약을 적는다.
 
 ### HTTP / GET / POST
 - 정의: 요청에 응답을 돌려주는 웹 통신 방식이다.
@@ -719,7 +719,7 @@ topic 이름 앞에 접두어를 붙여 구분하는 방식(/d1/scan, /d2/scan).
 ## 가속도계와 자세의 기초
 
 이 절은 센서 측정값과 자세 추정값을 구분한다.
-쉬운 원리는 [가속도계 설명](accelerometer_gravity_explained.md)을 본다.
+쉬운 원리는 [가속도계 설명](reference/accelerometer_gravity_explained.md)을 본다.
 
 ### 가속도계와 비력
 가속도계는 비력을 측정하는 센서다.
@@ -881,7 +881,7 @@ VRAM은 GPU가 사용하는 메모리다.
 ## UWB 선행 필터 이식
 
 이 절은 HW팀 필터를 companion에 옮길 때 쓴다.
-[이식 계획](uwb_jetson_port_plan_20260920.md)을 함께 읽는다.
+[이식 계획](architecture/uwb_jetson_port_plan_20260920.md)을 함께 읽는다.
 
 ### H80
 

@@ -15,7 +15,7 @@ import numpy as np
 from drone_uwb.processing.experiments.baseline_a import digest
 from drone_uwb.processing.experiments.gazebo_height import GazeboSensorHeight
 from drone_uwb.processing.experiments.h80_b import write_json
-from drone_uwb.processing.gazebo_geometry import rotation_world_body, tag_position
+from drone_uwb.processing.geometry.gazebo_geometry import rotation_world_body, tag_position
 from drone_uwb.processing.runner import json_line
 
 

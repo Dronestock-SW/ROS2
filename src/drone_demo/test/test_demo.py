@@ -9,12 +9,12 @@ from drone_demo.core import DemoConfig, DemoRun
 from drone_demo.export import write_demo
 from drone_demo.node import observation_message, require_demo_environment
 from drone_demo.z_gate import DemoZGate
-from drone_uwb.core import Processor, Settings
+from drone_uwb.processing.solvers.observations import Processor, Settings
 
 
 ROOT = Path(__file__).resolve().parents[2]
 CONFIG = DemoConfig(**json.loads((ROOT / 'drone_demo/config/demo.json').read_text(encoding='utf-8')))
-LAYOUT = json.loads((ROOT / 'drone_uwb/config/anchors_20260906.json').read_text(encoding='utf-8'))
+LAYOUT = json.loads((ROOT / 'drone_uwb/config/anchors/anchors_20261004.json').read_text(encoding='utf-8'))
 
 
 def samples(config):

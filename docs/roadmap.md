@@ -92,7 +92,7 @@ EKF2는 Pixhawk 6C Mini 하드웨어가 아니라 **그 위에 올라간 PX4 펌
 - [x] T-mini Pro → /scan 발행 (10Hz)
 - [x] Pixhawk 6C Mini heartbeat (PX4 탑재, MAVROS connected)
 - [x] UWB 앵커 4기 자체 제작 + 설치 (멀티 태그 지원 확인)
-- [x] UWB 실측 거리와 방향으로 잠정 좌표 산출 — [앵커 실측값](uwb_anchor_survey.md)
+- [x] UWB 실측 거리와 방향으로 잠정 좌표 산출 — [앵커 실측값](reference/uwb_anchor_survey.md)
   현재 배치는 불규칙하다. 직사각형을 가정하지 않는다.
   이유: 2026-09-06 실측이 기존 5×4.5m 설정과 다르다.
 - [ ] UWB 새 앵커 좌표를 태그에 반영하고 독립 기준점으로 검증
@@ -100,7 +100,7 @@ EKF2는 Pixhawk 6C Mini 하드웨어가 아니라 **그 위에 올라간 PX4 펌
 - [ ] PMW3901 → PX4 직결 배선 + 파라미터 설정 (결정 8) — 미입고로 보류
 - [x] UWB 태그 → /uwb_pose 관측 노드 구현·지상 수신 확인
   실측 앵커 좌표로 RAW 거리를 계산한다. 태그 x·y 모드도 제공한다.
-  [설계](uwb_node_design.md) / [실기 결과](report/uwb_integration_20260906.md)
+  [설계](architecture/uwb_node_design.md) / [실기 결과](report/uwb_integration_20260906.md)
 - [ ] UWB 태그 배치 갱신·다점 거리 교정·동적 검증
   v1.8 RAW 계약에는 구형 `fix` 조건을 적용하지 않는다.
   이유: 현재 RAW 거리·좌표 유효 필드가 별도 계약이다.
@@ -115,18 +115,18 @@ EKF2는 Pixhawk 6C Mini 하드웨어가 아니라 **그 위에 올라간 PX4 펌
   이 보류는 당시 기록이다. 2026-09-28 요청으로 SITL 개발을 재개했다.
   10월 2일 실시간 계산·MAVLink 관측 연결을 구현했다.
   사용자 WSL의 라이브 융합·비행 검증은 남아 있다.
-  [SITL 실행 상태](uwb_gazebo_sitl_observer.md)를 따른다.
+  [SITL 실행 상태](runbooks/uwb_gazebo_sitl_observer.md)를 따른다.
   같은 날 수평 목표 명령·PX4 도착 판정 모듈을 추가했다.
   같은 UDP 수신기를 쓰는 라이브 실행기까지 통합했다.
   관련 로컬 시험 142개가 통과했다.
   WSL 배포·실제 융합·목표 이동 시험은 남아 있다.
-  [목표 연결 상태](uwb_gazebo_target_adapter.md)를 따른다.
+  [목표 연결 상태](architecture/uwb_gazebo_target_adapter.md)를 따른다.
   기록 종료 후 사용하는 독립 평가기도 추가했다.
   관련 시험 55개가 통과했다. 평가 자체는 합성 기록 시험이다.
-  [평가 범위](uwb_gazebo_flight_evaluation.md)와 실제 비행 성공을 구분한다.
+  [평가 범위](architecture/uwb_gazebo_flight_evaluation.md)와 실제 비행 성공을 구분한다.
   선택 실행하는 거리 편향·단절 주입도 추가했다.
   관련 로컬 시험 54개가 통과했다.
-  [이상 시험](uwb_gazebo_fault_trials.md)의 실제 WSL 비행은 미실시다.
+  [이상 시험](runbooks/uwb_gazebo_fault_trials.md)의 실제 WSL 비행은 미실시다.
   [누적 배포본](report/uwb_gazebo_fault_bundle_20261002.md)을 만들었다.
   기본 ZIP에 적용한 별도 폴더에서도 54개 시험을 통과했다.
   후속으로 정상·이상·복구 CSV와 관측 복구 시간을 추가했다.
@@ -206,7 +206,7 @@ ToF 실측 자료가 없어 합성 입력부터 축적한다.
 Z·좌표 계산과 외부 전달 게이트는 닫혀 있다.
 수식은 독립 함수에 보관한다.
 실물·SITL 관측 연결 보류와 별개의 작업이다.
-[개발 기준](uwb_pipeline_design.md)과
+[개발 기준](architecture/uwb_pipeline_design.md)과
 [확인 결과](report/uwb_pipeline_20260921.md)를 따른다.
 
 2026-09-21에는 후속 게이트·H80·Q_S10 시험안을 보류했다.
@@ -277,10 +277,10 @@ FC·LiDAR 전방 14cm, UWB·ToF 중앙을 반영했다.
 센서별 수신·가상 UWB 발행·비행 융합은 후속 확인이 필요하다.
 [장비 구성 기록](report/uwb_gazebo_equipment_20260927.md)을 따른다.
 
-장비 도착 전 시험에는 [공용 데모](demo_design.md)를 쓴다.
+장비 도착 전 시험에는 [공용 데모](architecture/demo_design.md)를 쓴다.
 고정 z·가상 위치·UWB 공백을 재사용한다.
 도착·공백·복구 판단을 데모 노드로 구현했다.
-[임무 상태 기준](demo_mission_design.md)을 따른다.
+[임무 상태 기준](architecture/demo_mission_design.md)을 따른다.
 데모 실행은 Phase 비행 완료 판정을 대신하지 않는다.
 이유: 가상 경로에는 비행 물리가 없기 때문이다.
 9월 13일의 개발 후보는 수평 이동·감속·정지였다.
@@ -292,7 +292,7 @@ SITL 목표 높이는 기존 데모의 1.2m를 활용하는 안이다.
 하방 거리의 지상·공중·착륙 후 변화를 확인했다.
 이번 시험의 공중 표본은 2.52873m다.
 1.2m 목표 추종이나 위치 정확도를 검증한 값은 아니다.
-[재실행 절차](gazebo_wsl_runbook.md)와
+[재실행 절차](runbooks/gazebo_wsl_runbook.md)와
 [완료 범위](report/gazebo_sitl_20260921.md)를 구분해 읽는다.
 
 ## 폐기/보류 항목

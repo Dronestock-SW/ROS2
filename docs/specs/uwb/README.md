@@ -26,7 +26,7 @@ ToF 연동·동적 비행·여러 위치의 정확도 검증과 구분한다.
 C는 균등 평균, D는 반지름 확장 없는 첫 방식이다.
 C/D 후보의 품질 가중·확장과 최종 선정은 남았다.
 27일 후속으로 [M09 거리 가중 풀이](09_weighted_range_solver.md)를 구현했다.
-[Gazebo 경로 비교](../../uwb_gazebo_shadow_runbook.md)도 준비했다.
+[Gazebo 경로 비교](../../runbooks/uwb_gazebo_shadow_runbook.md)도 준비했다.
 합성 검증과 실제 Gazebo·PX4 비행 검증을 구분한다.
 27일 ULog는 [센서 입력 준비](../../report/uwb_flight_inputs_20260927.md)에 반영했다.
 같은 비행의 UWB RAW는 없다는 사용자 확인을 기록했다.
@@ -140,4 +140,4 @@ M03의 거리 게이트 유무는 실행 설정에서 고정한다.
 제안 구현 경로는 `src/drone_uwb/drone_uwb/preimu/experiments/`다.
 제안 시험 경로는 `src/drone_uwb/test/experiments/`다.
 두 경로의 새 기능은 이번 작업에서 만들지 않는다.
-기존 실행기는 [현재 설계](../../uwb_pipeline_design.md)를 따른다.
+기존 실행기는 [현재 설계](../../architecture/uwb_pipeline_design.md)를 따른다.

@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "source": "synthetic_pose_fixture",
+  "purpose": "algorithm-only stop, reversal and axis response; not PX4 flight",
+  "clock_domain": "gazebo_sim_us",
+  "model": "dronestock_x500_0",
+  "start_time_us": 1000000,
+  "rate_hz": 40,
+  "duration_s": 12,
+  "start_xyz_m": [2.09, 1.68, 0.9],
+  "velocity_segments": [
+    {"name": "east", "start_s": 2, "end_s": 4, "vx_m_s": 0.3, "vy_m_s": 0},
+    {"name": "west_reversal", "start_s": 4, "end_s": 6, "vx_m_s": -0.3, "vy_m_s": 0},
+    {"name": "north", "start_s": 7, "end_s": 8.2, "vx_m_s": 0, "vy_m_s": 0.3},
+    {"name": "south_reversal", "start_s": 8.2, "end_s": 9.4, "vx_m_s": 0, "vy_m_s": -0.3}
+  ]
+}

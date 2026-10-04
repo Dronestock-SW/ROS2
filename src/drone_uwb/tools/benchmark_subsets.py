@@ -11,8 +11,8 @@ from drone_uwb.acquisition.validation import Cycle
 from drone_uwb.processing.experiments.baseline_a import digest
 from drone_uwb.processing.experiments.h80_b import BSettings, H80Window, write_json
 from drone_uwb.processing.experiments.uniform_xy import solve_uniform_xy
-from drone_uwb.processing.intersections import DSettings, make_candidates as model_d
-from drone_uwb.processing.triplets import make_candidates as model_c
+from drone_uwb.processing.solvers.intersections import DSettings, make_candidates as model_d
+from drone_uwb.processing.solvers.triplets import make_candidates as model_c
 from drone_uwb.processing.runner import json_line
 
 

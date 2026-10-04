@@ -8,10 +8,10 @@ from copy import deepcopy
 from dataclasses import asdict, dataclass, field
 
 from drone_uwb.contracts.protocol import integer
-from drone_uwb.processing.clock import ClockMap
+from drone_uwb.processing.timing.clock import ClockMap
 from drone_uwb.acquisition.validation import InputValidator, InvalidInput
 from drone_uwb.processing.ranges import RangeDecision, RangeGate, RangeHistory, subtract_bias
-from drone_uwb.processing.sensors import SensorInputs
+from drone_uwb.processing.timing.sensors import SensorInputs
 from drone_uwb.processing.settings import PreimuSettings, settings_from_mapping
 
 

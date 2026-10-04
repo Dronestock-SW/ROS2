@@ -1,0 +1,12 @@
+{
+  "moved_docs": 46,
+  "old_paths_as_relative_symlinks": 46,
+  "pdf_hash_preserved": true,
+  "original_index_rows_preserved": true,
+  "existing_report_files_preserved": 197,
+  "canonical_doc_broken_links": {},
+  "index_pending_links": [
+    "reference/repository_layout.md",
+    "report/repository_modularization_20261004.md"
+  ]
+}

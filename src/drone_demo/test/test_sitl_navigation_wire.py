@@ -5,10 +5,10 @@ import math
 import pytest
 
 from drone_demo.sitl_mission import PX4MissionMonitor
-from drone_uwb.integration.sitl_target_contract import (
+from drone_uwb.integration.sitl.sitl_target_contract import (
     NavigationReadiness, PX4GlobalReference, RepositionProgress, SITLTargetSettings,
     reposition_fields, send_reposition_fields)
-from drone_uwb.integration.sitl_odometry_contract import SITLOdometrySettings
+from drone_uwb.integration.sitl.sitl_odometry_contract import SITLOdometrySettings
 from test_sitl_mission import CONFIG
 
 

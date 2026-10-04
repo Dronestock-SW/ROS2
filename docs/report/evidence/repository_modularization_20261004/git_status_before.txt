@@ -1,0 +1,98 @@
+ M docs/README.md
+ M docs/demo_mission_design.md
+ M docs/gazebo_wsl_runbook.md
+ M docs/glossary.md
+ M docs/report/uwb_gazebo_equipment_20260927.md
+ M docs/roadmap.md
+ M docs/specs/uwb/02_tof_z_adapter.md
+ M docs/specs/uwb/15_lidar_aiding.md
+ M docs/specs/uwb/README.md
+ M docs/uwb_gazebo_architecture.md
+ M docs/uwb_gazebo_equipment_runbook.md
+ M docs/uwb_mavros_parameter_api.md
+ M src/drone_demo/drone_demo/mission.py
+ M src/drone_demo/package.xml
+ M src/drone_demo/setup.py
+ M src/drone_uwb/drone_uwb/integration/gazebo_ranges.py
+ M src/drone_uwb/drone_uwb/processing/experiments/gazebo_trial.py
+ M src/drone_uwb/test/test_gazebo_trial.py
+?? data/processed/uwb/navigation_20260928/
+?? data/processed/uwb/windows_resume_20261002_140858/
+?? data/raw/uwb/gazebo_capture_20260928_01/
+?? data/raw/uwb/gazebo_dynamic_path_20260928_v1/
+?? data/raw/uwb/gazebo_dynamic_path_eval_20260928_v1/
+?? data/raw/uwb/windows_restart_20261002_01/
+?? docs/report/gazebo_equipment_audit_20260927.md
+?? docs/report/uwb_gazebo_fault_bundle_20261002.md
+?? docs/report/uwb_gazebo_fault_evaluation_20261002.md
+?? docs/report/uwb_navigation_iteration_20260928.md
+?? docs/report/uwb_navigation_iteration_index_20260928.md
+?? docs/report/uwb_windows_restart_20261002.md
+?? docs/report/uwb_windows_resume_20261002_140858.md
+?? docs/specs/uwb/lidar_speed_tuning.md
+?? docs/uwb_gazebo_fault_trials.md
+?? docs/uwb_gazebo_flight_evaluation.md
+?? docs/uwb_gazebo_live_shadow.md
+?? docs/uwb_gazebo_navigation_prompt.md
+?? docs/uwb_gazebo_navigation_runbook.md
+?? docs/uwb_gazebo_sitl_observer.md
+?? docs/uwb_gazebo_sitl_odometry.md
+?? docs/uwb_gazebo_target_adapter.md
+?? docs/uwb_goal_prompt_20261002.txt
+?? docs/uwb_sitl_clock_probe.md
+?? docs/uwb_sitl_link_probe.md
+?? docs/uwb_windows_handoff.md
+?? src/drone_demo/config/gazebo_flight_evaluation.json
+?? src/drone_demo/config/gazebo_navigation_plan.json
+?? src/drone_demo/config/gazebo_px4_evaluation_clock.json
+?? src/drone_demo/drone_demo/flight_evaluation.py
+?? src/drone_demo/drone_demo/flight_fault_evaluation.py
+?? src/drone_demo/drone_demo/flight_metrics.py
+?? src/drone_demo/drone_demo/sitl_mission.py
+?? src/drone_demo/drone_demo/sitl_navigation.py
+?? src/drone_demo/test/test_flight_evaluation.py
+?? src/drone_demo/test/test_flight_fault_evaluation.py
+?? src/drone_demo/test/test_sitl_mission.py
+?? src/drone_demo/test/test_sitl_navigation_runtime.py
+?? src/drone_demo/test/test_sitl_navigation_wire.py
+?? src/drone_uwb/config/gazebo_dynamic_path_20260928.json
+?? src/drone_uwb/config/gazebo_dynamic_path_eval_20260928.json
+?? src/drone_uwb/config/gazebo_fault_bias_01.json
+?? src/drone_uwb/config/gazebo_fault_drop_01.json
+?? src/drone_uwb/config/gazebo_sensor_height_profile.json
+?? src/drone_uwb/config/gazebo_sitl_observer.json
+?? src/drone_uwb/config/gazebo_sitl_odometry.json
+?? src/drone_uwb/config/gazebo_sitl_target.json
+?? src/drone_uwb/drone_uwb/integration/gazebo_clock.py
+?? src/drone_uwb/drone_uwb/integration/gazebo_faults.py
+?? src/drone_uwb/drone_uwb/integration/gazebo_live_shadow.py
+?? src/drone_uwb/drone_uwb/integration/gazebo_sensors.py
+?? src/drone_uwb/drone_uwb/integration/px4_clock_tracker.py
+?? src/drone_uwb/drone_uwb/integration/sitl_clock_probe.py
+?? src/drone_uwb/drone_uwb/integration/sitl_link_probe.py
+?? src/drone_uwb/drone_uwb/integration/sitl_observer.py
+?? src/drone_uwb/drone_uwb/integration/sitl_odometry_contract.py
+?? src/drone_uwb/drone_uwb/integration/sitl_target_contract.py
+?? src/drone_uwb/drone_uwb/integration/sitl_timesync.py
+?? src/drone_uwb/drone_uwb/processing/experiments/gazebo_height.py
+?? src/drone_uwb/drone_uwb/processing/experiments/gazebo_height_diagnostic.py
+?? src/drone_uwb/drone_uwb/processing/experiments/gazebo_live_shadow.py
+?? src/drone_uwb/drone_uwb/processing/experiments/navigation_iteration.py
+?? src/drone_uwb/test/test_gazebo_clock.py
+?? src/drone_uwb/test/test_gazebo_dynamic_path.py
+?? src/drone_uwb/test/test_gazebo_faults.py
+?? src/drone_uwb/test/test_gazebo_height_diagnostic.py
+?? src/drone_uwb/test/test_gazebo_live_shadow.py
+?? src/drone_uwb/test/test_gazebo_sensor_height.py
+?? src/drone_uwb/test/test_gazebo_sensors.py
+?? src/drone_uwb/test/test_gazebo_sitl_cli.py
+?? src/drone_uwb/test/test_navigation_iteration.py
+?? src/drone_uwb/test/test_px4_clock_tracker.py
+?? src/drone_uwb/test/test_sitl_clock_probe.py
+?? src/drone_uwb/test/test_sitl_link_probe.py
+?? src/drone_uwb/test/test_sitl_mavlink_wire.py
+?? src/drone_uwb/test/test_sitl_observer.py
+?? src/drone_uwb/test/test_sitl_odometry_contract.py
+?? src/drone_uwb/test/test_sitl_target_contract.py
+?? src/drone_uwb/test/test_sitl_timesync.py
+?? src/drone_uwb/tools/generate_gazebo_dynamic_path.py

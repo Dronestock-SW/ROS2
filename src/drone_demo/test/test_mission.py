@@ -12,7 +12,7 @@ from drone_demo.mission import MissionConfig, MissionMonitor
 ROOT = Path(__file__).resolve().parents[2]
 CONFIG = MissionConfig(**json.loads((ROOT / 'drone_demo/config/mission.json').read_text(encoding='utf-8')))
 DEMO = DemoConfig(**json.loads((ROOT / 'drone_demo/config/demo.json').read_text(encoding='utf-8')))
-LAYOUT = json.loads((ROOT / 'drone_uwb/config/anchors_20260906.json').read_text(encoding='utf-8'))
+LAYOUT = json.loads((ROOT / 'drone_uwb/config/anchors/anchors_20261004.json').read_text(encoding='utf-8'))
 
 
 def feed(m, t, x=0.0, y=0.0, uwb=True):

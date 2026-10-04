@@ -9,7 +9,7 @@ import pytest
 
 from drone_demo.mission import MissionConfig
 from drone_demo.sitl_mission import PX4MissionMonitor
-from drone_uwb.integration.sitl_odometry_contract import SITLOdometrySettings
+from drone_uwb.integration.sitl.sitl_odometry_contract import SITLOdometrySettings
 
 
 CONFIG = MissionConfig(**json.loads((Path(__file__).parents[1]/'config/mission.json')

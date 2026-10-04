@@ -1,9 +1,1 @@
-{
-  "calculation_enabled": false,
-  "external_output_enabled": false,
-  "range_bias_source": "esp32_reference_trial_20260920_unverified_on_current_tag",
-  "preimu": {
-    "range_bias_m": [-0.08733, 0.41107, -0.11148, 0.15125],
-    "range_bias_calibrated": false
-  }
-}
+pipeline/preimu_pipeline.json

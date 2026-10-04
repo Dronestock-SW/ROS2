@@ -2,7 +2,7 @@
 import math
 
 from drone_demo.flight_metrics import error_stats
-from drone_uwb.integration.gazebo_faults import RangeFaultPlan
+from drone_uwb.integration.gazebo.gazebo_faults import RangeFaultPlan
 
 
 def fresh(row, plan):

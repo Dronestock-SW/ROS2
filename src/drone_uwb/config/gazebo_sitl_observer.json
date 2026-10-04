@@ -1,8 +1,1 @@
-{
-  "model": "A",
-  "sigma_xy_m": [0.10, 0.10],
-  "uncertainty_source": "declared_sitl_trial_uncertainty_uncalibrated",
-  "uncertainty_reviewed": false,
-  "max_wall_residence_s": 0.15,
-  "min_timesync_replies": 10
-}
+sitl/gazebo_sitl_observer.json

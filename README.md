@@ -2,6 +2,23 @@
 
 드론 자율이동 저장소의 설치·실행 안내다. 작업을 시작할 때 읽는다.
 
+## 코드와 자료 찾기
+
+[단계별 위치표](docs/reference/repository_layout.md)에서 수정할 파일과 검증 방법을 찾는다.
+[모듈화 확인 기록](docs/report/repository_modularization_20261004.md)에 이동·검증 결과를 남겼다.
+
+| 작업 | 시작 위치 |
+|---|---|
+| UWB 수신·후보정·PX4 연결 | [drone_uwb](src/drone_uwb/README.md) |
+| 데모·임무·SITL 평가 | [drone_demo](src/drone_demo/README.md) |
+| 센서 실행·인쇄 마커 | [drone_bringup](src/drone_bringup/README.md) |
+| 플랫폼 수신·상태 전달 | [drone_platform_link](src/drone_platform_link/README.md) |
+| 기준·설계·실행 절차 | [문서 색인](docs/README.md) |
+| 측정 원본·계산 결과 | [자료 색인](data/README.md) |
+
+이전 모듈명과 문서·설정 경로는 호환용이다.
+새 작업은 위 색인의 실제 구현 경로에서 시작한다.
+
 ## 현재 작업 상태
 
 기술 방향은 [로드맵](docs/roadmap.md)을 따른다.
@@ -13,7 +30,7 @@
   두 구간의 추종 오차·속도와 분석 도구.
 - [기본 설정 확인](docs/report/setup_status_20260921.md):
   2026-09-21 `pgyxn` 계정·저장소·설치 상태.
-- [UWB 참고 자료와 코드 상태](docs/uwb_h80_qs10_reference.md):
+- [UWB 참고 자료와 코드 상태](docs/reference/uwb_h80_qs10_reference.md):
   9월 20일 ZIP, 필터 기본값, 남은 연결 작업.
 - [문서 색인](docs/README.md): 기준·절차·확인 기록.
 
@@ -53,7 +70,7 @@ UWB 연동은 HW팀 정비로 보류했다.
 
 | 문서 | 읽는 시점 |
 |---|---|
-| [WSL 재실행 절차](docs/gazebo_wsl_runbook.md) | 터미널 구분·실행·QGroundControl 재연결 |
+| [WSL 재실행 절차](docs/runbooks/gazebo_wsl_runbook.md) | 터미널 구분·실행·QGroundControl 재연결 |
 | [기본 시험 결과](docs/report/gazebo_sitl_20260921.md) | 완료 범위·남은 검증 확인 |
 | [사용자 제공 출력](docs/report/evidence/gazebo_sitl_20260921_user_excerpt.md) | 결과의 근거와 수집 한계 확인 |
 | [9월 20일 준비 논의](docs/report/gazebo_preparation_20260920.md) | 센서 역할과 가상 시험 설계 검토 |
@@ -91,6 +108,6 @@ UWB 연동은 HW팀 정비로 보류했다.
 
 ## UWB 개발 자료
 
-[활용 데이터](data/README.md)와 [코드·자료 분류 기준](docs/uwb_data_layout.md)을 따른다.
+[활용 데이터](data/README.md)와 [코드·자료 분류 기준](docs/architecture/uwb_data_layout.md)을 따른다.
 수신은 `acquisition/`, 보정은 `processing/`, ROS 연결은 `integration/`에 둔다.
-[모듈 입출력](docs/uwb_module_api.md)과 [재실행 절차](docs/uwb_data_runbook.md)를 참고한다.
+[모듈 입출력](docs/reference/uwb_module_api.md)과 [재실행 절차](docs/runbooks/uwb_data_runbook.md)를 참고한다.

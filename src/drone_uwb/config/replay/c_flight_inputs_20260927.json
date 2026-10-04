@@ -1,0 +1,41 @@
+{
+  "schema": "uwb_flight_preparation_v1",
+  "model_id": "C",
+  "planned_variant": "uniform4",
+  "executable_model_config": false,
+  "source": "measured",
+  "dataset_id": "px4_flight_20260927",
+  "inputs": {
+    "ulog": {
+      "path": "data/raw/flight/20260927/log_23_2026-9-27-13-34-50.ulg",
+      "sha256": "896a3f021f0b2eb9fd943e7960e2add8dfff67bcfe15541c442fac175146690f"
+    },
+    "native_sensors": {
+      "path": "data/processed/flight_inputs_20260927/native_sensor_events.jsonl",
+      "sha256": "3fdc22bd8b9fdb6b7ad872408f3b41f4efbea8f22e0aee580e5fcb2ac80051d8"
+    },
+    "readiness": {
+      "path": "data/processed/flight_inputs_20260927/readiness.json",
+      "sha256": "d20c07e9f626fd78248a1a43374a9a4f92d39ea10275367fde1e9b0753b916d2"
+    }
+  },
+  "same_session_uwb_raw": null,
+  "same_session_uwb_available": false,
+  "availability_source": "user_confirmed_ULog_only",
+  "antenna_height_stream": null,
+  "clock_mapping": null,
+  "sensor_geometry": null,
+  "native_clock_domain": "px4_boot_us",
+  "native_attitude_convention": "FRD_body_to_NED_earth",
+  "position_calculation_enabled": false,
+  "external_output_allowed": false,
+  "flight_valid": false,
+  "blocked_reasons": [
+    "missing_synchronous_uwb_raw",
+    "fc_uwb_clock_mapping_unconfirmed",
+    "sensor_mount_and_antenna_offsets_unconfirmed",
+    "warehouse_frame_alignment_unconfirmed",
+    "distance_sensor_model_unconfirmed"
+  ],
+  "note": "Sensor preparation profile only. Do not merge September 6 UWB and September 27 PX4 timestamps or interpret native attitude as warehouse R_WB."
+}

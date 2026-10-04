@@ -14,10 +14,10 @@ import time
 
 from drone_demo.mission import MissionConfig
 from drone_demo.sitl_mission import PX4MissionMonitor
-from drone_uwb.integration.px4_clock_tracker import PX4ClockTracker
-from drone_uwb.integration.sitl_link_probe import _name, decode_px4_param
-from drone_uwb.integration.sitl_observer import log_value
-from drone_uwb.integration.sitl_target_contract import (
+from drone_uwb.integration.sitl.px4_clock_tracker import PX4ClockTracker
+from drone_uwb.integration.sitl.sitl_link_probe import _name, decode_px4_param
+from drone_uwb.integration.sitl.sitl_observer import log_value
+from drone_uwb.integration.sitl.sitl_target_contract import (
     NavigationReadiness, PX4GlobalReference, RepositionProgress, SITLTargetSettings,
     navigation_gate, reposition_fields, send_reposition_fields)
 
@@ -415,7 +415,7 @@ class SITLNavigationSession:
 
 def main(args=None):
     parser = argparse.ArgumentParser(description=__doc__,
-        epilog='Remaining arguments are passed to drone_uwb.integration.gazebo_live_shadow.')
+        epilog='Remaining arguments are passed to drone_uwb.integration.gazebo.gazebo_live_shadow.')
     parser.add_argument('--navigation-settings', type=Path, required=True)
     parser.add_argument('--navigation-plan', type=Path, required=True)
     parser.add_argument('--mission-config', type=Path, required=True)
@@ -452,7 +452,7 @@ def main(args=None):
         session.close = close
         return session
 
-    from drone_uwb.integration.gazebo_live_shadow import main as record
+    from drone_uwb.integration.gazebo.gazebo_live_shadow import main as record
     record(remaining, session_factory=factory)
 
 

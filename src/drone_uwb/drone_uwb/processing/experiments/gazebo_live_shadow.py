@@ -13,10 +13,10 @@ from drone_uwb.processing.experiments.gazebo_height import GazeboSensorHeight
 from drone_uwb.processing.experiments.gazebo_trial import validate_config
 from drone_uwb.processing.experiments.h80_b import BSettings, H80Window
 from drone_uwb.processing.experiments.uniform_xy import solve_uniform_xy
-from drone_uwb.processing.gazebo_geometry import rotation_world_body
-from drone_uwb.processing.intersections import DSettings, make_candidates as model_d
-from drone_uwb.processing.triplets import make_candidates as model_c
-from drone_uwb.processing.weighted_xy import solve_weighted_xy
+from drone_uwb.processing.geometry.gazebo_geometry import rotation_world_body
+from drone_uwb.processing.solvers.intersections import DSettings, make_candidates as model_d
+from drone_uwb.processing.solvers.triplets import make_candidates as model_c
+from drone_uwb.processing.solvers.weighted_xy import solve_weighted_xy
 
 
 MODEL_NAMES = ('A', 'B', 'C', 'D', 'WLS')

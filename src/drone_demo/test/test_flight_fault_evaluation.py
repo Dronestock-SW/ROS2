@@ -6,7 +6,7 @@ import pytest
 
 from drone_demo.flight_evaluation import EvaluationPlan, run
 from drone_demo.flight_fault_evaluation import fault_reports
-from drone_uwb.integration.gazebo_faults import RangeFaultPlan
+from drone_uwb.integration.gazebo.gazebo_faults import RangeFaultPlan
 from test_flight_evaluation import recorded_fixture
 
 

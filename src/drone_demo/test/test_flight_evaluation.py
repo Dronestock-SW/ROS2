@@ -9,8 +9,8 @@ from pathlib import Path
 import pytest
 
 from drone_demo.flight_evaluation import EvaluationClock, EvaluationPlan, evaluate, run
-from drone_uwb.integration.sitl_odometry_contract import SITLOdometrySettings
-from drone_uwb.processing.gazebo_geometry import VirtualRanges, tag_position
+from drone_uwb.integration.sitl.sitl_odometry_contract import SITLOdometrySettings
+from drone_uwb.processing.geometry.gazebo_geometry import VirtualRanges, tag_position
 
 
 def fixture(px4_bias=.3):

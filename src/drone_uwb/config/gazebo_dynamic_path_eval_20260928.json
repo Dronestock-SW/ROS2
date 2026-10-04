@@ -1,18 +1,1 @@
-{
-  "schema": 1,
-  "source": "synthetic_pose_fixture",
-  "purpose": "held-out algorithm-only path with new positions, motions and random seed",
-  "clock_domain": "gazebo_sim_us",
-  "model": "dronestock_x500_0",
-  "start_time_us": 1000000,
-  "rate_hz": 40,
-  "duration_s": 14,
-  "start_xyz_m": [1.5, 1.2, 0.8],
-  "velocity_segments": [
-    {"name": "east", "start_s": 1, "end_s": 2.5, "vx_m_s": 0.25, "vy_m_s": 0},
-    {"name": "west_reversal", "start_s": 3.5, "end_s": 5, "vx_m_s": -0.25, "vy_m_s": 0},
-    {"name": "north", "start_s": 6, "end_s": 8, "vx_m_s": 0, "vy_m_s": 0.22},
-    {"name": "south_reversal", "start_s": 8, "end_s": 10, "vx_m_s": 0, "vy_m_s": -0.22},
-    {"name": "diagonal", "start_s": 10.5, "end_s": 12.5, "vx_m_s": 0.15, "vy_m_s": 0.15}
-  ]
-}
+gazebo/scenarios/gazebo_dynamic_path_eval_20260928.json

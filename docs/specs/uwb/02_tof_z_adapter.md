@@ -13,7 +13,7 @@
 [A 실행·검증 기록](../../report/uwb_baseline_a_20260926.md)에 범위를 적었다.
 Gazebo 파일 비교기는 별도 `gazebo_height.py`에서 같은 수식을 호출한다.
 하방 거리·IMU 원본의 같은 시계와 최신 표본을 요구한다.
-기본 [시험 프로필](../../../src/drone_uwb/config/gazebo_sensor_height_profile.json)은
+기본 [시험 프로필](../../../src/drone_uwb/config/gazebo/gazebo_sensor_height_profile.json)은
 자세 기준축·바닥 평면 확인 게이트를 둘 다 닫아 둔다.
 센서 입력 실패 시 시뮬레이터 위치의 높이로 대체하지 않는다.
 사용자 WSL의 실제 센서 기록으로 이 경로를 시험한 결과는 아직 없다.

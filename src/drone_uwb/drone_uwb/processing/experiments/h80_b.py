@@ -17,7 +17,7 @@ import numpy as np
 
 from drone_uwb.acquisition.validation import InputValidator, InvalidInput
 from drone_uwb.contracts.protocol import InvalidSample, decode_line, integer
-from drone_uwb.processing.h80 import fit_h80
+from drone_uwb.processing.solvers.h80 import fit_h80
 from drone_uwb.processing.runner import json_line, require_finite_json
 from drone_uwb.processing.settings import PreimuSettings
 from drone_uwb.processing.experiments.baseline_a import digest

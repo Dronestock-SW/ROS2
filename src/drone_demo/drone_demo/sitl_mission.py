@@ -6,8 +6,8 @@ receipt time as PX4 sample time. UWB and PX4 stamps stay in their own domains.
 import math
 
 from drone_demo.mission import MissionMonitor
-from drone_uwb.integration.sitl_odometry_contract import ned_xy_to_map_reference
-from drone_uwb.processing.gazebo_geometry import rotation_world_body
+from drone_uwb.integration.sitl.sitl_odometry_contract import ned_xy_to_map_reference
+from drone_uwb.processing.geometry.gazebo_geometry import rotation_world_body
 
 
 def _px4(message, kind):

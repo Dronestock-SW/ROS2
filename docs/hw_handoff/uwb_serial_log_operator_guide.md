@@ -9,13 +9,13 @@
 **검증 기준**: 2026-08-09 COM3 실측 로그 `data/ai_logs/pilot_20260809_115530_x070_y180_z120.jsonl` (568 프레임, 15초)
 
 본문은 구형 `uwb_pose` 계약의 기록이다.
-현재 v1.8의 RAW 계약은 [노드 설계](../uwb_node_design.md)를 따른다.
+현재 v1.8의 RAW 계약은 [노드 설계](../architecture/uwb_node_design.md)를 따른다.
 
 현재 앵커 설치 높이는 4기 모두 2.2 m다.
 2026-09-06 사용자 지정 기준이다.
 본문의 1.20 m는 2026-08-09 실측 조건이다.
 당시 거리·오차 계산을 재현하려고 보존한다.
-현재 좌표는 [UWB 노드 설계](../uwb_node_design.md)를 본다.
+현재 좌표는 [UWB 노드 설계](../architecture/uwb_node_design.md)를 본다.
 
 ---
 

@@ -13,8 +13,8 @@ import numpy as np
 from drone_uwb.processing.experiments.baseline_a import digest
 from drone_uwb.processing.experiments.h80_b import BSettings, calculate as calculate_ab, read_events, write_json
 from drone_uwb.processing.experiments.static_a import position_metrics
-from drone_uwb.processing.intersections import DSettings, make_candidates as model_d
-from drone_uwb.processing.triplets import make_candidates as model_c
+from drone_uwb.processing.solvers.intersections import DSettings, make_candidates as model_d
+from drone_uwb.processing.solvers.triplets import make_candidates as model_c
 from drone_uwb.processing.runner import json_line, require_finite_json
 
 

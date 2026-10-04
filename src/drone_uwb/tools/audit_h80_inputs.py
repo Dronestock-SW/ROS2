@@ -14,9 +14,9 @@ import subprocess
 
 import numpy as np
 
-from drone_uwb.preimu.h80 import fit_h80
-from drone_uwb.preimu.rawxy import solve_raw_xy
-from drone_uwb.preimu.settings import PreimuSettings
+from drone_uwb.processing.solvers.h80 import fit_h80
+from drone_uwb.processing.solvers.rawxy import solve_raw_xy
+from drone_uwb.processing.settings import PreimuSettings
 
 
 def sha256(path):

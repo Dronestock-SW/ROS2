@@ -10,8 +10,8 @@ import pytest
 
 from drone_demo.mission import MissionConfig
 from drone_demo.sitl_navigation import NavigationPlan, SITLNavigationSession
-from drone_uwb.integration.sitl_odometry_contract import SITLOdometrySettings
-from drone_uwb.integration.sitl_target_contract import SITLTargetSettings
+from drone_uwb.integration.sitl.sitl_odometry_contract import SITLOdometrySettings
+from drone_uwb.integration.sitl.sitl_target_contract import SITLTargetSettings
 
 
 d = pytest.importorskip('pymavlink.dialects.v20.common')

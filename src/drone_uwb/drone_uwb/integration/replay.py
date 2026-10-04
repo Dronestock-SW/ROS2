@@ -12,7 +12,7 @@ import sys
 import numpy as np
 import yaml
 
-from drone_uwb.processing.observations import Observation, Processor, Settings
+from drone_uwb.processing.solvers.observations import Observation, Processor, Settings
 
 
 def error_metrics(xy, reference):

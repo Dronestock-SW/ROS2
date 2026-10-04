@@ -1,14 +1,1 @@
-{
-  "layout_id": "warehouse-irregular-z2p2-20260906",
-  "coordinate_frame": "uwb_map",
-  "units": "m",
-  "source": "docs/uwb_anchor_survey.md; user-reported six distances and directions, 2026-09-06",
-  "independently_verified": false,
-  "anchor_order": ["A1", "A2", "A3", "A4"],
-  "anchors_xyz_m": [
-    [0.0, 0.0, 2.2],
-    [5.8102027071690925, -0.43032700908323007, 2.2],
-    [0.0, 4.63, 2.2],
-    [6.110227024200994, 4.357349538815547, 2.2]
-  ]
-}
+anchors/anchors_20260906.json
