@@ -5,23 +5,23 @@
   "external_output_allowed": false,
   "anchors_xyz_m": [
     [
-      -3,
-      -2.5,
+      0.0,
+      0.0,
       2.2
     ],
     [
-      3,
-      -2.5,
+      6.3,
+      0.0,
       2.2
     ],
     [
-      -3,
-      2.5,
+      0.0,
+      4.6,
       2.2
     ],
     [
-      3.1,
-      2.3,
+      6.3,
+      4.6,
       2.2
     ]
   ],
@@ -70,5 +70,5 @@
     "numeric_tolerance_m2": 1e-10,
     "min_center_separation_m": 1e-06
   },
-  "note": "Virtual anchor layout around Gazebo spawn. Tag point equals model origin. Exact simulator height, simultaneous ranges. No flight output. WLS sigmas are user-declared simulation assumptions, not measured calibration."
+  "note": "User-fixed rectangular XY layout 6.3m x 4.6m (2026-10-04), A1 at world (0,0); existing anchor Z=2.2m retained. Tag point equals model origin. Exact simulator height, simultaneous ranges. No flight output. Bias and WLS sigmas remain simulation assumptions, not measured calibration."
 }

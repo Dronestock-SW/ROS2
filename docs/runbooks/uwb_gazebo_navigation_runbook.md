@@ -79,14 +79,14 @@ PX4·Gazebo와 가상 RAW 발행기가 먼저 실행돼야 한다.
 
 ```bash
 ~/.venvs/px4/bin/python -m drone_demo.sitl_navigation \
-  --navigation-settings src/drone_uwb/config/gazebo_sitl_target.json \
+  --navigation-settings src/drone_uwb/config/sitl/gazebo_sitl_target.json \
   --navigation-plan src/drone_demo/config/gazebo_navigation_plan.json \
   --mission-config src/drone_demo/config/mission.json \
   --navigation-mode monitor \
   --config runs/equipment_02/trial.json \
-  --height-profile src/drone_uwb/config/gazebo_sensor_height_profile.json \
-  --sitl-odometry src/drone_uwb/config/gazebo_sitl_odometry.json \
-  --sitl-observer src/drone_uwb/config/gazebo_sitl_observer.json \
+  --height-profile src/drone_uwb/config/gazebo/gazebo_sensor_height_profile.json \
+  --sitl-odometry src/drone_uwb/config/sitl/gazebo_sitl_odometry.json \
+  --sitl-observer src/drone_uwb/config/sitl/gazebo_sitl_observer.json \
   --sitl-mode timesync \
   --duration-s 30 \
   --output runs/navigation_monitor_01

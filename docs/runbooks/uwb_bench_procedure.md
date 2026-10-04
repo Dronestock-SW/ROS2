@@ -40,7 +40,7 @@ ros2 launch drone_uwb uwb.launch.py \
 
 60초가 지나면 수신 노드와 브리지가 종료된다.
 연속 수신은 `stop_after_s:=0.0`을 사용한다.
-설정 파일은 `src/drone_uwb/config/uwb.yaml`이다.
+설정 파일은 `src/drone_uwb/config/runtime/uwb.yaml`이다.
 변경한 설정은 노드 재시작 때 적용한다.
 
 | 확인 대상 | 정상 해석 |
@@ -64,7 +64,7 @@ MAVROS가 이미 실행 중이면 중복 기동하지 않는다.
 
 ```bash
 ros2 run mavros mavros_node --ros-args -r __ns:=/mavros \
-  --params-file src/drone_uwb/config/mavros_uwb.yaml \
+  --params-file src/drone_uwb/config/runtime/mavros_uwb.yaml \
   -p fcu_url:=/dev/pixhawk:921600 \
   -p tgt_system:=1 -p tgt_component:=1 -p fcu_protocol:=v2.0
 ```
@@ -88,8 +88,8 @@ ros2 run drone_uwb uwb_bench_probe \
 
 ```bash
 ros2 run drone_uwb uwb_replay /tmp/uwb_bench_run_01/raw/received.jsonl \
-  --layout src/drone_uwb/config/anchors_20260906.json \
-  --settings src/drone_uwb/config/uwb.yaml \
+  --layout src/drone_uwb/config/anchors/anchors_20261004.json \
+  --settings src/drone_uwb/config/runtime/uwb.yaml \
   --output /tmp/uwb_replay_01
 ```
 
@@ -98,7 +98,8 @@ ros2 run drone_uwb uwb_replay /tmp/uwb_bench_run_01/raw/received.jsonl \
 기존 배치가 남으면 `tag_layout_mismatch`가 나온다.
 실제 태그 갱신 전에는 기본 `raw_ranges`를 유지한다.
 
-태그 갱신값은 [설정 사전](../reference/uwb_tag_layout_update.md)을 따른다.
+현재 RAW 경로의 좌표는 [앵커 사전](../reference/uwb_anchor_layout.md)을 따른다.
+이전 XY 펌웨어 검산은 [과거 설정 사전](../reference/uwb_tag_layout_update.md)에 있다.
 수신 성공만으로 갱신 완료를 판정하지 않는다.
 이유: 배치 ID와 좌표 계산의 일치를 검증해야 한다.
 

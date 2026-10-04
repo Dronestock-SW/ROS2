@@ -94,7 +94,7 @@ M08에서 독립 후보 수로 공분산을 줄이지 않는다.
 
 ## 구현과 확인 결과
 
-`processing/intersections.py`가 D 수식을 소유한다.
+`processing/solvers/intersections.py`가 D 수식을 소유한다.
 파일 실행과 결합은 C와 같은 모듈을 사용한다.
 
 | 함수 | 실제 입출력 |

@@ -57,9 +57,9 @@ PX4 venv와 Gazebo 기록용 Python을 구분한다.
 배포 ZIP을 쓸 때도 `src/drone_uwb`가 있는 폴더로 이동한다.
 
 ```bash
-test -f src/drone_uwb/drone_uwb/integration/gazebo_capture.py
+test -f src/drone_uwb/drone_uwb/integration/gazebo/gazebo_capture.py
 export PYTHONPATH="$PWD/src/drone_uwb${PYTHONPATH:+:$PYTHONPATH}"
-/usr/bin/python3 -m drone_uwb.integration.gazebo_capture --help
+/usr/bin/python3 -m drone_uwb.integration.gazebo.gazebo_capture --help
 ```
 
 통신 목록에서 `/world/.../dynamic_pose/info`를 찾는다.
@@ -81,7 +81,7 @@ Gazebo 화면의 최상위 기체 이름과 대조한다.
 아래의 이름은 예시이며 아직 사용자 출력으로 확인하지 않았다.
 
 ```bash
-/usr/bin/python3 -m drone_uwb.integration.gazebo_capture \
+/usr/bin/python3 -m drone_uwb.integration.gazebo.gazebo_capture \
   --topic /world/default/dynamic_pose/info \
   --model x500_lidar_down_0 \
   --duration-s 60 --rate-hz 40 \
@@ -110,7 +110,7 @@ Gazebo 화면의 최상위 기체 이름과 대조한다.
 ```bash
 /usr/bin/python3 -m drone_uwb.processing.experiments.gazebo_scenarios \
   --input runs/gazebo_capture_01/poses.jsonl \
-  --config src/drone_uwb/config/gazebo_shadow.json \
+  --config src/drone_uwb/config/gazebo/gazebo_shadow.json \
   --output runs/gazebo_comparison_01
 ```
 

@@ -99,11 +99,11 @@ WSL 실행 결과는 사용자 출력으로 확인한다.
 - 이번에 적용할 보조기능의 개별 명세와 현재 구현.
 
 관련 코드는 다음을 출발점으로 추적한다.
-- src/drone_uwb/drone_uwb/integration/gazebo_rig.py
-- src/drone_uwb/drone_uwb/integration/gazebo_ranges.py
-- src/drone_uwb/drone_uwb/integration/gazebo_capture.py
-- src/drone_uwb/drone_uwb/integration/bridge.py
-- src/drone_uwb/drone_uwb/integration/frames.py
+- src/drone_uwb/drone_uwb/integration/gazebo/gazebo_rig.py
+- src/drone_uwb/drone_uwb/integration/gazebo/gazebo_ranges.py
+- src/drone_uwb/drone_uwb/integration/gazebo/gazebo_capture.py
+- src/drone_uwb/drone_uwb/integration/ros/bridge.py
+- src/drone_uwb/drone_uwb/integration/ros/frames.py
 - src/drone_uwb/drone_uwb/processing/experiments/
 - src/drone_demo/drone_demo/mission.py
 - src/drone_demo/drone_demo/mission_node.py
@@ -178,7 +178,8 @@ Gazebo 정답은 가상 센서 생성과 별도 평가에 사용한다.
 UWB 수평 원점은 A1이다.
 +y는 A1→A3, +x는 A3를 볼 때 오른쪽이다.
 A1→A2 선을 x축으로 간주하지 않는다.
-앵커 좌표는 기존 불규칙 배치 JSON을 기준으로 삼는다.
+앵커 좌표는 `config/anchors/anchors_20261004.json`을 기준으로 삼는다.
+가로 6.3m, 세로 4.6m의 직사각형이다.
 실물의 잠정 지도와 Gazebo에서 정의한 정답 지도를 구분한다.
 
 사용자 장착 보고:
@@ -522,7 +523,7 @@ WSL 명령은 작은 묶음으로 안내한다.
 | 자료 | 프롬프트에 반영한 차이 |
 |---|---|
 | [27일 Position 기록](../report/position_hold_20260927.md) | 위치 유지 완료와 UWB·자동 이동 미검증 구분 |
-| [앵커 기준](../reference/uwb_anchor_survey.md) | 불규칙 배치·원점·축 방향 |
+| [앵커 기준](../reference/uwb_anchor_layout.md) | 직사각형 배치·원점·축 방향 |
 | [B 비교 기록](../report/uwb_h80_b_20260927.md) | 정지 개선과 반전 시 성능 저하 구분 |
 | [임무 데모](../architecture/demo_mission_design.md) | 상태 판단과 실제 비행 명령 구분 |
 | [장비 적용 절차](uwb_gazebo_equipment_runbook.md) | 사용자 WSL 확인 범위·후속 UWB 기록 |

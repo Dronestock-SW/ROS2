@@ -7,7 +7,7 @@
 M06 또는 M07이 만든 후보를 같은 조건에서 결합한다.
 0.7·0.3·0.03은 대화에서 나온 시험 후보값이다.
 GNSS 공통 상수나 검증된 계수로 취급하지 않는다.
-`processing/candidate_fusion.py`에 균등 결합을 구현했다.
+`processing/solvers/candidate_fusion.py`에 균등 결합을 구현했다.
 품질·상하위 가중은 설계 단계다.
 확장 인터페이스는 [공통 규격](00_interfaces.md)을 따른다.
 2026-09-27 C 착수 명세에서 첫 결합 정책을 정했다.

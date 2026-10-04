@@ -1,0 +1,91 @@
+{
+  "layout": {
+    "layout_id": "warehouse-rectangle-6p3x4p6-z2p2-20261004",
+    "coordinate_frame": "uwb_map",
+    "units": "m",
+    "source": "User fixed rectangular XY layout on 2026-10-04: A1-A2/A3-A4=6.3m, A1-A3/A2-A4=4.6m; existing Z=2.2m retained.",
+    "independently_verified": false,
+    "anchor_order": [
+      "A1",
+      "A2",
+      "A3",
+      "A4"
+    ],
+    "anchors_xyz_m": [
+      [
+        0.0,
+        0.0,
+        2.2
+      ],
+      [
+        6.3,
+        0.0,
+        2.2
+      ],
+      [
+        0.0,
+        4.6,
+        2.2
+      ],
+      [
+        6.3,
+        4.6,
+        2.2
+      ]
+    ]
+  },
+  "edge_lengths_m": {
+    "A1-A2": 6.3,
+    "A3-A4": 6.3,
+    "A1-A3": 4.6,
+    "A2-A4": 4.6
+  },
+  "diagonal_m": 7.800640999302557,
+  "noiseless_positions": [
+    {
+      "truth": [
+        0.7,
+        1.8,
+        1.13
+      ],
+      "xy": [
+        0.7000000000000004,
+        1.799999999999999
+      ],
+      "error_m": 1.1957467920563633e-15,
+      "residual_m": 1.1584935909132068e-15
+    },
+    {
+      "truth": [
+        3.15,
+        2.3,
+        1.2
+      ],
+      "xy": [
+        3.1499999999999995,
+        2.299999999999999
+      ],
+      "error_m": 9.930136612989092e-16,
+      "residual_m": 9.108773699797602e-16
+    },
+    {
+      "truth": [
+        5.6,
+        3.9,
+        0.9
+      ],
+      "xy": [
+        5.599999999999998,
+        3.899999999999999
+      ],
+      "error_m": 1.9860273225978185e-15,
+      "residual_m": 1.8217547399595204e-15
+    }
+  ],
+  "gazebo_anchor_match": true,
+  "historical_replay_anchor_hashes_preserved": [
+    "baseline_a_static_20260906.json",
+    "h80_b_static_20260906.json",
+    "subsets_cd_static_20260906.json"
+  ]
+}

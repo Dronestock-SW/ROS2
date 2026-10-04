@@ -23,8 +23,8 @@ source install/setup.bash
 ```bash
 ros2 run drone_uwb uwb_pipeline \
   --simulate --duration 10 --seed 7 \
-  --config src/drone_uwb/config/preimu_pipeline.json \
-  --anchors src/drone_uwb/config/anchors_20260906.json \
+  --config src/drone_uwb/config/pipeline/preimu_pipeline.json \
+  --anchors src/drone_uwb/config/anchors/anchors_20261004.json \
   --output /tmp/uwb_pipeline_run_01
 ```
 
@@ -44,7 +44,7 @@ ros2 run drone_uwb uwb_pipeline \
 ```bash
 ros2 run drone_uwb uwb_pipeline \
   --input /tmp/uwb_pipeline_run_01/input.jsonl \
-  --config src/drone_uwb/config/preimu_pipeline.json \
+  --config src/drone_uwb/config/pipeline/preimu_pipeline.json \
   --output /tmp/uwb_pipeline_replay_01
 cmp /tmp/uwb_pipeline_run_01/diagnostics.jsonl /tmp/uwb_pipeline_replay_01/diagnostics.jsonl
 ```

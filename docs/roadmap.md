@@ -93,9 +93,12 @@ EKF2는 Pixhawk 6C Mini 하드웨어가 아니라 **그 위에 올라간 PX4 펌
 - [x] Pixhawk 6C Mini heartbeat (PX4 탑재, MAVROS connected)
 - [x] UWB 앵커 4기 자체 제작 + 설치 (멀티 태그 지원 확인)
 - [x] UWB 실측 거리와 방향으로 잠정 좌표 산출 — [앵커 실측값](reference/uwb_anchor_survey.md)
-  현재 배치는 불규칙하다. 직사각형을 가정하지 않는다.
-  이유: 2026-09-06 실측이 기존 5×4.5m 설정과 다르다.
-- [ ] UWB 새 앵커 좌표를 태그에 반영하고 독립 기준점으로 검증
+  2026-09-06 불규칙 배치는 과거 재생용으로 보존한다.
+- [x] 2026-10-04 사용자 지정 직사각형 배치를 기본 설정에 반영
+  x=6.3m, y=4.6m. A1 원점, A2는 +x, A3는 +y다.
+  [현재 앵커 좌표](reference/uwb_anchor_layout.md)를 따른다.
+- [ ] 새 배치의 설치값·독립 기준점 검증
+  RAW 태그는 거리를 송신하고 companion이 좌표를 계산한다.
 - [ ] TFmini Plus → PX4 EKF rangefinder 융합 설정 — 미입고로 보류
 - [ ] PMW3901 → PX4 직결 배선 + 파라미터 설정 (결정 8) — 미입고로 보류
 - [x] UWB 태그 → /uwb_pose 관측 노드 구현·지상 수신 확인
@@ -156,7 +159,7 @@ EKF와 목표의 수평 편차 RMS는 4.26cm·2.76cm다.
 이번 로그는 UWB 융합·Offboard 경로 시험이 아니다.
 Phase 0의 1호기 장착 항목은 별도로 확인한다.
 [로그 결과](report/position_hold_20260927.md)를 기준 기록으로 삼는다.
-같은 날 `perfect_holdv2.params` 원본을 보관했다.
+같은 날 `data/raw/flight/20260927/perfect_holdv2.params` 원본을 보관했다.
 주요 수평 게인은 로그와 같으나 RC·모드 값은 다르다.
 [설정 비교 기록](report/perfect_holdv2_20260927.md)을 함께 읽는다.
 

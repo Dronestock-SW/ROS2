@@ -137,7 +137,11 @@ M03의 거리 게이트 유무는 실행 설정에서 고정한다.
 | 모델 선정 | 사전 기준을 통과한 모델 선택 | 미선정 |
 | 외부 연결 | 좌표·시간·책임 경계 검증 | 보류 |
 
-제안 구현 경로는 `src/drone_uwb/drone_uwb/preimu/experiments/`다.
-제안 시험 경로는 `src/drone_uwb/test/experiments/`다.
-두 경로의 새 기능은 이번 작업에서 만들지 않는다.
+현재 비교 실행기는 `src/drone_uwb/drone_uwb/processing/experiments/`에 있다.
+비교 시험은 `src/drone_uwb/test/experiments/`에서 찾는다.
+`preimu/`는 이전 import 호환 경로다.
+위 표는 초기 명세의 완료 조건도 포함한다.
+현재 구현·실행 상태는 [단계별 위치표](../../reference/repository_layout.md)를 함께 읽는다.
+2026-10-04 정리에서는 경로만 분류했다.
+미구현 기능이나 새 모델을 추가하지 않았다.
 기존 실행기는 [현재 설계](../../architecture/uwb_pipeline_design.md)를 따른다.

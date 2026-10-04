@@ -67,7 +67,7 @@ def load_inputs(config_file='', **overrides):
     config = json.loads(path.read_text(encoding='utf-8'))
     config.update({name: value for name, value in overrides.items() if value is not None})
     uwb_share = Path(get_package_share_directory('drone_uwb'))
-    layout = json.loads((uwb_share / 'config/anchors/anchors_20260906.json').read_text(encoding='utf-8'))
+    layout = json.loads((uwb_share / 'config/anchors/anchors_20261004.json').read_text(encoding='utf-8'))
     values = yaml.safe_load((uwb_share / 'config/uwb.yaml').read_text(encoding='utf-8'))
     params = values['uwb_node']['ros__parameters']
     settings = Settings(**{k: v for k, v in params.items() if k in asdict(Settings())})

@@ -3,6 +3,23 @@
 현재 구현의 입력·출력·실패 처리를 정리한 사전이다.
 함수 호출이나 후속 API를 설계할 때 읽는다.
 
+실제 파일은 [단계별 위치표](repository_layout.md)에서 찾는다.
+2026-10-04 경로 정리에서 함수 계약·수치 설정은 유지했다.
+아래 표의 짧은 모듈명은 다음 경로를 기준으로 읽는다.
+
+| 모듈명 | 실제 패키지 |
+|---|---|
+| `clock`, `sensors` | `drone_uwb.processing.timing` |
+| `height`, `transform`, `gazebo_geometry` | `drone_uwb.processing.geometry` |
+| `observations`, `rawxy`, `range_solver`, `weighted_xy`, `h80`, `qs10`, `triplets`, `intersections`, `candidate_fusion` | `drone_uwb.processing.solvers` |
+| `ranges`, `settings`, `pipeline`, `runner`, `simulator` | `drone_uwb.processing` |
+| `node`, `bridge`, `frames`, `bench_probe` | `drone_uwb.integration.ros` |
+| `gazebo_*`의 외부 연결 | `drone_uwb.integration.gazebo` |
+| `sitl_*`, `px4_clock_tracker` | `drone_uwb.integration.sitl` |
+
+옛 import는 같은 모듈 객체로 연결한다.
+전체 대응은 [모듈 경로표](../../data/module_paths.json)에 있다.
+
 ## 공통 계약
 
 RAW·보정 거리·좌표를 서로 다른 필드로 전달한다.

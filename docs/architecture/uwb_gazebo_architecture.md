@@ -42,9 +42,9 @@ JSON은 설정표이고 SDF는 가상 장비의 설계도다.
 
 | 파일 | 역할 |
 |---|---|
-| `src/drone_uwb/config/anchors_20260906.json` | A1~A4의 같은 좌표를 화면과 계산에 제공 |
-| `src/drone_uwb/config/gazebo_equipment.json` | 센서 장착·질량·측정 범위·시작 위치 설정 |
-| `src/drone_uwb/drone_uwb/integration/gazebo_rig.py` | PX4 원본 모델을 읽고 별도 모델·시험장 생성 |
+| `src/drone_uwb/config/anchors/anchors_20261004.json` | A1~A4의 같은 좌표를 화면과 계산에 제공 |
+| `src/drone_uwb/config/gazebo/gazebo_equipment.json` | 센서 장착·질량·측정 범위·시작 위치 설정 |
+| `src/drone_uwb/drone_uwb/integration/gazebo/gazebo_rig.py` | PX4 원본 모델을 읽고 별도 모델·시험장 생성 |
 | `runs/equipment_02/models/dronestock_x500/model.sdf` | 기체·센서·모터 구성을 저장 |
 | `runs/equipment_02/worlds/dronestock_uwb.sdf` | 앵커·무늬 바닥·시험 벽을 저장 |
 | `runs/equipment_02/trial.json` | 가상 UWB·계산 비교에 같은 배치 전달 |

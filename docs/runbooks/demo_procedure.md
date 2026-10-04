@@ -127,8 +127,8 @@ ROS_DOMAIN_ID=99 ROS_LOCALHOST_ONLY=1 \
 ```bash
 ros2 run drone_uwb uwb_replay \
   /tmp/drone_demo_gap/received.jsonl \
-  --layout src/drone_uwb/config/anchors_20260906.json \
-  --settings src/drone_uwb/config/uwb.yaml \
+  --layout src/drone_uwb/config/anchors/anchors_20261004.json \
+  --settings src/drone_uwb/config/runtime/uwb.yaml \
   --output /tmp/drone_demo_gap_replay
 ```
 

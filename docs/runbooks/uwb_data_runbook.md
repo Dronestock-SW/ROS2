@@ -26,8 +26,8 @@ Gazebo나 PX4를 띄우는 명령은 아니다.
 
 ```bash
 PYTHONPATH=src/drone_uwb python src/drone_uwb/tools/run_subset_simulation.py \
-  --config src/drone_uwb/config/subsets_cd_static_20260906.json \
-  --anchors src/drone_uwb/config/anchors_20260906.json \
+  --config src/drone_uwb/config/replay/subsets_cd_static_20260906.json \
+  --anchors src/drone_uwb/config/anchors/anchors_20261004.json \
   --output /tmp/uwb_cd_simulation_new
 ```
 
@@ -49,6 +49,8 @@ PYTHONPATH=src/drone_uwb python src/drone_uwb/tools/run_subset_simulation.py \
 | `manifest.json` | 도구·계산 소스·설정·출력 해시 |
 
 [2026-09-27 실행 기록](../report/uwb_cd_simulation_20260927.md)에 확인 결과가 있다.
+그 기록은 당시 배치로 계산한 결과다.
+위 새 합성 명령은 10월 4일 직사각형 배치를 사용한다.
 
 ## 새 수신 기록
 
@@ -57,7 +59,7 @@ PYTHONPATH=src/drone_uwb python src/drone_uwb/tools/run_subset_simulation.py \
 
 ```bash
 ros2 run drone_uwb uwb_node --ros-args \
-  --params-file src/drone_uwb/config/uwb.yaml \
+  --params-file src/drone_uwb/config/runtime/uwb.yaml \
   -p record_directory:="$PWD/data/captures/session_001" \
   -p stop_after_s:=60.0
 ```
@@ -86,7 +88,7 @@ data/captures/session_001/
 
 ```bash
 ros2 run drone_uwb uwb_static_a \
-  --config src/drone_uwb/config/baseline_a_static_20260906.json \
+  --config src/drone_uwb/config/replay/baseline_a_static_20260906.json \
   --root "$PWD" \
   --output data/processed/static_a_new_run
 ```
@@ -95,7 +97,7 @@ ROS 없이 실행하려면 다음 명령을 쓴다.
 
 ```bash
 PYTHONPATH=src/drone_uwb python3 -m drone_uwb.processing.experiments.static_a \
-  --config src/drone_uwb/config/baseline_a_static_20260906.json \
+  --config src/drone_uwb/config/replay/baseline_a_static_20260906.json \
   --root "$PWD" \
   --output data/processed/static_a_new_run
 ```

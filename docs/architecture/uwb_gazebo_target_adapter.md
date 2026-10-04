@@ -56,7 +56,8 @@ PX4가 명령 수신 시점의 현재 고도를 선택한다.
 | 시계·원점 변경 | 기존 명령의 재사용 거부 |
 | 송신 예외 | 같은 패킷 자동 재전송 없음 |
 
-허용 구역은 불규칙 앵커 배치 내부의 시험 사각형이다.
+허용 구역은 앵커 배치 내부의 기존 시험 사각형이다.
+현재 앵커는 6.3×4.6m이며 허용 구역 값은 유지한다.
 벽 충돌·기체 크기·제동거리를 검증한 경계는 아니다.
 실제 시험 경로와 목표 목록은 실행 전에 기록해야 한다.
 
@@ -313,5 +314,5 @@ sha256sum -c uwb_gazebo_sitl_target_modules_20261002.zip.sha256
 unzip -o uwb_gazebo_sitl_target_modules_20261002.zip -d uwb-gazebo-equipment
 cd uwb-gazebo-equipment
 export PYTHONPATH="$PWD/src/drone_uwb:$PWD/src/drone_demo${PYTHONPATH:+:$PYTHONPATH}"
-/usr/bin/python3 -c "from drone_demo.sitl_mission import PX4MissionMonitor; from drone_uwb.integration.sitl_target_contract import reposition_fields; print('Target modules OK')"
+/usr/bin/python3 -c "from drone_demo.sitl_mission import PX4MissionMonitor; from drone_uwb.integration.sitl.sitl_target_contract import reposition_fields; print('Target modules OK')"
 ```

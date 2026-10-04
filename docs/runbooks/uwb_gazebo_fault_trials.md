@@ -67,9 +67,9 @@ Gazebo pose → 원래 가상 RAW + 별도 정답
 
 ```bash
 export PYTHONPATH="$PWD/src/drone_uwb:$PWD/src/drone_demo${PYTHONPATH:+:$PYTHONPATH}"
-/usr/bin/python3 -m drone_uwb.integration.gazebo_ranges \
+/usr/bin/python3 -m drone_uwb.integration.gazebo.gazebo_ranges \
   --config runs/equipment_02/trial.json \
-  --fault-plan src/drone_uwb/config/gazebo_fault_drop_01.json \
+  --fault-plan src/drone_uwb/config/gazebo/scenarios/gazebo_fault_drop_01.json \
   --duration-s 20 \
   --output runs/ranges_drop_01
 ```

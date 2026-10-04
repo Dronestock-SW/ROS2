@@ -3,6 +3,9 @@
 수신과 보정의 폴더·책임을 정한 기준이다.
 파일을 추가하거나 API 경계를 바꿀 때 읽는다.
 
+[단계별 위치표](../reference/repository_layout.md)에서 A~H와 관련 시험을 찾는다.
+2026-10-04에는 기존 계층 안의 실제 구현을 세분화했다.
+
 ## 코드 경계
 
 수신부는 RAW를 보존하고 계산부는 별도 결과를 만든다.
@@ -14,14 +17,14 @@ UART bytes -> acquisition/serial_io.py -> acquisition/framing.py
                                             |
                                acquisition/validation.py
                                             |
-                   processing/clock.py + sensors.py
+                   processing/timing/clock.py + sensors.py
                                             |
                      processing/ranges.py -> 계산 후보
                                             |
                      integration/ -> ROS 관측 출력
 
 기존 실시간 경로:
- integration/node.py -> processing/observations.py -> /uwb_pose
+ integration/ros/node.py -> processing/solvers/observations.py -> /uwb_pose
 
 파일 비교 경로:
  processing/runner.py -> pipeline.py -> 진단 파일
@@ -35,10 +38,14 @@ UART bytes -> acquisition/serial_io.py -> acquisition/framing.py
 |---|---|---|
 | `contracts/` | JSON·스칼라 공통 검사와 예외 | 수신·계산·ROS에 의존하지 않음 |
 | `acquisition/` | 장치 읽기, 행 분리, RAW 계약 검사 | 공통 계약만 사용. 보정기 의존 금지 |
-| `processing/` | 시각 대응, 거리 정제, 기하 계산 | 입력 검사·공통 계약 사용. ROS 의존 금지 |
+| `processing/timing/` | 시각 대응·센서 표본 선택 | 공통 계약 사용. ROS 의존 금지 |
+| `processing/geometry/` | 높이·회전·장착 위치 | 수식·입력 검사. ROS 의존 금지 |
+| `processing/solvers/` | raw XY·H80·Q_S10·비교 풀이 | 공통 계약·계산 모듈 사용 |
+| `processing/ranges.py`, `settings.py`, `pipeline.py` | 거리 게이트·설정·호출 순서 | 기존 단일 파일 유지 |
 | `processing/experiments/` | 파일 비교, 교정·평가 분리 | 계산 함수를 조합. 장치 출력 없음 |
-| `integration/` | ROS·MAVROS 연결, 기록 파일 소유 | 수신과 계산을 연결 |
-| 기존 최상위·`preimu/` | 이전 import·실행 경로 호환 | 새 구현을 연결. 계산 코드 추가 금지 |
+| `integration/ros/`, `gazebo/`, `sitl/` | 외부 실행 환경별 연결 | 수신과 계산을 연결 |
+| `integration/recording.py`, `replay.py` | 기록·기존 관측 재생 | 파일 입출력 소유 |
+| 이전 최상위·`preimu/`·이동 전 파일명 | import·실행 경로 호환 | 실제 구현 직접 연결. 계산 코드 추가 금지 |
 
 의존성 제한은 수신기와 계산기를 따로 바꾸기 위함이다.
 `test_module_layout.py`가 역방향 import를 검사한다.

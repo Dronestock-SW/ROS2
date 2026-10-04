@@ -39,7 +39,7 @@ class UwbNode(Node):
         self.settings = Settings(**values)
         path = self.get_parameter('anchor_file').value
         if not path:
-            path = str(Path(get_package_share_directory('drone_uwb')) / 'config/anchors/anchors_20260906.json')
+            path = str(Path(get_package_share_directory('drone_uwb')) / 'config/anchors/anchors_20261004.json')
         self.layout = json.loads(Path(path).read_text(encoding='utf-8'))
         self.processor = Processor(self.layout, self.settings)
         self.framer = LineFramer()

@@ -245,7 +245,7 @@ def main(args=None):
     config = _default_config_directory()
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--px4-gz', type=Path, required=True)
-    parser.add_argument('--anchors', type=Path, default=config/'anchors/anchors_20260906.json')
+    parser.add_argument('--anchors', type=Path, default=config/'anchors/anchors_20261004.json')
     parser.add_argument('--equipment', type=Path, default=config/'gazebo_equipment.json')
     parser.add_argument('--trial', type=Path, default=config/'gazebo_shadow.json')
     parser.add_argument('--output', type=Path, required=True)

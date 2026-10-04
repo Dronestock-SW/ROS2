@@ -41,7 +41,7 @@ B H80의 수평 진단은 별도로 계산하되 PX4 관측으로 송신하지 �
 
 ```bash
 export PYTHONPATH="$PWD/src/drone_uwb${PYTHONPATH:+:$PYTHONPATH}"
-/usr/bin/python3 -m drone_uwb.integration.gazebo_ranges \
+/usr/bin/python3 -m drone_uwb.integration.gazebo.gazebo_ranges \
   --config runs/equipment_02/trial.json \
   --output runs/raw_shadow_20260928_01
 ```
@@ -51,9 +51,9 @@ export PYTHONPATH="$PWD/src/drone_uwb${PYTHONPATH:+:$PYTHONPATH}"
 
 ```bash
 export PYTHONPATH="$PWD/src/drone_uwb${PYTHONPATH:+:$PYTHONPATH}"
-/usr/bin/python3 -m drone_uwb.integration.gazebo_live_shadow \
+/usr/bin/python3 -m drone_uwb.integration.gazebo.gazebo_live_shadow \
   --config runs/equipment_02/trial.json \
-  --height-profile src/drone_uwb/config/gazebo_sensor_height_profile.json \
+  --height-profile src/drone_uwb/config/gazebo/gazebo_sensor_height_profile.json \
   --output runs/live_shadow_20260928_01 \
   --duration-s 60
 ```

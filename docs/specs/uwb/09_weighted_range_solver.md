@@ -7,7 +7,7 @@
 관측별 불확실성을 위치 계산에 반영한다.
 GNSS의 가중 추정 원리를 UWB 거리식에 적용하는 시험안이다.
 기존 `rawxy.py`는 동일 가중 기준선의 참고 함수다.
-2026-09-27 `processing/weighted_xy.py`를 추가했다.
+2026-09-27 `processing/solvers/weighted_xy.py`를 추가했다.
 네 앵커와 명시된 거리 공분산으로 위치를 푼다.
 공유 Z·지도 오차의 자동 전파는 미구현이다.
 실측 품질 추정과 통합 Candidate 연결은 남아 있다.

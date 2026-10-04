@@ -180,11 +180,11 @@ D_C = sum((p_S - p_C)*(p_S - p_C)^T) / 4
 
 | 위치 | 함수·역할 | 입력 → 출력 |
 |---|---|---|
-| `processing/triplets.py` | `make_triplets` | 앵커 ID 네 개 → 정렬된 네 조합 |
-| `processing/triplets.py` | `solve_triplet_xy` | 지도·세 거리·표본별 높이·설정 → 후보·진단 |
-| `processing/triplets.py` | `make_candidates` | 지도·거리·높이·시각·ID → 네 후보·결합·실패 |
-| `processing/candidate_fusion.py` | `uniform_fuse` | 네 유효 후보 → 평균·가중치·산포 |
-| `processing/range_solver.py` | `solve_slant_xy` | A/C 공통 수식. 요구 앵커 수는 호출자가 지정 |
+| `processing/solvers/triplets.py` | `make_triplets` | 앵커 ID 네 개 → 정렬된 네 조합 |
+| `processing/solvers/triplets.py` | `solve_triplet_xy` | 지도·세 거리·표본별 높이·설정 → 후보·진단 |
+| `processing/solvers/triplets.py` | `make_candidates` | 지도·거리·높이·시각·ID → 네 후보·결합·실패 |
+| `processing/solvers/candidate_fusion.py` | `uniform_fuse` | 네 유효 후보 → 평균·가중치·산포 |
+| `processing/solvers/range_solver.py` | `solve_slant_xy` | A/C 공통 수식. 요구 앵커 수는 호출자가 지정 |
 | `processing/experiments/subset_comparison.py` | `run` | 잠근 파일 설정 → A/B/C 또는 A/B/C/D 비교 |
 | `config/subsets_cd_static_20260906.json` | 시험 설정 | 같은 평가 RAW·지도·교정·이전 A/B 해시 |
 

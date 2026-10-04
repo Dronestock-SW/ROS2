@@ -76,7 +76,7 @@ HW 앵커 A1~A4 <-> ESP32 RAW JSONL
 
 코드 열의 경로는 `src/drone_uwb/drone_uwb/` 기준이다.
 설정과 시험은 `src/drone_uwb/` 기준이다.
-현재 앵커는 [6.3×4.6m 직사각형](uwb_anchor_survey.md)이다.
+현재 앵커는 [6.3×4.6m 직사각형](uwb_anchor_layout.md)이다.
 이전 날짜 좌표는 해당 실측 기록의 재생용이다.
 
 | 단계 | 실제 코드 | 설정·시험 | 기준·현재 범위 |

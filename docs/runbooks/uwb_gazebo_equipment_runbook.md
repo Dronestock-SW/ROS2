@@ -2,6 +2,11 @@
 
 사용자 기체 배치를 반영한 가상 모델 실행 절차다. 기존 x500을 센서 시험 모델로 바꿀 때 읽는다.
 
+2026-10-04 이후 새 생성의 기본 배치는 [현재 앵커 좌표](../reference/uwb_anchor_layout.md)다.
+아래 9월 ZIP과 이미 생성한 월드는 당시 배치를 유지한다.
+새 저장소의 소스·설정을 함께 반영한 뒤 새 출력 폴더에 생성한다.
+현재 기본 파일은 `config/anchors/anchors_20261004.json`이다.
+
 파일을 만든 원리와 연결 구조는 [구현 설명](../architecture/uwb_gazebo_architecture.md)에 있다.
 
 ## 현재 범위
@@ -126,17 +131,17 @@ gazebo_shadow.json
 이미 `equipment_01`을 설치했다면 2.1절을 따른다.
 
 ```bash
-scp pgyxn@100.110.163.94:/home/pgyxn/github/ROS2/src/drone_uwb/drone_uwb/integration/gazebo_rig.py src/drone_uwb/drone_uwb/integration/gazebo_rig.py
+scp pgyxn@100.110.163.94:/home/pgyxn/github/ROS2/src/drone_uwb/drone_uwb/integration/gazebo/gazebo_rig.py src/drone_uwb/drone_uwb/integration/gazebo/gazebo_rig.py
 ```
 
 파일 이름 확인 후 같은 소스 폴더에서 도구 로딩을 확인한다.
 
 ```bash
 export PYTHONPATH="$PWD/src/drone_uwb${PYTHONPATH:+:$PYTHONPATH}"
-/usr/bin/python3 -m drone_uwb.integration.gazebo_rig --help
+/usr/bin/python3 -m drone_uwb.integration.gazebo.gazebo_rig --help
 ```
 
-설정은 `src/drone_uwb/config/gazebo_equipment.json`이다.
+설정은 `src/drone_uwb/config/gazebo/gazebo_equipment.json`이다.
 실측 수평 위치와 높이 시험값을 구분해 적었다.
 생성기는 설치된 PX4의 원본 센서를 읽는다.
 기존 x500·기체 파라미터 파일은 수정하지 않는다.
@@ -150,14 +155,14 @@ export PYTHONPATH="$PWD/src/drone_uwb${PYTHONPATH:+:$PYTHONPATH}"
 이 값은 Python이 `src/drone_uwb`의 코드를 찾게 한다.
 
 ```bash
-/usr/bin/python3 -m drone_uwb.integration.gazebo_rig \
+/usr/bin/python3 -m drone_uwb.integration.gazebo.gazebo_rig \
   --px4-gz "$HOME/github/PX4-Autopilot/Tools/simulation/gz" \
   --output runs/equipment_01 --install
 ```
 
 | 명령·옵션 | 역할 |
 |---|---|
-| `-m drone_uwb.integration.gazebo_rig` | 이번에 전달한 모델 생성 도구 실행 |
+| `-m drone_uwb.integration.gazebo.gazebo_rig` | 이번에 전달한 모델 생성 도구 실행 |
 | `--px4-gz` | 원본 기체·센서 파일을 읽을 PX4 Gazebo 폴더 |
 | `--output` | 생성한 모델·설정·기록을 저장할 새 폴더 |
 | `--install` | 생성 후 PX4의 모델·월드 폴더에 새 이름으로 복사 |
@@ -208,9 +213,9 @@ gz sdf -k runs/equipment_01/worlds/dronestock_uwb.sdf
 WSL의 `~/uwb_sim/uwb-gazebo-equipment`에서 실행한다.
 
 ```bash
-scp pgyxn@100.110.163.94:/home/pgyxn/github/ROS2/src/drone_uwb/drone_uwb/integration/gazebo_rig.py src/drone_uwb/drone_uwb/integration/gazebo_rig.py
+scp pgyxn@100.110.163.94:/home/pgyxn/github/ROS2/src/drone_uwb/drone_uwb/integration/gazebo/gazebo_rig.py src/drone_uwb/drone_uwb/integration/gazebo/gazebo_rig.py
 export PYTHONPATH="$PWD/src/drone_uwb${PYTHONPATH:+:$PYTHONPATH}"
-/usr/bin/python3 -m drone_uwb.integration.gazebo_rig \
+/usr/bin/python3 -m drone_uwb.integration.gazebo.gazebo_rig \
   --px4-gz "$HOME/github/PX4-Autopilot/Tools/simulation/gz" \
   --output runs/equipment_02
 gz sdf -k runs/equipment_02/worlds/dronestock_uwb.sdf
@@ -357,7 +362,7 @@ Gazebo Python 모듈·NumPy는 [연결 준비](uwb_gazebo_shadow_runbook.md) 1�
 ```bash
 cd ~/uwb_sim/uwb-gazebo-equipment
 export PYTHONPATH="$PWD/src/drone_uwb${PYTHONPATH:+:$PYTHONPATH}"
-/usr/bin/python3 -m drone_uwb.integration.gazebo_ranges \
+/usr/bin/python3 -m drone_uwb.integration.gazebo.gazebo_ranges \
   --config runs/equipment_02/trial.json \
   --output runs/equipment_capture_01
 ```
@@ -473,9 +478,9 @@ WSL의 `dronestock` 셸에서 다음 파일을 복사한다.
 
 ```bash
 cd ~/uwb_sim/uwb-gazebo-equipment
-scp pgyxn@100.110.163.94:/home/pgyxn/github/ROS2/src/drone_uwb/drone_uwb/integration/gazebo_sensors.py src/drone_uwb/drone_uwb/integration/gazebo_sensors.py
+scp pgyxn@100.110.163.94:/home/pgyxn/github/ROS2/src/drone_uwb/drone_uwb/integration/gazebo/gazebo_sensors.py src/drone_uwb/drone_uwb/integration/gazebo/gazebo_sensors.py
 export PYTHONPATH="$PWD/src/drone_uwb${PYTHONPATH:+:$PYTHONPATH}"
-/usr/bin/python3 -m drone_uwb.integration.gazebo_sensors --help
+/usr/bin/python3 -m drone_uwb.integration.gazebo.gazebo_sensors --help
 ```
 
 PX4·Gazebo 창과 가상 UWB 기록 창을 유지한다.
@@ -486,7 +491,7 @@ PX4·Gazebo 창과 가상 UWB 기록 창을 유지한다.
 ```bash
 cd ~/uwb_sim/uwb-gazebo-equipment
 export PYTHONPATH="$PWD/src/drone_uwb${PYTHONPATH:+:$PYTHONPATH}"
-/usr/bin/python3 -m drone_uwb.integration.gazebo_sensors \
+/usr/bin/python3 -m drone_uwb.integration.gazebo.gazebo_sensors \
   --output runs/equipment_sensors_01
 ```
 
@@ -508,7 +513,7 @@ IMU 자세의 기준축은 아직 사용자 WSL에서 확인하지 않았다.
 새 분석 시행은 계획 파일에 세 입력의 SHA256을 먼저 적고
 `navigation_iteration`에 같은 세 옵션을 전달한다.
 예비 높이 프로필은
-`src/drone_uwb/config/gazebo_sensor_height_profile.json`이다.
+`src/drone_uwb/config/gazebo/gazebo_sensor_height_profile.json`이다.
 그 설정의 두 확인 게이트는 기본 `false`다.
 이 상태에서는 높이가 필요한 A/C/D/WLS가 보류 사유를 기록한다.
 B는 거리 이력만으로 Shadow 계산을 계속한다.
@@ -527,7 +532,7 @@ export PYTHONPATH="$PWD/src/drone_uwb${PYTHONPATH:+:$PYTHONPATH}"
   --poses data/raw/uwb/equipment_capture_02/poses.jsonl \
   --tof data/raw/uwb/equipment_sensors_02/tof.jsonl \
   --attitude data/raw/uwb/equipment_sensors_02/attitude.jsonl \
-  --height-profile src/drone_uwb/config/gazebo_sensor_height_profile.json \
+  --height-profile src/drone_uwb/config/gazebo/gazebo_sensor_height_profile.json \
   --config data/raw/uwb/equipment_capture_02/config.json \
   --output data/processed/uwb/equipment_height_diagnostic_02
 ```

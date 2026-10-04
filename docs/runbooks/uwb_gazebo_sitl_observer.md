@@ -94,11 +94,11 @@ A/B/C/D 잔차에서 계산한 공분산이 아니다.
 
 ```bash
 export PYTHONPATH="$PWD/src/drone_uwb${PYTHONPATH:+:$PYTHONPATH}"
-/usr/bin/python3 -m drone_uwb.integration.gazebo_live_shadow \
+/usr/bin/python3 -m drone_uwb.integration.gazebo.gazebo_live_shadow \
   --config runs/equipment_02/trial.json \
-  --height-profile src/drone_uwb/config/gazebo_sensor_height_profile.json \
-  --sitl-odometry src/drone_uwb/config/gazebo_sitl_odometry.json \
-  --sitl-observer src/drone_uwb/config/gazebo_sitl_observer.json \
+  --height-profile src/drone_uwb/config/gazebo/gazebo_sensor_height_profile.json \
+  --sitl-odometry src/drone_uwb/config/sitl/gazebo_sitl_odometry.json \
+  --sitl-observer src/drone_uwb/config/sitl/gazebo_sitl_observer.json \
   --sitl-mode shadow \
   --output runs/observer_shadow_20261002_01 --duration-s 60
 ```

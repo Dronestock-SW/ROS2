@@ -8,9 +8,14 @@
 ## 결론 한 줄
 
 ```text
-uwb_node = 번역기다. 계산기가 아니다.
-태그가 케이블로 보내는 글자 줄을 ROS2 좌표 메시지로 바꿔 /uwb_pose 에 발행한다. 그게 전부다.
+RAW JSONL -> 입력 검사 -> 앵커 배치 기반 XY 계산 -> /uwb_pose
+태그는 원본 거리를 보내고 companion이 수평 관측을 계산한다.
 ```
+
+현재 기본 배치는 [6.3×4.6m 직사각형](../reference/uwb_anchor_layout.md)이다.
+기존 `tag_xy` 선택 경로는 태그 좌표를 검사한다.
+아래 초기 설계 설명과 현재 RAW 경로를 구분한다.
+실제 구현 위치와 계약은 [API 사전](../reference/uwb_module_api.md)에 있다.
 
 ---
 

@@ -32,7 +32,7 @@ PX4·Gazebo가 실행 중인 WSL Ubuntu의 새 창에서 입력한다.
 
 ```bash
 export PYTHONPATH="$PWD/src/drone_uwb${PYTHONPATH:+:$PYTHONPATH}"
-~/.venvs/px4/bin/python -m drone_uwb.integration.sitl_clock_probe \
+~/.venvs/px4/bin/python -m drone_uwb.integration.sitl.sitl_clock_probe \
   --output runs/sitl_clock_probe_20261002_01.json \
   --duration-s 20 --samples 8
 ```
