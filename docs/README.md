@@ -75,3 +75,10 @@
 
 현재 코드의 유무는 최근 기록과 함께 확인한다.
 8월의 미구현 표시는 이후 구현을 반영하지 않는다.
+
+## 2026-10-04 기능별 반영
+
+- [Gazebo UWB 관측의 SITL 실행 절차](uwb_gazebo_sitl_observer.md)
+- [Gazebo UWB 관측의 PX4 입력 계약](uwb_gazebo_sitl_odometry.md)
+- [PX4 SITL 부트 시계 조회](uwb_sitl_clock_probe.md)
+- [PX4 SITL MAVLink 읽기 점검](uwb_sitl_link_probe.md)
