@@ -1,0 +1,57 @@
+{
+  "run_id": "iter_0013_dynamic_w020",
+  "parent_run_id": "iter_0011_dynamic_w080",
+  "dataset_split": "tuning",
+  "hypothesis": "Shorter H80 window may reduce reversal lag at the cost of static noise.",
+  "change": {
+    "kind": "parameter",
+    "model": "B",
+    "parameter": "window_s",
+    "from_s": 0.8,
+    "to_s": 0.2
+  },
+  "criteria": {
+    "target_m": 0.07,
+    "min_coverage": 0.99
+  },
+  "scenario_intervals": [
+    {
+      "name": "start_hold",
+      "start_s": 0,
+      "end_s": 2
+    },
+    {
+      "name": "east",
+      "start_s": 2,
+      "end_s": 4
+    },
+    {
+      "name": "west_reversal",
+      "start_s": 4,
+      "end_s": 6
+    },
+    {
+      "name": "middle_hold",
+      "start_s": 6,
+      "end_s": 7
+    },
+    {
+      "name": "north",
+      "start_s": 7,
+      "end_s": 8.2
+    },
+    {
+      "name": "south_reversal",
+      "start_s": 8.2,
+      "end_s": 9.4
+    },
+    {
+      "name": "end_hold",
+      "start_s": 9.4,
+      "end_s": 12
+    }
+  ],
+  "source_limit": "Synthetic simulator-pose fixture with exact height; algorithm-only, no PX4 flight or ToF",
+  "input_sha256": "97e46b3fd96b9970505b41052d87fa64b11d2e016f4dc46b6d467a5e6b4ca56b",
+  "config_sha256": "cc3ac4cc680c30dd82f989e969ff7de7bc705e4b1e366292848301a2e26bb53b"
+}

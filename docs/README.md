@@ -9,8 +9,16 @@
 
 | 문서 | 확인 범위 |
 |---|---|
+| [Windows UWB 재시작·첫 실시간 기록](report/uwb_windows_restart_20261002.md) | 사용자 승인 재기동, RAW 812개·B 정지 진단·ULog 스냅샷. 실제 융합·동적 이동 미검증 |
+| [UWB 새 Goal 프롬프트](uwb_goal_prompt_20261002.txt) | 기존 실행 보존, 실제 EKF2 융합, 독립 다점·동적 7cm 및 목표 이동의 완료 기준 |
+| [Windows UWB 재개 점검](report/uwb_windows_resume_20261002_140858.md) | 실제 Windows·WSL 프로세스·메모리 고갈·누적본 54개 파일 반영. 새 센서·융합·비행 미실시 |
+| [Gazebo 이상·복구 구간 평가](report/uwb_gazebo_fault_evaluation_20261002.md) | 구간별 CSV·복구 시간·누적본 68개 시험. v2는 Windows 인계·설치 문서 개정 |
+| [Gazebo 이상 시험 갱신본](report/uwb_gazebo_fault_bundle_20261002.md) | 누적 ZIP·SHA-256·별도 폴더의 54개 시험. WSL 비행 미검증 |
+| [Gazebo UWB 시행 기록](report/uwb_navigation_iteration_20260928.md) | 정지 RAW와 합성 이동·반전 비교, B 시간창 조정, M03 보완 기각 및 7cm 판정 범위 |
+| [Gazebo UWB 시행 누적표](report/uwb_navigation_iteration_index_20260928.md) | 시행 0002~0016의 변경·오차·가용률·채택 여부 |
 | [기능별 커밋 전 통합 확인](report/uwb_commit_review_20260927.md) | 8개 커밋 구분·142개 테스트·전체 빌드·남은 검증 |
-| [UWB·장비 Gazebo 구성](report/uwb_gazebo_equipment_20260927.md) | 사용자 WSL의 새 시험장·PX4 시작 확인. 센서별 수신·가상 UWB 실행은 후속 검증 |
+| [구매 장비·Gazebo 대조](report/gazebo_equipment_audit_20260927.md) | 장비 문서와 실제 SDF 대조. 구매 엑셀 미발견, 제품별 미반영 항목·실행 확인 한계 |
+| [UWB·장비 Gazebo 구성](report/uwb_gazebo_equipment_20260927.md) | 사용자 WSL 시작과 IMU·기압·하방 거리 표본 확인. 가상 UWB 기록·융합은 후속 검증 |
 | [Gazebo UWB 비교 준비](report/uwb_gazebo_shadow_20260927.md) | WLS·경로 기록·여섯 조건 재생·WSL 버전 확인. 실제 Gazebo 연동은 대기 |
 | [perfect_holdv2 설정 보관](report/perfect_holdv2_20260927.md) | 1,095개 파라미터. 27일 ULog와 공통 990개 중 차이 11개 |
 | [9월 27일 Position 위치 유지](report/position_hold_20260927.md) | 두 구간 29.28초. 추종 오차·센서 융합·종료 사건 |
@@ -41,7 +49,18 @@
 
 | 문서 | 읽는 때 |
 |---|---|
+| [Windows 로컬 작업 인계](uwb_windows_handoff.md) | Windows 터미널로 WSL 시험을 이어받고 Jetson 자료를 SSH로 읽을 때 |
+| [Gazebo UWB 목표 이동 프롬프트](uwb_gazebo_navigation_prompt.md) | A/B/C/D 선정·보조기능 순차 보완·7cm 목표·시행별 기록과 목표 이동 검증을 이어갈 때 |
 | [Gazebo UWB 구현 구조](uwb_gazebo_architecture.md) | 설정표·모델 생성·센서·PX4·가상 UWB의 역할을 이해할 때 |
+| [Gazebo UWB의 PX4 입력 계약](uwb_gazebo_sitl_odometry.md) | SITL 외부 위치의 좌표·장착·시각·MAVLink 조건을 검토할 때 |
+| [Gazebo UWB의 SITL 실행](uwb_gazebo_sitl_observer.md) | 실시간 계산→관측 후보→시각 응답·송신을 연결할 때. 기본 Shadow |
+| [Gazebo 수평 목표 연결](uwb_gazebo_target_adapter.md) | 단일 MAVLink 연결의 관측·목표 송신, 도착·중단 처리와 미검증 범위를 확인할 때 |
+| [Gazebo 목표 이동 실행 절차](uwb_gazebo_navigation_runbook.md) | WSL에 실행기를 반영하고 관측·이동 시험을 준비할 때 |
+| [Gazebo 비행 기록의 독립 평가](uwb_gazebo_flight_evaluation.md) | UWB·PX4 측위와 목표 추종·실제 도착을 구분해 평가할 때 |
+| [Gazebo UWB 이상 주입](uwb_gazebo_fault_trials.md) | 예약한 거리 편향·단절을 별도 시행으로 만들고 원본·발행 상태를 확인할 때 |
+| [PX4 SITL MAVLink 읽기 점검](uwb_sitl_link_probe.md) | WSL 온보드 UDP와 외부 관측 파라미터를 변경 없이 읽을 때 |
+| [PX4 SITL 부트 시계 조회](uwb_sitl_clock_probe.md) | WSL 시각과 PX4 부트 시각의 왕복 조회를 기록할 때 |
+| [Gazebo UWB 실시간 Shadow 기록](uwb_gazebo_live_shadow.md) | Gazebo RAW·ToF·IMU 토픽을 함께 받아 A/B/C/D를 기록할 때 |
 | [Gazebo 앵커·장비 적용 절차](uwb_gazebo_equipment_runbook.md) | 새 센서 기체와 앵커 월드 생성·설치·가상 RAW 수신 |
 | [Gazebo UWB 경로 비교 절차](uwb_gazebo_shadow_runbook.md) | ROS 없이 경로 수집·잡음/가중치/단절 조건 비교 |
 | [Position 로그 분석 절차](position_hold_audit_runbook.md) | 새 ULog의 위치 유지 성능 비교 |
@@ -75,19 +94,3 @@
 
 현재 코드의 유무는 최근 기록과 함께 확인한다.
 8월의 미구현 표시는 이후 구현을 반영하지 않는다.
-
-## 2026-10-04 기능별 반영
-
-- [Gazebo UWB 관측의 SITL 실행 절차](uwb_gazebo_sitl_observer.md)
-- [Gazebo UWB 관측의 PX4 입력 계약](uwb_gazebo_sitl_odometry.md)
-- [PX4 SITL 부트 시계 조회](uwb_sitl_clock_probe.md)
-- [PX4 SITL MAVLink 읽기 점검](uwb_sitl_link_probe.md)
-- [Gazebo UWB 실시간 Shadow 기록](uwb_gazebo_live_shadow.md)
-- [UWB 목표 좌표 이동 검증 프롬프트](uwb_gazebo_navigation_prompt.md)
-- [Gazebo 목표 이동 실행 절차](uwb_gazebo_navigation_runbook.md)
-- [데모 임무 상태 판단 기준](demo_mission_design.md)
-- [Gazebo 수평 목표 연결 구조](uwb_gazebo_target_adapter.md)
-- [Gazebo 이상 시험 갱신본 제작 기록](report/uwb_gazebo_fault_bundle_20261002.md)
-- [Gazebo 이상·복구 평가 확인 기록](report/uwb_gazebo_fault_evaluation_20261002.md)
-- [Gazebo UWB 이상 주입 시험](uwb_gazebo_fault_trials.md)
-- [Gazebo 비행 기록의 독립 평가](uwb_gazebo_flight_evaluation.md)

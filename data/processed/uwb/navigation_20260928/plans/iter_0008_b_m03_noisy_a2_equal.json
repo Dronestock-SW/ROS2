@@ -1,0 +1,25 @@
+{
+  "run_id": "iter_0008_b_m03_noisy_a2_equal",
+  "parent_run_id": "iter_0003_noisy_a2_equal",
+  "dataset_split": "tuning",
+  "hypothesis": "noisy_A2_equal 조건에서 M03 게이트 추가가 B의 오차를 줄이는지, 출력은 유지하는지 확인한다.",
+  "change": {
+    "kind": "one_auxiliary_module",
+    "base_model": "B",
+    "module": "M03",
+    "settings": {
+      "margin_m": 0.2,
+      "speed_m_s": 1.2,
+      "cluster_radius_m": 0.15,
+      "confirm_count": 3
+    }
+  },
+  "criteria": {
+    "target_m": 0.07,
+    "min_coverage": 0.99
+  },
+  "scenario_intervals": [],
+  "input_sha256": "47731648cf50424085a89aa18a6a980b005cf0c09c279c7ed7b25c8715d23dac",
+  "config_sha256": "db92523344f45ac074ce55a7574994170be504066f40393796037ffee2c07075",
+  "source_limit": "Synthetic pose fixture with injected fault; simulator pose supplies height; no flight"
+}

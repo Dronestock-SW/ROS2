@@ -1,0 +1,147 @@
+{
+  "run_id": "iter_0011_dynamic_w080",
+  "parent_run_id": null,
+  "dataset_split": "tuning",
+  "source": "synthetic_pose_fixture",
+  "height_source": "simulator_tag_pose_with_mount_offset",
+  "range_source": "regenerated_from_pose",
+  "hypothesis": "Baseline moving path with stops and axis reversals.",
+  "change": {
+    "kind": "data_source",
+    "from": "stationary_capture",
+    "to": "synthetic_dynamic_path"
+  },
+  "criteria": {
+    "target_m": 0.07,
+    "min_coverage": 0.99
+  },
+  "model_metrics": {
+    "A": {
+      "count": 480,
+      "rmse_m": 0.029998844194287298,
+      "median_m": 0.025720809962254287,
+      "p95_m": 0.049182171108175445,
+      "max_m": 0.08051208233368994,
+      "target_m": 0.07,
+      "at_or_above_target_count": 4,
+      "max_under_target_on_valid": false,
+      "mean_error_xy_m": [
+        0.0025307906958387427,
+        0.0006784204619377116
+      ],
+      "std_error_xy_m": [
+        0.019088874449515108,
+        0.022993050458224418
+      ],
+      "coverage": 1.0,
+      "missing_count": 0,
+      "reasons": {
+        "ok": 480
+      }
+    },
+    "B": {
+      "count": 478,
+      "rmse_m": 0.023091573325685264,
+      "median_m": 0.011860160945066048,
+      "p95_m": 0.05613643070838709,
+      "max_m": 0.08478997077267737,
+      "target_m": 0.07,
+      "at_or_above_target_count": 11,
+      "max_under_target_on_valid": false,
+      "mean_error_xy_m": [
+        0.002617308819870881,
+        0.0006944194335162478
+      ],
+      "std_error_xy_m": [
+        0.01537053765902094,
+        0.01701866055011085
+      ],
+      "coverage": 0.9958333333333333,
+      "missing_count": 2,
+      "reasons": {
+        "insufficient_anchors": 2,
+        "ok": 478
+      }
+    },
+    "C": {
+      "count": 480,
+      "rmse_m": 0.030044253839754127,
+      "median_m": 0.025953414197912385,
+      "p95_m": 0.04926113122264383,
+      "max_m": 0.08089076550748864,
+      "target_m": 0.07,
+      "at_or_above_target_count": 4,
+      "max_under_target_on_valid": false,
+      "mean_error_xy_m": [
+        0.002534166907296449,
+        0.0006291716057917165
+      ],
+      "std_error_xy_m": [
+        0.0190748459348582,
+        0.023064899360834702
+      ],
+      "coverage": 1.0,
+      "missing_count": 0,
+      "reasons": {
+        "ok": 480
+      }
+    },
+    "D": {
+      "count": 266,
+      "rmse_m": 0.04897488934834749,
+      "median_m": 0.04019642100679846,
+      "p95_m": 0.08379684855353772,
+      "max_m": 0.11602171570684901,
+      "target_m": 0.07,
+      "at_or_above_target_count": 34,
+      "max_under_target_on_valid": false,
+      "mean_error_xy_m": [
+        -0.006373273237614884,
+        0.013745295964105592
+      ],
+      "std_error_xy_m": [
+        0.030339478680423946,
+        0.03533417675821564
+      ],
+      "coverage": 0.5541666666666667,
+      "missing_count": 214,
+      "reasons": {
+        "incomplete_candidate_set": 214,
+        "ok": 266
+      }
+    },
+    "WLS": {
+      "count": 480,
+      "rmse_m": 0.029998844194287295,
+      "median_m": 0.025720809962254287,
+      "p95_m": 0.049182171108175445,
+      "max_m": 0.08051208233368994,
+      "target_m": 0.07,
+      "at_or_above_target_count": 4,
+      "max_under_target_on_valid": false,
+      "mean_error_xy_m": [
+        0.0025307906958387414,
+        0.000678420461937714
+      ],
+      "std_error_xy_m": [
+        0.019088874449515108,
+        0.022993050458224414
+      ],
+      "coverage": 1.0,
+      "missing_count": 0,
+      "reasons": {
+        "ok": 480
+      }
+    }
+  },
+  "model_status": {
+    "A": "7cm_max_failed",
+    "B": "7cm_max_failed",
+    "C": "7cm_max_failed",
+    "D": "coverage_failed",
+    "WLS": "7cm_max_failed"
+  },
+  "parent_comparison": "none",
+  "achieved_7cm": false,
+  "achieved_reason": "pose_replay_lacks_ToF_and_end_to_end_latency_validation"
+}

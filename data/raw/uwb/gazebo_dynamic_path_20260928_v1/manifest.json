@@ -1,0 +1,8 @@
+{
+  "scope": "synthetic_algorithm_path",
+  "output_count": 480,
+  "path_spec_sha256": "8185116f366a383e7d0696da7266c328acea1bb0bb5b5edc884e630153e93ab2",
+  "poses_sha256": "97e46b3fd96b9970505b41052d87fa64b11d2e016f4dc46b6d467a5e6b4ca56b",
+  "flight_valid": false,
+  "external_output_allowed": false
+}

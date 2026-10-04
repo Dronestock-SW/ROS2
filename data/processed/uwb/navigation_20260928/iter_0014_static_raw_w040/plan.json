@@ -1,0 +1,23 @@
+{
+  "run_id": "iter_0014_static_raw_w040",
+  "parent_run_id": "iter_0006_gazebo_raw",
+  "dataset_split": "tuning",
+  "hypothesis": "A shorter H80 window should reduce dynamic lag; check its static noise cost on the recorded RAW.",
+  "change": {
+    "kind": "parameter",
+    "model": "B",
+    "parameter": "window_s",
+    "from_s": 0.8,
+    "to_s": 0.4
+  },
+  "criteria": {
+    "target_m": 0.07,
+    "min_coverage": 0.99
+  },
+  "scenario_intervals": [],
+  "source_limit": "Recorded stationary Gazebo virtual UWB RAW; no flight or ToF height",
+  "input_sha256": "7dade4990a282a3f05dde1292bb38baefc0b25e45e58f39103a4570633c04b9a",
+  "config_sha256": "7333e985a20c4ecc8d37b4a638bc0b846088c8ab39c2ead132737f79e69f3abf",
+  "raw_sha256": "d54c40bcc0d352a53c68c69b37c17d4662d2236ddbef6e99a879ca349f4158db",
+  "truth_sha256": "557c629ade3f3143862c0528d6c5720a582542555475403195db9d31799f7bc4"
+}

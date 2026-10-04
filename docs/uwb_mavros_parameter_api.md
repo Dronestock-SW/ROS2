@@ -35,6 +35,8 @@ ROS 2 서비스 -> MAVROS param 플러그인
 파라미터에는 어떤 관측을 융합할지 등의 설정을 저장한다.
 좌표를 `EKF2_EV_CTRL` 같은 파라미터에 쓰는 방식이 아니다.
 현재 A 파일 계산 결과는 위 실시간 토픽에 연결하지 않았다.
+WSL Gazebo의 별도 [직접 MAVLink 시험 계약](uwb_gazebo_sitl_odometry.md)은
+ROS 2가 없는 SITL 환경을 위한 준비다. 현재 송신·융합은 미실시다.
 
 MAVROS 2.14.0의 `pose_cov` 구독·메시지 변환을 확인했다.
 ENU→NED 변환도 이 플러그인이 수행한다.

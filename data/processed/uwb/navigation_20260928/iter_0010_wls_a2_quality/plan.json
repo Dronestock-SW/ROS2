@@ -1,0 +1,21 @@
+{
+  "run_id": "iter_0010_wls_a2_quality",
+  "parent_run_id": "iter_0003_noisy_a2_equal",
+  "dataset_split": "tuning",
+  "hypothesis": "A2의 오차 표준편차가 알려진 합성 조건에서 거리 가중 WLS가 A와 B보다 최대 오차를 줄이는지 확인한다.",
+  "change": {
+    "kind": "alternative_solver_branch",
+    "model": "WLS",
+    "changed_setting": "wls_sigma_m[A2]",
+    "from_m": 0.03,
+    "to_m": 0.3
+  },
+  "criteria": {
+    "target_m": 0.07,
+    "min_coverage": 0.99
+  },
+  "scenario_intervals": [],
+  "input_sha256": "47731648cf50424085a89aa18a6a980b005cf0c09c279c7ed7b25c8715d23dac",
+  "config_sha256": "548a7868a97f1b53d95915ce44fe3d53d7ebeb7669bcb2ff8b69f41fd410687b",
+  "source_limit": "Known synthetic A2 noise; not an estimated RF quality model; no ToF or flight"
+}

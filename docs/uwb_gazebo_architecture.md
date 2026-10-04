@@ -92,7 +92,9 @@ d_i = sqrt((x_tag-x_i)^2 + (y_tag-y_i)^2 + (z_tag-z_i)^2)
 Gazebo 위치·자세를 받아 이 RAW를 발행하고 기록한다.
 시뮬레이션 측정시각과 앵커 순서를 함께 보관한다.
 정답 위치는 평가용 파일에 별도로 저장한다.
-현재 실시간 생성기의 오차는 설정 편향과 정규분포 잡음이다.
+기본 생성기의 오차는 설정 편향과 정규분포 잡음이다.
+선택 인자로 예약한 거리 편향·발행 단절도 시험할 수 있다.
+[이상 주입 절차](uwb_gazebo_fault_trials.md)를 따른다.
 벽을 배치해도 UWB 차폐 편향이 자동 생성되지는 않는다.
 
 ```text
@@ -105,8 +107,10 @@ Gazebo 기체 위치·자세
 
 이 UWB 생성기는 별도 실행하는 프로그램이다.
 PX4 시작 명령은 이 프로그램을 자동 실행하지 않는다.
-현재 파일 비교 도구의 높이는 시뮬레이터 안테나 위치에서 가져온다.
-Gazebo ToF 측정을 비교기의 높이 입력으로 연결하는 작업은 남았다.
+기존 비교는 시뮬레이터 안테나 위치에서 높이를 가져온다.
+별도 파일 비교 경로는 Gazebo ToF·IMU 기록의 후보 높이를 사용한다.
+장착·자세·바닥 확인 게이트는 현재 닫혀 있다.
+동시 센서 기록으로 이 경로를 실행한 결과는 아직 없다.
 UWB 위치 관측을 PX4에 전달하는 가상 비행 시험도 남았다.
 
 ## 통신 계층
@@ -136,11 +140,53 @@ Gazebo 내부 통신과 지상국 통신은 역할이 다르다.
 | Gazebo 시험장 시작 | `Gazebo world is ready` |
 | 새 모델의 PX4 연결 초기화 | `gz_bridge`의 월드·모델 이름과 시작 완료 로그 |
 | Gazebo 화면 | GUI 시작 로그만 확인. 화면 자체는 미확인 |
-| 센서별 실제 값 | PX4 `listener` 등으로 후속 확인 필요 |
-| 가상 UWB RAW | 코드 준비. 이번 시작 로그에는 실행 근거 없음 |
+| IMU·기압·하방 거리 | 사용자 `listener`의 최근 표본 확인. 연속성·융합은 별도 |
+| 광학흐름·수평 LiDAR·카메라 | 실제 수신값은 후속 확인 필요 |
+| 가상 UWB RAW | 9월 28일 정지 기체에서 696주기 기록. 이동 중 기록은 미실시 |
 | UWB를 사용한 가상 호버링 | 미실시 |
 
 반복된 `No connection to the GCS`는 지상국 미연결을 나타낸다.
-초기 기압·전원 경고도 있었으며 지속 여부는 미확인이다.
+초기 기압·전원 경고도 있었다.
+이후 기압 표본 수신은 확인했다. 전체 상태 판정은 별도다.
 기본 GNSS 센서도 포함돼 있으므로 UWB 융합 검증과 구분한다.
 다음 실행 절차는 [장비 적용 문서](uwb_gazebo_equipment_runbook.md)를 따른다.
+
+## 목표 명령 연결에서 확인한 조건
+
+2026-10-02 목표 명령 생성·송신 함수를 구현했다.
+라이브 실행기와의 통합·실제 이동 시험은 남아 있다.
+`MissionMonitor`의 기본 데모 입력은 그대로 유지한다.
+별도 `PX4MissionMonitor`가 FC 위치·속도를 연결한다.
+상태 판정은 명령 접수·목표 반영과 구분한다.
+이번에 [관측 연결기](uwb_gazebo_sitl_observer.md)에
+FC 위치·속도·목표값의 원문 기록을 추가했다.
+
+수평 목표만 넣고 모든 수직축 입력을 비우면 안 된다.
+대상 PX4의 [PositionControl 입력 검사](https://github.com/PX4/PX4-Autopilot/blob/c4e4ef98e9d75063bf3d53ebb2716221ee7505ae/src/modules/mc_pos_control/PositionControl/PositionControl.cpp)는
+x·y·z 각 축에 위치·속도·가속도 중 유효한 목표 하나를 요구한다.
+[MAVLink 수신부](https://github.com/PX4/PX4-Autopilot/blob/c4e4ef98e9d75063bf3d53ebb2716221ee7505ae/src/modules/mavlink/mavlink_receiver.cpp)는
+무시 비트가 켜진 축을 NaN으로 전달한다.
+따라서 z·vz·az를 모두 무시하는 Offboard 명령은 채택하지 않는다.
+
+| 후보 경로 | 확인한 조건 | 남은 확인 |
+|---|---|---|
+| SET_POSITION_TARGET_LOCAL_NED | 로컬 목표를 전달. 수직축 목표도 필요 | FC 고도 유지 목표의 인계 방식·시각·모드 전환·스트림 단절 대응 |
+| MAV_CMD_DO_REPOSITION | 수평 목표는 위도·경도. 고도 생략 시 PX4가 현재 고도를 선택 | UWB 지도↔전역 원점 정합·전역 위치 유효성·Hold 전환·도착 판정 |
+
+두 번째 경로의 동작은
+[대상 Navigator 코드](https://github.com/PX4/PX4-Autopilot/blob/c4e4ef98e9d75063bf3d53ebb2716221ee7505ae/src/modules/navigator/navigator_main.cpp)의
+`VEHICLE_CMD_DO_REPOSITION` 분기에서 확인했다.
+시동 상태와 Hold 또는 모드 전환 요청도 확인한다.
+위도·경도를 쓰는 형식이 GNSS 측정 융합을 입증하지는 않는다.
+원점 정합과 사용 중인 위치원은 별도다.
+
+첫 구현 후보는 `MAV_CMD_DO_REPOSITION`이다.
+이미 Hold인 상태에서 고도 항목을 비워 보낸다.
+자세한 입출력은 [수평 목표 연결](uwb_gazebo_target_adapter.md)을 따른다.
+실제 비행 경로의 검증·최종 채택은 남아 있다.
+`drone_demo.sitl_navigation`에서 관측과 목표 송신을 통합했다.
+하나의 UDP 수신 루프가 FC 상태를 두 연결기에 전달한다.
+로컬 모의 메시지 시험까지이며 WSL 실시간 검증은 남았다.
+고도·자세 제어기는 계속 PX4가 담당한다.
+FC의 유지 목표와 유효 상태를 확인한 뒤 작은 SITL 시험으로 비교한다.
+이 API 검토는 비행 성공이나 목표 도착의 근거가 아니다.

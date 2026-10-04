@@ -1,0 +1,29 @@
+{
+  "run_id": "iter_0002",
+  "parent_run_id": "iter_0001",
+  "dataset_split": "exploratory",
+  "hypothesis": "기존 합성 경로에서 A/B/C/D의 7cm 이상 표본과 누락을 함께 기록한다.",
+  "change": {
+    "kind": "evaluation_instrumentation",
+    "item": "7cm exceedance and missing-output accounting"
+  },
+  "criteria": {
+    "target_m": 0.07,
+    "min_coverage": 0.99
+  },
+  "scenario_intervals": [
+    {
+      "name": "early_motion",
+      "start_s": 0.0,
+      "end_s": 2.0
+    },
+    {
+      "name": "later_motion",
+      "start_s": 2.0,
+      "end_s": 8.0
+    }
+  ],
+  "input_sha256": "47731648cf50424085a89aa18a6a980b005cf0c09c279c7ed7b25c8715d23dac",
+  "config_sha256": "38ab27fac63c8e333e8bc094f7e47ca76b1248f2bdf1f7107a97aac561e2f557",
+  "source_limit": "synthetic_pose_fixture; simulator pose supplies height; no actual Gazebo flight"
+}

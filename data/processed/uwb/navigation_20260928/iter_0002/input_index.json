@@ -1,0 +1,9 @@
+{
+  "input_path": "data/processed/uwb/gazebo_shadow_fixture_20260927/poses.jsonl",
+  "input_sha256": "47731648cf50424085a89aa18a6a980b005cf0c09c279c7ed7b25c8715d23dac",
+  "config_path": "data/processed/uwb/gazebo_equipment_20260927/rig_wall_name_fix/trial.json",
+  "config_sha256": "38ab27fac63c8e333e8bc094f7e47ca76b1248f2bdf1f7107a97aac561e2f557",
+  "plan_path": "data/processed/uwb/navigation_20260928/plans/iter_0002.json",
+  "plan_sha256": "4de09a662af0e3d283ab16e2fcb63f7519aa581fd5d4fb4fd288c415417fed7a",
+  "parent_path": "data/processed/uwb/navigation_20260928/iter_0001"
+}

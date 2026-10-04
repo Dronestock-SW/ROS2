@@ -1,0 +1,544 @@
+{
+  "scope": "simulator_pose_UWB_shadow",
+  "source": "synthetic_pose_fixture",
+  "evaluation": {
+    "input_ticks": 480,
+    "models": {
+      "A": {
+        "count": 480,
+        "rmse_m": 0.029998844194287298,
+        "median_m": 0.025720809962254287,
+        "p95_m": 0.049182171108175445,
+        "max_m": 0.08051208233368994,
+        "target_m": 0.07,
+        "at_or_above_target_count": 4,
+        "max_under_target_on_valid": false,
+        "mean_error_xy_m": [
+          0.0025307906958387427,
+          0.0006784204619377116
+        ],
+        "std_error_xy_m": [
+          0.019088874449515108,
+          0.022993050458224418
+        ],
+        "coverage": 1.0,
+        "missing_count": 0,
+        "reasons": {
+          "ok": 480
+        }
+      },
+      "B": {
+        "count": 478,
+        "rmse_m": 0.018909283869946336,
+        "median_m": 0.0151662857081631,
+        "p95_m": 0.03222233069023559,
+        "max_m": 0.05380768454118608,
+        "target_m": 0.07,
+        "at_or_above_target_count": 0,
+        "max_under_target_on_valid": true,
+        "mean_error_xy_m": [
+          0.00262481978676359,
+          0.0006450102474965089
+        ],
+        "std_error_xy_m": [
+          0.011729859810777224,
+          0.014583061686812032
+        ],
+        "coverage": 0.9958333333333333,
+        "missing_count": 2,
+        "reasons": {
+          "insufficient_anchors": 2,
+          "ok": 478
+        }
+      },
+      "C": {
+        "count": 480,
+        "rmse_m": 0.030044253839754127,
+        "median_m": 0.025953414197912385,
+        "p95_m": 0.04926113122264383,
+        "max_m": 0.08089076550748864,
+        "target_m": 0.07,
+        "at_or_above_target_count": 4,
+        "max_under_target_on_valid": false,
+        "mean_error_xy_m": [
+          0.002534166907296449,
+          0.0006291716057917165
+        ],
+        "std_error_xy_m": [
+          0.0190748459348582,
+          0.023064899360834702
+        ],
+        "coverage": 1.0,
+        "missing_count": 0,
+        "reasons": {
+          "ok": 480
+        }
+      },
+      "D": {
+        "count": 266,
+        "rmse_m": 0.04897488934834749,
+        "median_m": 0.04019642100679846,
+        "p95_m": 0.08379684855353772,
+        "max_m": 0.11602171570684901,
+        "target_m": 0.07,
+        "at_or_above_target_count": 34,
+        "max_under_target_on_valid": false,
+        "mean_error_xy_m": [
+          -0.006373273237614884,
+          0.013745295964105592
+        ],
+        "std_error_xy_m": [
+          0.030339478680423946,
+          0.03533417675821564
+        ],
+        "coverage": 0.5541666666666667,
+        "missing_count": 214,
+        "reasons": {
+          "incomplete_candidate_set": 214,
+          "ok": 266
+        }
+      },
+      "WLS": {
+        "count": 480,
+        "rmse_m": 0.029998844194287295,
+        "median_m": 0.025720809962254287,
+        "p95_m": 0.049182171108175445,
+        "max_m": 0.08051208233368994,
+        "target_m": 0.07,
+        "at_or_above_target_count": 4,
+        "max_under_target_on_valid": false,
+        "mean_error_xy_m": [
+          0.0025307906958387414,
+          0.000678420461937714
+        ],
+        "std_error_xy_m": [
+          0.019088874449515108,
+          0.022993050458224414
+        ],
+        "coverage": 1.0,
+        "missing_count": 0,
+        "reasons": {
+          "ok": 480
+        }
+      }
+    },
+    "pairwise": {
+      "A_B": {
+        "count": 478,
+        "models": {
+          "A": {
+            "count": 478,
+            "rmse_m": 0.03001707548375606,
+            "median_m": 0.025720809962254287,
+            "p95_m": 0.04920809752972214,
+            "max_m": 0.08051208233368994,
+            "target_m": 0.07,
+            "at_or_above_target_count": 4,
+            "max_under_target_on_valid": false,
+            "mean_error_xy_m": [
+              0.0025472330003922057,
+              0.000709590529879142
+            ],
+            "std_error_xy_m": [
+              0.01912369210391404,
+              0.02298515403981064
+            ]
+          },
+          "B": {
+            "count": 478,
+            "rmse_m": 0.018909283869946336,
+            "median_m": 0.0151662857081631,
+            "p95_m": 0.03222233069023559,
+            "max_m": 0.05380768454118608,
+            "target_m": 0.07,
+            "at_or_above_target_count": 0,
+            "max_under_target_on_valid": true,
+            "mean_error_xy_m": [
+              0.00262481978676359,
+              0.0006450102474965089
+            ],
+            "std_error_xy_m": [
+              0.011729859810777224,
+              0.014583061686812032
+            ]
+          }
+        }
+      },
+      "A_C": {
+        "count": 480,
+        "models": {
+          "A": {
+            "count": 480,
+            "rmse_m": 0.029998844194287298,
+            "median_m": 0.025720809962254287,
+            "p95_m": 0.049182171108175445,
+            "max_m": 0.08051208233368994,
+            "target_m": 0.07,
+            "at_or_above_target_count": 4,
+            "max_under_target_on_valid": false,
+            "mean_error_xy_m": [
+              0.0025307906958387427,
+              0.0006784204619377116
+            ],
+            "std_error_xy_m": [
+              0.019088874449515108,
+              0.022993050458224418
+            ]
+          },
+          "C": {
+            "count": 480,
+            "rmse_m": 0.030044253839754127,
+            "median_m": 0.025953414197912385,
+            "p95_m": 0.04926113122264383,
+            "max_m": 0.08089076550748864,
+            "target_m": 0.07,
+            "at_or_above_target_count": 4,
+            "max_under_target_on_valid": false,
+            "mean_error_xy_m": [
+              0.002534166907296449,
+              0.0006291716057917165
+            ],
+            "std_error_xy_m": [
+              0.0190748459348582,
+              0.023064899360834702
+            ]
+          }
+        }
+      },
+      "A_D": {
+        "count": 266,
+        "models": {
+          "A": {
+            "count": 266,
+            "rmse_m": 0.030903714948030857,
+            "median_m": 0.02624082980774231,
+            "p95_m": 0.05186204950557388,
+            "max_m": 0.08051208233368994,
+            "target_m": 0.07,
+            "at_or_above_target_count": 4,
+            "max_under_target_on_valid": false,
+            "mean_error_xy_m": [
+              0.0016736989660837342,
+              0.0008881968770044501
+            ],
+            "std_error_xy_m": [
+              0.019683322987468648,
+              0.023749025913471573
+            ]
+          },
+          "D": {
+            "count": 266,
+            "rmse_m": 0.04897488934834749,
+            "median_m": 0.04019642100679846,
+            "p95_m": 0.08379684855353772,
+            "max_m": 0.11602171570684901,
+            "target_m": 0.07,
+            "at_or_above_target_count": 34,
+            "max_under_target_on_valid": false,
+            "mean_error_xy_m": [
+              -0.006373273237614884,
+              0.013745295964105592
+            ],
+            "std_error_xy_m": [
+              0.030339478680423946,
+              0.03533417675821564
+            ]
+          }
+        }
+      },
+      "A_WLS": {
+        "count": 480,
+        "models": {
+          "A": {
+            "count": 480,
+            "rmse_m": 0.029998844194287298,
+            "median_m": 0.025720809962254287,
+            "p95_m": 0.049182171108175445,
+            "max_m": 0.08051208233368994,
+            "target_m": 0.07,
+            "at_or_above_target_count": 4,
+            "max_under_target_on_valid": false,
+            "mean_error_xy_m": [
+              0.0025307906958387427,
+              0.0006784204619377116
+            ],
+            "std_error_xy_m": [
+              0.019088874449515108,
+              0.022993050458224418
+            ]
+          },
+          "WLS": {
+            "count": 480,
+            "rmse_m": 0.029998844194287295,
+            "median_m": 0.025720809962254287,
+            "p95_m": 0.049182171108175445,
+            "max_m": 0.08051208233368994,
+            "target_m": 0.07,
+            "at_or_above_target_count": 4,
+            "max_under_target_on_valid": false,
+            "mean_error_xy_m": [
+              0.0025307906958387414,
+              0.000678420461937714
+            ],
+            "std_error_xy_m": [
+              0.019088874449515108,
+              0.022993050458224414
+            ]
+          }
+        }
+      },
+      "B_C": {
+        "count": 478,
+        "models": {
+          "B": {
+            "count": 478,
+            "rmse_m": 0.018909283869946336,
+            "median_m": 0.0151662857081631,
+            "p95_m": 0.03222233069023559,
+            "max_m": 0.05380768454118608,
+            "target_m": 0.07,
+            "at_or_above_target_count": 0,
+            "max_under_target_on_valid": true,
+            "mean_error_xy_m": [
+              0.00262481978676359,
+              0.0006450102474965089
+            ],
+            "std_error_xy_m": [
+              0.011729859810777224,
+              0.014583061686812032
+            ]
+          },
+          "C": {
+            "count": 478,
+            "rmse_m": 0.030061090450922937,
+            "median_m": 0.025953414197912385,
+            "p95_m": 0.04927306611085437,
+            "max_m": 0.08089076550748864,
+            "target_m": 0.07,
+            "at_or_above_target_count": 4,
+            "max_under_target_on_valid": false,
+            "mean_error_xy_m": [
+              0.002549841952484075,
+              0.0006618624199164371
+            ],
+            "std_error_xy_m": [
+              0.019110179798906134,
+              0.02305494374980134
+            ]
+          }
+        }
+      },
+      "B_D": {
+        "count": 265,
+        "models": {
+          "B": {
+            "count": 265,
+            "rmse_m": 0.019233759727539185,
+            "median_m": 0.014875669862271821,
+            "p95_m": 0.032578889785830574,
+            "max_m": 0.05380768454118608,
+            "target_m": 0.07,
+            "at_or_above_target_count": 0,
+            "max_under_target_on_valid": true,
+            "mean_error_xy_m": [
+              0.0018392485750506255,
+              0.0004931910608742927
+            ],
+            "std_error_xy_m": [
+              0.012020615260811177,
+              0.014893496878332824
+            ]
+          },
+          "D": {
+            "count": 265,
+            "rmse_m": 0.04905377171883885,
+            "median_m": 0.04026518800497842,
+            "p95_m": 0.08379840653011317,
+            "max_m": 0.11602171570684901,
+            "target_m": 0.07,
+            "at_or_above_target_count": 34,
+            "max_under_target_on_valid": false,
+            "mean_error_xy_m": [
+              -0.006329093247119653,
+              0.013779287610901124
+            ],
+            "std_error_xy_m": [
+              0.03038812750347018,
+              0.03539644103977298
+            ]
+          }
+        }
+      },
+      "B_WLS": {
+        "count": 478,
+        "models": {
+          "B": {
+            "count": 478,
+            "rmse_m": 0.018909283869946336,
+            "median_m": 0.0151662857081631,
+            "p95_m": 0.03222233069023559,
+            "max_m": 0.05380768454118608,
+            "target_m": 0.07,
+            "at_or_above_target_count": 0,
+            "max_under_target_on_valid": true,
+            "mean_error_xy_m": [
+              0.00262481978676359,
+              0.0006450102474965089
+            ],
+            "std_error_xy_m": [
+              0.011729859810777224,
+              0.014583061686812032
+            ]
+          },
+          "WLS": {
+            "count": 478,
+            "rmse_m": 0.030017075483756053,
+            "median_m": 0.025720809962254287,
+            "p95_m": 0.04920809752972214,
+            "max_m": 0.08051208233368994,
+            "target_m": 0.07,
+            "at_or_above_target_count": 4,
+            "max_under_target_on_valid": false,
+            "mean_error_xy_m": [
+              0.002547233000392205,
+              0.0007095905298791443
+            ],
+            "std_error_xy_m": [
+              0.019123692103914038,
+              0.022985154039810635
+            ]
+          }
+        }
+      },
+      "C_D": {
+        "count": 266,
+        "models": {
+          "C": {
+            "count": 266,
+            "rmse_m": 0.031003599221977096,
+            "median_m": 0.026475145717294247,
+            "p95_m": 0.05228918010322986,
+            "max_m": 0.08089076550748864,
+            "target_m": 0.07,
+            "at_or_above_target_count": 4,
+            "max_under_target_on_valid": false,
+            "mean_error_xy_m": [
+              0.0017656254070948921,
+              0.0010223875075689786
+            ],
+            "std_error_xy_m": [
+              0.019687948383274024,
+              0.02386304976068029
+            ]
+          },
+          "D": {
+            "count": 266,
+            "rmse_m": 0.04897488934834749,
+            "median_m": 0.04019642100679846,
+            "p95_m": 0.08379684855353772,
+            "max_m": 0.11602171570684901,
+            "target_m": 0.07,
+            "at_or_above_target_count": 34,
+            "max_under_target_on_valid": false,
+            "mean_error_xy_m": [
+              -0.006373273237614884,
+              0.013745295964105592
+            ],
+            "std_error_xy_m": [
+              0.030339478680423946,
+              0.03533417675821564
+            ]
+          }
+        }
+      },
+      "C_WLS": {
+        "count": 480,
+        "models": {
+          "C": {
+            "count": 480,
+            "rmse_m": 0.030044253839754127,
+            "median_m": 0.025953414197912385,
+            "p95_m": 0.04926113122264383,
+            "max_m": 0.08089076550748864,
+            "target_m": 0.07,
+            "at_or_above_target_count": 4,
+            "max_under_target_on_valid": false,
+            "mean_error_xy_m": [
+              0.002534166907296449,
+              0.0006291716057917165
+            ],
+            "std_error_xy_m": [
+              0.0190748459348582,
+              0.023064899360834702
+            ]
+          },
+          "WLS": {
+            "count": 480,
+            "rmse_m": 0.029998844194287295,
+            "median_m": 0.025720809962254287,
+            "p95_m": 0.049182171108175445,
+            "max_m": 0.08051208233368994,
+            "target_m": 0.07,
+            "at_or_above_target_count": 4,
+            "max_under_target_on_valid": false,
+            "mean_error_xy_m": [
+              0.0025307906958387414,
+              0.000678420461937714
+            ],
+            "std_error_xy_m": [
+              0.019088874449515108,
+              0.022993050458224414
+            ]
+          }
+        }
+      },
+      "D_WLS": {
+        "count": 266,
+        "models": {
+          "D": {
+            "count": 266,
+            "rmse_m": 0.04897488934834749,
+            "median_m": 0.04019642100679846,
+            "p95_m": 0.08379684855353772,
+            "max_m": 0.11602171570684901,
+            "target_m": 0.07,
+            "at_or_above_target_count": 34,
+            "max_under_target_on_valid": false,
+            "mean_error_xy_m": [
+              -0.006373273237614884,
+              0.013745295964105592
+            ],
+            "std_error_xy_m": [
+              0.030339478680423946,
+              0.03533417675821564
+            ]
+          },
+          "WLS": {
+            "count": 266,
+            "rmse_m": 0.030903714948030854,
+            "median_m": 0.02624082980774231,
+            "p95_m": 0.05186204950557388,
+            "max_m": 0.08051208233368994,
+            "target_m": 0.07,
+            "at_or_above_target_count": 4,
+            "max_under_target_on_valid": false,
+            "mean_error_xy_m": [
+              0.0016736989660837327,
+              0.000888196877004456
+            ],
+            "std_error_xy_m": [
+              0.019683322987468645,
+              0.023749025913471562
+            ]
+          }
+        }
+      }
+    }
+  },
+  "height_source": "simulator_tag_pose_with_mount_offset",
+  "ranges_sampled_simultaneously": true,
+  "range_source": "regenerated_from_pose",
+  "weight_source": "configured_expected_range_sigma; no_reference_based_adaptation",
+  "external_output_allowed": false,
+  "flight_valid": false
+}

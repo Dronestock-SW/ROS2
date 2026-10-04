@@ -1,0 +1,133 @@
+{
+  "schema": 1,
+  "scope": "gazebo_shadow",
+  "coordinate_frame": "gazebo_world",
+  "external_output_allowed": false,
+  "anchors_xyz_m": [
+    [
+      0.0,
+      0.0,
+      2.2
+    ],
+    [
+      5.8102027071690925,
+      -0.43032700908323007,
+      2.2
+    ],
+    [
+      0.0,
+      4.63,
+      2.2
+    ],
+    [
+      6.110227024200994,
+      4.357349538815547,
+      2.2
+    ]
+  ],
+  "seed": 7,
+  "bias_m": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "noise_sigma_m": [
+    0.03,
+    0.03,
+    0.03,
+    0.03
+  ],
+  "wls_sigma_m": [
+    0.03,
+    0.03,
+    0.03,
+    0.03
+  ],
+  "faults": [
+    {
+      "start_s": 2.0,
+      "end_s": 6.0,
+      "anchor_id": "A2",
+      "bias_m": 0.35
+    }
+  ],
+  "solver": {
+    "max_iterations": 40,
+    "step_tol_m": 1e-07,
+    "condition_max": 1000000.0
+  },
+  "B": {
+    "window_s": 0.8,
+    "min_samples_per_anchor": 3,
+    "min_samples_total": 12,
+    "required_anchor_count": 4,
+    "sigma_r_m": 0.08,
+    "huber_m": 0.12,
+    "h80_irls_iterations": 8,
+    "max_scaled_condition": 1000000.0,
+    "reset_gap_s": 0.15,
+    "max_extrapolation_s": 0.04,
+    "max_range_m": 80.0
+  },
+  "D": {
+    "intersection_policy": "strict",
+    "tie_margin_m": 1e-06,
+    "min_horizontal_range_m": 0.0001,
+    "numeric_tolerance_m2": 1e-10,
+    "min_center_separation_m": 1e-06
+  },
+  "note": "Survey-coordinate prototype; user-reported horizontal mounts; sensor heights remain simulation assumptions. No flight output.",
+  "tag_offset_body_flu_m": [
+    0.0,
+    0.0,
+    0.3
+  ],
+  "layout_source": {
+    "layout_id": "warehouse-irregular-z2p2-20260906",
+    "coordinate_frame": "uwb_map",
+    "units": "m",
+    "source": "docs/uwb_anchor_survey.md; user-reported six distances and directions, 2026-09-06",
+    "independently_verified": false,
+    "anchor_order": [
+      "A1",
+      "A2",
+      "A3",
+      "A4"
+    ],
+    "anchors_xyz_m": [
+      [
+        0.0,
+        0.0,
+        2.2
+      ],
+      [
+        5.8102027071690925,
+        -0.43032700908323007,
+        2.2
+      ],
+      [
+        0.0,
+        4.63,
+        2.2
+      ],
+      [
+        6.110227024200994,
+        4.357349538815547,
+        2.2
+      ]
+    ]
+  },
+  "mount_status": "horizontal_user_report_20260927; vertical_and_camera_flow_unconfirmed",
+  "fc_offset_body_flu_m": [
+    0.14,
+    0.0,
+    0.0
+  ],
+  "range_gate": {
+    "margin_m": 0.2,
+    "speed_m_s": 1.2,
+    "cluster_radius_m": 0.15,
+    "confirm_count": 3
+  }
+}

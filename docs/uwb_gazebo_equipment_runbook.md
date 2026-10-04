@@ -337,6 +337,10 @@ param show EKF2_RNG_POS_X
 ```
 
 토픽 존재와 연속 데이터 수신은 별개로 확인한다.
+후속 사용자 출력에서 IMU·기압·하방 거리의 최근 표본을 확인했다.
+하방 거리는 0.17155m, 방향은 25로 보고됐다.
+이는 센서에서 바닥까지의 거리이며 안테나 높이와 구분한다.
+나머지 센서와 연속 수신률·융합 상태는 별도 확인한다.
 초기 로그에 기압·전원 경고가 있었으므로 지속 여부를 확인한다.
 반복된 `No connection to the GCS`는 QGroundControl 연결 단계에서 확인한다.
 시작 스크립트 성공만으로 비행 준비 완료를 판정하지 않는다.
@@ -345,15 +349,29 @@ param show EKF2_RNG_POS_X
 
 ## 5. 가상 UWB 수신 시작
 
-새 도구 폴더의 별도 WSL 창에서 실행한다.
+PX4의 `pxh>` 창은 유지한다.
+새 Windows PowerShell에서 `wsl -d Ubuntu-22.04`로 진입한다.
+`dronestock@DESKTOP-0C8GRSK` Ubuntu 셸에서 실행한다.
 Gazebo Python 모듈·NumPy는 [연결 준비](uwb_gazebo_shadow_runbook.md) 1절을 따른다.
 
 ```bash
+cd ~/uwb_sim/uwb-gazebo-equipment
 export PYTHONPATH="$PWD/src/drone_uwb${PYTHONPATH:+:$PYTHONPATH}"
 /usr/bin/python3 -m drone_uwb.integration.gazebo_ranges \
-  --config runs/equipment_01/trial.json \
+  --config runs/equipment_02/trial.json \
   --output runs/equipment_capture_01
 ```
+
+이번 수정본은 `equipment_02` 설정을 사용한다.
+`--config`는 앵커·안테나 장착·거리 오차 설정이다.
+`--output`은 새 기록 폴더이며 이미 있으면 중단한다.
+시작 문구는 프로그램 초기화 확인이다.
+실제 수신 여부는 종료 요약과 기록 파일로 확인한다.
+첫 연결 시험은 약 10초 뒤 UWB 기록 창에서 `Ctrl+C`로 끝낸다.
+이는 실제 대기 시간이며 기록된 시뮬레이션 구간은 요약에서 확인한다.
+PX4 콘솔과 Gazebo는 계속 실행한다.
+`recorded`, `publish_failed`, 종료 사유와 시각 구간을 확인한다.
+기록 중에는 매 표본을 화면에 출력하지 않는다.
 
 이 프로세스는 앵커별 가상 RAW 사거리를 발행한다.
 관측 토픽은 `/dronestock/sim/uwb/ranges`다.
@@ -376,7 +394,9 @@ gz topic -e -t /dronestock/sim/uwb/ranges
 RAW에는 위치 정답을 넣지 않는다.
 시뮬레이션 시계를 ESP32 시계로 표기하지 않는다.
 네 거리는 동시에 생성하며 RF 전파를 해석하지 않는다.
-현재 실시간 생성에는 정규 잡음과 설정 편향만 적용한다.
+기본 실시간 생성에는 정규 잡음과 설정 편향을 적용한다.
+후속 [예약 이상 주입](uwb_gazebo_fault_trials.md)도 구현했다.
+기본 실행은 그대로이며 별도 fault-plan을 줄 때만 적용한다.
 가림·단절 시나리오는 다음 파일 비교에서 적용한다.
 
 ## 6. 같은 경로에서 계산 후보 비교
@@ -386,7 +406,7 @@ RAW에는 위치 정답을 넣지 않는다.
 ```bash
 /usr/bin/python3 -m drone_uwb.processing.experiments.gazebo_scenarios \
   --input runs/equipment_capture_01/poses.jsonl \
-  --config runs/equipment_01/trial.json \
+  --config runs/equipment_02/trial.json \
   --output runs/equipment_compare_01
 ```
 
@@ -397,3 +417,125 @@ RAW에는 위치 정답을 넣지 않는다.
 동일 입력 일치는 단위 검사로 확인했다.
 
 남은 작업과 실제 로그 검토는 [구성 결과](report/uwb_gazebo_equipment_20260927.md)에 있다.
+
+## 7. 기록된 RAW를 그대로 비교하기
+
+6절 명령은 위치 경로에서 거리를 다시 생성한다.
+이번 절은 수신 당시 저장한 RAW를 그대로 읽는다.
+비행 전 정지 기록도 같은 방식으로 검사한다.
+
+WSL의 수신 창을 `Ctrl+C`로 끝낸 뒤 폴더를 압축한다.
+아래 명령은 WSL Ubuntu의 `dronestock` 셸에서 실행한다.
+
+```bash
+cd ~/uwb_sim/uwb-gazebo-equipment
+tar -C runs -czf ~/uwb_sim/equipment_capture_20260928_01.tar.gz equipment_capture_20260928_01
+sha256sum ~/uwb_sim/equipment_capture_20260928_01.tar.gz
+scp ~/uwb_sim/equipment_capture_20260928_01.tar.gz pgyxn@100.110.163.94:/home/pgyxn/
+```
+
+원격 컴퓨터의 `/home/pgyxn/github/ROS2`에서 압축파일 해시를 대조한다.
+새 기록을 풀 때는 원본 압축파일도 보존한다.
+이번 전송본의 해시는 `fb880ecbed180a8a0116fbbb0d662b5616383b16189594f2a3896e1db3f34cd8`이다.
+
+첫 분석 결과는 [2026-09-28 시행 기록](report/uwb_navigation_iteration_20260928.md)에 있다.
+해당 기록의 원본은 `data/raw/uwb/gazebo_capture_20260928_01/`이다.
+같은 입력으로 새 시행을 만들 때는 먼저 계획 파일에 입력·설정·RAW·정답 해시를 적는다.
+다음 명령은 원격 컴퓨터의 ROS2 저장소 루트에서 실행한다.
+
+```bash
+export PYTHONPATH="$PWD/src/drone_uwb${PYTHONPATH:+:$PYTHONPATH}"
+/usr/bin/python3 -m drone_uwb.processing.experiments.navigation_iteration \
+  --input data/raw/uwb/gazebo_capture_20260928_01/poses.jsonl \
+  --raw data/raw/uwb/gazebo_capture_20260928_01/raw_ranges.jsonl \
+  --truth data/raw/uwb/gazebo_capture_20260928_01/truth.jsonl \
+  --config data/raw/uwb/gazebo_capture_20260928_01/config.json \
+  --plan data/processed/uwb/navigation_20260928/plans/iter_0006_gazebo_raw.json \
+  --output data/processed/uwb/navigation_20260928/iter_0006_gazebo_raw
+```
+
+위 명령은 `iter_0006_gazebo_raw`를 만든 원래 실행 형식이다.
+그 폴더가 이미 있으면 덮어쓰지 않고 중단한다.
+새 실험에는 새 시행 ID·계획 파일·출력 폴더를 사용한다.
+`--raw`와 `--truth`는 함께 지정해야 한다.
+비교기는 시각·순서·앵커 지도와 해시가 맞는지 검사한다.
+결과 폴더의 `iteration.json`과 `scenario_metrics.csv`에서 오차와 출력률을 본다.
+`failures.jsonl`에는 출력되지 않은 주기를 남긴다.
+
+이번 정지 기록은 PX4의 UWB 융합이나 이동 비행을 증명하지 않는다.
+다음에는 이동 중 RAW와 PX4 ULog를 같은 시행으로 모은다.
+
+## 8. 다음 시행의 하방 거리·IMU 원본 기록
+
+동일한 Gazebo 시계의 하방 거리와 IMU를 별도 파일로 모은다.
+현재 WSL에 풀린 장비 ZIP에는 이 수집기가 없다.
+WSL의 `dronestock` 셸에서 다음 파일을 복사한다.
+
+```bash
+cd ~/uwb_sim/uwb-gazebo-equipment
+scp pgyxn@100.110.163.94:/home/pgyxn/github/ROS2/src/drone_uwb/drone_uwb/integration/gazebo_sensors.py src/drone_uwb/drone_uwb/integration/gazebo_sensors.py
+export PYTHONPATH="$PWD/src/drone_uwb${PYTHONPATH:+:$PYTHONPATH}"
+/usr/bin/python3 -m drone_uwb.integration.gazebo_sensors --help
+```
+
+PX4·Gazebo 창과 가상 UWB 기록 창을 유지한다.
+새 WSL Ubuntu 창에서 수집기를 시작한다.
+실제 `gz topic -l`의 센서 토픽이 기본 경로와 다르면
+`--tof-topic`과 `--imu-topic`에 조회된 경로를 지정한다.
+
+```bash
+cd ~/uwb_sim/uwb-gazebo-equipment
+export PYTHONPATH="$PWD/src/drone_uwb${PYTHONPATH:+:$PYTHONPATH}"
+/usr/bin/python3 -m drone_uwb.integration.gazebo_sensors \
+  --output runs/equipment_sensors_01
+```
+
+수집 중 비행이 끝나면 이 창에서 `Ctrl+C`로 저장한다.
+`tof.jsonl`에는 거리·측정 시각·유효 여부가 들어간다.
+`attitude.jsonl`에는 IMU 자세·각속도·측정 시각이 들어간다.
+`capture.json`에서 두 표본 수와 종료 사유를 확인한다.
+하나라도 0개이면 수집기는 실패 코드로 종료한다.
+
+이 수집기는 Gazebo 센서 출력을 수정하거나 PX4로 보내지 않는다.
+IMU 자세의 기준축은 아직 사용자 WSL에서 확인하지 않았다.
+센서 설치값과 바닥 평면도 시험 설정으로 대조해야 한다.
+그 전에는 수집값을 높이 계산이나 비행 관측에 투입하지 않는다.
+수집기 코드는 단위 시험만 통과했다.
+사용자 WSL의 토픽 구독·센서 기록 검증은 미실시다.
+
+센서 파일을 원격 작업공간으로 가져온 뒤
+`gazebo_trial`의 `--tof`, `--attitude`, `--height-profile`을 함께 지정한다.
+새 분석 시행은 계획 파일에 세 입력의 SHA256을 먼저 적고
+`navigation_iteration`에 같은 세 옵션을 전달한다.
+예비 높이 프로필은
+`src/drone_uwb/config/gazebo_sensor_height_profile.json`이다.
+그 설정의 두 확인 게이트는 기본 `false`다.
+이 상태에서는 높이가 필요한 A/C/D/WLS가 보류 사유를 기록한다.
+B는 거리 이력만으로 Shadow 계산을 계속한다.
+센서가 빠질 때 시뮬레이터 정답 높이로 자동 대체하지 않는다.
+자세 기준축·바닥 반사면을 실제 기록과 대조한 뒤에만
+새 프로필과 새 시행 ID로 게이트 변경을 시험한다.
+
+원격 작업공간에 세 기록을 함께 복사한 뒤 진단을 먼저 실행한다.
+아래 명령은 `/home/pgyxn/github/ROS2` 셸에서 실행한다.
+`equipment_capture_02`와 `equipment_sensors_02`는 같은 Gazebo 세션을
+기록했을 때 사용할 폴더 이름의 예시다. 실제 이름으로 바꾼다.
+
+```bash
+export PYTHONPATH="$PWD/src/drone_uwb${PYTHONPATH:+:$PYTHONPATH}"
+/usr/bin/python3 -m drone_uwb.processing.experiments.gazebo_height_diagnostic \
+  --poses data/raw/uwb/equipment_capture_02/poses.jsonl \
+  --tof data/raw/uwb/equipment_sensors_02/tof.jsonl \
+  --attitude data/raw/uwb/equipment_sensors_02/attitude.jsonl \
+  --height-profile src/drone_uwb/config/gazebo_sensor_height_profile.json \
+  --config data/raw/uwb/equipment_capture_02/config.json \
+  --output data/processed/uwb/equipment_height_diagnostic_02
+```
+
+`summary.json`의 후보 높이 오차·ToF 거리 잔차·기울기 범위를 읽는다.
+`diagnostics.jsonl`에는 UWB 시각별 선택 표본과 보류 사유가 있다.
+`manifest.json`에는 입력·출력 해시가 남는다.
+기울기 변화가 거의 없으면 자세 축 정렬의 동적 검증은 부족하다.
+시계가 겹친다는 사실만으로 같은 실행 세션임을 증명할 수 없다.
+수집 시작·종료 시각과 월드·기체 이름을 함께 대조한다.
+진단은 확인 게이트를 수정하거나 PX4 관측을 발행하지 않는다.

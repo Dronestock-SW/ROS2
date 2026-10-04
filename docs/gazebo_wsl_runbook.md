@@ -24,8 +24,9 @@ WSL Ubuntu 진입 → Python 계산·통신 모듈 확인
 현재는 사용자 WSL에서 수정 시험장과 PX4의 시작을 확인한 단계다.
 로그에 `Gazebo world is ready`와 `gz_bridge`의 새 모델 이름이 있다.
 PX4 시작 스크립트도 완료됐다.
-다음은 센서별 메시지 확인과 가상 UWB 프로그램 연결이다.
-명령은 [장비 절차](uwb_gazebo_equipment_runbook.md) 4절부터 따른다.
+IMU·기압·하방 거리의 최근 표본도 확인했다.
+다음은 별도 Ubuntu 창에서 가상 UWB RAW를 생성·기록하는 단계다.
+명령은 [장비 절차](uwb_gazebo_equipment_runbook.md) 5절을 따른다.
 모델 파일 설치와 실제 센서 수신 성공은 구분한다.
 사용자가 명령의 목적을 이해하며 진행하도록 다음 순서로 안내한다.
 목적 → 입력할 셸 → 명령 → 예상 출력 → 다음 단계 순서다.
@@ -141,6 +142,20 @@ wsl -d Ubuntu-22.04 -- ip -4 -o addr show dev eth0
 `inet` 뒤 주소에서 `/20` 같은 접미부를 뺀다.
 시험 때 주소는 `172.25.0.249`였다.
 다음 실행에서도 같은 주소라고 가정하지 않는다.
+
+`eth0` 조회 결과가 비어 있으면 주소를 추측하지 않는다.
+WSL Ubuntu 창에서 다음 두 출력으로 실제 IPv4 인터페이스와 경로를 확인한다.
+
+```bash
+ip -br -4 addr
+ip -4 route
+```
+
+인터페이스 이름이 달라졌을 수 있다.
+Microsoft의 [WSL 네트워크 안내](https://learn.microsoft.com/windows/wsl/networking)는
+Windows에서 WSL 주소를 조회할 때 `wsl.exe hostname -I`를 제시한다.
+미러링 네트워크 모드에서는 양쪽이 `127.0.0.1`로 통신할 수 있다.
+현재 PC의 모드와 출력 확인 전에는 QGroundControl 서버 주소를 확정하지 않는다.
 
 Windows QGroundControl을 연다.
 `Application Settings → Comm Links`로 이동한다.

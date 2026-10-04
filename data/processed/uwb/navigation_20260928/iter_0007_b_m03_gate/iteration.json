@@ -1,0 +1,178 @@
+{
+  "run_id": "iter_0007_b_m03_gate",
+  "parent_run_id": "iter_0006_gazebo_raw",
+  "dataset_split": "tuning",
+  "source": "gazebo",
+  "height_source": "simulator_tag_pose_with_mount_offset",
+  "range_source": "recorded_capture",
+  "hypothesis": "M03 거리 게이트를 B 입력에만 추가해 정지 노이즈에서의 효과와 정상 표본 거부를 확인한다.",
+  "change": {
+    "kind": "one_auxiliary_module",
+    "base_model": "B",
+    "module": "M03",
+    "settings": {
+      "margin_m": 0.2,
+      "speed_m_s": 1.2,
+      "cluster_radius_m": 0.15,
+      "confirm_count": 3
+    }
+  },
+  "criteria": {
+    "target_m": 0.07,
+    "min_coverage": 0.99
+  },
+  "model_metrics": {
+    "A": {
+      "count": 696,
+      "rmse_m": 0.03265383860092444,
+      "median_m": 0.02750611828113135,
+      "p95_m": 0.05490211400954947,
+      "max_m": 0.08537736182755784,
+      "target_m": 0.07,
+      "at_or_above_target_count": 7,
+      "max_under_target_on_valid": false,
+      "mean_error_xy_m": [
+        0.002642524027389233,
+        -0.0003938791106342195
+      ],
+      "std_error_xy_m": [
+        0.020406670324548962,
+        0.025351585900122178
+      ],
+      "coverage": 1.0,
+      "missing_count": 0,
+      "reasons": {
+        "ok": 696
+      }
+    },
+    "B": {
+      "count": 694,
+      "rmse_m": 0.013588556627156438,
+      "median_m": 0.011565405728048702,
+      "p95_m": 0.022757750279291247,
+      "max_m": 0.03503589861050071,
+      "target_m": 0.07,
+      "at_or_above_target_count": 0,
+      "max_under_target_on_valid": true,
+      "mean_error_xy_m": [
+        0.002707607354490613,
+        -0.0003992076680523949
+      ],
+      "std_error_xy_m": [
+        0.008292280645407001,
+        0.010411361513218245
+      ],
+      "coverage": 0.9971264367816092,
+      "missing_count": 2,
+      "reasons": {
+        "insufficient_anchors": 2,
+        "ok": 694
+      }
+    },
+    "C": {
+      "count": 696,
+      "rmse_m": 0.032683113125088065,
+      "median_m": 0.027825527880529055,
+      "p95_m": 0.05502976905552271,
+      "max_m": 0.08594882717605744,
+      "target_m": 0.07,
+      "at_or_above_target_count": 10,
+      "max_under_target_on_valid": false,
+      "mean_error_xy_m": [
+        0.00261842443479984,
+        -0.00044407502538291066
+      ],
+      "std_error_xy_m": [
+        0.02040097461074895,
+        0.025395526561383903
+      ],
+      "coverage": 1.0,
+      "missing_count": 0,
+      "reasons": {
+        "ok": 696
+      }
+    },
+    "D": {
+      "count": 370,
+      "rmse_m": 0.05038556106199528,
+      "median_m": 0.042272435643885956,
+      "p95_m": 0.08916543808046105,
+      "max_m": 0.12160774758137605,
+      "target_m": 0.07,
+      "at_or_above_target_count": 60,
+      "max_under_target_on_valid": false,
+      "mean_error_xy_m": [
+        -0.015899586072037983,
+        0.026132796529492665
+      ],
+      "std_error_xy_m": [
+        0.026453692091769888,
+        0.030053070500896867
+      ],
+      "coverage": 0.5316091954022989,
+      "missing_count": 326,
+      "reasons": {
+        "incomplete_candidate_set": 326,
+        "ok": 370
+      }
+    },
+    "WLS": {
+      "count": 696,
+      "rmse_m": 0.03265383860092445,
+      "median_m": 0.02750611828113135,
+      "p95_m": 0.05490211400954947,
+      "max_m": 0.08537736182755784,
+      "target_m": 0.07,
+      "at_or_above_target_count": 7,
+      "max_under_target_on_valid": false,
+      "mean_error_xy_m": [
+        0.0026425240273892326,
+        -0.00039387911063421753
+      ],
+      "std_error_xy_m": [
+        0.020406670324548962,
+        0.025351585900122178
+      ],
+      "coverage": 1.0,
+      "missing_count": 0,
+      "reasons": {
+        "ok": 696
+      }
+    },
+    "B_M03": {
+      "count": 694,
+      "rmse_m": 0.013588556627156438,
+      "median_m": 0.011565405728048702,
+      "p95_m": 0.022757750279291247,
+      "max_m": 0.03503589861050071,
+      "target_m": 0.07,
+      "at_or_above_target_count": 0,
+      "max_under_target_on_valid": true,
+      "mean_error_xy_m": [
+        0.002707607354490613,
+        -0.0003992076680523949
+      ],
+      "std_error_xy_m": [
+        0.008292280645407001,
+        0.010411361513218245
+      ],
+      "coverage": 0.9971264367816092,
+      "missing_count": 2,
+      "reasons": {
+        "insufficient_anchors": 2,
+        "ok": 694
+      }
+    }
+  },
+  "model_status": {
+    "A": "7cm_max_failed",
+    "B": "exploratory_or_tuning_only",
+    "C": "7cm_max_failed",
+    "D": "coverage_failed",
+    "WLS": "7cm_max_failed",
+    "B_M03": "exploratory_or_tuning_only"
+  },
+  "parent_comparison": "same_raw",
+  "achieved_7cm": false,
+  "achieved_reason": "pose_replay_lacks_ToF_and_end_to_end_latency_validation"
+}
