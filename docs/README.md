@@ -82,3 +82,6 @@
 - [Gazebo UWB 관측의 PX4 입력 계약](uwb_gazebo_sitl_odometry.md)
 - [PX4 SITL 부트 시계 조회](uwb_sitl_clock_probe.md)
 - [PX4 SITL MAVLink 읽기 점검](uwb_sitl_link_probe.md)
+- [Gazebo UWB 실시간 Shadow 기록](uwb_gazebo_live_shadow.md)
+- [UWB 목표 좌표 이동 검증 프롬프트](uwb_gazebo_navigation_prompt.md)
+- [Gazebo 목표 이동 실행 절차](uwb_gazebo_navigation_runbook.md)
