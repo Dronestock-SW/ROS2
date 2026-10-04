@@ -1,4 +1,4 @@
-"""Demo-only mission assessment. Produces decisions, never flight commands."""
+"""Reusable arrival assessment. Produces decisions, never flight commands."""
 from dataclasses import dataclass, fields
 import json
 import math
@@ -59,9 +59,12 @@ def finite_xy(x, y):
 
 
 class MissionMonitor:
-    """Uses demo position for progress, UWB freshness only for input health."""
+    """Assess distance, speed and dwell; UWB is only an input-health signal."""
 
-    def __init__(self, config):
+    def __init__(self, config, *, position_source='demo_pose'):
+        if position_source not in ('demo_pose', 'px4_ekf2'):
+            raise ValueError('unsupported_position_source')
+        self.position_source = position_source
         self.config = config
         self.target = None
         self.target_generation = 0
@@ -98,7 +101,8 @@ class MissionMonitor:
         self.target_reason = 'target_accepted'
         return True
 
-    def update(self, kind, x, y, stamp_ns, received_s, age_at_receipt_s, frame):
+    def update(self, kind, x, y, stamp_ns, received_s, age_at_receipt_s, frame,
+               *, velocity_xy=None):
         if kind not in ('pose', 'uwb'):
             raise ValueError('unsupported input')
         self.seen[kind] = True
@@ -109,6 +113,9 @@ class MissionMonitor:
                  and type(age_at_receipt_s) in (int, float)
                  and math.isfinite(age_at_receipt_s)
                  and 0 <= age_at_receipt_s <= timeout)
+        if kind == 'pose' and self.position_source == 'px4_ekf2':
+            valid = (valid and isinstance(velocity_xy, (list, tuple))
+                     and len(velocity_xy) == 2 and finite_xy(*velocity_xy))
         if not valid:
             setattr(self, kind, None)
             if kind == 'pose':
@@ -124,8 +131,11 @@ class MissionMonitor:
         sample = Sample(float(x), float(y), stamp_ns, received_s, age_at_receipt_s)
         if kind == 'pose':
             dt = (stamp_ns - previous.stamp_ns)/1e9 if previous else 0.0
-            self.speed = (math.hypot(x-previous.x, y-previous.y)/dt
-                          if previous and 0 < dt <= self.config.pose_timeout_s else None)
+            if self.position_source == 'px4_ekf2':
+                self.speed = math.hypot(*velocity_xy)
+            else:
+                self.speed = (math.hypot(x-previous.x, y-previous.y)/dt
+                              if previous and 0 < dt <= self.config.pose_timeout_s else None)
             if self.speed is not None and not math.isfinite(self.speed):
                 self.pose = None
                 self.speed = None
@@ -199,12 +209,15 @@ class MissionMonitor:
                     state = 'APPROACHING' if self.near else 'MOVING'
                     reason = 'near_target' if self.near else 'target_far'
         self.state = state
-        return {'schema': 1, 'demo': True, 'state': state, 'reason': reason,
+        return {'schema': 1, 'demo': self.position_source == 'demo_pose',
+                'state': state, 'reason': reason,
                 'target_generation': self.target_generation, 'target_valid': self.target is not None,
                 'target_xy_m': list(self.target) if self.target else None,
                 'arrival_valid': state == 'ARRIVED', 'distance_m': distance,
                 'speed_m_s': self.speed if fresh['pose'] else None,
                 'pose_age_s': ages['pose'], 'uwb_age_s': ages['uwb'],
                 'settle_elapsed_s': settle_elapsed, 'recovery_elapsed_s': recovery_elapsed,
-                'frame_id': self.config.frame_id, 'position_source': 'demo_pose',
+                'frame_id': self.config.frame_id, 'position_source': self.position_source,
+                'velocity_source': ('px4_ekf2' if self.position_source == 'px4_ekf2'
+                                    else 'position_difference'),
                 'uwb_role': 'freshness_check_only', 'flight_output': False}

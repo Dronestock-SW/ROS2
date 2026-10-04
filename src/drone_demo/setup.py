@@ -11,7 +11,7 @@ setup(
     ],
     install_requires=['setuptools'], tests_require=['pytest'], zip_safe=True,
     maintainer='Dronestock', maintainer_email='user@todo.todo',
-    description='Reusable demo inputs without a flight interface.',
+    description='Reusable demo inputs and explicit Gazebo SITL navigation adapters.',
     license='Proprietary',
     entry_points={'console_scripts': [
         'demo_export = drone_demo.export:main',

@@ -85,3 +85,5 @@
 - [Gazebo UWB 실시간 Shadow 기록](uwb_gazebo_live_shadow.md)
 - [UWB 목표 좌표 이동 검증 프롬프트](uwb_gazebo_navigation_prompt.md)
 - [Gazebo 목표 이동 실행 절차](uwb_gazebo_navigation_runbook.md)
+- [데모 임무 상태 판단 기준](demo_mission_design.md)
+- [Gazebo 수평 목표 연결 구조](uwb_gazebo_target_adapter.md)

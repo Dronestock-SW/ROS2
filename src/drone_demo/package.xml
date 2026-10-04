@@ -2,7 +2,7 @@
 <package format="3">
   <name>drone_demo</name>
   <version>0.1.0</version>
-  <description>Reusable offline and ROS 2 demo inputs, with no flight interface.</description>
+  <description>Reusable demo inputs and explicit Gazebo SITL navigation adapters.</description>
   <maintainer email="user@todo.todo">Dronestock</maintainer>
   <license>Proprietary</license>
   <buildtool_depend>ament_python</buildtool_depend>

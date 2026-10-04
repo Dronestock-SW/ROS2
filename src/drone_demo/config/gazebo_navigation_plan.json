@@ -1,0 +1,6 @@
+{
+  "targets_map_xy_m": [[2.59, 1.68]],
+  "return_to_start": true,
+  "land_on_completion": true,
+  "max_leg_sim_s": 20.0
+}
