@@ -135,6 +135,44 @@
         비전은 오차·제안까지만 내고 판단과 지령은 companion 내부 BT가 한다.
         PX4는 그 위치 지령을 자세로 구현하는 쪽이다(roadmap 결정 4).
 
+좌우 허용오차는 거리에 따라 달라진다(2026-10-07 수정):
+    고정 ±3cm만 쓰면 aligned=True 인데 QR 이 안 읽히는 조합이 생긴다.
+    QR 이 ArUco 오른쪽에만 있어서, 좌우 오차의 두 방향이 전혀 다르기 때문이다.
+
+        +방향(ArUco 가 오른쪽) → QR 이 더 오른쪽으로 → 화면 밖으로 먼저 잘림
+        -방향(ArUco 가 왼쪽)   → QR 이 중앙 쪽으로   → 오히려 여유가 늘어남
+
+    고정값이 틀리는 지점(수정 전 기준):
+
+        | 거리  | 좌우  | QR 여유  | 실측 판독률 |
+        |-------|-------|----------|-------------|
+        | 23cm  | +3cm  | -1.59cm  |     0~32%   |
+        | 25cm  | +3cm  | -0.09cm  |       71%   |
+        | 27cm  | +3cm  | +1.40cm  |    90~93%   |
+
+    그래서 +방향 상한을 기하로 계산해 lateral_tolerance_m 과 함께 쓴다.
+
+        lateral_max = min(lateral_tolerance_m,
+                          화면 반폭 - qr_outer_offset_m)
+        화면 반폭 = (image_width / 2) * z / fx
+
+    -방향은 lateral_tolerance_m 을 그대로 쓴다. ArUco 자신이 화면을 벗어나는
+    한계가 23cm 에서 -10.2cm 라 기하 제약이 걸리지 않는다. 그 쪽 ±3cm 는
+    "선반 앞에 제대로 섰는가"라는 임무 요구이지 QR 프레이밍 제약이 아니다.
+
+    거리별 +방향 상한(현재 라벨·캘리브레이션 기준):
+
+        | 거리  | 수정 전 | 수정 후 |
+        |-------|---------|---------|
+        | 23cm  |  +3.0cm |  +1.4cm |
+        | 25cm  |  +3.0cm |  +2.9cm |
+        | 27cm  |  +3.0cm |  +3.0cm | (기하 상한 +4.4cm 를 ±3cm 가 먼저 막음)
+
+    fx·image_width 는 /camera/camera_info 에서 받는다. 초점을 조정하면
+    재캘리브레이션이 따라오고 이 값도 같이 바뀌어야 하는데, 파라미터로 박아두면
+    조용히 낡는다(roadmap Phase 0 의 렌즈 초점 항목이 아직 미완이다).
+    camera_info 가 아직 안 왔으면 frame_half_width_per_m 기본값을 쓰고 경고한다.
+
 실행:
     ros2 run drone_bringup aruco_alignment_node
 """
@@ -145,6 +183,7 @@ import math
 import rclpy
 from aruco_opencv_msgs.msg import ArucoDetection
 from rclpy.node import Node
+from sensor_msgs.msg import CameraInfo
 from std_msgs.msg import String
 
 
@@ -156,22 +195,58 @@ class ArucoAlignmentNode(Node):
         self.declare_parameter('target_distance_m', 0.25)
         self.declare_parameter('lateral_tolerance_m', 0.03)
         self.declare_parameter('distance_tolerance_m', 0.02)
-        self.declare_parameter('marker_id', -1)  # -1이면 처음 보이는 마커 아무거나
+        self.declare_parameter('marker_id', -1)  # -1이면 가장 가까운 마커
+
+        # ArUco 중심에서 QR 바깥 끝까지. 123mm(중심간격) + 30mm(QR 절반)
+        # + 4.5mm(정숙구역 4모듈). 라벨 레이아웃이 바뀌면 같이 바꾼다.
+        self.declare_parameter('qr_outer_offset_m', 0.1575)
+        # camera_info 가 오기 전까지 쓰는 폴백. (1640/2)/1098.86 = 0.7462
+        self.declare_parameter('frame_half_width_per_m', 0.7462)
 
         self._target_distance = self.get_parameter('target_distance_m').value
         self._lateral_tol = self.get_parameter('lateral_tolerance_m').value
         self._distance_tol = self.get_parameter('distance_tolerance_m').value
         self._marker_id = self.get_parameter('marker_id').value
+        self._qr_outer_offset = self.get_parameter('qr_outer_offset_m').value
+        self._half_width_per_m = self.get_parameter('frame_half_width_per_m').value
+        self._have_camera_info = False
 
         self._sub = self.create_subscription(
             ArucoDetection, '/aruco_detections', self._on_detection, 10)
+        self._info_sub = self.create_subscription(
+            CameraInfo, '/camera/camera_info', self._on_camera_info, 10)
         self._pub = self.create_publisher(String, '/aruco_alignment/error', 10)
 
         self._miss_streak = 0
 
         self.get_logger().info(
             f'aruco_alignment_node 시작 — target_distance={self._target_distance}m, '
-            f'lateral_tol=±{self._lateral_tol}m, distance_tol=±{self._distance_tol}m')
+            f'lateral_tol=±{self._lateral_tol}m, distance_tol=±{self._distance_tol}m, '
+            f'qr_outer_offset={self._qr_outer_offset}m')
+
+    def _on_camera_info(self, msg):
+        """화면 반폭 비율을 실제 캘리브레이션에서 받는다.
+
+        fx 는 projection_matrix(p[0]) 가 아니라 camera_matrix(k[0]) 를 쓴다.
+        aruco_opencv 가 pose 를 뽑을 때 쓰는 값이 k 라서, 여기서 다른 값을
+        쓰면 좌우오차와 화면 반폭의 기준이 어긋난다.
+        """
+        fx = msg.k[0]
+        if not (math.isfinite(fx) and fx > 0 and msg.width > 0):
+            return
+        ratio = (msg.width / 2.0) / fx
+        if self._have_camera_info and abs(ratio - self._half_width_per_m) < 1e-9:
+            return
+        self._half_width_per_m = ratio
+        self._have_camera_info = True
+        self.get_logger().info(
+            f'camera_info 반영 — width={msg.width} fx={fx:.2f} '
+            f'→ 화면 반폭 {ratio:.4f} m/m')
+
+    def _lateral_bounds(self, z):
+        """좌우 허용 구간 (하한, 상한). 상한만 거리에 따라 좁아진다."""
+        framing_max = self._half_width_per_m * z - self._qr_outer_offset
+        return -self._lateral_tol, min(self._lateral_tol, framing_max)
 
     def _on_detection(self, msg):
         marker = self._pick_marker(msg.markers)
@@ -189,20 +264,29 @@ class ArucoAlignmentNode(Node):
                 and marker.pose.position.z > 0):
             self._publish_invalid('invalid_pose')
             return
-        aligned = (abs(lateral_error) <= self._lateral_tol
+        lateral_min, lateral_max = self._lateral_bounds(marker.pose.position.z)
+        aligned = (lateral_min <= lateral_error <= lateral_max
                    and abs(distance_error) <= self._distance_tol)
+
+        if not self._have_camera_info and self._miss_streak == 0:
+            self.get_logger().warn(
+                'camera_info 미수신 — frame_half_width_per_m 기본값으로 판정 중',
+                once=True)
 
         payload = {
             'valid': True,
             'marker_id': marker.marker_id,
             'lateral_error_m': round(lateral_error, 4),
             'distance_error_m': round(distance_error, 4),
+            # 소비자가 "왜 aligned 가 아닌지" 알 수 있게 상한을 같이 싣는다.
+            'lateral_max_m': round(lateral_max, 4),
             'aligned': aligned,
         }
         self._pub.publish(String(data=json.dumps(payload)))
         self.get_logger().info(
             f'id={marker.marker_id} 좌우오차={lateral_error:+.3f}m '
-            f'거리오차={distance_error:+.3f}m aligned={aligned}')
+            f'(상한 {lateral_max:+.3f}m) 거리오차={distance_error:+.3f}m '
+            f'aligned={aligned}')
 
     def _publish_invalid(self, reason):
         self._pub.publish(String(data=json.dumps({
@@ -211,14 +295,29 @@ class ArucoAlignmentNode(Node):
         })))
 
     def _pick_marker(self, markers):
+        """marker_id 가 지정되면 그 마커만, -1이면 가장 가까운 마커를 쓴다.
+
+        예전에는 -1일 때 markers[0] 을 집었다. aruco_opencv 가 넣는 순서는
+        검출 순서라 프레임마다 바뀔 수 있어서, 선반 둘이 동시에 보이면 정렬
+        대상이 왔다 갔다 한다. 가장 가까운 것을 고르면 결과가 프레임 순서에
+        의존하지 않고, "지금 작업 중인 선반"이라는 뜻과도 맞는다.
+
+        선반마다 ArUco 번호를 다르게 붙이기로 하면 임무가 marker_id 를 지정하는
+        쪽이 맞다. 그 번호 체계는 아직 미정이라(docs/vision_print 참조) 그때까지
+        거리 기준을 기본으로 둔다.
+        """
         if not markers:
             return None
-        if self._marker_id < 0:
-            return markers[0]
-        for m in markers:
-            if m.marker_id == self._marker_id:
-                return m
-        return None
+        if self._marker_id >= 0:
+            for m in markers:
+                if m.marker_id == self._marker_id:
+                    return m
+            return None
+        valid = [m for m in markers
+                 if math.isfinite(m.pose.position.z) and m.pose.position.z > 0]
+        if not valid:
+            return None
+        return min(valid, key=lambda m: m.pose.position.z)
 
 
 def main(args=None):
