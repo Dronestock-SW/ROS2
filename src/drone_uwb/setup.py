@@ -25,6 +25,7 @@ setup(
     license='Proprietary',
     entry_points={'console_scripts': [
         'uwb_node = drone_uwb.integration.ros.node:main',
+        'uwb_btf_node = drone_uwb.integration.ros.btf_node:main',
         'uwb_px4_bridge = drone_uwb.integration.ros.bridge:main',
         'uwb_replay = drone_uwb.integration.replay:main',
         'uwb_bench_probe = drone_uwb.integration.ros.bench_probe:main',

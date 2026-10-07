@@ -21,6 +21,11 @@
 
 ## 현재 작업 상태
 
+- [실물 B_TF 연결 결과](docs/report/uwb_btf_real_20261005.md):
+  실물 관측 계산과 60초 기록 2회. FC 전달·정확도 검증은 남아 있다.
+- [실물 B_TF 실행 절차](docs/runbooks/uwb_btf_real_bench.md):
+  네 앵커·하방 거리·자세를 받는 지상 관측 기록.
+
 기술 방향은 [로드맵](docs/roadmap.md)을 따른다.
 구 8주 WBS는 현재 기준이 아니다.
 

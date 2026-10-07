@@ -45,6 +45,7 @@ class UwbNode(Node):
         self.framer = LineFramer()
         self.pose_pub = self.create_publisher(PoseWithCovarianceStamped, '/uwb_pose', qos_profile_sensor_data)
         self.raw_pub = self.create_publisher(String, '/uwb/raw', qos_profile_sensor_data)
+        self.received_pub = self.create_publisher(String, '/uwb/received', qos_profile_sensor_data)
         self.status_pub = self.create_publisher(String, '/uwb/status', 10)
         self.counts = Counter()
         self.last_decision = 'starting'
@@ -120,8 +121,10 @@ class UwbNode(Node):
                 self.counts['cycles'] += 1
                 self.last_cycle_mono = mono_ns
             self.raw_pub.publish(String(data=json.dumps(msg, ensure_ascii=False)))
-            self.record('received', {'host_received_monotonic_ns': mono_ns,
-                                    'host_received_ros_ns': ros_ns, 'message': msg})
+            received = {'host_received_monotonic_ns': mono_ns,
+                        'host_received_ros_ns': ros_ns, 'message': msg}
+            self.received_pub.publish(String(data=json.dumps(received, ensure_ascii=False)))
+            self.record('received', received)
             result = self.processor.process(msg, mono_ns, ros_ns)
             self.last_decision = result.reason
             self.counts[result.reason] += 1
