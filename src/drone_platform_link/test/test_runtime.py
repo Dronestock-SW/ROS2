@@ -16,6 +16,7 @@ from drone_platform_link.telemetry import Observations
 
 def config(tmp_path, server='http://127.0.0.1:8001', **extra):
     return Config({'DRONESTOCK_SERVER_URL': server,
+                   'DRONESTOCK_MISSION_POLL_ENABLED': 'true',
                    'DRONESTOCK_STATE_DIR': str(tmp_path), **extra})
 
 
@@ -42,7 +43,7 @@ def test_observations_are_fresh_and_flight_stays_disabled(tmp_path):
     assert sent['x'] == 1.2 and sent['y'] == 3.4 and sent['fix'] is True
     assert sent['battery'] == 63 and sent['battery_voltage'] == 15.2
     assert sent['flight_control_enabled'] is False
-    observations.pose = (1.2, 3.4, time.time_ns(), time.monotonic() - 1)
+    observations.pose['received_mono'] = time.monotonic() - 1
     observations.battery = (63, 15.2, time.monotonic() - 4)
     stale = presence_payload(config(tmp_path), 2, observations)
     assert stale['fix'] is False and stale['x'] is None and stale['battery'] is None
@@ -68,6 +69,26 @@ def test_device_signature_matches_wire_get(tmp_path):
     expected = hmac.new(b'test-secret', canonical.encode('utf-8'), hashlib.sha256).hexdigest()
     assert headers['X-DS-Signature'] == expected
     assert cfg.headers()['X-DS-Nonce'] != headers['X-DS-Nonce']
+
+
+def test_observation_default_does_not_poll_legacy_missions(tmp_path):
+    async def scenario():
+        cfg = Config({'DRONESTOCK_SERVER_URL': 'http://127.0.0.1:8001',
+                      'DRONESTOCK_STATE_DIR': str(tmp_path)})
+        runtime = Runtime(cfg)
+        stop = asyncio.Event()
+
+        async def finish():
+            stop.set()
+            await asyncio.Event().wait()
+
+        with patch.object(runtime, 'websocket_loop', finish), \
+                patch('drone_platform_link.runtime.fetch_mission') as fetch:
+            await runtime.run(stop)
+        fetch.assert_not_called()
+        assert runtime.status()['mission_poll_enabled'] is False
+        assert runtime.status()['http_failures'] == 0
+    asyncio.run(scenario())
 
 
 def test_poll_failures_do_not_refresh_last_success(tmp_path):

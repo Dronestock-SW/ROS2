@@ -142,9 +142,11 @@ class BtfNode(Node):
         except (KeyError, TypeError, ValueError):
             self.counts['invalid_envelope'] += 1
             return
-        self.last_source_ns = now_ns
         self.counts[result['reason']] += 1
+        if result['reason'].startswith('sideband_') or result['reason'] in ('status', 'awaiting_tdma'):
+            return
         if 'seq' in result:
+            self.last_source_ns = event['host_received_ros_ns']
             self.counts['cycles'] += 1
         for selection in result.get('height_selection',[]):
             self.height_counts[selection['reason']] += 1

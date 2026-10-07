@@ -109,6 +109,7 @@ class UwbNode(Node):
             try:
                 msg = decode_line(line)
             except InvalidSample:
+                self.processor.tdma.discard_pending('parse_error')
                 self.counts['parse_error'] += 1
                 self.parse_streak += 1
                 if self.parse_streak >= 100:
@@ -126,7 +127,8 @@ class UwbNode(Node):
             self.received_pub.publish(String(data=json.dumps(received, ensure_ascii=False)))
             self.record('received', received)
             result = self.processor.process(msg, mono_ns, ros_ns)
-            self.last_decision = result.reason
+            if not result.reason.startswith('sideband_') and result.reason != 'awaiting_tdma':
+                self.last_decision = result.reason
             self.counts[result.reason] += 1
             self.record('decisions', {'host_received_monotonic_ns': mono_ns,
                                      'reason': result.reason, 'details': result.details,
@@ -159,6 +161,8 @@ class UwbNode(Node):
                  'timestamp_method': 'approximate_mean_report_read_time',
                  'timestamp_calibrated': False,
                  'framing_overflows': self.framer.overflows}
+        value['tdma_required'] = self.processor.tdma.required
+        value['tdma_counts'] = dict(self.processor.tdma.counts)
         if rclpy.ok():
             self.status_pub.publish(String(data=json.dumps(value, ensure_ascii=False)))
         self.record('status', value)

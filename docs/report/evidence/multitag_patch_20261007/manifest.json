@@ -1,0 +1,56 @@
+{
+  "date": "2026-10-07",
+  "scope": "Isolated software tests and synthetic localhost UI; not live onboard sensors or flight",
+  "files": [
+    {
+      "path": "ros-uwb-tests.log",
+      "bytes": 421,
+      "sha256": "f5f9b7de7e2e98e6ec4c290a2f6dff020f9eafc469a5ee694cdf7a29dbf0b85c"
+    },
+    {
+      "path": "ros-build.log",
+      "bytes": 285,
+      "sha256": "ea9ce80f1209c882015d875ca5cea5245aa68bf0a2fe67b3a97df920aa1cce3a"
+    },
+    {
+      "path": "ros-platform-tests-final.log",
+      "bytes": 101,
+      "sha256": "00ca56786de72844c8ef965a1ba2668675a52b65e7dc6c4d537f172bc1cf66d2"
+    },
+    {
+      "path": "ros-tdma-replay.json",
+      "bytes": 3455,
+      "sha256": "35700065da00f4af77b02a97a825b03c3958f47ce09102bc592a7ecddea9b6f3"
+    },
+    {
+      "path": "runtime-web-e2e.json",
+      "bytes": 1718,
+      "sha256": "9dca31102e938b9d9c450759493007d909468463c09f2702aaad4cbe03ac0562"
+    },
+    {
+      "path": "web-tests-final.log",
+      "bytes": 1239,
+      "sha256": "081b6e524547f8eb71f8148df8c2d3f97a0623ba280403d22a985ed9790e0d93"
+    },
+    {
+      "path": "web-ui-node-tests.log",
+      "bytes": 1449,
+      "sha256": "23b8edf469d0b26b868c7bec9c14df2378df3e4e81c1f01b26a813213eb5c086"
+    },
+    {
+      "path": "web-baseline-ui-tests.log",
+      "bytes": 1529,
+      "sha256": "c86d0bc78349634100bc60bc263d1640ad68c6688d06b9422c1ffb16599a4187"
+    },
+    {
+      "path": "web-observation-final.png",
+      "bytes": 139129,
+      "sha256": "b73e44279800808693d0f8cedcbaf38f7c8f006fef6bceb0f88dd3d681a54d26"
+    },
+    {
+      "path": "web-observation-js-tests.log",
+      "bytes": 64,
+      "sha256": "5c4dd5858dae25c9cbead6f7b188786226ca8e6b9baba813f189b44336680818"
+    }
+  ]
+}

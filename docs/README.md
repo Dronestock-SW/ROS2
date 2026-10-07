@@ -10,6 +10,10 @@
 
 | 찾는 내용 | 위치 |
 |---|---|
+| 웹·companion·태그 후속 작업 | [멀티태그 연결 인수인계](runbooks/multitag_jetson_web_handoff.md) |
+| Wi-Fi/LoRa 역할·좌표 출처·ID·주기 | [멀티태그 연결 기준](reference/multitag_jetson_web_contract.md) |
+| TDMA·A/B·웹 패치 시험과 미검증 범위 | [2026-10-07 패치 검증](report/multitag_patch_validation_20261007.md) |
+| TDMA 호환·웹 좌표 소스 확인 근거 | [2026-10-07 검토 기록](report/multitag_web_compatibility_20261007.md) |
 | A~H 단계, 패키지·설정·시험 대응표 | [저장소 구조와 작업 위치](reference/repository_layout.md) |
 | 현재 앵커 배치 | [6.3×4.6m 직사각형 좌표](reference/uwb_anchor_layout.md) |
 | 앵커 배치 변경·검증 | [2026-10-04 배치 고정 기록](report/uwb_anchor_rectangle_20261004.md) |

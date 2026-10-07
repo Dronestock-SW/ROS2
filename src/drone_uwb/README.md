@@ -2,6 +2,11 @@
 
 수신·후보정·관측 연결 코드의 입구다. 기능을 수정하거나 해당 시험을 찾을 때 읽는다.
 
+[멀티태그·웹 연결 인수인계](../../docs/runbooks/multitag_jetson_web_handoff.md)에
+TDMA 대응 검사와 A/B 공통 실행기를 반영했다.
+실제 ToF·장착 확인과 최종 XYZ 검증은 남아 있다.
+현재 태그와 연결할 때 먼저 확인한다.
+
 [단계별 위치표](../../docs/reference/repository_layout.md)의 A~H를 따른다.
 [API 사전](../../docs/reference/uwb_module_api.md)에 단위·실패 계약이 있다.
 

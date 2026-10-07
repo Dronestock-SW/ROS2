@@ -1,0 +1,130 @@
+{
+  "scope": "Captured USB replay of identity/deadline gate only; no ToF, XY accuracy or live ROS claim",
+  "runs": {
+    "v041-70s": {
+      "5": {
+        "paired_deadline_admitted": 2761,
+        "dispatch_counts": {
+          "awaiting_tdma": 2762,
+          "identity_changes": 0,
+          "raw": 2761,
+          "sideband_lora_rx": 70,
+          "status": 14,
+          "tdma_deadline_rejected": 1
+        },
+        "gate_counts": {}
+      },
+      "6": {
+        "paired_deadline_admitted": 2796,
+        "dispatch_counts": {
+          "parse_error": 1,
+          "awaiting_tdma": 2797,
+          "identity_changes": 0,
+          "raw": 2796,
+          "sideband_lora_rx": 70,
+          "status": 14,
+          "tdma_deadline_rejected": 1
+        },
+        "gate_counts": {}
+      }
+    },
+    "recovery-70s": {
+      "5": {
+        "paired_deadline_admitted": 2698,
+        "dispatch_counts": {
+          "awaiting_tdma": 2702,
+          "identity_changes": 1,
+          "raw": 2698,
+          "sideband_lora_rx": 62,
+          "status": 14,
+          "tdma_deadline_rejected": 4
+        },
+        "gate_counts": {}
+      },
+      "6": {
+        "paired_deadline_admitted": 2581,
+        "dispatch_counts": {
+          "awaiting_tdma": 2582,
+          "identity_changes": 2,
+          "raw": 2581,
+          "status": 13,
+          "sideband_lora_rx": 63,
+          "parse_error": 1,
+          "tdma_deadline_rejected": 1
+        },
+        "gate_counts": {}
+      }
+    },
+    "v041-buffered-610s": {
+      "5": {
+        "paired_deadline_admitted": 23757,
+        "dispatch_counts": {
+          "awaiting_tdma": 23784,
+          "identity_changes": 0,
+          "raw": 23757,
+          "sideband_lora_rx": 610,
+          "status": 121,
+          "tdma_deadline_rejected": 21,
+          "parse_error": 7,
+          "tdma_without_raw": 3,
+          "tdma_pair_expired": 2
+        },
+        "gate_counts": {
+          "parse_error": 4
+        }
+      },
+      "6": {
+        "paired_deadline_admitted": 24373,
+        "dispatch_counts": {
+          "parse_error": 2,
+          "tdma_without_raw": 1,
+          "awaiting_tdma": 24386,
+          "identity_changes": 0,
+          "raw": 24373,
+          "sideband_lora_rx": 610,
+          "status": 122,
+          "tdma_deadline_rejected": 11,
+          "tdma_pair_expired": 1
+        },
+        "gate_counts": {
+          "parse_error": 1
+        }
+      }
+    },
+    "v041-single-a-610s": {
+      "5": {
+        "paired_deadline_admitted": 23757,
+        "dispatch_counts": {
+          "awaiting_tdma": 23783,
+          "identity_changes": 0,
+          "raw": 23757,
+          "sideband_lora_rx": 609,
+          "status": 121,
+          "tdma_deadline_rejected": 17,
+          "tdma_pair_expired": 2,
+          "parse_error": 15,
+          "tdma_without_raw": 4
+        },
+        "gate_counts": {
+          "parse_error": 7
+        }
+      }
+    },
+    "v041-single-b-70s": {
+      "6": {
+        "paired_deadline_admitted": 2791,
+        "dispatch_counts": {
+          "parse_error": 1,
+          "tdma_without_raw": 1,
+          "awaiting_tdma": 2792,
+          "identity_changes": 0,
+          "raw": 2791,
+          "sideband_lora_rx": 70,
+          "status": 14,
+          "tdma_deadline_rejected": 1
+        },
+        "gate_counts": {}
+      }
+    }
+  }
+}

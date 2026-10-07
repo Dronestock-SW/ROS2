@@ -1,4 +1,4 @@
-"""Poll missions and report communication presence; never execute missions."""
+"""Report observations; optional legacy mission polling never executes missions."""
 
 import asyncio
 import hashlib
@@ -18,7 +18,7 @@ from urllib.request import HTTPRedirectHandler, ProxyHandler, Request, build_ope
 import uuid
 
 from websockets.asyncio.client import connect
-from .telemetry import Observations
+from .telemetry import Observations, SOURCES
 
 
 LOG = logging.getLogger('dronestock-companion')
@@ -46,6 +46,14 @@ class Config:
         if (url.scheme not in ('http', 'https') or not url.hostname
                 or url.username or url.password or url.path or url.query or url.fragment):
             raise ValueError('DRONESTOCK_SERVER_URL must be an HTTP(S) origin')
+        self.pose_source = env.get('DRONESTOCK_POSE_SOURCE', 'btf_xy')
+        poll_enabled = env.get('DRONESTOCK_MISSION_POLL_ENABLED', 'false').lower()
+        if poll_enabled not in ('true', 'false'):
+            raise ValueError('DRONESTOCK_MISSION_POLL_ENABLED must be true or false')
+        self.mission_poll_enabled = poll_enabled == 'true'
+        if self.pose_source not in SOURCES:
+            raise ValueError('unsupported_pose_source')
+        self.session_id = uuid.uuid4().hex
         self.drone_id = env.get('DRONESTOCK_DRONE_ID', '5')
         if not self.drone_id.isascii() or not self.drone_id.isdecimal():
             raise ValueError('DRONESTOCK_DRONE_ID must be numeric')
@@ -64,13 +72,13 @@ class Config:
             str(Path.home() / '.local/state/dronestock-companion'),
         ))
 
-    def headers(self):
+    def headers(self, path=None):
         headers = {'Accept': 'application/json', 'User-Agent': 'DroneStock-Link/0.1.0'}
         if self.auth_id:
             timestamp = str(int(time.time()))
             nonce = uuid.uuid4().hex
             canonical = '\n'.join((
-                'GET', self.path, hashlib.sha256(b'').hexdigest(), timestamp, nonce,
+                'GET', path or self.path, hashlib.sha256(b'').hexdigest(), timestamp, nonce,
             ))
             signature = hmac.new(
                 self.auth_secret.encode('utf-8'), canonical.encode('utf-8'), hashlib.sha256,
@@ -105,7 +113,9 @@ def presence_payload(config, sequence, observations=None):
     """Unknown sensor/flight values stay null; presence isn't flight readiness."""
     timestamp = int(time.time() * 1000)
     payload = {
-        'contract_version': '1.0',
+        'observation_contract': '1.0',
+        'drone_id': config.drone_id,
+        'companion_session_id': config.session_id,
         'type': 'telemetry',
         'telemetry_source': 'companion',
         'companion_link': True,
@@ -152,7 +162,7 @@ def error_code(exc):
 class Runtime:
     def __init__(self, config):
         self.config = config
-        self.observations = Observations()
+        self.observations = Observations(config.pose_source)
         self.started = time.time()
         self.mission = None
         self.mission_at = None
@@ -166,6 +176,8 @@ class Runtime:
         self.ws_error = None
         self.ws_sent = 0
         self.ws_received = 0
+        self.ws_accepted = 0
+        self.ws_rejected = 0
         self.ws_sent_at = None
         self.sequence = 0
 
@@ -209,6 +221,16 @@ class Runtime:
         # Incoming frames never become control commands.
         async for _message in ws:
             self.ws_received += 1
+            try:
+                ack = json.loads(_message)
+            except (ValueError, TypeError):
+                continue
+            if isinstance(ack, dict) and ack.get('type') == 'observation.ack':
+                if ack.get('accepted') is True:
+                    self.ws_accepted += 1
+                else:
+                    self.ws_rejected += 1
+                    raise ValueError('observation_report_rejected')
 
     async def websocket_loop(self):
         retry_s = 1
@@ -216,7 +238,8 @@ class Runtime:
             connected_at = None
             try:
                 async with connect(
-                    self.config.ws_url, open_timeout=3, close_timeout=2,
+                    self.config.ws_url, additional_headers={**self.config.headers(urlsplit(self.config.ws_url).path),
+                        'X-DS-Observation-Version':'1.0'}, open_timeout=3, close_timeout=2,
                     ping_interval=10, ping_timeout=10, max_size=65536, max_queue=1,
                 ) as ws:
                     connected_at = time.monotonic()
@@ -254,6 +277,7 @@ class Runtime:
             'updated_at_unix': time.time(),
             'started_at_unix': self.started,
             'mode': 'communication_only',
+            'mission_poll_enabled': self.config.mission_poll_enabled,
             'flight_control_enabled': False,
             'server': self.config.server,
             'drone_id': self.config.drone_id,
@@ -268,6 +292,8 @@ class Runtime:
             'websocket_connections': self.ws_connections,
             'websocket_messages_sent': self.ws_sent,
             'websocket_messages_received': self.ws_received,
+            'websocket_observations_accepted': self.ws_accepted,
+            'websocket_observations_rejected': self.ws_rejected,
             'websocket_last_sent_at_unix': self.ws_sent_at,
             'websocket_last_error': self.ws_error,
         }
@@ -295,9 +321,10 @@ class Runtime:
     async def run(self, stop):
         LOG.info('starting server=%s drone_id=%s mode=communication_only',
                  self.config.server, self.config.drone_id)
-        tasks = [asyncio.create_task(loop()) for loop in (
-            self.poll_loop, self.websocket_loop, self.status_loop,
-        )]
+        loops = [self.websocket_loop, self.status_loop]
+        if self.config.mission_poll_enabled:
+            loops.append(self.poll_loop)
+        tasks = [asyncio.create_task(loop()) for loop in loops]
         stopper = asyncio.create_task(stop.wait())
         try:
             done, _ = await asyncio.wait([*tasks, stopper], return_when=asyncio.FIRST_COMPLETED)
@@ -315,7 +342,7 @@ class Runtime:
 
 async def async_main(config):
     from .ros_monitor import start
-    observations = Observations()
+    observations = Observations(config.pose_source)
     start(observations)
     stop = asyncio.Event()
     loop = asyncio.get_running_loop()

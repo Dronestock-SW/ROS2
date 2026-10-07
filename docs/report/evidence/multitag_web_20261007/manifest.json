@@ -1,0 +1,17 @@
+{
+  "review_date_kst": "2026-10-07",
+  "ros2_source_commit": "1cc9ba484d19cd3b41c4b0330394d8c30c029b20",
+  "tag_firmware_commit": "0026d6414d1ac273f958003f42e939a7cce0471a",
+  "evidence_kind": "Existing read-only review from this conversation, preserved during documentation handoff",
+  "python_tests_passed": 44,
+  "synthetic_replay_conditions": 9,
+  "ros_runtime": false,
+  "hardware_upload": false,
+  "rf_measured": false,
+  "web_server_tested": false,
+  "field_accuracy_measured": false,
+  "files": {
+    "pytest.log": "fb18a16a226b0dc260176a54bd3cc5ad5145544e3aea9284e636100998e549fa",
+    "replay-results.json": "6ed9e325c9707cddefef4f14003e465024f85416b14579e3a22e73136ceb763f"
+  }
+}

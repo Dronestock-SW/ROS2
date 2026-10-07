@@ -21,6 +21,14 @@
 
 ## 현재 작업 상태
 
+- [웹·companion·멀티태그 인수인계](docs/runbooks/multitag_jetson_web_handoff.md):
+  웹 좌표는 Wi-Fi/WebSocket이다. LoRa는 별도 채널이다.
+  TDMA 수신·A/B 설정·인증 관측 전송을 구현했다.
+  [패치 검증](docs/report/multitag_patch_validation_20261007.md)에 시험과 실물 미검증 범위를 구분했다.
+  [연결 기준](docs/reference/multitag_jetson_web_contract.md)과
+  [호환 재현 기록](docs/report/multitag_web_compatibility_20261007.md)을 함께 읽는다.
+  이번 반영은 문서 정리이며 실행 코드·기기 설정은 바꾸지 않았다.
+
 - [4앵커 기본 실행 복원](docs/runbooks/uwb_four_anchor_restore_20261007.md):
   A1~A4, `min_anchors=4`, `active_anchor_mask=15`.
   Jetson 적용·빌드·134개 검사를 통과했다.
