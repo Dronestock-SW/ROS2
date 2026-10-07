@@ -1,7 +1,13 @@
 # PX4 수동 기준값과 자율비행 설정 관리
 
-상태: 2026-10-04 기준 자료 확인 및 구현 명세. 파라미터 적용기는 아직 구현하지 않았다.
-현재 개발 Jetson에는 Pixhawk가 연결되어 있지 않다. HOST_OBSERVE와 flight_authority=false를 유지한다.
+2026-10-07 Jetson의 실제 Pixhawk에 사용자가 요청한 세 값을 적용했다.
+`COM_RC_OVERRIDE=2`, `EKF2_EV_CTRL=1`, `MIS_TAKEOFF_ALT=1.3`이다.
+DISARM에서 저장·FC reboot·새 연결의 값 유지까지 확인했다.
+자동 임무용 파라미터 적용기는 여전히 미구현이다.
+이 일회성 적용은 HOST_OBSERVE의 비행 권한을 켜지 않는다.
+RC 16채널은 관측 시 모두 0이었다. 실기 인계는 미검증이다.
+세부 근거는 [낮은 앵커 시험 기록](../../docs/report/anchor_low015_bench_20261007.md)을 본다.
+아래 2026-10-04 파일 분석과 설계는 당시 자료로 보존한다.
 
 ## 1. 확인한 기준 자료
 

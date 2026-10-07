@@ -47,8 +47,8 @@ def setup(context):
     bench = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(str(share / 'launch/uwb_btf_bench.launch.py')),
         launch_arguments={name: value(name) for name in
-                          ('tag', 'uwb_port', 'btf_config', 'fcu_url', 'start_mavros',
-                           'record_directory', 'stop_after_s')}.items())
+                          ('tag', 'uwb_port', 'btf_config', 'anchor_file', 'fcu_url',
+                           'start_mavros', 'record_directory', 'stop_after_s')}.items())
     actions = [SetEnvironmentVariable('ROS_DOMAIN_ID', str(domain))]
     for child in (bridge, observer):
         actions.append(RegisterEventHandler(OnProcessExit(
@@ -66,6 +66,7 @@ def generate_launch_description():
         DeclareLaunchArgument('stop_after_s', default_value='60.0'),
         DeclareLaunchArgument('uwb_port', default_value='/dev/uwb'),
         DeclareLaunchArgument('btf_config', default_value=''),
+        DeclareLaunchArgument('anchor_file', default_value=''),
         DeclareLaunchArgument('fcu_url', default_value='/dev/pixhawk:921600'),
         DeclareLaunchArgument('start_mavros', default_value='false'),
         OpaqueFunction(function=setup),

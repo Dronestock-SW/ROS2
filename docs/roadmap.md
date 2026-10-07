@@ -421,3 +421,19 @@ ARM·이륙·FC 설정 변경은 실행하지 않았다.
 [통합 기준](architecture/flight_uwb_ai_integration.md),
 [지상 절차](runbooks/flight_uwb_ai_ground.md),
 [시험 기록](report/flight_uwb_ai_integration_20261007.md)을 따른다.
+
+
+## 2026-10-07 임시 낮은 앵커와 비행 시험 준비
+
+- [x] Tag B 펌웨어·ROS 배치 6.3×4.6m, 앵커 z=0.15m.
+- [x] 2.2m 복원 프로파일 보존. Tag A 변경 없음.
+- [x] 사용자 요청 FC 세 파라미터 저장·reboot·재조회.
+- [x] 네 시험 경로의 웹 계획·C++ FakePx4 재생.
+- [ ] 실제 PX4 writer·SITL·웹 실비행 실행.
+- [ ] 실측 좌표·장착·시각·EKF 융합과 RC 인계.
+
+목표 Z는 PX4 고도 기준과 대조해야 한다.
+companion에 별도 고도 제어 루프를 추가하지 않았다.
+이번 사용자의 웹 시험 준비 요청을 적용했다.
+[후속 기록](report/anchor_low015_bench_20261007.md),
+[실행·복원 절차](runbooks/anchor_low015_bench.md)를 따른다.

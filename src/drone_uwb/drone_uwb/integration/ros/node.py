@@ -21,6 +21,7 @@ from drone_uwb.contracts.protocol import InvalidSample, decode_line
 from drone_uwb.acquisition.framing import LineFramer
 from drone_uwb.integration.recording import open_record_files
 from drone_uwb.acquisition.serial_io import SerialInput
+from drone_uwb.integration.ros.layout_selection import anchor_path
 
 
 class UwbNode(Node):
@@ -38,8 +39,7 @@ class UwbNode(Node):
         values = {name: self.get_parameter(name).value for name in asdict(Settings())}
         self.settings = Settings(**values)
         path = self.get_parameter('anchor_file').value
-        if not path:
-            path = str(Path(get_package_share_directory('drone_uwb')) / 'config/anchors/anchors_20261004.json')
+        path = anchor_path(get_package_share_directory('drone_uwb'), path)
         self.layout = json.loads(Path(path).read_text(encoding='utf-8'))
         self.processor = Processor(self.layout, self.settings)
         self.framer = LineFramer()

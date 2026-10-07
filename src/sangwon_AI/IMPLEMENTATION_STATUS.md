@@ -1,5 +1,11 @@
 # 1차 C++ 구현 현황
 
+2026-10-07 후속: 네 지상 시험 계획을 만드는 loopback 웹을 추가했다.
+호버·X·Y·XY 왕복은 기존 C++ FakePx4 경로에서 통과했다.
+실제 PX4 writer·SITL·비행은 완료되지 않았다.
+FC 세 파라미터의 사용자 요청 적용·저장·reboot는 별도로 확인했다.
+[후속 기록](../../docs/report/anchor_low015_bench_20261007.md)을 따른다.
+
 2026-10-07 ROS2 통합: 기존 소스 191개를 보존해 편입했다.
 Tag별 domain과 선택 PX4 local_position 구독을 추가했다.
 같은 메시지의 XYZ·원본 stamp·frame·유효기간을 검사한다.

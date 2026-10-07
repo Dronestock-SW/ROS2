@@ -14,7 +14,7 @@ from rclpy.qos import qos_profile_sensor_data
 from rcl_interfaces.srv import GetParameters
 from rosidl_runtime_py.convert import message_to_ordereddict
 from sensor_msgs.msg import Imu, LaserScan, Range
-from mavros_msgs.msg import State, ExtendedState, TimesyncStatus
+from mavros_msgs.msg import State, ExtendedState, TimesyncStatus, RCIn
 from nav_msgs.msg import Odometry
 from geometry_msgs.msg import PoseStamped, PoseWithCovarianceStamped
 from std_msgs.msg import String
@@ -50,6 +50,7 @@ def main():
         '/mavros/imu/data': Imu, '/mavros/local_position/odom': Odometry,
         '/mavros/local_position/pose': PoseStamped,
         '/mavros/extended_state': ExtendedState, '/mavros/timesync_status': TimesyncStatus,
+        '/mavros/rc/in': RCIn,
         '/mavros/downward_0': Range, '/mavros/downward_1': Range,
         '/scan': LaserScan, '/uwb_pose': PoseWithCovarianceStamped,
         '/uwb/btf_pose': PoseWithCovarianceStamped, '/uwb/btf_status': String,
@@ -61,7 +62,14 @@ def main():
                      for name, cls in topics.items()]
     names = ['EKF2_EV_CTRL', 'EKF2_EV_DELAY', 'EKF2_EV_NOISE_MD',
              'EKF2_EVP_NOISE', 'EKF2_MAG_TYPE', 'SENS_BOARD_ROT',
-             'EKF2_EV_POS_X', 'EKF2_EV_POS_Y', 'EKF2_EV_POS_Z']
+             'EKF2_EV_POS_X', 'EKF2_EV_POS_Y', 'EKF2_EV_POS_Z',
+             'EKF2_HGT_REF', 'EKF2_RNG_CTRL', 'COM_RC_OVERRIDE', 'COM_RC_STICK_OV',
+             'COM_RC_IN_MODE', 'COM_RCL_EXCEPT', 'COM_RC_LOSS_T', 'COM_OF_LOSS_T',
+             'COM_OBL_RC_ACT', 'COM_FAIL_ACT_T', 'COM_TAKEOFF_ACT', 'MIS_TAKEOFF_ALT',
+             'RC_MAP_FLTMODE', 'COM_FLTMODE1', 'COM_FLTMODE2', 'COM_FLTMODE3',
+             'COM_FLTMODE4', 'COM_FLTMODE5', 'COM_FLTMODE6', 'RC_MAP_OFFB_SW',
+             'RC_MAP_RETURN_SW', 'RC_MAP_KILL_SW', 'RC_MAP_ARM_SW',
+             'RC_MAP_ROLL', 'RC_MAP_PITCH', 'RC_MAP_YAW', 'RC_MAP_THROTTLE']
     client = node.create_client(GetParameters, '/mavros/param/get_parameters')
     future = None
     params = {}

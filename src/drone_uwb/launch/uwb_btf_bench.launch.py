@@ -9,6 +9,7 @@ from launch.event_handlers import OnProcessExit
 from launch.events import Shutdown
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
+from drone_uwb.integration.ros.layout_selection import matched_anchor_path
 
 
 def setup(context):
@@ -22,10 +23,13 @@ def setup(context):
     measured = json.loads(Path(config).read_text(encoding='utf-8'))
     if measured['tag_id'] != tag_id or measured.get('tdma_mode') != 'required':
         raise ValueError('BTF config must match selected Tag with tdma_mode=required')
+    anchors = matched_anchor_path(share, measured,
+                                  LaunchConfiguration('anchor_file', default='').perform(context))
     directory = Path(value('record_directory'))
     receiver = Node(package='drone_uwb', executable='uwb_node', output='screen',
         parameters=[str(share/f'config/runtime/uwb_tag_{role}.yaml'), {
             'port':value('uwb_port'), 'record_directory':str(directory/'uwb'),
+            'anchor_file': str(anchors),
             'stop_after_s':float(value('stop_after_s'))}])
     btf = Node(package='drone_uwb', executable='uwb_btf_node', output='screen',
         parameters=[{'config_file':config,'record_directory':str(directory/'btf')}])
@@ -50,6 +54,7 @@ def generate_launch_description():
         DeclareLaunchArgument('tag', default_value='A'),
         DeclareLaunchArgument('uwb_port', default_value='/dev/uwb'),
         DeclareLaunchArgument('btf_config', default_value=''),
+        DeclareLaunchArgument('anchor_file', default_value=''),
         DeclareLaunchArgument('fcu_url', default_value='/dev/pixhawk:921600'),
         DeclareLaunchArgument('start_mavros', default_value='true'),
         DeclareLaunchArgument('record_directory'),

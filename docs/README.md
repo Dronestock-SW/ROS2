@@ -10,6 +10,8 @@
 
 | 찾는 내용 | 위치 |
 |---|---|
+| Tag B 임시 0.15m·FC 설정·웹 시험 결과 | [낮은 앵커 시험 기록](report/anchor_low015_bench_20261007.md) |
+| 임시 배치 실행·2.2m 복원·웹 계획 | [낮은 앵커 시험 절차](runbooks/anchor_low015_bench.md) |
 | 비행·UWB·AI 연결과 미완료 범위 | [통합 기준](architecture/flight_uwb_ai_integration.md) |
 | 기체별 통합 지상 실행 | [통합 지상 절차](runbooks/flight_uwb_ai_ground.md) |
 | 기존 AI 보존·코드 통합·실물 수신 결과 | [2026-10-07 통합 기록](report/flight_uwb_ai_integration_20261007.md) |

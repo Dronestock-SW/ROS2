@@ -1,0 +1,89 @@
+{
+  "scope": "GROUND_AND_SYNTHETIC_ONLY",
+  "firmware_commit": "df61ebf",
+  "firmware": "uwb-tag-tdma40-v0.4.1-lora-sync1hz-z015",
+  "layout_id": "warehouse-rectangle-6p3x4p6-z0p15-20261007",
+  "firmware_app_sha256": "844f27c840c474e1d8ecfcaea8741049b52877b4c6a711adb1d4c91b49e73b49",
+  "anchor_z_m": 0.15,
+  "restore_anchor_z_m": 2.2,
+  "firmware_pc_capture": {
+    "utc": "2026-10-07T10:57:17.794349+00:00",
+    "duration_s": 60.125,
+    "counts": {
+      "uwb_raw_cycle": 2394,
+      "uwb_tdma_epoch": 2393,
+      "lora_rx": 40,
+      "uwb_raw_status": 12
+    },
+    "malformed_lines": 0,
+    "raw_xy_valid": 140,
+    "quality_reasons": {
+      "inconsistent_ranges": 1813,
+      "consistent": 140,
+      "insufficient_anchors": 440
+    },
+    "mean_cycle_hz": 39.9,
+    "min_complete_1s_count": 39,
+    "max_missing_seq": 0,
+    "max_host_gap_s": 0.06300000002374873,
+    "physical_accuracy_verified": false
+  },
+  "px4_after_reboot": {
+    "utc": "2026-10-07T10:58:31.536329+00:00",
+    "source": "fresh USB MAVLink PARAM_REQUEST_READ after FC reboot",
+    "parameters": {
+      "COM_RC_OVERRIDE": 2,
+      "EKF2_EV_CTRL": 1,
+      "MIS_TAKEOFF_ALT": 1.2999999523162842
+    },
+    "armed": false,
+    "persistent_readback_verified": true
+  },
+  "jetson_ground": {
+    "scope": "RECORDED_RAW_TDMA_TRANSPORT_ONLY",
+    "tag_id": "6",
+    "window_seconds": 600,
+    "warmup_s": 10,
+    "complete_window": true,
+    "count": 23647,
+    "mean_hz": 39.41166666666667,
+    "min_1s_hz": 0,
+    "max_1s_hz": 41,
+    "windows_below_35hz": 16,
+    "max_consecutive_missing": 58,
+    "session_count": 1,
+    "rate_pass": false,
+    "consecutive_loss_pass": false,
+    "transport_pass": false,
+    "rejection_counts": {
+      "status_unavailable": 63,
+      "tdma_deadline_rejected": 48,
+      "tdma_pair_expired": 11,
+      "tdma_seq_mismatch": 14,
+      "tdma_without_raw": 8,
+      "schema_or_tag_mismatch": 2
+    },
+    "pending_pair_counts": {
+      "tdma_missing": 3,
+      "schema_or_tag_mismatch": 2
+    },
+    "btf_accuracy_verified": false,
+    "fusion_verified": false,
+    "flight_verified": false
+  },
+  "jetson_json_parse_errors": 43,
+  "jetson_btf_pose_count": 0,
+  "jetson_vision_pose_count": 0,
+  "physical_anchor_layout_matches_config": false,
+  "physical_accuracy_verified": false,
+  "sitl_run": false,
+  "flight_run": false,
+  "tests": {
+    "uwb_passed": 342,
+    "bringup_passed": 57,
+    "bringup_skipped": 1,
+    "selected_ctest_passed": 4,
+    "firmware_profile_tests_passed": 3,
+    "synthetic_routes_passed": 4
+  }
+}

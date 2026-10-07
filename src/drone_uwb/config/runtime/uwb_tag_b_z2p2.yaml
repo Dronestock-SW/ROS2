@@ -3,7 +3,7 @@ uwb_node:
     port: /dev/uwb
     baudrate: 921600
     tag_id: '6'
-    anchor_file: config/anchors/anchors_20261007_z015.json
+    anchor_file: config/anchors/anchors_20261004.json
     tdma_mode: required
     source_mode: raw_ranges
     min_anchors: 4

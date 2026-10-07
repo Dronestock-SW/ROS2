@@ -125,6 +125,11 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     set(_sangwon_web_python "${CMAKE_CURRENT_SOURCE_DIR}/.venv/bin/python")
   endif()
   set(SANGWON_WEB_PYTHON "${_sangwon_web_python}" CACHE FILEPATH "Python with pinned websockets")
+  add_test(NAME bench_plan_boundaries COMMAND ${Python3_EXECUTABLE}
+    ${CMAKE_CURRENT_SOURCE_DIR}/tests/test_bench_plan.py)
+  add_test(NAME bench_plan_cpp_replay COMMAND ${SANGWON_WEB_PYTHON}
+    ${CMAKE_CURRENT_SOURCE_DIR}/tests/bench_plan_integration.py $<TARGET_FILE:sangwon_companiond>)
+  set_tests_properties(bench_plan_cpp_replay PROPERTIES TIMEOUT 180)
   add_test(NAME web_service_integration COMMAND ${SANGWON_WEB_PYTHON}
     ${CMAKE_CURRENT_SOURCE_DIR}/tests/web_service_integration.py $<TARGET_FILE:sangwon_companiond>)
   set_tests_properties(web_service_integration PROPERTIES ENVIRONMENT "PYTHONDONTWRITEBYTECODE=1" TIMEOUT 90)

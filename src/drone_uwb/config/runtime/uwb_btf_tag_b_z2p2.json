@@ -2,27 +2,27 @@
   "schema": 1,
   "external_output_allowed": false,
   "tag_id": "6",
-  "layout_id": "warehouse-rectangle-6p3x4p6-z0p15-20261007",
+  "layout_id": "warehouse-rectangle-6p3x4p6-z2p2-20261004",
   "anchors_xyz_m": [
     [
       0,
       0,
-      0.15
+      2.2
     ],
     [
       6.3,
       0,
-      0.15
+      2.2
     ],
     [
       0,
       4.6,
-      0.15
+      2.2
     ],
     [
       6.3,
       4.6,
-      0.15
+      2.2
     ]
   ],
   "bias_m": [
@@ -72,7 +72,7 @@
   },
   "provenance": {
     "algorithm": "final108 B_TF with per-anchor physical sample times",
-    "anchors_and_downward_sensor": "Temporary antenna stability test requested 2026-10-07: 6.3 x 4.6 m, anchor antenna centres 0.15 m above the common floor. Restore 2.2 m after this test. Physical layout not surveyed.",
+    "anchors_and_downward_sensor": "Shared warehouse layout; verify Tag B sensor topic and installation",
     "tof_to_tag_mount": "Tag B unmeasured; zero vector is a disabled placeholder",
     "timing": "ESP32 lower-envelope host mapping and MAVROS TIMESYNC; physical delay uncalibrated",
     "range_bias": "zero correction means uncalibrated, not zero physical bias"

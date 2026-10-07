@@ -1,0 +1,35 @@
+{
+  "layout_id": "warehouse-rectangle-6p3x4p6-z0p15-20261007",
+  "coordinate_frame": "uwb_map",
+  "units": "m",
+  "source": "Temporary antenna stability test requested 2026-10-07: 6.3 x 4.6 m, anchor antenna centres 0.15 m above the common floor. Restore 2.2 m after this test. Physical layout not surveyed.",
+  "independently_verified": false,
+  "anchor_order": [
+    "A1",
+    "A2",
+    "A3",
+    "A4"
+  ],
+  "anchors_xyz_m": [
+    [
+      0.0,
+      0.0,
+      0.15
+    ],
+    [
+      6.3,
+      0.0,
+      0.15
+    ],
+    [
+      0.0,
+      4.6,
+      0.15
+    ],
+    [
+      6.3,
+      4.6,
+      0.15
+    ]
+  ]
+}
