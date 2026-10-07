@@ -21,6 +21,12 @@
 
 ## 현재 작업 상태
 
+- [4앵커 기본 실행 복원](docs/runbooks/uwb_four_anchor_restore_20261007.md):
+  A1~A4, `min_anchors=4`, `active_anchor_mask=15`.
+  Jetson 장치 적용은 연결 회복 후 확인한다.
+- [기능별 커밋·검증 정리](docs/report/uwb_commit_inventory_20261007.md):
+  실물 B_TF, 3앵커 진단, 4앵커 기본 실행과 보존 범위.
+
 - [A4 결측 시 3앵커 진단](docs/runbooks/uwb_a123_bench_20261005.md):
   별도 시험 설정으로만 실행한다. 기본 운영 설정이 아니다.
 - [3앵커 실측 기록](docs/report/uwb_a123_session_20261005.md):

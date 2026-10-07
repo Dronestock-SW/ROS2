@@ -11,7 +11,7 @@ from launch_ros.parameter_descriptions import ParameterValue
 
 
 def generate_launch_description():
-    config = str(Path(get_package_share_directory('drone_uwb'))/'config/uwb.yaml')
+    config = str(Path(get_package_share_directory('drone_uwb'))/'config/runtime/uwb.yaml')
     receiver = Node(package='drone_uwb', executable='uwb_node', output='screen',
                     parameters=[LaunchConfiguration('config'), {
                         'record_directory': ParameterValue(LaunchConfiguration('record_directory'), value_type=str),

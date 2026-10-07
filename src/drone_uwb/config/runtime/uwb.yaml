@@ -5,6 +5,7 @@ uwb_node:
     tag_id: '5'
     source_mode: raw_ranges
     min_anchors: 4
+    active_anchor_mask: 15
     status_timeout_s: 10.0
     max_cycle_s: 0.10
     max_report_span_s: 0.04
