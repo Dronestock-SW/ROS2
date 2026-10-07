@@ -23,7 +23,9 @@
 
 - [4앵커 기본 실행 복원](docs/runbooks/uwb_four_anchor_restore_20261007.md):
   A1~A4, `min_anchors=4`, `active_anchor_mask=15`.
-  Jetson 장치 적용은 연결 회복 후 확인한다.
+  Jetson 적용·빌드·134개 검사를 통과했다.
+  [장치 적용 기록](docs/report/uwb_jetson_sync_20261007.md)을 따른다.
+  실제 A4 응답과 정확도·비행 검증은 남아 있다.
 - [기능별 커밋·검증 정리](docs/report/uwb_commit_inventory_20261007.md):
   실물 B_TF, 3앵커 진단, 4앵커 기본 실행과 보존 범위.
 

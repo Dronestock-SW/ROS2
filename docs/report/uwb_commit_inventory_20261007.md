@@ -12,7 +12,9 @@ B_TF도 네 앵커 입력 조건을 유지한다.
 
 기능별 변경은 아래 세 커밋으로 나눈다.
 기존 기능별 커밋 이후의 보존본을 추가했다.
-Jetson 현재 작업 트리는 오프라인으로 확인하지 못했다.
+GitHub 정리 당시 Jetson은 오프라인이었다.
+그 뒤 SSH 회복으로 장치 적용과 재빌드를 마쳤다.
+[장치 적용 기록](uwb_jetson_sync_20261007.md)에 결과를 남겼다.
 보존본과 GitHub 기준 파일의 동일성을 대조했다.
 확인된 파일의 원본 버전은 GitHub와 일치했다.
 
@@ -72,7 +74,7 @@ OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 PYTHONIOENCODING=utf-8 \
 python -m pytest src/drone_uwb/test/processing src/drone_uwb/test/experiments -q
 ```
 
-## 장치 적용 상태
+## GitHub 정리 당시 장치 상태
 
 Windows 로컬 터미널에서 Git 저장소를 정리했다.
 확인 시 Jetson 100.110.163.94는 Tailscale 오프라인이었다.
@@ -80,3 +82,12 @@ SSH 접속도 시간 초과였다.
 현재 장치의 프로세스·설정·미커밋 파일은 재확인하지 못했다.
 장치 복원 완료로 보고하지 않는다.
 연결 회복 후 [4앵커 복원 절차](../runbooks/uwb_four_anchor_restore_20261007.md)를 따른다.
+
+## 이후 Jetson 적용 확인
+
+같은 날 SSH 회복 후 장치 적용·빌드를 마쳤다.
+Jetson에서도 처리·알고리즘 검사 134개를 통과했다.
+18:59 제외 원본과 추가 기록은 원래 경로에 보존했다.
+미추적 원본 40개 파일을 삭제하지 않았다.
+현재 `/dev/uwb`가 없어 새 수신은 미실시다.
+[장치 적용 기록](uwb_jetson_sync_20261007.md)에 백업과 검사 근거가 있다.
