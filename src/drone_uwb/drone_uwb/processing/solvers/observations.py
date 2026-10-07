@@ -20,6 +20,7 @@ class Settings:
     tag_id: str = '5'
     source_mode: str = 'raw_ranges'
     min_anchors: int = 4
+    active_anchor_mask: int = 15  # Explicit input selection; wire RAW is never modified.
     max_range_m: float = 1000.0
     status_timeout_s: float = 10.0
     max_cycle_s: float = 0.10
@@ -41,6 +42,11 @@ class Settings:
             raise ValueError('invalid source_mode')
         if self.min_anchors not in (3, 4):
             raise ValueError('min_anchors must be 3 or 4')
+        if (not integer(self.active_anchor_mask) or not 0 < self.active_anchor_mask <= 15
+                or bin(self.active_anchor_mask).count('1') < self.min_anchors):
+            raise ValueError('active_anchor_mask must contain enough anchors')
+        if self.source_mode == 'tag_xy' and self.active_anchor_mask != 15:
+            raise ValueError('anchor selection requires raw_ranges mode')
         if (not integer(self.recovery_samples) or not integer(self.clock_warmup_samples)
                 or self.recovery_samples < 1 or self.clock_warmup_samples < 2):
             raise ValueError('invalid warmup count')
@@ -169,7 +175,7 @@ class Processor:
             raise InvalidSample('invalid_anchor_arrays')
         indices = []
         for i in range(4):
-            if mask & (1 << i):
+            if mask & s.active_anchor_mask & (1 << i):
                 if not finite(values[i]) or not 0 < values[i] <= s.max_range_m or failures[i] != 'ok':
                     raise InvalidSample('valid_mask_range_conflict')
                 if not integer(sample_times[i]) or not start <= sample_times[i] <= end:
@@ -200,6 +206,8 @@ class Processor:
         ranges = np.array([v if finite(v) else np.nan for v in values], dtype=float)
         xy, residual = solve_xy(self.anchors, ranges, indices)
         details = {'seq': seq, 'candidate_xy_m': xy.tolist(), 'pair_residual_m': residual,
+                   'wire_anchor_mask': mask, 'used_anchor_mask': mask & s.active_anchor_mask,
+                   'consistency_redundancy': len(indices) > 3,
                    'queue_s': queue_s, 'report_span_s': span,
                    'tag_layout_id': self.status.get('anchor_layout_id'),
                    'layout_id': self.layout['layout_id'],
@@ -235,5 +243,5 @@ class Processor:
         if len(indices) == 3:
             variance *= 4  # No fourth-anchor consistency redundancy.
         obs = Observation(seq, stamp, float(xy[0]), float(xy[1]), variance,
-                          mask, residual, span, s.source_mode)
+                          mask & s.active_anchor_mask, residual, span, s.source_mode)
         return Decision('accepted', obs, details)

@@ -21,6 +21,11 @@
 
 ## 현재 작업 상태
 
+- [A4 결측 시 3앵커 진단](docs/runbooks/uwb_a123_bench_20261005.md):
+  별도 시험 설정으로만 실행한다. 기본 운영 설정이 아니다.
+- [3앵커 실측 기록](docs/report/uwb_a123_session_20261005.md):
+  A1 복구·P1 재측정. 기준점 차이의 원인 확인은 남아 있다.
+
 - [실물 B_TF 연결 결과](docs/report/uwb_btf_real_20261005.md):
   실물 관측 계산과 60초 기록 2회. FC 전달·정확도 검증은 남아 있다.
 - [실물 B_TF 실행 절차](docs/runbooks/uwb_btf_real_bench.md):

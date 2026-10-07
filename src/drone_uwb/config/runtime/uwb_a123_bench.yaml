@@ -1,0 +1,23 @@
+# Bench only: explicitly select A1/A2/A3; no FC output bridge.
+uwb_node:
+  ros__parameters:
+    port: /dev/uwb
+    baudrate: 921600
+    tag_id: '5'
+    source_mode: raw_ranges
+    min_anchors: 3
+    active_anchor_mask: 7
+    status_timeout_s: 10.0
+    max_cycle_s: 0.10
+    max_report_span_s: 0.04
+    max_queue_s: 0.15
+    max_pair_residual_m: 0.15
+    range_step_margin_m: 0.20
+    max_speed_m_s: 1.20
+    history_timeout_s: 0.5
+    recovery_samples: 3
+    clock_warmup_samples: 30
+    clock_window_s: 5.0
+    xy_stddev_m: 0.30
+    report_delay_s: 0.0
+    watchdog_timeout_s: 0.5

@@ -1,0 +1,62 @@
+{
+  "start_utc": "2026-10-05T09:52:20.172437+00:00",
+  "port": "/dev/uwb",
+  "settings": {
+    "tag_id": "5",
+    "source_mode": "raw_ranges",
+    "min_anchors": 3,
+    "active_anchor_mask": 7,
+    "max_range_m": 1000.0,
+    "status_timeout_s": 10.0,
+    "max_cycle_s": 0.1,
+    "max_report_span_s": 0.04,
+    "max_queue_s": 0.15,
+    "max_pair_residual_m": 0.15,
+    "range_step_margin_m": 0.2,
+    "max_speed_m_s": 1.2,
+    "history_timeout_s": 0.5,
+    "recovery_samples": 3,
+    "clock_warmup_samples": 30,
+    "clock_window_s": 5.0,
+    "xy_stddev_m": 0.3,
+    "geometry_tolerance_m": 0.03,
+    "report_delay_s": 0.0
+  },
+  "layout": {
+    "layout_id": "warehouse-rectangle-6p3x4p6-z2p2-20261004",
+    "coordinate_frame": "uwb_map",
+    "units": "m",
+    "source": "User fixed rectangular XY layout on 2026-10-04: A1-A2/A3-A4=6.3m, A1-A3/A2-A4=4.6m; existing Z=2.2m retained.",
+    "independently_verified": false,
+    "anchor_order": [
+      "A1",
+      "A2",
+      "A3",
+      "A4"
+    ],
+    "anchors_xyz_m": [
+      [
+        0.0,
+        0.0,
+        2.2
+      ],
+      [
+        6.3,
+        0.0,
+        2.2
+      ],
+      [
+        0.0,
+        4.6,
+        2.2
+      ],
+      [
+        6.3,
+        4.6,
+        2.2
+      ]
+    ]
+  },
+  "serial_payload_bytes_written": 0,
+  "flight_state_estimator": "PX4 EKF2 only"
+}

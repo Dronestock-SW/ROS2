@@ -1,0 +1,148 @@
+{
+  "duration_s": 62.07500820399946,
+  "counts": {
+    "/mavros/imu/data": 3009,
+    "/mavros/timesync_status": 605,
+    "/mavros/downward_0": 593,
+    "/mavros/state": 61,
+    "/mavros/battery": 37,
+    "/uwb/status": 60
+  },
+  "last": {
+    "/mavros/imu/data": {
+      "header": {
+        "stamp": {
+          "sec": 1791194000,
+          "nanosec": 642252288
+        },
+        "frame_id": "base_link"
+      },
+      "orientation": {
+        "x": 0.001711980620365729,
+        "y": -0.017256624752091172,
+        "z": -0.7870232329625397,
+        "w": 0.6166796640352116
+      },
+      "orientation_covariance": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "angular_velocity": {
+        "x": 0.0003646695986390114,
+        "y": -0.00041690096259117126,
+        "z": -0.00020732742268592114
+      },
+      "angular_velocity_covariance": [
+        1.2184696791468346e-07,
+        0.0,
+        0.0,
+        0.0,
+        1.2184696791468346e-07,
+        0.0,
+        0.0,
+        0.0,
+        1.2184696791468346e-07
+      ],
+      "linear_acceleration": {
+        "x": 0.17488281428813934,
+        "y": 0.28582519292831543,
+        "z": 9.792906761169434
+      },
+      "linear_acceleration_covariance": [
+        8.999999999999999e-08,
+        0.0,
+        0.0,
+        0.0,
+        8.999999999999999e-08,
+        0.0,
+        0.0,
+        0.0,
+        8.999999999999999e-08
+      ]
+    },
+    "/mavros/timesync_status": {
+      "header": {
+        "stamp": {
+          "sec": 1791194000,
+          "nanosec": 601406491
+        },
+        "frame_id": ""
+      },
+      "remote_timestamp_ns": 9357933205000,
+      "observed_offset_ns": 1791184642666086251,
+      "estimated_offset_ns": 1791184642666252288,
+      "round_trip_time_ms": 4.2239837646484375
+    },
+    "/mavros/downward_0": {
+      "header": {
+        "stamp": {
+          "sec": 1791194000,
+          "nanosec": 637252288
+        },
+        "frame_id": "downward_0"
+      },
+      "radiation_type": 1,
+      "field_of_view": 0.03999999910593033,
+      "min_range": 0.10000000149011612,
+      "max_range": 35.0,
+      "range": 0.0
+    },
+    "/mavros/state": {
+      "header": {
+        "stamp": {
+          "sec": 1791194000,
+          "nanosec": 493580306
+        },
+        "frame_id": ""
+      },
+      "connected": true,
+      "armed": false,
+      "guided": false,
+      "manual_input": true,
+      "mode": "ALTCTL",
+      "system_status": 8
+    },
+    "/mavros/battery": {
+      "header": {
+        "stamp": {
+          "sec": 1791194000,
+          "nanosec": 67256205
+        },
+        "frame_id": ""
+      },
+      "voltage": 23.144001007080078,
+      "temperature": 0.0,
+      "current": -0.0,
+      "charge": null,
+      "capacity": null,
+      "design_capacity": null,
+      "percentage": 0.4399999976158142,
+      "power_supply_status": 2,
+      "power_supply_health": 0,
+      "power_supply_technology": 3,
+      "present": true,
+      "cell_voltage": [
+        23.144001007080078
+      ],
+      "cell_temperature": [],
+      "location": "id0",
+      "serial_number": ""
+    },
+    "/uwb/status": {
+      "data": "{\"counts\": {\"json_messages\": 1220, \"cycles\": 1208, \"status_unavailable\": 74, \"status\": 12, \"insufficient_anchors\": 1134}, \"last_decision\": \"insufficient_anchors\", \"connected\": true, \"cycle_age_s\": 0.020006846, \"watchdog_ok\": true, \"source_mode\": \"raw_ranges\", \"layout_id\": \"warehouse-rectangle-6p3x4p6-z2p2-20261004\", \"frame_id\": \"uwb_map\", \"tag_status\": {\"type\": \"uwb_raw_status\", \"schema\": 1, \"event\": \"heartbeat\", \"tag_id\": \"5\", \"firmware\": \"uwb-tag-for-jetson-v1.10-status-only\", \"uwb_ready\": true, \"serial_baud\": 921600, \"anchor_count\": 4, \"anchor_order\": [\"A1\", \"A2\", \"A3\", \"A4\"], \"anchor_layout_id\": \"warehouse-5x4p5-z2p2-v2\", \"clock_domain\": \"esp32_monotonic_boot_us\", \"temporal_filter_applied\": false, \"raw_xy_method\": \"linear_ls_unfiltered_equal_anchor_z\", \"display_ready\": true, \"display_mode\": \"status_only\", \"lora_ready\": true, \"lora_frequency_hz\": 915000000, \"lora_good_fix_period_ms\": 500, \"lora_bad_fix_period_ms\": 250, \"lora_hw_verified\": true, \"lora_tx_busy\": true, \"lora_tx_attempts\": 26911, \"lora_tx_done\": 26910, \"lora_tx_timeouts\": 0, \"lora_watchdog_timeouts\": 0, \"lora_recoveries\": 0, \"lora_rx_packets\": 0, \"lora_rx_errors\": 0, \"lora_last_tx_done_ms\": 9348569, \"lora_last_rx_ms\": 0}, \"timestamp_method\": \"approximate_mean_report_read_time\", \"timestamp_calibrated\": false, \"framing_overflows\": 0}"
+    }
+  },
+  "exit_codes": [
+    0,
+    0
+  ],
+  "fc_output_enabled": false,
+  "flight_test": false
+}

@@ -1,0 +1,17 @@
+{
+  "stage": "P1_repeat_1",
+  "reference_xyz_m": [
+    1.0,
+    1.0,
+    null
+  ],
+  "active_anchors": [
+    "A1",
+    "A2",
+    "A3"
+  ],
+  "fc_output_enabled": false,
+  "flight_test": false,
+  "planned_seconds": 60.0,
+  "start_kst": "2026-10-05T19:03:40.051222+09:00"
+}
