@@ -15,6 +15,26 @@ ROI(관심 영역) 최적화:
     ROI에서 못 찾으면 같은 프레임 안에서 즉시 전체 프레임으로 재시도한다.
     QR이 ROI 밖으로 빠져나갔을 때 여러 프레임을 그냥 흘려보내지 않기 위해서다.
 
+Otsu 이진화 폴백:
+    zbar는 내부 이진화로 흑백을 가르는데, 라벨이 충분히 밝지 않으면 임계값을
+    못 잡는다. ROI·전체 프레임 각 단계에서 원본으로 먼저 시도하고, 실패할
+    때만 Otsu 이진화로 재시도한다. 조명이 좋으면 원본이 먼저 걸려 Otsu 비용이
+    아예 안 든다 (docs/glossary.md의 Otsu 이진화 항목 참조).
+
+    근거 (2026-10-04 실측, 정면 거치 라벨 1프레임):
+        원본 실패 / CLAHE 실패 / 2배확대 실패 / 샤픈 실패
+        Otsu 성공 / CLAHE+Otsu 성공 (payload 125B)
+        QR 영역 밝기가 35~180에 몰려 있다. 같은 프레임의 다른 곳은 255까지
+        오르므로 노출이 아니라 라벨 반사율 문제다. Otsu는 임계값을 히스토그램
+        에서 직접 찾아(이 프레임에서 101) 통과했다.
+        이 폴백이 없을 때 244프레임 연속 미검출 (ArUco는 같은 구간 414샘플
+        100% 검출).
+
+    한계: 전역 Otsu는 임계값 하나를 영역 전체에 쓴다. 조명 기울기가 심해 한쪽은
+    다 희고 한쪽은 다 검게 나오는 상황에서는 깨진다. 그때는 adaptiveThreshold를
+    3단계로 추가해야 한다 — 이번 범위가 아니다. (위 프레임의 기울기는 흰색 수준
+    좌 162 / 우 161, 상 164 / 하 155로 약했다)
+
 watchdog:
     N프레임(기본 15) 연속으로 못 찾으면 경고 로그를 남긴다.
     (docs/glossary.md의 watchdog 항목과 같은 설계 — 조용히 못 찾는 상태가
@@ -35,6 +55,7 @@ on/off:
 
 import time
 
+import cv2
 import rclpy
 from cv_bridge import CvBridge
 from pyzbar.pyzbar import decode as zbar_decode
@@ -72,19 +93,36 @@ class QrDecoderNode(Node):
         self._proc_times = []  # 최근 처리 시간(초) — Hz 로그용
         self._last_hz_log_time = time.monotonic()
 
-        self._sub = self.create_subscription(
-            Image, '/camera/image_raw', self._on_image, qos_profile_sensor_data)
+        self._sub = None
         self._pub = self.create_publisher(String, '/qr_code/data', 10)
         self._srv = self.create_service(SetBool, '~/set_enabled', self._on_set_enabled)
+        self._set_enabled(True)
 
         self.get_logger().info(
             f'qr_decoder_node 시작 — roi_margin={self._roi_margin}px, '
             f'miss_warn_threshold={self._miss_warn_threshold}프레임')
 
+    def _set_enabled(self, enabled):
+        """끌 때 구독 자체를 끊는다.
+
+        콜백 안에서 일찍 return 하는 것만으로는 부족하다. 구독이 살아 있으면
+        1640x1232 프레임이 계속 전달돼 역직렬화와 복사가 일어난다. 실측으로
+        꺼진 상태에서도 CPU 23%를 쓰고 있었다(2026-10-04). 이 노드를 평소
+        꺼두는 이유가 CPU 절약인데(qr_fallback_node 폴백 경로), 그 효과가
+        거의 없던 셈이다.
+        """
+        if enabled and self._sub is None:
+            self._sub = self.create_subscription(
+                Image, '/camera/image_raw', self._on_image, qos_profile_sensor_data)
+        elif not enabled and self._sub is not None:
+            self.destroy_subscription(self._sub)
+            self._sub = None
+            self._last_bbox = None  # 꺼진 동안 프레임이 바뀐다 — ROI는 버린다
+            self._miss_streak = 0   # 꺼둔 시간이 미검출로 집계되면 안 된다
+        self._enabled = enabled
+
     def _on_set_enabled(self, request, response):
-        self._enabled = request.data
-        if not self._enabled:
-            self._last_bbox = None  # 꺼진 동안 프레임이 바뀔 테니 ROI는 버린다
+        self._set_enabled(request.data)
         response.success = True
         response.message = f'enabled={request.data}'
         self.get_logger().info(f'qr_decoder_node enabled={request.data}')
@@ -122,16 +160,29 @@ class QrDecoderNode(Node):
 
         if self._last_bbox is not None:
             x0, y0, x1, y1 = self._expand_roi(self._last_bbox, w_img, h_img)
-            hit = zbar_decode(frame[y0:y1, x0:x1])
+            hit = self._zbar(frame[y0:y1, x0:x1])
             if hit:
                 x, y, w, h = hit[0].rect
                 return (x0 + x, y0 + y, w, h), hit[0].data.decode('utf-8')
 
-        hit = zbar_decode(frame)
+        hit = self._zbar(frame)
         if hit:
             return hit[0].rect, hit[0].data.decode('utf-8')
 
         return None, None
+
+    def _zbar(self, img):
+        """원본으로 먼저 디코딩하고, 실패할 때만 Otsu 이진화로 재시도한다.
+
+        ROI와 전체 프레임 양쪽에서 같은 순서로 쓴다 — 조명이 좋으면 원본이
+        먼저 걸려 Otsu 비용이 안 든다. 자세한 근거는 모듈 docstring 참조.
+        """
+        hit = zbar_decode(img)
+        if hit:
+            return hit
+
+        _, binary = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+        return zbar_decode(binary)
 
     def _expand_roi(self, bbox, w_img, h_img):
         x, y, w, h = bbox
@@ -166,7 +217,10 @@ def main(args=None):
         pass
     finally:
         node.destroy_node()
-        rclpy.shutdown()
+        # ros2 launch 의 SIGINT 는 rclpy 가 먼저 shutdown 해서, 무조건 부르면
+        # "rcl_shutdown already called" 로 exit code 1 이 된다.
+        if rclpy.ok():
+            rclpy.shutdown()
 
 
 if __name__ == '__main__':
