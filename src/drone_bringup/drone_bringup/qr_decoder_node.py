@@ -93,19 +93,36 @@ class QrDecoderNode(Node):
         self._proc_times = []  # 최근 처리 시간(초) — Hz 로그용
         self._last_hz_log_time = time.monotonic()
 
-        self._sub = self.create_subscription(
-            Image, '/camera/image_raw', self._on_image, qos_profile_sensor_data)
+        self._sub = None
         self._pub = self.create_publisher(String, '/qr_code/data', 10)
         self._srv = self.create_service(SetBool, '~/set_enabled', self._on_set_enabled)
+        self._set_enabled(True)
 
         self.get_logger().info(
             f'qr_decoder_node 시작 — roi_margin={self._roi_margin}px, '
             f'miss_warn_threshold={self._miss_warn_threshold}프레임')
 
+    def _set_enabled(self, enabled):
+        """끌 때 구독 자체를 끊는다.
+
+        콜백 안에서 일찍 return 하는 것만으로는 부족하다. 구독이 살아 있으면
+        1640x1232 프레임이 계속 전달돼 역직렬화와 복사가 일어난다. 실측으로
+        꺼진 상태에서도 CPU 23%를 쓰고 있었다(2026-10-04). 이 노드를 평소
+        꺼두는 이유가 CPU 절약인데(qr_fallback_node 폴백 경로), 그 효과가
+        거의 없던 셈이다.
+        """
+        if enabled and self._sub is None:
+            self._sub = self.create_subscription(
+                Image, '/camera/image_raw', self._on_image, qos_profile_sensor_data)
+        elif not enabled and self._sub is not None:
+            self.destroy_subscription(self._sub)
+            self._sub = None
+            self._last_bbox = None  # 꺼진 동안 프레임이 바뀐다 — ROI는 버린다
+            self._miss_streak = 0   # 꺼둔 시간이 미검출로 집계되면 안 된다
+        self._enabled = enabled
+
     def _on_set_enabled(self, request, response):
-        self._enabled = request.data
-        if not self._enabled:
-            self._last_bbox = None  # 꺼진 동안 프레임이 바뀔 테니 ROI는 버린다
+        self._set_enabled(request.data)
         response.success = True
         response.message = f'enabled={request.data}'
         self.get_logger().info(f'qr_decoder_node enabled={request.data}')
