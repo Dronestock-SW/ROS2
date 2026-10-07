@@ -1,0 +1,28 @@
+{
+  "date": "2026-09-27",
+  "pytest": {
+    "passed": 89,
+    "failed": 0,
+    "command": "PYTHONPATH=src/drone_uwb python -m pytest src/drone_uwb/test -q"
+  },
+  "build": {
+    "passed": true,
+    "base": "/tmp/uwb_flight_inputs_20260927",
+    "module_help_passed": true,
+    "preparation_profile_installed": true
+  },
+  "sensor_replay": {
+    "native_sensor_events.jsonl": true,
+    "readiness.json": true
+  },
+  "user_confirmed_ULog_only": true,
+  "C_solver_implemented": false,
+  "antenna_height_calculated": false,
+  "hardware_flight_tests": "not_run",
+  "archive_sha256": {
+    "replay_checks.json": "da0a9ccd08cbd60584b3a7180098157ce541ef01d9f3d5569fe1558e9b3a22a9",
+    "native_sensor_events.jsonl": "3fdc22bd8b9fdb6b7ad872408f3b41f4efbea8f22e0aee580e5fcb2ac80051d8",
+    "readiness.json": "d20c07e9f626fd78248a1a43374a9a4f92d39ea10275367fde1e9b0753b916d2",
+    "manifest.json": "1d392c1d0b631eb553b96d31e4da29559c940e4806e038873c12d45cb7dfc179"
+  }
+}

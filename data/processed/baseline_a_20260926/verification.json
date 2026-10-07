@@ -1,0 +1,74 @@
+{
+  "date": "2026-09-26",
+  "git_fetch_origin": "passed; no new remote commit",
+  "origin_feature_uwb": "30804d1771fc575d303e772946d4482ee6c1dc26",
+  "github_files": [
+    {
+      "path": "uwb_raw.txt",
+      "sha256": "d93b96c9f1f02cd9d10e76191eab2cb70fdd4093e4cc74dbb9ae15fe203a3dc0",
+      "matches_origin_feature_uwb": true,
+      "last_commit": "87431bc 2026-09-20 16:25:16 +0900 Phase 0/이사: bluewak 개인 작업공간 이사 축하"
+    },
+    {
+      "path": "log_7_2026-9-26-12-31-34.ulg",
+      "sha256": "1b55df16dc04cf2f7f5188c0948173d125caf897bf7b3c65ca8493dbc650f70b",
+      "matches_origin_feature_uwb": true,
+      "last_commit": "46669a8 2026-09-26 17:13:46 +0900 reference for real flight record"
+    }
+  ],
+  "user_confirmed_z_source": "log_7_2026-9-26-12-31-34.ulg",
+  "real_data_blockers": [
+    "no UWB raw in ULog",
+    "root UWB file lacks host receive timestamp / mapping to PX4 time",
+    "same-session UWB not established",
+    "physical calibration and sensor geometry not established"
+  ],
+  "root_raw_audit": {
+    "cycles": 125,
+    "malformed_line_numbers": [
+      1
+    ],
+    "duration_s": 2.984067,
+    "has_host_received_monotonic_ns": false
+  },
+  "ulog_previous_audit": "../h80_readiness_20260926/summary.json",
+  "ulog_counts": {
+    "distance_sensor": 67,
+    "vehicle_attitude": 1342
+  },
+  "tests": {
+    "command": "source /opt/ros/humble/setup.bash; PYTHONPATH=src/drone_uwb python3 -m pytest -q src/drone_uwb/test",
+    "passed": 58,
+    "new_baseline_cases": 20,
+    "initial_failure": "test generator used default zero biases while estimator config used signed simulator biases; corrected fixture to use the same declared bias list"
+  },
+  "build": {
+    "result": "passed",
+    "package": "drone_uwb",
+    "base": "/tmp/uwb_a_20260926",
+    "symlink_install": true,
+    "cli_help": "passed"
+  },
+  "replay": {
+    "result_records": 1202,
+    "equal_except_run_id": true,
+    "summary_bytes_equal": true,
+    "second_run_invocation": "ros2 run drone_uwb uwb_baseline_a"
+  },
+  "run_directory": "/home/pgyxn/uwb_pipeline_runs/20260926_baseline_a_simulation",
+  "replay_directory": "/home/pgyxn/uwb_pipeline_runs/20260926_baseline_a_replay",
+  "not_run": [
+    "measured A positions",
+    "flight output",
+    "hardware timing validation",
+    "other model comparison"
+  ],
+  "runtime": {
+    "python": "3.10.12",
+    "numpy": "1.21.5"
+  },
+  "documentation_checks": {
+    "git_diff_check": "passed",
+    "report_local_links": "passed"
+  }
+}

@@ -2,7 +2,7 @@
 이 폴더는 웹 담당자가 보낸 9월 11일 자료다.
 API 계약과 회신 원문을 확인할 때 읽는다.
 
-먼저 [회신 검토](../../companion_platform_api_v1_review.md)를 읽는다.
+먼저 [회신 검토](../../reference/companion_platform_api_v1_review.md)를 읽는다.
 원문 계약과 실제 코드의 차이를 정리했다.
 
 | 파일 | 역할 |

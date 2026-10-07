@@ -1,0 +1,14 @@
+{
+  "source": "user reply in conversation",
+  "captured_statement": "응 같은 기체인데, pixhwak의 위에 셋팅될 예정. 아직 따로 놓고 시험중이야 픽스호크로부터 위로 한 30센치, 앞으로 한 5~7센치 앞에 있는듯해.",
+  "current_rigid_mount_confirmed": false,
+  "planned_same_vehicle": true,
+  "approximate_above_px4_m": 0.3,
+  "approximate_forward_px4_m_range": [
+    0.05,
+    0.07
+  ],
+  "lateral_m": null,
+  "antenna_reference_surveyed": false,
+  "applied_to_px4": false
+}

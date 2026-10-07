@@ -1,0 +1,171 @@
+{
+  "updated_at_kst": "2026-10-02T14:14:54.610265+09:00",
+  "status": "awaiting_authorization_to_restart_unresponsive_wsl",
+  "execution_host": "Windows DESKTOP-0C8GRSK",
+  "distribution": "Ubuntu-22.04",
+  "wsl_version": 2,
+  "ssh_target": "pgyxn@100.110.163.94",
+  "remote_repository_commit": "ab555baeed911d5e9e91ba7b5d2668fd832c2e08",
+  "preserved_linux_pids": {
+    "px4": 819,
+    "gazebo_server": 1016,
+    "gazebo_gui": 1017
+  },
+  "runtime_environment": {
+    "819": {
+      "PX4_SYS_AUTOSTART": "4016",
+      "PX4_SIM_MODEL": "gz_dronestock_x500",
+      "PX4_GZ_WORLD": "dronestock_uwb",
+      "PX4_GZ_MODEL_POSE": "2.09,1.68,0.24,0,0,0"
+    },
+    "1016": {
+      "GZ_SIM_SYSTEM_PLUGIN_PATH": ":/home/dronestock/github/PX4-Autopilot/build/px4_sitl_default/src/modules/simulation/gz_plugins",
+      "GZ_SIM_SERVER_CONFIG_PATH": "/home/dronestock/github/PX4-Autopilot/src/modules/simulation/gz_bridge/server.config",
+      "PX4_GZ_MODELS": "/home/dronestock/github/PX4-Autopilot/Tools/simulation/gz/models",
+      "GZ_SIM_RESOURCE_PATH": ":/home/dronestock/github/PX4-Autopilot/Tools/simulation/gz/models:/home/dronestock/github/PX4-Autopilot/Tools/simulation/gz/worlds",
+      "PX4_SYS_AUTOSTART": "4016",
+      "PX4_GZ_SERVER_CONFIG": "/home/dronestock/github/PX4-Autopilot/src/modules/simulation/gz_bridge/server.config",
+      "PX4_GZ_MODEL_POSE": "2.09,1.68,0.24,0,0,0",
+      "PX4_GZ_PLUGINS": "/home/dronestock/github/PX4-Autopilot/build/px4_sitl_default/src/modules/simulation/gz_plugins",
+      "PX4_GZ_WORLD": "dronestock_uwb",
+      "PX4_GZ_WORLDS": "/home/dronestock/github/PX4-Autopilot/Tools/simulation/gz/worlds",
+      "PX4_SIM_MODEL": "gz_dronestock_x500"
+    },
+    "1017": {
+      "GZ_SIM_SYSTEM_PLUGIN_PATH": ":/home/dronestock/github/PX4-Autopilot/build/px4_sitl_default/src/modules/simulation/gz_plugins",
+      "GZ_SIM_SERVER_CONFIG_PATH": "/home/dronestock/github/PX4-Autopilot/src/modules/simulation/gz_bridge/server.config",
+      "PX4_GZ_MODELS": "/home/dronestock/github/PX4-Autopilot/Tools/simulation/gz/models",
+      "GZ_SIM_RESOURCE_PATH": ":/home/dronestock/github/PX4-Autopilot/Tools/simulation/gz/models:/home/dronestock/github/PX4-Autopilot/Tools/simulation/gz/worlds",
+      "PX4_SYS_AUTOSTART": "4016",
+      "PX4_GZ_SERVER_CONFIG": "/home/dronestock/github/PX4-Autopilot/src/modules/simulation/gz_bridge/server.config",
+      "PX4_GZ_MODEL_POSE": "2.09,1.68,0.24,0,0,0",
+      "PX4_GZ_PLUGINS": "/home/dronestock/github/PX4-Autopilot/build/px4_sitl_default/src/modules/simulation/gz_plugins",
+      "PX4_GZ_WORLD": "dronestock_uwb",
+      "PX4_GZ_WORLDS": "/home/dronestock/github/PX4-Autopilot/Tools/simulation/gz/worlds",
+      "PX4_SIM_MODEL": "gz_dronestock_x500"
+    },
+    "px4_head_sha": "c4e4ef98e9d75063bf3d53ebb2716221ee7505ae",
+    "gazebo_pkgconfig_version": "8.15.0"
+  },
+  "memory_and_dependencies": {
+    "proc/loadavg": "11.74 13.84 12.58 1/314 2680\n",
+    "proc/meminfo": "MemTotal:       16334448 kB\nMemFree:           96976 kB\nMemAvailable:          0 kB\nBuffers:            3208 kB\nCached:            51292 kB\nSwapCached:         1072 kB\nActive:           765448 kB\nInactive:       15097252 kB\nActive(anon):     763160 kB\nInactive(anon): 15062872 kB\nActive(file):       2288 kB\nInactive(file):    34380 kB\nUnevictable:           0 kB\nMlocked:               0 kB\nSwapTotal:       4194304 kB\nSwapFree:              0 kB\nDirty:                 0 kB\nWriteback:             0 kB\nAnonPages:      15807576 kB\nMapped:            25652 kB\nShmem:             17392 kB\nKReclaimable:      20016 kB\nSlab:              95612 kB\nSReclaimable:      20016 kB\nSUnreclaim:        75596 kB\nKernelStack:        5088 kB\nPageTables:        50052 kB\nSecPageTables:         0 kB\nNFS_Unstable:          0 kB\nBounce:                0 kB\nWritebackTmp:          0 kB\nCommitLimit:    12361528 kB\nCommitted_AS:    3951828 kB\nVmallocTotal:   34359738367 kB\nVmallocUsed:       33724 kB\nVmallocChunk:          0 kB\nPercpu:             3296 kB\nHardwareCorrupted:     0 kB\nAnonHugePages:         0 kB\nShmemHugePages:        0 kB\nShmemPmdMapped:        0 kB\nFileHugePages:         0 kB\nFilePmdMapped:      2048 kB\nUnaccepted:            0 kB\nBalloon:               0 kB\nHugePages_Total:       0\nHugePages_Free:        0\nHugePages_Rsvd:        0\nHugePages_Surp:        0\nHugepagesize:       2048 kB\nHugetlb:               0 kB\nDirectMap4k:       56320 kB\nDirectMap2M:     9336832 kB\nDirectMap1G:    16777216 kB\n",
+    "proc/pressure/memory": "some avg10=24.72 avg60=24.20 avg300=24.62 total=2082892882\nfull avg10=24.61 avg60=24.00 avg300=24.43 total=2061393293\n",
+    "proc/pressure/io": "some avg10=80.64 avg60=83.22 avg300=83.70 total=7176007223\nfull avg10=79.66 avg60=82.00 avg300=82.36 total=7047483302\n",
+    "proc/819/net/udp": "   sl  local_address rem_address   st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode ref pointer drops            \n 1109: 00000000:37C8 00000000:0000 07 00000000:00000000 00:00000000 00000000  1000        0 5913 2 ffff8df153f3b9c0 0          \n 1409: 00000000:38F4 00000000:0000 07 00000000:00000000 00:00000000 00000000  1000        0 5912 2 ffff8df153f38540 0          \n 3266: 3500007F:0035 00000000:0000 07 00000000:00000000 00:00000000 00000000   101        0 7421 2 ffff8df020522a00 0          \n 3266: FEFFFF0A:0035 00000000:0000 07 00000000:00000000 00:00000000 00000000     0        0 7177 2 ffff8df020526e40 0          \n 3536: 0100007F:0143 00000000:0000 07 00000000:00000000 00:00000000 00000000     0        0 1733 2 ffff8df001f1de80 0          \n 5338: 00000000:284D 00000000:0000 07 00000000:00000000 00:00000000 00000000  1000        0 3800 2 ffff8df0aace5400 578        \n 5338: 00000000:284D 00000000:0000 07 00000000:00000000 00:00000000 00000000  1000        0 4702 2 ffff8df02e419a40 1836       \n 5338: 00000000:284D 00000000:0000 07 00000000:00000000 00:00000000 00000000  1000        0 8557 2 ffff8df001f1af40 165        \n 5339: 00000000:284E 00000000:0000 07 00000000:00000000 00:00000000 00000000  1000        0 3805 2 ffff8df0aace0a80 3966       \n 5339: 00000000:284E 00000000:0000 07 00000000:00000000 00:00000000 00000000  1000        0 4707 2 ffff8df02e41e900 7626       \n 5339: 00000000:284E 00000000:0000 07 00000000:00000000 00:00000000 00000000  1000        0 8562 2 ffff8df001f1f8c0 2438       \n 5399: 00000000:488A 00000000:0000 07 00000000:00000000 00:00000000 00000000  1000        0 4783 2 ffff8df02e419f80 0          \n 7720: 0100007F:919B 0100007F:22B8 01 00000000:00000000 00:00000000 00000000  1000        0 9531 2 ffff8df18ffeee40 0          \n 8051: 00000000:32E6 00000000:0000 07 00000000:00000000 00:00000000 00000000  1000        0 10310 2 ffff8df008ddc440 0         \n",
+    "proc/819/cmdline": "./build/px4_sitl_default/bin/px4 ",
+    "proc/1016/cmdline": "gz sim --verbose=1 -r -s /home/dronestock/github/PX4-Autopilot/Tools/simulation/gz/worlds/dronestock_uwb.sdf               ",
+    "proc/1017/cmdline": "gz sim -g               ",
+    "home/dronestock/github/PX4-Autopilot/.git/HEAD": "ref: refs/heads/main\n",
+    "venv_modules": [
+      "fastcrc",
+      "fastcrc-0.5.0.dist-info",
+      "lxml",
+      "lxml-6.1.3.dist-info",
+      "numpy",
+      "numpy-2.2.6.dist-info",
+      "numpy.libs",
+      "pymavlink",
+      "pymavlink-2.4.49.dist-info"
+    ],
+    "system_gazebo_modules": [
+      "common5.cpython-310-x86_64-linux-gnu.so",
+      "math7.cpython-310-x86_64-linux-gnu.so",
+      "msgs10",
+      "sim8.cpython-310-x86_64-linux-gnu.so",
+      "transport13"
+    ],
+    "proc_evidence_source": "Windows local Python via WSL fileshare; no Linux process launch"
+  },
+  "deployment": {
+    "run_id": "windows_resume_20261002_140858",
+    "created_at_kst": "2026-10-02T14:09:15.449197+09:00",
+    "wsl_directory": "/home/dronestock/uwb_sim/windows_resume_20261002_140858/uwb-gazebo-equipment",
+    "windows_directory": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\dronestock\\uwb_sim\\windows_resume_20261002_140858\\uwb-gazebo-equipment",
+    "original_directory": "/home/dronestock/uwb_sim/uwb-gazebo-equipment",
+    "preserved_trial_sha256": "38ab27fac63c8e333e8bc094f7e47ca76b1248f2bdf1f7107a97aac561e2f557",
+    "copied_trial_sha256": "38ab27fac63c8e333e8bc094f7e47ca76b1248f2bdf1f7107a97aac561e2f557",
+    "package_sha256": {
+      "uwb_gazebo_equipment_20260927.zip": "faf4fdc44a659f6733d9d3c314f76638c43097860d8f7b23adbfb312ed0de8ba",
+      "uwb_gazebo_fault_evaluation_v2_20261002.zip": "2b5dc76d5a3127491f04437ac0630bb886a6c93a9de899ec44a91669122663ee"
+    },
+    "updated_files_hash_verified": 54,
+    "installed_sdf": {
+      "worlds/dronestock_uwb.sdf": {
+        "installed_sha256": "b44110bd592b6efe7f5d4f0b28b4cd893643c2165e8d1338656655dee00c7c87",
+        "generated_sha256": "b44110bd592b6efe7f5d4f0b28b4cd893643c2165e8d1338656655dee00c7c87",
+        "matches": true
+      },
+      "models/dronestock_x500/model.sdf": {
+        "installed_sha256": "218e59bb8a262ae60cef8a0478a72427626286ca21eed03674e5b9bd2498bb24",
+        "generated_sha256": "218e59bb8a262ae60cef8a0478a72427626286ca21eed03674e5b9bd2498bb24",
+        "matches": true
+      }
+    },
+    "anchors_xyz_m": [
+      [
+        0.0,
+        0.0,
+        2.2
+      ],
+      [
+        5.8102027071690925,
+        -0.43032700908323007,
+        2.2
+      ],
+      [
+        0.0,
+        4.63,
+        2.2
+      ],
+      [
+        6.110227024200994,
+        4.357349538815547,
+        2.2
+      ]
+    ],
+    "seed": 7,
+    "original_b_window_s": 0.8,
+    "runtime_import_verified": false,
+    "live_sensor_capture_verified": false,
+    "flight_verified": false,
+    "reason_pending": "WSL launch timeout; live simulation processes preserved"
+  },
+  "failed_command_evidence": {
+    "name": "wsl_inventory_01",
+    "target": "wsl",
+    "started_at_kst": "2026-10-02T14:03:32.854240+09:00",
+    "script": "C:\\Users\\A\\Documents\\Codex\\2026-10-02\\windows-1-wsl-list-verbose-2\\work\\wsl_inventory.py",
+    "transport_arguments": [
+      "wsl.exe",
+      "-d",
+      "Ubuntu-22.04",
+      "-u",
+      "dronestock",
+      "--cd",
+      "/",
+      "--",
+      "/usr/bin/python3",
+      "-u"
+    ],
+    "returncode": 4294967295,
+    "stdout": "연결된 구성원으로부터 응답이 없어 연결하지 못했거나, 호스트로부터 응답이 없어 연결이 끊어졌습니다. \r\n오류 코드: Wsl/Service/0x8007274c\r\n",
+    "stderr": "",
+    "timed_out": false,
+    "elapsed_s": 31.164
+  },
+  "simulation_restarted": false,
+  "first_live_capture_performed": false,
+  "uwb_7cm_verified": false,
+  "ekf_fusion_verified": false,
+  "navigation_verified": false,
+  "evidence_files_sha256": {
+    "stage_wsl_runtime_01.json": "f1dc9ee049e96617fabdb48191243438359f509f269e124f592660b29bee9e5c",
+    "stage_wsl_runtime_02.json": "0b4ec8e98dec8dd15fea2ffd6533418d41d8b07b5af30ecfb5d6c3cf57b1bcac",
+    "wsl_alternative_access_01.json": "e0d541529d32a2240bb170837e6ae0b4a84bbe99aacd863106ebd47306e8d0da",
+    "wsl_fileshare_probe_01.json": "fd5a990f21d90179a1c83fdefd248287e60d003a8436421d6709791cb9367d5c",
+    "wsl_inventory_01.json": "18e1bb0778e5a730570bed50fe5e1440ac60e5651cf535346b109ce9dc1ab918",
+    "wsl_proc_dependencies_01.json": "072b1a5176b8293e43d602ed96c0290c819459a9ff7b6a5e2d07dfbe51192dee",
+    "wsl_startup_environment_01.json": "0537fd9a8b3feccd150aecf0765ac5e2d4cb55abd9033bcc76283fc733b3badb"
+  }
+}

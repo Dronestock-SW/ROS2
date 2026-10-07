@@ -1,0 +1,12 @@
+{
+  "date": "2026-10-04",
+  "local_markdown_links_checked": 503,
+  "missing_active_links": [],
+  "relocation_paths_and_recorded_final_hashes_checked": 130,
+  "direct_module_aliases_checked": 55,
+  "implementation_python_files_checked": 166,
+  "noncanonical_implementation_imports": [],
+  "git_diff_check_returncode": 0,
+  "historical_report_contents_not_rewritten": true,
+  "generated_directories_not_manually_edited": true
+}

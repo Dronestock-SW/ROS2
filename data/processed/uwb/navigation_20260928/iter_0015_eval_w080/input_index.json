@@ -1,0 +1,13 @@
+{
+  "input_path": "data/raw/uwb/gazebo_dynamic_path_eval_20260928_v1/poses.jsonl",
+  "input_sha256": "815de03fe0aa93a121f2b4aa48989149fa2d3ca4a8a0d49ac6273fe5b6d25962",
+  "config_path": "data/processed/uwb/navigation_20260928/plans/iter_0015_eval_w080_config.json",
+  "config_sha256": "b15a97b2f066c35c51b08fa4480d8110405a90a13527468cf8ce83367457f31e",
+  "plan_path": "data/processed/uwb/navigation_20260928/plans/iter_0015_eval_w080.json",
+  "plan_sha256": "60d693cf04ff6e969e4ad1a37f07f63867ee40d04ffb460e87bb97b32fec4d72",
+  "raw_path": null,
+  "raw_sha256": null,
+  "truth_path": null,
+  "truth_sha256": null,
+  "parent_path": null
+}

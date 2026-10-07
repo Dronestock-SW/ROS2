@@ -1,0 +1,263 @@
+{
+  "date": "2026-10-04",
+  "timezone": "Asia/Seoul",
+  "starting_commit": "ab555baeed911d5e9e91ba7b5d2668fd832c2e08",
+  "feature_commits": [
+    {
+      "sha": "db867891f1f2e4cff160644424dfd2511a03806c",
+      "title": "Phase 0/UWB-SITL-OBS: 시계·좌표 계약과 PX4 관측 연결 추가"
+    },
+    {
+      "sha": "cda33002e7f5cc79a1b0da79482139c6a05390bf",
+      "title": "Phase 0/UWB-GZ-SENSORS: ToF·IMU 높이와 실시간 UWB 비교 연결"
+    },
+    {
+      "sha": "6d164cbf6ff424ccdb96ba2efa1daa24106cf15f",
+      "title": "Phase 0/SITL-TARGET: 수평 목표 전송과 PX4 도착 판정 연결"
+    },
+    {
+      "sha": "27477296a1418d5c11ec0a9f2f58e0dcf0cbe9be",
+      "title": "Phase 0/SITL-FAULT-EVAL: 거리 이상 주입과 독립 비행·복구 평가 추가"
+    },
+    {
+      "sha": "777cb108010da3a0312aa2057afa59a4bad32028",
+      "title": "Phase 0/UWB-NAV-RECORDS: 모델 비교 시행과 원본·진행 근거 보존"
+    },
+    {
+      "sha": "79d0498dd7266072bd652cac0eb728ae65946e6e",
+      "title": "Phase 0/UWB-WSL-RECORDS: Windows 재개·재시작 기록과 원본 보존"
+    },
+    {
+      "sha": "37f7b231afc93e73ffb197729d7e3aa45a9d81fd",
+      "title": "Phase 0/REPO-LAYOUT: 구현·설정·문서 경로 분리와 호환성 보존"
+    },
+    {
+      "sha": "f5edf38fc2e4a8e57d2cfcf8f9483d9c2febc1df",
+      "title": "Phase 0/UWB-ANCHORS: 6.3×4.6m 직사각형 기본 배치 반영"
+    },
+    {
+      "sha": "87a0c50b10550b552784fa1e6b70dc681a4dd8f1",
+      "title": "Phase 0/DEMO-TOF: 가상 고도 제거와 실측 ToF 표시 연결"
+    }
+  ],
+  "pytest": [
+    {
+      "package": "drone_uwb",
+      "command": [
+        "/usr/bin/python3",
+        "-m",
+        "pytest",
+        "-q",
+        "-r",
+        "a",
+        "-p",
+        "no:cacheprovider",
+        "src/drone_uwb/test"
+      ],
+      "returncode": 0,
+      "seconds": 44.58,
+      "log": "/tmp/ros2_commit_audit_20261004/pytest_drone_uwb.log"
+    },
+    {
+      "package": "drone_demo",
+      "command": [
+        "/usr/bin/python3",
+        "-m",
+        "pytest",
+        "-q",
+        "-r",
+        "a",
+        "-p",
+        "no:cacheprovider",
+        "src/drone_demo/test"
+      ],
+      "returncode": 0,
+      "seconds": 10.06,
+      "log": "/tmp/ros2_commit_audit_20261004/pytest_drone_demo.log"
+    },
+    {
+      "package": "drone_platform_link",
+      "command": [
+        "/usr/bin/python3",
+        "-m",
+        "pytest",
+        "-q",
+        "-r",
+        "a",
+        "-p",
+        "no:cacheprovider",
+        "src/drone_platform_link/test"
+      ],
+      "returncode": 0,
+      "seconds": 4.05,
+      "log": "/tmp/ros2_commit_audit_20261004/pytest_drone_platform_link.log"
+    },
+    {
+      "package": "drone_bringup",
+      "cwd": "/home/pgyxn/github/ROS2/src/drone_bringup",
+      "command": [
+        "/usr/bin/python3",
+        "-m",
+        "pytest",
+        "-q",
+        "-r",
+        "a",
+        "-p",
+        "no:cacheprovider",
+        "test"
+      ],
+      "returncode": 1,
+      "seconds": 2.69
+    }
+  ],
+  "test_totals": {
+    "passed": 422,
+    "failed": 2,
+    "skipped": 1
+  },
+  "test_environment": {
+    "ros": "humble",
+    "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "dependencies": {
+      "pymavlink": "2.4.50",
+      "websockets": "13.1"
+    },
+    "dependency_install_path": "/tmp/ros2_commit_audit_20261004/deps"
+  },
+  "build": {
+    "command": [
+      "colcon",
+      "build",
+      "--symlink-install"
+    ],
+    "returncode": 0,
+    "seconds": 12.83
+  },
+  "installed": {
+    "alias_module_objects_identical": 55,
+    "installed_config_files_identical": 41,
+    "configs": [
+      "anchors/anchors_20260906.json",
+      "anchors/anchors_20261004.json",
+      "anchors_20260906.json",
+      "baseline_a_reference_20260921.json",
+      "baseline_a_simulation_20260921.json",
+      "baseline_a_static_20260906.json",
+      "c_flight_inputs_20260927.json",
+      "gazebo/gazebo_equipment.json",
+      "gazebo/gazebo_sensor_height_profile.json",
+      "gazebo/gazebo_shadow.json",
+      "gazebo/scenarios/gazebo_dynamic_path_20260928.json",
+      "gazebo/scenarios/gazebo_dynamic_path_eval_20260928.json",
+      "gazebo/scenarios/gazebo_fault_bias_01.json",
+      "gazebo/scenarios/gazebo_fault_drop_01.json",
+      "gazebo_dynamic_path_20260928.json",
+      "gazebo_dynamic_path_eval_20260928.json",
+      "gazebo_equipment.json",
+      "gazebo_fault_bias_01.json",
+      "gazebo_fault_drop_01.json",
+      "gazebo_sensor_height_profile.json",
+      "gazebo_shadow.json",
+      "gazebo_sitl_observer.json",
+      "gazebo_sitl_odometry.json",
+      "gazebo_sitl_target.json",
+      "h80_b_static_20260906.json",
+      "mavros_uwb.yaml",
+      "pipeline/preimu_pipeline.json",
+      "preimu_pipeline.json",
+      "replay/baseline_a_reference_20260921.json",
+      "replay/baseline_a_simulation_20260921.json",
+      "replay/baseline_a_static_20260906.json",
+      "replay/c_flight_inputs_20260927.json",
+      "replay/h80_b_static_20260906.json",
+      "replay/subsets_cd_static_20260906.json",
+      "runtime/mavros_uwb.yaml",
+      "runtime/uwb.yaml",
+      "sitl/gazebo_sitl_observer.json",
+      "sitl/gazebo_sitl_odometry.json",
+      "sitl/gazebo_sitl_target.json",
+      "subsets_cd_static_20260906.json",
+      "uwb.yaml"
+    ],
+    "cli_help": [
+      {
+        "module": "drone_uwb.processing.experiments.gazebo_trial",
+        "returncode": 0,
+        "help_sha256": "33c42893e11b102c63e3d7b1a482987d729855499aee13f883eaa3883222c60d"
+      },
+      {
+        "module": "drone_uwb.integration.gazebo.gazebo_ranges",
+        "returncode": 0,
+        "help_sha256": "e0b2898e931b490cf5cb90164601e18b740c87780000f439d4d43f5cdef4b689"
+      },
+      {
+        "module": "drone_uwb.integration.gazebo.gazebo_live_shadow",
+        "returncode": 0,
+        "help_sha256": "28ab837d926281f7f8f2682a6173b35d245ff32edc36b921d6ba64a0177fc07e"
+      },
+      {
+        "module": "drone_demo.sitl_navigation",
+        "returncode": 0,
+        "help_sha256": "bde98b5f495d36011ed52ef758ad2e5d7e824d034ac1d77fefc7100536f24341"
+      },
+      {
+        "module": "drone_demo.flight_evaluation",
+        "returncode": 0,
+        "help_sha256": "914b035d9a1dbcfb62d96cbe55d03b5b5acdc0f035944709b88a60a487edaca2"
+      },
+      {
+        "module": "drone_uwb.integration.sitl.sitl_link_probe",
+        "returncode": 0,
+        "help_sha256": "c82ea193cd02fd1b9907819e44406302aee12dd939b11c09d6bef272f4689c0f"
+      },
+      {
+        "module": "drone_uwb.integration.sitl.sitl_clock_probe",
+        "returncode": 0,
+        "help_sha256": "da15d0b2e5df75c64542e7ac8a63b8b4f0e6c86f9102651ce3b9b2cc6148d1bd"
+      }
+    ],
+    "cwd_for_cli": "/tmp",
+    "live_device_or_flight_test": false
+  },
+  "preservation": {
+    "initial_files_checked": 1043,
+    "unchanged_initial_contents": 1041,
+    "expected_documentation_changes": [
+      "docs/README.md",
+      "docs/report/uwb_baseline_a_20260926.md"
+    ],
+    "submodule_preserved": true,
+    "broken_symlinks": []
+  },
+  "links": {
+    "markdown_files_checked": 154,
+    "local_links_checked": 963,
+    "missing": [],
+    "scan_scope": "repository Markdown; generated build/install/log, pytest cache, vendor submodule excluded"
+  },
+  "existing_lint_failures": {
+    "changed_since_starting_commit": false,
+    "flake8": {
+      "E128": 3,
+      "E501": 1
+    },
+    "pydocstyle": {
+      "D213": 8
+    },
+    "copyright_skip": "existing missing copyright header"
+  },
+  "not_performed": [
+    "per-intermediate-commit pytest rerun",
+    "new Windows/WSL deployment",
+    "real sensor UART capture",
+    "new live Gazebo/PX4 fusion or flight",
+    "independent survey and dynamic 7cm acceptance"
+  ],
+  "push_targets": [
+    "feature_uwb",
+    "main"
+  ],
+  "main_integration": "fast-forward",
+  "whitespace_check_config": "blank-at-eol,space-before-tab,cr-at-eol,-blank-at-eof"
+}

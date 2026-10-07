@@ -1,0 +1,81 @@
+{
+  "files": {
+    "calibration_raw": {
+      "path": "docs/report/evidence/uwb_static_20260906_161636/received.jsonl",
+      "sha256": "823ed62d07d7408e841f4de7c07b67854aa0d18d650c47509fd565aadfdc2bc2"
+    },
+    "calibration_metadata": {
+      "path": "docs/report/evidence/uwb_static_20260906_161636/metadata.json",
+      "sha256": "c2d2b77d5e6fc8c046d0c7a6af5c6446216a6653e399ceed5d942b14b2829ebe"
+    },
+    "calibration_frame_confirmation": {
+      "path": "docs/report/evidence/uwb_static_20260906_161636/manual_checks.json",
+      "sha256": "5a25fe227b7c1872f49e2ac2a3801c7adfd863313d5c2975b5fdfd7b1b08b6e8"
+    },
+    "evaluation_raw": {
+      "path": "docs/report/evidence/uwb_static_20260906_170938/received.jsonl",
+      "sha256": "5ee6df9ce510bb98a781a6548997aa7f3403506a5f0a67a981cada61051ff466"
+    },
+    "evaluation_metadata": {
+      "path": "docs/report/evidence/uwb_static_20260906_170938/metadata.json",
+      "sha256": "3d57ee908977ab6fe9e1b1b25d494443864db2501070d79b4458cd733eb732d2"
+    },
+    "evaluation_manual_checks": {
+      "path": "docs/report/evidence/uwb_static_20260906_170938/manual_checks.json",
+      "sha256": "403a98f43348a7ad92479113aeca48f739a89b0266f938e894e74168e02b88f9"
+    },
+    "excursion_annotation": {
+      "path": "docs/report/evidence/uwb_static_20260906_170938/range_excursions.json",
+      "sha256": "ad66c24443dc1568017b9394e62d366e047805e8c541fd9cf1129d060cd648ce"
+    },
+    "anchors": {
+      "path": "src/drone_uwb/config/anchors_20260906.json",
+      "sha256": "0ec5124ceba41e686d8eeb5ce2df391cb6dbef258dd4861697d889bd18a58e92"
+    }
+  },
+  "code_sha256": {
+    "__init__.py": "bce381df9833e7d090082cd0b4b8c0589b6e79e7e666e959824aaf43d6a93d18",
+    "bench_probe.py": "66f4ec8f3759fb2c137245774631bb574793cfedf2a4fd6b6a390a1f5c29bcb5",
+    "bridge.py": "693cefc389a8d736f7bd25cc8b98e83e5a5318b15fc8f9dba39dcb73df571380",
+    "core.py": "56caacfdd44c4f21a13aa1d344b0eb588f49bf692a73f29c8764539828556ebe",
+    "frames.py": "7c8e4db3f7002b1eeca3eea6609774e81d2d90cf252b4790aebbe5b111fbddc7",
+    "node.py": "0781d413b548aaf45e73a085d95bbfa6bc29f80048000246423595faebac1086",
+    "preimu/__init__.py": "a537059b25fb0c44e5fb0480c31c0f0914e9526f31f602acf6ecae16551d1a6e",
+    "preimu/clock.py": "160a3a2b01c47ca7055f57d39d66b43686df14febdf7cb61def980c75901b04c",
+    "preimu/experiments/__init__.py": "87ecfc8ec9f28fac31a259e70ad582f887a1f9cc85176894846f16cc082e6dea",
+    "preimu/experiments/baseline_a.py": "d8949eb791b2d5ac171c1ce6453f72ce269e752d49bc05737d6cd973d8a2fb68",
+    "preimu/experiments/static_a.py": "8b286c35cfb2f350ce31cac513949ccf5b96e16c226567f9893d3aab10658337",
+    "preimu/experiments/uniform_xy.py": "4985f00206f845bc3e3cf6183b9de263fc6d93634eba9eebb1eb87e45cb1b04b",
+    "preimu/h80.py": "af2863a56e4e38d3416623b9042c726c3685afd517b3d4cef304fc1c54b9281d",
+    "preimu/height.py": "8da35b238e6ae3c3392326836e00431d30632ec0772ee7b730a30da1690987d7",
+    "preimu/inputs.py": "8bafc26fd37105b553b990ff56d7f4ac7a6751552fa4a8ae85586958240965a0",
+    "preimu/pipeline.py": "9bc72166bbeea5174589725bbe132e466183608487b3d8bbb5d2bfb9718e8c87",
+    "preimu/qs10.py": "ee7e666f031bd6ec591d0d100197d551a8e7eb2a574c84d2adb88106f6f00c54",
+    "preimu/ranges.py": "c8b3a85fa3408868c6d5bceee247749e04afda5da5746b18b9a953144d095052",
+    "preimu/rawxy.py": "b676423f44e827a7eebf5085badc6f8203d83b3ccdbbc7e973eaf33beb20024b",
+    "preimu/runner.py": "c44e056cd8c7b7e2d6700e86de0ed51dd5c9ffea4be36f78f238fc7a5e1cfbb6",
+    "preimu/sensors.py": "dbeb2c12628e56716c52ce6a4a73b0050dfbc084eee7a15628ee9aff3a8b85d6",
+    "preimu/settings.py": "bd5fb0409879249e7f3e38ef7f3342c1d2848b12ede431f121534784cf8e036b",
+    "preimu/simulator.py": "b33d4f37b135226a0f1c0144a2a235a88568aa8b26926d5dd31cc7bd48871e2b",
+    "preimu/transform.py": "aafc6331881da03e822592f39739fd1e55eb7be86c30b8c34bf3283e31b014fa",
+    "replay.py": "91e6bb74a97ec088b673d7a967c4b261326852fc82d4f2bd1684740ef3b58595",
+    "serial_io.py": "bb6350ab4d65deff1b56fd8c7940079c5e831af17bab9f2b34bb9e28f2e75eda"
+  },
+  "output_sha256": {
+    "anchors.json": "2d4d9d79d4a3fd772018e53d46659201041a76022c727b55c2506dd39b188407",
+    "calibration.json": "460d94899a6ac93f1a59f0342208362006c5ad9bcbdaa9b9c3d4eba3b11b3305",
+    "calibration_raw.jsonl": "823ed62d07d7408e841f4de7c07b67854aa0d18d650c47509fd565aadfdc2bc2",
+    "config.json": "3e648399bf126a992fd6837e71ae7e5db269adc4ef7c17ce6be507a8c5d49ef8",
+    "evaluation_raw.jsonl": "5ee6df9ce510bb98a781a6548997aa7f3403506a5f0a67a981cada61051ff466",
+    "positions.csv": "903ffe2b7717861484baf557498132cc0e8b8293d79585e17e15e1fee6a95774",
+    "results.jsonl": "7e2e2bada6e2cf24cc513af5b1b39945e283732bb3afe1975c3daef40a460189",
+    "summary.json": "bf18e0ac7d1c00520475952ae49be72df12941ff8326cef317e08185b1ce1a82"
+  },
+  "runtime": {
+    "python": "3.10.12",
+    "numpy": "1.21.5"
+  },
+  "status_policy": "whole_session_metadata_check_before_offline_replay",
+  "data_origin": "stored_serial_capture",
+  "device_output": false
+}

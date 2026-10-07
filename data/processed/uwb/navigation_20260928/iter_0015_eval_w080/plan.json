@@ -1,0 +1,64 @@
+{
+  "run_id": "iter_0015_eval_w080",
+  "parent_run_id": null,
+  "dataset_split": "evaluation",
+  "hypothesis": "Reproduce B 0.8s baseline on a held-out path and seed.",
+  "change": {
+    "kind": "new_dataset",
+    "dataset": "held_out_path_seed23"
+  },
+  "criteria": {
+    "target_m": 0.07,
+    "min_coverage": 0.99
+  },
+  "scenario_intervals": [
+    {
+      "name": "start_hold",
+      "start_s": 0,
+      "end_s": 1
+    },
+    {
+      "name": "east",
+      "start_s": 1,
+      "end_s": 2.5
+    },
+    {
+      "name": "east_hold",
+      "start_s": 2.5,
+      "end_s": 3.5
+    },
+    {
+      "name": "west",
+      "start_s": 3.5,
+      "end_s": 5
+    },
+    {
+      "name": "middle_hold",
+      "start_s": 5,
+      "end_s": 6
+    },
+    {
+      "name": "north",
+      "start_s": 6,
+      "end_s": 8
+    },
+    {
+      "name": "south",
+      "start_s": 8,
+      "end_s": 10
+    },
+    {
+      "name": "diagonal",
+      "start_s": 10.5,
+      "end_s": 12.5
+    },
+    {
+      "name": "end_hold",
+      "start_s": 12.5,
+      "end_s": 14
+    }
+  ],
+  "source_limit": "Held-out synthetic path only; exact simulator pose height; no Gazebo runtime, ToF, latency or PX4 flight",
+  "input_sha256": "815de03fe0aa93a121f2b4aa48989149fa2d3ca4a8a0d49ac6273fe5b6d25962",
+  "config_sha256": "b15a97b2f066c35c51b08fa4480d8110405a90a13527468cf8ce83367457f31e"
+}

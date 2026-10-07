@@ -1,0 +1,17 @@
+{
+  "README.md": "112237a16107963140e05d20338cc09156f085b3b257aab7550fbd586e79b95d",
+  "capture.log": "d796cc1fb60ea23171eec76f721f9bb3e082924e1ceed9abd23e6aed23cd56c5",
+  "capture_window.json": "b7cfeebdda568e0e599eaee8d2dc830d17c1ed2c6de740d7683859753f9676fa",
+  "console.raw": "f76f105c442fd24d964e341a7bf23a09eaf97c632fa155c9bfbe6cc14a3178d0",
+  "imu0_accel.csv": "9f862f0dc4b097d9b943adf37e5896ef3fb2ffc2ff252d822385b8aa6c80793b",
+  "imu0_gyro.csv": "7fe22b194beb9397665d8fb7658dc214aac1c8cf092324c882ccc92012603ed5",
+  "imu0_raw.csv": "14e8427a36a099de809e8ca4bceeb47477d933c852098114fff2cfaf48dd8bd4",
+  "imu1_accel.csv": "21b954abefc952db5b90c3b8291a98064a39bf0ac2e83074bfc8ee1685e10808",
+  "imu1_gyro.csv": "cb6eaca57ec0faeab335bbc2256cdad1b3dd120b2b04f32ed75ac95264b19820",
+  "imu1_raw.csv": "65e3cc3a9aa38acb1febe6ead7c0886e2107cee291533df259e86c3c4224e590",
+  "imu_comparison.png": "2a1811453776a196ba3e98357dc301ccd5d2c711eccb2ec245b3f3844e29c12b",
+  "mavlink_rx.bin": "0535ed23d974d9a2685784cb6daecf38934623a8de35aa859be958530039e240",
+  "queries.jsonl": "e6551c506ea8600264c396fcf35822743e79cfcb8cfbdb4abaa3628005968aa3",
+  "summary.json": "1d4cf074c9868f44d7b5dec6e6b914675c970568660fd0e861813bccb0b13d8b",
+  "tool_sources.json": "eb977f73d158d214c7c26f14c5e39d368ff42efc92d693ad65125f49454b068f"
+}

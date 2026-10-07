@@ -1,0 +1,8 @@
+{
+  "capture": "a123_P1_r1_20261005_185944",
+  "include_in_stationary_accuracy": false,
+  "count_as_completed_repeat": false,
+  "classification": "placement_preparation",
+  "reason": "사용자가 첫 기록 도중 위치 준비가 이제 완료되었다고 알리고 다시 측정하도록 요청했다. 원시 기록은 보존하고 정지 정확도 평가에서 제외한다.",
+  "replacement_capture": "a123_P1_r1_20261005_190339"
+}

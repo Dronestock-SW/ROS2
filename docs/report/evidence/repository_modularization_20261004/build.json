@@ -1,0 +1,14 @@
+{
+  "command": "source /opt/ros/humble/setup.bash\ncolcon build --symlink-install",
+  "cwd": "/home/pgyxn/github/ROS2",
+  "returncode": 0,
+  "packages": [
+    "drone_uwb",
+    "drone_bringup",
+    "drone_platform_link",
+    "ydlidar_ros2_driver",
+    "drone_demo"
+  ],
+  "summary": "5 packages finished [2min 10s]",
+  "generated_outputs": "Only build tool writes build/install/log. No manual edits."
+}

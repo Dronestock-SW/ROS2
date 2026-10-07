@@ -1,0 +1,50 @@
+{
+  "schema_version": "uwb_experiment_v1",
+  "model": "A",
+  "source": "simulation",
+  "input_sha256": "9a07f42e128db8088ed4b0d2f7315c7159d6ef4154c4904176e56d19acfce796",
+  "config_hash": "1918103525e0d802881004f34dc60f29db3b25fafa6e94cb208d7915b5585802",
+  "event_count": 1202,
+  "cycle_count": 400,
+  "reasons": {
+    "status_recorded": 1,
+    "sensor_recorded": 800,
+    "clock_unsynced": 29,
+    "ok": 371,
+    "no_new_range": 1
+  },
+  "cycle_reasons": {
+    "clock_unsynced": 29,
+    "ok": 371
+  },
+  "positions": 371,
+  "cycle_coverage": 0.9275,
+  "mean_xy_m": [
+    0.7005024517967045,
+    1.8002917479003897
+  ],
+  "position_error": {
+    "reference_source": "known_stationary_simulator_fixture",
+    "samples": 371,
+    "median_m": 0.004472417024701437,
+    "p95_m": 0.009091251268882418,
+    "max_m": 0.014747588975801803,
+    "rmse_m": 0.00526525921732204
+  },
+  "external_output_allowed": false,
+  "flight_valid": false,
+  "scope": "A_file_replay_only",
+  "reference": {
+    "source": "simulation",
+    "dataset_id": "uwb_simulation_20260921_seed7",
+    "frame_id": "uwb_map",
+    "input_sha256": "9a07f42e128db8088ed4b0d2f7315c7159d6ef4154c4904176e56d19acfce796",
+    "reference_point": "uwb_antenna",
+    "method": "known_stationary_simulator_fixture",
+    "xy_m": [
+      0.7,
+      1.8
+    ],
+    "note": "Used only after solving, for error evaluation. Source: preimu/simulator.py."
+  }
+}

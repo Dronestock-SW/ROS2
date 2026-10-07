@@ -1,0 +1,64 @@
+{
+  "demo": true,
+  "scenario": "stationary",
+  "config": {
+    "scenario": "stationary",
+    "fixed_z_m": 1.2,
+    "start_xy_m": [
+      2.09,
+      1.68
+    ],
+    "target_xy_m": [
+      3.09,
+      2.68
+    ],
+    "rate_hz": 40.0,
+    "duration_s": 12.0,
+    "start_hold_s": 2.0,
+    "speed_m_s": 0.25,
+    "range_noise_stddev_m": 0.02,
+    "gap_start_s": 4.0,
+    "gap_duration_s": 1.0,
+    "seed": 7
+  },
+  "mission_config": {
+    "frame_id": "uwb_map",
+    "approach_enter_m": 0.5,
+    "approach_exit_m": 0.6,
+    "arrival_enter_m": 0.15,
+    "arrival_exit_m": 0.2,
+    "arrival_speed_m_s": 0.1,
+    "settle_s": 1.0,
+    "pose_timeout_s": 0.2,
+    "uwb_timeout_s": 0.25,
+    "recovery_s": 0.5,
+    "recovery_samples": 3
+  },
+  "layout_id": "warehouse-irregular-z2p2-20260906",
+  "sample_count": 480,
+  "transitions": [
+    {
+      "time_s": 0.0,
+      "state": "WAITING_DATA",
+      "reason": "inputs_missing"
+    },
+    {
+      "time_s": 0.725,
+      "state": "RECOVERING",
+      "reason": "waiting_continuous_fresh_inputs"
+    },
+    {
+      "time_s": 1.225,
+      "state": "SETTLING",
+      "reason": "waiting_settle_time"
+    },
+    {
+      "time_s": 2.225,
+      "state": "ARRIVED",
+      "reason": "arrival_conditions_met"
+    }
+  ],
+  "final_state": "ARRIVED",
+  "final_arrival_valid": true,
+  "limits": "Demo state assessment only; no flight actions or EKF validation."
+}

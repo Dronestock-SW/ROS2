@@ -1,0 +1,113 @@
+{
+  "files": {
+    "calibration_raw": {
+      "path": "data/raw/uwb/uwb_static_20260906_161636/received.jsonl",
+      "sha256": "823ed62d07d7408e841f4de7c07b67854aa0d18d650c47509fd565aadfdc2bc2"
+    },
+    "evaluation_raw": {
+      "path": "data/raw/uwb/uwb_static_20260906_170938/received.jsonl",
+      "sha256": "5ee6df9ce510bb98a781a6548997aa7f3403506a5f0a67a981cada61051ff466"
+    },
+    "evaluation_metadata": {
+      "path": "data/raw/uwb/uwb_static_20260906_170938/metadata.json",
+      "sha256": "3d57ee908977ab6fe9e1b1b25d494443864db2501070d79b4458cd733eb732d2"
+    },
+    "excursion_annotation": {
+      "path": "data/processed/uwb/uwb_static_20260906_170938/range_excursions.json",
+      "sha256": "ad66c24443dc1568017b9394e62d366e047805e8c541fd9cf1129d060cd648ce"
+    },
+    "anchors": {
+      "path": "src/drone_uwb/config/anchors_20260906.json",
+      "sha256": "0ec5124ceba41e686d8eeb5ce2df391cb6dbef258dd4861697d889bd18a58e92"
+    },
+    "locked_calibration": {
+      "path": "docs/report/evidence/baseline_a_static_20260926/calibration.json",
+      "sha256": "460d94899a6ac93f1a59f0342208362006c5ad9bcbdaa9b9c3d4eba3b11b3305"
+    }
+  },
+  "config_sha256": "29846f1c4496f43771a5af89904efaa70b2453b8e19801429957cce74b900cfe",
+  "code_sha256": {
+    "__init__.py": "bce381df9833e7d090082cd0b4b8c0589b6e79e7e666e959824aaf43d6a93d18",
+    "acquisition/__init__.py": "7e29bacdf11ae854b094698129df22f131fb0c632d256932efaaec46bed23edc",
+    "acquisition/framing.py": "afe6c4ea74c1595875bc95cd85e07a166ea7eef3bc60d0a9acad667b4233903a",
+    "acquisition/serial_io.py": "bb6350ab4d65deff1b56fd8c7940079c5e831af17bab9f2b34bb9e28f2e75eda",
+    "acquisition/validation.py": "7e3ab4c61cab11c593a8571418eac9a1b58f786e9f9b573ddcfeb624839be1b9",
+    "bench_probe.py": "326d9981e3f2d8a07ee8031f04d4f21151dfd783dbb8658af31f03def6908dbf",
+    "bridge.py": "dccc70e8ba20eaaccf5f33e6c2295f9ce0d83bef02a6820049188644cf46f37a",
+    "contracts/__init__.py": "b2ff0a358a82069672394a9de711499050fa6466a5ac6397c01b2d57f2914813",
+    "contracts/protocol.py": "67e0d29c8db9638fb373b21ae04217848c1443e1d9a5b2f3b91d197cf85c783f",
+    "core.py": "de7441319899634b34ac071a03318371bf8d154f8b48c6a38ea1ccd7c416b8f7",
+    "frames.py": "3c7833dc9c8d335e20f719a81d3213f37203f7ffe826ba65c592f66f53fde9d6",
+    "integration/__init__.py": "a45fefc988f24761ce02e032ccfffe3b14e609d8aff3eeaba9be78428123aaee",
+    "integration/bench_probe.py": "66f4ec8f3759fb2c137245774631bb574793cfedf2a4fd6b6a390a1f5c29bcb5",
+    "integration/bridge.py": "17f8913b3748455a8a6b00b60028b2d64e10fcb4904417af09cf6b0cb89ffc14",
+    "integration/frames.py": "7c8e4db3f7002b1eeca3eea6609774e81d2d90cf252b4790aebbe5b111fbddc7",
+    "integration/node.py": "3cd816ba8f984d7eacef4818a9397e366526024f0f9ce01e95b623b44200486b",
+    "integration/recording.py": "b1356f2b719144924acf9d7ca89dbc89e4d3638453d2a362a279b24d33c2c503",
+    "integration/replay.py": "3970ad56524905c15eca7ab5a86be8f914458b867d3b3d29ce408f56987f2a4f",
+    "node.py": "3df7a63693a9bdd9c9cd6894bd9b516e1db013371112c0f3fbd8367a76f99f13",
+    "preimu/__init__.py": "a537059b25fb0c44e5fb0480c31c0f0914e9526f31f602acf6ecae16551d1a6e",
+    "preimu/clock.py": "64be0451eb7e875e6d8a95e7992303a8a1e457383e9affa61608f4b0169fee41",
+    "preimu/experiments/__init__.py": "87ecfc8ec9f28fac31a259e70ad582f887a1f9cc85176894846f16cc082e6dea",
+    "preimu/experiments/baseline_a.py": "9da3bf1801332bd68e8ceb76b76ceb12a1d5501e33999378251fb3e3d6d6d425",
+    "preimu/experiments/static_a.py": "1f2bfb8030f622fb2884fd2a038fc1ac732620666126790d07cc70e89974b5a4",
+    "preimu/experiments/uniform_xy.py": "5658301e158ff1131c8a3ea52643c9746da288213a5a548a9cd94c3633a7ff50",
+    "preimu/h80.py": "4a53cfae90f44806757c2dffaa602f6b906d2dcc08fab4fb198cf8b7bc9b55cb",
+    "preimu/height.py": "f8a65b1af001238090838b51e7b1fb745a11e1914a34e592045c09eade0704a8",
+    "preimu/inputs.py": "4d22efbe2885da6eef64ded4fae8544ff5b7adf08d1e89431baff65e08d8c79f",
+    "preimu/pipeline.py": "401d9c29a40b83780d9c75f327ce83273ca51a3e4a8693314ca25593d8acd36b",
+    "preimu/qs10.py": "984c74cdef5f36ff1338896d105b676836a99116e7c0cdf918faf01edc3bbb14",
+    "preimu/ranges.py": "f2f38c05c67e9326fa238724ce684a729e4396d2f76a8fac1e457ef18ff46a3d",
+    "preimu/rawxy.py": "5707751c5a5acf627144aac694b9e4aba7af093b6242de063d0f74f8c7a2bb11",
+    "preimu/runner.py": "00006e5d03f227f920dcd6305a41695663513b2d9851f38811747b5a78465b5b",
+    "preimu/sensors.py": "7f17645fec041de7c03cf17c8d625ce17b59dc77f0d7d503940c28a7523408ea",
+    "preimu/settings.py": "bbc1ad3375eecc6856e6fb400f14f9b9429f86695bfc9f3bb8f7ec4db8f9004f",
+    "preimu/simulator.py": "2998754838c5484f055f03b6ca740f2710bfa643499aac4f7cb41d56ac87b573",
+    "preimu/transform.py": "fd2991b9e08dd8aae3a77a5e790fdf564cd6be798d47bd12a7ce75764dbb90e6",
+    "processing/__init__.py": "6ef687d88141874e203acc86933d1e42620d0506be59f83c9a302e46c9b89b3e",
+    "processing/clock.py": "160a3a2b01c47ca7055f57d39d66b43686df14febdf7cb61def980c75901b04c",
+    "processing/experiments/__init__.py": "5f2974aa74ca93bbc33431cfc6562c424312b6ae6c02cbce423f4da683d98f49",
+    "processing/experiments/baseline_a.py": "feae8c7f1abd8807d05fb701a7e08e1c54fb89b2b48d29ee5c043b2311c1c1e2",
+    "processing/experiments/h80_b.py": "44ec5e86dd10f061a668bcf630fa3b0bdfb97470e99a2d5319679b9bd217675d",
+    "processing/experiments/static_a.py": "1378f3b5ffbf9fb94c87006f74182c85911b72788adb1ef5adda803e2b8d597d",
+    "processing/experiments/uniform_xy.py": "4985f00206f845bc3e3cf6183b9de263fc6d93634eba9eebb1eb87e45cb1b04b",
+    "processing/h80.py": "6661d7747d3323ca195b083d6aabb2468622110ce4df3225a4e37c886ebd055d",
+    "processing/height.py": "de78369c6c9ce828990314b8f4b05af69092e174124fa11ded3baef75826eb57",
+    "processing/observations.py": "feb66f50d4cd9454d506af2131160d99887b3223e5883c0aaf9c3c03707770b2",
+    "processing/pipeline.py": "3837bd7d1dcb4e61d7cc6b239655234c8dee2532824b34461901e1ed1fa23822",
+    "processing/qs10.py": "70eef199824a5ba97f5c4c48e2d135df797f720463a60d208b58cbd4b7a3b3cb",
+    "processing/ranges.py": "242950aa78d6bbcee97a65e82e27d49a9b5ee474293a59f19df10fc93066b0a4",
+    "processing/rawxy.py": "ce6d623131265df5ddd67cd369d16588eff8787bb7855f0ad846f254dc9facbd",
+    "processing/runner.py": "179e0ef64b7cf37b765ca0284604e03afd4cb07053a62721df2e454ed171d9d2",
+    "processing/sensors.py": "5966d8cd2b74f4f8093717c33ba19f75c820c926e9988b726a54cce199a7a183",
+    "processing/settings.py": "bd5fb0409879249e7f3e38ef7f3342c1d2848b12ede431f121534784cf8e036b",
+    "processing/simulator.py": "b33d4f37b135226a0f1c0144a2a235a88568aa8b26926d5dd31cc7bd48871e2b",
+    "processing/transform.py": "aafc6331881da03e822592f39739fd1e55eb7be86c30b8c34bf3283e31b014fa",
+    "replay.py": "0b81d62fd1a753763424e69686eb6d7596bc3d67c5d40ff0b19306d2f1f22d10",
+    "serial_io.py": "9360558ea54e27fd257c959cddc59f7d6c8ca4ad39d393f668af820a26e61d6c"
+  },
+  "output_sha256": {
+    "anchors.json": "2d4d9d79d4a3fd772018e53d46659201041a76022c727b55c2506dd39b188407",
+    "calibration.json": "460d94899a6ac93f1a59f0342208362006c5ad9bcbdaa9b9c3d4eba3b11b3305",
+    "config.json": "29846f1c4496f43771a5af89904efaa70b2453b8e19801429957cce74b900cfe",
+    "positions.csv": "c7107c415dbb88b6db51a77953c1eff0c7ee290c7ba5bdb15eb506012eab1eb3",
+    "results.jsonl": "9978fb2f8a634fb02b8636f8a9352fc56e9421627fd3da18047e56909dc17604",
+    "summary.json": "c789e1af9afb9747a211d844dd2785d4061329c37717559edfca2f975e2338ad",
+    "timing_summary.json": "3853cf7ce943fbba07e313166c8030258cf8cb11fae84f64c0524e8e91b429c2",
+    "timings.jsonl": "8738d4e557f3e226232309d53ffe4b355a96ecc2154b7d51804e490dcfb2d640"
+  },
+  "runtime": {
+    "python": "3.10.12",
+    "numpy": "1.21.5",
+    "machine": "aarch64"
+  },
+  "status_policy": "whole_session_metadata_preflight; sequential_cycles_and_boot_resets",
+  "evaluation_clock": "cycle_end_us; plot uses host receive elapsed time",
+  "source_timestamp_kind": "Report_read_time_not_hardware_range_time",
+  "deterministic_files": [
+    "results.jsonl",
+    "summary.json",
+    "positions.csv"
+  ],
+  "device_output": false
+}

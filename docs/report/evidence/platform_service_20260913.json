@@ -1,0 +1,93 @@
+{
+  "checked_at_utc": "2026-09-13T07:07:54.145197+00:00",
+  "unit": {
+    "MainPID": "30731",
+    "NRestarts": "1",
+    "ActiveState": "active",
+    "SubState": "running",
+    "UnitFileState": "enabled"
+  },
+  "linger": "Linger=yes",
+  "status_before": {
+    "updated_at_unix": 1789283264.4333377,
+    "started_at_unix": 1789283219.3566587,
+    "mode": "communication_only",
+    "flight_control_enabled": false,
+    "server": "http://203.247.41.82:8001",
+    "drone_id": "5",
+    "http_ok": true,
+    "http_successes": 90,
+    "http_failures": 0,
+    "http_last_error": null,
+    "mission_received_at_unix": 1789283264.0901592,
+    "mission_age_ms": 343,
+    "websocket_connected": true,
+    "websocket_connections": 1,
+    "websocket_messages_sent": 443,
+    "websocket_messages_received": 0,
+    "websocket_last_sent_at_unix": 1789283264.4228625,
+    "websocket_last_error": null
+  },
+  "status_after": {
+    "updated_at_unix": 1789283269.4359367,
+    "started_at_unix": 1789283219.3566587,
+    "mode": "communication_only",
+    "flight_control_enabled": false,
+    "server": "http://203.247.41.82:8001",
+    "drone_id": "5",
+    "http_ok": true,
+    "http_successes": 100,
+    "http_failures": 0,
+    "http_last_error": null,
+    "mission_received_at_unix": 1789283269.1452525,
+    "mission_age_ms": 291,
+    "websocket_connected": true,
+    "websocket_connections": 1,
+    "websocket_messages_sent": 492,
+    "websocket_messages_received": 0,
+    "websocket_last_sent_at_unix": 1789283269.417026,
+    "websocket_last_error": null
+  },
+  "automatic_restart_check": {
+    "before": {
+      "MainPID": "30586",
+      "NRestarts": "0",
+      "ActiveState": "active",
+      "UnitFileState": "enabled"
+    },
+    "after": {
+      "MainPID": "30731",
+      "NRestarts": "1",
+      "ActiveState": "active",
+      "UnitFileState": "enabled"
+    },
+    "status_after_restart": {
+      "updated_at_unix": 1789283224.3765416,
+      "started_at_unix": 1789283219.3566587,
+      "mode": "communication_only",
+      "flight_control_enabled": false,
+      "server": "http://203.247.41.82:8001",
+      "drone_id": "5",
+      "http_ok": true,
+      "http_successes": 10,
+      "http_failures": 0,
+      "http_last_error": null,
+      "mission_received_at_unix": 1789283223.9740493,
+      "mission_age_ms": 402,
+      "websocket_connected": true,
+      "websocket_connections": 1,
+      "websocket_messages_sent": 50,
+      "websocket_messages_received": 0,
+      "websocket_last_sent_at_unix": 1789283224.3763483,
+      "websocket_last_error": null
+    }
+  },
+  "deployed_runtime_sha256": "459cf17e57e2757d2520ba2e8d3b841d7db610ebdc7be1a5bc82ff68b9ce2000",
+  "tests": "8 passed: mock HTTP/WS, reconnect, unsigned/signed GET, invalid contract, stale reception, unknown sensors, no command execution",
+  "build": "colcon build --symlink-install --packages-select drone_platform_link: 1 package finished; source install/setup.bash completed",
+  "limits": [
+    "No physical reboot test",
+    "No sensor or flight interface",
+    "No browser rendering or server DB verification"
+  ]
+}

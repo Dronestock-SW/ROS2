@@ -1,0 +1,158 @@
+{
+  "research_date_kst": "2026-09-13",
+  "scope": "Read-only research of source, saved PX4 output and installed message contracts; documentation edits only.",
+  "hardware_observation_date": "2026-09-11",
+  "live_hardware_checked_this_research": false,
+  "sitl_executed_this_research": false,
+  "flight_commands_sent": false,
+  "px4_release_from_saved_ver_all": "1.16.0",
+  "px4_commit_from_saved_ver_all": "6ea3539157ca358c70a515878b77077af7d4611d",
+  "mavros_installed_version": "2.14.0",
+  "source_files": [
+    {
+      "file": "px4_position_control.cpp",
+      "url": "https://raw.githubusercontent.com/PX4/PX4-Autopilot/6ea3539157ca358c70a515878b77077af7d4611d/src/modules/mc_pos_control/PositionControl/PositionControl.cpp",
+      "bytes": 10557,
+      "sha256": "6c2eb1132c41b9cb8c87a1def69278327d45117553e88b2ece6944f3d5e96f08"
+    },
+    {
+      "file": "px4_mc_pos_control.cpp",
+      "url": "https://raw.githubusercontent.com/PX4/PX4-Autopilot/6ea3539157ca358c70a515878b77077af7d4611d/src/modules/mc_pos_control/MulticopterPositionControl.cpp",
+      "bytes": 30922,
+      "sha256": "307ba6adba91819f052806eac8497d65775b94d956901caafcc500f203ba18cb"
+    },
+    {
+      "file": "px4_mavlink_receiver.cpp",
+      "url": "https://raw.githubusercontent.com/PX4/PX4-Autopilot/6ea3539157ca358c70a515878b77077af7d4611d/src/modules/mavlink/mavlink_receiver.cpp",
+      "bytes": 120451,
+      "sha256": "cc65819a0400fb208cf9cdfd4b07c8b3d8bf138b1a63d66ac8aaeae1fa63edde"
+    },
+    {
+      "file": "px4_offboard_check.cpp",
+      "url": "https://raw.githubusercontent.com/PX4/PX4-Autopilot/6ea3539157ca358c70a515878b77077af7d4611d/src/modules/commander/HealthAndArmingChecks/checks/offboardCheck.cpp",
+      "bytes": 3105,
+      "sha256": "36890c99b6fb9185fa153c6738112108d9bc8398ac6a9138de7e7ad78db53c7d"
+    },
+    {
+      "file": "px4_failsafe.cpp",
+      "url": "https://raw.githubusercontent.com/PX4/PX4-Autopilot/6ea3539157ca358c70a515878b77077af7d4611d/src/modules/commander/failsafe/failsafe.cpp",
+      "bytes": 25714,
+      "sha256": "a4e4fc05a125e1877875d683854f40a92033b9c7e33e537c30692bf8ec425e3d"
+    },
+    {
+      "file": "px4_position_params.c",
+      "url": "https://raw.githubusercontent.com/PX4/PX4-Autopilot/6ea3539157ca358c70a515878b77077af7d4611d/src/modules/mc_pos_control/multicopter_position_control_params.c",
+      "bytes": 3994,
+      "sha256": "31912781966c324cc9f54a2aeee24175647da2ed8e9b3087b5bcba660cf9fcf6"
+    },
+    {
+      "file": "mavros_setpoint_raw.cpp",
+      "url": "https://raw.githubusercontent.com/mavlink/mavros/2.14.0/mavros/src/plugins/setpoint_raw.cpp",
+      "bytes": 11980,
+      "sha256": "c91a53fb32dd089ad7c2579b71fc24b1b79af2a1b9a86b68a8e3997343b3c848"
+    },
+    {
+      "file": "mavros_local_position.cpp",
+      "url": "https://raw.githubusercontent.com/mavlink/mavros/2.14.0/mavros/src/plugins/local_position.cpp",
+      "bytes": 11251,
+      "sha256": "4be2b4a203505cc3d4d572c7b51cc1fe4839e693bc710c131be25e4a2f2dae28"
+    },
+    {
+      "file": "mavros_odometry.cpp",
+      "url": "https://raw.githubusercontent.com/mavlink/mavros/2.14.0/mavros_extras/src/plugins/odom.cpp",
+      "bytes": 12841,
+      "sha256": "c2d1d78285355875064991b8a725d1b6abda4decae6e21d09e5339840a4b07fe"
+    },
+    {
+      "file": "px4_local_position.msg",
+      "url": "https://raw.githubusercontent.com/PX4/PX4-Autopilot/6ea3539157ca358c70a515878b77077af7d4611d/msg/versioned/VehicleLocalPosition.msg",
+      "bytes": 4797,
+      "sha256": "5bf55da4743f1d9c6d69a56473ee6a813d573890c051d6ab442dc01f18433fdd"
+    },
+    {
+      "file": "px4_manual_accel.cpp",
+      "url": "https://raw.githubusercontent.com/PX4/PX4-Autopilot/6ea3539157ca358c70a515878b77077af7d4611d/src/modules/flight_mode_manager/tasks/ManualAcceleration/FlightTaskManualAcceleration.cpp",
+      "bytes": 4559,
+      "sha256": "8238e3587e053a918362e6dfe2ab01eb4e4645f0eefeb56905e366469d68ee49"
+    },
+    {
+      "file": "px4_estimator_status_stream.hpp",
+      "url": "https://raw.githubusercontent.com/PX4/PX4-Autopilot/6ea3539157ca358c70a515878b77077af7d4611d/src/modules/mavlink/streams/ESTIMATOR_STATUS.hpp",
+      "bytes": 3936,
+      "sha256": "a1309c95708896fed0b68bd4593c817c04319eb7203e0d84459e857a3a77e860"
+    },
+    {
+      "file": "mavros_sys_status.cpp",
+      "url": "https://raw.githubusercontent.com/mavlink/mavros/2.14.0/mavros/src/plugins/sys_status.cpp",
+      "bytes": 51267,
+      "sha256": "5ca0986706a7856fab7acce11cb39c390c330d724fb784d9755a4824e814b9d9"
+    },
+    {
+      "file": "px4_estimator_status.msg",
+      "url": "https://raw.githubusercontent.com/PX4/PX4-Autopilot/6ea3539157ca358c70a515878b77077af7d4611d/msg/EstimatorStatus.msg",
+      "bytes": 9036,
+      "sha256": "51effe58d60bc01a1ade594efd636ae9e7f04dbee87103c8f31ff5d873e389d0"
+    },
+    {
+      "file": "px4_estimator_checks.cpp",
+      "url": "https://raw.githubusercontent.com/PX4/PX4-Autopilot/6ea3539157ca358c70a515878b77077af7d4611d/src/modules/commander/HealthAndArmingChecks/checks/estimatorCheck.cpp",
+      "bytes": 32045,
+      "sha256": "c4860b7467c13f2105554a70e807f9f25027be995fff1afe46030a0f63c36142"
+    }
+  ],
+  "local_evidence": [
+    {
+      "file": "src/drone_demo/config/demo.json",
+      "bytes": 283,
+      "sha256": "bb4545a6bf5e3801dc7212e9ad52e0ec788d24de633964af9c77f62bc6ec7d52"
+    },
+    {
+      "file": "src/drone_demo/drone_demo/core.py",
+      "bytes": 7905,
+      "sha256": "b58c4ff2438c6049be114ee73b672af64796d6f1552e8a8646a7c5d0edbe8964"
+    },
+    {
+      "file": "src/drone_demo/drone_demo/node.py",
+      "bytes": 5474,
+      "sha256": "bca9ce06b14c0db1ed687311f024baf8af7df9b1e4cc77285f889f2e0a3e69ea"
+    },
+    {
+      "file": "src/drone_uwb/config/uwb.yaml",
+      "bytes": 811,
+      "sha256": "dc7eefe090d2ae1e75dc90db9dc90e89e703aaf86ae7204d28dd962463b70438"
+    },
+    {
+      "file": "docs/report/evidence/px4_survey_20260911_retry/console.txt",
+      "bytes": 26859,
+      "sha256": "7549784203baff32d408d1ab1599eeba3ecbcb30128ba9c1046637f4186a549c"
+    },
+    {
+      "file": "/opt/ros/humble/share/mavros/package.xml",
+      "bytes": 3167,
+      "sha256": "01f890f994f561c85dcd9fb590644a36de48a6ef7bfc39f9cef6ca5bd06eca96"
+    },
+    {
+      "file": "/opt/ros/humble/share/mavros_msgs/package.xml",
+      "bytes": 1534,
+      "sha256": "c8547cf40deeb4f2c6087562ac38ed9c12f576fb1f046d888d8ffeefffc08e48"
+    },
+    {
+      "file": "/opt/ros/humble/share/mavros_msgs/msg/PositionTarget.msg",
+      "bytes": 850,
+      "sha256": "05a9720dd0e57e8f1a4fa2b09e05a6d10530a04e7637743783a861c533e7b781"
+    },
+    {
+      "file": "/opt/ros/humble/share/mavros_msgs/msg/EstimatorStatus.msg",
+      "bytes": 507,
+      "sha256": "66a6a59623be0c4d6d7dfbef9aa763f8f3ae08c28366f02d82f479c16e82e528"
+    }
+  ],
+  "official_documentation": [
+    "https://docs.px4.io/v1.16/en/flight_modes/offboard",
+    "https://docs.px4.io/v1.16/en/flight_stack/controller_diagrams",
+    "https://docs.px4.io/v1.16/en/config_mc/mc_trajectory_tuning",
+    "https://docs.px4.io/v1.16/en/computer_vision/collision_prevention",
+    "https://docs.px4.io/v1.16/en/config/safety",
+    "https://docs.px4.io/v1.16/en/sim_gazebo_gz/"
+  ]
+}

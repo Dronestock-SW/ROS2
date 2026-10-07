@@ -1,0 +1,14 @@
+{
+  "layout_id": "warehouse-rectangle-6p3x4p6-z2p2-20261004",
+  "coordinate_frame": "uwb_map",
+  "units": "m",
+  "source": "User fixed rectangular XY layout on 2026-10-04: A1-A2/A3-A4=6.3m, A1-A3/A2-A4=4.6m; existing Z=2.2m retained.",
+  "independently_verified": false,
+  "anchor_order": ["A1", "A2", "A3", "A4"],
+  "anchors_xyz_m": [
+    [0.0, 0.0, 2.2],
+    [6.3, 0.0, 2.2],
+    [0.0, 4.6, 2.2],
+    [6.3, 4.6, 2.2]
+  ]
+}

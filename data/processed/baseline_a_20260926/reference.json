@@ -1,0 +1,13 @@
+{
+  "source": "simulation",
+  "dataset_id": "uwb_simulation_20260921_seed7",
+  "frame_id": "uwb_map",
+  "input_sha256": "9a07f42e128db8088ed4b0d2f7315c7159d6ef4154c4904176e56d19acfce796",
+  "reference_point": "uwb_antenna",
+  "method": "known_stationary_simulator_fixture",
+  "xy_m": [
+    0.7,
+    1.8
+  ],
+  "note": "Used only after solving, for error evaluation. Source: preimu/simulator.py."
+}

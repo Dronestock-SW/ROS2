@@ -1,0 +1,10 @@
+Starting >>> drone_uwb
+[Processing: drone_uwb]
+Finished <<< drone_uwb [33.5s]
+Starting >>> drone_demo
+[Processing: drone_demo]
+[Processing: drone_demo]
+[Processing: drone_demo]
+Finished <<< drone_demo [1min 30s]
+
+Summary: 2 packages finished [2min 7s]

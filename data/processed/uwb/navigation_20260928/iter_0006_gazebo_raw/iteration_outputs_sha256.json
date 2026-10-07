@@ -1,0 +1,15 @@
+{
+  "input_index.json": "70d5cc1ee89bc9d1f6513e73272f0a1267885b15809a1cb435f19c15d6b1904b",
+  "failures.jsonl": "611fd41ee58c847beed56a35f72b9aac70e68c3d6ea1acf24b3cba67388b3703",
+  "iteration.json": "3b8084146d42d156bb551bbc261c4fae87c65cbfdff0429d0336fac1dfa8ce02",
+  "comparison.md": "01ccff1b7fda0b1d2240f95c675b1eb547ab62effdacd400ed4d2c9cf9bb0b98",
+  "config.json": "38ab27fac63c8e333e8bc094f7e47ca76b1248f2bdf1f7107a97aac561e2f557",
+  "poses.jsonl": "7dade4990a282a3f05dde1292bb38baefc0b25e45e58f39103a4570633c04b9a",
+  "summary.json": "75d2f9d75911f84bc291559e6a3773d7075e293c3a53bd38b12da17b80bd55be",
+  "raw_ranges.jsonl": "d54c40bcc0d352a53c68c69b37c17d4662d2236ddbef6e99a879ca349f4158db",
+  "results.jsonl": "c483b6e806e5dd839da186b43ddf35e84ad7a2043833ba4b57aeae0b50a64c5e",
+  "scenario_metrics.csv": "cc6138216faabd8e2dc8c003b1805d917c779d9c8862ec718f83ab29de1ec36d",
+  "truth.jsonl": "557c629ade3f3143862c0528d6c5720a582542555475403195db9d31799f7bc4",
+  "plan.json": "d18096dc98c21b04789985b487629fe89de3b4702a3fc83ddae90383b1ef1cf3",
+  "manifest.json": "950aed6fe9b260d187774ba511f6f2809a35c1ce28a9bc7f92216539a5263452"
+}

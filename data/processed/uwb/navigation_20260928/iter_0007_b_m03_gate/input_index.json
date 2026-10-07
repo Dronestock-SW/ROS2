@@ -1,0 +1,13 @@
+{
+  "input_path": "data/raw/uwb/gazebo_capture_20260928_01/poses.jsonl",
+  "input_sha256": "7dade4990a282a3f05dde1292bb38baefc0b25e45e58f39103a4570633c04b9a",
+  "config_path": "data/processed/uwb/navigation_20260928/plans/iter_0007_b_m03_gate_config.json",
+  "config_sha256": "9254b866f450298dba38bb17b2a00165ddae13f90bec2d5a0fd7ace076a64bd8",
+  "plan_path": "data/processed/uwb/navigation_20260928/plans/iter_0007_b_m03_gate.json",
+  "plan_sha256": "9b3dc49efe1b2d711a68bfce92477fd343da88f4603eb1c644f6b16fcf43a157",
+  "raw_path": "data/raw/uwb/gazebo_capture_20260928_01/raw_ranges.jsonl",
+  "raw_sha256": "d54c40bcc0d352a53c68c69b37c17d4662d2236ddbef6e99a879ca349f4158db",
+  "truth_path": "data/raw/uwb/gazebo_capture_20260928_01/truth.jsonl",
+  "truth_sha256": "557c629ade3f3143862c0528d6c5720a582542555475403195db9d31799f7bc4",
+  "parent_path": "data/processed/uwb/navigation_20260928/iter_0006_gazebo_raw"
+}

@@ -1,0 +1,373 @@
+{
+  "purpose": "2026-10-04 stage-directory modularization validation; file replay and local tests only",
+  "source_root": "/home/pgyxn/github/ROS2",
+  "baseline_directory": "/tmp/ros2_modularization_baseline",
+  "after_directory": "/tmp/ros2_modularization_after",
+  "pytest": {
+    "environment": {
+      "PYTHONPATH": "/home/pgyxn/github/ROS2/src/drone_uwb:/home/pgyxn/github/ROS2/src/drone_demo:/home/pgyxn/github/ROS2/src/drone_platform_link:/home/pgyxn/github/ROS2/src/drone_bringup",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1"
+    },
+    "results": {
+      "drone_uwb": {
+        "before_passed": 275,
+        "after_passed": 285,
+        "before_skipped_modules": 1,
+        "after_skipped_modules": 1,
+        "new_failures": 0,
+        "skip_reason": "pymavlink missing"
+      },
+      "drone_demo": {
+        "before_passed": 89,
+        "after_passed": 89,
+        "before_skipped_modules": 2,
+        "after_skipped_modules": 2,
+        "new_failures": 0,
+        "skip_reason": "pymavlink missing"
+      },
+      "drone_bringup": {
+        "before_passed": 9,
+        "after_passed": 9,
+        "before_failed": 2,
+        "after_failed": 2,
+        "before_skipped": 1,
+        "after_skipped": 1,
+        "new_failures": 0,
+        "existing_failure_details": {
+          "flake8": [
+            "test/test_position_hold_audit.py:52 E128",
+            "tools/analyze_position_hold.py:100 E128",
+            "tools/analyze_position_hold.py:103 E128",
+            "tools/analyze_position_hold.py:139 E501"
+          ],
+          "pep257": "8 D213 errors in existing QR nodes, launch files and audit tool"
+        },
+        "skip_reason": "generated copyright test explicitly skipped"
+      },
+      "drone_platform_link": {
+        "before_collection_errors": 1,
+        "after_collection_errors": 1,
+        "new_failures": 0,
+        "existing_reason": "websockets missing"
+      }
+    },
+    "total_before_passed": 373,
+    "total_after_passed": 383,
+    "new_failures": 0,
+    "existing_bringup_diagnostics_equal": true,
+    "existing_bringup_diagnostics": [
+      "./drone_bringup/qr_decoder_node.py:1 at module level: D213: Multi-line docstring summary should start at the second line",
+      "./drone_bringup/qr_decoder_node.py:117 in private method `_decode`: D213: Multi-line docstring summary should start at the second line",
+      "./drone_bringup/qr_fallback_node.py:1 at module level: D213: Multi-line docstring summary should start at the second line",
+      "./drone_bringup/qr_parser_node.py:1 at module level: D213: Multi-line docstring summary should start at the second line",
+      "./drone_bringup/qr_reader_node.py:1 at module level: D213: Multi-line docstring summary should start at the second line",
+      "./launch/camera.launch.py:1 at module level: D213: Multi-line docstring summary should start at the second line",
+      "./launch/lidar.launch.py:1 at module level: D213: Multi-line docstring summary should start at the second line",
+      "./test/test_position_hold_audit.py:52:35: E128 continuation line under-indented for visual indent",
+      "./tools/analyze_position_hold.py:1 at module level: D213: Multi-line docstring summary should start at the second line",
+      "./tools/analyze_position_hold.py:100:44: E128 continuation line under-indented for visual indent",
+      "./tools/analyze_position_hold.py:103:37: E128 continuation line under-indented for visual indent",
+      "./tools/analyze_position_hold.py:139:100: E501 line too long (100 > 99 characters)"
+    ],
+    "commands": [
+      {
+        "label": "drone_uwb",
+        "command": "bash -c 'source /opt/ros/humble/setup.bash\npython3 -m pytest -q -p no:cacheprovider --basetemp /tmp/ros2_modularization_after/pytest_isolated_tmp_drone_uwb test'",
+        "cwd": "/home/pgyxn/github/ROS2/src/drone_uwb",
+        "returncode": 0,
+        "seconds": 46.509
+      },
+      {
+        "label": "drone_demo",
+        "command": "bash -c 'source /opt/ros/humble/setup.bash\npython3 -m pytest -q -p no:cacheprovider --basetemp /tmp/ros2_modularization_after/pytest_isolated_tmp_drone_demo test'",
+        "cwd": "/home/pgyxn/github/ROS2/src/drone_demo",
+        "returncode": 0,
+        "seconds": 6.438
+      },
+      {
+        "label": "drone_platform_link",
+        "command": "bash -c 'source /opt/ros/humble/setup.bash\npython3 -m pytest -q -p no:cacheprovider --basetemp /tmp/ros2_modularization_after/pytest_isolated_tmp_drone_platform_link test'",
+        "cwd": "/home/pgyxn/github/ROS2/src/drone_platform_link",
+        "returncode": 2,
+        "seconds": 1.167
+      },
+      {
+        "label": "drone_bringup",
+        "command": "bash -c 'source /opt/ros/humble/setup.bash\npython3 -m pytest -q -p no:cacheprovider --basetemp /tmp/ros2_modularization_after/pytest_isolated_tmp_drone_bringup test'",
+        "cwd": "/home/pgyxn/github/ROS2/src/drone_bringup",
+        "returncode": 1,
+        "seconds": 2.294
+      }
+    ]
+  },
+  "replay": {
+    "commands": [
+      {
+        "label": "pipeline_simulate",
+        "command": "python3 -m drone_uwb.processing.runner --simulate --duration 10 --seed 7 --config src/drone_uwb/config/preimu_pipeline.json --anchors src/drone_uwb/config/anchors_20260906.json --output /tmp/ros2_modularization_after/pipeline_simulate",
+        "cwd": "/home/pgyxn/github/ROS2",
+        "returncode": 0,
+        "seconds": 1.543
+      },
+      {
+        "label": "pipeline_replay",
+        "command": "python3 -m drone_uwb.processing.runner --input /tmp/ros2_modularization_after/pipeline_simulate/input.jsonl --config src/drone_uwb/config/preimu_pipeline.json --output /tmp/ros2_modularization_after/pipeline_replay",
+        "cwd": "/home/pgyxn/github/ROS2",
+        "returncode": 0,
+        "seconds": 1.875
+      },
+      {
+        "label": "static_a",
+        "command": "python3 -m drone_uwb.processing.experiments.static_a --config src/drone_uwb/config/baseline_a_static_20260906.json --root /home/pgyxn/github/ROS2 --output /tmp/ros2_modularization_after/static_a",
+        "cwd": "/home/pgyxn/github/ROS2",
+        "returncode": 0,
+        "seconds": 10.779
+      },
+      {
+        "label": "h80_b",
+        "command": "python3 -m drone_uwb.processing.experiments.h80_b --config src/drone_uwb/config/h80_b_static_20260906.json --root /home/pgyxn/github/ROS2 --output /tmp/ros2_modularization_after/h80_b",
+        "cwd": "/home/pgyxn/github/ROS2",
+        "returncode": 0,
+        "seconds": 14.122
+      }
+    ],
+    "comparisons": {
+      "pipeline_simulate": {
+        "files": [
+          {
+            "file": "diagnostics.jsonl",
+            "before_sha256": "eea210839626137cdb63d35bf1849632f619357c62b18e0f0f0cd6f75e61bcf0",
+            "after_sha256": "eea210839626137cdb63d35bf1849632f619357c62b18e0f0f0cd6f75e61bcf0",
+            "equal": true
+          },
+          {
+            "file": "input.jsonl",
+            "before_sha256": "9a07f42e128db8088ed4b0d2f7315c7159d6ef4154c4904176e56d19acfce796",
+            "after_sha256": "9a07f42e128db8088ed4b0d2f7315c7159d6ef4154c4904176e56d19acfce796",
+            "equal": true
+          },
+          {
+            "file": "summary.json",
+            "before_sha256": "2e513d2b1dbbae483c76a552672729945a40ce2cd00f102b5d377540bb51703f",
+            "after_sha256": "2e513d2b1dbbae483c76a552672729945a40ce2cd00f102b5d377540bb51703f",
+            "equal": true
+          }
+        ],
+        "all_equal": true
+      },
+      "pipeline_replay": {
+        "files": [
+          {
+            "file": "diagnostics.jsonl",
+            "before_sha256": "eea210839626137cdb63d35bf1849632f619357c62b18e0f0f0cd6f75e61bcf0",
+            "after_sha256": "eea210839626137cdb63d35bf1849632f619357c62b18e0f0f0cd6f75e61bcf0",
+            "equal": true
+          },
+          {
+            "file": "input.jsonl",
+            "before_sha256": "9a07f42e128db8088ed4b0d2f7315c7159d6ef4154c4904176e56d19acfce796",
+            "after_sha256": "9a07f42e128db8088ed4b0d2f7315c7159d6ef4154c4904176e56d19acfce796",
+            "equal": true
+          },
+          {
+            "file": "summary.json",
+            "before_sha256": "747a0bf7d083c747564b52c19fa0d38ccb8961043466c8f4c51a8c82cae91e08",
+            "after_sha256": "747a0bf7d083c747564b52c19fa0d38ccb8961043466c8f4c51a8c82cae91e08",
+            "equal": true
+          }
+        ],
+        "all_equal": true
+      },
+      "static_a": {
+        "files": [
+          {
+            "file": "anchors.json",
+            "before_sha256": "2d4d9d79d4a3fd772018e53d46659201041a76022c727b55c2506dd39b188407",
+            "after_sha256": "2d4d9d79d4a3fd772018e53d46659201041a76022c727b55c2506dd39b188407",
+            "equal": true
+          },
+          {
+            "file": "calibration.json",
+            "before_sha256": "460d94899a6ac93f1a59f0342208362006c5ad9bcbdaa9b9c3d4eba3b11b3305",
+            "after_sha256": "460d94899a6ac93f1a59f0342208362006c5ad9bcbdaa9b9c3d4eba3b11b3305",
+            "equal": true
+          },
+          {
+            "file": "calibration_raw.jsonl",
+            "before_sha256": "823ed62d07d7408e841f4de7c07b67854aa0d18d650c47509fd565aadfdc2bc2",
+            "after_sha256": "823ed62d07d7408e841f4de7c07b67854aa0d18d650c47509fd565aadfdc2bc2",
+            "equal": true
+          },
+          {
+            "file": "config.json",
+            "before_sha256": "607b7c5aea966ba86c9bbf32c51938f5465346e5083c24b52c1ca825ffaf8bde",
+            "after_sha256": "607b7c5aea966ba86c9bbf32c51938f5465346e5083c24b52c1ca825ffaf8bde",
+            "equal": true
+          },
+          {
+            "file": "evaluation_raw.jsonl",
+            "before_sha256": "5ee6df9ce510bb98a781a6548997aa7f3403506a5f0a67a981cada61051ff466",
+            "after_sha256": "5ee6df9ce510bb98a781a6548997aa7f3403506a5f0a67a981cada61051ff466",
+            "equal": true
+          },
+          {
+            "file": "positions.csv",
+            "before_sha256": "903ffe2b7717861484baf557498132cc0e8b8293d79585e17e15e1fee6a95774",
+            "after_sha256": "903ffe2b7717861484baf557498132cc0e8b8293d79585e17e15e1fee6a95774",
+            "equal": true
+          },
+          {
+            "file": "results.jsonl",
+            "before_sha256": "7e2e2bada6e2cf24cc513af5b1b39945e283732bb3afe1975c3daef40a460189",
+            "after_sha256": "7e2e2bada6e2cf24cc513af5b1b39945e283732bb3afe1975c3daef40a460189",
+            "equal": true
+          },
+          {
+            "file": "summary.json",
+            "before_sha256": "bf18e0ac7d1c00520475952ae49be72df12941ff8326cef317e08185b1ce1a82",
+            "after_sha256": "bf18e0ac7d1c00520475952ae49be72df12941ff8326cef317e08185b1ce1a82",
+            "equal": true
+          }
+        ],
+        "all_equal": true
+      },
+      "h80_b": {
+        "files": [
+          {
+            "file": "anchors.json",
+            "before_sha256": "2d4d9d79d4a3fd772018e53d46659201041a76022c727b55c2506dd39b188407",
+            "after_sha256": "2d4d9d79d4a3fd772018e53d46659201041a76022c727b55c2506dd39b188407",
+            "equal": true
+          },
+          {
+            "file": "calibration.json",
+            "before_sha256": "460d94899a6ac93f1a59f0342208362006c5ad9bcbdaa9b9c3d4eba3b11b3305",
+            "after_sha256": "460d94899a6ac93f1a59f0342208362006c5ad9bcbdaa9b9c3d4eba3b11b3305",
+            "equal": true
+          },
+          {
+            "file": "config.json",
+            "before_sha256": "29846f1c4496f43771a5af89904efaa70b2453b8e19801429957cce74b900cfe",
+            "after_sha256": "29846f1c4496f43771a5af89904efaa70b2453b8e19801429957cce74b900cfe",
+            "equal": true
+          },
+          {
+            "file": "positions.csv",
+            "before_sha256": "c7107c415dbb88b6db51a77953c1eff0c7ee290c7ba5bdb15eb506012eab1eb3",
+            "after_sha256": "c7107c415dbb88b6db51a77953c1eff0c7ee290c7ba5bdb15eb506012eab1eb3",
+            "equal": true
+          },
+          {
+            "file": "results.jsonl",
+            "before_sha256": "9978fb2f8a634fb02b8636f8a9352fc56e9421627fd3da18047e56909dc17604",
+            "after_sha256": "9978fb2f8a634fb02b8636f8a9352fc56e9421627fd3da18047e56909dc17604",
+            "equal": true
+          },
+          {
+            "file": "summary.json",
+            "before_sha256": "c789e1af9afb9747a211d844dd2785d4061329c37717559edfca2f975e2338ad",
+            "after_sha256": "c789e1af9afb9747a211d844dd2785d4061329c37717559edfca2f975e2338ad",
+            "equal": true
+          }
+        ],
+        "all_equal": true
+      }
+    },
+    "all_deterministic_files_equal": true,
+    "manifest_checks": {
+      "static_a": {
+        "code_file_count": 124,
+        "canonical_checks": {
+          "processing/solvers/range_solver.py": {
+            "present": true,
+            "hash_matches": true
+          },
+          "processing/solvers/h80.py": {
+            "present": true,
+            "hash_matches": true
+          },
+          "processing/geometry/height.py": {
+            "present": true,
+            "hash_matches": true
+          },
+          "processing/timing/clock.py": {
+            "present": true,
+            "hash_matches": true
+          },
+          "processing/experiments/static_a.py": {
+            "present": true,
+            "hash_matches": true
+          }
+        },
+        "all_canonical_present_and_match": true,
+        "output_checks": {
+          "anchors.json": true,
+          "calibration.json": true,
+          "calibration_raw.jsonl": true,
+          "config.json": true,
+          "evaluation_raw.jsonl": true,
+          "positions.csv": true,
+          "results.jsonl": true,
+          "summary.json": true
+        },
+        "all_recorded_code_hashes_match": true,
+        "code_hash_mismatches": []
+      },
+      "h80_b": {
+        "code_file_count": 124,
+        "canonical_checks": {
+          "processing/solvers/range_solver.py": {
+            "present": true,
+            "hash_matches": true
+          },
+          "processing/solvers/h80.py": {
+            "present": true,
+            "hash_matches": true
+          },
+          "processing/geometry/height.py": {
+            "present": true,
+            "hash_matches": true
+          },
+          "processing/timing/clock.py": {
+            "present": true,
+            "hash_matches": true
+          },
+          "processing/experiments/h80_b.py": {
+            "present": true,
+            "hash_matches": true
+          }
+        },
+        "all_canonical_present_and_match": true,
+        "output_checks": {
+          "anchors.json": true,
+          "calibration.json": true,
+          "config.json": true,
+          "positions.csv": true,
+          "results.jsonl": true,
+          "summary.json": true,
+          "timing_summary.json": true,
+          "timings.jsonl": true
+        },
+        "all_recorded_code_hashes_match": true,
+        "code_hash_mismatches": []
+      }
+    },
+    "excluded_files": [
+      "manifest.json",
+      "timing_summary.json",
+      "timings.jsonl"
+    ],
+    "exclude_reason": "Manifest includes moved implementation hashes; execution timing is non-deterministic.",
+    "comparison_file_count": 20
+  },
+  "limitations": [
+    "Three MAVLink test modules skipped because pymavlink is unavailable.",
+    "Platform test collection requires websockets==13.1, unavailable in this environment.",
+    "Existing bringup lint failures retained: E128 x3, E501 x1, D213 x8.",
+    "No actual hardware, serial, ROS topic, MAVLink peer, SITL, Gazebo or deployment execution performed.",
+    "Build/install verification is handled separately by parent agent."
+  ],
+  "repository_mutations_in_this_validation": "none",
+  "validation_policy": "One full pass per original local Python package; PYTHONDONTWRITEBYTECODE=1; pytest cache disabled; ROS launch-testing plugin autoload disabled consistently before/after."
+}

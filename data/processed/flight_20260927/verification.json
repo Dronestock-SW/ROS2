@@ -1,0 +1,15 @@
+{
+  "date": "2026-09-27",
+  "source_remote": "origin/feature_uwb@cbfbb6b",
+  "source_bytes_equal_remote": true,
+  "catalog_file_count": 43,
+  "extracted_hashes_verified": true,
+  "pytest_passed": 70,
+  "test_scope": "isolated staged snapshot without concurrent H80 B work",
+  "colcon_build": "passed",
+  "ros_imports": "passed",
+  "staged_document_links": "passed",
+  "staged_diff_check": "passed",
+  "flight_test": "not_run",
+  "uwb_sync": "not_run"
+}

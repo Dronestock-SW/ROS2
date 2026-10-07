@@ -1,0 +1,395 @@
+{
+  "schema_version": 1,
+  "registered_on": "2026-09-27",
+  "path_base": "repository_root",
+  "files": [
+    {
+      "path": "data/processed/uwb/uwb_static_20260906_161636/anchor_polygon.json",
+      "legacy_path": "docs/report/evidence/uwb_static_20260906_161636/anchor_polygon.json",
+      "kind": "processed",
+      "role": "bias_calibration",
+      "bytes": 2469,
+      "sha256": "0ab64691c006bb0a78844d912e7b5edcca19c747618e027d0845be9f36d6728b"
+    },
+    {
+      "path": "data/processed/uwb/uwb_static_20260906_161636/anchor_polygon.png",
+      "legacy_path": "docs/report/evidence/uwb_static_20260906_161636/anchor_polygon.png",
+      "kind": "processed",
+      "role": "bias_calibration",
+      "bytes": 152867,
+      "sha256": "0da14fb897ce4102a6e8d2d8bd743c16bc37ccd20d7eae3d28b3610cecc75c61"
+    },
+    {
+      "path": "data/processed/uwb/uwb_static_20260906_161636/anchor_polygon.svg",
+      "legacy_path": "docs/report/evidence/uwb_static_20260906_161636/anchor_polygon.svg",
+      "kind": "processed",
+      "role": "bias_calibration",
+      "bytes": 92787,
+      "sha256": "327f9f0715421edbc83d2144261d60813c1b627f431672edabdfeaf2d5667e34"
+    },
+    {
+      "path": "data/raw/uwb/uwb_static_20260906_161636/manual_checks.json",
+      "legacy_path": "docs/report/evidence/uwb_static_20260906_161636/manual_checks.json",
+      "kind": "raw",
+      "role": "bias_calibration",
+      "bytes": 10083,
+      "sha256": "5a25fe227b7c1872f49e2ac2a3801c7adfd863313d5c2975b5fdfd7b1b08b6e8"
+    },
+    {
+      "path": "data/processed/uwb/uwb_static_20260906_161636/measurements.csv",
+      "legacy_path": "docs/report/evidence/uwb_static_20260906_161636/measurements.csv",
+      "kind": "processed",
+      "role": "bias_calibration",
+      "bytes": 387504,
+      "sha256": "86e7d739faff3be39d851f06bdcbe0968233975415254e7f79ffc5147418c681"
+    },
+    {
+      "path": "data/raw/uwb/uwb_static_20260906_161636/metadata.json",
+      "legacy_path": "docs/report/evidence/uwb_static_20260906_161636/metadata.json",
+      "kind": "raw",
+      "role": "bias_calibration",
+      "bytes": 1414,
+      "sha256": "c2d2b77d5e6fc8c046d0c7a6af5c6446216a6653e399ceed5d942b14b2829ebe"
+    },
+    {
+      "path": "data/raw/uwb/uwb_static_20260906_161636/received.jsonl",
+      "legacy_path": "docs/report/evidence/uwb_static_20260906_161636/received.jsonl",
+      "kind": "raw",
+      "role": "bias_calibration",
+      "bytes": 1249414,
+      "sha256": "823ed62d07d7408e841f4de7c07b67854aa0d18d650c47509fd565aadfdc2bc2"
+    },
+    {
+      "path": "data/processed/uwb/uwb_static_20260906_161636/recomputed_irregular.csv",
+      "legacy_path": "docs/report/evidence/uwb_static_20260906_161636/recomputed_irregular.csv",
+      "kind": "processed",
+      "role": "bias_calibration",
+      "bytes": 343993,
+      "sha256": "a15cc79ce7ca6168a35379f86f1acb18fd60422005435bbaf3d277ff7431b008"
+    },
+    {
+      "path": "data/processed/uwb/uwb_static_20260906_161636/recomputed_irregular_summary.json",
+      "legacy_path": "docs/report/evidence/uwb_static_20260906_161636/recomputed_irregular_summary.json",
+      "kind": "processed",
+      "role": "bias_calibration",
+      "bytes": 2085,
+      "sha256": "84b6eb5fa432fcc645e8d4815706d53ad866a05d6fcdb343ae0330b7d0cb1021"
+    },
+    {
+      "path": "data/raw/uwb/uwb_static_20260906_161636/serial.raw",
+      "legacy_path": "docs/report/evidence/uwb_static_20260906_161636/serial.raw",
+      "kind": "raw",
+      "role": "bias_calibration",
+      "bytes": 971410,
+      "sha256": "6500ab889e46dd1a4650b08d0eeeedd071887b8433376097f37a7dd19fd91f8c"
+    },
+    {
+      "path": "data/raw/uwb/uwb_static_20260906_161636/sha256.json",
+      "legacy_path": "docs/report/evidence/uwb_static_20260906_161636/sha256.json",
+      "kind": "raw",
+      "role": "bias_calibration",
+      "bytes": 1189,
+      "sha256": "acac72cd39d6826b606f7c03a955a67f4de2ca81fd30b9f7232d914c62654058"
+    },
+    {
+      "path": "data/processed/uwb/uwb_static_20260906_161636/summary.json",
+      "legacy_path": "docs/report/evidence/uwb_static_20260906_161636/summary.json",
+      "kind": "processed",
+      "role": "bias_calibration",
+      "bytes": 6210,
+      "sha256": "063ed37347c0bb7e94bdffbc14ab76be347d2d5bbf170ce426aa45527154ed3e"
+    },
+    {
+      "path": "data/processed/uwb/uwb_static_20260906_161636/survey_solution.json",
+      "legacy_path": "docs/report/evidence/uwb_static_20260906_161636/survey_solution.json",
+      "kind": "processed",
+      "role": "bias_calibration",
+      "bytes": 4775,
+      "sha256": "99dfe2cd98e6e0006c4f33751cf42f04f0520406a50e499125934cdfcd5a5c3a"
+    },
+    {
+      "path": "data/raw/uwb/uwb_static_20260906_170938/manual_checks.json",
+      "legacy_path": "docs/report/evidence/uwb_static_20260906_170938/manual_checks.json",
+      "kind": "raw",
+      "role": "development_evaluation",
+      "bytes": 585,
+      "sha256": "403a98f43348a7ad92479113aeca48f739a89b0266f938e894e74168e02b88f9"
+    },
+    {
+      "path": "data/processed/uwb/uwb_static_20260906_170938/measurements.csv",
+      "legacy_path": "docs/report/evidence/uwb_static_20260906_170938/measurements.csv",
+      "kind": "processed",
+      "role": "development_evaluation",
+      "bytes": 742850,
+      "sha256": "7fadef1d1652e1f25c5c07610b3abb6e1c91d8ee35c960375ccd8711da94f247"
+    },
+    {
+      "path": "data/raw/uwb/uwb_static_20260906_170938/metadata.json",
+      "legacy_path": "docs/report/evidence/uwb_static_20260906_170938/metadata.json",
+      "kind": "raw",
+      "role": "development_evaluation",
+      "bytes": 2014,
+      "sha256": "3d57ee908977ab6fe9e1b1b25d494443864db2501070d79b4458cd733eb732d2"
+    },
+    {
+      "path": "data/processed/uwb/uwb_static_20260906_170938/range_excursions.json",
+      "legacy_path": "docs/report/evidence/uwb_static_20260906_170938/range_excursions.json",
+      "kind": "processed",
+      "role": "development_evaluation",
+      "bytes": 3884,
+      "sha256": "ad66c24443dc1568017b9394e62d366e047805e8c541fd9cf1129d060cd648ce"
+    },
+    {
+      "path": "data/raw/uwb/uwb_static_20260906_170938/received.jsonl",
+      "legacy_path": "docs/report/evidence/uwb_static_20260906_170938/received.jsonl",
+      "kind": "raw",
+      "role": "development_evaluation",
+      "bytes": 1372703,
+      "sha256": "5ee6df9ce510bb98a781a6548997aa7f3403506a5f0a67a981cada61051ff466"
+    },
+    {
+      "path": "data/raw/uwb/uwb_static_20260906_170938/serial.raw",
+      "legacy_path": "docs/report/evidence/uwb_static_20260906_170938/serial.raw",
+      "kind": "raw",
+      "role": "development_evaluation",
+      "bytes": 974192,
+      "sha256": "948d34ffe5e2057e995c4744ec61e70aa936187f913c1b57371e6435f61a2258"
+    },
+    {
+      "path": "data/raw/uwb/uwb_static_20260906_170938/sha256.json",
+      "legacy_path": "docs/report/evidence/uwb_static_20260906_170938/sha256.json",
+      "kind": "raw",
+      "role": "development_evaluation",
+      "bytes": 887,
+      "sha256": "55b2d37b351327b5dedd8774e5ac22057e103f6cb640e10c667e86a24fab549f"
+    },
+    {
+      "path": "data/processed/uwb/uwb_static_20260906_170938/static_repeat.png",
+      "legacy_path": "docs/report/evidence/uwb_static_20260906_170938/static_repeat.png",
+      "kind": "processed",
+      "role": "development_evaluation",
+      "bytes": 208767,
+      "sha256": "16cb76ae50bca23fa93f04897a3c5628ba3774545291a7d02184cddef71290ba"
+    },
+    {
+      "path": "data/processed/uwb/uwb_static_20260906_170938/summary.json",
+      "legacy_path": "docs/report/evidence/uwb_static_20260906_170938/summary.json",
+      "kind": "processed",
+      "role": "development_evaluation",
+      "bytes": 15419,
+      "sha256": "6a557324623a53176a12a625491debae6e69f2ec73eb5a07947f928753b7af9b"
+    },
+    {
+      "path": "data/raw/uwb/uwb_static_20260906_170938/unparsed.jsonl",
+      "legacy_path": "docs/report/evidence/uwb_static_20260906_170938/unparsed.jsonl",
+      "kind": "raw",
+      "role": "development_evaluation",
+      "bytes": 907,
+      "sha256": "a9b291757a453571af4fa6d1062af0c9eb7d12580cfbb760c930abc3b976e998"
+    },
+    {
+      "path": "data/raw/uwb/legacy/uwb_raw.txt",
+      "legacy_path": "uwb_raw.txt",
+      "kind": "raw",
+      "role": "legacy_reference",
+      "bytes": 47508,
+      "sha256": "d93b96c9f1f02cd9d10e76191eab2cb70fdd4093e4cc74dbb9ae15fe203a3dc0"
+    },
+    {
+      "path": "data/raw/flight/20260926/log_7_2026-9-26-12-31-34.ulg",
+      "legacy_path": "log_7_2026-9-26-12-31-34.ulg",
+      "kind": "raw",
+      "role": "attitude_and_distance_input_candidate",
+      "bytes": 2847324,
+      "sha256": "1b55df16dc04cf2f7f5188c0948173d125caf897bf7b3c65ca8493dbc650f70b"
+    },
+    {
+      "path": "data/processed/baseline_a_20260926/anchors.json",
+      "legacy_path": "docs/report/evidence/baseline_a_20260926/anchors.json",
+      "kind": "processed",
+      "role": "prior_analysis",
+      "bytes": 566,
+      "sha256": "2d4d9d79d4a3fd772018e53d46659201041a76022c727b55c2506dd39b188407"
+    },
+    {
+      "path": "data/processed/baseline_a_20260926/config.json",
+      "legacy_path": "docs/report/evidence/baseline_a_20260926/config.json",
+      "kind": "processed",
+      "role": "prior_analysis",
+      "bytes": 1033,
+      "sha256": "975682ec6698ae2b32876eb210a41c939dfe9d485957db3ed0a69ddfef75521f"
+    },
+    {
+      "path": "data/processed/baseline_a_20260926/manifest.json",
+      "legacy_path": "docs/report/evidence/baseline_a_20260926/manifest.json",
+      "kind": "processed",
+      "role": "prior_analysis",
+      "bytes": 3222,
+      "sha256": "9cf95f7bd7c5cdeb475b965a28c1c8b7b5b3b21f6240a51201ffa1528239f366"
+    },
+    {
+      "path": "data/processed/baseline_a_20260926/positions.csv",
+      "legacy_path": "docs/report/evidence/baseline_a_20260926/positions.csv",
+      "kind": "processed",
+      "role": "prior_analysis",
+      "bytes": 27222,
+      "sha256": "60dc6a4f96e3815a06b53fe0625e92228c37ab6f6a428a2882778fae7af42d7a"
+    },
+    {
+      "path": "data/processed/baseline_a_20260926/reference.json",
+      "legacy_path": "docs/report/evidence/baseline_a_20260926/reference.json",
+      "kind": "processed",
+      "role": "prior_analysis",
+      "bytes": 398,
+      "sha256": "17248cf18dc3291376f4c64b6e3e931a1822b100a4f70a42d39cb93cc96a3e1d"
+    },
+    {
+      "path": "data/processed/baseline_a_20260926/summary.json",
+      "legacy_path": "docs/report/evidence/baseline_a_20260926/summary.json",
+      "kind": "processed",
+      "role": "prior_analysis",
+      "bytes": 1405,
+      "sha256": "9dc6b2125b9adc484609ea9ee2763b659a981c5db2453bba4cffec96355f493f"
+    },
+    {
+      "path": "data/processed/baseline_a_20260926/verification.json",
+      "legacy_path": "docs/report/evidence/baseline_a_20260926/verification.json",
+      "kind": "processed",
+      "role": "prior_analysis",
+      "bytes": 2492,
+      "sha256": "d0bb661c7ab0517c36f25bb90a97f527bee0bafe082e618e41800ba9e25f5842"
+    },
+    {
+      "path": "data/processed/baseline_a_static_20260926/anchors.json",
+      "legacy_path": "docs/report/evidence/baseline_a_static_20260926/anchors.json",
+      "kind": "processed",
+      "role": "prior_analysis",
+      "bytes": 566,
+      "sha256": "2d4d9d79d4a3fd772018e53d46659201041a76022c727b55c2506dd39b188407"
+    },
+    {
+      "path": "data/processed/baseline_a_static_20260926/calibration.json",
+      "legacy_path": "docs/report/evidence/baseline_a_static_20260926/calibration.json",
+      "kind": "processed",
+      "role": "prior_analysis",
+      "bytes": 817,
+      "sha256": "460d94899a6ac93f1a59f0342208362006c5ad9bcbdaa9b9c3d4eba3b11b3305"
+    },
+    {
+      "path": "data/processed/baseline_a_static_20260926/config.json",
+      "legacy_path": "docs/report/evidence/baseline_a_static_20260926/config.json",
+      "kind": "processed",
+      "role": "prior_analysis",
+      "bytes": 2215,
+      "sha256": "3e648399bf126a992fd6837e71ae7e5db269adc4ef7c17ce6be507a8c5d49ef8"
+    },
+    {
+      "path": "data/processed/baseline_a_static_20260926/manifest.json",
+      "legacy_path": "docs/report/evidence/baseline_a_static_20260926/manifest.json",
+      "kind": "processed",
+      "role": "prior_analysis",
+      "bytes": 4992,
+      "sha256": "3ad8001ae2d7e9e4d6a632a340ee71324d5f94e466c10d7e71543352eef78a65"
+    },
+    {
+      "path": "data/processed/baseline_a_static_20260926/positions.csv",
+      "legacy_path": "docs/report/evidence/baseline_a_static_20260926/positions.csv",
+      "kind": "processed",
+      "role": "prior_analysis",
+      "bytes": 619770,
+      "sha256": "903ffe2b7717861484baf557498132cc0e8b8293d79585e17e15e1fee6a95774"
+    },
+    {
+      "path": "data/processed/baseline_a_static_20260926/static_a_comparison.pdf",
+      "legacy_path": "docs/report/evidence/baseline_a_static_20260926/static_a_comparison.pdf",
+      "kind": "processed",
+      "role": "prior_analysis",
+      "bytes": 66816,
+      "sha256": "35de831993b36648fec20f3bad04a3895239ecf8dd6cc9b4aef09527a52b5302"
+    },
+    {
+      "path": "data/processed/baseline_a_static_20260926/static_a_comparison.png",
+      "legacy_path": "docs/report/evidence/baseline_a_static_20260926/static_a_comparison.png",
+      "kind": "processed",
+      "role": "prior_analysis",
+      "bytes": 223497,
+      "sha256": "535cf509e8d78d51116fe590c8990160f13ac6d1720f253ba20087b7dda1564d"
+    },
+    {
+      "path": "data/processed/baseline_a_static_20260926/summary.json",
+      "legacy_path": "docs/report/evidence/baseline_a_static_20260926/summary.json",
+      "kind": "processed",
+      "role": "prior_analysis",
+      "bytes": 6232,
+      "sha256": "bf18e0ac7d1c00520475952ae49be72df12941ff8326cef317e08185b1ce1a82"
+    },
+    {
+      "path": "data/processed/baseline_a_static_20260926/verification.json",
+      "legacy_path": "docs/report/evidence/baseline_a_static_20260926/verification.json",
+      "kind": "processed",
+      "role": "prior_analysis",
+      "bytes": 1580,
+      "sha256": "2d0b263353ec1b0ca4f0c461bf9a4a16dcf04dd3afda909937aaa53d80958dc2"
+    },
+    {
+      "path": "data/processed/mavros_parameter_api_20260927/ulog_parameters.json",
+      "legacy_path": "docs/report/evidence/mavros_parameter_api_20260927/ulog_parameters.json",
+      "kind": "processed",
+      "role": "prior_analysis",
+      "bytes": 2281,
+      "sha256": "f09585ff190076a23eb81d085ab98b025a569dd2201a20cd10a2cff2624f71f5"
+    },
+    {
+      "path": "data/raw/flight/20260927/log_23_2026-9-27-13-34-50.ulg",
+      "legacy_path": "log_23_2026-9-27-13-34-50.ulg",
+      "kind": "raw",
+      "role": "position_mode_attitude_and_distance_record",
+      "bytes": 2839356,
+      "sha256": "896a3f021f0b2eb9fd943e7960e2add8dfff67bcfe15541c442fac175146690f"
+    },
+    {
+      "path": "data/raw/flight/20260927/perfect_holdv2.params",
+      "legacy_path": "perfect_holdv2.params",
+      "kind": "raw",
+      "role": "px4_parameter_reference",
+      "bytes": 36977,
+      "sha256": "389b802cb7cecad0c71c4f70745c9c125959da9e3fe146cfb22ca44725c8fd46"
+    }
+  ],
+  "policy": {
+    "raw_overwrite": false,
+    "calibration_evaluation_separate": true,
+    "flight_output_allowed": false
+  },
+  "flight_logs": [
+    {
+      "date": "2026-09-26",
+      "reported_use": "Position / attitude-control record requested by user",
+      "observed_mode": "ALTCTL (prior ULog extraction)",
+      "position_success_log_match_confirmed": false,
+      "synchronized_with_uwb": false,
+      "external_position_fusion_enabled": false
+    },
+    {
+      "date": "2026-09-27",
+      "path": "data/raw/flight/20260927/log_23_2026-9-27-13-34-50.ulg",
+      "observed_nav_states": [
+        1,
+        2
+      ],
+      "position_mode_present": true,
+      "synchronized_with_uwb": false,
+      "position_success_log_match_confirmed": false,
+      "external_position_fusion_enabled": false,
+      "analysis_path": "data/processed/flight_20260927/summary.json"
+    }
+  ],
+  "flight_log": {
+    "date": "2026-09-26",
+    "reported_use": "Position / attitude-control record requested by user",
+    "observed_mode": "ALTCTL (prior ULog extraction)",
+    "position_success_log_match_confirmed": false,
+    "synchronized_with_uwb": false,
+    "external_position_fusion_enabled": false
+  }
+}

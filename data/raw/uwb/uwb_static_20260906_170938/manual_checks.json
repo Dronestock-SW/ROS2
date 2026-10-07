@@ -1,0 +1,10 @@
+[
+  {
+    "kind": "obstruction_during_repeat_capture",
+    "question": "측정 시작 약 17~19초 뒤(17:09:56~58)에 A4 거리가 크게 튀었습니다. 그때 태그를 만지거나 움직였거나, 태그와 A4 사이로 사람·물체가 지나갔나요?",
+    "answer": "사람·물체가 지나가거나 가렸어요",
+    "recorded_at": "2026-09-06T17:17:13.537964+09:00",
+    "interpretation": "The user reports obstruction during the discussed excursion interval; not a separately timed or controlled obstruction trial.",
+    "firmware_or_px4_settings_changed": false
+  }
+]

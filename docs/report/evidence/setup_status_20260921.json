@@ -1,0 +1,276 @@
+{
+  "checked_at": "2026-09-21T11:15:59+09:00",
+  "scope": "Read-only local account, installed packages, repository and reference archive inspection; no build, serial capture, flight or simulator run.",
+  "account": "pgyxn",
+  "groups": [
+    "audio",
+    "video",
+    "render",
+    "i2c",
+    "gdm",
+    "weston-launch",
+    "gpio",
+    "pgyxn"
+  ],
+  "workspace": "/home/pgyxn/github/ROS2",
+  "commands": [
+    {
+      "command": [
+        "git",
+        "branch",
+        "--show-current"
+      ],
+      "exit_code": 0,
+      "stdout": "feature_uwb",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit_code": 0,
+      "stdout": "1ef3f038842c107d349a6ef3eebd07fcd814cdbe",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "submodule",
+        "status"
+      ],
+      "exit_code": 0,
+      "stdout": "4ef70d3f32a85704ade0be54b214f3763b1ab3e8 src/ydlidar_ros2_driver (remotes/origin/humble)",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "uname",
+        "-m"
+      ],
+      "exit_code": 0,
+      "stdout": "aarch64",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": "Python 3.10.12",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "systemctl",
+        "is-active",
+        "tailscaled"
+      ],
+      "exit_code": 0,
+      "stdout": "active",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "dpkg-query",
+        "-W",
+        "-f=${binary:Package}\t${Version}\t${db:Status-Status}\n",
+        "ros-humble-ros-base",
+        "ros-humble-mavros",
+        "ros-humble-mavros-extras",
+        "ros-humble-gscam",
+        "python3-colcon-common-extensions",
+        "python3-rosdep"
+      ],
+      "exit_code": 0,
+      "stdout": "python3-colcon-common-extensions\t0.3.0-100\tinstalled\npython3-rosdep\t0.26.0-1\tinstalled\nros-humble-gscam\t2.0.2-1jammy.20260725.191932\tinstalled\nros-humble-mavros\t2.14.0-1jammy.20260608.191037\tinstalled\nros-humble-mavros-extras\t2.14.0-1jammy.20260608.200936\tinstalled\nros-humble-ros-base\t0.10.0-1jammy.20260607.150006\tinstalled",
+      "stderr": ""
+    }
+  ],
+  "os_release": "PRETTY_NAME=\"Ubuntu 22.04.5 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"22.04\"\nVERSION=\"22.04.5 LTS (Jammy Jellyfish)\"\nVERSION_CODENAME=jammy\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=jammy\n",
+  "l4t_release": "# R36 (release), REVISION: 4.7, GCID: 42132812, BOARD: generic, EABI: aarch64, DATE: Thu Sep 18 22:54:44 UTC 2025\n# KERNEL_VARIANT: oot\nTARGET_USERSPACE_LIB_DIR=nvidia\nTARGET_USERSPACE_LIB_DIR_PATH=usr/lib/aarch64-linux-gnu/nvidia\n",
+  "account_ros_startup_lines": {
+    "/home/pgyxn/.bashrc": [],
+    "/home/pgyxn/.profile": []
+  },
+  "paths": [
+    {
+      "path": "/opt/ros/humble/setup.bash",
+      "exists": true,
+      "symlink": null,
+      "readable": true,
+      "writable": false
+    },
+    {
+      "path": "/usr/share/GeographicLib/geoids/egm96-5.pgm",
+      "exists": true,
+      "symlink": null,
+      "readable": true,
+      "writable": false
+    },
+    {
+      "path": "/home/pgyxn/.ros/rosdep/sources.cache",
+      "exists": false,
+      "symlink": null,
+      "readable": false,
+      "writable": false
+    },
+    {
+      "path": "/dev/lidar",
+      "exists": true,
+      "symlink": "ttyUSB0",
+      "readable": false,
+      "writable": false
+    },
+    {
+      "path": "/dev/uwb",
+      "exists": true,
+      "symlink": "ttyUSB1",
+      "readable": false,
+      "writable": false
+    },
+    {
+      "path": "/dev/pixhawk",
+      "exists": false,
+      "symlink": null,
+      "readable": false,
+      "writable": false
+    },
+    {
+      "path": "/dev/video0",
+      "exists": true,
+      "symlink": null,
+      "readable": true,
+      "writable": true
+    },
+    {
+      "path": "/home/pgyxn/github/ROS2/build",
+      "exists": false,
+      "symlink": null,
+      "readable": false,
+      "writable": false
+    },
+    {
+      "path": "/home/pgyxn/github/ROS2/install",
+      "exists": false,
+      "symlink": null,
+      "readable": false,
+      "writable": false
+    },
+    {
+      "path": "/home/pgyxn/github/ROS2/log",
+      "exists": false,
+      "symlink": null,
+      "readable": false,
+      "writable": false
+    }
+  ],
+  "ros_package_probe": {
+    "command": [
+      "bash",
+      "--noprofile",
+      "--norc",
+      "-c",
+      "source /opt/ros/humble/setup.bash\npython3 - <<'PROBE'\nimport os, subprocess, json\npackages=set(subprocess.check_output(['ros2','pkg','list'],text=True).splitlines())\nprint(json.dumps({'ROS_DISTRO':os.environ.get('ROS_DISTRO'),'ROS_DOMAIN_ID':os.environ.get('ROS_DOMAIN_ID'),'packages':{p:p in packages for p in ['mavros','mavros_extras','mavros_msgs','gscam','cv_bridge','camera_calibration','drone_uwb','drone_demo','drone_platform_link']}},ensure_ascii=False))\nPROBE"
+    ],
+    "exit_code": 0,
+    "stdout": "{\"ROS_DISTRO\": \"humble\", \"ROS_DOMAIN_ID\": null, \"packages\": {\"mavros\": true, \"mavros_extras\": true, \"mavros_msgs\": true, \"gscam\": true, \"cv_bridge\": true, \"camera_calibration\": true, \"drone_uwb\": false, \"drone_demo\": false, \"drone_platform_link\": false}}",
+    "stderr": ""
+  },
+  "package_manifests": [
+    {
+      "path": "src/drone_bringup/package.xml",
+      "xml_parse": "failed",
+      "error": "not well-formed (invalid token): line 20, column 45"
+    },
+    {
+      "path": "src/drone_demo/package.xml",
+      "name": "drone_demo",
+      "version": "0.1.0",
+      "xml_parse": "ok"
+    },
+    {
+      "path": "src/drone_platform_link/package.xml",
+      "name": "drone_platform_link",
+      "version": "0.1.0",
+      "xml_parse": "ok"
+    },
+    {
+      "path": "src/drone_uwb/package.xml",
+      "name": "drone_uwb",
+      "version": "0.1.0",
+      "xml_parse": "ok"
+    },
+    {
+      "path": "src/ydlidar_ros2_driver/package.xml",
+      "name": "ydlidar_ros2_driver",
+      "version": "1.0.2",
+      "xml_parse": "ok"
+    }
+  ],
+  "uwb_reference": {
+    "path": "/home/pgyxn/uwb_h80_qs10_reference_source_v1.zip",
+    "mtime_kst": "2026-09-20T18:34:25.536174+09:00",
+    "sha256": "1b49160e665c02a9f1e31c9093ae4693859d7053f4cd0507ed984c8348be3e55",
+    "zip_member_timezone": "not recorded in ZIP member timestamps",
+    "members": [
+      {
+        "name": "firmware/uwb_tag_h80_qs10_test_reference.bin",
+        "mtime_as_stored": "2026-09-20 17:18:54",
+        "size_bytes": 335136
+      },
+      {
+        "name": "include/ExperimentalPositionFilter.h",
+        "mtime_as_stored": "2026-09-20 17:06:50",
+        "size_bytes": 1380
+      },
+      {
+        "name": "include/RawTagConfig.h",
+        "mtime_as_stored": "2026-09-20 17:16:16",
+        "size_bytes": 1551
+      },
+      {
+        "name": "src/ExperimentalPositionFilter.cpp",
+        "mtime_as_stored": "2026-09-20 17:07:32",
+        "size_bytes": 27102
+      },
+      {
+        "name": "src/main.cpp",
+        "mtime_as_stored": "2026-09-20 17:07:32",
+        "size_bytes": 30943
+      },
+      {
+        "name": "JETSON_REFERENCE_README.md",
+        "mtime_as_stored": "2026-09-20 18:19:20",
+        "size_bytes": 3230
+      },
+      {
+        "name": "platformio.ini",
+        "mtime_as_stored": "2026-09-20 17:16:16",
+        "size_bytes": 1339
+      },
+      {
+        "name": "README.md",
+        "mtime_as_stored": "2026-09-20 17:16:16",
+        "size_bytes": 20580
+      }
+    ],
+    "readme_sha256": "386230c51b1778a1494424ce63d72d3b79ef1d98047694f474394f8fc715be87"
+  },
+  "pdfs": [
+    {
+      "path": "docs/KCI_FI003284551.pdf",
+      "mtime_kst": "2026-09-20T17:56:02.984034+09:00"
+    },
+    {
+      "path": "docs/report/uwb_imu_learning_guide_20260911.pdf",
+      "mtime_kst": "2026-09-20T17:56:03.212040+09:00"
+    },
+    {
+      "path": "docs/report/uwb_field_request.pdf",
+      "mtime_kst": "2026-09-20T17:59:10.068468+09:00"
+    }
+  ]
+}

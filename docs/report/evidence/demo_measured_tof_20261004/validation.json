@@ -1,0 +1,55 @@
+{
+  "date": "2026-10-04",
+  "pytest": {
+    "passed": 129,
+    "skipped_modules": 2,
+    "skip_reason": "pymavlink not installed",
+    "scope": [
+      "src/drone_demo/test",
+      "src/drone_uwb/test/processing/test_observations.py",
+      "src/drone_uwb/test/processing/test_preimu_pipeline.py"
+    ]
+  },
+  "build": {
+    "command": "colcon build --symlink-install --packages-select drone_demo",
+    "packages_succeeded": 1
+  },
+  "installed_checks": {
+    "config": "passed",
+    "xy_export": "passed",
+    "mission_cycles": 3,
+    "launch_arguments": 2,
+    "artifacts": "/tmp/ros2_xy_tof_check__s0sy7ae"
+  },
+  "ros_transport": {
+    "domain_id": 99,
+    "localhost_only": true,
+    "result": "passed",
+    "truth_messages": 478,
+    "uwb_messages": 438,
+    "gap_status_messages": 40,
+    "late_goal_messages": 1,
+    "final_demo_xy_m": [
+      3.09,
+      2.68
+    ],
+    "tof_input": "test fixture on /demo/test_tof_range; not a hardware measurement",
+    "tof_fixture_m": 1.37,
+    "tof_expired_without_fallback": true,
+    "mission_transitions": [
+      "RECOVERING",
+      "MOVING",
+      "DEGRADED",
+      "RECOVERING",
+      "MOVING",
+      "APPROACHING",
+      "SETTLING",
+      "ARRIVED",
+      "DEGRADED"
+    ],
+    "exit_code": 0,
+    "environment_note": "getifaddrs/UDP permission errors logged; local message assertions passed"
+  },
+  "hardware_validation": "not performed",
+  "deployment": "not performed"
+}

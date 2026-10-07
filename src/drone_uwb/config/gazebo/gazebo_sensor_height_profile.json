@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "orientation_alignment_confirmed": false,
+  "flat_floor_confirmed": false,
+  "tof_bias_m": 0.0,
+  "ground_z_m": 0.0,
+  "tof_axis_body_flu": [0.0, 0.0, -1.0],
+  "tof_lever_body_flu_m": [0.0, 0.0, -0.05],
+  "max_tof_age_s": 0.10,
+  "max_attitude_skew_s": 0.02
+}

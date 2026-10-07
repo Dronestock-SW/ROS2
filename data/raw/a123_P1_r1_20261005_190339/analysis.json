@@ -1,0 +1,76 @@
+{
+  "capture": "a123_P1_r1_20261005_190339",
+  "stage": "P1_repeat_1",
+  "raw_cycles": 1735,
+  "masks": {
+    "7": 1734,
+    "5": 1
+  },
+  "anchors": {
+    "A1": {
+      "valid": 1735,
+      "failures": {
+        "ok": 1735
+      }
+    },
+    "A2": {
+      "valid": 1734,
+      "failures": {
+        "ok": 1734,
+        "response_timeout": 1
+      }
+    },
+    "A3": {
+      "valid": 1735,
+      "failures": {
+        "ok": 1735
+      }
+    },
+    "A4": {
+      "valid": 0,
+      "failures": {
+        "response_timeout": 1735
+      }
+    }
+  },
+  "accepted_observations": 1489,
+  "acceptance_fraction": 0.8582132564841498,
+  "reasons": {
+    "status_unavailable": 144,
+    "status": 11,
+    "warming_up": 56,
+    "accepted": 1489,
+    "range_jump": 27,
+    "insufficient_anchors": 1,
+    "queued_sample": 18
+  },
+  "maximum_accepted_gap_s": 1.429999616,
+  "tof_samples": 587,
+  "tof_valid_samples": 587,
+  "tof_valid_median_m": 0.9700000286102295,
+  "tof_last_m": 0.9700000286102295,
+  "fc_state_samples": 62,
+  "any_armed": false,
+  "battery_voltage_v": 22.996000289916992,
+  "battery_remaining_pct": 39.0,
+  "fc_output_enabled": false,
+  "reference_xyz_m": [
+    1.0,
+    1.0,
+    null
+  ],
+  "observed_xy_mean_m": [
+    1.5405405560604286,
+    1.9670136334601145
+  ],
+  "observed_xy_std_m": [
+    0.029450161053320666,
+    0.027782662086442613
+  ],
+  "reference_xy_error_m": {
+    "rmse": 1.108575053094071,
+    "maximum": 1.2181695735672713,
+    "p95": 1.1638759325015169,
+    "count": 1489
+  }
+}

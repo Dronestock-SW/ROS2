@@ -1,0 +1,13 @@
+{
+  "input_path": "data/processed/uwb/gazebo_shadow_fixture_20260927/poses.jsonl",
+  "input_sha256": "47731648cf50424085a89aa18a6a980b005cf0c09c279c7ed7b25c8715d23dac",
+  "config_path": "data/processed/uwb/navigation_20260928/plans/iter_0008_b_m03_noisy_a2_equal_config.json",
+  "config_sha256": "db92523344f45ac074ce55a7574994170be504066f40393796037ffee2c07075",
+  "plan_path": "data/processed/uwb/navigation_20260928/plans/iter_0008_b_m03_noisy_a2_equal.json",
+  "plan_sha256": "b8bc4dde8c5244e7276e6beee6a3c51d9ea611ba8fa0ea8a6b31dc58c7c3fcd7",
+  "raw_path": null,
+  "raw_sha256": null,
+  "truth_path": null,
+  "truth_sha256": null,
+  "parent_path": "data/processed/uwb/navigation_20260928/iter_0003_noisy_a2_equal"
+}

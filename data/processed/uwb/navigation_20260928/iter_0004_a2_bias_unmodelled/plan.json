@@ -1,0 +1,24 @@
+{
+  "run_id": "iter_0004_a2_bias_unmodelled",
+  "parent_run_id": null,
+  "dataset_split": "exploratory",
+  "hypothesis": "A2_bias_unmodelled 조건에서 A/B/C/D의 오차·출력률·7cm 이상 표본을 비교한다.",
+  "change": {
+    "kind": "simulated_sensor_condition",
+    "name": "A2_bias_unmodelled"
+  },
+  "criteria": {
+    "target_m": 0.07,
+    "min_coverage": 0.99
+  },
+  "scenario_intervals": [
+    {
+      "name": "injected_fault",
+      "start_s": 2.0,
+      "end_s": 6.0
+    }
+  ],
+  "input_sha256": "47731648cf50424085a89aa18a6a980b005cf0c09c279c7ed7b25c8715d23dac",
+  "config_sha256": "1384a8de25e234f0fc2183d6c023cef8923867c5869667025392543faae11ce2",
+  "source_limit": "synthetic_pose_fixture; no Gazebo runtime or ToF observations"
+}

@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "external_output_allowed": false,
+  "tag_id": "5",
+  "layout_id": "warehouse-rectangle-6p3x4p6-z2p2-20261004",
+  "anchors_xyz_m": [[0,0,2.2],[6.3,0,2.2],[0,4.6,2.2],[6.3,4.6,2.2]],
+  "bias_m": [0,0,0,0],
+  "bias_calibrated": false,
+  "B": {"window_s":0.8,"min_samples_per_anchor":3,"min_samples_total":12,"required_anchor_count":4,"sigma_r_m":0.08,"huber_m":0.12,"h80_irls_iterations":8,"max_scaled_condition":1000000.0,"reset_gap_s":0.15,"max_extrapolation_s":0.04,"max_range_m":80.0},
+  "tof_subset": {"rms_limit_m":0.06,"score_margin_m":0.015,"max_speed_m_s":1.0,"continuity_margin_m":0.1,"max_prior_age_s":0.1},
+  "tof_topic": "/mavros/downward_0",
+  "imu_topic": "/mavros/imu/data",
+  "max_output_age_s": 0.15,
+  "xy_stddev_m": 0.30,
+  "height": {
+    "tof_to_tag_body_flu_m": [0,0,0.12],
+    "mount_confirmed": true,
+    "flat_floor_confirmed": true,
+    "tof_bias_m": 0.0,
+    "ground_z_m": 0.0,
+    "min_downward_projection": 0.8,
+    "max_tof_age_s": 0.10,
+    "max_attitude_skew_s": 0.02
+  },
+  "provenance": {
+    "algorithm": "final108 B_TF with per-anchor physical sample times",
+    "anchors_and_downward_sensor": "user confirmed 2026-10-05",
+    "tof_to_tag_mount": "user confirmed same horizontal position, tag 12 cm above lens, 2026-10-05",
+    "timing": "ESP32 lower-envelope host mapping and MAVROS TIMESYNC; physical delay uncalibrated",
+    "range_bias": "zero correction means uncalibrated, not zero physical bias"
+  }
+}

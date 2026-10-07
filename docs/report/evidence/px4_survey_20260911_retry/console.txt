@@ -1,0 +1,912 @@
+
+NuttShell (NSH) NuttX-11.0.0
+nsh> 
+nsh> 
+ver all
+HW arch: PX4_FMU_V6C
+HW type: V6C002002
+HW version: 0x002
+HW revision: 0x002
+PX4 git-hash: 6ea3539157ca358c70a515878b77077af7d4611d
+PX4 version: Release 1.16.0 (17826047)
+OS: NuttX
+OS version: Release 11.0.0 (184549631)
+OS git-hash: 886acbbdb4f061e5c0ce1a76afbcfa7cb7df9849
+Build datetime: Aug  6 2025 15:07:26
+Build uri: localhost
+Build variant: default
+Toolchain: GNU GCC, 9.3.1 20200408 (release)
+PX4GUID: 0006000000003132343830345119003d0027
+MCU: STM32H7[4|5]xxx, rev. V
+nsh> [
+Ksensors status
+selected gyro: 6684682 (0)
+validator: best: 0, prev best: 0, failsafe: NO (0 events)
+sensor #0, prio: 50, state: OK
+	val:  -0.0058, lp:  -0.0004 mean dev:  -0.0000 RMS:   0.0031 conf:   1.0000
+	val:   0.0025, lp:  -0.0008 mean dev:   0.0000 RMS:   0.0042 conf:   1.0000
+	val:  -0.0108, lp:  -0.0098 mean dev:  -0.0001 RMS:   0.0033 conf:   1.0000
+sensor #1, prio: 50, state: OK
+	val:   0.0019, lp:   0.0015 mean dev:  -0.0000 RMS:   0.0008 conf:   1.0000
+	val:  -0.0003, lp:  -0.0005 mean dev:  -0.0001 RMS:   0.0008 conf:   1.0000
+	val:  -0.0023, lp:  -0.0024 mean dev:  -0.0000 RMS:   0.0005 conf:   1.0000
+
+selected accel: 6946826 (0)
+validator: best: 0, prev best: 0, failsafe: NO (0 events)
+sensor #0, prio: 50, state: OK
+	val:  -0.8649, lp:  -0.8086 mean dev:  -0.0021 RMS:   0.0264 conf:   1.0000
+	val:  -0.0274, lp:  -0.0411 mean dev:  -0.0001 RMS:   0.0202 conf:   1.0000
+	val:  -9.8124, lp:  -9.7907 mean dev:  -0.0244 RMS:   0.2433 conf:   1.0000
+sensor #1, prio: 50, state: OK
+	val:  -0.7476, lp:  -0.7611 mean dev:  -0.0022 RMS:   0.0210 conf:   1.0000
+	val:  -0.1326, lp:  -0.1382 mean dev:  -0.0000 RMS:   0.0107 conf:   1.0000
+	val:  -9.7750, lp:  -9.7677 mean dev:  -0.0332 RMS:   0.2846 conf:   1.0000
+
+[vehicle_magnetometer] selected MAG: 396321 (0)
+validator: best: 0, prev best: 0, failsafe: NO (0 events)
+sensor #0, prio: 50, state: OK
+	val:  -0.2548, lp:  -0.2553 mean dev:  -0.0001 RMS:   0.0010 conf:   1.0000
+	val:  -0.4184, lp:  -0.4174 mean dev:  -0.0001 RMS:   0.0012 conf:   1.0000
+	val:   0.7030, lp:   0.7025 mean dev:   0.0001 RMS:   0.0031 conf:   1.0000
+MAG 396321 EN: 1, offset: [0.201 0.255 -0.254], scale: [0.993 0.995 1.012], Internal
+
+[vehicle_air_data] selected BARO: 4028193 (0)
+validator: best: 0, prev best: 0, failsafe: NO (0 events)
+sensor #0, prio: 50, state: OK
+	val: 101155.0000, lp: 101152.0938 mean dev:  -0.1588 RMS:   2.3301 conf:   1.0000
+	val:  32.5900, lp:  32.5766 mean dev:   0.0094 RMS:   0.0048 conf:   1.0000
+	val:  14.4139, lp:  14.4124 mean dev:   0.0059 RMS:   0.1940 conf:   1.0000
+BARO 4028193 EN: 1, offset: 0.000, Internal
+
+Airspeed status:
+	no data
+
+[vehicle_acceleration] selected sensor: 6946826, rate: 803.2 Hz, estimated bias: [-0.0024 -0.0009 -0.0180]
+ACC 6946826 EN: 1, offset: [-0.022 0.022 0.081], scale: [1.000 1.000 1.000], Internal
+
+[vehicle_angular_velocity] selected sensor: 6684682, rate: 1979.3 Hz FIFO, estimated bias: [-0.00035 -0.00101 -0.00977]
+GYRO 6684682 EN: 1, offset: [-0.001 0.001 0.009], Internal
+vehicle_angular_velocity: gyro filter: 66574 events, 758975us elapsed, 11.40us avg, min 9us max 131us 0.958us rms
+vehicle_angular_velocity: gyro filter reset: 2 events
+vehicle_angular_velocity: gyro selection changed: 2 events
+
+[vehicle_gps_position] selected GPS: 0
+
+
+[vehicle_imu] 0 - Accel: 6946826, interval: 1245.2 us (SD 0.6 us), Gyro: 6684682, interval: 1500.1 us (SD 29.6 us)
+vehicle_imu: accel data gap: 1 events
+vehicle_imu: gyro data gap: 1 events
+ACC 6946826 EN: 1, offset: [-0.022 0.022 0.081], scale: [1.000 1.000 1.000], Internal
+GYRO 6684682 EN: 1, offset: [-0.001 0.001 0.009], Internal
+
+[vehicle_imu] 1 - Accel: 2490378, interval: 1250.2 us (SD 0.6 us), Gyro: 2490378, interval: 1250.2 us (SD 0.6 us)
+vehicle_imu: accel data gap: 1 events
+vehicle_imu: gyro data gap: 1 events
+ACC 2490378 EN: 1, offset: [0.085 0.126 -0.040], scale: [1.000 1.000 1.000], Internal
+GYRO 2490378 EN: 1, offset: [-0.010 -0.013 -0.000], Internal
+nsh> 
+listener sensor_selection -n 1
+
+TOPIC: sensor_selection
+ sensor_selection
+    timestamp: 612537 (99.799103 seconds ago)
+    accel_device_id: 6946826 (Type: 0x6A, SPI:1 (0x00))
+    gyro_device_id: 6684682 (Type: 0x66, SPI:1 (0x00))
+nsh> 
+listener sensor_accel -n 1
+
+TOPIC: sensor_accel 2 instances
+
+Instance 0:
+ sensor_accel
+    timestamp: 100424646 (0.001082 seconds ago)
+    timestamp_sample: 100424509 (137 us before timestamp)
+    device_id: 6946826 (Type: 0x6A, SPI:1 (0x00))
+    x: 0.03411
+    y: 0.19572
+    z: -9.78989
+    temperature: 30.25000
+    error_count: 0
+    clip_counter: [0, 0, 0]
+    samples: 2
+
+
+Instance 1:
+ sensor_accel
+    timestamp: 100440764 (0.000650 seconds ago)
+    timestamp_sample: 100440658 (106 us before timestamp)
+    device_id: 2490378 (Type: 0x26, SPI:1 (0x00))
+    x: 0.18698
+    y: 0.13766
+    z: -9.83969
+    temperature: 31.89010
+    error_count: 0
+    clip_counter: [0, 0, 0]
+    samples: 10
+
+nsh> 
+listener sensor_gyro -n 1
+
+TOPIC: sensor_gyro 2 instances
+
+Instance 0:
+ sensor_gyro
+    timestamp: 100463585 (0.001197 seconds ago)
+    timestamp_sample: 100463487 (98 us before timestamp)
+    device_id: 6684682 (Type: 0x66, SPI:1 (0x00))
+    x: 0.01065
+    y: -0.00923
+    z: -0.00887
+    temperature: nan
+    error_count: 0
+    clip_counter: [0, 0, 0]
+    samples: 3
+
+
+Instance 1:
+ sensor_gyro
+    timestamp: 100478260 (0.000150 seconds ago)
+    timestamp_sample: 100478164 (96 us before timestamp)
+    device_id: 2490378 (Type: 0x26, SPI:1 (0x00))
+    x: -0.00893
+    y: -0.01449
+    z: -0.00219
+    temperature: 32.01691
+    error_count: 0
+    clip_counter: [0, 0, 0]
+    samples: 10
+
+nsh> 
+listener vehicle_imu -n 1
+
+TOPIC: vehicle_imu 2 instances
+
+Instance 0:
+ vehicle_imu
+    timestamp: 100493637 (0.004042 seconds ago)
+    timestamp_sample: 100493490 (147 us before timestamp)
+    accel_device_id: 6946826 (Type: 0x6A, SPI:1 (0x00))
+    gyro_device_id: 6684682 (Type: 0x66, SPI:1 (0x00))
+    delta_angle: [0.00001, 0.00000, -0.00007]
+    delta_velocity: [-0.00400, -0.00012, -0.04885]
+    delta_angle_dt: 6001
+    delta_velocity_dt: 4980
+    delta_angle_clipping: 0
+    delta_velocity_clipping: 0
+    accel_calibration_count: 1
+    gyro_calibration_count: 1
+
+
+Instance 1:
+ vehicle_imu
+    timestamp: 100515822 (0.002944 seconds ago)
+    timestamp_sample: 100515671 (151 us before timestamp)
+    accel_device_id: 2490378 (Type: 0x26, SPI:1 (0x00))
+    gyro_device_id: 2490378 (Type: 0x26, SPI:1 (0x00))
+    delta_angle: [0.00001, -0.00000, -0.00001]
+    delta_velocity: [-0.00379, -0.00066, -0.04886]
+    delta_angle_dt: 5001
+    delta_velocity_dt: 5001
+    delta_angle_clipping: 0
+    delta_velocity_clipping: 0
+    accel_calibration_count: 1
+    gyro_calibration_count: 1
+
+nsh> 
+listener sensor_mag -n 1
+
+TOPIC: sensor_mag
+ sensor_mag
+    timestamp: 100526056 (0.017941 seconds ago)
+    timestamp_sample: 100525116 (940 us before timestamp)
+    device_id: 396321 (Type: 0x06, I2C:4 (0x0C))
+    x: -0.09090
+    y: -0.15606
+    z: 0.38787
+    temperature: nan
+    error_count: 1
+nsh> 
+listener sensor_baro -n 1
+
+TOPIC: sensor_baro
+ sensor_baro
+    timestamp: 100557284 (0.004163 seconds ago)
+    timestamp_sample: 100556704 (580 us before timestamp)
+    device_id: 4028193 (Type: 0x3D, I2C:4 (0x77))
+    pressure: 101149.00000
+    temperature: 32.59000
+    error_count: 0
+nsh> 
+listener vehicle_attitude -n 1
+
+TOPIC: vehicle_attitude
+ vehicle_attitude
+    timestamp: 100573211 (0.007526 seconds ago)
+    timestamp_sample: 100572996 (215 us before timestamp)
+    q: [0.99916, 0.00186, -0.04093, -0.00093] (Roll: 0.2 deg, Pitch: -4.7 deg, Yaw: -0.1 deg)
+    delta_q_reset: [1.00000, 0.00000, 0.00000, 0.00000]
+    quat_reset_counter: 0
+
+nsh> 
+listener vehicle_local_position -n 1
+
+TOPIC: vehicle_local_position
+ vehicle_local_position
+    timestamp: 100593252 (0.006413 seconds ago)
+    timestamp_sample: 100592497 (755 us before timestamp)
+    ref_timestamp: 0
+    ref_lat: nan
+    ref_lon: nan
+    x: -0.00517
+    y: -0.00073
+    z: -0.26052
+    delta_xy: [0.00000, 0.00000]
+    delta_z: 0.00000
+    vx: -0.00370
+    vy: -0.00148
+    vz: 0.00567
+    z_deriv: -0.00597
+    delta_vxy: [0.00414, 0.00195]
+    delta_vz: 0.00044
+    ax: -0.01483
+    ay: 0.01406
+    az: 0.00404
+    heading: -0.00203
+    heading_var: 0.00491
+    unaided_heading: -0.02203
+    delta_heading: 0.00000
+    tilt_var: 0.00017
+    ref_alt: nan
+    dist_bottom: 0.10088
+    dist_bottom_var: 0.01000
+    delta_dist_bottom: 0.00000
+    eph: 0.01084
+    epv: 0.27277
+    evh: 0.03606
+    evv: 0.05608
+    vxy_max: inf
+    vz_max: inf
+    hagl_min: inf
+    hagl_max_z: inf
+    hagl_max_xy: inf
+    xy_valid: False
+    z_valid: True
+    v_xy_valid: False
+    v_z_valid: True
+    xy_reset_counter: 1
+    z_reset_counter: 1
+    vxy_reset_counter: 1
+    vz_reset_counter: 1
+    heading_reset_counter: 0
+    heading_good_for_control: False
+    xy_global: False
+    z_global: False
+    dist_bottom_valid: False
+    dist_bottom_reset_counter: 1
+    dist_bottom_sensor_bitfield: 0
+    dead_reckoning: True
+nsh> 
+[Klistener vehicle_global_position -n 1
+
+TOPIC: vehicle_global_position
+nsh> 
+listener vehicle_angular_velocity -n 1
+
+TOPIC: vehicle_angular_velocity
+ vehicle_angular_velocity
+    timestamp: 100661613 (0.001090 seconds ago)
+    timestamp_sample: 100661550 (63 us before timestamp)
+    xyz: [-0.00051, -0.00513, -0.00045]
+    xyz_derivative: [-0.15913, -0.39337, -0.18024]
+nsh> 
+listener vehicle_acceleration -n 1
+
+TOPIC: vehicle_acceleration
+ vehicle_acceleration
+    timestamp: 100673658 (0.004217 seconds ago)
+    timestamp_sample: 100673513 (145 us before timestamp)
+    xyz: [-0.79526, -0.05714, -9.75165]
+
+nsh> 
+listener vehicle_air_data -n 1
+
+TOPIC: vehicle_air_data
+ vehicle_air_data
+    timestamp: 100676131 (0.013554 seconds ago)
+    timestamp_sample: 100651227 (24904 us before timestamp)
+    baro_device_id: 4028193 (Type: 0x3D, I2C:4 (0x77))
+    baro_alt_meter: 14.45613
+    baro_pressure_pa: 101151.50000
+    ambient_temperature: 15.00000
+    rho: 1.22270
+    temperature_source: 0
+    calibration_count: 0
+
+nsh> 
+listener vehicle_magnetometer -n 1
+
+TOPIC: vehicle_magnetometer
+ vehicle_magnetometer
+    timestamp: 100677677 (0.030012 seconds ago)
+    timestamp_sample: 100676319 (1358 us before timestamp)
+    device_id: 396321 (Type: 0x06, I2C:4 (0x0C))
+    magnetometer_ga: [-0.25555, -0.41690, 0.70310]
+    calibration_count: 3
+
+nsh> 
+listener estimator_status -n 1
+
+TOPIC: estimator_status 2 instances
+
+Instance 0:
+ estimator_status
+    timestamp: 100712999 (0.009753 seconds ago)
+    timestamp_sample: 100523492 (189507 us before timestamp)
+    control_mode_flags: 2216807170561 (0b10'0000'0100'0010'0100'0000'0001'0000'0010'0000'0001)
+    output_tracking_error: [0.00009, 0.00030, 0.00032]
+    filter_fault_flags: 0
+    pos_horiz_accuracy: 0.01413
+    pos_vert_accuracy: 0.27396
+    hdg_test_ratio: nan
+    vel_test_ratio: nan
+    pos_test_ratio: nan
+    hgt_test_ratio: 0.00556
+    tas_test_ratio: nan
+    hagl_test_ratio: nan
+    beta_test_ratio: nan
+    time_slip: 0.00000
+    accel_device_id: 6946826 (Type: 0x6A, SPI:1 (0x00))
+    gyro_device_id: 6684682 (Type: 0x66, SPI:1 (0x00))
+    baro_device_id: 4028193 (Type: 0x3D, I2C:4 (0x77))
+    mag_device_id: 396321 (Type: 0x06, I2C:4 (0x0C))
+    mag_inclination_deg: 52.28046
+    mag_inclination_ref_deg: nan
+    mag_strength_gs: 0.85549
+    mag_strength_ref_gs: nan
+    gps_check_fail_flags: 0
+    solution_status_flags: 165 (0b1010'0101)
+    reset_count_vel_ne: 1
+    reset_count_vel_d: 1
+    reset_count_pos_ne: 1
+    reset_count_pod_d: 1
+    reset_count_quat: 0
+    pre_flt_fail_innov_heading: False
+    pre_flt_fail_innov_height: False
+    pre_flt_fail_innov_pos_horiz: False
+    pre_flt_fail_innov_vel_horiz: False
+    pre_flt_fail_innov_vel_vert: False
+    pre_flt_fail_mag_field_disturbed: True
+    health_flags: 0
+    timeout_flags: 0
+
+
+Instance 1:
+ estimator_status
+    timestamp: 100786736 (0.002112 seconds ago)
+    timestamp_sample: 100595685 (191051 us before timestamp)
+    control_mode_flags: 2216807170561 (0b10'0000'0100'0010'0100'0000'0001'0000'0010'0000'0001)
+    output_tracking_error: [0.00004, 0.00055, 0.00167]
+    filter_fault_flags: 0
+    pos_horiz_accuracy: 0.01252
+    pos_vert_accuracy: 0.27086
+    hdg_test_ratio: nan
+    vel_test_ratio: nan
+    pos_test_ratio: nan
+    hgt_test_ratio: 0.00650
+    tas_test_ratio: nan
+    hagl_test_ratio: nan
+    beta_test_ratio: nan
+    time_slip: 0.00000
+    accel_device_id: 2490378 (Type: 0x26, SPI:1 (0x00))
+    gyro_device_id: 2490378 (Type: 0x26, SPI:1 (0x00))
+    baro_device_id: 4028193 (Type: 0x3D, I2C:4 (0x77))
+    mag_device_id: 396321 (Type: 0x06, I2C:4 (0x0C))
+    mag_inclination_deg: 51.95457
+    mag_inclination_ref_deg: nan
+    mag_strength_gs: 0.85549
+    mag_strength_ref_gs: nan
+    gps_check_fail_flags: 0
+    solution_status_flags: 165 (0b1010'0101)
+    reset_count_vel_ne: 1
+    reset_count_vel_d: 1
+    reset_count_pos_ne: 1
+    reset_count_pod_d: 1
+    reset_count_quat: 0
+    pre_flt_fail_innov_heading: False
+    pre_flt_fail_innov_height: False
+    pre_flt_fail_innov_pos_horiz: False
+    pre_flt_fail_innov_vel_horiz: False
+    pre_flt_fail_innov_vel_vert: False
+    pre_flt_fail_mag_field_disturbed: True
+    health_flags: 0
+    timeout_flags: 0
+
+nsh> 
+[Klistener estimator_status_flags -n 1
+
+TOPIC: estimator_status_flags 2 instances
+
+Instance 0:
+ estimator_status_flags
+    timestamp: 100275508 (0.582245 seconds ago)
+    timestamp_sample: 100077959 (197549 us before timestamp)
+    control_status_changes: 48
+    fault_status_changes: 0
+    innovation_fault_status_changes: 1
+    cs_tilt_align: True
+    cs_yaw_align: False
+    cs_gnss_pos: False
+    cs_opt_flow: False
+    cs_mag_hdg: False
+    cs_mag_3d: False
+    cs_mag_dec: False
+    cs_in_air: False
+    cs_wind: False
+    cs_baro_hgt: True
+    cs_rng_hgt: False
+    cs_gps_hgt: False
+    cs_ev_pos: False
+    cs_ev_yaw: False
+    cs_ev_hgt: False
+    cs_fuse_beta: False
+    cs_mag_field_disturbed: True
+    cs_fixed_wing: False
+    cs_mag_fault: False
+    cs_fuse_aspd: False
+    cs_gnd_effect: False
+    cs_rng_stuck: False
+    cs_gnss_yaw: False
+    cs_mag_aligned_in_flight: False
+    cs_ev_vel: False
+    cs_synthetic_mag_z: False
+    cs_vehicle_at_rest: True
+    cs_gnss_yaw_fault: False
+    cs_rng_fault: False
+    cs_inertial_dead_reckoning: True
+    cs_wind_dead_reckoning: False
+    cs_rng_kin_consistent: False
+    cs_fake_pos: False
+    cs_fake_hgt: False
+    cs_gravity_vector: True
+    cs_mag: False
+    cs_ev_yaw_fault: False
+    cs_mag_heading_consistent: False
+    cs_aux_gpos: False
+    cs_rng_terrain: False
+    cs_opt_flow_terrain: False
+    cs_valid_fake_pos: True
+    cs_constant_pos: False
+    cs_baro_fault: False
+    cs_gnss_vel: False
+    fs_bad_mag_x: False
+    fs_bad_mag_y: False
+    fs_bad_mag_z: False
+    fs_bad_hdg: False
+    fs_bad_mag_decl: False
+    fs_bad_airspeed: False
+    fs_bad_sideslip: False
+    fs_bad_optflow_x: False
+    fs_bad_optflow_y: False
+    fs_bad_acc_vertical: False
+    fs_bad_acc_clipping: False
+    reject_hor_vel: False
+    reject_ver_vel: False
+    reject_hor_pos: False
+    reject_ver_pos: False
+    reject_yaw: False
+    reject_airspeed: False
+    reject_sideslip: False
+    reject_hagl: False
+    reject_optflow_x: False
+    reject_optflow_y: False
+
+
+Instance 1:
+ estimator_status_flags
+    timestamp: 100306300 (0.641438 seconds ago)
+    timestamp_sample: 100115602 (190698 us before timestamp)
+    control_status_changes: 47
+    fault_status_changes: 0
+    innovation_fault_status_changes: 1
+    cs_tilt_align: True
+    cs_yaw_align: False
+    cs_gnss_pos: False
+    cs_opt_flow: False
+    cs_mag_hdg: False
+    cs_mag_3d: False
+    cs_mag_dec: False
+    cs_in_air: False
+    cs_wind: False
+    cs_baro_hgt: True
+    cs_rng_hgt: False
+    cs_gps_hgt: False
+    cs_ev_pos: False
+    cs_ev_yaw: False
+    cs_ev_hgt: False
+    cs_fuse_beta: False
+    cs_mag_field_disturbed: True
+    cs_fixed_wing: False
+    cs_mag_fault: False
+    cs_fuse_aspd: False
+    cs_gnd_effect: False
+    cs_rng_stuck: False
+    cs_gnss_yaw: False
+    cs_mag_aligned_in_flight: False
+    cs_ev_vel: False
+    cs_synthetic_mag_z: False
+    cs_vehicle_at_rest: True
+    cs_gnss_yaw_fault: False
+    cs_rng_fault: False
+    cs_inertial_dead_reckoning: True
+    cs_wind_dead_reckoning: False
+    cs_rng_kin_consistent: False
+    cs_fake_pos: False
+    cs_fake_hgt: False
+    cs_gravity_vector: True
+    cs_mag: False
+    cs_ev_yaw_fault: False
+    cs_mag_heading_consistent: False
+    cs_aux_gpos: False
+    cs_rng_terrain: False
+    cs_opt_flow_terrain: False
+    cs_valid_fake_pos: True
+    cs_constant_pos: False
+    cs_baro_fault: False
+    cs_gnss_vel: False
+    fs_bad_mag_x: False
+    fs_bad_mag_y: False
+    fs_bad_mag_z: False
+    fs_bad_hdg: False
+    fs_bad_mag_decl: False
+    fs_bad_airspeed: False
+    fs_bad_sideslip: False
+    fs_bad_optflow_x: False
+    fs_bad_optflow_y: False
+    fs_bad_acc_vertical: False
+    fs_bad_acc_clipping: False
+    reject_hor_vel: False
+    reject_ver_vel: False
+    reject_hor_pos: False
+    reject_ver_pos: False
+    reject_yaw: False
+    reject_airspeed: False
+    reject_sideslip: False
+    reject_hagl: False
+    reject_optflow_x: False
+    reject_optflow_y: False
+
+nsh> 
+listener estimator_sensor_bias -n 1
+
+TOPIC: estimator_sensor_bias 2 instances
+
+Instance 0:
+ estimator_sensor_bias
+    timestamp: 100177446 (0.866323 seconds ago)
+    timestamp_sample: 99984952 (192494 us before timestamp)
+    gyro_device_id: 6684682 (Type: 0x66, SPI:1 (0x00))
+    gyro_bias: [-0.00035, -0.00101, -0.00977]
+    gyro_bias_limit: 0.15000
+    gyro_bias_variance: [0.00000, 0.00000, 0.00000]
+    accel_device_id: 6946826 (Type: 0x6A, SPI:1 (0x00))
+    accel_bias: [-0.00242, -0.00092, -0.01804]
+    accel_bias_limit: 0.40000
+    accel_bias_variance: [0.00773, 0.00779, 0.00006]
+    mag_device_id: 396321 (Type: 0x06, I2C:4 (0x0C))
+    mag_bias: [0.00000, 0.00000, 0.00000]
+    mag_bias_limit: 0.50000
+    mag_bias_variance: [0.00250, 0.00250, 0.00250]
+    gyro_bias_valid: True
+    gyro_bias_stable: True
+    accel_bias_valid: True
+    accel_bias_stable: False
+    mag_bias_valid: True
+    mag_bias_stable: False
+
+
+Instance 1:
+ estimator_sensor_bias
+    timestamp: 100906338 (0.182147 seconds ago)
+    timestamp_sample: 100715705 (190633 us before timestamp)
+    gyro_device_id: 2490378 (Type: 0x26, SPI:1 (0x00))
+    gyro_bias: [0.00167, -0.00049, -0.00248]
+    gyro_bias_limit: 0.15000
+    gyro_bias_variance: [0.00000, 0.00000, 0.00000]
+    accel_device_id: 2490378 (Type: 0x26, SPI:1 (0x00))
+    accel_bias: [0.00117, 0.00086, 0.00750]
+    accel_bias_limit: 0.40000
+    accel_bias_variance: [0.00764, 0.00769, 0.00006]
+    mag_device_id: 396321 (Type: 0x06, I2C:4 (0x0C))
+    mag_bias: [0.00000, 0.00000, 0.00000]
+    mag_bias_limit: 0.50000
+    mag_bias_variance: [0.00250, 0.00250, 0.00250]
+    gyro_bias_valid: True
+    gyro_bias_stable: True
+    accel_bias_valid: True
+    accel_bias_stable: False
+    mag_bias_valid: True
+    mag_bias_stable: False
+
+nsh> 
+listener vehicle_status -n 1
+
+TOPIC: vehicle_status
+ vehicle_status
+    timestamp: 100810508 (0.324207 seconds ago)
+    armed_time: 0
+    takeoff_time: 0
+    nav_state_timestamp: 541796
+    valid_nav_states_mask: 2147411071
+    can_set_nav_states_mask: 8307839
+    failure_detector_status: 0
+    arming_state: 1
+    latest_arming_reason: 0
+    latest_disarming_reason: 0
+    nav_state_user_intention: 4
+    nav_state: 4
+    executor_in_charge: 0
+    hil_state: 0
+    vehicle_type: 1
+    failsafe: False
+    failsafe_and_user_took_over: False
+    failsafe_defer_state: 0
+    gcs_connection_lost: True
+    gcs_connection_lost_counter: 0
+    high_latency_data_link_lost: False
+    is_vtol: False
+    is_vtol_tailsitter: False
+    in_transition_mode: False
+    in_transition_to_fw: False
+    system_type: 2
+    system_id: 1
+    component_id: 1
+    safety_button_available: True
+    safety_off: True
+    power_input_valid: True
+    usb_connected: True
+    open_drone_id_system_present: False
+    open_drone_id_system_healthy: False
+    parachute_system_present: False
+    parachute_system_healthy: False
+    rc_calibration_in_progress: False
+    calibration_enabled: False
+    pre_flight_checks_pass: False
+
+nsh> 
+listener vehicle_land_detected -n 1
+
+TOPIC: vehicle_land_detected
+ vehicle_land_detected
+    timestamp: 100355105 (0.835509 seconds ago)
+    freefall: False
+    ground_contact: True
+    maybe_landed: True
+    landed: True
+    in_ground_effect: True
+    in_descend: True
+    has_low_throttle: True
+    vertical_movement: False
+    horizontal_movement: False
+    rotational_movement: False
+    close_to_ground_or_skipped_check: True
+    at_rest: True
+
+nsh> 
+listener failsafe_flags -n 1
+
+TOPIC: failsafe_flags
+ failsafe_flags
+    timestamp: 100678652 (0.531191 seconds ago)
+    mode_req_angular_velocity: 8311934
+    mode_req_attitude: 8310910
+    mode_req_local_alt: 8257662
+    mode_req_local_position: 7995448
+    mode_req_local_position_relaxed: 262212
+    mode_req_global_position: 56
+    mode_req_mission: 8
+    mode_req_offboard_signal: 16384
+    mode_req_home_position: 32
+    mode_req_wind_and_flight_time_compliance: 2621464
+    mode_req_prevent_arming: 3944480
+    mode_req_manual_control: 33863
+    mode_req_other: 2139095040
+    angular_velocity_invalid: False
+    attitude_invalid: False
+    local_altitude_invalid: False
+    local_position_invalid: True
+    local_position_invalid_relaxed: True
+    local_velocity_invalid: True
+    global_position_invalid: True
+    auto_mission_missing: True
+    offboard_control_signal_lost: True
+    home_position_invalid: True
+    manual_control_signal_lost: True
+    gcs_connection_lost: True
+    battery_warning: 0
+    battery_low_remaining_time: False
+    battery_unhealthy: False
+    geofence_breached: False
+    mission_failure: False
+    vtol_fixed_wing_system_failure: False
+    wind_limit_exceeded: False
+    flight_time_limit_exceeded: False
+    local_position_accuracy_low: False
+    navigator_failure: False
+    fd_critical_failure: False
+    fd_esc_arming_failure: False
+    fd_imbalanced_prop: False
+    fd_motor_failure: False
+
+nsh> 
+listener battery_status -n 1
+
+TOPIC: battery_status
+ battery_status
+    timestamp: 101279384 (0.001045 seconds ago)
+    voltage_v: 0.03919
+    current_a: 0.08606
+    current_average_a: 15.00000
+    discharged_mah: 3.00699
+    remaining: -1.00000
+    scale: 1.00000
+    time_remaining_s: nan
+    temperature: nan
+    voltage_cell_v: [0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000]
+    max_cell_voltage_delta: 0.00000
+    full_charge_capacity_wh: 0.00000
+    remaining_capacity_wh: 0.00000
+    nominal_voltage: 0.00000
+    internal_resistance_estimate: 0.00500
+    ocv_estimate: 0.03919
+    ocv_estimate_filtered: 0.00000
+    volt_based_soc_estimate: -1.00000
+    voltage_prediction: 0.00000
+    prediction_error: 0.00000
+    estimation_covariance_norm: 0.00000
+    capacity: 0
+    cycle_count: 0
+    average_time_to_empty: 0
+    serial_number: 0
+    manufacture_date: 0
+    state_of_health: 0
+    max_error: 0
+    interface_error: 0
+    faults: 0
+    over_discharge_count: 0
+    connected: False
+    cell_count: 0
+    source: 0
+    priority: 0
+    id: 1
+    is_powering_off: False
+    is_required: False
+    warning: 0
+nsh> 
+listener system_power -n 1
+
+TOPIC: system_power
+ system_power
+    timestamp: 101329366 (0.005406 seconds ago)
+    voltage5v_v: 4.76591
+    voltage_payload_v: 0.00000
+    sensors3v3: [0.00000, 0.00000, 0.00000, 0.00000]
+    sensors3v3_valid: 0
+    usb_connected: 1
+    brick_valid: 0
+    usb_valid: 1
+    servo_valid: 1
+    periph_5v_oc: 0
+    hipower_5v_oc: 0
+    comp_5v_valid: 0
+    can1_gps1_5v_valid: 0
+    payload_v_valid: 0
+
+nsh> 
+listener cpuload -n 1
+
+TOPIC: cpuload
+ cpuload
+    timestamp: 101159771 (0.199150 seconds ago)
+    load: 0.47086
+    ram_usage: 0.30664
+nsh> 
+listener sensor_gps -n 1
+never published
+nsh> 
+listener distance_sensor -n 1
+never published
+nsh> 
+listener sensor_optical_flow -n 1
+never published
+nsh> 
+listener input_rc -n 1
+never published
+nsh> 
+listener actuator_outputs -n 1
+
+TOPIC: actuator_outputs 4 instances
+
+Instance 0:
+ actuator_outputs
+    timestamp: 536796 (100.852951 seconds ago)
+    noutputs: 8
+    output: [0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000]
+
+
+Instance 1:
+ actuator_outputs
+    timestamp: 546471 (100.863167 seconds ago)
+    noutputs: 8
+    output: [1000.00000, 1000.00000, 1000.00000, 1000.00000, 1000.00000, 1000.00000, 1000.00000, 1000.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000]
+
+
+Instance 2:
+ actuator_outputs
+    timestamp: 1049522 (100.378296 seconds ago)
+    noutputs: 8
+    output: [0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000]
+
+
+Instance 3:
+ actuator_outputs
+    timestamp: 1049578 (100.399323 seconds ago)
+    noutputs: 8
+    output: [500.00000, 500.00000, 500.00000, 500.00000, 500.00000, 500.00000, 500.00000, 500.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000]
+
+nsh> 
+listener esc_status -n 1
+
+TOPIC: esc_status
+nsh> 
+listener vehicle_imu_status -n 1
+
+TOPIC: vehicle_imu_status 2 instances
+
+Instance 0:
+ vehicle_imu_status
+    timestamp: 101410183 (0.067792 seconds ago)
+    accel_device_id: 6946826 (Type: 0x6A, SPI:1 (0x00))
+    gyro_device_id: 6684682 (Type: 0x66, SPI:1 (0x00))
+    accel_clipping: [0, 0, 0]
+    gyro_clipping: [0, 0, 0]
+    accel_error_count: 0
+    gyro_error_count: 0
+    accel_rate_hz: 803.09106
+    gyro_rate_hz: 666.61682
+    accel_raw_rate_hz: 1606.18213
+    gyro_raw_rate_hz: 1999.85034
+    accel_vibration_metric: 0.03728
+    gyro_vibration_metric: 0.00892
+    delta_angle_coning_metric: 0.00000
+    mean_accel: [-0.82195, -0.01184, -9.70336]
+    mean_gyro: [-0.00202, 0.00143, -0.00011]
+    var_accel: [0.00071, 0.00102, 0.00086]
+    var_gyro: [0.00015, 0.00025, 0.00014]
+    temperature_accel: 30.25000
+    temperature_gyro: nan
+
+
+Instance 1:
+ vehicle_imu_status
+    timestamp: 101466224 (0.046544 seconds ago)
+    accel_device_id: 2490378 (Type: 0x26, SPI:1 (0x00))
+    gyro_device_id: 2490378 (Type: 0x26, SPI:1 (0x00))
+    accel_clipping: [0, 0, 0]
+    gyro_clipping: [0, 0, 0]
+    accel_error_count: 0
+    gyro_error_count: 0
+    accel_rate_hz: 799.86377
+    gyro_rate_hz: 799.86377
+    accel_raw_rate_hz: 7998.63770
+    gyro_raw_rate_hz: 7998.63770
+    accel_vibration_metric: 0.01180
+    gyro_vibration_metric: 0.00111
+    delta_angle_coning_metric: 0.00000
+    mean_accel: [-0.68152, -0.00955, -9.82100]
+    mean_gyro: [-0.00827, -0.01365, -0.00144]
+    var_accel: [0.00011, 0.00012, 0.00015]
+    var_gyro: [0.00000, 0.00000, 0.00000]
+    temperature_accel: 31.98232
+    temperature_gyro: 31.98232
+
+nsh> 

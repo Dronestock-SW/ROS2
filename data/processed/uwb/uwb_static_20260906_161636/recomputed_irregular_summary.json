@@ -1,0 +1,50 @@
+{
+  "created_at": "2026-09-06T16:51:24.837325+09:00",
+  "mode": "Offline replay of saved raw ranges; no device settings changed and no live estimator started.",
+  "common_frame_confirmed": true,
+  "positive_side_is_hypothesis": false,
+  "rectangle_assumption": false,
+  "anchor_fit_file": "survey_solution.json",
+  "solver": "Unweighted linear least squares of squared range differences relative to the first usable anchor; equal anchor height cancels z.",
+  "source_cycles": 2533,
+  "positive_side": {
+    "mean_xy_m": [
+      1.9329260326042395,
+      1.8020850668342918
+    ],
+    "std_xy_m": [
+      0.012029331043961656,
+      0.014312071651406534
+    ],
+    "reference_xy_m": [
+      2.09,
+      1.68
+    ],
+    "mean_xy_difference_m": [
+      -0.1570739673957604,
+      0.12208506683429188
+    ],
+    "radial_difference_rmse_m": 0.19981625303687947,
+    "p95_radial_difference_m": 0.2172769907817856,
+    "mean_position_difference_norm_m": 0.1989396762271868
+  },
+  "negative_side": {
+    "mean_xy_m": [
+      -1.932926032604237,
+      1.8020850668342894
+    ]
+  },
+  "limits": [
+    "A2 right and A4 upper right are confirmed by the user; anchor coordinate accuracy remains unverified.",
+    "The user confirmed the reference point uses the defined anchor axes; measurement tool, antenna endpoints and true accuracy were not independently checked.",
+    "Distance-fit residuals indicate consistency with input values, not survey accuracy.",
+    "Offline replay is not a new physical measurement or a flight EKF."
+  ],
+  "updated_at": "2026-09-06T17:01:48.112534+09:00",
+  "anchor_orientation_confirmed_by_user": true,
+  "selected_side": "positive_x",
+  "common_frame_confirmation_scope": "User confirmed x=2.09m perpendicular right from A1-A3 and y=1.68m along A1 toward A3. No independent metrology verification.",
+  "negative_side_status": "Historical mirrored calculation; excluded by the user-confirmed right-side placement.",
+  "reference_confirmation_source": "manual_checks.json: tag_reference_coordinate_frame_confirmation",
+  "independent_reference_verified": false
+}

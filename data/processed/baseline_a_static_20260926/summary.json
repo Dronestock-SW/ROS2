@@ -1,0 +1,239 @@
+{
+  "model": "A",
+  "scope": "static_reference_trial",
+  "source": "measured_uwb",
+  "evaluation_reference_xyz_m": [
+    2.09,
+    1.68,
+    1.19
+  ],
+  "reference_independently_verified": false,
+  "height_source": "manual_capture_reference; not ToF",
+  "calibration_candidate": {
+    "method": "mean_raw_minus_reference_range",
+    "candidate_only": true,
+    "production_calibration_confirmed": false,
+    "reference_xyz_m": [
+      2.09,
+      1.68,
+      1.19
+    ],
+    "expected_slant_m": [
+      2.86541445518794,
+      4.394711397543007,
+      3.7537581168743412,
+      4.934625201483068
+    ],
+    "mean_raw_slant_m": [
+      2.720659573628109,
+      4.5929459415712595,
+      3.5783201145339643,
+      4.875488566916699
+    ],
+    "bias_m": [
+      -0.14475488155983118,
+      0.19823454402825202,
+      -0.175438002340377,
+      -0.05913663456636886
+    ],
+    "samples_per_anchor": [
+      2533,
+      2533,
+      2532,
+      2533
+    ],
+    "raw_std_m": [
+      0.021234396402538724,
+      0.01561366616060664,
+      0.012658629353282514,
+      0.0147966267148607
+    ],
+    "source_sha256": "823ed62d07d7408e841f4de7c07b67854aa0d18d650c47509fd565aadfdc2bc2"
+  },
+  "groups": {
+    "all": {
+      "input_records": 2540,
+      "models": {
+        "without_bias": {
+          "count": 2540,
+          "mean_xy_m": [
+            1.9265039772390802,
+            1.8446001352471184
+          ],
+          "mean_difference_xy_m": [
+            -0.1634960227609176,
+            0.16460013524711933
+          ],
+          "std_xy_m": [
+            0.0706710076580561,
+            0.0567191249352437
+          ],
+          "rmse_m": 0.24906947713205102,
+          "median_m": 0.23236374909216218,
+          "p95_m": 0.2703224792886435,
+          "max_m": 0.7413950875168122,
+          "reasons": {
+            "ok": 2540
+          },
+          "coverage": 1.0
+        },
+        "with_candidate_bias": {
+          "count": 2540,
+          "mean_xy_m": [
+            2.069120556923351,
+            1.7311429354786043
+          ],
+          "mean_difference_xy_m": [
+            -0.02087944307664978,
+            0.05114293547860825
+          ],
+          "std_xy_m": [
+            0.06685743062475472,
+            0.06269694656605947
+          ],
+          "rmse_m": 0.10701576580584453,
+          "median_m": 0.06869194754207794,
+          "p95_m": 0.10616186535998587,
+          "max_m": 0.6656099990727624,
+          "reasons": {
+            "ok": 2540
+          },
+          "coverage": 1.0
+        }
+      },
+      "paired": {
+        "count": 2540,
+        "before_rmse_m": 0.24906947713205102,
+        "after_rmse_m": 0.10701576580584453,
+        "rmse_reduction_fraction": 0.5703376943730958
+      }
+    },
+    "reported_excursion_span": {
+      "input_records": 95,
+      "models": {
+        "without_bias": {
+          "count": 95,
+          "mean_xy_m": [
+            1.6546986545720042,
+            1.6306169487152864
+          ],
+          "mean_difference_xy_m": [
+            -0.4353013454279951,
+            -0.04938305128471251
+          ],
+          "std_xy_m": [
+            0.19941136743212895,
+            0.15936126495913672
+          ],
+          "rmse_m": 0.5070373293122895,
+          "median_m": 0.4759569122254116,
+          "p95_m": 0.7075983283949037,
+          "max_m": 0.7413950875168122,
+          "reasons": {
+            "ok": 95
+          },
+          "coverage": 1.0
+        },
+        "with_candidate_bias": {
+          "count": 95,
+          "mean_xy_m": [
+            1.8125366332198618,
+            1.4936840348974874
+          ],
+          "mean_difference_xy_m": [
+            -0.2774633667801384,
+            -0.18631596510251322
+          ],
+          "std_xy_m": [
+            0.1866579036206262,
+            0.17899044553599294
+          ],
+          "rmse_m": 0.4225852710806078,
+          "median_m": 0.3830828278927221,
+          "p95_m": 0.6288141174004793,
+          "max_m": 0.6656099990727624,
+          "reasons": {
+            "ok": 95
+          },
+          "coverage": 1.0
+        }
+      },
+      "paired": {
+        "count": 95,
+        "before_rmse_m": 0.5070373293122895,
+        "after_rmse_m": 0.4225852710806078,
+        "rmse_reduction_fraction": 0.16655984352518316
+      }
+    },
+    "outside_reported_span": {
+      "input_records": 2445,
+      "models": {
+        "without_bias": {
+          "count": 2445,
+          "mean_xy_m": [
+            1.9370649202465937,
+            1.852914410388436
+          ],
+          "mean_difference_xy_m": [
+            -0.1529350797534033,
+            0.1729144103884379
+          ],
+          "std_xy_m": [
+            0.025716457353500793,
+            0.02251794704501422
+          ],
+          "rmse_m": 0.23336007811341142,
+          "median_m": 0.23175296349596436,
+          "p95_m": 0.2615662267638944,
+          "max_m": 0.3244188386295086,
+          "reasons": {
+            "ok": 2445
+          },
+          "coverage": 1.0
+        },
+        "with_candidate_bias": {
+          "count": 2445,
+          "mean_xy_m": [
+            2.079090075431256,
+            1.7403693549285872
+          ],
+          "mean_difference_xy_m": [
+            -0.010909924568743295,
+            0.06036935492859048
+          ],
+          "std_xy_m": [
+            0.025148305423192997,
+            0.02372352366238673
+          ],
+          "rmse_m": 0.0704182384699293,
+          "median_m": 0.06817158142589128,
+          "p95_m": 0.09745514343134005,
+          "max_m": 0.18595319870337748,
+          "reasons": {
+            "ok": 2445
+          },
+          "coverage": 1.0
+        }
+      },
+      "paired": {
+        "count": 2445,
+        "before_rmse_m": 0.23336007811341142,
+        "after_rmse_m": 0.0704182384699293,
+        "rmse_reduction_fraction": 0.6982421370475094
+      }
+    }
+  },
+  "reported_excursion_seq_interval": [
+    246475,
+    246569
+  ],
+  "calibration_cycle_records": 2533,
+  "evaluation_cycle_records": 2540,
+  "calibration_validation_reasons": {
+    "ok": 2533
+  },
+  "production_calibration_confirmed": false,
+  "external_output_allowed": false,
+  "flight_valid": false,
+  "limitation": "Separate captures at the same reported point; no independent metrology, dynamic flight, or ToF validation."
+}

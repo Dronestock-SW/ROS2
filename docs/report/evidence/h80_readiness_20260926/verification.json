@@ -1,0 +1,33 @@
+{
+  "checked_at": "2026-09-26T17:35:06.852931+09:00",
+  "merge_commit": "6cc5b0300e6d3ebbe6a252d77aefcf677a3b11d1",
+  "origin_feature_uwb": "46669a8fad1c89712eaac9d5c782c8b8c5adbe44",
+  "ahead_behind": [
+    "12",
+    "0"
+  ],
+  "backup_stash": "56eac0c35825bfe40dd04836c7451978928aa6d6",
+  "pyulog_revision": "ffbe3755d903e93797a89fb4fce26e0c0420a42f",
+  "websockets_version": "13.1",
+  "websockets_revision": "4d229bf9f583d593aa103287aee0a77c9fbc3a79",
+  "zip_sha256": "1b49160e665c02a9f1e31c9093ae4693859d7053f4cd0507ed984c8348be3e55",
+  "pytest": {
+    "uwb_and_demo": {
+      "passed": 55,
+      "environment": "ROS Humble setup sourced"
+    },
+    "platform_runtime": {
+      "passed": 9,
+      "environment": "websockets 13.1 source on PYTHONPATH"
+    }
+  },
+  "doc_checks": {
+    "documents": 10,
+    "local_links": 85,
+    "issues": 0
+  },
+  "diff_check": "passed",
+  "full_build": "not_run",
+  "real_accuracy_comparison": "not_run",
+  "push": "not_run"
+}

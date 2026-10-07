@@ -1,0 +1,16 @@
+{
+  "source": "simulation",
+  "model": "dronestock_x500_0",
+  "input_topic": "/world/dronestock_uwb/dynamic_pose/info",
+  "output_topic": "/dronestock/sim/uwb/ranges",
+  "counters": {
+    "recorded": 696,
+    "rate_filtered": 717
+  },
+  "stop_reason": "user_stopped",
+  "start_sim_us": 76720000,
+  "end_sim_us": 103776000,
+  "effective_rate_hz": 25.687463039621527,
+  "external_output_allowed": false,
+  "flight_valid": false
+}

@@ -1,0 +1,145 @@
+{
+  "run_id": "iter_0002",
+  "parent_run_id": "iter_0001",
+  "dataset_split": "exploratory",
+  "source": "synthetic_pose_fixture",
+  "height_source": "simulator_tag_pose_with_mount_offset",
+  "hypothesis": "기존 합성 경로에서 A/B/C/D의 7cm 이상 표본과 누락을 함께 기록한다.",
+  "change": {
+    "kind": "evaluation_instrumentation",
+    "item": "7cm exceedance and missing-output accounting"
+  },
+  "criteria": {
+    "target_m": 0.07,
+    "min_coverage": 0.99
+  },
+  "model_metrics": {
+    "A": {
+      "count": 320,
+      "rmse_m": 0.0308546166034409,
+      "median_m": 0.026150370558189376,
+      "p95_m": 0.052634816520809945,
+      "max_m": 0.07868432173121134,
+      "target_m": 0.07,
+      "at_or_above_target_count": 1,
+      "max_under_target_on_valid": false,
+      "mean_error_xy_m": [
+        0.0032363030695587852,
+        -1.6292001234466152e-05
+      ],
+      "std_error_xy_m": [
+        0.020091478925865314,
+        0.023191936472177162
+      ],
+      "coverage": 1.0,
+      "missing_count": 0,
+      "reasons": {
+        "ok": 320
+      }
+    },
+    "B": {
+      "count": 318,
+      "rmse_m": 0.02242467183450384,
+      "median_m": 0.021555659149761472,
+      "p95_m": 0.03226789445498922,
+      "max_m": 0.045395977395344025,
+      "target_m": 0.07,
+      "at_or_above_target_count": 0,
+      "max_under_target_on_valid": true,
+      "mean_error_xy_m": [
+        0.006561262791602449,
+        0.001638744097113599
+      ],
+      "std_error_xy_m": [
+        0.019373400619446125,
+        0.009044423900246108
+      ],
+      "coverage": 0.99375,
+      "missing_count": 2,
+      "reasons": {
+        "insufficient_anchors": 2,
+        "ok": 318
+      }
+    },
+    "C": {
+      "count": 320,
+      "rmse_m": 0.03142449399940471,
+      "median_m": 0.026557158672262545,
+      "p95_m": 0.0535519804924056,
+      "max_m": 0.08502765162680756,
+      "target_m": 0.07,
+      "at_or_above_target_count": 2,
+      "max_under_target_on_valid": false,
+      "mean_error_xy_m": [
+        0.0031091221681084718,
+        -6.148006985222272e-05
+      ],
+      "std_error_xy_m": [
+        0.020132434780263476,
+        0.023927253759716077
+      ],
+      "coverage": 1.0,
+      "missing_count": 0,
+      "reasons": {
+        "ok": 320
+      }
+    },
+    "D": {
+      "count": 225,
+      "rmse_m": 0.036643610562192376,
+      "median_m": 0.03089215526953404,
+      "p95_m": 0.06684680915092861,
+      "max_m": 0.12311457901655617,
+      "target_m": 0.07,
+      "at_or_above_target_count": 10,
+      "max_under_target_on_valid": false,
+      "mean_error_xy_m": [
+        0.00342526635889255,
+        0.0009244886194184493
+      ],
+      "std_error_xy_m": [
+        0.021966476921455938,
+        0.02911427412552071
+      ],
+      "coverage": 0.703125,
+      "missing_count": 95,
+      "reasons": {
+        "incomplete_candidate_set": 95,
+        "ok": 225
+      }
+    },
+    "WLS": {
+      "count": 320,
+      "rmse_m": 0.030854616603440892,
+      "median_m": 0.026150370558189376,
+      "p95_m": 0.05263481652080984,
+      "max_m": 0.07868432173121143,
+      "target_m": 0.07,
+      "at_or_above_target_count": 1,
+      "max_under_target_on_valid": false,
+      "mean_error_xy_m": [
+        0.0032363030695587843,
+        -1.629200123446108e-05
+      ],
+      "std_error_xy_m": [
+        0.020091478925865318,
+        0.02319193647217715
+      ],
+      "coverage": 1.0,
+      "missing_count": 0,
+      "reasons": {
+        "ok": 320
+      }
+    }
+  },
+  "model_status": {
+    "A": "7cm_max_failed",
+    "B": "exploratory_or_tuning_only",
+    "C": "7cm_max_failed",
+    "D": "coverage_failed",
+    "WLS": "7cm_max_failed"
+  },
+  "parent_comparison": "same_raw",
+  "achieved_7cm": false,
+  "achieved_reason": "pose_replay_lacks_ToF_and_end_to_end_latency_validation"
+}

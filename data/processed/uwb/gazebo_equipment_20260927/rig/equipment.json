@@ -1,0 +1,97 @@
+{
+  "schema": 1,
+  "mount_status": "horizontal_user_report_20260927; vertical_and_camera_flow_unconfirmed",
+  "frame": "body_flu",
+  "description": "Body origin is aircraft center. User confirmed FC and lidar +0.14m forward; UWB and ToF centered; ToF downward. Vertical coordinates and camera/flow mounts below remain simulation assumptions.",
+  "fc_offset_body_flu_m": [
+    0.14,
+    0.0,
+    0.0
+  ],
+  "tag_offset_body_flu_m": [
+    0.0,
+    0.0,
+    0.3
+  ],
+  "tof_pose_body_flu": [
+    0.0,
+    0.0,
+    -0.05,
+    0.0,
+    1.5707963267948966,
+    0.0
+  ],
+  "flow_pose_body_flu": [
+    0.03,
+    0.0,
+    -0.1,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "lidar_pose_body_flu": [
+    0.14,
+    0.0,
+    0.08,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "camera_pose_body_flu": [
+    0.18,
+    0.0,
+    0.03,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "tof": {
+    "min_m": 0.1,
+    "max_m": 12.0,
+    "rate_hz": 100,
+    "noise_sigma_m": 0.01
+  },
+  "lidar": {
+    "min_m": 0.02,
+    "max_m": 12.0,
+    "rate_hz": 10,
+    "samples": 720,
+    "noise_sigma_m": 0.01
+  },
+  "camera": {
+    "width": 640,
+    "height": 480,
+    "rate_hz": 30,
+    "horizontal_fov_rad": 1.2
+  },
+  "spawn_pose_world": [
+    2.09,
+    1.68,
+    0.24,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "obstacles": [
+    {
+      "name": "test_wall",
+      "pose": [
+        8.0,
+        2.0,
+        1.5,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size_m": [
+        0.15,
+        10.0,
+        3.0
+      ]
+    }
+  ],
+  "real_total_mass_kg": null,
+  "simulation_total_mass_kg": 2.0,
+  "mass_policy": "2kg upper-reference from approximate user report; scale native link masses and inertias uniformly; actual distribution and inertia unmeasured",
+  "external_output_allowed": false
+}

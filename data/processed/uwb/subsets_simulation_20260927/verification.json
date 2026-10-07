@@ -1,0 +1,54 @@
+{
+  "date": "2026-09-27",
+  "execution": "completed",
+  "simulation_kind": "synthetic_UWB_algorithm",
+  "physics_engine": false,
+  "flight_controller_connected": false,
+  "tof_sensor_model": false,
+  "total_scheduled_ticks": 1920,
+  "cases": 6,
+  "models": [
+    "A",
+    "B",
+    "C",
+    "D"
+  ],
+  "pytest": {
+    "command": "PYTHONPATH=src/drone_uwb python -m pytest src/drone_uwb/test/test_subset_models.py src/drone_uwb/test/test_subset_comparison.py -q",
+    "passed": 28,
+    "failed": 0,
+    "seconds": 7.35
+  },
+  "byte_identical_to_previous_same_seed_simulation": {
+    "synthetic_results.jsonl": true,
+    "synthetic_summary.json": true
+  },
+  "previous_reference": "data/processed/uwb/subsets_cd_20260927",
+  "new_independent_random_trials": false,
+  "source_and_output_hashes_verified": true,
+  "plots_visually_reviewed": [
+    "simulation_errors.png",
+    "simulation_paths.png"
+  ],
+  "build": "not_run_this_turn; standalone source tool, no package entry-point or model code changed",
+  "not_run": [
+    "Gazebo/PX4 SITL",
+    "live ROS topics",
+    "measured ToF integration",
+    "flight verification",
+    "multiple random seeds"
+  ],
+  "artifact_sha256": {
+    "anchors.json": "2d4d9d79d4a3fd772018e53d46659201041a76022c727b55c2506dd39b188407",
+    "diagnostics.json": "d95060f9bb576daccdc26b52d9d1254dad66cd1c4515c0801a087ac14be93023",
+    "manifest.json": "3ae10a0ae5c73296507f43b32c8049dc686d48c138a537fbad574c8649d7d764",
+    "model_settings.json": "9519a3d98f24c88c39ca26bc05b2fe4be37835d0babbe4a0b6b2558ba871b354",
+    "simulation_conditions.json": "6c926a0f4138faf34c24cbf4f305cb616af04c8fbcbe77ff06b0c93be9ce9e72",
+    "simulation_errors.pdf": "330f19e48c1c292bdbb053aad4d5553aff23157a5a9bc2b2edfaa97ff8b3da31",
+    "simulation_errors.png": "a2f78be18efedc2d111f3568910d2f7882bd6cbca11dd4f25866cb8d5ee794e3",
+    "simulation_paths.pdf": "394226c5865c5cd98bea9aa90568f4b955a924f88c62202bd78ca4648b4dad46",
+    "simulation_paths.png": "f3214e553aa59322bfa9b1aab74cb7826de7a71f35e434ad148c1141e1e43e00",
+    "synthetic_results.jsonl": "fc1f49ac3d93cf377e006f457d3abb96d5e1619efa70e344d852b74acd9bdf62",
+    "synthetic_summary.json": "db8dd7cd98ca5cdc1ebb1064cc955a33c09c379af7a1bd57c603d1eb6b456ab6"
+  }
+}

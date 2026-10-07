@@ -1,0 +1,61 @@
+{
+  "start_utc": "2026-09-06T08:50:46.140713+00:00",
+  "port": "/dev/uwb",
+  "settings": {
+    "tag_id": "5",
+    "source_mode": "raw_ranges",
+    "min_anchors": 4,
+    "max_range_m": 1000.0,
+    "status_timeout_s": 10.0,
+    "max_cycle_s": 0.1,
+    "max_report_span_s": 0.04,
+    "max_queue_s": 0.15,
+    "max_pair_residual_m": 0.15,
+    "range_step_margin_m": 0.15,
+    "max_speed_m_s": 2.0,
+    "history_timeout_s": 0.5,
+    "recovery_samples": 5,
+    "clock_warmup_samples": 30,
+    "clock_window_s": 5.0,
+    "xy_stddev_m": 0.3,
+    "geometry_tolerance_m": 0.03,
+    "report_delay_s": 0.0
+  },
+  "layout": {
+    "layout_id": "warehouse-irregular-z2p2-20260906",
+    "coordinate_frame": "uwb_map",
+    "units": "m",
+    "source": "docs/uwb_anchor_survey.md; user-reported six distances and directions, 2026-09-06",
+    "independently_verified": false,
+    "anchor_order": [
+      "A1",
+      "A2",
+      "A3",
+      "A4"
+    ],
+    "anchors_xyz_m": [
+      [
+        0.0,
+        0.0,
+        2.2
+      ],
+      [
+        5.8102027071690925,
+        -0.43032700908323007,
+        2.2
+      ],
+      [
+        0.0,
+        4.63,
+        2.2
+      ],
+      [
+        6.110227024200994,
+        4.357349538815547,
+        2.2
+      ]
+    ]
+  },
+  "serial_payload_bytes_written": 0,
+  "flight_state_estimator": "PX4 EKF2 only"
+}

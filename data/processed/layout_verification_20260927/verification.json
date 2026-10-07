@@ -1,0 +1,33 @@
+{
+  "checked_on": "2026-09-27",
+  "pytest": {
+    "command": "PYTHONPATH=src/drone_uwb python3 -m pytest -q src/drone_uwb/test",
+    "passed": 70
+  },
+  "build": {
+    "command": "colcon build --symlink-install --packages-select drone_uwb",
+    "passed": true
+  },
+  "ros_imports_and_legacy_identity": "passed",
+  "data_catalog": {
+    "files": 42,
+    "hashes_and_legacy_symlinks": "passed"
+  },
+  "static_replay": {
+    "output": "/tmp/uwb_layout_check_wmcrb6zc/static_a",
+    "summary_matches_previous": true,
+    "positions_csv_byte_identical": true,
+    "evaluation_cycles": 2540
+  },
+  "cli_help": [
+    "drone_uwb.preimu.runner",
+    "drone_uwb.processing.runner",
+    "uwb_static_a"
+  ],
+  "not_run": [
+    "live_serial_capture",
+    "hardware_flight",
+    "synchronized_uwb_tof_attitude"
+  ],
+  "external_output_enabled": false
+}

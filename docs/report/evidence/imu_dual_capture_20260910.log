@@ -1,0 +1,241 @@
+ver all
+HW arch: PX4_FMU_V6C
+HW type: V6C002002
+HW version: 0x002
+HW revision: 0x002
+PX4 git-hash: 6ea3539157ca358c70a515878b77077af7d4611d
+PX4 version: Release 1.16.0 (17826047)
+OS: NuttX
+OS version: Release 11.0.0 (184549631)
+OS git-hash: 886acbbdb4f061e5c0ce1a76afbcfa7cb7df9849
+Build datetime: Aug  6 2025 15:07:26
+Build uri: localhost
+Build variant: default
+Toolchain: GNU GCC, 9.3.1 20200408 (release)
+PX4GUID: 0006000000003132343830345119003d0027
+MCU: STM32H7[4|5]xxx, rev. V
+nsh> [Ksensors status
+selected gyro: 6684682 (0)
+validator: best: 0, prev best: 0, failsafe: NO (0 events)
+sensor #0, prio: 50, state: OK
+	val:   0.0025, lp:  -0.0003 mean dev:  -0.0000 RMS:   0.2632 conf:   1.0000
+	val:   0.0034, lp:  -0.0010 mean dev:   0.0000 RMS:   0.3082 conf:   1.0000
+	val:  -0.0077, lp:  -0.0095 mean dev:  -0.0000 RMS:   0.3201 conf:   1.0000
+sensor #1, prio: 50, state: OK
+	val:  -0.0004, lp:  -0.0003 mean dev:  -0.0000 RMS:   0.2614 conf:   1.0000
+	val:   0.0008, lp:   0.0004 mean dev:  -0.0000 RMS:   0.3149 conf:   1.0000
+	val:  -0.0030, lp:  -0.0028 mean dev:  -0.0000 RMS:   0.3208 conf:   1.0000
+
+selected accel: 6946826 (0)
+validator: best: 0, prev best: 0, failsafe: NO (0 events)
+sensor #0, prio: 50, state: OK
+	val:  -0.9596, lp:  -0.9754 mean dev:  -0.0001 RMS:   0.6893 conf:   1.0000
+	val:  -0.0392, lp:  -0.0401 mean dev:   0.0000 RMS:   1.7443 conf:   1.0000
+	val:  -9.7753, lp:  -9.7721 mean dev:  -0.0008 RMS:   0.9007 conf:   1.0000
+sensor #1, prio: 50, state: OK
+	val:  -0.9467, lp:  -0.9495 mean dev:  -0.0001 RMS:   0.7042 conf:   1.0000
+	val:  -0.1305, lp:  -0.1317 mean dev:   0.0000 RMS:   1.8168 conf:   1.0000
+	val:  -9.7573, lp:  -9.7558 mean dev:  -0.0011 RMS:   0.9359 conf:   1.0000
+
+[vehicle_magnetometer] selected MAG: 396321 (0)
+validator: best: 0, prev best: 0, failsafe: NO (0 events)
+sensor #0, prio: 50, state: OK
+	val:   0.0721, lp:   0.0736 mean dev:   0.0003 RMS:   0.0608 conf:   1.0000
+	val:  -0.1224, lp:  -0.1224 mean dev:   0.0001 RMS:   0.0214 conf:   1.0000
+	val:   0.1187, lp:   0.1169 mean dev:  -0.0004 RMS:   0.0254 conf:   1.0000
+MAG 396321 EN: 1, offset: [0.201 0.255 -0.254], scale: [0.993 0.995 1.012], Internal
+
+[vehicle_air_data] selected BARO: 4028193 (0)
+validator: best: 0, prev best: 0, failsafe: NO (0 events)
+sensor #0, prio: 50, state: OK
+	val: 101020.0000, lp: 101021.5938 mean dev:  -0.0536 RMS:   2.3807 conf:   1.0000
+	val:  36.1700, lp:  36.1882 mean dev:   0.0062 RMS:   0.0128 conf:   1.0000
+	val:  25.0915, lp:  25.2984 mean dev:  -0.0034 RMS:   0.1987 conf:   1.0000
+BARO 4028193 EN: 1, offset: 0.000, Internal
+
+Airspeed status:
+	no data
+
+[vehicle_acceleration] selected sensor: 6946826, rate: 805.6 Hz, estimated bias: [0.0131 -0.0632 -0.0186]
+ACC 6946826 EN: 1, offset: [-0.022 0.022 0.081], scale: [1.000 1.000 1.000], Internal
+
+[vehicle_angular_velocity] selected sensor: 6684682, rate: 1979.8 Hz FIFO, estimated bias: [-0.00053 -0.00123 -0.01172]
+GYRO 6684682 EN: 1, offset: [-0.001 0.001 0.009], Internal
+vehicle_angular_velocity: gyro filter: 1928505 events, 21957824us elapsed, 11.39us avg, min 9us max 131us 0.802us rms
+vehicle_angular_velocity: gyro filter reset: 2 events
+vehicle_angular_velocity: gyro selection changed: 2 events
+
+[vehicle_gps_position] selected GPS: 0
+
+
+[vehicle_imu] 0 - Accel: 6946826, interval: 1246.7 us (SD 0.6 us), Gyro: 6684682, interval: 1500.3 us (SD 29.5 us)
+vehicle_imu: accel data gap: 1 events
+vehicle_imu: gyro data gap: 1 events
+ACC 6946826 EN: 1, offset: [-0.022 0.022 0.081], scale: [1.000 1.000 1.000], Internal
+GYRO 6684682 EN: 1, offset: [-0.001 0.001 0.009], Internal
+
+[vehicle_imu] 1 - Accel: 2490378, interval: 1250.3 us (SD 0.7 us), Gyro: 2490378, interval: 1250.3 us (SD 0.7 us)
+vehicle_imu: accel data gap: 1 events
+vehicle_imu: gyro data gap: 1 events
+ACC 2490378 EN: 1, offset: [0.085 0.126 -0.040], scale: [1.000 1.000 1.000], Internal
+GYRO 2490378 EN: 1, offset: [-0.010 -0.013 -0.000], Internal
+nsh> [Klistener sensor_selection -n 1
+
+TOPIC: sensor_selection
+ sensor_selection
+    timestamp: 612556 (2893.071045 seconds ago)
+    accel_device_id: 6946826 (Type: 0x6A, SPI:1 (0x00))
+    gyro_device_id: 6684682 (Type: 0x66, SPI:1 (0x00))
+nsh> [Klistener sensor_accel -n 1
+
+TOPIC: sensor_accel 2 instances
+
+Instance 0:
+ sensor_accel
+    timestamp: 2893865833 (0.000965 seconds ago)
+    timestamp_sample: 2893865790 (43 us before timestamp)
+    device_id: 6946826 (Type: 0x6A, SPI:1 (0x00))
+    x: -0.13826
+    y: 0.20290
+    z: -9.76834
+    temperature: 33.87500
+    error_count: 0
+    clip_counter: [0, 0, 0]
+    samples: 2
+
+
+Instance 1:
+ sensor_accel
+    timestamp: 2893879105 (0.000735 seconds ago)
+    timestamp_sample: 2893879005 (100 us before timestamp)
+    device_id: 2490378 (Type: 0x26, SPI:1 (0x00))
+    x: 0.00502
+    y: 0.16424
+    z: -9.84089
+    temperature: 35.66425
+    error_count: 0
+    clip_counter: [0, 0, 0]
+    samples: 10
+
+nsh> [Klistener sensor_gyro -n 1
+
+TOPIC: sensor_gyro 2 instances
+
+Instance 0:
+ sensor_gyro
+    timestamp: 2893958387 (0.001284 seconds ago)
+    timestamp_sample: 2893958290 (97 us before timestamp)
+    device_id: 6684682 (Type: 0x66, SPI:1 (0x00))
+    x: 0.00071
+    y: -0.00390
+    z: 0.01420
+    temperature: nan
+    error_count: 0
+    clip_counter: [0, 0, 0]
+    samples: 3
+
+
+Instance 1:
+ sensor_gyro
+    timestamp: 2893971621 (0.001184 seconds ago)
+    timestamp_sample: 2893971530 (91 us before timestamp)
+    device_id: 2490378 (Type: 0x26, SPI:1 (0x00))
+    x: -0.01033
+    y: -0.01273
+    z: -0.00338
+    temperature: 35.74879
+    error_count: 0
+    clip_counter: [0, 0, 0]
+    samples: 10
+
+nsh> [Klistener vehicle_imu -n 1
+
+TOPIC: vehicle_imu 2 instances
+
+Instance 0:
+ vehicle_imu
+    timestamp: 2893988438 (0.004314 seconds ago)
+    timestamp_sample: 2893988295 (143 us before timestamp)
+    accel_device_id: 6946826 (Type: 0x6A, SPI:1 (0x00))
+    gyro_device_id: 6684682 (Type: 0x66, SPI:1 (0x00))
+    delta_angle: [-0.00002, -0.00001, -0.00005]
+    delta_velocity: [-0.00478, -0.00023, -0.04879]
+    delta_angle_dt: 6001
+    delta_velocity_dt: 4987
+    delta_angle_clipping: 0
+    delta_velocity_clipping: 0
+    accel_calibration_count: 1
+    gyro_calibration_count: 1
+
+
+Instance 1:
+ vehicle_imu
+    timestamp: 2894012975 (0.001788 seconds ago)
+    timestamp_sample: 2894012791 (184 us before timestamp)
+    accel_device_id: 2490378 (Type: 0x26, SPI:1 (0x00))
+    gyro_device_id: 2490378 (Type: 0x26, SPI:1 (0x00))
+    delta_angle: [-0.00001, 0.00000, -0.00001]
+    delta_velocity: [-0.00476, -0.00067, -0.04877]
+    delta_angle_dt: 5001
+    delta_velocity_dt: 5001
+    delta_angle_clipping: 0
+    delta_velocity_clipping: 0
+    accel_calibration_count: 1
+    gyro_calibration_count: 1
+
+nsh> [KCAPTURE_STARTED: both sensor instances, 60 seconds, alternating accel/gyro snapshots
+CAPTURE_PROGRESS_SECONDS 15.0002
+CAPTURE_PROGRESS_SECONDS 30.0047
+CAPTURE_PROGRESS_SECONDS 45.0763
+listener vehicle_imu_status -n 1
+
+TOPIC: vehicle_imu_status 2 instances
+
+Instance 0:
+ vehicle_imu_status
+    timestamp: 2953949950 (0.096805 seconds ago)
+    accel_device_id: 6946826 (Type: 0x6A, SPI:1 (0x00))
+    gyro_device_id: 6684682 (Type: 0x66, SPI:1 (0x00))
+    accel_clipping: [0, 0, 0]
+    gyro_clipping: [0, 0, 0]
+    accel_error_count: 0
+    gyro_error_count: 0
+    accel_rate_hz: 802.22437
+    gyro_rate_hz: 666.56293
+    accel_raw_rate_hz: 1604.44873
+    gyro_raw_rate_hz: 1999.68872
+    accel_vibration_metric: 0.04014
+    gyro_vibration_metric: 0.00852
+    delta_angle_coning_metric: 0.00000
+    mean_accel: [-0.99365, -0.02001, -9.69044]
+    mean_gyro: [-0.00077, 0.00036, 0.00044]
+    var_accel: [0.00090, 0.00082, 0.00106]
+    var_gyro: [0.00010, 0.00022, 0.00016]
+    temperature_accel: 33.50000
+    temperature_gyro: nan
+
+
+Instance 1:
+ vehicle_imu_status
+    timestamp: 2954018807 (0.062051 seconds ago)
+    accel_device_id: 2490378 (Type: 0x26, SPI:1 (0x00))
+    gyro_device_id: 2490378 (Type: 0x26, SPI:1 (0x00))
+    accel_clipping: [0, 28, 5]
+    gyro_clipping: [0, 0, 0]
+    accel_error_count: 0
+    gyro_error_count: 0
+    accel_rate_hz: 799.79193
+    gyro_rate_hz: 799.79193
+    accel_raw_rate_hz: 7997.91895
+    gyro_raw_rate_hz: 7997.91895
+    accel_vibration_metric: 0.01735
+    gyro_vibration_metric: 0.00109
+    delta_angle_coning_metric: 0.00000
+    mean_accel: [-0.86902, -0.00702, -9.80509]
+    mean_gyro: [-0.01044, -0.01291, -0.00168]
+    var_accel: [0.00007, 0.00015, 0.00018]
+    var_gyro: [0.00000, 0.00000, 0.00000]
+    temperature_accel: 35.25090
+    temperature_gyro: 35.25090
+
+nsh> [KDONE queries=608, output="/home/user/drone_ws/docs/report/evidence/imu_dual_raw_20260910_60s"

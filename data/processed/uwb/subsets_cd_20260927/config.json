@@ -1,0 +1,71 @@
+{
+  "scope": "offline_static_subset_comparison",
+  "target_mode": "reference_slant",
+  "tag_id": "5",
+  "firmware": "uwb-tag-for-jetson-v1.8-raw-xy",
+  "files": {
+    "calibration_raw": {
+      "path": "data/raw/uwb/uwb_static_20260906_161636/received.jsonl",
+      "sha256": "823ed62d07d7408e841f4de7c07b67854aa0d18d650c47509fd565aadfdc2bc2"
+    },
+    "evaluation_raw": {
+      "path": "data/raw/uwb/uwb_static_20260906_170938/received.jsonl",
+      "sha256": "5ee6df9ce510bb98a781a6548997aa7f3403506a5f0a67a981cada61051ff466"
+    },
+    "evaluation_metadata": {
+      "path": "data/raw/uwb/uwb_static_20260906_170938/metadata.json",
+      "sha256": "3d57ee908977ab6fe9e1b1b25d494443864db2501070d79b4458cd733eb732d2"
+    },
+    "excursion_annotation": {
+      "path": "data/processed/uwb/uwb_static_20260906_170938/range_excursions.json",
+      "sha256": "ad66c24443dc1568017b9394e62d366e047805e8c541fd9cf1129d060cd648ce"
+    },
+    "anchors": {
+      "path": "src/drone_uwb/config/anchors_20260906.json",
+      "sha256": "0ec5124ceba41e686d8eeb5ce2df391cb6dbef258dd4861697d889bd18a58e92"
+    },
+    "locked_calibration": {
+      "path": "docs/report/evidence/baseline_a_static_20260926/calibration.json",
+      "sha256": "460d94899a6ac93f1a59f0342208362006c5ad9bcbdaa9b9c3d4eba3b11b3305"
+    },
+    "prior_AB_results": {
+      "path": "data/processed/uwb/h80_b_20260927/results.jsonl",
+      "sha256": "9978fb2f8a634fb02b8636f8a9352fc56e9421627fd3da18047e56909dc17604"
+    }
+  },
+  "A": {
+    "max_iterations": 40,
+    "step_tol_m": 1e-07,
+    "condition_max": 1000000.0
+  },
+  "B": {
+    "window_s": 0.8,
+    "min_samples_per_anchor": 3,
+    "min_samples_total": 12,
+    "required_anchor_count": 4,
+    "sigma_r_m": 0.08,
+    "huber_m": 0.12,
+    "h80_irls_iterations": 8,
+    "max_scaled_condition": 1000000.0,
+    "reset_gap_s": 0.15,
+    "max_extrapolation_s": 0.04,
+    "max_range_m": 80.0
+  },
+  "note": "C uniform4 and D strict_uniform4 declared before measured evaluation. All candidates required; no radius expansion, no extra gates, no same-flight UWB available for September 27 ULog. Preserve A/B results exactly.",
+  "models": [
+    "C",
+    "D"
+  ],
+  "C": {
+    "max_iterations": 40,
+    "step_tol_m": 1e-07,
+    "condition_max": 1000000.0
+  },
+  "D": {
+    "intersection_policy": "strict",
+    "tie_margin_m": 1e-06,
+    "min_horizontal_range_m": 0.0001,
+    "numeric_tolerance_m2": 1e-10,
+    "min_center_separation_m": 1e-06
+  }
+}

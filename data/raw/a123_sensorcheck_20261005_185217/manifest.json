@@ -1,0 +1,13 @@
+{
+  "stage": "sensor_check",
+  "reference_xyz_m": null,
+  "active_anchors": [
+    "A1",
+    "A2",
+    "A3"
+  ],
+  "fc_output_enabled": false,
+  "flight_test": false,
+  "planned_seconds": 60.0,
+  "start_kst": "2026-10-05T18:52:18.754822+09:00"
+}

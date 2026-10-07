@@ -1,0 +1,468 @@
+{
+  "utc": "2026-09-06T08:51:47.514693+00:00",
+  "duration_s": 40.018143087,
+  "body_x_along_a1_a3_user_confirmed": false,
+  "parameters": {
+    "EKF2_EV_CTRL": 0,
+    "EKF2_EV_DELAY": 0.0,
+    "EKF2_EV_NOISE_MD": 0,
+    "EKF2_EVP_NOISE": 0.10000000149011612,
+    "EKF2_MAG_TYPE": 0,
+    "SENS_BOARD_ROT": 0,
+    "EKF2_EV_POS_X": 0.0,
+    "EKF2_EV_POS_Y": 0.0,
+    "EKF2_EV_POS_Z": 0.0
+  },
+  "topics": {
+    "/mavros/state": {
+      "count": 40,
+      "rate_over_window_hz": 0.9995466284639806,
+      "rate_between_first_last_hz": 1.000005088564355,
+      "median_gap_ms": 999.948308,
+      "max_gap_ms": 1007.9929089999999,
+      "gaps_over_twice_median": 0
+    },
+    "/mavros/imu/data_raw": {
+      "count": 1980,
+      "rate_over_window_hz": 49.47755810896704,
+      "rate_between_first_last_hz": 49.99969139654849,
+      "median_gap_ms": 20.406247999999998,
+      "max_gap_ms": 82.403422,
+      "gaps_over_twice_median": 2
+    },
+    "/mavros/imu/data": {
+      "count": 1979,
+      "rate_over_window_hz": 49.45256944325544,
+      "rate_between_first_last_hz": 50.00304380636577,
+      "median_gap_ms": 20.3537275,
+      "max_gap_ms": 81.871566,
+      "gaps_over_twice_median": 4
+    },
+    "/mavros/local_position/odom": {
+      "count": 1187,
+      "rate_over_window_hz": 29.661546199668624,
+      "rate_between_first_last_hz": 30.000071345532238,
+      "median_gap_ms": 33.166257,
+      "max_gap_ms": 66.143831,
+      "gaps_over_twice_median": 0
+    },
+    "/scan": {
+      "count": 0,
+      "rate_over_window_hz": 0.0,
+      "rate_between_first_last_hz": null,
+      "median_gap_ms": null,
+      "max_gap_ms": null,
+      "gaps_over_twice_median": 0
+    },
+    "/uwb_pose": {
+      "count": 1630,
+      "rate_over_window_hz": 40.73152510990721,
+      "rate_between_first_last_hz": 42.323696956037516,
+      "median_gap_ms": 22.379984,
+      "max_gap_ms": 78.022179,
+      "gaps_over_twice_median": 42
+    },
+    "/uwb/status": {
+      "count": 39,
+      "rate_over_window_hz": 0.974557962752381,
+      "rate_between_first_last_hz": 1.000001195159323,
+      "median_gap_ms": 1000.0642055,
+      "max_gap_ms": 1005.417061,
+      "gaps_over_twice_median": 0
+    },
+    "/uwb/bridge_status": {
+      "count": 39,
+      "rate_over_window_hz": 0.974557962752381,
+      "rate_between_first_last_hz": 0.99989286976759,
+      "median_gap_ms": 1000.0686089999999,
+      "max_gap_ms": 1004.1285849999999,
+      "gaps_over_twice_median": 0
+    },
+    "/mavros/vision_pose/pose_cov": {
+      "count": 0,
+      "rate_over_window_hz": 0.0,
+      "rate_between_first_last_hz": null,
+      "median_gap_ms": null,
+      "max_gap_ms": null,
+      "gaps_over_twice_median": 0
+    }
+  },
+  "last_messages": {
+    "/uwb_pose": {
+      "header": {
+        "stamp": {
+          "sec": 1788684706,
+          "nanosec": 129095680
+        },
+        "frame_id": "uwb_map"
+      },
+      "pose": {
+        "pose": {
+          "position": {
+            "x": 1.9595403490127559,
+            "y": 1.8748651225756652,
+            "z": 0.0
+          },
+          "orientation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 1.0
+          }
+        },
+        "covariance": [
+          0.09824845192028478,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.09824845192028478,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1000000.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1000000.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1000000.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1000000.0
+        ]
+      }
+    },
+    "/mavros/imu/data_raw": {
+      "header": {
+        "stamp": {
+          "sec": 1788684707,
+          "nanosec": 507276816
+        },
+        "frame_id": "base_link"
+      },
+      "orientation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+      },
+      "orientation_covariance": [
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "angular_velocity": {
+        "x": 0.001572192064486444,
+        "y": 0.0071912966668605804,
+        "z": 0.002142869867384433
+      },
+      "angular_velocity_covariance": [
+        1.2184696791468346e-07,
+        0.0,
+        0.0,
+        0.0,
+        1.2184696791468346e-07,
+        0.0,
+        0.0,
+        0.0,
+        1.2184696791468346e-07
+      ],
+      "linear_acceleration": {
+        "x": -0.8260287642478943,
+        "y": 0.09047300368547559,
+        "z": 9.78480052947998
+      },
+      "linear_acceleration_covariance": [
+        8.999999999999999e-08,
+        0.0,
+        0.0,
+        0.0,
+        8.999999999999999e-08,
+        0.0,
+        0.0,
+        0.0,
+        8.999999999999999e-08
+      ]
+    },
+    "/mavros/imu/data": {
+      "header": {
+        "stamp": {
+          "sec": 1788684707,
+          "nanosec": 483106816
+        },
+        "frame_id": "base_link"
+      },
+      "orientation": {
+        "x": 0.026143851145439854,
+        "y": -0.033250657351158196,
+        "z": -0.7007674019206726,
+        "w": -0.7121348877015516
+      },
+      "orientation_covariance": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "angular_velocity": {
+        "x": -0.003446357324719429,
+        "y": 0.005907280370593071,
+        "z": -0.0008455701172351845
+      },
+      "angular_velocity_covariance": [
+        1.2184696791468346e-07,
+        0.0,
+        0.0,
+        0.0,
+        1.2184696791468346e-07,
+        0.0,
+        0.0,
+        0.0,
+        1.2184696791468346e-07
+      ],
+      "linear_acceleration": {
+        "x": -0.7992516756057739,
+        "y": 0.08701824396848798,
+        "z": 9.750268936157227
+      },
+      "linear_acceleration_covariance": [
+        8.999999999999999e-08,
+        0.0,
+        0.0,
+        0.0,
+        8.999999999999999e-08,
+        0.0,
+        0.0,
+        0.0,
+        8.999999999999999e-08
+      ]
+    },
+    "/mavros/local_position/odom": {
+      "header": {
+        "stamp": {
+          "sec": 1788684707,
+          "nanosec": 477106816
+        },
+        "frame_id": "map"
+      },
+      "child_frame_id": "base_link",
+      "pose": {
+        "pose": {
+          "position": {
+            "x": 37.62081527709961,
+            "y": 47.97220230102539,
+            "z": 3.6757123470306396
+          },
+          "orientation": {
+            "x": 0.026144614727796858,
+            "y": -0.03325640018854006,
+            "z": -0.7007750621103894,
+            "w": -0.7121270589244407
+          }
+        },
+        "covariance": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "twist": {
+        "twist": {
+          "linear": {
+            "x": -0.0016306833577380817,
+            "y": 0.0008361059913404586,
+            "z": 0.0012385561185524585
+          },
+          "angular": {
+            "x": 0.0018979000160470605,
+            "y": 0.0004394130082800985,
+            "z": 0.0005890224128961563
+          }
+        },
+        "covariance": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "/uwb/status": {
+      "data": "{\"counts\": {\"json_messages\": 2548, \"cycles\": 2536, \"status_unavailable\": 96, \"status\": 12, \"warming_up\": 29, \"accepted\": 2411}, \"last_decision\": \"accepted\", \"connected\": true, \"cycle_age_s\": 0.00514856, \"watchdog_ok\": true, \"source_mode\": \"raw_ranges\", \"layout_id\": \"warehouse-irregular-z2p2-20260906\", \"frame_id\": \"uwb_map\", \"tag_status\": {\"type\": \"uwb_raw_status\", \"schema\": 1, \"event\": \"heartbeat\", \"tag_id\": \"5\", \"firmware\": \"uwb-tag-for-jetson-v1.8-raw-xy\", \"uwb_ready\": true, \"serial_baud\": 921600, \"anchor_count\": 4, \"anchor_order\": [\"A1\", \"A2\", \"A3\", \"A4\"], \"anchor_layout_id\": \"warehouse-5x4p5-z2p2-v2\", \"clock_domain\": \"esp32_monotonic_boot_us\", \"temporal_filter_applied\": false, \"raw_xy_method\": \"linear_ls_unfiltered_equal_anchor_z\", \"display_ready\": true, \"lora_ready\": true, \"lora_frequency_hz\": 915000000, \"lora_good_fix_period_ms\": 500, \"lora_bad_fix_period_ms\": 250}, \"timestamp_method\": \"approximate_mean_report_read_time\", \"timestamp_calibrated\": false, \"framing_overflows\": 0}"
+    },
+    "/mavros/state": {
+      "header": {
+        "stamp": {
+          "sec": 1788684707,
+          "nanosec": 438283005
+        },
+        "frame_id": ""
+      },
+      "connected": true,
+      "armed": false,
+      "guided": true,
+      "manual_input": false,
+      "mode": "AUTO.LOITER",
+      "system_status": 0
+    },
+    "/uwb/bridge_status": {
+      "data": "{\"gate\": \"disabled\", \"last_reason\": \"disabled\", \"published\": 0, \"rejected\": 2411, \"parameters\": {\"EKF2_EV_CTRL\": 0, \"EKF2_EV_DELAY\": 0.0, \"EKF2_EV_NOISE_MD\": 0}, \"settings\": {\"enabled\": false, \"alignment_confirmed\": false, \"timing_confirmed\": false, \"sensor_mount_confirmed\": false, \"enu_yaw_deg\": 0.0, \"enu_offset_x_m\": 0.0, \"enu_offset_y_m\": 0.0, \"expected_ev_delay_ms\": 0.0, \"source_frame\": \"uwb_map\", \"max_age_s\": 0.2, \"state_timeout_s\": 2.5}}"
+    }
+  },
+  "nodes": [
+    [
+      "uwb_px4_bridge",
+      "/"
+    ],
+    [
+      "mavros_node",
+      "/mavros"
+    ],
+    [
+      "mavros_router",
+      "/mavros"
+    ],
+    [
+      "mavros",
+      "/mavros"
+    ],
+    [
+      "transform_listener_impl_aaaaea913ce8",
+      "/mavros"
+    ],
+    [
+      "cmd",
+      "/mavros"
+    ],
+    [
+      "imu",
+      "/mavros"
+    ],
+    [
+      "local_position",
+      "/mavros"
+    ],
+    [
+      "param",
+      "/mavros"
+    ],
+    [
+      "sys",
+      "/mavros"
+    ],
+    [
+      "time",
+      "/mavros"
+    ],
+    [
+      "vision_pose",
+      "/mavros"
+    ],
+    [
+      "uwb_readonly_bench_probe",
+      "/"
+    ]
+  ],
+  "heading": {
+    "count": 1979,
+    "mean_yaw_enu_deg": 89.0965191495342,
+    "stddev_deg": 0.013811810339639762,
+    "span_deg": 0.05716686223054922,
+    "provisional_uwb_to_enu_rotation_deg": null,
+    "independently_verified": false
+  }
+}

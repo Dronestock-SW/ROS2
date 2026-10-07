@@ -1,0 +1,25 @@
+{
+  "title": "UWB·IMU 드론의 위치추정과 학습 제어",
+  "date": "2026-09-11",
+  "language": "ko",
+  "pages": 19,
+  "references": 28,
+  "validation": {
+    "text_extractable": true,
+    "all_pages_nonempty": true,
+    "margins_checked": true,
+    "fonts_embedded": true,
+    "workspace_build": "3 packages passed"
+  },
+  "research_limitations": [
+    "별도 학습 PC 사양 미확인",
+    "시뮬레이터 설치 및 실기 학습 미실시",
+    "정상 각도·보상 가중치 미확정"
+  ],
+  "sha256": {
+    "docs/report/uwb_imu_learning_guide_20260911.pdf": "ead13e065923d1bbefb1a83007b0a8883f614654dd0a3484a5690eaf45bb8c0a",
+    "docs/report/uwb_imu_learning_guide_20260911.md": "9f36410c3569ddc953b4d8d7a7e61492e1691d5282576fdf18778c36d11ae634",
+    "docs/report/uwb_imu_learning_guide_20260911.odt": "d848cbc1d6b1fd87c852a0bc7af295fc330d476a9deffbb09c8f55aa0ea73217",
+    "src/drone_uwb/tools/build_research_odt.py": "ca5e17aab02a2f70a0ea19572f17a595be5e241786a6c5a5c2447d62b62cdd80"
+  }
+}

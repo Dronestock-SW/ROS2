@@ -1,6 +1,63 @@
 # Dronestock-SW / ROS2 — 드론 자율이동 MVP
 
-웹 좌표 명령 기반 실드론 자율이동 (8주 WBS)
+드론 자율이동 저장소의 설치·실행 안내다. 작업을 시작할 때 읽는다.
+
+## 코드와 자료 찾기
+
+[단계별 위치표](docs/reference/repository_layout.md)에서 수정할 파일과 검증 방법을 찾는다.
+[모듈화 확인 기록](docs/report/repository_modularization_20261004.md)에 이동·검증 결과를 남겼다.
+
+| 작업 | 시작 위치 |
+|---|---|
+| UWB 수신·후보정·PX4 연결 | [drone_uwb](src/drone_uwb/README.md) |
+| 데모·임무·SITL 평가 | [drone_demo](src/drone_demo/README.md) |
+| 센서 실행·인쇄 마커 | [drone_bringup](src/drone_bringup/README.md) |
+| 플랫폼 수신·상태 전달 | [drone_platform_link](src/drone_platform_link/README.md) |
+| 기준·설계·실행 절차 | [문서 색인](docs/README.md) |
+| 측정 원본·계산 결과 | [자료 색인](data/README.md) |
+
+이전 모듈명과 문서·설정 경로는 호환용이다.
+새 작업은 위 색인의 실제 구현 경로에서 시작한다.
+
+## 현재 작업 상태
+
+- [4앵커 기본 실행 복원](docs/runbooks/uwb_four_anchor_restore_20261007.md):
+  A1~A4, `min_anchors=4`, `active_anchor_mask=15`.
+  Jetson 적용·빌드·134개 검사를 통과했다.
+  [장치 적용 기록](docs/report/uwb_jetson_sync_20261007.md)을 따른다.
+  실제 A4 응답과 정확도·비행 검증은 남아 있다.
+- [기능별 커밋·검증 정리](docs/report/uwb_commit_inventory_20261007.md):
+  실물 B_TF, 3앵커 진단, 4앵커 기본 실행과 보존 범위.
+
+- [A4 결측 시 3앵커 진단](docs/runbooks/uwb_a123_bench_20261005.md):
+  별도 시험 설정으로만 실행한다. 기본 운영 설정이 아니다.
+- [3앵커 실측 기록](docs/report/uwb_a123_session_20261005.md):
+  A1 복구·P1 재측정. 기준점 차이의 원인 확인은 남아 있다.
+
+- [실물 B_TF 연결 결과](docs/report/uwb_btf_real_20261005.md):
+  실물 관측 계산과 60초 기록 2회. FC 전달·정확도 검증은 남아 있다.
+- [실물 B_TF 실행 절차](docs/runbooks/uwb_btf_real_bench.md):
+  네 앵커·하방 거리·자세를 받는 지상 관측 기록.
+
+기술 방향은 [로드맵](docs/roadmap.md)을 따른다.
+구 8주 WBS는 현재 기준이 아니다.
+
+현재 [앵커 배치](docs/reference/uwb_anchor_layout.md)는 x=6.3m, y=4.6m 직사각형이다.
+공용 데모의 가상 고도를 제거했다. ToF 실측 가능 상태와 연결 범위는
+[고도 원칙](docs/altitude_policy.md)을 따른다.
+
+- [위치 유지 참고 설정](docs/report/perfect_holdv2_20260927.md):
+  `data/raw/flight/20260927/perfect_holdv2.params` 원본과 27일 ULog 비교.
+- [27일 Position 위치 유지](docs/report/position_hold_20260927.md):
+  두 구간의 추종 오차·속도와 분석 도구.
+- [기본 설정 확인](docs/report/setup_status_20260921.md):
+  2026-09-21 `pgyxn` 계정·저장소·설치 상태.
+- [UWB 참고 자료와 코드 상태](docs/reference/uwb_h80_qs10_reference.md):
+  9월 20일 ZIP, 필터 기본값, 남은 연결 작업.
+- [문서 색인](docs/README.md): 기준·절차·확인 기록.
+
+기능 완료 때마다 관련 `docs/`를 함께 갱신한다.
+[에이전트 규칙](AGENTS.md)에 완료 조건을 명시했다.
 
 ## 접속 정보
 - Jetson Orin Nano (JetPack 6.2 / Ubuntu 22.04 / ROS2 Humble)
@@ -26,6 +83,23 @@ ros2 launch drone_bringup lidar.launch.py
 (`src/ydlidar_ros2_driver`)는 수정하지 않는다 — 제조사 새 버전과 충돌하고,
 별도 저장소라 우리 수정이 이 저장소에 기록되지 않기 때문이다.
 
+## Gazebo 가상 시험 — 2026-09-21
+
+Windows PC의 WSL에서 기본 가상 이착륙을 확인했다.
+Gazebo·PX4 SITL·Windows QGroundControl을 연결했다.
+하방 거리는 지상 0.17701m → 공중 2.52873m → 지상 0.17701m였다.
+UWB 연동은 HW팀 정비로 보류했다.
+
+| 문서 | 읽는 시점 |
+|---|---|
+| [WSL 재실행 절차](docs/runbooks/gazebo_wsl_runbook.md) | 터미널 구분·실행·QGroundControl 재연결 |
+| [기본 시험 결과](docs/report/gazebo_sitl_20260921.md) | 완료 범위·남은 검증 확인 |
+| [사용자 제공 출력](docs/report/evidence/gazebo_sitl_20260921_user_excerpt.md) | 결과의 근거와 수집 한계 확인 |
+| [9월 20일 준비 논의](docs/report/gazebo_preparation_20260920.md) | 센서 역할과 가상 시험 설계 검토 |
+
+이번 결과는 실물 비행이나 UWB 융합 완료를 뜻하지 않는다.
+실행 환경은 companion과 별도다.
+
 ## 브랜치 규칙
 현재는 1인 개발이라 main에 직접 push 한다. 리뷰할 사람이 없는 PR은 절차 비용만 남는다.
 
@@ -45,7 +119,7 @@ ros2 launch drone_bringup lidar.launch.py
 ## Topic 구조
 | Topic | 내용 |
 |---|---|
-| /uwb_pose | UWB 현재 위치 (x, y만 — z 없음) |
+| /uwb_pose | UWB 수평 위치 관측. z=0은 미관측 자리값 |
 | /target_pose | 웹에서 들어온 목표 좌표 |
 | /target_valid | 목표 좌표 허용/거부 |
 | /cmd_vel | 이동 명령 (x, y 속도) |
@@ -53,3 +127,9 @@ ros2 launch drone_bringup lidar.launch.py
 | /tfmini_range | TFmini 하방 거리 (고도) |
 | /safety_stop | 장애물 정지 신호 |
 | /flight_state | Pixhawk 상태 |
+
+## UWB 개발 자료
+
+[활용 데이터](data/README.md)와 [코드·자료 분류 기준](docs/architecture/uwb_data_layout.md)을 따른다.
+수신은 `acquisition/`, 보정은 `processing/`, ROS 연결은 `integration/`에 둔다.
+[모듈 입출력](docs/reference/uwb_module_api.md)과 [재실행 절차](docs/runbooks/uwb_data_runbook.md)를 참고한다.

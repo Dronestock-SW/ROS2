@@ -1,0 +1,227 @@
+{
+  "reviewed_at_utc": "2026-09-13T07:13:05.318022+00:00",
+  "zip_sha256": "5dd97e663e450d60b8a88ca00b79d9a950db5094cb07ee6863a65e96d24f528b",
+  "scope": "Pure Python branches and mock transports only; no hardware, server, or installed service calls",
+  "source_sha256": {
+    "tools/companion/__init__.py": "5c3b55c646deb2158bd8c2a9ae56eb9a45073ea75662666e36386152e870b225",
+    "tools/companion/app.py": "a5c94957cf3339ee5131e7ce31db1b67eaf03b7de01e1c7ed094a629ad619a71",
+    "tools/companion/config.py": "fcc32541bdff87a0675a23c62f55a1f466d1a6484b4d54b29ccd8c4b6c67cc8b",
+    "tools/companion/control/__init__.py": "b060c2e014b2e68b47c79608124614df16df05cb1dc5fccdf772bd386be47f69",
+    "tools/companion/control/altitude_controller.py": "5ba58ede688bd3a390c32bb8060c2edb178ea3df47b0b560b7bfc11883748047",
+    "tools/companion/control/backend.py": "0fe33c452c61febcbac4655c69a94a0bae611a16bc716e5168e0eb9f49af00f8",
+    "tools/companion/control/controller_manager.py": "f3369e1834c6350055eefc08377af5f6030749f7d18672da3e620fc50c21f916",
+    "tools/companion/control/landing_controller.py": "f518dad972538682def5818e8a17ad66aa2dac44d46dfd02c738e42f9c39af8b",
+    "tools/companion/control/rc_arbiter.py": "1917fce861cfba9855d817c67386954d07617604507cd7fe3ed04aed1d4ed925",
+    "tools/companion/control/takeoff_controller.py": "4b2d2e34d7de13320a3ed568d58c85bf1486fa3012a7d1cb137820fb34ef5a8a",
+    "tools/companion/control/xy_controller.py": "d4c08a09a716a3c3d99b922a39b06a16f853ada0f47b407547379445d668c585",
+    "tools/companion/deploy/check_pixhawk_uart.py": "c03dfe8a7bf6218277f75c4f6f0ace8343e2e167d5ef5f701f4a5c190a9a0b20",
+    "tools/companion/deploy/check_uwb_serial.py": "584b66069e575e848576bef8cb5b275df5612e6bb4e90a35d0610523dfc44744",
+    "tools/companion/estimation/__init__.py": "67aa6be18fee51fb1abc7f617ecb8c8698f1b8c8b36b5ea491391093c747acb4",
+    "tools/companion/estimation/current_z_resolver.py": "0619c3ba6838f7390f8eeca8e6c2f2f0e1baccbc401d61b7c2dfe0aee601d571",
+    "tools/companion/estimation/health_resolver.py": "2e4151e98773dadcc0539ef1eeb2bdf1cd7527d40e9a06bf3d37a10e9b0cce8c",
+    "tools/companion/estimation/sensor_snapshot.py": "2baafe03601fd81abbcd8e6864b70afdcf11c31c2a2d9076da5ce246b2d22078",
+    "tools/companion/estimation/uwb_pose_resolver.py": "80430dd63bd51b981a210560296d395da7cf02b61d1c98a55b493454a8fa2b60",
+    "tools/companion/io/__init__.py": "c0fb6adf507491fa56df6b676409a6f642507b2d12fc03d566064f3d8f4c797f",
+    "tools/companion/io/mpu6050_reader.py": "f4e4460b55ec885f7fb552a3a72d46da06ae15ec0d2e432328c9fca378769b81",
+    "tools/companion/io/offline_scan_buffer.py": "3ca44fb5ab8df5ac3b411170373a83ae5e6fac0ac547393a827602816a3825f9",
+    "tools/companion/io/pixhawk_mavlink.py": "8a671383b55c99760c5177b58c1de223d37ea538b324f3aba9cb0c750f80ff30",
+    "tools/companion/io/qr_camera_scanner.py": "e289ec2097f1c6322d03a3351b706596897b36ca1ba5c35e4ed2dbaf2906c495",
+    "tools/companion/io/qr_decoder.py": "db36bfea4fccabe403b28865495fd9d8d63abba1042e10de39ac5808429e7b42",
+    "tools/companion/io/server_client.py": "fbaa9ec4626c07ad9010a1bf60d25593990996b523e720bbfd64e0aff340c359",
+    "tools/companion/io/tof10120_reader.py": "1f49dbf5e9b73b9115063d786a142feabbfdf4710657bc3fc5c934110a90fe8b",
+    "tools/companion/io/uwb_serial_reader.py": "711c7d69b42e1ee87c6107ca9b89712839ec6452f8a216ea925c9f488105b31a",
+    "tools/companion/logging/__init__.py": "a73dcb5c9e6db27f858e15e67c5183ff3248135d96b0fd546571279c7681f7f4",
+    "tools/companion/logging/event_logger.py": "875fe0b7cbc7d2ba5938bfafe16208f93d410789719d641f4070a536737af066",
+    "tools/companion/logging/flight_logger.py": "916b3ff65ab9189c7145545952acc4ff3347a63f42a2aa37a6bef534a43a8a0b",
+    "tools/companion/mission/__init__.py": "ebc277f3dfc7e02bb672db9e971dd2ad3c8feb0e6c7313b19a7f8c23dc264d52",
+    "tools/companion/mission/ai_tree.py": "a3924615bb91f815a5471ceed458ae317b4ac2d22cc7c5e978ce10af6c1a89c3",
+    "tools/companion/mission/launch_guard.py": "09baced04a3db50bf0c0262bc92dc2181f3f3be06c709ee55717fbfbceda52cd",
+    "tools/companion/mission/mission_fsm.py": "2e69651f5cf85b9cc1c08886caf39f238758784a0d461bcdbf03bf263a4a0e88",
+    "tools/companion/mission/route_manager.py": "386e4c26a938c8e5c9c864cf18e480e1cf3253ea798d0e6e217a0719cd2895b9",
+    "tools/companion/safety/__init__.py": "649d07ff0be500df1fb28ed5fa80b159042bd9be616fbf17f0158035c09cd431",
+    "tools/companion/safety/emergency_manager.py": "15e17df96b238b9886fa08a4d0625a980569f0e631b0160d82634da77e269439",
+    "tools/companion/safety/imu_safety_monitor.py": "78fee68f30f5a44dba577c0d1dde846a59fc30c504c0d1f1509fee18d7dca2f9",
+    "tools/companion/safety/sensor_failsafe.py": "929fb54a55f97beb87ba780c76cf46d6bef5a5fa7e318c2d887d4cdb79e0dc58",
+    "tools/companion/types.py": "489a31e35082a2f6e5daec9e531dec3f2516b1351e20cb0d1ae6e1fda3259742"
+  },
+  "checks": [
+    {
+      "name": "px4_mode_tuple_serialization",
+      "input": {
+        "mapping_shape": "(base_mode, custom_main_mode, custom_sub_mode)",
+        "transport": "mock uint32 pack"
+      },
+      "observed": {
+        "set_flight_mode_return": false
+      }
+    },
+    {
+      "name": "backend_name_fallback",
+      "input": {
+        "requested": [
+          "fc_guided",
+          "offboard",
+          "misspelled_mode"
+        ]
+      },
+      "observed": {
+        "all_normalized_to": "companion_rc"
+      }
+    },
+    {
+      "name": "inflight_HOLD",
+      "input": {
+        "initial_state": "MOVE_TO_WAYPOINT",
+        "status": "HOLD",
+        "target": [
+          1,
+          2,
+          1.2
+        ]
+      },
+      "observed": {
+        "state": "MOVE_TO_WAYPOINT",
+        "active_waypoint": "P1"
+      }
+    },
+    {
+      "name": "inflight_CANCEL",
+      "input": {
+        "initial_state": "MOVE_TO_WAYPOINT",
+        "status": "CANCEL",
+        "target": [
+          1,
+          2,
+          1.2
+        ]
+      },
+      "observed": {
+        "state": "MOVE_TO_WAYPOINT",
+        "active_waypoint": "P1"
+      }
+    },
+    {
+      "name": "inflight_revision_resets_index",
+      "input": {
+        "index": 1,
+        "revision_change": "r1 -> r2"
+      },
+      "observed": {
+        "index": 0
+      }
+    },
+    {
+      "name": "arrival_accepts_invalid_xy",
+      "input": {
+        "xy_control_usable": false,
+        "held_position": [
+          1,
+          2,
+          1.2
+        ],
+        "elapsed_s": 0.8
+      },
+      "observed": {
+        "inside_radius": true,
+        "complete": true,
+        "distance_m": 0.0,
+        "z_error_m": 0.0
+      }
+    },
+    {
+      "name": "xy_only_takeoff_cannot_complete",
+      "input": {
+        "xy_valid": true,
+        "imu_stable": true,
+        "uwb_z_usable": false
+      },
+      "observed": {
+        "complete_after_3s": false,
+        "complete_with_uwb_z_enabled": true
+      }
+    },
+    {
+      "name": "imu_abort_and_stale_sample",
+      "input": {
+        "roll_degrees": 18,
+        "alternate_input": "roll=0, usable=true, age_ms=10000"
+      },
+      "observed": {
+        "roll18_level": "EMERGENCY_CUT",
+        "stale_level": "OK"
+      }
+    },
+    {
+      "name": "landing_uses_untrusted_height",
+      "input": {
+        "state": "LAND",
+        "current_z_m": 0.05,
+        "current_z_trusted": false,
+        "z_control_usable": false
+      },
+      "observed": {
+        "state": "POWER_OFF",
+        "required_action": "DISARM"
+      }
+    },
+    {
+      "name": "backend_replaces_final_safety_output",
+      "input": {
+        "arbiter_throttle": 1000,
+        "xy_usable": false,
+        "current_z_m": null,
+        "old_tof_altitude": 0.2,
+        "tof_usable": false
+      },
+      "observed": {
+        "transmitted_throttle": 1500,
+        "reason": "external_nav_failed_neutral_hold"
+      }
+    },
+    {
+      "name": "fc_yaw_sent_back_as_external_observation",
+      "input": {
+        "fc_yaw_deg": 37
+      },
+      "observed": {
+        "x_m": 0,
+        "y_m": 0,
+        "z_m": -1.2,
+        "vx_mps": 0.0,
+        "vy_mps": 0.0,
+        "vz_mps": 0.0,
+        "yaw_deg": 37,
+        "quality": 100
+      }
+    },
+    {
+      "name": "dry_run_rc_still_requests_mode",
+      "input": {
+        "dry_run_rc": true,
+        "fc_mode": "POSCTL",
+        "armed": false
+      },
+      "observed": {
+        "mode_requests": [
+          "LOITER"
+        ]
+      }
+    },
+    {
+      "name": "same_uwb_sample_processed_again",
+      "input": {
+        "same_seq": 2,
+        "same_measured_x": 0.3,
+        "ticks": [
+          10.05,
+          10.1
+        ]
+      },
+      "observed": {
+        "x_first": 0.084,
+        "x_second": 0.18595199999999923,
+        "both_usable": true
+      }
+    }
+  ]
+}

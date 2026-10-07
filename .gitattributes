@@ -1,0 +1,4 @@
+# Preserve recorded bytes and archived evidence, including original line endings.
+data/** -text -whitespace
+perfect_holdv2.params -text -whitespace
+docs/report/evidence/position_hold_20260927/samples.csv -text -whitespace

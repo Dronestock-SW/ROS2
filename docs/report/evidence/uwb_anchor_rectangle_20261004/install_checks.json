@@ -1,0 +1,36 @@
+{
+  "cwd": "/tmp",
+  "installed_anchor_file": "/home/pgyxn/github/ROS2/install/drone_uwb/share/drone_uwb/config/anchors/anchors_20261004.json",
+  "source_and_installed_bytes_equal": true,
+  "demo_default_layout_id": "warehouse-rectangle-6p3x4p6-z2p2-20261004",
+  "sha256": "159bb7327f7c822b60aad8325a0a80a2c08dfe69727f48cb3d581d0c16c27721",
+  "anchor_order": [
+    "A1",
+    "A2",
+    "A3",
+    "A4"
+  ],
+  "anchors_xyz_m": [
+    [
+      0.0,
+      0.0,
+      2.2
+    ],
+    [
+      6.3,
+      0.0,
+      2.2
+    ],
+    [
+      0.0,
+      4.6,
+      2.2
+    ],
+    [
+      6.3,
+      4.6,
+      2.2
+    ]
+  ],
+  "build": "2 packages finished; exit 0"
+}

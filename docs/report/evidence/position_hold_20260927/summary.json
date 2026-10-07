@@ -1,0 +1,1801 @@
+{
+  "schema": "position_hold_audit_v1",
+  "file": "log_23_2026-9-27-13-34-50.ulg",
+  "sha256": "896a3f021f0b2eb9fd943e7960e2add8dfff67bcfe15541c442fac175146690f",
+  "script_sha256": "f1905a71ee02a2ecde7263dcabf46ff23c0d5ad02d8a3dc0b721c519ff4386a1",
+  "version": "v1.17.0",
+  "metadata": {
+    "ver_hw": "PX4_FMU_V6C",
+    "ver_sw": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+    "sys_os_name": "NuttX"
+  },
+  "origin_timestamp_us": 21124593,
+  "duration_s": 70.908608,
+  "logged_dropout_count": 0,
+  "analysis_settings": {
+    "setpoint_max_age_s": 0.25,
+    "manual_max_age_s": 0.4,
+    "state_max_age_s": 1.5,
+    "neutral_xy_stick_limit": 0.05,
+    "fixed_target_span_limit_m": 0.001,
+    "candidate_min_coverage": 0.95
+  },
+  "statistics_weighting": "per_logged_sample",
+  "ground_truth_available": false,
+  "sensor_models_confirmed": false,
+  "mode_segments": [
+    {
+      "start_s": 0.026738,
+      "end_s": 20.124232,
+      "duration_s": 20.097493999999998,
+      "nav_state": 1,
+      "mode": "ALTCTL"
+    },
+    {
+      "start_s": 20.124232,
+      "end_s": 27.685214,
+      "duration_s": 7.560981999999999,
+      "nav_state": 2,
+      "mode": "POSCTL"
+    },
+    {
+      "start_s": 27.685214,
+      "end_s": 31.480222,
+      "duration_s": 3.795008000000003,
+      "nav_state": 1,
+      "mode": "ALTCTL"
+    },
+    {
+      "start_s": 31.480222,
+      "end_s": 53.199202,
+      "duration_s": 21.71898,
+      "nav_state": 2,
+      "mode": "POSCTL"
+    },
+    {
+      "start_s": 53.199202,
+      "end_s": 70.908608,
+      "duration_s": 17.709406,
+      "nav_state": 1,
+      "mode": "ALTCTL"
+    }
+  ],
+  "position_windows": [
+    {
+      "start_s": 20.124232,
+      "end_s": 27.685214,
+      "duration_s": 7.560981999999999,
+      "nav_state": 2,
+      "mode": "POSCTL",
+      "local_position_samples": 75,
+      "qualified_samples": 74,
+      "qualified_fraction": 0.9866666666666667,
+      "error_m": {
+        "n": 74,
+        "mean": 0.04027120333982578,
+        "rms": 0.04262861190041656,
+        "p95": 0.06051539389647985,
+        "max": 0.06141369715105946
+      },
+      "speed_m_s": {
+        "n": 74,
+        "mean": 0.0223962866155916,
+        "rms": 0.029188894188654533,
+        "p95": 0.06630149305455374,
+        "max": 0.10035432455093732
+      },
+      "target_median_xy_m": [
+        -0.2705358564853668,
+        0.21484717726707458
+      ],
+      "target_span_m": 0.0,
+      "xy_stick_abs": {
+        "n": 75,
+        "mean": 0.0020040469244122505,
+        "rms": 0.0020040469244122505,
+        "p95": 0.0020040469244122505,
+        "max": 0.0020040469244122505
+      },
+      "reset_changes": {
+        "xy_reset_counter": 0,
+        "vxy_reset_counter": 0,
+        "heading_reset_counter": 0
+      },
+      "position_hold_candidate": true,
+      "qualification_is_not_flight_acceptance": true,
+      "selected_estimator_aid": [
+        {
+          "topic": "estimator_aid_src_optical_flow",
+          "instance": 0,
+          "selected_samples": 15,
+          "fused_samples": 15,
+          "rejected_samples": 0,
+          "test_ratio": {
+            "n": 30,
+            "mean": 0.001190002855989055,
+            "rms": 0.0021084112122166897,
+            "p95": 0.004830022947862742,
+            "max": 0.007124934811145067
+          }
+        },
+        {
+          "topic": "estimator_aid_src_optical_flow",
+          "instance": 1,
+          "selected_samples": 0,
+          "fused_samples": 0,
+          "rejected_samples": 0,
+          "test_ratio": null
+        },
+        {
+          "topic": "estimator_aid_src_rng_hgt",
+          "instance": 0,
+          "selected_samples": 15,
+          "fused_samples": 15,
+          "rejected_samples": 0,
+          "test_ratio": {
+            "n": 15,
+            "mean": 4.655015710987124e-05,
+            "rms": 8.103772683668696e-05,
+            "p95": 0.00014922017071512513,
+            "max": 0.0002541513822507113
+          }
+        },
+        {
+          "topic": "estimator_aid_src_rng_hgt",
+          "instance": 1,
+          "selected_samples": 0,
+          "fused_samples": 0,
+          "rejected_samples": 0,
+          "test_ratio": null
+        }
+      ]
+    },
+    {
+      "start_s": 31.480222,
+      "end_s": 53.199202,
+      "duration_s": 21.71898,
+      "nav_state": 2,
+      "mode": "POSCTL",
+      "local_position_samples": 217,
+      "qualified_samples": 216,
+      "qualified_fraction": 0.9953917050691244,
+      "error_m": {
+        "n": 216,
+        "mean": 0.025911708267291937,
+        "rms": 0.027613559628951217,
+        "p95": 0.04104296897951804,
+        "max": 0.042976526220612175
+      },
+      "speed_m_s": {
+        "n": 216,
+        "mean": 0.02525133011318562,
+        "rms": 0.027610361730068797,
+        "p95": 0.043043962423699886,
+        "max": 0.05153481790486161
+      },
+      "target_median_xy_m": [
+        -0.18829815089702606,
+        0.12703418731689453
+      ],
+      "target_span_m": 0.0,
+      "xy_stick_abs": {
+        "n": 217,
+        "mean": 0.0020040469244122505,
+        "rms": 0.0020040469244122505,
+        "p95": 0.0020040469244122505,
+        "max": 0.0020040469244122505
+      },
+      "reset_changes": {
+        "xy_reset_counter": 0,
+        "vxy_reset_counter": 0,
+        "heading_reset_counter": 0
+      },
+      "position_hold_candidate": true,
+      "qualification_is_not_flight_acceptance": true,
+      "selected_estimator_aid": [
+        {
+          "topic": "estimator_aid_src_optical_flow",
+          "instance": 0,
+          "selected_samples": 44,
+          "fused_samples": 44,
+          "rejected_samples": 0,
+          "test_ratio": {
+            "n": 88,
+            "mean": 0.002119435414746301,
+            "rms": 0.006375433802234719,
+            "p95": 0.007520257285796095,
+            "max": 0.050893619656562805
+          }
+        },
+        {
+          "topic": "estimator_aid_src_optical_flow",
+          "instance": 1,
+          "selected_samples": 0,
+          "fused_samples": 0,
+          "rejected_samples": 0,
+          "test_ratio": null
+        },
+        {
+          "topic": "estimator_aid_src_rng_hgt",
+          "instance": 0,
+          "selected_samples": 43,
+          "fused_samples": 43,
+          "rejected_samples": 0,
+          "test_ratio": {
+            "n": 43,
+            "mean": 1.977618278339271e-05,
+            "rms": 3.87180149087188e-05,
+            "p95": 7.182787448982707e-05,
+            "max": 0.00015137139416765422
+          }
+        },
+        {
+          "topic": "estimator_aid_src_rng_hgt",
+          "instance": 1,
+          "selected_samples": 0,
+          "fused_samples": 0,
+          "rejected_samples": 0,
+          "test_ratio": null
+        }
+      ]
+    }
+  ],
+  "transitions": {
+    "vehicle_status": {
+      "arming_state": [
+        {
+          "time_s": 0.026738,
+          "value": 2.0,
+          "initial_sample": true
+        },
+        {
+          "time_s": 69.909833,
+          "value": 1.0,
+          "initial_sample": false
+        }
+      ],
+      "failsafe": [
+        {
+          "time_s": 0.026738,
+          "value": 0.0,
+          "initial_sample": true
+        }
+      ]
+    },
+    "vehicle_control_mode": {
+      "flag_control_manual_enabled": [
+        {
+          "time_s": 0.026737,
+          "value": 1.0,
+          "initial_sample": true
+        }
+      ],
+      "flag_control_offboard_enabled": [
+        {
+          "time_s": 0.026737,
+          "value": 0.0,
+          "initial_sample": true
+        }
+      ]
+    },
+    "vehicle_land_detected": {
+      "landed": [
+        {
+          "time_s": -0.077095,
+          "value": 0.0,
+          "initial_sample": true
+        },
+        {
+          "time_s": 70.259249,
+          "value": 1.0,
+          "initial_sample": false
+        }
+      ],
+      "ground_contact": [
+        {
+          "time_s": -0.077095,
+          "value": 0.0,
+          "initial_sample": true
+        },
+        {
+          "time_s": 58.672859,
+          "value": 1.0,
+          "initial_sample": false
+        },
+        {
+          "time_s": 62.641436,
+          "value": 0.0,
+          "initial_sample": false
+        },
+        {
+          "time_s": 70.259249,
+          "value": 1.0,
+          "initial_sample": false
+        }
+      ]
+    },
+    "vehicle_local_position": {
+      "xy_valid": [
+        {
+          "time_s": 0.109128,
+          "value": 1.0,
+          "initial_sample": true
+        }
+      ],
+      "v_xy_valid": [
+        {
+          "time_s": 0.109128,
+          "value": 1.0,
+          "initial_sample": true
+        }
+      ],
+      "heading_good_for_control": [
+        {
+          "time_s": 0.109128,
+          "value": 0.0,
+          "initial_sample": true
+        }
+      ]
+    },
+    "estimator_selector_status": {
+      "primary_instance": [
+        {
+          "time_s": 0.076276,
+          "value": 0.0,
+          "initial_sample": true
+        },
+        {
+          "time_s": 70.905356,
+          "value": 1.0,
+          "initial_sample": false
+        }
+      ]
+    },
+    "estimator_status_flags_0": {
+      "cs_opt_flow": [
+        {
+          "time_s": -0.446542,
+          "value": 1.0,
+          "initial_sample": true
+        },
+        {
+          "time_s": 70.867688,
+          "value": 0.0,
+          "initial_sample": false
+        }
+      ],
+      "cs_rng_hgt": [
+        {
+          "time_s": -0.446542,
+          "value": 1.0,
+          "initial_sample": true
+        }
+      ],
+      "cs_ev_pos": [
+        {
+          "time_s": -0.446542,
+          "value": 0.0,
+          "initial_sample": true
+        }
+      ],
+      "cs_gnss_pos": [
+        {
+          "time_s": -0.446542,
+          "value": 0.0,
+          "initial_sample": true
+        }
+      ],
+      "cs_mag_hdg": [
+        {
+          "time_s": -0.446542,
+          "value": 1.0,
+          "initial_sample": true
+        }
+      ],
+      "cs_yaw_align": [
+        {
+          "time_s": -0.446542,
+          "value": 1.0,
+          "initial_sample": true
+        }
+      ],
+      "cs_mag_aligned_in_flight": [
+        {
+          "time_s": -0.446542,
+          "value": 0.0,
+          "initial_sample": true
+        }
+      ]
+    },
+    "estimator_status_flags_1": {
+      "cs_opt_flow": [
+        {
+          "time_s": -0.448872,
+          "value": 1.0,
+          "initial_sample": true
+        }
+      ],
+      "cs_rng_hgt": [
+        {
+          "time_s": -0.448872,
+          "value": 1.0,
+          "initial_sample": true
+        }
+      ],
+      "cs_ev_pos": [
+        {
+          "time_s": -0.448872,
+          "value": 0.0,
+          "initial_sample": true
+        }
+      ],
+      "cs_gnss_pos": [
+        {
+          "time_s": -0.448872,
+          "value": 0.0,
+          "initial_sample": true
+        }
+      ],
+      "cs_mag_hdg": [
+        {
+          "time_s": -0.448872,
+          "value": 1.0,
+          "initial_sample": true
+        }
+      ],
+      "cs_yaw_align": [
+        {
+          "time_s": -0.448872,
+          "value": 1.0,
+          "initial_sample": true
+        }
+      ],
+      "cs_mag_aligned_in_flight": [
+        {
+          "time_s": -0.448872,
+          "value": 0.0,
+          "initial_sample": true
+        }
+      ]
+    }
+  },
+  "parameters": {
+    "COM_OBL_RC_ACT": 0,
+    "COM_OF_LOSS_T": 1.0,
+    "EKF2_EVA_NOISE": 0.10000000149011612,
+    "EKF2_EVP_GATE": 5.0,
+    "EKF2_EVP_NOISE": 0.10000000149011612,
+    "EKF2_EVV_GATE": 3.0,
+    "EKF2_EVV_NOISE": 0.10000000149011612,
+    "EKF2_EV_CTRL": 0,
+    "EKF2_EV_DELAY": 0.0,
+    "EKF2_EV_NOISE_MD": 0,
+    "EKF2_EV_POS_X": 0.0,
+    "EKF2_EV_POS_Y": 0.0,
+    "EKF2_EV_POS_Z": 0.0,
+    "EKF2_EV_QMIN": 0,
+    "EKF2_GPS_CTRL": 0,
+    "EKF2_HGT_REF": 0,
+    "EKF2_OF_CTRL": 1,
+    "EKF2_OF_DELAY": 20.0,
+    "EKF2_OF_GATE": 3.0,
+    "EKF2_OF_GYR_SRC": 0,
+    "EKF2_OF_N_MAX": 0.5,
+    "EKF2_OF_N_MIN": 0.15000000596046448,
+    "EKF2_OF_POS_X": 0.0,
+    "EKF2_OF_POS_Y": 0.0,
+    "EKF2_OF_POS_Z": 0.0,
+    "EKF2_OF_QMIN": 1,
+    "EKF2_OF_QMIN_GND": 0,
+    "EKF2_RNG_A_HMAX": 5.0,
+    "EKF2_RNG_A_VMAX": 2.0,
+    "EKF2_RNG_CTRL": 1,
+    "EKF2_RNG_DELAY": 5.0,
+    "EKF2_RNG_FOG": 1.0,
+    "EKF2_RNG_GATE": 5.0,
+    "EKF2_RNG_K_GATE": 1.0,
+    "EKF2_RNG_NOISE": 0.10000000149011612,
+    "EKF2_RNG_PITCH": 0.0,
+    "EKF2_RNG_POS_X": 0.0,
+    "EKF2_RNG_POS_Y": 0.0,
+    "EKF2_RNG_POS_Z": 0.0,
+    "EKF2_RNG_QLTY_T": 1.0,
+    "EKF2_RNG_SFE": 0.05000000074505806,
+    "MPC_ACC_DECOUPLE": 1,
+    "MPC_ACC_DOWN_MAX": 2.0,
+    "MPC_ACC_HOR": 1.0,
+    "MPC_ACC_HOR_MAX": 2.0,
+    "MPC_ACC_UP_MAX": 3.0,
+    "MPC_JERK_AUTO": 4.0,
+    "MPC_JERK_MAX": 2.0,
+    "MPC_POS_MODE": 0,
+    "MPC_VEL_MANUAL": 1.0,
+    "MPC_XY_CRUISE": 2.0,
+    "MPC_XY_ERR_MAX": 2.0,
+    "MPC_XY_P": 0.949999988079071,
+    "MPC_XY_TRAJ_P": 0.5,
+    "MPC_XY_VEL_ALL": -10.0,
+    "MPC_XY_VEL_D_ACC": 0.20000000298023224,
+    "MPC_XY_VEL_I_ACC": 0.4000000059604645,
+    "MPC_XY_VEL_MAX": 2.0,
+    "MPC_XY_VEL_P_ACC": 1.7999999523162842,
+    "SENS_EN_PMW3901": 0,
+    "SENS_EN_TF02PRO": 1,
+    "SYS_HITL": 0
+  },
+  "parameter_changes": [],
+  "messages": [
+    {
+      "time_s": -0.003204,
+      "message": "[logger] Start file log (type: full)"
+    },
+    {
+      "time_s": -0.001365,
+      "message": "[logger] [logger] /fs/microsd/log/2026-09-27/04_33_39.ulg\t"
+    },
+    {
+      "time_s": -0.001201,
+      "message": "[uavcan] Node ID 1, bitrate 1000000"
+    },
+    {
+      "time_s": -4e-06,
+      "message": "[logger] Opened full log file: /fs/microsd/log/2026-09-27/04_33_39.ulg"
+    },
+    {
+      "time_s": 60.327175,
+      "message": "[commander] Disarming denied: not landed\t"
+    },
+    {
+      "time_s": 63.331138,
+      "message": "[commander] Kill engaged\t"
+    },
+    {
+      "time_s": 63.419766,
+      "message": "[health_and_arming_checks] Preflight Fail: Flight termination active"
+    },
+    {
+      "time_s": 64.68436,
+      "message": "[commander] Kill disengaged\t"
+    },
+    {
+      "time_s": 64.893207,
+      "message": "[commander] Kill engaged\t"
+    },
+    {
+      "time_s": 65.509624,
+      "message": "[health_and_arming_checks] Preflight Fail: Flight termination active"
+    },
+    {
+      "time_s": 69.909136,
+      "message": "[commander] Disarmed by kill-switch\t"
+    },
+    {
+      "time_s": 69.909594,
+      "message": "[health_and_arming_checks] Preflight Fail: Kill switch engaged"
+    },
+    {
+      "time_s": 69.909771,
+      "message": "[health_and_arming_checks] Preflight Fail: Flight termination active"
+    }
+  ],
+  "inventory": [
+    {
+      "topic": "action_request",
+      "instance": 0,
+      "samples": 9,
+      "logged_gap_s": {
+        "n": 8,
+        "mean": 9.879851875,
+        "rms": 14.91177052854621,
+        "p95": 29.87043099999999,
+        "max": 34.259249
+      }
+    },
+    {
+      "topic": "actuator_armed",
+      "instance": 0,
+      "samples": 146,
+      "logged_gap_s": {
+        "n": 145,
+        "mean": 0.4854508,
+        "rms": 0.4927961132492688,
+        "p95": 0.5070018,
+        "max": 0.507304
+      }
+    },
+    {
+      "topic": "actuator_controls_status_0",
+      "instance": 0,
+      "samples": 142,
+      "logged_gap_s": {
+        "n": 141,
+        "mean": 0.5002442411347517,
+        "rms": 0.5002443181016014,
+        "p95": 0.500284,
+        "max": 0.502439
+      }
+    },
+    {
+      "topic": "actuator_motors",
+      "instance": 0,
+      "samples": 709,
+      "logged_gap_s": {
+        "n": 708,
+        "mean": 0.09986255367231638,
+        "rms": 0.09994503597759194,
+        "p95": 0.102191,
+        "max": 0.105105
+      }
+    },
+    {
+      "topic": "actuator_outputs",
+      "instance": 0,
+      "samples": 709,
+      "logged_gap_s": {
+        "n": 708,
+        "mean": 0.09986466384180791,
+        "rms": 0.09995017179401215,
+        "p95": 0.1022483,
+        "max": 0.103704
+      }
+    },
+    {
+      "topic": "actuator_outputs",
+      "instance": 1,
+      "samples": 1,
+      "logged_gap_s": null
+    },
+    {
+      "topic": "battery_status",
+      "instance": 0,
+      "samples": 355,
+      "logged_gap_s": {
+        "n": 354,
+        "mean": 0.19943492937853108,
+        "rms": 0.19969475532040745,
+        "p95": 0.200356,
+        "max": 0.210091
+      }
+    },
+    {
+      "topic": "can_interface_status",
+      "instance": 0,
+      "samples": 690,
+      "logged_gap_s": {
+        "n": 689,
+        "mean": 0.10200000145137882,
+        "rms": 0.1020001058116287,
+        "p95": 0.1022012,
+        "max": 0.102785
+      }
+    },
+    {
+      "topic": "can_interface_status",
+      "instance": 1,
+      "samples": 690,
+      "logged_gap_s": {
+        "n": 689,
+        "mean": 0.10200000145137879,
+        "rms": 0.10200010556113807,
+        "p95": 0.1022008,
+        "max": 0.102785
+      }
+    },
+    {
+      "topic": "config_overrides",
+      "instance": 0,
+      "samples": 141,
+      "logged_gap_s": {
+        "n": 140,
+        "mean": 0.5061000071428571,
+        "rms": 0.5061001625933419,
+        "p95": 0.5069982,
+        "max": 0.508003
+      }
+    },
+    {
+      "topic": "control_allocator_status",
+      "instance": 0,
+      "samples": 355,
+      "logged_gap_s": {
+        "n": 354,
+        "mean": 0.19944515536723162,
+        "rms": 0.19973048153118939,
+        "p95": 0.204338,
+        "max": 0.207295
+      }
+    },
+    {
+      "topic": "cpuload",
+      "instance": 0,
+      "samples": 143,
+      "logged_gap_s": {
+        "n": 142,
+        "mean": 0.499998823943662,
+        "rms": 0.4999988559873884,
+        "p95": 0.50031,
+        "max": 0.500564
+      }
+    },
+    {
+      "topic": "distance_sensor",
+      "instance": 0,
+      "samples": 71,
+      "logged_gap_s": {
+        "n": 70,
+        "mean": 0.9991765285714288,
+        "rms": 0.9998591035020528,
+        "p95": 1.0152461,
+        "max": 1.015298
+      }
+    },
+    {
+      "topic": "distance_sensor_mode_change_request",
+      "instance": 0,
+      "samples": 1,
+      "logged_gap_s": null
+    },
+    {
+      "topic": "estimator_aid_src_baro_hgt",
+      "instance": 0,
+      "samples": 141,
+      "logged_gap_s": {
+        "n": 140,
+        "mean": 0.49976061428571433,
+        "rms": 0.5004835131293965,
+        "p95": 0.5287075999999999,
+        "max": 0.534903
+      }
+    },
+    {
+      "topic": "estimator_aid_src_baro_hgt",
+      "instance": 1,
+      "samples": 141,
+      "logged_gap_s": {
+        "n": 140,
+        "mean": 0.49972688571428575,
+        "rms": 0.5004535838530454,
+        "p95": 0.52664605,
+        "max": 0.527241
+      }
+    },
+    {
+      "topic": "estimator_aid_src_fake_hgt",
+      "instance": 0,
+      "samples": 1,
+      "logged_gap_s": null
+    },
+    {
+      "topic": "estimator_aid_src_fake_hgt",
+      "instance": 1,
+      "samples": 1,
+      "logged_gap_s": null
+    },
+    {
+      "topic": "estimator_aid_src_fake_pos",
+      "instance": 0,
+      "samples": 1,
+      "logged_gap_s": null
+    },
+    {
+      "topic": "estimator_aid_src_fake_pos",
+      "instance": 1,
+      "samples": 3,
+      "logged_gap_s": {
+        "n": 2,
+        "mean": 39.430458,
+        "rms": 55.755650207074154,
+        "p95": 74.9084022,
+        "max": 78.850396
+      }
+    },
+    {
+      "topic": "estimator_aid_src_gravity",
+      "instance": 0,
+      "samples": 141,
+      "logged_gap_s": {
+        "n": 140,
+        "mean": 0.5000087642857143,
+        "rms": 0.5000403634860248,
+        "p95": 0.5092805499999999,
+        "max": 0.513182
+      }
+    },
+    {
+      "topic": "estimator_aid_src_gravity",
+      "instance": 1,
+      "samples": 141,
+      "logged_gap_s": {
+        "n": 140,
+        "mean": 0.5000105571428571,
+        "rms": 0.5000320922283603,
+        "p95": 0.50692775,
+        "max": 0.507832
+      }
+    },
+    {
+      "topic": "estimator_aid_src_mag",
+      "instance": 0,
+      "samples": 141,
+      "logged_gap_s": {
+        "n": 140,
+        "mean": 0.49993377857142857,
+        "rms": 0.5012764831113165,
+        "p95": 0.53781935,
+        "max": 0.545262
+      }
+    },
+    {
+      "topic": "estimator_aid_src_mag",
+      "instance": 1,
+      "samples": 141,
+      "logged_gap_s": {
+        "n": 140,
+        "mean": 0.49972880714285717,
+        "rms": 0.5010771063168322,
+        "p95": 0.53656405,
+        "max": 0.540193
+      }
+    },
+    {
+      "topic": "estimator_aid_src_optical_flow",
+      "instance": 0,
+      "samples": 141,
+      "logged_gap_s": {
+        "n": 140,
+        "mean": 0.5000287142857144,
+        "rms": 0.500127273921049,
+        "p95": 0.5167199,
+        "max": 0.522765
+      }
+    },
+    {
+      "topic": "estimator_aid_src_optical_flow",
+      "instance": 1,
+      "samples": 141,
+      "logged_gap_s": {
+        "n": 140,
+        "mean": 0.49993980714285724,
+        "rms": 0.5000314504320774,
+        "p95": 0.5167225,
+        "max": 0.517825
+      }
+    },
+    {
+      "topic": "estimator_aid_src_rng_hgt",
+      "instance": 0,
+      "samples": 141,
+      "logged_gap_s": {
+        "n": 140,
+        "mean": 0.49966605714285717,
+        "rms": 0.5004285773273459,
+        "p95": 0.51975715,
+        "max": 0.524018
+      }
+    },
+    {
+      "topic": "estimator_aid_src_rng_hgt",
+      "instance": 1,
+      "samples": 141,
+      "logged_gap_s": {
+        "n": 140,
+        "mean": 0.50029455,
+        "rms": 0.5009610621929256,
+        "p95": 0.5165976999999999,
+        "max": 0.516934
+      }
+    },
+    {
+      "topic": "estimator_attitude",
+      "instance": 0,
+      "samples": 141,
+      "logged_gap_s": {
+        "n": 140,
+        "mean": 0.4999972,
+        "rms": 0.500008976811474,
+        "p95": 0.5047393,
+        "max": 0.509239
+      }
+    },
+    {
+      "topic": "estimator_attitude",
+      "instance": 1,
+      "samples": 141,
+      "logged_gap_s": {
+        "n": 140,
+        "mean": 0.5000118357142858,
+        "rms": 0.5000178367916989,
+        "p95": 0.5018542500000001,
+        "max": 0.50675
+      }
+    },
+    {
+      "topic": "estimator_baro_bias",
+      "instance": 0,
+      "samples": 141,
+      "logged_gap_s": {
+        "n": 140,
+        "mean": 0.4997599714285714,
+        "rms": 0.5005573748789872,
+        "p95": 0.5287025,
+        "max": 0.5333
+      }
+    },
+    {
+      "topic": "estimator_baro_bias",
+      "instance": 1,
+      "samples": 141,
+      "logged_gap_s": {
+        "n": 140,
+        "mean": 0.5000802857142858,
+        "rms": 0.5008028828950426,
+        "p95": 0.5267488499999999,
+        "max": 0.527168
+      }
+    },
+    {
+      "topic": "estimator_event_flags",
+      "instance": 0,
+      "samples": 71,
+      "logged_gap_s": {
+        "n": 70,
+        "mean": 1.0071855285714286,
+        "rms": 1.007191409633293,
+        "p95": 1.0118325499999998,
+        "max": 1.013929
+      }
+    },
+    {
+      "topic": "estimator_event_flags",
+      "instance": 1,
+      "samples": 71,
+      "logged_gap_s": {
+        "n": 70,
+        "mean": 1.0038558142857137,
+        "rms": 1.003856605038197,
+        "p95": 1.0060211000000001,
+        "max": 1.010392
+      }
+    },
+    {
+      "topic": "estimator_innovation_test_ratios",
+      "instance": 0,
+      "samples": 141,
+      "logged_gap_s": {
+        "n": 140,
+        "mean": 0.49994447142857146,
+        "rms": 0.4999741628414841,
+        "p95": 0.5088913,
+        "max": 0.51215
+      }
+    },
+    {
+      "topic": "estimator_innovation_test_ratios",
+      "instance": 1,
+      "samples": 141,
+      "logged_gap_s": {
+        "n": 140,
+        "mean": 0.5000144785714286,
+        "rms": 0.5000358947696012,
+        "p95": 0.5069390500000001,
+        "max": 0.507345
+      }
+    },
+    {
+      "topic": "estimator_innovation_variances",
+      "instance": 0,
+      "samples": 141,
+      "logged_gap_s": {
+        "n": 140,
+        "mean": 0.50004095,
+        "rms": 0.5000657543632565,
+        "p95": 0.50781815,
+        "max": 0.512167
+      }
+    },
+    {
+      "topic": "estimator_innovation_variances",
+      "instance": 1,
+      "samples": 141,
+      "logged_gap_s": {
+        "n": 140,
+        "mean": 0.5000103357142857,
+        "rms": 0.5000321484101583,
+        "p95": 0.5070393,
+        "max": 0.508017
+      }
+    },
+    {
+      "topic": "estimator_innovations",
+      "instance": 0,
+      "samples": 141,
+      "logged_gap_s": {
+        "n": 140,
+        "mean": 0.49997716428571426,
+        "rms": 0.5000015068247651,
+        "p95": 0.50900495,
+        "max": 0.510851
+      }
+    },
+    {
+      "topic": "estimator_innovations",
+      "instance": 1,
+      "samples": 141,
+      "logged_gap_s": {
+        "n": 140,
+        "mean": 0.5000118857142858,
+        "rms": 0.5000330923046565,
+        "p95": 0.50699125,
+        "max": 0.507674
+      }
+    },
+    {
+      "topic": "estimator_local_position",
+      "instance": 0,
+      "samples": 141,
+      "logged_gap_s": {
+        "n": 140,
+        "mean": 0.5000082714285714,
+        "rms": 0.5000322808260768,
+        "p95": 0.5077456499999999,
+        "max": 0.512227
+      }
+    },
+    {
+      "topic": "estimator_local_position",
+      "instance": 1,
+      "samples": 141,
+      "logged_gap_s": {
+        "n": 140,
+        "mean": 0.5000124571428571,
+        "rms": 0.5000352987991232,
+        "p95": 0.50697305,
+        "max": 0.507064
+      }
+    },
+    {
+      "topic": "estimator_odometry",
+      "instance": 0,
+      "samples": 141,
+      "logged_gap_s": {
+        "n": 140,
+        "mean": 0.5000082785714286,
+        "rms": 0.5000360622224661,
+        "p95": 0.5089496,
+        "max": 0.510824
+      }
+    },
+    {
+      "topic": "estimator_odometry",
+      "instance": 1,
+      "samples": 141,
+      "logged_gap_s": {
+        "n": 140,
+        "mean": 0.5000110142857143,
+        "rms": 0.5000324336988122,
+        "p95": 0.5071009,
+        "max": 0.507435
+      }
+    },
+    {
+      "topic": "estimator_optical_flow_vel",
+      "instance": 0,
+      "samples": 355,
+      "logged_gap_s": {
+        "n": 354,
+        "mean": 0.19945007062146894,
+        "rms": 0.19997564406901253,
+        "p95": 0.21785345,
+        "max": 0.226834
+      }
+    },
+    {
+      "topic": "estimator_optical_flow_vel",
+      "instance": 1,
+      "samples": 355,
+      "logged_gap_s": {
+        "n": 354,
+        "mean": 0.19942965536723162,
+        "rms": 0.1998927443787431,
+        "p95": 0.21839955,
+        "max": 0.222502
+      }
+    },
+    {
+      "topic": "estimator_selector_status",
+      "instance": 0,
+      "samples": 75,
+      "logged_gap_s": {
+        "n": 74,
+        "mean": 0.9571497297297298,
+        "rms": 0.9787542663899694,
+        "p95": 1.0111239,
+        "max": 1.012396
+      }
+    },
+    {
+      "topic": "estimator_sensor_bias",
+      "instance": 0,
+      "samples": 70,
+      "logged_gap_s": {
+        "n": 69,
+        "mean": 0.9965473913043478,
+        "rms": 1.0104497947705828,
+        "p95": 1.2167038,
+        "max": 1.659799
+      }
+    },
+    {
+      "topic": "estimator_sensor_bias",
+      "instance": 1,
+      "samples": 70,
+      "logged_gap_s": {
+        "n": 69,
+        "mean": 1.0009765942028988,
+        "rms": 1.0119821640095845,
+        "p95": 1.2081248,
+        "max": 1.619819
+      }
+    },
+    {
+      "topic": "estimator_states",
+      "instance": 0,
+      "samples": 141,
+      "logged_gap_s": {
+        "n": 140,
+        "mean": 0.4999631500000001,
+        "rms": 0.4999900493935069,
+        "p95": 0.50901695,
+        "max": 0.512445
+      }
+    },
+    {
+      "topic": "estimator_states",
+      "instance": 1,
+      "samples": 141,
+      "logged_gap_s": {
+        "n": 140,
+        "mean": 0.4999381714285714,
+        "rms": 0.49995982183238624,
+        "p95": 0.5070560999999999,
+        "max": 0.507613
+      }
+    },
+    {
+      "topic": "estimator_status",
+      "instance": 0,
+      "samples": 355,
+      "logged_gap_s": {
+        "n": 354,
+        "mean": 0.1994410762711864,
+        "rms": 0.19977494042147517,
+        "p95": 0.20879955,
+        "max": 0.212213
+      }
+    },
+    {
+      "topic": "estimator_status",
+      "instance": 1,
+      "samples": 355,
+      "logged_gap_s": {
+        "n": 354,
+        "mean": 0.19942876271186438,
+        "rms": 0.19971132686716894,
+        "p95": 0.20867905,
+        "max": 0.209154
+      }
+    },
+    {
+      "topic": "estimator_status_flags",
+      "instance": 0,
+      "samples": 88,
+      "logged_gap_s": {
+        "n": 87,
+        "mean": 0.8197037931034482,
+        "rms": 0.8953676548276486,
+        "p95": 1.0119905,
+        "max": 1.014329
+      }
+    },
+    {
+      "topic": "estimator_status_flags",
+      "instance": 1,
+      "samples": 108,
+      "logged_gap_s": {
+        "n": 107,
+        "mean": 0.6625783271028036,
+        "rms": 0.7901682492701797,
+        "p95": 1.0070816999999999,
+        "max": 1.010056
+      }
+    },
+    {
+      "topic": "event",
+      "instance": 0,
+      "samples": 39,
+      "logged_gap_s": {
+        "n": 38,
+        "mean": 2.106821605263159,
+        "rms": 9.93574109421222,
+        "p95": 5.262132749999992,
+        "max": 60.14883
+      }
+    },
+    {
+      "topic": "failsafe_flags",
+      "instance": 0,
+      "samples": 131,
+      "logged_gap_s": {
+        "n": 130,
+        "mean": 0.5413845538461538,
+        "rms": 0.5443817971625317,
+        "p95": 0.5510373,
+        "max": 0.605082
+      }
+    },
+    {
+      "topic": "failure_detector_status",
+      "instance": 0,
+      "samples": 146,
+      "logged_gap_s": {
+        "n": 145,
+        "mean": 0.4854508137931034,
+        "rms": 0.4927961398793483,
+        "p95": 0.5070018,
+        "max": 0.507303
+      }
+    },
+    {
+      "topic": "home_position",
+      "instance": 0,
+      "samples": 1,
+      "logged_gap_s": null
+    },
+    {
+      "topic": "hover_thrust_estimate",
+      "instance": 0,
+      "samples": 403,
+      "logged_gap_s": {
+        "n": 402,
+        "mean": 0.0997456144278607,
+        "rms": 0.0999860028807142,
+        "p95": 0.11100259999999999,
+        "max": 0.112651
+      }
+    },
+    {
+      "topic": "input_rc",
+      "instance": 0,
+      "samples": 141,
+      "logged_gap_s": {
+        "n": 140,
+        "mean": 0.4999912214285714,
+        "rms": 0.499999383902499,
+        "p95": 0.5041535500000001,
+        "max": 0.509001
+      }
+    },
+    {
+      "topic": "landing_gear",
+      "instance": 0,
+      "samples": 1,
+      "logged_gap_s": null
+    },
+    {
+      "topic": "magnetometer_bias_estimate",
+      "instance": 0,
+      "samples": 3,
+      "logged_gap_s": {
+        "n": 2,
+        "mean": 42.5200905,
+        "rms": 60.11835030701469,
+        "p95": 80.77017465,
+        "max": 85.020184
+      }
+    },
+    {
+      "topic": "manual_control_setpoint",
+      "instance": 0,
+      "samples": 355,
+      "logged_gap_s": {
+        "n": 354,
+        "mean": 0.1991486694915254,
+        "rms": 0.21039772056510386,
+        "p95": 0.3197774,
+        "max": 0.380395
+      }
+    },
+    {
+      "topic": "manual_control_switches",
+      "instance": 0,
+      "samples": 74,
+      "logged_gap_s": {
+        "n": 73,
+        "mean": 0.9575205479452055,
+        "rms": 0.9751436599089122,
+        "p95": 1.020203,
+        "max": 1.020548
+      }
+    },
+    {
+      "topic": "navigator_status",
+      "instance": 0,
+      "samples": 141,
+      "logged_gap_s": {
+        "n": 140,
+        "mean": 0.50468675,
+        "rms": 0.5053702223434462,
+        "p95": 0.5196752,
+        "max": 0.557165
+      }
+    },
+    {
+      "topic": "parameter_update",
+      "instance": 0,
+      "samples": 1,
+      "logged_gap_s": null
+    },
+    {
+      "topic": "position_setpoint_triplet",
+      "instance": 0,
+      "samples": 1,
+      "logged_gap_s": null
+    },
+    {
+      "topic": "px4io_status",
+      "instance": 0,
+      "samples": 72,
+      "logged_gap_s": {
+        "n": 71,
+        "mean": 0.9840907605633802,
+        "rms": 0.9915419579935679,
+        "p95": 1.0065404999999998,
+        "max": 1.006561
+      }
+    },
+    {
+      "topic": "rate_ctrl_status",
+      "instance": 0,
+      "samples": 355,
+      "logged_gap_s": {
+        "n": 354,
+        "mean": 0.19943653389830507,
+        "rms": 0.19971556345665886,
+        "p95": 0.202796,
+        "max": 0.204341
+      }
+    },
+    {
+      "topic": "rtl_status",
+      "instance": 0,
+      "samples": 35,
+      "logged_gap_s": {
+        "n": 34,
+        "mean": 2.0257079117647057,
+        "rms": 2.025718480550594,
+        "p95": 2.0352896,
+        "max": 2.048674
+      }
+    },
+    {
+      "topic": "rtl_time_estimate",
+      "instance": 0,
+      "samples": 36,
+      "logged_gap_s": {
+        "n": 35,
+        "mean": 0.0,
+        "rms": 0.0,
+        "p95": 0.0,
+        "max": 0.0
+      }
+    },
+    {
+      "topic": "sensor_accel",
+      "instance": 0,
+      "samples": 71,
+      "logged_gap_s": {
+        "n": 70,
+        "mean": 0.9999880714285713,
+        "rms": 0.9999895434755519,
+        "p95": 1.0016409499999999,
+        "max": 1.00233
+      }
+    },
+    {
+      "topic": "sensor_accel",
+      "instance": 1,
+      "samples": 71,
+      "logged_gap_s": {
+        "n": 70,
+        "mean": 0.9999881285714285,
+        "rms": 0.9999894166699322,
+        "p95": 1.0011111,
+        "max": 1.002337
+      }
+    },
+    {
+      "topic": "sensor_baro",
+      "instance": 0,
+      "samples": 71,
+      "logged_gap_s": {
+        "n": 70,
+        "mean": 0.9998302428571427,
+        "rms": 0.9998598118670364,
+        "p95": 1.0157223,
+        "max": 1.016064
+      }
+    },
+    {
+      "topic": "sensor_combined",
+      "instance": 0,
+      "samples": 11680,
+      "logged_gap_s": {
+        "n": 11679,
+        "mean": 0.006062023803407825,
+        "rms": 0.006529015475609107,
+        "p95": 0.010516,
+        "max": 0.010564
+      }
+    },
+    {
+      "topic": "sensor_gyro",
+      "instance": 0,
+      "samples": 71,
+      "logged_gap_s": {
+        "n": 70,
+        "mean": 0.9999947000000002,
+        "rms": 0.9999961550773011,
+        "p95": 1.0019921,
+        "max": 1.002023
+      }
+    },
+    {
+      "topic": "sensor_gyro",
+      "instance": 1,
+      "samples": 71,
+      "logged_gap_s": {
+        "n": 70,
+        "mean": 1.0000058714285713,
+        "rms": 1.0000070627458801,
+        "p95": 1.00110875,
+        "max": 1.001171
+      }
+    },
+    {
+      "topic": "sensor_mag",
+      "instance": 0,
+      "samples": 71,
+      "logged_gap_s": {
+        "n": 70,
+        "mean": 0.9999826571428573,
+        "rms": 1.0000281998161995,
+        "p95": 1.0157894,
+        "max": 1.016138
+      }
+    },
+    {
+      "topic": "sensor_optical_flow",
+      "instance": 0,
+      "samples": 71,
+      "logged_gap_s": {
+        "n": 70,
+        "mean": 0.9999580428571432,
+        "rms": 0.9999665721250813,
+        "p95": 1.00689475,
+        "max": 1.007993
+      }
+    },
+    {
+      "topic": "sensor_selection",
+      "instance": 0,
+      "samples": 2,
+      "logged_gap_s": {
+        "n": 1,
+        "mean": 79.869107,
+        "rms": 79.869107,
+        "p95": 79.869107,
+        "max": 79.869107
+      }
+    },
+    {
+      "topic": "sensors_status_imu",
+      "instance": 0,
+      "samples": 355,
+      "logged_gap_s": {
+        "n": 354,
+        "mean": 0.1994366581920904,
+        "rms": 0.19974299989593267,
+        "p95": 0.20576875,
+        "max": 0.211784
+      }
+    },
+    {
+      "topic": "system_power",
+      "instance": 0,
+      "samples": 141,
+      "logged_gap_s": {
+        "n": 140,
+        "mean": 0.5000001,
+        "rms": 0.5000001124694731,
+        "p95": 0.50013955,
+        "max": 0.500608
+      }
+    },
+    {
+      "topic": "takeoff_status",
+      "instance": 0,
+      "samples": 3,
+      "logged_gap_s": {
+        "n": 2,
+        "mean": 39.209577,
+        "rms": 55.44123337028574,
+        "p95": 74.4861264,
+        "max": 78.405743
+      }
+    },
+    {
+      "topic": "trajectory_setpoint",
+      "instance": 0,
+      "samples": 355,
+      "logged_gap_s": {
+        "n": 354,
+        "mean": 0.19941218079096043,
+        "rms": 0.1997248562151396,
+        "p95": 0.208802,
+        "max": 0.223789
+      }
+    },
+    {
+      "topic": "transponder_report",
+      "instance": 0,
+      "samples": 1,
+      "logged_gap_s": null
+    },
+    {
+      "topic": "vehicle_acceleration",
+      "instance": 0,
+      "samples": 1417,
+      "logged_gap_s": {
+        "n": 1416,
+        "mean": 0.04996576836158192,
+        "rms": 0.05003552764546295,
+        "p95": 0.054384,
+        "max": 0.054493
+      }
+    },
+    {
+      "topic": "vehicle_air_data",
+      "instance": 0,
+      "samples": 355,
+      "logged_gap_s": {
+        "n": 354,
+        "mean": 0.19944590395480224,
+        "rms": 0.20171888648878875,
+        "p95": 0.23775675,
+        "max": 0.238029
+      }
+    },
+    {
+      "topic": "vehicle_angular_velocity",
+      "instance": 0,
+      "samples": 3541,
+      "logged_gap_s": {
+        "n": 3540,
+        "mean": 0.019994163841807907,
+        "rms": 0.020065879280143962,
+        "p95": 0.021079,
+        "max": 0.025582
+      }
+    },
+    {
+      "topic": "vehicle_attitude",
+      "instance": 0,
+      "samples": 1417,
+      "logged_gap_s": {
+        "n": 1416,
+        "mean": 0.04996628531073446,
+        "rms": 0.050096341176249344,
+        "p95": 0.057017,
+        "max": 0.060152
+      }
+    },
+    {
+      "topic": "vehicle_attitude_setpoint",
+      "instance": 0,
+      "samples": 1417,
+      "logged_gap_s": {
+        "n": 1416,
+        "mean": 0.049964166666666664,
+        "rms": 0.05017547534488085,
+        "p95": 0.05858175,
+        "max": 0.063506
+      }
+    },
+    {
+      "topic": "vehicle_command",
+      "instance": 0,
+      "samples": 1,
+      "logged_gap_s": null
+    },
+    {
+      "topic": "vehicle_constraints",
+      "instance": 0,
+      "samples": 70,
+      "logged_gap_s": {
+        "n": 69,
+        "mean": 0.9998565217391304,
+        "rms": 0.9998707149889831,
+        "p95": 1.009157,
+        "max": 1.011102
+      }
+    },
+    {
+      "topic": "vehicle_control_mode",
+      "instance": 0,
+      "samples": 146,
+      "logged_gap_s": {
+        "n": 145,
+        "mean": 0.4854508,
+        "rms": 0.4927961204704268,
+        "p95": 0.507001,
+        "max": 0.507304
+      }
+    },
+    {
+      "topic": "vehicle_imu",
+      "instance": 0,
+      "samples": 142,
+      "logged_gap_s": {
+        "n": 141,
+        "mean": 0.5000526312056737,
+        "rms": 0.5000637668518099,
+        "p95": 0.504758,
+        "max": 0.506283
+      }
+    },
+    {
+      "topic": "vehicle_imu",
+      "instance": 1,
+      "samples": 142,
+      "logged_gap_s": {
+        "n": 141,
+        "mean": 0.5000235957446807,
+        "rms": 0.5000298241335068,
+        "p95": 0.501983,
+        "max": 0.507141
+      }
+    },
+    {
+      "topic": "vehicle_imu_status",
+      "instance": 0,
+      "samples": 71,
+      "logged_gap_s": {
+        "n": 70,
+        "mean": 1.0001462571428572,
+        "rms": 1.0014265621405583,
+        "p95": 1.04634245,
+        "max": 1.048531
+      }
+    },
+    {
+      "topic": "vehicle_imu_status",
+      "instance": 1,
+      "samples": 71,
+      "logged_gap_s": {
+        "n": 70,
+        "mean": 0.9989594142857141,
+        "rms": 1.0002633809236088,
+        "p95": 1.04334865,
+        "max": 1.043814
+      }
+    },
+    {
+      "topic": "vehicle_land_detected",
+      "instance": 0,
+      "samples": 73,
+      "logged_gap_s": {
+        "n": 72,
+        "mean": 0.9768936666666667,
+        "rms": 0.9862432433734055,
+        "p95": 1.0115664500000001,
+        "max": 1.012552
+      }
+    },
+    {
+      "topic": "vehicle_local_position",
+      "instance": 0,
+      "samples": 709,
+      "logged_gap_s": {
+        "n": 708,
+        "mean": 0.09985849858757062,
+        "rms": 0.1000402351015093,
+        "p95": 0.108306,
+        "max": 0.113112
+      }
+    },
+    {
+      "topic": "vehicle_local_position_setpoint",
+      "instance": 0,
+      "samples": 709,
+      "logged_gap_s": {
+        "n": 708,
+        "mean": 0.09985849293785312,
+        "rms": 0.1000399047180462,
+        "p95": 0.1082893,
+        "max": 0.113095
+      }
+    },
+    {
+      "topic": "vehicle_magnetometer",
+      "instance": 0,
+      "samples": 141,
+      "logged_gap_s": {
+        "n": 140,
+        "mean": 0.5002976785714286,
+        "rms": 0.5043481557528702,
+        "p95": 0.60519975,
+        "max": 0.605624
+      }
+    },
+    {
+      "topic": "vehicle_optical_flow",
+      "instance": 0,
+      "samples": 142,
+      "logged_gap_s": {
+        "n": 141,
+        "mean": 0.5001180709219858,
+        "rms": 0.500217232196329,
+        "p95": 0.514138,
+        "max": 0.52217
+      }
+    },
+    {
+      "topic": "vehicle_rates_setpoint",
+      "instance": 0,
+      "samples": 3541,
+      "logged_gap_s": {
+        "n": 3540,
+        "mean": 0.019994601694915255,
+        "rms": 0.02032454008309328,
+        "p95": 0.02560605,
+        "max": 0.028627
+      }
+    },
+    {
+      "topic": "vehicle_status",
+      "instance": 0,
+      "samples": 146,
+      "logged_gap_s": {
+        "n": 145,
+        "mean": 0.4854508000000001,
+        "rms": 0.4927961219936139,
+        "p95": 0.5070018,
+        "max": 0.507303
+      }
+    },
+    {
+      "topic": "vehicle_thrust_setpoint",
+      "instance": 0,
+      "samples": 3541,
+      "logged_gap_s": {
+        "n": 3540,
+        "mean": 0.019994163276836157,
+        "rms": 0.020066613898062084,
+        "p95": 0.02108,
+        "max": 0.025582
+      }
+    },
+    {
+      "topic": "vehicle_torque_setpoint",
+      "instance": 0,
+      "samples": 3541,
+      "logged_gap_s": {
+        "n": 3540,
+        "mean": 0.019994163276836157,
+        "rms": 0.02006649207698511,
+        "p95": 0.02108,
+        "max": 0.025582
+      }
+    }
+  ]
+}

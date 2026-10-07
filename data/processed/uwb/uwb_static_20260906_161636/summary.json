@@ -1,0 +1,249 @@
+{
+  "reference_position_m": {
+    "x": 2.09,
+    "y": 1.68,
+    "z": 1.19
+  },
+  "duration_s": 60.000667234,
+  "cycle_count": 2533,
+  "valid_xy_count": 2533,
+  "valid_xy_fraction": 1.0,
+  "status": {
+    "type": "uwb_raw_status",
+    "schema": 1,
+    "event": "heartbeat",
+    "tag_id": "5",
+    "firmware": "uwb-tag-for-jetson-v1.8-raw-xy",
+    "uwb_ready": true,
+    "serial_baud": 921600,
+    "anchor_count": 4,
+    "anchor_order": [
+      "A1",
+      "A2",
+      "A3",
+      "A4"
+    ],
+    "anchor_layout_id": "warehouse-5x4p5-z2p2-v2",
+    "clock_domain": "esp32_monotonic_boot_us",
+    "temporal_filter_applied": false,
+    "raw_xy_method": "linear_ls_unfiltered_equal_anchor_z",
+    "display_ready": true,
+    "lora_ready": true,
+    "lora_frequency_hz": 915000000,
+    "lora_good_fix_period_ms": 500,
+    "lora_bad_fix_period_ms": 250
+  },
+  "tag_ids": [
+    "5"
+  ],
+  "sequence_missing_count": 0,
+  "sequence_non_increasing_count": 0,
+  "valid_mask_counts": {
+    "15": 2532,
+    "11": 1
+  },
+  "xy_mask_counts": {
+    "15": 2532,
+    "11": 1
+  },
+  "xy_invalid_examples": [],
+  "xy_m": {
+    "x": {
+      "n": 2533,
+      "mean": 1.2215634741413344,
+      "std_population": 0.014099556788406967,
+      "min": 1.12639,
+      "median": 1.22087,
+      "p95": 1.245576,
+      "max": 1.27287
+    },
+    "y": {
+      "n": 2533,
+      "mean": 1.7508448480063166,
+      "std_population": 0.015246671002377872,
+      "min": 1.68119,
+      "median": 1.74962,
+      "p95": 1.77679,
+      "max": 1.95679
+    }
+  },
+  "xy_mean_error_m": {
+    "x": -0.8684365258586655,
+    "y": 0.07084484800631669,
+    "magnitude": 0.8713214056446144
+  },
+  "xy_radial_error_m": {
+    "n": 2533,
+    "mean": 0.8714578842413636,
+    "std_population": 0.013907063182316059,
+    "min": 0.8212161404283284,
+    "median": 0.8718197577481253,
+    "p95": 0.8928225433822555,
+    "max": 1.002575152395071
+  },
+  "xy_rmse_m": 0.871568844333476,
+  "xy_scatter_about_mean_m": {
+    "n": 2533,
+    "mean": 0.01777601139438331,
+    "std_population": 0.010736475082214737,
+    "min": 0.0003247557957448448,
+    "median": 0.015986655654741454,
+    "p95": 0.035466700467982316,
+    "max": 0.22687308304387416
+  },
+  "ranges": {
+    "A1": {
+      "expected_slant_m": 2.86541445518794,
+      "observed_slant_m": {
+        "n": 2533,
+        "mean": 2.720659573628109,
+        "std_population": 0.021234396402538724,
+        "min": 2.52337,
+        "median": 2.71763,
+        "p95": 2.7600040000000003,
+        "max": 2.80633
+      },
+      "mean_error_m": -0.14475488155983116,
+      "rmse_m": 0.14630405095547047,
+      "failure_counts": {
+        "ok": 2533
+      }
+    },
+    "A2": {
+      "expected_slant_m": 3.508646462669045,
+      "observed_slant_m": {
+        "n": 2533,
+        "mean": 4.5929459415712595,
+        "std_population": 0.01561366616060664,
+        "min": 4.53585,
+        "median": 4.59343,
+        "p95": 4.61767,
+        "max": 4.64587
+      },
+      "mean_error_m": 1.0842994789022145,
+      "rmse_m": 1.0844118896980928,
+      "failure_counts": {
+        "ok": 2533
+      }
+    },
+    "A3": {
+      "expected_slant_m": 3.652478610478096,
+      "observed_slant_m": {
+        "n": 2532,
+        "mean": 3.578320114533965,
+        "std_population": 0.012658629353282514,
+        "min": 3.51594,
+        "median": 3.5779449999999997,
+        "p95": 3.598779,
+        "max": 3.61556
+      },
+      "mean_error_m": -0.07415849594413072,
+      "rmse_m": 0.07523113330130976,
+      "failure_counts": {
+        "ok": 2532,
+        "response_timeout": 1
+      }
+    },
+    "A4": {
+      "expected_slant_m": 4.176194439917759,
+      "observed_slant_m": {
+        "n": 2533,
+        "mean": 4.875488566916699,
+        "std_population": 0.014796626714860699,
+        "min": 4.82273,
+        "median": 4.87473,
+        "p95": 4.89956,
+        "max": 4.91574
+      },
+      "mean_error_m": 0.6992941269989407,
+      "rmse_m": 0.6994506531681485,
+      "failure_counts": {
+        "ok": 2533
+      }
+    }
+  },
+  "source_cycle_intervals_ms": {
+    "n": 2532,
+    "mean": 23.681070300157977,
+    "std_population": 5.175149436199984,
+    "min": 22.25,
+    "median": 22.257,
+    "p95": 28.2946,
+    "max": 60.232
+  },
+  "source_cycle_rate_hz": 42.22782109613217,
+  "cycle_gap_threshold_ms": 44.514,
+  "cycle_gaps_gt_2median_count": 60,
+  "host_receive_intervals_ms": {
+    "n": 2532,
+    "mean": 23.680661101895733,
+    "std_population": 5.2920044769006545,
+    "min": 16.049479,
+    "median": 22.0203125,
+    "p95": 32.857040199999965,
+    "max": 53.977669
+  },
+  "valid_anchor_report_read_span_ms": {
+    "n": 2533,
+    "mean": 12.135427556257401,
+    "std_population": 1.1613294174240174,
+    "min": 11.994,
+    "median": 11.998,
+    "p95": 11.999,
+    "max": 21.999
+  },
+  "coordinate_recompute": {
+    "four_anchor_cycles": 2532,
+    "max_absolute_axis_difference_m": 1.1077018518657056e-05
+  },
+  "ten_second_segments": [
+    {
+      "start_s": 0,
+      "end_s": 10,
+      "n": 423,
+      "mean_x_m": 1.2213870685579196,
+      "mean_y_m": 1.7527517494089835
+    },
+    {
+      "start_s": 10,
+      "end_s": 20,
+      "n": 423,
+      "mean_x_m": 1.2249194799054373,
+      "mean_y_m": 1.7511131205673758
+    },
+    {
+      "start_s": 20,
+      "end_s": 30,
+      "n": 422,
+      "mean_x_m": 1.2238589099526067,
+      "mean_y_m": 1.7509734123222749
+    },
+    {
+      "start_s": 30,
+      "end_s": 40,
+      "n": 421,
+      "mean_x_m": 1.2213553206650831,
+      "mean_y_m": 1.7532596912114013
+    },
+    {
+      "start_s": 40,
+      "end_s": 50,
+      "n": 424,
+      "mean_x_m": 1.2176819811320754,
+      "mean_y_m": 1.7487067924528301
+    },
+    {
+      "start_s": 50,
+      "end_s": 60,
+      "n": 420,
+      "mean_x_m": 1.2201819047619047,
+      "mean_y_m": 1.7482627857142856
+    }
+  ],
+  "interpretation_limits": [
+    "Reference coordinates were provided by the user, not independently surveyed by this capture.",
+    "Sensor antenna reference and installed anchor positions require physical confirmation.",
+    "Report read timestamps are not hardware range timestamps and are not synchronized to the companion clock.",
+    "This one-point result does not identify a unique cause or justify universal offset correction."
+  ]
+}

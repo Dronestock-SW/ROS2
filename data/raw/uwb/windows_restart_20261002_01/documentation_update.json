@@ -1,0 +1,17 @@
+{
+  "archive_sha256": "6d50ec1686124490f8566c5acd15747f0c729d054c4639117bc4f3a10e3790de",
+  "archive_members": 40,
+  "archive_testzip": "passed",
+  "doc_changes": [
+    {
+      "path": "/home/pgyxn/github/ROS2/docs/README.md",
+      "before_sha256": "795afb65fb13b26b0cb1735e14623b98c556011e726dc088eb5d3b86652cb578",
+      "after_sha256": "eda84a9bea54247f4a18609eb55ca4a0f31818dec48ce1dd43cac76f5aedb77f"
+    },
+    {
+      "path": "/home/pgyxn/github/ROS2/docs/uwb_windows_handoff.md",
+      "before_sha256": "a0d7bd0245aadf5c31f25c18b3b201d7de0aad1cb2291c35a59e0e8285168020",
+      "after_sha256": "0c0762704f87d0c375db14fe9db69f7362e296306155c537ccab6b8c306038a6"
+    }
+  ]
+}

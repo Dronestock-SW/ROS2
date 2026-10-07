@@ -1,0 +1,150 @@
+{
+  "run_id": "iter_0005_dropout",
+  "parent_run_id": null,
+  "dataset_split": "exploratory",
+  "source": "synthetic_pose_fixture",
+  "height_source": "simulator_tag_pose_with_mount_offset",
+  "hypothesis": "dropout 조건에서 A/B/C/D의 오차·출력률·7cm 이상 표본을 비교한다.",
+  "change": {
+    "kind": "simulated_sensor_condition",
+    "name": "dropout"
+  },
+  "criteria": {
+    "target_m": 0.07,
+    "min_coverage": 0.99
+  },
+  "model_metrics": {
+    "A": {
+      "count": 310,
+      "rmse_m": 0.030799403935924428,
+      "median_m": 0.026122404157108092,
+      "p95_m": 0.0525092092320672,
+      "max_m": 0.07868432173121134,
+      "target_m": 0.07,
+      "at_or_above_target_count": 1,
+      "max_under_target_on_valid": false,
+      "mean_error_xy_m": [
+        0.002965696205627376,
+        -0.00013927992088536457
+      ],
+      "std_error_xy_m": [
+        0.020065560979089125,
+        0.023176751120945718
+      ],
+      "coverage": 0.96875,
+      "missing_count": 10,
+      "reasons": {
+        "ok": 310,
+        "injected_dropout": 10
+      }
+    },
+    "B": {
+      "count": 306,
+      "rmse_m": 0.022335806062111017,
+      "median_m": 0.021488158257114188,
+      "p95_m": 0.03217222359941166,
+      "max_m": 0.045395977395344025,
+      "target_m": 0.07,
+      "at_or_above_target_count": 0,
+      "max_under_target_on_valid": true,
+      "mean_error_xy_m": [
+        0.005690325645228699,
+        0.000990545086038796
+      ],
+      "std_error_xy_m": [
+        0.01924171961022388,
+        0.009761325390004067
+      ],
+      "coverage": 0.95625,
+      "missing_count": 14,
+      "reasons": {
+        "insufficient_anchors": 4,
+        "ok": 306,
+        "injected_dropout": 10
+      }
+    },
+    "C": {
+      "count": 310,
+      "rmse_m": 0.03137852359427996,
+      "median_m": 0.026543580565090583,
+      "p95_m": 0.05327056160084161,
+      "max_m": 0.08502765162680756,
+      "target_m": 0.07,
+      "at_or_above_target_count": 2,
+      "max_under_target_on_valid": false,
+      "mean_error_xy_m": [
+        0.0028430888588496846,
+        -0.00016632992334252223
+      ],
+      "std_error_xy_m": [
+        0.02010814897237786,
+        0.023919934530820287
+      ],
+      "coverage": 0.96875,
+      "missing_count": 10,
+      "reasons": {
+        "ok": 310,
+        "injected_dropout": 10
+      }
+    },
+    "D": {
+      "count": 220,
+      "rmse_m": 0.03634260159328382,
+      "median_m": 0.03087918354777343,
+      "p95_m": 0.0667041474472587,
+      "max_m": 0.12311457901655617,
+      "target_m": 0.07,
+      "at_or_above_target_count": 9,
+      "max_under_target_on_valid": false,
+      "mean_error_xy_m": [
+        0.003580351185785852,
+        0.0005572244229564206
+      ],
+      "std_error_xy_m": [
+        0.022133307146189257,
+        0.02859671295218222
+      ],
+      "coverage": 0.6875,
+      "missing_count": 100,
+      "reasons": {
+        "incomplete_candidate_set": 90,
+        "ok": 220,
+        "injected_dropout": 10
+      }
+    },
+    "WLS": {
+      "count": 310,
+      "rmse_m": 0.030799403935924424,
+      "median_m": 0.026122404157108092,
+      "p95_m": 0.052509209232067124,
+      "max_m": 0.07868432173121143,
+      "target_m": 0.07,
+      "at_or_above_target_count": 1,
+      "max_under_target_on_valid": false,
+      "mean_error_xy_m": [
+        0.002965696205627374,
+        -0.00013927992088535928
+      ],
+      "std_error_xy_m": [
+        0.020065560979089125,
+        0.02317675112094571
+      ],
+      "coverage": 0.96875,
+      "missing_count": 10,
+      "reasons": {
+        "ok": 310,
+        "injected_dropout": 10
+      }
+    }
+  },
+  "model_status": {
+    "A": "coverage_failed",
+    "B": "coverage_failed",
+    "C": "coverage_failed",
+    "D": "coverage_failed",
+    "WLS": "coverage_failed"
+  },
+  "parent_comparison": "none",
+  "achieved_7cm": false,
+  "achieved_reason": "pose_replay_lacks_ToF_and_end_to_end_latency_validation"
+}

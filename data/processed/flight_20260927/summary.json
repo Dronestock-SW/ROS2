@@ -1,0 +1,604 @@
+{
+  "path": "data/raw/flight/20260927/log_23_2026-9-27-13-34-50.ulg",
+  "sha256": "896a3f021f0b2eb9fd943e7960e2add8dfff67bcfe15541c442fac175146690f",
+  "duration_s": 70.908608,
+  "dropout_count": 0,
+  "inventory": [
+    {
+      "topic": "action_request",
+      "instance": 0,
+      "count": 9
+    },
+    {
+      "topic": "actuator_armed",
+      "instance": 0,
+      "count": 146
+    },
+    {
+      "topic": "actuator_controls_status_0",
+      "instance": 0,
+      "count": 142
+    },
+    {
+      "topic": "actuator_motors",
+      "instance": 0,
+      "count": 709
+    },
+    {
+      "topic": "actuator_outputs",
+      "instance": 0,
+      "count": 709
+    },
+    {
+      "topic": "actuator_outputs",
+      "instance": 1,
+      "count": 1
+    },
+    {
+      "topic": "battery_status",
+      "instance": 0,
+      "count": 355
+    },
+    {
+      "topic": "can_interface_status",
+      "instance": 0,
+      "count": 690
+    },
+    {
+      "topic": "can_interface_status",
+      "instance": 1,
+      "count": 690
+    },
+    {
+      "topic": "config_overrides",
+      "instance": 0,
+      "count": 141
+    },
+    {
+      "topic": "control_allocator_status",
+      "instance": 0,
+      "count": 355
+    },
+    {
+      "topic": "cpuload",
+      "instance": 0,
+      "count": 143
+    },
+    {
+      "topic": "distance_sensor",
+      "instance": 0,
+      "count": 71
+    },
+    {
+      "topic": "distance_sensor_mode_change_request",
+      "instance": 0,
+      "count": 1
+    },
+    {
+      "topic": "estimator_aid_src_baro_hgt",
+      "instance": 0,
+      "count": 141
+    },
+    {
+      "topic": "estimator_aid_src_baro_hgt",
+      "instance": 1,
+      "count": 141
+    },
+    {
+      "topic": "estimator_aid_src_fake_hgt",
+      "instance": 0,
+      "count": 1
+    },
+    {
+      "topic": "estimator_aid_src_fake_hgt",
+      "instance": 1,
+      "count": 1
+    },
+    {
+      "topic": "estimator_aid_src_fake_pos",
+      "instance": 0,
+      "count": 1
+    },
+    {
+      "topic": "estimator_aid_src_fake_pos",
+      "instance": 1,
+      "count": 3
+    },
+    {
+      "topic": "estimator_aid_src_gravity",
+      "instance": 0,
+      "count": 141
+    },
+    {
+      "topic": "estimator_aid_src_gravity",
+      "instance": 1,
+      "count": 141
+    },
+    {
+      "topic": "estimator_aid_src_mag",
+      "instance": 0,
+      "count": 141
+    },
+    {
+      "topic": "estimator_aid_src_mag",
+      "instance": 1,
+      "count": 141
+    },
+    {
+      "topic": "estimator_aid_src_optical_flow",
+      "instance": 0,
+      "count": 141
+    },
+    {
+      "topic": "estimator_aid_src_optical_flow",
+      "instance": 1,
+      "count": 141
+    },
+    {
+      "topic": "estimator_aid_src_rng_hgt",
+      "instance": 0,
+      "count": 141
+    },
+    {
+      "topic": "estimator_aid_src_rng_hgt",
+      "instance": 1,
+      "count": 141
+    },
+    {
+      "topic": "estimator_attitude",
+      "instance": 0,
+      "count": 141
+    },
+    {
+      "topic": "estimator_attitude",
+      "instance": 1,
+      "count": 141
+    },
+    {
+      "topic": "estimator_baro_bias",
+      "instance": 0,
+      "count": 141
+    },
+    {
+      "topic": "estimator_baro_bias",
+      "instance": 1,
+      "count": 141
+    },
+    {
+      "topic": "estimator_event_flags",
+      "instance": 0,
+      "count": 71
+    },
+    {
+      "topic": "estimator_event_flags",
+      "instance": 1,
+      "count": 71
+    },
+    {
+      "topic": "estimator_innovation_test_ratios",
+      "instance": 0,
+      "count": 141
+    },
+    {
+      "topic": "estimator_innovation_test_ratios",
+      "instance": 1,
+      "count": 141
+    },
+    {
+      "topic": "estimator_innovation_variances",
+      "instance": 0,
+      "count": 141
+    },
+    {
+      "topic": "estimator_innovation_variances",
+      "instance": 1,
+      "count": 141
+    },
+    {
+      "topic": "estimator_innovations",
+      "instance": 0,
+      "count": 141
+    },
+    {
+      "topic": "estimator_innovations",
+      "instance": 1,
+      "count": 141
+    },
+    {
+      "topic": "estimator_local_position",
+      "instance": 0,
+      "count": 141
+    },
+    {
+      "topic": "estimator_local_position",
+      "instance": 1,
+      "count": 141
+    },
+    {
+      "topic": "estimator_odometry",
+      "instance": 0,
+      "count": 141
+    },
+    {
+      "topic": "estimator_odometry",
+      "instance": 1,
+      "count": 141
+    },
+    {
+      "topic": "estimator_optical_flow_vel",
+      "instance": 0,
+      "count": 355
+    },
+    {
+      "topic": "estimator_optical_flow_vel",
+      "instance": 1,
+      "count": 355
+    },
+    {
+      "topic": "estimator_selector_status",
+      "instance": 0,
+      "count": 75
+    },
+    {
+      "topic": "estimator_sensor_bias",
+      "instance": 0,
+      "count": 70
+    },
+    {
+      "topic": "estimator_sensor_bias",
+      "instance": 1,
+      "count": 70
+    },
+    {
+      "topic": "estimator_states",
+      "instance": 0,
+      "count": 141
+    },
+    {
+      "topic": "estimator_states",
+      "instance": 1,
+      "count": 141
+    },
+    {
+      "topic": "estimator_status",
+      "instance": 0,
+      "count": 355
+    },
+    {
+      "topic": "estimator_status",
+      "instance": 1,
+      "count": 355
+    },
+    {
+      "topic": "estimator_status_flags",
+      "instance": 0,
+      "count": 88
+    },
+    {
+      "topic": "estimator_status_flags",
+      "instance": 1,
+      "count": 108
+    },
+    {
+      "topic": "event",
+      "instance": 0,
+      "count": 39
+    },
+    {
+      "topic": "failsafe_flags",
+      "instance": 0,
+      "count": 131
+    },
+    {
+      "topic": "failure_detector_status",
+      "instance": 0,
+      "count": 146
+    },
+    {
+      "topic": "home_position",
+      "instance": 0,
+      "count": 1
+    },
+    {
+      "topic": "hover_thrust_estimate",
+      "instance": 0,
+      "count": 403
+    },
+    {
+      "topic": "input_rc",
+      "instance": 0,
+      "count": 141
+    },
+    {
+      "topic": "landing_gear",
+      "instance": 0,
+      "count": 1
+    },
+    {
+      "topic": "magnetometer_bias_estimate",
+      "instance": 0,
+      "count": 3
+    },
+    {
+      "topic": "manual_control_setpoint",
+      "instance": 0,
+      "count": 355
+    },
+    {
+      "topic": "manual_control_switches",
+      "instance": 0,
+      "count": 74
+    },
+    {
+      "topic": "navigator_status",
+      "instance": 0,
+      "count": 141
+    },
+    {
+      "topic": "parameter_update",
+      "instance": 0,
+      "count": 1
+    },
+    {
+      "topic": "position_setpoint_triplet",
+      "instance": 0,
+      "count": 1
+    },
+    {
+      "topic": "px4io_status",
+      "instance": 0,
+      "count": 72
+    },
+    {
+      "topic": "rate_ctrl_status",
+      "instance": 0,
+      "count": 355
+    },
+    {
+      "topic": "rtl_status",
+      "instance": 0,
+      "count": 35
+    },
+    {
+      "topic": "rtl_time_estimate",
+      "instance": 0,
+      "count": 36
+    },
+    {
+      "topic": "sensor_accel",
+      "instance": 0,
+      "count": 71
+    },
+    {
+      "topic": "sensor_accel",
+      "instance": 1,
+      "count": 71
+    },
+    {
+      "topic": "sensor_baro",
+      "instance": 0,
+      "count": 71
+    },
+    {
+      "topic": "sensor_combined",
+      "instance": 0,
+      "count": 11680
+    },
+    {
+      "topic": "sensor_gyro",
+      "instance": 0,
+      "count": 71
+    },
+    {
+      "topic": "sensor_gyro",
+      "instance": 1,
+      "count": 71
+    },
+    {
+      "topic": "sensor_mag",
+      "instance": 0,
+      "count": 71
+    },
+    {
+      "topic": "sensor_optical_flow",
+      "instance": 0,
+      "count": 71
+    },
+    {
+      "topic": "sensor_selection",
+      "instance": 0,
+      "count": 2
+    },
+    {
+      "topic": "sensors_status_imu",
+      "instance": 0,
+      "count": 355
+    },
+    {
+      "topic": "system_power",
+      "instance": 0,
+      "count": 141
+    },
+    {
+      "topic": "takeoff_status",
+      "instance": 0,
+      "count": 3
+    },
+    {
+      "topic": "trajectory_setpoint",
+      "instance": 0,
+      "count": 355
+    },
+    {
+      "topic": "transponder_report",
+      "instance": 0,
+      "count": 1
+    },
+    {
+      "topic": "vehicle_acceleration",
+      "instance": 0,
+      "count": 1417
+    },
+    {
+      "topic": "vehicle_air_data",
+      "instance": 0,
+      "count": 355
+    },
+    {
+      "topic": "vehicle_angular_velocity",
+      "instance": 0,
+      "count": 3541
+    },
+    {
+      "topic": "vehicle_attitude",
+      "instance": 0,
+      "count": 1417
+    },
+    {
+      "topic": "vehicle_attitude_setpoint",
+      "instance": 0,
+      "count": 1417
+    },
+    {
+      "topic": "vehicle_command",
+      "instance": 0,
+      "count": 1
+    },
+    {
+      "topic": "vehicle_constraints",
+      "instance": 0,
+      "count": 70
+    },
+    {
+      "topic": "vehicle_control_mode",
+      "instance": 0,
+      "count": 146
+    },
+    {
+      "topic": "vehicle_imu",
+      "instance": 0,
+      "count": 142
+    },
+    {
+      "topic": "vehicle_imu",
+      "instance": 1,
+      "count": 142
+    },
+    {
+      "topic": "vehicle_imu_status",
+      "instance": 0,
+      "count": 71
+    },
+    {
+      "topic": "vehicle_imu_status",
+      "instance": 1,
+      "count": 71
+    },
+    {
+      "topic": "vehicle_land_detected",
+      "instance": 0,
+      "count": 73
+    },
+    {
+      "topic": "vehicle_local_position",
+      "instance": 0,
+      "count": 709
+    },
+    {
+      "topic": "vehicle_local_position_setpoint",
+      "instance": 0,
+      "count": 709
+    },
+    {
+      "topic": "vehicle_magnetometer",
+      "instance": 0,
+      "count": 141
+    },
+    {
+      "topic": "vehicle_optical_flow",
+      "instance": 0,
+      "count": 142
+    },
+    {
+      "topic": "vehicle_rates_setpoint",
+      "instance": 0,
+      "count": 3541
+    },
+    {
+      "topic": "vehicle_status",
+      "instance": 0,
+      "count": 146
+    },
+    {
+      "topic": "vehicle_thrust_setpoint",
+      "instance": 0,
+      "count": 3541
+    },
+    {
+      "topic": "vehicle_torque_setpoint",
+      "instance": 0,
+      "count": 3541
+    }
+  ],
+  "firmware": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+  "raw_uwb_field_matches": [],
+  "distance_m": {
+    "n": 71,
+    "min": 0.004000000189989805,
+    "median": 0.8130000233650208,
+    "p95": 1.2100000381469727,
+    "max": 1.222000002861023,
+    "rmse": 0.8885694772372768
+  },
+  "distance_gap_s": {
+    "n": 70,
+    "min": 0.913559,
+    "median": 1.0150994999999998,
+    "p95": 1.0152461,
+    "max": 1.015298,
+    "rmse": 0.9998591035020528
+  },
+  "distance_within_declared_limits": 58,
+  "distance_quality_counts": {
+    "-1": 58,
+    "0": 13
+  },
+  "distance_variance_values": [
+    0.0
+  ],
+  "distance_orientation_values": [
+    25
+  ],
+  "distance_device_ids": [
+    14684177
+  ],
+  "attitude_count": 1417,
+  "attitude_gap_s": {
+    "n": 1416,
+    "min": 0.004501,
+    "median": 0.049571,
+    "p95": 0.054124,
+    "max": 0.060088,
+    "rmse": 0.050093307384466934
+  },
+  "tof_sensor_model_confirmed": false,
+  "z_used_by_pipeline": false,
+  "nav_state_counts": {
+    "1": 88,
+    "2": 58
+  },
+  "nav_state_reference": "https://docs.px4.io/main/en/msg_docs/VehicleStatus",
+  "nav_state_labels": {
+    "1": "ALTCTL",
+    "2": "POSCTL"
+  },
+  "parameters": {
+    "EKF2_EV_CTRL": 0,
+    "EKF2_OF_CTRL": 1,
+    "EKF2_RNG_CTRL": 1,
+    "EKF2_HGT_REF": 0
+  },
+  "changed_parameters": [],
+  "synchronized_with_uwb": false,
+  "flight_performance_evaluated": false
+}
