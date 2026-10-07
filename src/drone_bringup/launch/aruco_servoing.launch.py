@@ -1,4 +1,5 @@
-"""ArUco 비주얼 서보잉 파이프라인 기동 launch — Dronestock 1호기 (Phase 3).
+"""
+ArUco 비주얼 서보잉 파이프라인 기동 launch — Dronestock 1호기 (Phase 3).
 
 세 노드를 한 번에 띄운다:
     aruco_tracker_autostart  ArUco 검출 + pose      → /aruco_detections

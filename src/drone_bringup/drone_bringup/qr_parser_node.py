@@ -1,4 +1,5 @@
-"""QR JSON 파서 노드 — Dronestock 1호기.
+"""
+QR JSON 파서 노드 — Dronestock 1호기.
 
 qr_fallback_node가 리더기(DE2110)/카메라 어느 쪽에서 읽었든 통일해 내보내는
 /qr/data 는 raw 문자열이다. 실제 내용은 웹 플랫폼(dronestock-platform)이

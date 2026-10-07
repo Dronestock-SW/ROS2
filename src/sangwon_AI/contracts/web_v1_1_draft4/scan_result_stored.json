@@ -1,0 +1,13 @@
+{
+  "contract_version": "1.1-draft.4",
+  "type": "scan_result_receipt",
+  "drone_id": "TEST-DRONE-01",
+  "profile": "REPLAY",
+  "task_result_id": "scan-result-demo-01",
+  "stored_revision": 2,
+  "storage_status": "STORED",
+  "duplicate": false,
+  "business_status": "NOT_APPLICABLE",
+  "business_reason_code": "NO_SUCCESSFUL_DECODE",
+  "received_at": "2026-10-04T06:03:30Z"
+}

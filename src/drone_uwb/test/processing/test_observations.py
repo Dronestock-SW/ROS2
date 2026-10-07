@@ -161,10 +161,11 @@ def test_rotation_changes_xy_and_covariance_only():
 
 
 def test_bridge_requires_every_precondition_and_xy_only_fusion():
-    params={'EKF2_EV_CTRL':1,'EKF2_EV_DELAY':0.,'EKF2_EV_NOISE_MD':0}
+    params={'EKF2_EV_CTRL':1,'EKF2_EV_DELAY':0.,'EKF2_EV_NOISE_MD':0,
+            'EKF2_EV_POS_X':0.,'EKF2_EV_POS_Y':0.,'EKF2_EV_POS_Z':0.}
     defaults=BridgeSettings()
     assert gate(defaults,True,0,params,0) == 'disabled'
-    ready=replace(defaults,enabled=True,alignment_confirmed=True,timing_confirmed=True,sensor_mount_confirmed=True)
+    ready=replace(defaults,enabled=True,layout_confirmed=True,alignment_confirmed=True,timing_confirmed=True,sensor_mount_confirmed=True)
     assert gate(ready,True,0,params,0) == 'ready'
     for field in ('alignment_confirmed','timing_confirmed','sensor_mount_confirmed'):
         assert gate(replace(ready,**{field:False}),True,0,params,0).endswith('_required')

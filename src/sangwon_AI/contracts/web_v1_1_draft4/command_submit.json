@@ -1,0 +1,22 @@
+{
+  "contract_version": "1.1-draft.4",
+  "type": "command_submission",
+  "drone_id": "TEST-DRONE-01",
+  "profile": "REPLAY",
+  "client_request_key": "browser-intent-demo-01",
+  "action": "START",
+  "context": {
+    "boot_id": "boot-demo-01",
+    "runtime_session_id": "runtime-demo-01",
+    "control_session_id": "control-demo-01",
+    "assignment_id": "assignment-demo-01",
+    "snapshot_id": "snapshot-demo-01",
+    "preparation_id": "preparation-demo-01",
+    "readiness_revision": 7,
+    "execution_id": null,
+    "flight_id": null
+  },
+  "payload": {
+    "start_mode": "AUTO_TAKEOFF"
+  }
+}

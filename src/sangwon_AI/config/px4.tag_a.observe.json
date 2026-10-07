@@ -1,0 +1,22 @@
+{
+  "schema_version": "sangwon-px4-observe-config/1",
+  "profile": "HOST_OBSERVE",
+  "flight_authority": false,
+  "physical_output_enabled": false,
+  "observation_source": "MAVROS_TOPICS_UNVERIFIED_AIRCRAFT",
+  "ros_domain_id": 1,
+  "topics": {
+    "state": "/mavros/state",
+    "extended_state": "/mavros/extended_state",
+    "battery": "/mavros/battery",
+    "rc": "/mavros/rc/in",
+    "local_position": "/mavros/local_position/pose"
+  },
+  "max_header_age_ms": {
+    "state": 2000,
+    "extended_state": 2000,
+    "battery": 2000,
+    "rc": 1000,
+    "local_position": 200
+  }
+}

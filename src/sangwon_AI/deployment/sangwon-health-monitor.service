@@ -1,0 +1,25 @@
+[Unit]
+Description=Sangwon host health monitor (no flight control)
+StartLimitIntervalSec=60
+StartLimitBurst=5
+
+[Service]
+Type=notify
+NotifyAccess=main
+WorkingDirectory=%h/Desktop/ROS2/src/sangwon_AI
+ExecStart=/usr/bin/python3 -u %h/Desktop/ROS2/src/sangwon_AI/ops/health_monitor.py
+Environment=PYTHONUTF8=1
+Environment=ROS_DOMAIN_ID=1
+Environment=PYTHONDONTWRITEBYTECODE=1
+Restart=on-failure
+RestartSec=5
+TimeoutStartSec=20
+TimeoutStopSec=10
+WatchdogSec=30
+NoNewPrivileges=true
+UMask=0077
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=default.target

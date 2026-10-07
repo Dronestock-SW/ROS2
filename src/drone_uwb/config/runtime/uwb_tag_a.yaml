@@ -25,6 +25,13 @@ uwb_node:
 uwb_px4_bridge:
   ros__parameters:
     enabled: false
+    input_source: btf_xy
+    tag_id: "5"
+    ground_only: true
+    layout_confirmed: false
+    antenna_body_frd_x_m: 0.0
+    antenna_body_frd_y_m: 0.0
+    antenna_body_frd_z_m: 0.0
     alignment_confirmed: false
     timing_confirmed: false
     sensor_mount_confirmed: false

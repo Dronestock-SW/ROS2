@@ -1,0 +1,17 @@
+{
+  "flight_authority": false,
+  "observation_source": "ROS_TOPICS_UNVERIFIED_AIRCRAFT",
+  "ros_domain_id": 1,
+  "topics": {
+    "image": "/camera/image_raw",
+    "camera_info": "/camera/camera_info",
+    "markers": "/aruco_detections",
+    "scanner_qr": "/qr_reader/data",
+    "camera_qr": "/qr_code/data"
+  },
+  "max_source_age_ms": {
+    "image": 500,
+    "camera_info": 5000,
+    "markers": 100
+  }
+}

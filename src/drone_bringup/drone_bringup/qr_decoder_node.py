@@ -1,4 +1,5 @@
-"""QR 코드 디코더 노드 — Dronestock 1호기.
+"""
+QR 코드 디코더 노드 — Dronestock 1호기.
 
 /camera/image_raw 를 구독해 pyzbar로 QR 코드를 디코딩하고,
 디코딩된 문자열을 /qr_code/data 로 발행한다.
@@ -103,7 +104,8 @@ class QrDecoderNode(Node):
             f'miss_warn_threshold={self._miss_warn_threshold}프레임')
 
     def _set_enabled(self, enabled):
-        """끌 때 구독 자체를 끊는다.
+        """
+        끌 때 구독 자체를 끊는다.
 
         콜백 안에서 일찍 return 하는 것만으로는 부족하다. 구독이 살아 있으면
         1640x1232 프레임이 계속 전달돼 역직렬화와 복사가 일어난다. 실측으로
@@ -152,7 +154,8 @@ class QrDecoderNode(Node):
         self._record_proc_time(time.monotonic() - t0)
 
     def _decode(self, frame):
-        """ROI 우선 → 실패 시 전체 프레임 순서로 디코딩한다.
+        """
+        ROI 우선 → 실패 시 전체 프레임 순서로 디코딩한다.
 
         반환값: ((x, y, w, h), 디코딩 문자열) 또는 (None, None)
         """
@@ -172,7 +175,8 @@ class QrDecoderNode(Node):
         return None, None
 
     def _zbar(self, img):
-        """원본으로 먼저 디코딩하고, 실패할 때만 Otsu 이진화로 재시도한다.
+        """
+        원본으로 먼저 디코딩하고, 실패할 때만 Otsu 이진화로 재시도한다.
 
         ROI와 전체 프레임 양쪽에서 같은 순서로 쓴다 — 조명이 좋으면 원본이
         먼저 걸려 Otsu 비용이 안 든다. 자세한 근거는 모듈 docstring 참조.

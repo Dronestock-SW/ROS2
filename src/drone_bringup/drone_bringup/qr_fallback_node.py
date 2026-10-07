@@ -1,4 +1,5 @@
-"""QR 폴백 코디네이터 노드 — Dronestock 1호기.
+"""
+QR 폴백 코디네이터 노드 — Dronestock 1호기.
 
 DYSCAN DE2110 리더기(/qr_reader/data)를 1순위로 쓰다가, 일정 시간
 연속으로 스캔이 안 들어오면 카메라+pyzbar(/qr_code/data, qr_decoder_node)

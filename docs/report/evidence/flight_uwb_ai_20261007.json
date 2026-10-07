@@ -1,0 +1,300 @@
+{
+  "schema": "ros2-flight-uwb-ai-evidence/1",
+  "date": "2026-10-07",
+  "branch": "codex/flight-uwb-ai-integration-20261007",
+  "source_uwb_commit": "7cfc482feee49d82ece1c3987af920587a1a920f",
+  "latest_main": "deb940f",
+  "preserved_ai_source_files": 191,
+  "tests": {
+    "uwb_passed": 337,
+    "drone_demo_passed": 116,
+    "platform_passed": 14,
+    "bringup_passed": 57,
+    "bringup_skipped": 1,
+    "ai_ctest_passed_after_reruns": 25
+  },
+  "transport_runs": [
+    {
+      "scope": "RECORDED_RAW_TDMA_TRANSPORT_ONLY",
+      "tag_id": "6",
+      "window_seconds": 600,
+      "warmup_s": 10,
+      "complete_window": true,
+      "count": 23636,
+      "mean_hz": 39.39333333333333,
+      "min_1s_hz": 0,
+      "max_1s_hz": 40,
+      "windows_below_35hz": 14,
+      "max_consecutive_missing": 113,
+      "session_count": 1,
+      "rate_pass": false,
+      "consecutive_loss_pass": false,
+      "transport_pass": false,
+      "rejection_counts": {
+        "status_unavailable": 109,
+        "tdma_deadline_rejected": 4,
+        "tdma_pair_expired": 11,
+        "tdma_without_raw": 13,
+        "tdma_seq_mismatch": 3
+      },
+      "pending_pair_counts": {},
+      "btf_accuracy_verified": false,
+      "fusion_verified": false,
+      "flight_verified": false
+    },
+    {
+      "scope": "RECORDED_RAW_TDMA_TRANSPORT_ONLY",
+      "tag_id": "6",
+      "window_seconds": 600,
+      "warmup_s": 10,
+      "complete_window": true,
+      "count": 23209,
+      "mean_hz": 38.681666666666665,
+      "min_1s_hz": 0,
+      "max_1s_hz": 43,
+      "windows_below_35hz": 23,
+      "max_consecutive_missing": 64,
+      "session_count": 1,
+      "rate_pass": false,
+      "consecutive_loss_pass": false,
+      "transport_pass": false,
+      "rejection_counts": {
+        "tdma_without_raw": 22,
+        "status_unavailable": 47,
+        "tdma_pair_expired": 22,
+        "tdma_deadline_rejected": 42,
+        "invalid_tdma_diagnostic": 1,
+        "tdma_seq_mismatch": 9
+      },
+      "pending_pair_counts": {
+        "tdma_missing": 2
+      },
+      "btf_accuracy_verified": false,
+      "fusion_verified": false,
+      "flight_verified": false
+    }
+  ],
+  "ground2": {
+    "parameters_read_only": {
+      "EKF2_EV_CTRL": 0,
+      "EKF2_EV_DELAY": 0.0,
+      "EKF2_EV_NOISE_MD": 0,
+      "EKF2_EVP_NOISE": 0.10000000149011612,
+      "EKF2_MAG_TYPE": 0,
+      "SENS_BOARD_ROT": 0,
+      "EKF2_EV_POS_X": 0.0,
+      "EKF2_EV_POS_Y": 0.0,
+      "EKF2_EV_POS_Z": 0.0
+    },
+    "px4_xyz": {
+      "valid": true,
+      "xyz_m": [
+        0.16668729484081268,
+        -16.932897567749023,
+        0.5112382173538208
+      ],
+      "frame": "px4_local_enu",
+      "fusion_verified": false,
+      "warehouse_aligned": false,
+      "source_stamp_ns": 1791368312325213824,
+      "age_s": 0.045331326
+    },
+    "topics": {
+      "/mavros/state": {
+        "count": 600,
+        "rate_over_window_hz": 0.9999997412850669,
+        "rate_between_first_last_hz": 0.9999542868610721,
+        "median_gap_ms": 1000.051193,
+        "max_gap_ms": 2183.747762,
+        "gaps_over_twice_median": 1
+      },
+      "/mavros/imu/data_raw": {
+        "count": 29582,
+        "rate_over_window_hz": 49.30332057782475,
+        "rate_between_first_last_hz": 49.30656917594311,
+        "median_gap_ms": 20.456339,
+        "max_gap_ms": 1688.464732,
+        "gaps_over_twice_median": 56
+      },
+      "/mavros/imu/data": {
+        "count": 29572,
+        "rate_over_window_hz": 49.28665391547,
+        "rate_between_first_last_hz": 49.29136508351922,
+        "median_gap_ms": 20.357404,
+        "max_gap_ms": 1708.501226,
+        "gaps_over_twice_median": 58
+      },
+      "/mavros/local_position/odom": {
+        "count": 17820,
+        "rate_over_window_hz": 29.699992316166487,
+        "rate_between_first_last_hz": 29.703007745513794,
+        "median_gap_ms": 33.267084000000004,
+        "max_gap_ms": 1708.066654,
+        "gaps_over_twice_median": 47
+      },
+      "/mavros/local_position/pose": {
+        "count": 17813,
+        "rate_over_window_hz": 29.68832565251816,
+        "rate_between_first_last_hz": 29.691329945033573,
+        "median_gap_ms": 33.305794,
+        "max_gap_ms": 1709.06108,
+        "gaps_over_twice_median": 46
+      },
+      "/mavros/extended_state": {
+        "count": 2995,
+        "rate_over_window_hz": 4.991665375247959,
+        "rate_between_first_last_hz": 4.991457271998096,
+        "median_gap_ms": 199.9951775,
+        "max_gap_ms": 1730.0311669999999,
+        "gaps_over_twice_median": 9
+      },
+      "/mavros/timesync_status": {
+        "count": 5974,
+        "rate_over_window_hz": 9.956664090728315,
+        "rate_between_first_last_hz": 9.95793265813607,
+        "median_gap_ms": 99.6414,
+        "max_gap_ms": 1759.808587,
+        "gaps_over_twice_median": 34
+      },
+      "/mavros/downward_0": {
+        "count": 5886,
+        "rate_over_window_hz": 9.809997462006507,
+        "rate_between_first_last_hz": 9.810237496212945,
+        "median_gap_ms": 101.32010700000001,
+        "max_gap_ms": 1738.5191,
+        "gaps_over_twice_median": 34
+      },
+      "/mavros/downward_1": {
+        "count": 0,
+        "rate_over_window_hz": 0.0,
+        "rate_between_first_last_hz": null,
+        "median_gap_ms": null,
+        "max_gap_ms": null,
+        "gaps_over_twice_median": 0
+      },
+      "/scan": {
+        "count": 0,
+        "rate_over_window_hz": 0.0,
+        "rate_between_first_last_hz": null,
+        "median_gap_ms": null,
+        "max_gap_ms": null,
+        "gaps_over_twice_median": 0
+      },
+      "/uwb_pose": {
+        "count": 185,
+        "rate_over_window_hz": 0.30833325356289565,
+        "rate_between_first_last_hz": 0.3123446886883232,
+        "median_gap_ms": 26.487834000000003,
+        "max_gap_ms": 369846.83326499996,
+        "gaps_over_twice_median": 50
+      },
+      "/uwb/btf_pose": {
+        "count": 10,
+        "rate_over_window_hz": 0.016666662354751116,
+        "rate_between_first_last_hz": 2.7517745436529637,
+        "median_gap_ms": 25.182108000000003,
+        "max_gap_ms": 3076.256839,
+        "gaps_over_twice_median": 1
+      },
+      "/uwb/btf_status": {
+        "count": 598,
+        "rate_over_window_hz": 0.9966664088141166,
+        "rate_between_first_last_hz": 0.9983149350707101,
+        "median_gap_ms": 1000.2100899999999,
+        "max_gap_ms": 2185.313052,
+        "gaps_over_twice_median": 1
+      },
+      "/uwb/status": {
+        "count": 598,
+        "rate_over_window_hz": 0.9966664088141166,
+        "rate_between_first_last_hz": 0.9983299342059975,
+        "median_gap_ms": 999.973539,
+        "max_gap_ms": 2461.124057,
+        "gaps_over_twice_median": 1
+      },
+      "/uwb/bridge_status": {
+        "count": 599,
+        "rate_over_window_hz": 0.9983330750495918,
+        "rate_between_first_last_hz": 1.0000074236905623,
+        "median_gap_ms": 1000.0011010000001,
+        "max_gap_ms": 2185.3338519999998,
+        "gaps_over_twice_median": 1
+      },
+      "/mavros/vision_pose/pose_cov": {
+        "count": 0,
+        "rate_over_window_hz": 0.0,
+        "rate_between_first_last_hz": null,
+        "median_gap_ms": null,
+        "max_gap_ms": null,
+        "gaps_over_twice_median": 0
+      }
+    },
+    "ai_stream_status_at_590s": {
+      "battery": "WARN",
+      "extended_state": "LIVE",
+      "local_position": "LIVE",
+      "rc": "LIVE",
+      "state": "LIVE"
+    },
+    "ai_authority": {
+      "ros_domain_id": 2,
+      "profile": "HOST_OBSERVE",
+      "can_start": false,
+      "flight_authority": false,
+      "physical_output_enabled": false
+    }
+  },
+  "lidar": {
+    "scope": "PHYSICAL_LIDAR_RECEPTION_ONLY",
+    "duration_s": 30.02628986900163,
+    "messages": 262,
+    "rate_between_first_last_hz": 9.9793401368772,
+    "min_valid_points": 367,
+    "last_scan": {
+      "frame_id": "laser_frame",
+      "range_min": 0.029999999329447746,
+      "range_max": 12.0,
+      "points": 430,
+      "valid_points": 400,
+      "nearest_m": 0.3630000054836273
+    },
+    "driver_returncode": null,
+    "mount_tf_verified": false,
+    "scan_matching_verified": false,
+    "flight_verified": false
+  },
+  "physical_flight_tested": false,
+  "real_sitl_tested": false,
+  "fc_uwb_fusion_verified": false,
+  "boot_services_migrated": false,
+  "evidence_base": "Jetson integration checkout/.integration-evidence (ignored; not published)",
+  "sha256": {
+    "initial-build.log": "9f7f14fcaa93c5853c615a87d006f16a0bfd4d9bbcf4d10a480cb5cf90026264",
+    "final-build.log": "510059ea4cd28e5cec4e1e8d89aa36ff1fe047b4f24a29909e5fab5135288278",
+    "bringup-ament-build.log": "0e67980909ed3dafbdea2dd71c65ae7be7e1525615b918c97166b6756040af96",
+    "uwb-final-tests.log": "9c306318ab07bb8f751d7b7defa5e1cfca4d388847fff919fe7c3804f29ddc7a",
+    "drone_demo-tests.log": "0587927475d7e573a85b377e5fb057d6982fb26664d67a42eedebaa097a38ec8",
+    "drone_platform_link-tests.log": "a7f94763de96421459c46736e2caf43f9d769372def7f3b0957f347c4fe88968",
+    "bringup-compose-tests.log": "74b4e0a7f20e056313f7984504ce50e8b75ba73674050387e8016979a8c79cd7",
+    "ai-ctest.log": "1f52a2c14660280b11b212bc2646f093b1ce8389cde08a1a5134a622e99eae28",
+    "ai-ctest-rerun.log": "6dde21a2b3d4ba79b3eecb98cc06bb9214f080bda6bbd3f2f2dadaa3f07b25b8",
+    "ai-ctest-final.log": "1115577d1c3afd02b61fefd6c9dbec5e7a09dbfea6df9e6e9973dfb95ddd6502",
+    "composed-launch.log": "fdfb35cc47c58960d9221db64b7e8d21785081bd16c5c6a695fd1c8f16b0ceb6",
+    "lidar-ground.log": "edddcd1cc4700acb10ff049dd4caf925021d4c3824e740551e01ab724ddf7f7c",
+    "tag-b-600s-audit.json": "5aa3de2eeb1373bb3bb3f33acd2ea7d0915150e1df28635694c25f9a8aa25793",
+    "tag-b-600s-audit-2.json": "6a7f5a8527908c7355d172d4890bf0484e15690dff377aaa485601830635de34",
+    "tag-b-probe-1/summary.json": "8f3a107a0fdf99c9a044b68648a3c1a3f1d63c337fb0651484b6872695e1c901",
+    "tag-b-probe-2/summary.json": "565cf6b581002ee88afab7b9de863f3cf3a3a92005708231dc67b34fedb1c06b",
+    "ai-ground-30s.json": "a9117cb176c684b895d5f6661dad4f6f11dce6f7786ceb59f7a17379314b0034",
+    "ai-ground-590s.json": "f9d4eb7cfc17d9b5eeaa59d0c3ae20e0adbca98f356bdc20a86c60b191b7056f",
+    "lidar-ground-summary.json": "994fdb1f9c32b96cca9be2149725c36e8e69ded4f72ce32c2f00f196aaac74bc",
+    "tag-b-ground-2/uwb/raw/serial.raw": "e3d21516f7350540961db648184c6b56f02cdf274ce8e9afe522da45c6bf6842",
+    "tag-b-ground-1/uwb/raw/serial.raw": "68b2ad1ddd37b362dbe942c796a74cdcf5a7a79839eff26b590f33088f015b56",
+    "tag-b-ground-2/uwb/raw/received.jsonl": "b29a792441df152c1a5958b200420c721e193db13c329cecc674faa7cc832d21",
+    "tag-b-ground-1/uwb/raw/received.jsonl": "1833ccadce8c90fba7c4904cccb5933ecca5f5a410a328b283f69426775afd90",
+    "tag-b-ground-2/uwb/processed/node_status.jsonl": "8156fa05af18fc66c528c9820c4fa3303b8eef6649c7cf6e7cb29905eb275e57",
+    "tag-b-ground-1/uwb/processed/node_status.jsonl": "98a54a6e7ce3f0344f7a60f3ecc39eae6ba9d8bd11c12834a0773ff8bccf8e4d",
+    "tag-b-ground-2/btf/decisions.jsonl": "2088891a3878d89953e2de74b625b187af7560fdf51a0dda1f965e7934650679",
+    "tag-b-ground-1/btf/decisions.jsonl": "0004ffab7986d815077533279626c5b3e5141bc17f40012a82930c3ef05a2b83"
+  }
+}

@@ -10,6 +10,9 @@
 
 | 찾는 내용 | 위치 |
 |---|---|
+| 비행·UWB·AI 연결과 미완료 범위 | [통합 기준](architecture/flight_uwb_ai_integration.md) |
+| 기체별 통합 지상 실행 | [통합 지상 절차](runbooks/flight_uwb_ai_ground.md) |
+| 기존 AI 보존·코드 통합·실물 수신 결과 | [2026-10-07 통합 기록](report/flight_uwb_ai_integration_20261007.md) |
 | 웹·companion·태그 후속 작업 | [멀티태그 연결 인수인계](runbooks/multitag_jetson_web_handoff.md) |
 | Wi-Fi/LoRa 역할·좌표 출처·ID·주기 | [멀티태그 연결 기준](reference/multitag_jetson_web_contract.md) |
 | TDMA·A/B·웹 패치 시험과 미검증 범위 | [2026-10-07 패치 검증](report/multitag_patch_validation_20261007.md) |

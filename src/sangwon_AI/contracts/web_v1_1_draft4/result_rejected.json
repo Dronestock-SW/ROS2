@@ -1,0 +1,28 @@
+{
+  "contract_version": "1.1-draft.4",
+  "type": "command_result",
+  "drone_id": "TEST-DRONE-01",
+  "profile": "REPLAY",
+  "control_request_id": "request-start-demo-01",
+  "status": "REJECTED",
+  "code": "PREPARATION_STALE",
+  "result_revision": 1,
+  "context": {
+    "boot_id": "boot-demo-01",
+    "runtime_session_id": "runtime-demo-01",
+    "control_session_id": "control-demo-01",
+    "assignment_id": "assignment-demo-01",
+    "snapshot_id": "snapshot-demo-01",
+    "preparation_id": "preparation-demo-01",
+    "readiness_revision": 7,
+    "execution_id": null,
+    "flight_id": null
+  },
+  "recorded_at": "2026-10-04T06:00:04.200Z",
+  "reason": "Preparation revoked before acceptance",
+  "operator_action": "Restore position and request new preparation",
+  "blocking_check_ids": [
+    "BP-C13"
+  ],
+  "field_errors": []
+}

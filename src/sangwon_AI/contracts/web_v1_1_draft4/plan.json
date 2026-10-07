@@ -1,0 +1,205 @@
+{
+  "contract_version": "1.1-draft.4",
+  "type": "validated_plan",
+  "drone_id": "TEST-DRONE-01",
+  "profile": "REPLAY",
+  "plan_id": "plan-demo-01",
+  "snapshot_id": "snapshot-demo-01",
+  "assignment_id": "assignment-demo-01",
+  "launch_context_id": "launch-demo-01",
+  "map_ref": {
+    "id": "map-demo",
+    "revision": "r1"
+  },
+  "transform_ref": {
+    "id": "map-px4-demo",
+    "revision": "r1"
+  },
+  "body_profile_ref": {
+    "id": "body-demo",
+    "revision": "r1"
+  },
+  "generated_at": "2026-10-04T06:00:01Z",
+  "validation": "SYNTHETIC_ONLY",
+  "global_detour_enabled": false,
+  "segments": [
+    {
+      "segment_id": "P1",
+      "task_id": null,
+      "kind": "TAKEOFF",
+      "from_position_m": {
+        "x": 1,
+        "y": 1,
+        "z": 0.1
+      },
+      "to_position_m": {
+        "x": 1,
+        "y": 1,
+        "z": 1.2
+      },
+      "space_ref": {
+        "id": "z-zone-demo",
+        "revision": "r1"
+      },
+      "validation": "SYNTHETIC_ONLY"
+    },
+    {
+      "segment_id": "P2",
+      "task_id": "W01",
+      "kind": "WAYPOINT",
+      "from_position_m": {
+        "x": 1,
+        "y": 1,
+        "z": 1.2
+      },
+      "to_position_m": {
+        "x": 1.5,
+        "y": 1.5,
+        "z": 1.2
+      },
+      "space_ref": {
+        "id": "z-zone-demo",
+        "revision": "r1"
+      },
+      "validation": "SYNTHETIC_ONLY"
+    },
+    {
+      "segment_id": "P3",
+      "task_id": "S01",
+      "kind": "SCAN_APPROACH",
+      "from_position_m": {
+        "x": 1.5,
+        "y": 1.5,
+        "z": 1.2
+      },
+      "to_position_m": {
+        "x": 3.88,
+        "y": 1.5,
+        "z": 1.2
+      },
+      "space_ref": {
+        "id": "SW01",
+        "revision": "r1"
+      },
+      "validation": "SYNTHETIC_ONLY"
+    },
+    {
+      "segment_id": "P4",
+      "task_id": "S01",
+      "kind": "SCAN_EGRESS",
+      "from_position_m": {
+        "x": 3.88,
+        "y": 1.5,
+        "z": 1.2
+      },
+      "to_position_m": {
+        "x": 1.5,
+        "y": 1.5,
+        "z": 1.2
+      },
+      "space_ref": {
+        "id": "SW01",
+        "revision": "r1"
+      },
+      "validation": "SYNTHETIC_ONLY"
+    },
+    {
+      "segment_id": "P5",
+      "task_id": "W02",
+      "kind": "WAYPOINT",
+      "from_position_m": {
+        "x": 1.5,
+        "y": 1.5,
+        "z": 1.2
+      },
+      "to_position_m": {
+        "x": 1.5,
+        "y": 3,
+        "z": 1.2
+      },
+      "space_ref": {
+        "id": "z-zone-demo",
+        "revision": "r1"
+      },
+      "validation": "SYNTHETIC_ONLY"
+    },
+    {
+      "segment_id": "P6",
+      "task_id": null,
+      "kind": "RETURN",
+      "from_position_m": {
+        "x": 1.5,
+        "y": 3,
+        "z": 1.2
+      },
+      "to_position_m": {
+        "x": 1.5,
+        "y": 1.5,
+        "z": 1.2
+      },
+      "space_ref": {
+        "id": "z-zone-demo",
+        "revision": "r1"
+      },
+      "validation": "SYNTHETIC_ONLY"
+    },
+    {
+      "segment_id": "P7",
+      "task_id": null,
+      "kind": "RETURN",
+      "from_position_m": {
+        "x": 1.5,
+        "y": 1.5,
+        "z": 1.2
+      },
+      "to_position_m": {
+        "x": 1,
+        "y": 1,
+        "z": 1.2
+      },
+      "space_ref": {
+        "id": "z-zone-demo",
+        "revision": "r1"
+      },
+      "validation": "SYNTHETIC_ONLY"
+    },
+    {
+      "segment_id": "P8",
+      "task_id": null,
+      "kind": "LAND",
+      "from_position_m": {
+        "x": 1,
+        "y": 1,
+        "z": 1.2
+      },
+      "to_position_m": {
+        "x": 1,
+        "y": 1,
+        "z": 0.1
+      },
+      "space_ref": {
+        "id": "z-zone-demo",
+        "revision": "r1"
+      },
+      "validation": "SYNTHETIC_ONLY"
+    }
+  ],
+  "scan_targets": [
+    {
+      "task_id": "S01",
+      "label_point_id": "L01",
+      "workspace_id": "SW01",
+      "staging_position_m": {
+        "x": 1.5,
+        "y": 1.5,
+        "z": 1.2
+      },
+      "scan_position_m": {
+        "x": 3.88,
+        "y": 1.5,
+        "z": 1.2
+      },
+      "yaw_deg": 0
+    }
+  ]
+}

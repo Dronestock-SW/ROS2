@@ -1,7 +1,9 @@
 /**:
   ros__parameters:
     startup_px4_usb_quirk: false
-    plugin_allowlist: [sys_status, sys_time, imu, distance_sensor]
+    # sys_status needs command for AUTOPILOT_VERSION/capabilities discovery.
+    # The bench has no flight-command clients, vision or setpoint plugins.
+    plugin_allowlist: [sys_status, sys_time, command, imu, distance_sensor, local_position, param, rc_io]
 /**/sys:
   ros__parameters:
     heartbeat_rate: 1.0
@@ -26,3 +28,7 @@
         orientation: PITCH_270
         field_of_view: 0.04
         send_tf: false
+/**/local_position:
+  ros__parameters:
+    frame_id: map
+    tf.send: false

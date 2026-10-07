@@ -11,6 +11,7 @@ from geometry_msgs.msg import PoseWithCovarianceStamped
 from mavros_msgs.msg import State, TimesyncStatus
 import rclpy
 from rclpy.node import Node
+from rclpy.executors import ExternalShutdownException
 from rclpy.qos import qos_profile_sensor_data
 from rcl_interfaces.msg import ParameterDescriptor
 from sensor_msgs.msg import Imu, Range
@@ -202,7 +203,7 @@ def main(args=None):
     node = BtfNode()
     try:
         rclpy.spin(node)
-    except KeyboardInterrupt:
+    except (KeyboardInterrupt, ExternalShutdownException):
         pass
     finally:
         node.destroy_node()

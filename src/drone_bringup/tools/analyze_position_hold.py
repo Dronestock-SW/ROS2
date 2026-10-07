@@ -1,4 +1,5 @@
-"""Inspect PX4 Position intervals offline; never send flight commands.
+"""
+Inspect PX4 Position intervals offline; never send flight commands.
 
 Error means EKF local XY minus the logged controller target, not ground truth.
 Mode IDs follow PX4 VehicleStatus (v1.17). Unknown IDs remain numeric.
@@ -97,10 +98,10 @@ def aligned_samples(ulog):
         result[field] = np.asarray(position.get(field, np.full(len(time), np.nan)), dtype=float)
     sources = [
         ('vehicle_local_position_setpoint', {'x': 'target_x', 'y': 'target_y',
-                                           'timestamp': 'target_timestamp_us'},
+                                             'timestamp': 'target_timestamp_us'},
          SETTINGS['setpoint_max_age_s']),
         ('manual_control_setpoint', {'roll': 'roll', 'pitch': 'pitch',
-                                    'valid': 'manual_valid'}, SETTINGS['manual_max_age_s']),
+                                     'valid': 'manual_valid'}, SETTINGS['manual_max_age_s']),
         ('vehicle_status', {'nav_state': 'nav_state', 'arming_state': 'arming_state'},
          SETTINGS['state_max_age_s']),
         ('vehicle_land_detected', {'landed': 'landed'}, SETTINGS['state_max_age_s']),
@@ -136,7 +137,8 @@ def aid_summary(ulog, start, end):
         result.append({'topic': entry.name, 'instance': entry.multi_id,
                        'selected_samples': int(mask.sum()),
                        'fused_samples': int(np.count_nonzero(data['fused'][mask])),
-                       'rejected_samples': int(np.count_nonzero(data['innovation_rejected'][mask])),
+                       'rejected_samples': int(np.count_nonzero(
+                           data['innovation_rejected'][mask])),
                        'test_ratio': stats(np.concatenate(ratios)) if ratios else None})
     return result
 
