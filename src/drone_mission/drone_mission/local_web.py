@@ -6,13 +6,14 @@ from datetime import datetime, timezone
 import hashlib
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
+from pathlib import Path
 import signal
 import threading
 import time
 import uuid
 
 from websockets.asyncio.server import serve
-from .contracts import LAYOUT
+from .contracts import LAYOUT, Settings
 
 
 PAGE = '''<!doctype html><html lang="ko"><meta charset="utf-8">
@@ -40,7 +41,8 @@ document.getElementById('start').onclick=()=>command('start');
 document.getElementById('land').onclick=()=>command('land');
 document.getElementById('home').onclick=()=>command('return_to_home');
 async function update(){try{const r=await fetch('/local/status',{cache:'no-store'}),s=await r.json(),t=s.telemetry;
-state.textContent=JSON.stringify({텔레메트리수신:s.telemetry_fresh,상태:t.flight_state??'대기',사유:t.flight_reason??null,
+state.textContent=JSON.stringify({기체:s.assignment.drone_id,배치:s.assignment.anchor_layout_id,
+텔레메트리수신:s.telemetry_fresh,상태:t.flight_state??'대기',사유:t.flight_reason??null,
 기체연결:t.fc_connected??null,시동:t.fc_armed??null,PX4모드:t.fc_mode??null,
 UWB_XYZ:[t.x??null,t.y??null,t.current_z_m??null],높이출처:t.current_z_source??null,
 PX4_ENU:t.px4_position_enu_m??null,경유지:t.active_waypoint_id??null,
@@ -52,7 +54,7 @@ if(!s.telemetry_fresh)notice.textContent='기체 텔레메트리 수신 대기 �
 
 
 class LocalPlatform:
-    def __init__(self, drone_id='5'):
+    def __init__(self, drone_id='5', layout_id=LAYOUT):
         self.lock = threading.Lock()
         self.drone_id = drone_id
         self.mission_number = 0
@@ -61,7 +63,7 @@ class LocalPlatform:
         self.assignment = dict(ok=True, contract_version='1.0', drone_id=drone_id,
             status='IDLE', control_action=None, coordinate_frame='UWB_ANCHOR_LOCAL',
             origin='A1', x_axis='A1_TO_A2', y_axis='A1_TO_A3', z_axis='UP_FROM_FLOOR', unit='meter',
-            anchor_layout_id=LAYOUT, route_tasks=[])
+            anchor_layout_id=layout_id, route_tasks=[])
 
     def command(self, action, route=None):
         if action not in ('start', 'land', 'return_to_home'):
@@ -162,7 +164,11 @@ class LocalPlatform:
 
 
 async def run(args):
-    platform = LocalPlatform(args.drone_id)
+    settings = (Settings(**json.loads(Path(args.config).read_text(encoding='utf-8')))
+                if args.config else Settings(drone_id=args.drone_id or '5'))
+    if args.drone_id is not None and args.drone_id != settings.drone_id:
+        raise ValueError('web_config_drone_id_mismatch')
+    platform = LocalPlatform(settings.drone_id, settings.layout_id)
     http = ThreadingHTTPServer((args.host,args.http_port), platform.http_handler())
     worker = threading.Thread(target=http.serve_forever,daemon=True)
     worker.start()
@@ -172,7 +178,7 @@ async def run(args):
     try:
         async with serve(platform.websocket,args.host,args.ws_port):
             print(f'Flight page: http://{args.host}:{http.server_port}',flush=True)
-            print(f'WS endpoint: ws://{args.host}:{args.ws_port}/ws/drones/{args.drone_id}/',flush=True)
+            print(f'WS endpoint: ws://{args.host}:{args.ws_port}/ws/drones/{settings.drone_id}/',flush=True)
             await stop.wait()
     finally:
         await asyncio.to_thread(http.shutdown)
@@ -184,5 +190,6 @@ def main():
     parser.add_argument('--host',default='127.0.0.1')
     parser.add_argument('--http-port',type=int,default=8001)
     parser.add_argument('--ws-port',type=int,default=8002)
-    parser.add_argument('--drone-id',default='5')
+    parser.add_argument('--drone-id',choices=('5','6'))
+    parser.add_argument('--config',default='',help='Same mission configuration as the flight launcher')
     asyncio.run(run(parser.parse_args()))

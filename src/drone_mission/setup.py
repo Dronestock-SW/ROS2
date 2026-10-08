@@ -11,6 +11,7 @@ setup(
         ('share/drone_mission/launch', glob('launch/*.launch.py')),
     ],
     install_requires=['setuptools'],
+    tests_require=['pytest'],
     maintainer='Dronestock', maintainer_email='user@todo.todo',
     description='PX4 flight mission sequencing and local web trial tools.',
     license='Proprietary',

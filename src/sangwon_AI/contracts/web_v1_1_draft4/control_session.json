@@ -1,0 +1,23 @@
+{
+  "contract_version": "1.1-draft.4",
+  "type": "control_session",
+  "drone_id": "TEST-DRONE-01",
+  "profile": "REPLAY",
+  "boot_id": "boot-demo-01",
+  "runtime_session_id": "runtime-demo-01",
+  "control_session_id": "control-demo-01",
+  "negotiated_contract": "1.1-draft.4",
+  "server_time": "2026-10-04T05:58:00Z",
+  "supported_capabilities": [
+    "mission_xyz",
+    "arrival_yaw",
+    "map_volumes",
+    "command_session",
+    "readiness_binding",
+    "scan_task_v1",
+    "label_pose_v1",
+    "scan_workspace_v1"
+  ],
+  "flight_authority": false,
+  "allowed_execution": "REPLAY_ONLY"
+}

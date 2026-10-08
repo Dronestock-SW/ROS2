@@ -39,13 +39,13 @@ def main():
     try:
         from geographic_msgs.msg import GeoPointStamped
         from geometry_msgs.msg import PoseStamped, PoseWithCovarianceStamped
-        from mavros_msgs.msg import EstimatorStatus, ExtendedState, State, TimesyncStatus
+        from mavros_msgs.msg import EstimatorStatus, ExtendedState, RCIn, State, TimesyncStatus
         from nav_msgs.msg import Odometry
         from rcl_interfaces.srv import GetParameters
         import rclpy
         from rclpy.qos import DurabilityPolicy, QoSProfile, qos_profile_sensor_data
         from rosidl_runtime_py.convert import message_to_ordereddict
-        from sensor_msgs.msg import Imu, Range
+        from sensor_msgs.msg import BatteryState, Imu, Range
         from std_msgs.msg import String
     except ImportError as exc:
         print(json.dumps({'result': 'missing_ros_dependency', 'module': exc.name}))
@@ -74,6 +74,8 @@ def main():
 
     for topic, message_type in (
         ('/mavros/state', State),
+        ('/mavros/rc/in', RCIn),
+        ('/mavros/battery', BatteryState),
         ('/mavros/extended_state', ExtendedState),
         ('/mavros/estimator_status', EstimatorStatus),
         ('/mavros/local_position/odom', Odometry),
@@ -102,6 +104,9 @@ def main():
         'EKF2_EV_POS_X', 'EKF2_EV_POS_Y', 'EKF2_EV_POS_Z',
         'EKF2_HGT_REF', 'EKF2_RNG_CTRL', 'MIS_TAKEOFF_ALT',
         'COM_DISARM_LAND', 'COM_DL_LOSS_T', 'NAV_DLL_ACT',
+        'COM_RC_OVERRIDE', 'COM_RC_IN_MODE', 'COM_RC_STICK_OV',
+        'RC_MAP_FLTMODE', 'RC_MAP_ARM_SW', 'RC_MAP_KILL_SW',
+        'COM_RC_LOSS_T', 'NAV_RCL_ACT', 'COM_LOW_BAT_ACT',
     ]
     client = node.create_client(GetParameters, '/mavros/param/get_parameters')
     future = None

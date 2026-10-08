@@ -22,6 +22,10 @@
 
 ## 현재 작업 상태
 
+- [2026-10-08 로컬 통합](docs/report/local_jetson_integration_20261008.md):
+  SSH 직접 조회 뒤 웹·TDMA·Tag B·추가 hover 소스를 통합했다.
+  기존 서비스와 FC 설정은 유지한다. 실물 비행은 미실시다.
+
 - [로컬·Jetson 세션 인계](docs/runbooks/local_jetson_handoff_20261008.md):
   전달 브랜치는 `codex/web-flight-handoff-20261008`이다.
   어제 통합 브랜치의 Tag B·낮은 앵커·FC 설정과 대조가 필요하다.
@@ -34,6 +38,14 @@
   FC는 시험용 모사 노드다. 실물 융합·비행은 미실시다.
   [2026-10-08 확인 기록](docs/report/web_test_flight_20261008.md)을 따른다.
   기본 실행·관측 전달과 물리 확인값은 비활성이다.
+
+- [웹·companion·멀티태그 인수인계](docs/runbooks/multitag_jetson_web_handoff.md):
+  웹 좌표는 Wi-Fi/WebSocket이다. LoRa는 별도 채널이다.
+  TDMA 수신·A/B 설정·인증 관측 전송을 구현했다.
+  [패치 검증](docs/report/multitag_patch_validation_20261007.md)에 시험과 실물 미검증 범위를 구분했다.
+  [연결 기준](docs/reference/multitag_jetson_web_contract.md)과
+  [호환 재현 기록](docs/report/multitag_web_compatibility_20261007.md)을 함께 읽는다.
+  이번 반영은 문서 정리이며 실행 코드·기기 설정은 바꾸지 않았다.
 
 - [4앵커 기본 실행 복원](docs/runbooks/uwb_four_anchor_restore_20261007.md):
   A1~A4, `min_anchors=4`, `active_anchor_mask=15`.

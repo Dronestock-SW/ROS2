@@ -1,0 +1,26 @@
+{
+  "contract_version": "1.1-draft.4",
+  "type": "preparation_report",
+  "drone_id": "TEST-DRONE-01",
+  "profile": "REPLAY",
+  "report_id": "report-demo-01",
+  "report_revision": 1,
+  "context": {
+    "boot_id": "boot-demo-01",
+    "runtime_session_id": "runtime-demo-01",
+    "control_session_id": "control-demo-01",
+    "assignment_id": "assignment-demo-01",
+    "snapshot_id": "snapshot-demo-01",
+    "preparation_id": "preparation-demo-01",
+    "readiness_revision": 7,
+    "execution_id": null,
+    "flight_id": null
+  },
+  "assignment_state": "READY",
+  "snapshot_sha256": "5419d8a9a9cd20e54f79d4bfc3551bf0e7894b647d94685763172ef741cf1909",
+  "plan_id": "plan-demo-01",
+  "operator_attestation_id": "attestation-demo-01",
+  "readiness_revision": 7,
+  "recorded_at": "2026-10-04T06:00:03Z",
+  "field_errors": []
+}

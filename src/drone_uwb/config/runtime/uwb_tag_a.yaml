@@ -1,0 +1,44 @@
+uwb_node:
+  ros__parameters:
+    port: /dev/uwb
+    baudrate: 921600
+    tag_id: '5'
+    tdma_mode: required
+    source_mode: raw_ranges
+    min_anchors: 4
+    active_anchor_mask: 15
+    status_timeout_s: 10.0
+    max_cycle_s: 0.10
+    max_report_span_s: 0.04
+    max_queue_s: 0.15
+    max_pair_residual_m: 0.15
+    range_step_margin_m: 0.20
+    max_speed_m_s: 1.20
+    history_timeout_s: 0.5
+    recovery_samples: 3
+    clock_warmup_samples: 30
+    clock_window_s: 5.0
+    xy_stddev_m: 0.30
+    report_delay_s: 0.0
+    watchdog_timeout_s: 0.5
+
+uwb_px4_bridge:
+  ros__parameters:
+    enabled: false
+    input_source: btf_xy
+    tag_id: "5"
+    ground_only: true
+    layout_confirmed: false
+    antenna_body_frd_x_m: 0.0
+    antenna_body_frd_y_m: 0.0
+    antenna_body_frd_z_m: 0.0
+    alignment_confirmed: false
+    timing_confirmed: false
+    sensor_mount_confirmed: false
+    enu_yaw_deg: 0.0
+    enu_offset_x_m: 0.0
+    enu_offset_y_m: 0.0
+    expected_ev_delay_ms: 0.0
+    source_frame: uwb_map
+    max_age_s: 0.20
+    state_timeout_s: 2.5

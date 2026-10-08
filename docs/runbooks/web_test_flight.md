@@ -10,7 +10,9 @@ Jetson의 웹 비행 시험 절차다. 실물 연결과 지상 확인을 준비�
 먼저 [로컬·Jetson 인계](local_jetson_handoff_20261008.md)를 읽는다.
 어제 Tag B·앵커 0.15m·이륙 1.3m 기록과 차이가 있다.
 이 문서의 Tag A 기본값은 실제 적용값이 아니다.
-태그·배치·domain·단일 명령 주체를 먼저 통합한다.
+현재 [통합·검증 기록](../report/local_jetson_integration_20261008.md)을 함께 읽는다.
+태그·배치·domain을 launch에서 함께 검사한다.
+실물 확인과 현장 배포는 별도 단계다.
 
 ## 1. 코드와 환경 준비
 
@@ -116,6 +118,7 @@ MIS_TAKEOFF_ALT도 2.5m였다.
 
 | 확인값 | 바꾸는 시점 |
 |---|---|
+| `layout_confirmed` | 실제 앵커 위치·높이와 선택 배치 대조 뒤 |
 | `alignment_confirmed` | +X·+Y 이동과 PX4 ENU 정렬 확인 뒤 |
 | `timing_confirmed` | TIMESYNC·RAW 시각과 전달 지연 확인 뒤 |
 | `sensor_mount_confirmed` | ToF·태그·FC 기준점 대조 뒤 |
@@ -151,6 +154,20 @@ Jetson의 같은 두 localhost 포트를 노트북에 연결한다.
 HTTP와 WebSocket 두 포트를 함께 연결한다.
 
 ## 4. 지상 관측 전달
+
+`tag:=A`가 기본값이다. B는 `tag:=B`를 명시한다.
+기본 `start_mavros=false`는 기존 MAVROS를 사용한다.
+포트와 기존 프로세스 확인 뒤에만 true로 시작한다.
+이유: 같은 FC에 MAVROS를 중복 연결하지 않기 위해서다.
+
+Tag B의 비활성 설정은 `flight_tag_b.json`이다.
+ID 6·domain 2·임시 0.15m 배치·이륙 기대값 1.3m다.
+확인값은 모두 false다. 현재 배치를 실측한 증거가 아니다.
+웹에는 같은 파일을 `--config`로 전달한다.
+예: `ros2 run drone_mission local_flight_web --config /path/to/flight_tag_b.json`.
+launch도 `tag:=B config:=/path/to/flight_tag_b.json`을 사용한다.
+2.2m 복원 때 mission·B_TF·anchor 파일을 함께 바꾼다.
+하나라도 다르면 프로세스를 시작하기 전에 거부한다.
 
 프로펠러를 제거한 지상 시험에서 관측부터 확인한다.
 `execute=false`는 arm·takeoff 요청을 보내지 않는다.

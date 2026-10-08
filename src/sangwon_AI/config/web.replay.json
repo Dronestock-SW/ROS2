@@ -1,0 +1,11 @@
+{
+  "mode": "contract",
+  "drone_id": "TEST-DRONE-01",
+  "base_url": "http://127.0.0.1:8878",
+  "websocket_url": "ws://127.0.0.1:8879/ws/drones/TEST-DRONE-01/",
+  "core_socket": ".runtime/replay-service/core.sock",
+  "state_dir": ".runtime/replay-web",
+  "poll_interval_s": 0.1,
+  "timeout_s": 2,
+  "auth": {"mode": "none"}
+}

@@ -12,9 +12,15 @@
   "expected_ev_pos_x_m": 0.0,
   "expected_ev_pos_y_m": 0.0,
   "expected_ev_pos_z_m": 0.0,
-  "bounds_xy_m": [0.5, 5.3, 0.5, 3.9],
+  "bounds_xy_m": [
+    0.5,
+    5.3,
+    0.5,
+    3.9
+  ],
   "max_leg_m": 1.0,
   "speed_m_s": 0.3,
   "drone_id": "5",
-  "layout_id": "warehouse-rectangle-6p3x4p6-z2p2-20261004"
+  "layout_id": "warehouse-rectangle-6p3x4p6-z2p2-20261004",
+  "layout_confirmed": false
 }

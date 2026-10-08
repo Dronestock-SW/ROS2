@@ -1,0 +1,26 @@
+{
+  "contract_version": "1.1-draft.4",
+  "type": "companion_mission",
+  "drone_id": "TEST-DRONE-01",
+  "profile": "REPLAY",
+  "server_time": "2026-10-04T06:00:00Z",
+  "control_session_id": "control-demo-01",
+  "assignment": {
+    "assignment_id": "assignment-demo-01",
+    "revision": 1,
+    "state": "QUEUED",
+    "snapshot_id": "snapshot-demo-01",
+    "assigned_at": "2026-10-04T05:59:00Z"
+  },
+  "snapshot_ref": {
+    "snapshot_id": "snapshot-demo-01",
+    "contract_version": "1.1-draft.4",
+    "content_url": "/api/mission-snapshots/snapshot-demo-01/content/",
+    "sha256": "5419d8a9a9cd20e54f79d4bfc3551bf0e7894b647d94685763172ef741cf1909",
+    "byte_length": 10699,
+    "media_type": "application/json; charset=utf-8"
+  },
+  "control_requests": [],
+  "operator_attestations": [],
+  "recheck_requests": []
+}

@@ -2,3 +2,5 @@
 data/** -text -whitespace
 perfect_holdv2.params -text -whitespace
 docs/report/evidence/position_hold_20260927/samples.csv -text -whitespace
+docs/report/evidence/multitag_web_20261007/** -text -whitespace
+docs/report/evidence/multitag_patch_20261007/** -text -whitespace

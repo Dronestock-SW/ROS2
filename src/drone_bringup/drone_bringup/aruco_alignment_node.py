@@ -1,4 +1,5 @@
-"""ArUco 정렬 오차 계산 노드 — Dronestock 1호기 (Phase 3, 비주얼 서보잉 1단계).
+"""
+ArUco 정렬 오차 계산 노드 — Dronestock 1호기 (Phase 3, 비주얼 서보잉 1단계).
 
 /aruco_detections를 구독해 "마커에 정렬하려면 얼마나 움직여야 하는지" 오차값을
 계산해서 /aruco_alignment/error 로 발행한다.
@@ -225,7 +226,8 @@ class ArucoAlignmentNode(Node):
             f'qr_outer_offset={self._qr_outer_offset}m')
 
     def _on_camera_info(self, msg):
-        """화면 반폭 비율을 실제 캘리브레이션에서 받는다.
+        """
+        화면 반폭 비율을 실제 캘리브레이션에서 받는다.
 
         fx 는 projection_matrix(p[0]) 가 아니라 camera_matrix(k[0]) 를 쓴다.
         aruco_opencv 가 pose 를 뽑을 때 쓰는 값이 k 라서, 여기서 다른 값을
@@ -295,7 +297,8 @@ class ArucoAlignmentNode(Node):
         })))
 
     def _pick_marker(self, markers):
-        """marker_id 가 지정되면 그 마커만, -1이면 가장 가까운 마커를 쓴다.
+        """
+        marker_id 가 지정되면 그 마커만, -1이면 가장 가까운 마커를 쓴다.
 
         예전에는 -1일 때 markers[0] 을 집었다. aruco_opencv 가 넣는 순서는
         검출 순서라 프레임마다 바뀔 수 있어서, 선반 둘이 동시에 보이면 정렬

@@ -1,0 +1,34 @@
+✖ preflight reuses all 33 rows and context while ages advance (50.2514ms)
+✔ preflight updates metadata even when status and age bucket are unchanged (7.1742ms)
+✔ preflight filters, expires on the local clock and recovers on a fresh report (7.269ms)
+✔ preflight preserves clock diagnosis and counts transit or network loss as stale (8.9223ms)
+✔ ready event storage and visible event history stay bounded (120.8749ms)
+✔ behavior leaves unchanged content alone; position expiry precedes report expiry (27.2211ms)
+✔ behavior handles disconnect, fresh recovery and held observations (3.7964ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 6
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 347.9458
+
+✖ failing tests:
+
+test at work\lora-field-20261007\web-baseline-ui\dashboard\DroneStock-main\tools\test_dashboard_rendering.cjs:79:3
+✖ preflight reuses all 33 rows and context while ages advance (50.2514ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  2 !== 0
+  
+      at TestContext.<anonymous> (C:\Users\A\Documents\Codex\2026-10-06\new-chat\work\lora-field-20261007\web-baseline-ui\dashboard\DroneStock-main\tools\test_dashboard_rendering.cjs:86:48)
+      at async Test.run (node:internal/test_runner/test:1332:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 2,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

@@ -24,6 +24,9 @@ uwb_node:
 uwb_px4_bridge:
   ros__parameters:
     enabled: false
+    input_source: uwb_xy
+    ground_only: true
+    layout_confirmed: false
     alignment_confirmed: false
     timing_confirmed: false
     sensor_mount_confirmed: false

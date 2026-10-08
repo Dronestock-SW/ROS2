@@ -1,0 +1,8 @@
+.build/
+__pycache__/
+*.pyc
+.runtime/
+.venv/
+.venv-log/
+.local/
+config/*.local.json

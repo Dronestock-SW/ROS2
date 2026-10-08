@@ -10,6 +10,7 @@ from urllib.request import Request, urlopen
 import pytest
 
 from drone_mission.local_web import LocalPlatform
+from drone_mission.contracts import Settings, parse_request
 
 
 @pytest.fixture
@@ -58,3 +59,11 @@ def test_browser_status_clears_flight_state_when_telemetry_expires(local_http):
         stale = json.load(response)
     assert stale['telemetry_fresh'] is False
     assert stale['telemetry'] == {}
+
+
+def test_tag_b_web_request_uses_selected_layout_end_to_end():
+    settings = Settings(drone_id='6',layout_id='warehouse-rectangle-6p3x4p6-z0p15-20261007')
+    platform = LocalPlatform(settings.drone_id, settings.layout_id)
+    request = platform.command('start',[dict(id='P1',x=2.3,y=2.)])
+    assert request['drone_id'] == '6' and request['anchor_layout_id'] == settings.layout_id
+    assert parse_request(request,settings,time.time())['action'] == 'start'

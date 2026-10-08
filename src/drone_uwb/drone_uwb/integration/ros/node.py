@@ -21,6 +21,7 @@ from drone_uwb.contracts.protocol import InvalidSample, decode_line
 from drone_uwb.acquisition.framing import LineFramer
 from drone_uwb.integration.recording import open_record_files
 from drone_uwb.acquisition.serial_io import SerialInput
+from drone_uwb.integration.ros.layout_selection import anchor_path
 
 
 class UwbNode(Node):
@@ -38,8 +39,7 @@ class UwbNode(Node):
         values = {name: self.get_parameter(name).value for name in asdict(Settings())}
         self.settings = Settings(**values)
         path = self.get_parameter('anchor_file').value
-        if not path:
-            path = str(Path(get_package_share_directory('drone_uwb')) / 'config/anchors/anchors_20261004.json')
+        path = anchor_path(get_package_share_directory('drone_uwb'), path)
         self.layout = json.loads(Path(path).read_text(encoding='utf-8'))
         self.processor = Processor(self.layout, self.settings)
         self.framer = LineFramer()
@@ -109,6 +109,7 @@ class UwbNode(Node):
             try:
                 msg = decode_line(line)
             except InvalidSample:
+                self.processor.tdma.discard_pending('parse_error')
                 self.counts['parse_error'] += 1
                 self.parse_streak += 1
                 if self.parse_streak >= 100:
@@ -126,7 +127,8 @@ class UwbNode(Node):
             self.received_pub.publish(String(data=json.dumps(received, ensure_ascii=False)))
             self.record('received', received)
             result = self.processor.process(msg, mono_ns, ros_ns)
-            self.last_decision = result.reason
+            if not result.reason.startswith('sideband_') and result.reason != 'awaiting_tdma':
+                self.last_decision = result.reason
             self.counts[result.reason] += 1
             self.record('decisions', {'host_received_monotonic_ns': mono_ns,
                                      'reason': result.reason, 'details': result.details,
@@ -159,6 +161,8 @@ class UwbNode(Node):
                  'timestamp_method': 'approximate_mean_report_read_time',
                  'timestamp_calibrated': False,
                  'framing_overflows': self.framer.overflows}
+        value['tdma_required'] = self.processor.tdma.required
+        value['tdma_counts'] = dict(self.processor.tdma.counts)
         if rclpy.ok():
             self.status_pub.publish(String(data=json.dumps(value, ensure_ascii=False)))
         self.record('status', value)

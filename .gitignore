@@ -3,3 +3,6 @@ install/
 log/
 __pycache__/
 *.pyc
+/.integration-evidence/
+/.test-deps/
+/.test-venv/

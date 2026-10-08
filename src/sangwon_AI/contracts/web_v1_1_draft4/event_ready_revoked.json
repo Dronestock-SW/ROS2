@@ -1,0 +1,28 @@
+{
+  "contract_version": "1.1-draft.4",
+  "type": "event",
+  "drone_id": "TEST-DRONE-01",
+  "profile": "REPLAY",
+  "event_id": "event-ready-revoked-demo-01",
+  "event_seq": 8,
+  "event_type": "READY_REVOKED",
+  "context": {
+    "boot_id": "boot-demo-01",
+    "runtime_session_id": "runtime-demo-01",
+    "control_session_id": "control-demo-01",
+    "assignment_id": "assignment-demo-01",
+    "snapshot_id": "snapshot-demo-01",
+    "preparation_id": null,
+    "readiness_revision": 8,
+    "execution_id": null,
+    "flight_id": null
+  },
+  "generated_at": "2026-10-04T06:00:04.150Z",
+  "previous_preparation_id": "preparation-demo-01",
+  "previous_readiness_revision": 7,
+  "readiness_revision": 8,
+  "reason_code": "POSITION_UNAVAILABLE",
+  "blocking_check_ids": [
+    "BP-C13"
+  ]
+}

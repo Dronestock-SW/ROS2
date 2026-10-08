@@ -2,6 +2,7 @@
 이 문서는 9월 10일 ZIP의 API 필드 사전이다.
 이전 요청과 변경 내용을 비교할 때 읽는다.
 
+10월 7일 관측 WS 구현은 [멀티태그 연결 기준](multitag_jetson_web_contract.md)을 따른다.
 9월 11일 회신을 받았다. 아래 표는 이전 코드 이력이다.
 최신 내용은 [v1 회신 검토](companion_platform_api_v1_review.md)를 본다.
 상대 원문은 [API 계약 v1](../hw_handoff/platform_api_v1/companion_platform_api_contract_v1.md)이다.

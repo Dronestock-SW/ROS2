@@ -3,9 +3,10 @@
 import json
 import queue
 import threading
+from .telemetry import SOURCES
 
 
-def start(observations, config=None, mission_queue=None):
+def start(observations, config=None, mission_queue=None, stop_event=None):
     import rclpy
     from geometry_msgs.msg import PoseStamped, PoseWithCovarianceStamped
     from mavros_msgs.msg import State
@@ -13,21 +14,25 @@ def start(observations, config=None, mission_queue=None):
     from sensor_msgs.msg import BatteryState
     from rclpy.node import Node
     from rclpy.qos import qos_profile_sensor_data
+    from rclpy.signals import SignalHandlerOptions
     from std_msgs.msg import String
 
+    stop_event = stop_event if stop_event is not None else threading.Event()
+
     def run():
-        rclpy.init()
-        node = Node('platform_telemetry_monitor')
-
+        # The asyncio main loop owns OS signals and joins this thread on exit.
+        rclpy.init(signal_handler_options=SignalHandlerOptions.NO)
+        node=Node('platform_telemetry_monitor')
         def pose(msg):
-            stamp = msg.header.stamp.sec * 1_000_000_000 + msg.header.stamp.nanosec
-            position = msg.pose.pose.position
-            observations.receive_pose(position.x, position.y, msg.header.frame_id, stamp)
-
+            stamp=msg.header.stamp.sec*1_000_000_000+msg.header.stamp.nanosec
+            position=msg.pose.position if observations.source=='px4_local' else msg.pose.pose.position
+            observations.receive_pose(position.x,position.y,msg.header.frame_id,stamp,
+                now_ns=node.get_clock().now().nanoseconds,z=position.z)
         def battery(msg):
             observations.receive_battery(msg.percentage, msg.voltage, msg.present)
 
-        node.create_subscription(PoseWithCovarianceStamped, config.uwb_topic if config else '/uwb_pose', pose,
+        kind = PoseStamped if observations.source == 'px4_local' else PoseWithCovarianceStamped
+        node.create_subscription(kind, SOURCES[observations.source][0], pose,
                                  qos_profile_sensor_data)
         node.create_subscription(BatteryState, '/mavros/battery', battery,
                                  qos_profile_sensor_data)
@@ -59,11 +64,12 @@ def start(observations, config=None, mission_queue=None):
 
             node.create_timer(.05, forward)
         try:
-            rclpy.spin(node)
+            while not stop_event.is_set() and rclpy.ok():
+                rclpy.spin_once(node, timeout_sec=.1)
         finally:
             node.destroy_node()
-            rclpy.shutdown()
-
-    thread = threading.Thread(target=run, name='platform-ros-monitor', daemon=True)
+            if rclpy.ok():
+                rclpy.shutdown()
+    thread=threading.Thread(target=run,name='platform-ros-monitor',daemon=True)
     thread.start()
     return thread

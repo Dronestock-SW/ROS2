@@ -15,6 +15,7 @@ def finite(*values):
 @dataclass(frozen=True)
 class Settings:
     execute: bool = False
+    layout_confirmed: bool = False
     alignment_confirmed: bool = False
     fusion_confirmed: bool = False
     timing_confirmed: bool = False
@@ -42,7 +43,7 @@ class Settings:
     layout_id: str = LAYOUT
 
     def __post_init__(self):
-        for name in ('execute', 'alignment_confirmed', 'fusion_confirmed',
+        for name in ('execute', 'layout_confirmed', 'alignment_confirmed', 'fusion_confirmed',
                      'takeoff_settings_confirmed', 'timing_confirmed', 'sensor_mount_confirmed'):
             if type(getattr(self, name)) is not bool:
                 raise ValueError(name + '_must_be_boolean')
@@ -60,7 +61,7 @@ class Settings:
                       self.expected_ev_delay_ms, self.expected_ev_pos_x_m,
                       self.expected_ev_pos_y_m, self.expected_ev_pos_z_m):
             raise ValueError('invalid_alignment')
-        if not self.drone_id or not self.layout_id:
+        if self.drone_id not in ('5', '6') or not self.layout_id:
             raise ValueError('device_and_layout_required')
 
     def inside(self, xy):

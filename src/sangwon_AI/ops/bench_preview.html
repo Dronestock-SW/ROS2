@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ko"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tag B · 비행 시험 준비</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#eef2f6;color:#182938;font:16px/1.6 system-ui,sans-serif}main{max-width:1120px;margin:35px auto;padding:0 22px}h1{margin:4px 0;font-size:32px}h2{font-size:19px;margin:0 0 18px}p{margin:10px 0}.muted{color:#526578;font-size:14px}.badge{display:inline-block;background:#fff1cd;border:1px solid #d9a537;border-radius:30px;padding:5px 14px;font-weight:650}.grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:24px}.card{background:white;border-radius:14px;padding:26px;box-shadow:0 3px 12px #1729350c}.choices{display:grid;grid-template-columns:1fr 1fr;gap:8px}button,input{font:inherit;border:1px solid #bac9d4;border-radius:8px;padding:10px;background:white}button{cursor:pointer}button.active{background:#123e5b;color:white;border-color:#123e5b}label{display:block;margin:20px 0 6px}input{width:100%}.primary{margin-top:18px;width:100%;background:#0b6470;color:white;border:0}button:disabled{opacity:.45;cursor:default}svg{width:100%;max-height:260px;background:#f5f8fa;border-radius:8px}ol{padding-left:22px;font-size:14px}.status{grid-column:1/-1}table{border-collapse:collapse;width:100%;font-size:14px}td{border-bottom:1px solid #e2e8ed;padding:7px}td:last-child{text-align:right;font-family:monospace}#error{color:#a33124;min-height:24px}a{color:#075d70}pre{overflow:auto;max-height:200px;font-size:12px}details{margin-top:20px}@media(max-width:740px){main{margin:20px auto}.grid{grid-template-columns:1fr}.card{padding:20px}h1{font-size:27px}}
+</style>
+<main><span class="muted">DRONESTOCK / TAG B · ID 6 · ROS DOMAIN 2</span>
+<h1>비행 시험 준비</h1><span class="badge">계획 검토용 · 실제 ARM / 비행 전송 차단</span>
+<p>앵커 배치 <b>6.3 × 4.6 m</b> · 임시 앵커 높이 <b>0.15 m</b> · 추후 복구 <b>2.2 m</b></p>
+<p class="muted">앵커 높이와 드론의 목표 높이는 서로 다른 값입니다. 이 페이지는 합성 REPLAY 계획만 만듭니다.</p>
+<div class="grid"><section class="card"><h2>1. 시험 순서 선택</h2><div class="choices">
+<button data-case="hover" class="active">① 3초 호버 → 착륙</button><button data-case="x">② X +1 m → 복귀</button>
+<button data-case="y">③ Y +1 m → 복귀</button><button data-case="xy">④ X +1 → Y +1 → 복귀</button></div>
+<label for="z">모의 목표 높이 Z (m)</label><input id="z" type="number" min="0.1" max="5" step="0.1" placeholder="높이를 입력하세요" autocomplete="off">
+<p class="muted">현재는 합성 바닥 기준입니다. 실기 적용 전 PX4 고도 원점과 대조해야 합니다. 모든 수평 구간은 같은 Z를 유지합니다.</p>
+<button id="make" class="primary" disabled>REPLAY 계획 만들기</button><div id="error" role="status"></div>
+<a id="download" hidden>모의 계획 JSON 저장</a></section>
+<section class="card"><h2>2. 출발점 기준 경로</h2><svg viewBox="0 0 340 260" aria-label="출발점 기준 수평 경로">
+<path d="M45 210H300 M65 230V20" stroke="#a6bac8" fill="none"/><text x="292" y="232" font-size="13">+X</text><text x="34" y="26" font-size="13">+Y</text>
+<path d="M65 110H265 M165 30V210 M265 30V210" stroke="#d5e1e9" stroke-dasharray="4 5" fill="none"/>
+<polyline id="route" points="65,210" fill="none" stroke="#147789" stroke-width="5" stroke-linejoin="round"/>
+<circle cx="65" cy="210" r="7" fill="#123e5b"/><text x="76" y="238" font-size="13">출발 / 복귀 (0,0)</text>
+<text x="153" y="226" font-size="12">1 m</text><text x="32" y="115" font-size="12">1 m</text></svg>
+<ol id="steps"><li>목표 Z 입력 후 계획을 확인하세요.</li></ol>
+<p class="muted">복귀는 진행 경로를 역순으로 따릅니다. 기체 전방이 아닌, 정렬할 창고 +X / +Y 방향입니다.</p></section>
+<section class="card status"><h2>3. 실기 준비 상태 — 아직 비행 불가</h2><p id="sample" class="muted">기록을 읽는 중입니다.</p>
+<table><tbody id="params"></tbody></table><ul id="blockers"></ul>
+<p class="muted">모드 전환은 파라미터 변경과 다릅니다. 실제 모드·EKF 상태를 확인해야 합니다. RC 인계 후 같은 비행에서 AI가 다시 권한을 가져오면 안 됩니다.</p>
+<details><summary>생성한 REPLAY 계획</summary><pre id="json">아직 생성하지 않았습니다.</pre></details></section></div></main>
+<script>
+let selected='hover', objectUrl=null;const $=id=>document.getElementById(id);
+const paths={hover:[[0,0]],x:[[0,0],[1,0],[0,0]],y:[[0,0],[0,1],[0,0]],xy:[[0,0],[1,0],[1,1],[1,0],[0,0]]};
+function invalidate(){ $('error').textContent=''; $('download').hidden=true; $('json').textContent='아직 생성하지 않았습니다.'; $('steps').textContent=''; $('make').disabled=!$('z').checkValidity()||!$('z').value; }
+document.querySelectorAll('[data-case]').forEach(b=>b.onclick=()=>{selected=b.dataset.case;document.querySelectorAll('[data-case]').forEach(c=>c.classList.toggle('active',c===b));$('route').setAttribute('points',paths[selected].map(([x,y])=>`${65+x*100},${210-y*100}`).join(' '));invalidate();});
+$('z').oninput=invalidate;
+$('make').onclick=async()=>{try{const r=await fetch(`/api/plan?case=${selected}&z=${encodeURIComponent($('z').value)}`);if(!r.ok)throw Error('0.1~5 m 범위의 모의 높이를 입력하세요.');const p=await r.json();$('json').textContent=JSON.stringify(p,null,2);$('steps').textContent='';
+const lines=[`PX4 native 이륙 절차의 모의시험: Z ${p.takeoff_z_m} m`,...p.route_tasks.map((t,i)=>`${i===0?'호버':'이동'} (${t.position_m.x}, ${t.position_m.y}, ${t.position_m.z}) m · 도착 확인 후 ${t.hold_s}초 유지`),'출발점 복귀 확인 → PX4 native 착륙 절차의 모의시험'];
+lines.forEach(s=>{const li=document.createElement('li');li.textContent=s;$('steps').append(li);});if(objectUrl)URL.revokeObjectURL(objectUrl);objectUrl=URL.createObjectURL(new Blob([JSON.stringify(p,null,2)+'\n'],{type:'application/json'}));$('download').href=objectUrl;$('download').download=`bench-${selected}-REPLAY.json`;$('download').hidden=false;$('error').textContent='계획 생성 완료. 기체에는 전송하지 않았습니다.';}catch(e){$('error').textContent=e.message;}};
+fetch('/api/status').then(r=>r.json()).then(s=>{$('sample').textContent=s.sampled_at?`마지막 읽기: ${new Date(s.sampled_at).toLocaleString('ko-KR',{timeZone:'Asia/Seoul'})} KST · 실시간 상태가 아닙니다. 유효 RC 채널: ${s.valid_rc_channels}`:'현재 기체 읽기 기록이 없습니다. 모든 비행 조건은 미검증입니다.';
+Object.entries(s.parameters).forEach(([k,v])=>{const tr=document.createElement('tr');[k,v===null?'미확인':typeof v==='number'?String(Number(v.toFixed(4))):String(v)].forEach(t=>{const td=document.createElement('td');td.textContent=t;tr.append(td);});$('params').append(tr);});s.blockers.forEach(t=>{const li=document.createElement('li');li.textContent=t;$('blockers').append(li);});}).catch(()=>{$('sample').textContent='기체 상태를 확인할 수 없습니다. 비행은 계속 차단됩니다.';});
+</script></html>

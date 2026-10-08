@@ -1,0 +1,13 @@
+{
+  "id": "body-demo",
+  "revision": "r1",
+  "valid_for_profiles": [
+    "REPLAY"
+  ],
+  "approval_status": "SYNTHETIC_ONLY",
+  "reference": "PX4_BODY_ORIGIN",
+  "length_m": 0.5,
+  "width_m": 0.5,
+  "height_m": 0.2,
+  "clearance_m": 0.1
+}

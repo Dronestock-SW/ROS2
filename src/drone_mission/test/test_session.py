@@ -13,7 +13,7 @@ WALL = 1_791_417_600.
 
 
 def settings(**changes):
-    return replace(Settings(execute=True, alignment_confirmed=True,
+    return replace(Settings(execute=True, layout_confirmed=True, alignment_confirmed=True,
         fusion_confirmed=True, timing_confirmed=True, sensor_mount_confirmed=True,
         takeoff_settings_confirmed=True), **changes)
 

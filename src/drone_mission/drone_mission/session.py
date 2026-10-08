@@ -138,7 +138,7 @@ class FlightSession:
     def ready(self, s, now, *, ground=False):
         if not s.command_services_ready:
             return 'mavros_command_services_unavailable'
-        for name in ('alignment_confirmed', 'fusion_confirmed', 'takeoff_settings_confirmed',
+        for name in ('layout_confirmed', 'alignment_confirmed', 'fusion_confirmed', 'takeoff_settings_confirmed',
                      'timing_confirmed', 'sensor_mount_confirmed'):
             if not getattr(self.settings, name):
                 return name + '_required'

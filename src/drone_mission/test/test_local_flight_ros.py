@@ -231,7 +231,7 @@ def test_local_web_raw_btf_px4_mission_telemetry(tmp_path,scenario):
     async def scenario_run():
         async with serve(platform.websocket,'127.0.0.1',0) as ws:
             ws_port=ws.sockets[0].getsockname()[1]
-            cfg=asdict(Settings(alignment_confirmed=True,fusion_confirmed=True,
+            cfg=asdict(Settings(layout_confirmed=True,alignment_confirmed=True,fusion_confirmed=True,
                 timing_confirmed=True,sensor_mount_confirmed=True,takeoff_settings_confirmed=True,
                 expected_ev_pos_z_m=-.12))
             config=tmp_path/'fixture-settings.json'
@@ -239,8 +239,8 @@ def test_local_web_raw_btf_px4_mission_telemetry(tmp_path,scenario):
             launch('btf',[executable('drone_uwb','uwb_btf_node'),'--ros-args','-p','require_height_for_pose:=true'])
             bridge=[executable('drone_uwb','uwb_px4_bridge'),'--ros-args']
             for setting in ('enabled:=true','alignment_confirmed:=true','timing_confirmed:=true',
-                            'sensor_mount_confirmed:=true','verify_ev_sensor_position:=true',
-                            'expected_ev_pos_z_m:=-0.12','pose_topic:=/uwb/btf_pose'):
+                            'sensor_mount_confirmed:=true','layout_confirmed:=true','ground_only:=false',
+                            'antenna_body_frd_z_m:=-0.12','input_source:=btf_xy','test_mode:=true'):
                 bridge+=['-p',setting]
             launch('bridge',bridge)
             mission_command=[executable('drone_mission','flight_mission'),'--ros-args',
@@ -317,3 +317,5 @@ def test_local_web_raw_btf_px4_mission_telemetry(tmp_path,scenario):
         fc.destroy_node()
         rclpy.shutdown()
         spin.join(2)
+    assert all(process.returncode == 0 for process in processes), [
+        process.returncode for process in processes]

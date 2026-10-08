@@ -1,0 +1,8 @@
+{
+  "profile": "HOST_OBSERVE",
+  "drone_id": "5",
+  "physical_output_enabled": false,
+  "state_dir": ".runtime/service",
+  "approved_replay_snapshot_sha256": [],
+  "replay_steps_per_tick": 1
+}

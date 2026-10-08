@@ -1,0 +1,17 @@
+/**:
+  ros__parameters:
+    startup_px4_usb_quirk: false
+    plugin_allowlist: [sys_status, sys_time, command, local_position, param, rc_io]
+/**/sys:
+  ros__parameters:
+    heartbeat_rate: 1.0
+    conn_timeout: 5.0
+/**/time:
+  ros__parameters:
+    timesync_mode: MAVLINK
+    timesync_rate: 10.0
+    system_time_rate: 0.0
+/**/local_position:
+  ros__parameters:
+    frame_id: map
+    tf.send: false

@@ -14,6 +14,8 @@ from drone_uwb.processing.timing.clock import ClockMap
 from drone_uwb.processing.gazebo_geometry import rotation_world_body
 from drone_uwb.processing.experiments.h80_b import H80Window, BSettings
 from drone_uwb.processing.experiments.tof_subset import ToFTrackedSubsetCandidate
+from drone_uwb.acquisition.tdma import TdmaGate
+from drone_uwb.contracts.protocol import InvalidSample
 
 
 class MeasuredHeight:
@@ -78,6 +80,7 @@ class MeasuredBtf:
         self.config = config
         self.input_settings = PreimuSettings(tag_id=config['tag_id'])
         self.validator = InputValidator(self.input_settings)
+        self.tdma = TdmaGate(config['tag_id'], config.get('tdma_mode', 'auto'))
         self.clock = ClockMap(self.input_settings)
         self.height = MeasuredHeight(config['height'])
         self.last_host_ns = None
@@ -92,6 +95,7 @@ class MeasuredBtf:
         self.last_output_stamp_ns = None
 
     def reset(self):
+        self.tdma.disconnect()
         self.validator.disconnect()
         self.clock.reset()
         self.reset_models()
@@ -114,10 +118,26 @@ class MeasuredBtf:
                 self.last_host_ns, self.last_ros_offset = mono, offset
                 raise InvalidInput('host_clock_jump')
             self.last_host_ns, self.last_ros_offset = mono, offset
+            dispatch = self.tdma.ingest(msg, mono, ros)
+            if dispatch.reset_history:
+                self.validator.reset()
+                self.clock.reset()
+                self.reset_models()
+            if dispatch.clear_status:
+                self.validator.disconnect()
+            if dispatch.message is None:
+                return dict(out, reason=dispatch.reason)
+            msg, mono, ros = dispatch.message, dispatch.mono_ns, dispatch.ros_ns
+            offset = ros-mono
+            out['tdma_verified'] = dispatch.tdma is not None
+            if dispatch.tdma is not None:
+                out['tdma'] = dispatch.tdma
             self.validator.check_common(msg)
             if msg.get('type') == 'uwb_raw_status':
                 if msg.get('event') == 'boot':
-                    self.reset()
+                    self.validator.disconnect()
+                    self.clock.reset()
+                    self.reset_models()
                 self.validator.on_status(msg, mono)
                 if msg.get('range_bias_applied') is True:
                     raise InvalidInput('already_bias_corrected_input', reset=True)
@@ -170,6 +190,11 @@ class MeasuredBtf:
                 receive_age_s=(ros-stamp_ns)/1e9, queue_age_s=queue_age,
                 report_span_s=(max(cycle.sample_us)-min(cycle.sample_us))/1e6,
                 layout_id=self.config['layout_id'], position_reference='uwb_antenna')
+        except InvalidSample as exc:
+            self.tdma.discard_pending('invalid_message')
+            if event.get('message', {}).get('type') == 'uwb_raw_cycle':
+                self.reset_models()
+            return dict(out, reason=str(exc))
         except InvalidInput as exc:
             if exc.reset:
                 self.reset()

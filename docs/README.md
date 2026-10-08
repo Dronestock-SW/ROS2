@@ -11,7 +11,19 @@
 | 찾는 내용 | 위치 |
 |---|---|
 | 다음 로컬·Jetson 세션 시작 | [브랜치·명령 흐름·비행 전 확인](runbooks/local_jetson_handoff_20261008.md) |
+| 웹·Tag B·TDMA 통합과 분리 시험 | [2026-10-08 로컬 통합 기록](report/local_jetson_integration_20261008.md) |
+| 현장 미커밋 hover 실행기 | [Native hover 명령 경계](architecture/native_hover_bench.md) |
 | 로컬 SSH·현재 FC·미커밋 현장 작업 | [2026-10-08 직접 조회·대조 기록](report/local_jetson_readback_20261008.md) |
+
+| Tag B 임시 0.15m·FC 설정·웹 시험 결과 | [낮은 앵커 시험 기록](report/anchor_low015_bench_20261007.md) |
+| 임시 배치 실행·2.2m 복원·웹 계획 | [낮은 앵커 시험 절차](runbooks/anchor_low015_bench.md) |
+| 비행·UWB·AI 연결과 미완료 범위 | [통합 기준](architecture/flight_uwb_ai_integration.md) |
+| 기체별 통합 지상 실행 | [통합 지상 절차](runbooks/flight_uwb_ai_ground.md) |
+| 기존 AI 보존·코드 통합·실물 수신 결과 | [2026-10-07 통합 기록](report/flight_uwb_ai_integration_20261007.md) |
+| 웹·companion·태그 후속 작업 | [멀티태그 연결 인수인계](runbooks/multitag_jetson_web_handoff.md) |
+| Wi-Fi/LoRa 역할·좌표 출처·ID·주기 | [멀티태그 연결 기준](reference/multitag_jetson_web_contract.md) |
+| TDMA·A/B·웹 패치 시험과 미검증 범위 | [2026-10-07 패치 검증](report/multitag_patch_validation_20261007.md) |
+| TDMA 호환·웹 좌표 소스 확인 근거 | [2026-10-07 검토 기록](report/multitag_web_compatibility_20261007.md) |
 | A~H 단계, 패키지·설정·시험 대응표 | [저장소 구조와 작업 위치](reference/repository_layout.md) |
 | 현재 앵커 배치 | [6.3×4.6m 직사각형 좌표](reference/uwb_anchor_layout.md) |
 | 로컬 웹 이륙·이동·착륙 | [실물 연결·현장 절차](runbooks/web_test_flight.md) |

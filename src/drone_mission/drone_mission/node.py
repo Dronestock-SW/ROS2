@@ -26,6 +26,7 @@ from drone_uwb.processing.gazebo_geometry import rotation_world_body
 from drone_uwb.integration.sitl.sitl_target_contract import PX4GlobalReference
 from .contracts import Settings, finite
 from .session import FlightSession, Snapshot
+from .writer_lock import WriterLock
 
 
 def stamp_ns(msg):
@@ -46,10 +47,10 @@ class FlightNode(Node):
         self.settings = replace(Settings(**values), execute=self.get_parameter('execute').value)
         test_mode = self.get_parameter('test_mode').value
         domain = self.context.get_domain_id()
-        if self.settings.execute and not (
+        if not (
                 (test_mode and domain == 99 and os.environ.get('ROS_LOCALHOST_ONLY') == '1')
-                or (not test_mode and domain in (1, 2))):
-            raise ValueError('execution_requires_drone_domain_or_explicit_local_test_mode')
+                or (not test_mode and domain == (1 if self.settings.drone_id == '5' else 2))):
+            raise ValueError('tag_domain_mismatch_or_invalid_local_test_mode')
         self.ledger = Path(self.get_parameter('ledger_file').value)
         consumed = []
         if self.ledger.exists():
@@ -100,6 +101,7 @@ class FlightNode(Node):
         self.param_client = self.create_client(GetParameters, '/mavros/param/get_parameters')
         self.stream_client = self.create_client(CommandLong, '/mavros/cmd/command')
         self.previous_state = None
+        self.writer_lock = WriterLock(domain) if self.settings.execute else None
         self.create_timer(.05, self.tick)
         self.create_timer(1., self.query)
 
@@ -227,13 +229,18 @@ class FlightNode(Node):
             stamp = value.get('last_observation_stamp_ns')
             if type(stamp) is int and stamp > 0:
                 s.bridge_observation_age_s = (self.get_clock().now().nanoseconds-stamp)/1e9
-            s.alignment_matches = (cfg.get('pose_topic') == '/uwb/btf_pose'
+            s.alignment_matches = (cfg.get('input_source') == 'btf_xy'
+                and cfg.get('tag_id') == self.settings.drone_id
+                and cfg.get('layout_confirmed') is True
+                and (not self.settings.execute or cfg.get('ground_only') is False)
                 and cfg.get('source_frame') == 'uwb_map'
-                and cfg.get('verify_ev_sensor_position') is True
                 and all(finite(cfg.get(k)) and abs(cfg[k]-getattr(self.settings, k)) < 1e-6
                         for k in ('enu_yaw_deg', 'enu_offset_x_m', 'enu_offset_y_m',
-                                  'expected_ev_delay_ms', 'expected_ev_pos_x_m',
-                                  'expected_ev_pos_y_m', 'expected_ev_pos_z_m')))
+                                  'expected_ev_delay_ms'))
+                and all(finite(cfg.get('antenna_body_frd_'+axis+'_m'))
+                        and abs(cfg['antenna_body_frd_'+axis+'_m']
+                                -getattr(self.settings, 'expected_ev_pos_'+axis+'_m')) < 1e-6
+                        for axis in ('x', 'y', 'z')))
         s.takeoff_alt_m = self.param_value
         s.takeoff_param_age_s = time.monotonic()-self.param_received
         return s
@@ -338,12 +345,15 @@ class FlightNode(Node):
     def destroy_node(self):
         if self.log:
             self.log.close()
+        if self.writer_lock:
+            self.writer_lock.close()
         return super().destroy_node()
 
 
 def main(args=None):
     sys.stdout.reconfigure(encoding='utf-8')
-    rclpy.init(args=args)
+    from drone_uwb.integration.ros.lifecycle import init_for_main
+    init_for_main(args)
     node = None
     try:
         node = FlightNode()

@@ -35,7 +35,8 @@ class QrRecordStore:
         self._prepare_schema()
 
     def _prepare_schema(self):
-        """Create the table, or refuse a database written by an older layout.
+        """
+        Create the table, or refuse a database written by an older layout.
 
         Version 1 never stamped user_version, so a pre-raw_qr_data database is
         indistinguishable from a fresh one by the stamp alone. The table has to

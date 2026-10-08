@@ -1,0 +1,11 @@
+{
+  "mode": "contract",
+  "integration_stage": "receive_only",
+  "drone_id": "TEST-DRONE-01",
+  "base_url": "http://203.247.41.82:8876",
+  "core_socket": ".runtime/web-receive-service/core.sock",
+  "state_dir": ".runtime/web-receive",
+  "poll_interval_s": 2,
+  "timeout_s": 3,
+  "auth": {"mode": "hmac_session_v2"}
+}

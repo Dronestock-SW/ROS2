@@ -5,7 +5,8 @@
 실행은 [현장 절차](../../docs/runbooks/web_test_flight.md)를 따른다.
 [구조 설명](../../docs/architecture/web_test_flight.md)에 관측·제어 책임을 적었다.
 로컬 세션은 [인계 절차](../../docs/runbooks/local_jetson_handoff_20261008.md)부터 읽는다.
-어제 Tag B·C++ AI 통합 브랜치와의 대조·통합이 먼저다.
+현재 상태는 [로컬 통합 기록](../../docs/report/local_jetson_integration_20261008.md)에 있다.
+Tag A/B·TDMA·장착값 검사와 웹 요청을 함께 보존한다.
 
 | 역할 | 구현 |
 |---|---|
@@ -15,10 +16,16 @@
 | 로컬 웹·HTTP·WebSocket | `drone_mission/local_web.py` |
 | 실물 센서·MAVROS 통합 실행 | `launch/test_flight.launch.py` |
 | 정렬·확인값·시험 한도 | `config/flight.json` |
+| Tag B·임시 0.15m·이륙 기대값 1.3m | `config/flight_tag_b.json` |
+| 기체·배치 일치 검사 | `drone_mission/profiles.py` |
+| C++ hover와 공통 명령 잠금 | `drone_mission/writer_lock.py` |
 | 전체 순서·단절·재요청 검사 | `test/` |
 | 기존 실물 ROS 읽기 전용 수집 | `tools/observe_ground.py` |
 
 기본값은 `execute=false`, `bridge_enabled=false`다.
+`start_mavros=false`이므로 기존 MAVROS를 먼저 확인한다.
+`tag:=B`는 domain 2·ID 6을 함께 선택한다.
+웹도 같은 `--config`를 사용해야 배치가 일치한다.
 확인 항목도 모두 `false`다.
 높이 계산은 UWB 관측 후보정에만 쓴다.
 비행 고도와 자세는 PX4가 제어한다.
