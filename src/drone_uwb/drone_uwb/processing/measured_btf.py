@@ -16,6 +16,8 @@ from drone_uwb.processing.experiments.h80_b import H80Window, BSettings
 from drone_uwb.processing.experiments.tof_subset import ToFTrackedSubsetCandidate
 from drone_uwb.acquisition.tdma import TdmaGate
 from drone_uwb.contracts.protocol import InvalidSample
+from drone_uwb.processing.solvers.observations import solve_xy
+from drone_uwb.processing.observation_guard import ObservationGuard
 
 
 class MeasuredHeight:
@@ -86,6 +88,7 @@ class MeasuredBtf:
         self.last_host_ns = None
         self.last_ros_offset = None
         self.last_output_stamp_ns = None
+        self.raw_guard = ObservationGuard()
         self.reset_models()
 
     def reset_models(self):
@@ -172,8 +175,17 @@ class MeasuredBtf:
                 selections.append(selection)
             latest_index = cycle.sample_us.index(stamp)
             height = heights[latest_index]
-            b = self.window.process(cycle, cycle.seq)
             corrected = cycle.raw-np.asarray(self.config['bias_m'])
+            # Detect coherent four-link steps before the 0.8s window can smear
+            # them into a plausible slow trajectory. NLOS-inconsistent cycles
+            # still go to the existing ToF/subset integrity calculation.
+            raw_xy, raw_residual = solve_xy(np.asarray(self.config['anchors_xyz_m']), corrected, list(range(4)))
+            if raw_residual < .06:
+                raw_reason = self.raw_guard.check(tuple(map(float, raw_xy)), stamp_ns)
+                if raw_reason == 'observation_jump_quarantined':
+                    self.window.reset('coherent_raw_step')
+                    return dict(out, reason=raw_reason, stamp_ns=stamp_ns, raw_xy_m=raw_xy.tolist())
+            b = self.window.process(cycle, cycle.seq)
             candidate_input = {'time_us': stamp, 'sample_time_us': cycle.sample_us,
                  'cal_slant_m': corrected.tolist(), 'height_m': height,
                  'sample_height_m': heights, 'height_source': 'measured_tof_imu' if height is not None else None,

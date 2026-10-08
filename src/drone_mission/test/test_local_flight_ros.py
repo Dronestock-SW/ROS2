@@ -18,6 +18,7 @@ import pytest
 import rclpy
 from ament_index_python.packages import get_package_prefix
 from rclpy.node import Node
+from rclpy.executors import SingleThreadedExecutor
 from rclpy.qos import DurabilityPolicy, QoSProfile, qos_profile_sensor_data
 from geographic_msgs.msg import GeoPointStamped
 from geometry_msgs.msg import PoseWithCovarianceStamped
@@ -209,7 +210,9 @@ def test_local_web_raw_btf_px4_mission_telemetry(tmp_path,scenario):
     require_demo_environment(os.environ)
     rclpy.init()
     fc=FakeFC()
-    spin=threading.Thread(target=rclpy.spin,args=(fc,),daemon=True)
+    executor=SingleThreadedExecutor()
+    executor.add_node(fc)
+    spin=threading.Thread(target=executor.spin,daemon=True)
     spin.start()
     platform=LocalPlatform()
     http=ThreadingHTTPServer(('127.0.0.1',0),platform.http_handler())
@@ -314,8 +317,9 @@ def test_local_web_raw_btf_px4_mission_telemetry(tmp_path,scenario):
             out.close()
         http.shutdown()
         http.server_close()
+        executor.shutdown(timeout_sec=2.)
+        spin.join(2)
         fc.destroy_node()
         rclpy.shutdown()
-        spin.join(2)
     assert all(process.returncode == 0 for process in processes), [
         process.returncode for process in processes]

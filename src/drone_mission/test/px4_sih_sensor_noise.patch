@@ -1,0 +1,21 @@
+diff --git a/src/modules/simulation/simulator_sih/sih.cpp b/src/modules/simulation/simulator_sih/sih.cpp
+index d6227ed..a7d2f07 100644
+--- a/src/modules/simulation/simulator_sih/sih.cpp
++++ b/src/modules/simulation/simulator_sih/sih.cpp
+@@ -630,6 +630,16 @@ void Sih::reconstruct_sensors_signals(const hrt_abstime &time_now_us)
+ 	}
+ 
+ 	Vector3f specific_force_B = R_E2B * _specific_force_E;
++	// Explicit sensor-noise model for isolated mission-chain trials.
++	// Default scale 1 preserves the upstream SIH sensor model.
++	static const float review_noise_scale = []() {
++		const char *value = getenv("PX4_MISSIONCHAIN_IMU_NOISE_SCALE");
++		const float scale = value ? strtof(value, nullptr) : 1.f;
++		return PX4_ISFINITE(scale) && scale >= 0.f && scale <= 1.f ? scale : 1.f;
++	}();
++	accel_noise *= review_noise_scale;
++	gyro_noise *= review_noise_scale;
++
+ 	Vector3f accel = specific_force_B + accel_noise;
+ 
+ 	const Vector3f earth_spin_rate_B = R_E2B * Vector3f(0.f, 0.f, CONSTANTS_EARTH_SPIN_RATE);

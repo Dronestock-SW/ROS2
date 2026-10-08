@@ -22,6 +22,7 @@ def main():
     from geometry_msgs.msg import PoseStamped
     rclpy.init()
     node = rclpy.create_node('sangwon_synthetic_px4_' + uuid.uuid4().hex[:8])
+    (ROOT / '.runtime').mkdir(exist_ok=True)
     with tempfile.TemporaryDirectory(prefix='px4-observe-test-', dir=ROOT / '.runtime') as name:
         test = Path(name).resolve()
         cfg = json.loads((ROOT / 'config/px4.observe.json').read_text())

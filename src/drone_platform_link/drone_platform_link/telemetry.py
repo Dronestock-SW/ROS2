@@ -114,7 +114,8 @@ class Observations:
                 for key in ('mission_db_id', 'mission_code', 'route_revision',
                             'active_waypoint_index', 'active_waypoint_id', 'flight_control_enabled',
                             'mission_complete', 'landing_verified', 'control_ack', 'target_applied',
-                            'px4_map_xy_m'):
+                            'px4_map_xy_m', 'home_verified', 'flight_outcome', 'work_outcome',
+                            'scan_results', 'scan_window'):
                     if key in value:
                         result[key] = value[key]
                 result.update(flight_state=value.get('state'), flight_reason=value.get('reason'),

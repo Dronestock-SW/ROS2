@@ -21,6 +21,7 @@ from rcl_interfaces.srv import GetParameters
 from std_msgs.msg import String
 
 from drone_uwb.integration.ros.frames import BridgeSettings, gate, observation_xy
+from drone_uwb.processing.observation_guard import ObservationGuard
 
 PARAMETERS = ('EKF2_EV_CTRL', 'EKF2_EV_DELAY', 'EKF2_EV_NOISE_MD',
               'EKF2_EV_POS_X', 'EKF2_EV_POS_Y', 'EKF2_EV_POS_Z')
@@ -57,6 +58,7 @@ class UwbPx4Bridge(Node):
         self.last_stamp = None
         self.published = self.rejected = 0
         self.last_reason = 'starting'
+        self.observation_guard = ObservationGuard()
         self.create_timer(0.1, self.monitor)
 
     def receive_state(self, msg):
@@ -76,9 +78,17 @@ class UwbPx4Bridge(Node):
         now = time.monotonic()
         valid = (msg.remote_timestamp_ns > self.sync_remote_ns and math.isfinite(msg.round_trip_time_ms)
                  and 0 <= msg.round_trip_time_ms <= 20)
+        offset_jump = (self.sync_offset is not None and
+                       abs(msg.estimated_offset_ns-self.sync_offset) > 5_000_000)
+        if not valid:
+            # A delayed probe is not a new valid clock observation. Keep the
+            # last valid clock's age; a real offset jump still closes the gate.
+            if offset_jump:
+                self.sync_count = 0
+            return
         stable = (now-self.sync_time < .5 and self.sync_offset is not None
                   and abs(msg.estimated_offset_ns-self.sync_offset) <= 5_000_000)
-        self.sync_count = self.sync_count+1 if valid and stable else int(valid)
+        self.sync_count = min(30,self.sync_count+1) if stable else 1
         self.sync_time, self.sync_offset = now, msg.estimated_offset_ns
         self.sync_remote_ns = msg.remote_timestamp_ns
 
@@ -113,6 +123,8 @@ class UwbPx4Bridge(Node):
             'gate': self.current_gate(), 'last_reason': self.last_reason,
             'published': self.published, 'rejected': self.rejected,
             'last_observation_stamp_ns': self.last_stamp,
+            'timesync': {'stable_samples': self.sync_count, 'last_valid_age_s': now-self.sync_time,
+                         'offset_ns': self.sync_offset, 'remote_ns': self.sync_remote_ns},
             'parameters': self.params, 'settings': asdict(self.settings),
             'input_topic': self.input_topic, 'position_reference': 'uwb_antenna',
             'lever_arm_owner': 'PX4_EKF2', 'z_observed': False,
@@ -139,6 +151,7 @@ class UwbPx4Bridge(Node):
                     stamp_ns=stamp, now_ns=self.get_clock().now().nanoseconds,
                     last_stamp_ns=self.last_stamp, x=msg.pose.pose.position.x,
                     y=msg.pose.pose.position.y, covariance=[[c[0], c[1]], [c[6], c[7]]])
+                reason = self.observation_guard.check(tuple(map(float, xy)), stamp)
             except (ValueError, ArithmeticError) as exc:
                 reason = 'invalid_frame_or_timestamp' if str(exc) == 'invalid_frame_or_timestamp' else 'invalid_xy_or_covariance'
         self.last_reason = reason
@@ -161,13 +174,18 @@ class UwbPx4Bridge(Node):
 
 def main(args=None):
     sys.stdout.reconfigure(encoding='utf-8')
-    from .lifecycle import init_for_main
+    from .lifecycle import init_for_main, shutdown_requested
     init_for_main(args)
     node = UwbPx4Bridge()
     try:
         rclpy.spin(node)
     except (KeyboardInterrupt, ExternalShutdownException):
         pass
+    except RuntimeError:
+        # Humble pybind can translate a signal's KeyboardInterrupt while
+        # taking a subscription into RuntimeError. Only suppress during stop.
+        if not shutdown_requested():
+            raise
     finally:
         node.destroy_node()
         if rclpy.ok():

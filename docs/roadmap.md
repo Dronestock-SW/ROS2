@@ -14,6 +14,13 @@
 실물 UWB·flow 공동 융합과 실제 비행은 미완료다.
 다음 단계는 [센서 융합 점검](runbooks/position_sensor_check.md)이다.
 
+전체 흐름은 `codex/mission-flight-flow-20261008`로 이어진다.
+기존 C++ AI의 지도 검사를 native 실행기에 연결했다.
+START·안정화·목표·마커 정렬·복귀·LAND·END를 구현했다.
+[전체 흐름 확인 기록](report/mission_flight_flow_20261008.md)을 읽는다.
+실물 스캔 adapter와 현장 보정은 미완료다.
+[내일 현장 절차](runbooks/mission_chain_field.md)를 따른다.
+
 ## 시스템 개요 (군집 재고조사)
 
 - 드론 2대가 사전 분할된 구역을 각자 순회하며 야간 재고를 스캔한다
@@ -30,7 +37,9 @@
    2026-10-08 사용자 요청으로 로컬 비행 시험 페이지를 추가했다.
    HTTP 미션·ROS 경계를 유지한다. 운영 웹의 `start` 지원은 별도 작업이다.
 4. 제어: 자세제어는 PX4 전담. companion은 위치제어 + 게인 스케줄링(상황별 게인 세트 전환)
-5. 임무 로직: FSM으로 시작 → 다중 목표+마커 시퀀스 시점에 Behavior Tree 전환
+5. 임무 로직: 기존 C++ Behavior Tree 설계를 보존한다.
+   2026-10-08 native 단일 명령 FSM에 지도 검사를 연결했다.
+   현장 실행은 이 경로를 사용한다. C++ BT는 REPLAY를 유지한다.
 6. 마커: ArUco(정렬) + QR(데이터) 하이브리드 라벨. 단 QR 단독 pose 실험 → 한계 문서화 → 전환 순서
 7. 군집 격리: 드론별 ROS_DOMAIN_ID 분리 (1호기=1, 2호기=2). 네임스페이스 개조 불요 — 두 드론의 ROS2는 서로 완전 불가시
 8. 광학흐름: PMW3901을 Phase 1부터 PX4 직결 — 실내 Loiter 안정화에 즉시 활용

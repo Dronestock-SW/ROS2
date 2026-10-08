@@ -296,8 +296,9 @@ class Runtime:
                 identity = (fields.get('mission_db_id'), fields.get('route_revision'), phase)
                 if phase and identity != previous_phase and identity[0] is not None:
                     report_phase = ('completed' if fields.get('mission_complete') else
-                                    'failed_returning' if phase in ('FAILED', 'PILOT_OVERRIDE') else
-                                    'in_flight' if phase in ('TAKING_OFF', 'MOVING', 'RETURNING', 'LANDING') else None)
+                                    'failed_returning' if phase in ('END', 'FAILED', 'UNCONFIRMED', 'PILOT_OVERRIDE') else
+                                    'in_flight' if phase in ('TAKING_OFF', 'STABILIZING', 'MOVING', 'DWELL',
+                                                           'ALIGNING', 'SCANNING', 'EGRESS', 'RECOVERING', 'RETURNING', 'LANDING') else None)
                     if report_phase:
                         await asyncio.to_thread(post_report, self.config, 'companion-phase', {
                             'contract_version': '1.0', 'phase': report_phase,

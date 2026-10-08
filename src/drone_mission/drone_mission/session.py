@@ -10,8 +10,27 @@ from drone_uwb.integration.sitl.sitl_target_contract import ned_to_global
 from .contracts import finite, parse_request
 
 
+def native_estimator_valid(msg):
+    # Pinned PX4 v1.17 sets CONST_POS_MODE for at_rest OR fake_pos.
+    # PRED_POS_HORIZ_REL proves active horizontal aiding, excluding fake-only.
+    return bool(msg.attitude_status_flag and msg.velocity_horiz_status_flag
+                and msg.pos_horiz_rel_status_flag
+                and (not msg.const_pos_mode_status_flag or msg.pred_pos_horiz_rel_status_flag)
+                and not msg.gps_glitch_status_flag and not msg.accel_error_status_flag)
+
+
 @dataclass
 class Snapshot:
+    yaw_deg: object = None
+    battery: object = None
+    battery_age_s: float = math.inf
+    takeoff_action: object = None
+    mag_type: object = None
+    rc_required: bool = True
+    rc_valid: bool = False
+    rc_age_s: float = math.inf
+    rc_override: object = None
+    rc_mode: object = None
     command_services_ready: bool = False
     land_service_ready: bool = False
     connected: bool = False
@@ -26,6 +45,7 @@ class Snapshot:
     pose_age_s: float = math.inf
     xy: tuple = ()
     velocity_xy: tuple = ()
+    vertical_speed_m_s: object = None
     uwb_stamp_ns: int = 0
     uwb_age_s: float = math.inf
     uwb_xy: tuple = ()
@@ -33,6 +53,7 @@ class Snapshot:
     bridge_age_s: float = math.inf
     bridge_observation_age_s: float = math.inf
     bridge_ready: bool = False
+    bridge_gate: str = ''
     bridge_published: int = 0
     alignment_matches: bool = False
     origin: object = None
@@ -50,6 +71,7 @@ def route_fingerprint(payload):
 
 
 class FlightSession:
+    TARGET_PHASES = {'MOVING', 'RETURNING'}
     ACTIVE = {'ARMING', 'TAKING_OFF', 'MOVING', 'RETURNING', 'LANDING', 'ABORTING'}
     AUTO_MODES = {'AUTO.TAKEOFF', 'AUTO.LOITER', 'AUTO.LAND'}
 
@@ -58,7 +80,7 @@ class FlightSession:
         self.consumed = set(consumed)
         self.remember = remember
         self.monitor = MissionMonitor(MissionConfig(
-            'uwb_map', .5, .6, .15, .2, .1, 1., .2, .25, .5, 3),
+            'uwb_map', .5, .6, .15, .2, .1, 1., settings.pose_timeout_s, .25, .5, 3),
             position_source='px4_ekf2')
         self.phase, self.reason = 'IDLE', 'waiting_for_web_start'
         self.validation = {'accepted': False, 'reason': 'assignment_missing'}
@@ -148,7 +170,7 @@ class FlightSession:
             return 'landed_state_stale'
         if not s.estimator_valid or not 0 <= s.estimator_age_s <= .5:
             return 'px4_estimator_unavailable'
-        if not s.xy or not self.settings.inside(s.xy) or not 0 <= s.pose_age_s <= .2:
+        if not s.xy or not self.settings.inside(s.xy) or not 0 <= s.pose_age_s <= self.settings.pose_timeout_s:
             return 'px4_pose_unavailable_or_outside_bounds'
         if not 0 <= s.uwb_age_s <= .25:
             return 'uwb_unavailable'
@@ -186,13 +208,15 @@ class FlightSession:
             self.failure = kind + '_rejected_or_transport_failed'
 
     def applied_target(self, latitude, longitude, stamp_ns):
-        if (self.phase not in ('MOVING', 'RETURNING') or self.target_global is None
+        if (self.phase not in self.TARGET_PHASES or self.target_global is None
                 or not finite(latitude, longitude)
                 or type(stamp_ns) is not int or stamp_ns < self.target_sent_ros_ns
                 or (self.target_last_stamp_ns is not None and stamp_ns <= self.target_last_stamp_ns)):
             return False
-        match = (abs(latitude-self.target_global[0]) <= .5e-7
-                 and abs(longitude-self.target_global[1]) <= .5e-7)
+        # Integer command -> double navigator -> integer telemetry can truncate
+        # by one 1e-7 degree unit (~1 cm). Larger target changes remain failures.
+        match = (abs(latitude-self.target_global[0]) <= 1.5e-7
+                 and abs(longitude-self.target_global[1]) <= 1.5e-7)
         if match:
             self.target_applied = True
             self.target_last_stamp_ns = stamp_ns

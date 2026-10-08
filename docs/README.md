@@ -10,6 +10,10 @@
 
 | 찾는 내용 | 위치 |
 |---|---|
+| 최종 AI 연결·시험 결과·현장 미확인 | [전체 흐름 확인 기록](report/mission_flight_flow_20261008.md) |
+| 내일 전체 미션 현장 설정·지도·실행 | [현장 미션 절차](runbooks/mission_chain_field.md) |
+| RAW UWB 고장·웹 명령·복귀·END 시험 | [가상 전체 미션 절차](runbooks/mission_chain_virtual.md) |
+| 관측 격리·ArUco 창·스캔 결과·복귀 책임 | [미션 연결 범위](architecture/mission_chain.md) |
 | 시동·이륙·2초 호버·착륙 시험 | [실행·결과 확인 절차](runbooks/native_hover_test.md) |
 | 기본 순서·실제 PX4 가상 시험·센서 공백 | [2026-10-08 확인 기록](report/native_hover_test_20261008.md) |
 | UWB·flow·ToF·IMU 수신·융합·방향 | [실물 점검 절차](runbooks/position_sensor_check.md) |

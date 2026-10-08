@@ -25,7 +25,7 @@ font:15px monospace;padding:12px}button{padding:12px 18px;margin:10px 8px 10px 0
 border:0;border-radius:6px;background:#164abd;color:white;cursor:pointer}
 #land{background:#b92b26}pre{padding:18px;background:white;white-space:pre-wrap;border-radius:8px}</style>
 <h1>Dronestock 비행 시험</h1>
-<p>시작하면 PX4 설정 고도로 이륙하고, 수평 경유지를 거쳐 착륙합니다.</p>
+<p>PX4 설정 고도로 이륙합니다. 전체 미션 설정에서는 안정화·이동·스캔·출발점 복귀 후 착륙합니다.</p>
 <label for="route">A1 기준 수평 경유지 · x/y 단위 m</label>
 <textarea id="route">[{"id":"P1","type":"waypoint","x":2.3,"y":2.0}]</textarea>
 <div><button id="start">이륙 · 경유지 이동 · 착륙</button>
@@ -47,6 +47,8 @@ state.textContent=JSON.stringify({기체:s.assignment.drone_id,배치:s.assignme
 UWB_XYZ:[t.x??null,t.y??null,t.current_z_m??null],높이출처:t.current_z_source??null,
 PX4_ENU:t.px4_position_enu_m??null,경유지:t.active_waypoint_id??null,
 목표적용:t.target_applied??false,착륙확인:t.landing_verified??false,
+출발점복귀확인:t.home_verified??false,비행결과:t.flight_outcome??null,
+작업결과:t.work_outcome??null,스캔결과:t.scan_results??[],
 임무완료:t.mission_complete??false,요청검사:t.target_validation??null},null,2);
 if(!s.telemetry_fresh)notice.textContent='기체 텔레메트리 수신 대기 · 현재 동작 상태를 확인할 수 없습니다.';
 }catch(e){notice.textContent='로컬 서버 응답 대기'}setTimeout(update,500)}update();
@@ -114,15 +116,18 @@ class LocalPlatform:
 
             def do_POST(self):
                 try:
-                    origin = self.headers.get('Origin')
-                    if origin and origin != 'http://'+self.headers.get('Host',''):
-                        return self.send_json({'error':'origin_rejected'},403)
                     if self.headers.get_content_type() != 'application/json':
                         raise ValueError('JSON 요청이 필요합니다.')
                     length = int(self.headers.get('Content-Length','0'))
                     if not 0 < length <= 65536:
                         raise ValueError('요청 크기를 확인하세요.')
-                    value = json.loads(self.rfile.read(length))
+                    raw = self.rfile.read(length)
+                    origin = self.headers.get('Origin')
+                    if origin and origin != 'http://'+self.headers.get('Host',''):
+                        # Drain the bounded request body before closing. An
+                        # unread body can reset TCP and hide the 403 on Windows.
+                        return self.send_json({'error':'origin_rejected'},403)
+                    value = json.loads(raw)
                     if not isinstance(value,dict):
                         raise ValueError('JSON 객체가 필요합니다.')
                     if self.path == '/local/command':

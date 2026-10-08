@@ -51,10 +51,13 @@ def test_ros_adapter_keeps_stamp_rotates_covariance_and_does_not_inject_height()
     from geometry_msgs.msg import PoseWithCovarianceStamped
     from drone_uwb.integration.ros.bridge import UwbPx4Bridge
     outputs=[]
+    from drone_uwb.processing.observation_guard import ObservationGuard
+    guard=ObservationGuard()
+    guard.check((2.,1.),1_650_000_000)  # Continuous synthetic observation span acquires the gate.
     settings=replace(ready(), enu_yaw_deg=90., enu_offset_x_m=3., enu_offset_y_m=-1.)
     obj=NS(settings=settings, current_gate=lambda:'ready', last_stamp=None,
            get_clock=lambda:NS(now=lambda:NS(nanoseconds=2_000_000_000)),
-           publisher=NS(publish=outputs.append), published=0, rejected=0)
+           publisher=NS(publish=outputs.append), published=0, rejected=0, observation_guard=guard)
     msg=PoseWithCovarianceStamped()
     msg.header.frame_id='uwb_map'; msg.header.stamp.sec=1; msg.header.stamp.nanosec=900_000_000
     msg.pose.pose.position.x=2.; msg.pose.pose.position.y=1.; msg.pose.pose.position.z=123.
@@ -86,3 +89,16 @@ def test_bridge_domain_timesync_and_publisher_gates(monkeypatch):
     assert bridge.UwbPx4Bridge.current_gate(obj)=='timesync_unavailable_or_unstable'
     obj.sync_time=10.; obj.count_publishers=lambda topic:2
     assert bridge.UwbPx4Bridge.current_gate(obj)=='ambiguous_or_missing_publisher'
+
+
+def test_delayed_clock_probe_does_not_refresh_or_destroy_valid_clock(monkeypatch):
+    pytest.importorskip('rclpy')
+    from drone_uwb.integration.ros import bridge
+    monkeypatch.setattr(bridge.time,'monotonic',lambda:10.1)
+    obj=NS(sync_count=30,sync_time=10.,sync_offset=1000000000,sync_remote_ns=100)
+    late=NS(remote_timestamp_ns=200,round_trip_time_ms=25.,estimated_offset_ns=1000000000)
+    bridge.UwbPx4Bridge.receive_sync(obj,late)
+    assert obj.sync_count==30 and obj.sync_time==10. and obj.sync_remote_ns==100
+    jump=NS(remote_timestamp_ns=200,round_trip_time_ms=1.,estimated_offset_ns=1010000000)
+    bridge.UwbPx4Bridge.receive_sync(obj,jump)
+    assert obj.sync_count==1  # A clock change requires acquisition again.

@@ -15,12 +15,20 @@ def finite(*values):
 @dataclass(frozen=True)
 class Settings:
     execute: bool = False
+    full_mission: bool = False
+    takeoff_settle_s: float = 2.0
+    observation_recovery_s: float = 3.0
+    observation_settle_s: float = .5
+    scan_timeout_s: float = 20.0
+    scan_speed_m_s: float = .05
     layout_confirmed: bool = False
     alignment_confirmed: bool = False
     fusion_confirmed: bool = False
     timing_confirmed: bool = False
     sensor_mount_confirmed: bool = False
     takeoff_settings_confirmed: bool = False
+    heading_control_confirmed: bool = False
+    expected_ekf2_mag_type: int = 0
     expected_mis_takeoff_alt_m: float = 0.6
     enu_yaw_deg: float = 0.0
     enu_offset_x_m: float = 0.0
@@ -34,6 +42,7 @@ class Settings:
     speed_m_s: float = 0.3
     web_timeout_s: float = 2.0
     state_timeout_s: float = 2.5
+    pose_timeout_s: float = .2
     command_timeout_s: float = 3.0
     takeoff_timeout_s: float = 30.0
     leg_timeout_s: float = 20.0
@@ -43,8 +52,10 @@ class Settings:
     layout_id: str = LAYOUT
 
     def __post_init__(self):
-        for name in ('execute', 'layout_confirmed', 'alignment_confirmed', 'fusion_confirmed',
-                     'takeoff_settings_confirmed', 'timing_confirmed', 'sensor_mount_confirmed'):
+        if type(self.expected_ekf2_mag_type) is not int or self.expected_ekf2_mag_type not in (0, 1, 6):
+            raise ValueError('supported_native_heading_policy_required')
+        for name in ('execute', 'full_mission', 'layout_confirmed', 'alignment_confirmed', 'fusion_confirmed',
+                     'takeoff_settings_confirmed', 'heading_control_confirmed', 'timing_confirmed', 'sensor_mount_confirmed'):
             if type(getattr(self, name)) is not bool:
                 raise ValueError(name + '_must_be_boolean')
         if (len(self.bounds_xy_m) != 4 or not finite(*self.bounds_xy_m)
@@ -52,11 +63,14 @@ class Settings:
                 or self.bounds_xy_m[2] >= self.bounds_xy_m[3]):
             raise ValueError('invalid_trial_bounds')
         for name in ('expected_mis_takeoff_alt_m', 'max_leg_m', 'speed_m_s',
-                     'web_timeout_s', 'state_timeout_s', 'command_timeout_s',
+                     'web_timeout_s', 'state_timeout_s', 'pose_timeout_s', 'command_timeout_s',
                      'takeoff_timeout_s', 'leg_timeout_s', 'landing_timeout_s',
-                     'request_ttl_s'):
+                     'request_ttl_s', 'takeoff_settle_s', 'observation_recovery_s',
+                     'observation_settle_s', 'scan_timeout_s', 'scan_speed_m_s'):
             if not finite(getattr(self, name)) or getattr(self, name) <= 0:
                 raise ValueError('positive_setting_required:' + name)
+        if self.scan_speed_m_s > .1:
+            raise ValueError('scan_speed_m_s_must_not_exceed_0p1')
         if not finite(self.enu_yaw_deg, self.enu_offset_x_m, self.enu_offset_y_m,
                       self.expected_ev_delay_ms, self.expected_ev_pos_x_m,
                       self.expected_ev_pos_y_m, self.expected_ev_pos_z_m):
@@ -121,13 +135,37 @@ def parse_request(payload, settings, wall_s):
         point_id = item.get('id')
         if not isinstance(point_id, str) or not point_id or point_id in ids:
             raise ValueError('unique_waypoint_ids_required')
-        if item.get('type', 'waypoint') not in ('waypoint', 'hover'):
+        kind = item.get('type', 'waypoint')
+        if kind not in (('waypoint', 'hover', 'scan') if settings.full_mission else ('waypoint', 'hover')):
             raise ValueError('flight_trial_supports_waypoint_and_hover')
         xy = (item.get('x'), item.get('y'))
         if not settings.inside(xy):
             raise ValueError('waypoint_outside_trial_bounds')
         ids.add(point_id)
-        waypoints.append(dict(id=point_id, xy=tuple(map(float, xy))))
+        point = dict(id=point_id, xy=tuple(map(float, xy)), type=kind)
+        if settings.full_mission:
+            yaw = item.get('yaw_deg')
+            dwell = item.get('dwell_s', 1.)
+            if ((yaw is not None and not finite(yaw)) or not finite(dwell) or not 0 <= dwell <= 30):
+                raise ValueError('invalid_waypoint_yaw_or_dwell')
+            point.update(yaw_deg=yaw, dwell_s=float(dwell))
+            if kind == 'scan':
+                # Web scan x/y identifies the label, never the aircraft target.
+                staging = item.get('staging_xy_m')
+                if not isinstance(staging, list) or not settings.inside(staging):
+                    raise ValueError('scan_validated_staging_xy_required')
+                if not isinstance(item.get('path_validation_ref'), str) or not item['path_validation_ref']:
+                    raise ValueError('scan_path_validation_ref_required')
+                point.update(label_xy=point['xy'], xy=tuple(map(float, staging)),
+                             path_validation_ref=item['path_validation_ref'])
+                if type(item.get('marker_id')) is not int or item['marker_id'] < 0 or yaw is None:
+                    raise ValueError('scan_marker_and_yaw_required')
+                for name in ('label_id', 'calibration_ref', 'mounting_ref'):
+                    if not isinstance(item.get(name), str) or not item[name]:
+                        raise ValueError('scan_'+name+'_required')
+                    point[name] = item[name]
+                point['marker_id'] = item['marker_id']
+        waypoints.append(point)
     return dict(request, mission_db_id=payload['mission_db_id'],
                 mission_code=payload['mission_code'], route_revision=payload['route_revision'],
                 waypoints=waypoints)

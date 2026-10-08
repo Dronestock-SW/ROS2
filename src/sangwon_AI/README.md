@@ -2,6 +2,15 @@
 이 디렉터리는 실내 자율비행 행동 계층의 설계를 모은다.
 설계 결정·구현 범위·검증 근거를 검토할 때 읽는다.
 
+2026-10-08 전체 미션은 기존 geometry를 native 경로에 연결했다.
+`sangwon_native_plan`은 지도·기체 여유·마커 보정 구역을 검사한다.
+Python MissionChain이 유일한 FC 명령 주체다.
+자세·고도·추정은 PX4가 맡는다.
+[연결 범위](../../docs/architecture/mission_chain.md)와
+[현장 절차](../../docs/runbooks/mission_chain_field.md)를 따른다.
+기존 BT의 Offboard 출력은 실물 경로로 연결하지 않는다.
+이유: 고도 책임과 명령 주체를 중복시키지 않는다.
+
 2026-10-08: [기본 이착륙 시험](../../docs/runbooks/native_hover_test.md)을 먼저 완성한다.
 native hover는 C++의 별도 출력 실행기다.
 취소·응답 지연·실패 결과·RC 인계를 검사한다.

@@ -3,6 +3,14 @@
 클라우드 구현을 로컬 SSH 세션으로 이어받는 절차다.
 새 세션은 이 문서부터 읽고 실제 장비와 대조한다.
 
+최신 실행 브랜치는 `codex/mission-flight-flow-20261008`이다.
+[전체 흐름 확인 기록](../report/mission_flight_flow_20261008.md)부터 읽는다.
+[내일 현장 절차](mission_chain_field.md)로 이어간다.
+기존 AI 지도 검사와 native 단일 명령 흐름을 연결했다.
+아래 브랜치·조회는 이전 단계의 근거로 보존한다.
+현재 실물 RC·앵커는 꺼져 있고 추진 배터리는 분리돼 있다.
+실물 ARM·모드·파라미터 쓰기는 이번 단계에서도 0회다.
+
 2026-10-08 로컬 SSH로 현재 상태를 조회했다.
 [직접 조회·대조 기록](../report/local_jetson_readback_20261008.md)을 함께 읽는다.
 현재 FC는 1.3m·RC override 2·EV_CTRL 1을 유지한다.
@@ -20,6 +28,12 @@ Jetson에는 미커밋 native hover 파일 9개가 추가로 있다.
 [실행 명령](native_hover_test.md)과 [센서 융합 점검](position_sensor_check.md)을 따른다.
 PX4 가상 순서는 통과했다. 실물 UWB·flow 융합은 남았다.
 기존 현장 checkout·main·서비스는 보존했다.
+
+후속 검토 브랜치는 `codex/mission-chain-faults-20261008`이다.
+[가상 전체 미션 절차](mission_chain_virtual.md)와
+[미션 연결 범위](../architecture/mission_chain.md)를 읽는다.
+RAW UWB·ToF·flow·IMU와 실제 PX4를 연결한다.
+실물 확인값과 C++ BT의 실물 출력 금지는 유지한다.
 
 현재 판정은 **실물 비행 보류**다.
 웹 전체 순서는 클라우드에서 구현·검사했다.

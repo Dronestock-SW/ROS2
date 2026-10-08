@@ -22,6 +22,7 @@ def main():
     from aruco_opencv_msgs.msg import ArucoDetection, MarkerPose
     rclpy.init()
     node = rclpy.create_node('sangwon_synthetic_sensor_' + uuid.uuid4().hex[:10])
+    (ROOT / '.runtime').mkdir(exist_ok=True)
     with tempfile.TemporaryDirectory(prefix='perception-test-', dir=ROOT / '.runtime') as name:
         test_root = Path(name).resolve()
         cfg = json.loads((ROOT / 'config/perception.observe.json').read_text())
