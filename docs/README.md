@@ -11,6 +11,7 @@
 | 찾는 내용 | 위치 |
 |---|---|
 | 다음 로컬·Jetson 세션 시작 | [브랜치·명령 흐름·비행 전 확인](runbooks/local_jetson_handoff_20261008.md) |
+| 로컬 SSH·현재 FC·미커밋 현장 작업 | [2026-10-08 직접 조회·대조 기록](report/local_jetson_readback_20261008.md) |
 | A~H 단계, 패키지·설정·시험 대응표 | [저장소 구조와 작업 위치](reference/repository_layout.md) |
 | 현재 앵커 배치 | [6.3×4.6m 직사각형 좌표](reference/uwb_anchor_layout.md) |
 | 로컬 웹 이륙·이동·착륙 | [실물 연결·현장 절차](runbooks/web_test_flight.md) |
