@@ -22,6 +22,12 @@
 
 ## 현재 작업 상태
 
+- [기본 이착륙 시험](docs/runbooks/native_hover_test.md):
+  C++ 실행기의 명령 확인·취소·결과 판정을 보완했다.
+  전체 미션에 앞서 한 번의 이륙·2초 호버·착륙을 검증한다.
+  [PX4 가상 시험 기록](docs/report/native_hover_test_20261008.md)에서 결과를 확인한다.
+  실물은 [센서 융합 점검](docs/runbooks/position_sensor_check.md)이 남았다.
+
 - [2026-10-08 로컬 통합](docs/report/local_jetson_integration_20261008.md):
   SSH 직접 조회 뒤 웹·TDMA·Tag B·추가 hover 소스를 통합했다.
   기존 서비스와 FC 설정은 유지한다. 실물 비행은 미실시다.

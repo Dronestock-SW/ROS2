@@ -10,6 +10,9 @@
 
 | 찾는 내용 | 위치 |
 |---|---|
+| 시동·이륙·2초 호버·착륙 시험 | [실행·결과 확인 절차](runbooks/native_hover_test.md) |
+| 기본 순서·실제 PX4 가상 시험·센서 공백 | [2026-10-08 확인 기록](report/native_hover_test_20261008.md) |
+| UWB·flow·ToF·IMU 수신·융합·방향 | [실물 점검 절차](runbooks/position_sensor_check.md) |
 | 다음 로컬·Jetson 세션 시작 | [브랜치·명령 흐름·비행 전 확인](runbooks/local_jetson_handoff_20261008.md) |
 | 웹·Tag B·TDMA 통합과 분리 시험 | [2026-10-08 로컬 통합 기록](report/local_jetson_integration_20261008.md) |
 | 현장 미커밋 hover 실행기 | [Native hover 명령 경계](architecture/native_hover_bench.md) |

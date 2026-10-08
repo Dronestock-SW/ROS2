@@ -15,6 +15,12 @@ Jetson에는 미커밋 native hover 파일 9개가 추가로 있다.
 [통합·검증 기록](../report/local_jetson_integration_20261008.md)을 현재 출발점으로 읽는다.
 기존 Jetson 서비스에 통합판을 배포하지 않았다.
 
+후속 검토 브랜치는 `codex/native-hover-test-20261008`이다.
+[기본 이착륙 확인 기록](../report/native_hover_test_20261008.md)을 먼저 읽는다.
+[실행 명령](native_hover_test.md)과 [센서 융합 점검](position_sensor_check.md)을 따른다.
+PX4 가상 순서는 통과했다. 실물 UWB·flow 융합은 남았다.
+기존 현장 checkout·main·서비스는 보존했다.
+
 현재 판정은 **실물 비행 보류**다.
 웹 전체 순서는 클라우드에서 구현·검사했다.
 어제의 실물 통합 브랜치는 main에 없었다.

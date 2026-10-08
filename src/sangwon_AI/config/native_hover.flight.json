@@ -4,5 +4,5 @@
   "output_enabled": false,
   "rc_auto_mode_handoff_verified": false,
   "takeoff_height_m": 1.3,
-  "state_dir": "/home/arialhanho/ROS2-integration-20261007/src/sangwon_AI/.runtime/native-hover"
+  "state_dir": "/home/arialhanho/ROS2-review-20261008-codex/.review/native-hover-flight"
 }

@@ -1,0 +1,822 @@
+{
+  "checked_at_utc": "2026-10-08T06:09:58.499092+00:00",
+  "branch": "codex/native-hover-test-20261008",
+  "baseline_commit": "24057d7690a2b04d8088b6871f61a823a03957cc",
+  "physical_flight": false,
+  "physical_arm_or_mode_commands": 0,
+  "physical_fc_parameter_writes": false,
+  "production_service_deployment": false,
+  "selected_ctest": {
+    "name": "(empty)",
+    "tests": "11",
+    "failures": "0",
+    "disabled": "0",
+    "skipped": "0",
+    "hostname": "user-desktop",
+    "time": "75",
+    "timestamp": "2026-10-08T14:45:57"
+  },
+  "ulog_verification": [
+    {
+      "folder": "px4-ev-nominal",
+      "firmware_commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+      "ulog_dropouts": 0,
+      "ev_position_fused": true,
+      "ev_velocity_fused": true,
+      "simulated_peak_height_m": 1.26214599609375,
+      "hover_phase_duration_s": 2.0005165959992155,
+      "phases": [
+        "IDLE",
+        "TAKEOFF_MODE",
+        "ARM",
+        "CLIMB",
+        "HOVER",
+        "LANDING",
+        "COMPLETE"
+      ]
+    },
+    {
+      "folder": "px4-ev-operator_cancel",
+      "firmware_commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+      "ulog_dropouts": 0,
+      "ev_position_fused": true,
+      "ev_velocity_fused": true,
+      "simulated_peak_height_m": 1.25,
+      "hover_phase_duration_s": 0.10084110099887766,
+      "phases": [
+        "IDLE",
+        "TAKEOFF_MODE",
+        "ARM",
+        "CLIMB",
+        "HOVER",
+        "ABORTING",
+        "CANCELLED"
+      ]
+    },
+    {
+      "folder": "px4-ev-rc-accepted",
+      "firmware_commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+      "ulog_dropouts": 0,
+      "ev_position_fused": true,
+      "ev_velocity_fused": true,
+      "simulated_peak_height_m": 1.27978515625,
+      "hover_phase_duration_s": 0.10066217200073879,
+      "phases": [
+        "IDLE",
+        "TAKEOFF_MODE",
+        "ARM",
+        "CLIMB",
+        "HOVER",
+        "HANDOFF",
+        "RELEASED"
+      ]
+    }
+  ],
+  "installed_hover_binary_sha256": "b2deeee55823476ca4d4e089b22aad3ccf9d80e32d368e347d6e2822ddfcc782",
+  "controller_source_sha256": "7845008c10c0b0e128d99e9eff4f4dd2e9b058cab25147b4d6aa8b26ddb56122",
+  "controller_header_sha256": "82a4d7b0708360d5ddce95a6c308cce5861ae4c266c69ec4958db7dc329391a1",
+  "original_source_sha256": {
+    "docs/architecture/native_hover_bench.md": "6bd265d35661f9401588c1dfaaea759d88a9680ba35aa6bd7972d167fe038945",
+    "src/sangwon_AI/CMakeLists.txt": "dbbdc657d5465494d302523675282e74d3699517cc52eb290fc578683efae7b6",
+    "src/sangwon_AI/config/mavros.native_hover.yaml": "f2dff2f1a73df2daf0b941f1cbab5946d59187a38766ddf5516a3822d6e81a8c",
+    "src/sangwon_AI/config/native_hover.flight.json": "acdf46503efb3810a4c1096bf5ceebb2f67ff7655c86e2716626b16b5db6f215",
+    "src/sangwon_AI/include/sangwon_ai/native_hover.hpp": "eefdb61feb341fd4042a7910b5b6b6f440149fd2f489b5c71872c42485802ea3",
+    "src/sangwon_AI/ops/native_hover_web.html": "c20c82c300ee51ac6cfb72f1f1849f232e03b6b27af1eaa47ddc16b0585a92a8",
+    "src/sangwon_AI/ops/native_hover_web.py": "0d183f87f9f154b12d729167f360424db6e842ff65d6d09098763bdfb99c0e75",
+    "src/sangwon_AI/src/native_hover_node.cpp": "dd05bf6cd90d241d7c2b7f1c9ca45e4b1d2c117c18417d06e81424b55c5245e1",
+    "src/sangwon_AI/tests/native_hover_tests.cpp": "d0252424be238483cbc14d598fd66f8e45c7ded3eaba9e632feb848bf7eb849b"
+  },
+  "original_git_state_unchanged": true,
+  "existing_services_active": 5,
+  "test_processes_stopped": true,
+  "synthetic_ros_scenarios": [
+    {
+      "scenario": "nominal",
+      "calls": [
+        "AUTO.TAKEOFF",
+        "ARM",
+        "AUTO.LAND"
+      ],
+      "actual_px4": false,
+      "physical_flight": false,
+      "phase": "COMPLETE",
+      "reason": "LANDED_AND_DISARMED",
+      "outcome": "PASS",
+      "landing_verified": true
+    },
+    {
+      "scenario": "arm_rejected",
+      "calls": [
+        "AUTO.TAKEOFF",
+        "ARM",
+        "POSCTL"
+      ],
+      "actual_px4": false,
+      "physical_flight": false,
+      "phase": "FAILED",
+      "reason": "ARM_REJECTED",
+      "outcome": "FAIL",
+      "landing_verified": true
+    },
+    {
+      "scenario": "takeoff_not_applied",
+      "calls": [
+        "AUTO.TAKEOFF",
+        "AUTO.TAKEOFF",
+        "AUTO.TAKEOFF",
+        "AUTO.TAKEOFF",
+        "AUTO.TAKEOFF",
+        "AUTO.TAKEOFF"
+      ],
+      "actual_px4": false,
+      "physical_flight": false,
+      "phase": "FAILED",
+      "reason": "TAKEOFF_MODE_TIMEOUT",
+      "outcome": "FAIL",
+      "landing_verified": true
+    },
+    {
+      "scenario": "delayed_arm_cancel",
+      "calls": [
+        "AUTO.TAKEOFF",
+        "ARM",
+        "DISARM",
+        "POSCTL"
+      ],
+      "actual_px4": false,
+      "physical_flight": false,
+      "phase": "CANCELLED",
+      "reason": "OPERATOR_CANCELLED",
+      "outcome": "CANCELLED",
+      "landing_verified": true
+    },
+    {
+      "scenario": "duplicate_stamp",
+      "calls": [
+        "AUTO.TAKEOFF",
+        "ARM"
+      ],
+      "actual_px4": false,
+      "physical_flight": false,
+      "phase": "RELEASED",
+      "reason": "TELEMETRY_LOST_PX4_FAILSAFE",
+      "outcome": "UNCONFIRMED",
+      "landing_verified": false
+    },
+    {
+      "scenario": "rc_loss",
+      "calls": [
+        "AUTO.TAKEOFF",
+        "ARM"
+      ],
+      "actual_px4": false,
+      "physical_flight": false,
+      "phase": "RELEASED",
+      "reason": "RC_LOST_PX4_FAILSAFE",
+      "outcome": "UNCONFIRMED",
+      "landing_verified": false
+    },
+    {
+      "scenario": "rc_stick",
+      "calls": [
+        "AUTO.TAKEOFF",
+        "ARM"
+      ],
+      "actual_px4": false,
+      "physical_flight": false,
+      "phase": "RELEASED",
+      "reason": "RC_HANDOFF_UNCONFIRMED",
+      "outcome": "UNCONFIRMED",
+      "landing_verified": false
+    },
+    {
+      "scenario": "manual_mode",
+      "calls": [
+        "AUTO.TAKEOFF",
+        "ARM"
+      ],
+      "actual_px4": false,
+      "physical_flight": false,
+      "phase": "RELEASED",
+      "reason": "PX4_MODE_CHANGED",
+      "outcome": "UNCONFIRMED",
+      "landing_verified": false
+    },
+    {
+      "scenario": "land_rejected",
+      "calls": [
+        "AUTO.TAKEOFF",
+        "ARM",
+        "AUTO.LAND",
+        "AUTO.LAND",
+        "AUTO.LAND",
+        "AUTO.LAND",
+        "AUTO.LAND",
+        "AUTO.LAND"
+      ],
+      "actual_px4": false,
+      "physical_flight": false,
+      "phase": "RELEASED",
+      "reason": "LAND_NOT_CONFIRMED",
+      "outcome": "UNCONFIRMED",
+      "landing_verified": false
+    },
+    {
+      "scenario": "arm_reply_timeout",
+      "calls": [
+        "AUTO.TAKEOFF",
+        "ARM"
+      ],
+      "actual_px4": false,
+      "physical_flight": false,
+      "phase": "RELEASED",
+      "reason": "COMMAND_EFFECT_UNKNOWN_OPERATOR_REQUIRED",
+      "outcome": "UNCONFIRMED",
+      "landing_verified": false
+    }
+  ],
+  "px4_trials": [
+    {
+      "folder": "px4-ev-nominal",
+      "command_actions": [
+        1,
+        1,
+        2,
+        2,
+        3
+      ],
+      "command_order": [
+        1,
+        2,
+        3
+      ],
+      "ulog_sha256": "20b40a8d320472571ba24d6a355dc80efb0f00daa4a4a67f0df3e07e05fefc03",
+      "scenario": "nominal",
+      "sensor_profile": "ideal-ev",
+      "simulation_parameters": {
+        "MIS_TAKEOFF_ALT": 1.3,
+        "COM_TAKEOFF_ACT": 0,
+        "RC_MAP_ROLL": 1,
+        "RC_MAP_PITCH": 2,
+        "RC_MAP_THROTTLE": 3,
+        "RC_MAP_YAW": 4,
+        "RC_MAP_FLTMODE": 5,
+        "RC_MAP_KILL_SW": 7,
+        "RC_MAP_ARM_SW": 8,
+        "COM_RC_OVERRIDE": 3,
+        "COM_RC_IN_MODE": 1,
+        "EKF2_EV_CTRL": 5,
+        "EKF2_EVP_NOISE": 0.02,
+        "EKF2_EVV_NOISE": 0.02
+      },
+      "status": {
+        "armed": false,
+        "battery_fraction": 0.7200000286102295,
+        "battery_ok": true,
+        "command_pending": false,
+        "const_pos_mode": false,
+        "hover_seconds": 2.0,
+        "landed": true,
+        "landing_verified": true,
+        "last_reply": "MODE SENT (await actual state)",
+        "mode": "AUTO.LOITER",
+        "outcome": "PASS",
+        "output_enabled": true,
+        "parameter_readback_ok": true,
+        "parameters": {
+          "COM_RC_OVERRIDE": 3,
+          "COM_TAKEOFF_ACT": 0,
+          "MIS_TAKEOFF_ALT": 1.2999999523162842,
+          "RC_MAP_ARM_SW": 8,
+          "RC_MAP_FLTMODE": 5,
+          "RC_MAP_KILL_SW": 7,
+          "RC_MAP_PITCH": 2,
+          "RC_MAP_ROLL": 1,
+          "RC_MAP_THROTTLE": 3,
+          "RC_MAP_YAW": 4
+        },
+        "phase": "COMPLETE",
+        "preflight_checks": {
+          "battery": true,
+          "command_services": true,
+          "disarmed_on_ground": true,
+          "estimator": true,
+          "log": true,
+          "output_enabled": true,
+          "parameters": true,
+          "position_mode": false,
+          "px4_auto_rc_override": true,
+          "rc": true,
+          "rc_handoff": true,
+          "stationary_hold": true,
+          "telemetry": true,
+          "unused_session": false
+        },
+        "profile": "SITL",
+        "px4_estimator_ok": true,
+        "px4_text": "",
+        "rc_channels": [
+          1500,
+          1500,
+          1500,
+          1500,
+          1500,
+          1500,
+          1500,
+          1500
+        ],
+        "rc_handoff_verified": true,
+        "rc_ok": true,
+        "reason": "LANDED_AND_DISARMED",
+        "session": "d15459f6fe37bd1f25d322e7bf2ab648",
+        "start_blocker": "NEW_SESSION_REQUIRED",
+        "stream_age_s": {
+          "battery": 1.0777681019990268,
+          "estimator": 0.05910749600116105,
+          "landed": 0.058804958998734946,
+          "odom": 0.003233221999835223,
+          "rc": 0.012275842998860753,
+          "state": 0.06044344299880322
+        },
+        "takeoff_height_m": 1.3,
+        "telemetry_fresh": true,
+        "uwb_fusion_verified": false,
+        "xyz_px4_enu_m": [
+          0.06885004043579102,
+          -0.11059588938951492,
+          0.00970458984375
+        ]
+      },
+      "operator_landing": null
+    },
+    {
+      "folder": "px4-ev-operator_cancel",
+      "command_actions": [
+        1,
+        2,
+        3,
+        5
+      ],
+      "command_order": [
+        1,
+        2,
+        3,
+        5
+      ],
+      "ulog_sha256": "f15809671e4d955e04c4fbca9862d954ca9103f04eabd52bd116c48afcce5881",
+      "scenario": "operator_cancel",
+      "sensor_profile": "ideal-ev",
+      "simulation_parameters": {
+        "MIS_TAKEOFF_ALT": 1.3,
+        "COM_TAKEOFF_ACT": 0,
+        "RC_MAP_ROLL": 1,
+        "RC_MAP_PITCH": 2,
+        "RC_MAP_THROTTLE": 3,
+        "RC_MAP_YAW": 4,
+        "RC_MAP_FLTMODE": 5,
+        "RC_MAP_KILL_SW": 7,
+        "RC_MAP_ARM_SW": 8,
+        "COM_RC_OVERRIDE": 3,
+        "COM_RC_IN_MODE": 1,
+        "EKF2_EV_CTRL": 5,
+        "EKF2_EVP_NOISE": 0.02,
+        "EKF2_EVV_NOISE": 0.02
+      },
+      "status": {
+        "armed": false,
+        "battery_fraction": 0.8500000238418579,
+        "battery_ok": true,
+        "command_pending": false,
+        "const_pos_mode": false,
+        "hover_seconds": 2.0,
+        "landed": true,
+        "landing_verified": true,
+        "last_reply": "ARM/DISARM ACK 0",
+        "mode": "AUTO.LOITER",
+        "outcome": "CANCELLED",
+        "output_enabled": true,
+        "parameter_readback_ok": true,
+        "parameters": {
+          "COM_RC_OVERRIDE": 3,
+          "COM_TAKEOFF_ACT": 0,
+          "MIS_TAKEOFF_ALT": 1.2999999523162842,
+          "RC_MAP_ARM_SW": 8,
+          "RC_MAP_FLTMODE": 5,
+          "RC_MAP_KILL_SW": 7,
+          "RC_MAP_PITCH": 2,
+          "RC_MAP_ROLL": 1,
+          "RC_MAP_THROTTLE": 3,
+          "RC_MAP_YAW": 4
+        },
+        "phase": "CANCELLED",
+        "preflight_checks": {
+          "battery": true,
+          "command_services": true,
+          "disarmed_on_ground": true,
+          "estimator": true,
+          "log": true,
+          "output_enabled": true,
+          "parameters": true,
+          "position_mode": false,
+          "px4_auto_rc_override": true,
+          "rc": true,
+          "rc_handoff": true,
+          "stationary_hold": true,
+          "telemetry": true,
+          "unused_session": false
+        },
+        "profile": "SITL",
+        "px4_estimator_ok": true,
+        "px4_text": "",
+        "rc_channels": [
+          1500,
+          1500,
+          1500,
+          1500,
+          1500,
+          1500,
+          1500,
+          1500
+        ],
+        "rc_handoff_verified": true,
+        "rc_ok": true,
+        "reason": "OPERATOR_CANCELLED",
+        "session": "957b855670cfb87529d4a57c29cad53b",
+        "start_blocker": "NEW_SESSION_REQUIRED",
+        "stream_age_s": {
+          "battery": 0.050473655999667244,
+          "estimator": 0.04890426200108777,
+          "landed": 0.048939655998765375,
+          "odom": 0.016338306999386987,
+          "rc": 0.03988045799997053,
+          "state": 0.0525082480016863
+        },
+        "takeoff_height_m": 1.3,
+        "telemetry_fresh": true,
+        "uwb_fusion_verified": false,
+        "xyz_px4_enu_m": [
+          -0.12669382989406586,
+          0.1768258959054947,
+          0.490264892578125
+        ]
+      },
+      "operator_landing": null
+    },
+    {
+      "folder": "px4-ev-rc-accepted",
+      "command_actions": [
+        1,
+        2
+      ],
+      "command_order": [
+        1,
+        2
+      ],
+      "ulog_sha256": "61a6f151110501dc486abacfa0cd08c526aec3cdd221f9915270e7f0819512a9",
+      "scenario": "rc_stick",
+      "sensor_profile": "ideal-ev",
+      "simulation_parameters": {
+        "MIS_TAKEOFF_ALT": 1.3,
+        "COM_TAKEOFF_ACT": 0,
+        "RC_MAP_ROLL": 1,
+        "RC_MAP_PITCH": 2,
+        "RC_MAP_THROTTLE": 3,
+        "RC_MAP_YAW": 4,
+        "RC_MAP_FLTMODE": 5,
+        "RC_MAP_KILL_SW": 7,
+        "RC_MAP_ARM_SW": 8,
+        "COM_RC_OVERRIDE": 3,
+        "COM_RC_IN_MODE": 1,
+        "EKF2_EV_CTRL": 5,
+        "EKF2_EVP_NOISE": 0.02,
+        "EKF2_EVV_NOISE": 0.02
+      },
+      "status": {
+        "armed": true,
+        "battery_fraction": 0.8500000238418579,
+        "battery_ok": true,
+        "command_pending": false,
+        "const_pos_mode": false,
+        "hover_seconds": 2.0,
+        "landed": false,
+        "landing_verified": false,
+        "last_reply": "ARM/DISARM ACK 0",
+        "mode": "POSCTL",
+        "outcome": "UNCONFIRMED",
+        "output_enabled": true,
+        "parameter_readback_ok": true,
+        "parameters": {
+          "COM_RC_OVERRIDE": 3,
+          "COM_TAKEOFF_ACT": 0,
+          "MIS_TAKEOFF_ALT": 1.2999999523162842,
+          "RC_MAP_ARM_SW": 8,
+          "RC_MAP_FLTMODE": 5,
+          "RC_MAP_KILL_SW": 7,
+          "RC_MAP_PITCH": 2,
+          "RC_MAP_ROLL": 1,
+          "RC_MAP_THROTTLE": 3,
+          "RC_MAP_YAW": 4
+        },
+        "phase": "RELEASED",
+        "preflight_checks": {
+          "battery": true,
+          "command_services": true,
+          "disarmed_on_ground": false,
+          "estimator": true,
+          "log": true,
+          "output_enabled": true,
+          "parameters": true,
+          "position_mode": true,
+          "px4_auto_rc_override": true,
+          "rc": true,
+          "rc_handoff": true,
+          "stationary_hold": true,
+          "telemetry": true,
+          "unused_session": false
+        },
+        "profile": "SITL",
+        "px4_estimator_ok": true,
+        "px4_text": "",
+        "rc_channels": [
+          2000,
+          1500,
+          1500,
+          1500,
+          1500,
+          1500,
+          1500,
+          1500
+        ],
+        "rc_handoff_verified": true,
+        "rc_ok": true,
+        "reason": "RC_POSITION_CONFIRMED",
+        "session": "3a0363e10619f697c2ae77001228dffe",
+        "start_blocker": "NEW_SESSION_REQUIRED",
+        "stream_age_s": {
+          "battery": 1.0889064749990212,
+          "estimator": 0.07091549100005068,
+          "landed": 0.07009519200073555,
+          "odom": 0.004256410999005311,
+          "rc": 0.007034106998617062,
+          "state": 0.07354905600004713
+        },
+        "takeoff_height_m": 1.3,
+        "telemetry_fresh": true,
+        "uwb_fusion_verified": false,
+        "xyz_px4_enu_m": [
+          -0.022149045020341873,
+          0.13048478960990906,
+          0.7276611328125
+        ]
+      },
+      "operator_landing": {
+        "armed": false,
+        "battery_fraction": 0.7200000286102295,
+        "battery_ok": true,
+        "command_pending": false,
+        "const_pos_mode": false,
+        "hover_seconds": 2.0,
+        "landed": true,
+        "landing_verified": false,
+        "last_reply": "ARM/DISARM ACK 0",
+        "mode": "POSCTL",
+        "outcome": "UNCONFIRMED",
+        "output_enabled": true,
+        "parameter_readback_ok": true,
+        "parameters": {
+          "COM_RC_OVERRIDE": 3,
+          "COM_TAKEOFF_ACT": 0,
+          "MIS_TAKEOFF_ALT": 1.2999999523162842,
+          "RC_MAP_ARM_SW": 8,
+          "RC_MAP_FLTMODE": 5,
+          "RC_MAP_KILL_SW": 7,
+          "RC_MAP_PITCH": 2,
+          "RC_MAP_ROLL": 1,
+          "RC_MAP_THROTTLE": 3,
+          "RC_MAP_YAW": 4
+        },
+        "phase": "RELEASED",
+        "preflight_checks": {
+          "battery": true,
+          "command_services": true,
+          "disarmed_on_ground": true,
+          "estimator": true,
+          "log": true,
+          "output_enabled": true,
+          "parameters": true,
+          "position_mode": true,
+          "px4_auto_rc_override": true,
+          "rc": true,
+          "rc_handoff": true,
+          "stationary_hold": true,
+          "telemetry": true,
+          "unused_session": false
+        },
+        "profile": "SITL",
+        "px4_estimator_ok": true,
+        "px4_text": "",
+        "rc_channels": [
+          1500,
+          1500,
+          1500,
+          1500,
+          1500,
+          1500,
+          1500,
+          1500
+        ],
+        "rc_handoff_verified": true,
+        "rc_ok": true,
+        "reason": "RC_POSITION_CONFIRMED",
+        "session": "3a0363e10619f697c2ae77001228dffe",
+        "start_blocker": "NEW_SESSION_REQUIRED",
+        "stream_age_s": {
+          "battery": 1.0451587740008108,
+          "estimator": 0.026312025998777244,
+          "landed": 0.025407483000890352,
+          "odom": 0.027863899998919806,
+          "rc": 0.01467884199882974,
+          "state": 0.02911211600076058
+        },
+        "takeoff_height_m": 1.3,
+        "telemetry_fresh": true,
+        "uwb_fusion_verified": false,
+        "xyz_px4_enu_m": [
+          0.3592293858528137,
+          1.0802452564239502,
+          -0.472015380859375
+        ]
+      }
+    }
+  ],
+  "final_physical_status": {
+    "armed": false,
+    "battery_fraction": null,
+    "battery_ok": false,
+    "command_pending": false,
+    "const_pos_mode": true,
+    "hover_seconds": 2.0,
+    "landed": true,
+    "landing_verified": false,
+    "last_reply": "",
+    "mode": "AUTO.LOITER",
+    "outcome": "NOT_RUN",
+    "output_enabled": false,
+    "parameter_readback_ok": true,
+    "parameters": {
+      "COM_RC_OVERRIDE": 2,
+      "COM_TAKEOFF_ACT": 0,
+      "MIS_TAKEOFF_ALT": 1.2999999523162842,
+      "RC_MAP_ARM_SW": 8,
+      "RC_MAP_FLTMODE": 5,
+      "RC_MAP_KILL_SW": 7,
+      "RC_MAP_PITCH": 2,
+      "RC_MAP_ROLL": 1,
+      "RC_MAP_THROTTLE": 3,
+      "RC_MAP_YAW": 4
+    },
+    "phase": "IDLE",
+    "preflight_checks": {
+      "battery": false,
+      "command_services": true,
+      "disarmed_on_ground": true,
+      "estimator": false,
+      "log": true,
+      "output_enabled": false,
+      "parameters": true,
+      "position_mode": false,
+      "px4_auto_rc_override": false,
+      "rc": false,
+      "rc_handoff": false,
+      "stationary_hold": false,
+      "telemetry": true,
+      "unused_session": true
+    },
+    "profile": "FLIGHT",
+    "px4_estimator_ok": false,
+    "px4_text": "",
+    "rc_channels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "rc_handoff_verified": false,
+    "rc_ok": false,
+    "reason": "",
+    "session": "19dde590eac8eeaa213eb0cd26f8b884",
+    "start_blocker": "OUTPUT_NOT_ENABLED",
+    "stream_age_s": {
+      "battery": 0.5709534979996533,
+      "estimator": 0.5707228760002181,
+      "landed": 0.03540088399859087,
+      "odom": 0.02641065699936007,
+      "rc": 0.06258388400055992,
+      "state": 0.03232850499989581
+    },
+    "takeoff_height_m": 1.3,
+    "telemetry_fresh": true,
+    "uwb_fusion_verified": false,
+    "xyz_px4_enu_m": [
+      -0.1031336709856987,
+      -0.12172119319438934,
+      0.20551681518554688
+    ]
+  },
+  "physical_sensor_readback": {
+    "checked_at_utc": "2026-10-08T06:01:51.651070+00:00",
+    "device": "/dev/pixhawk",
+    "outbound": [
+      "SERIAL_CONTROL fixed param show/listener queries only"
+    ],
+    "physical_flight": false,
+    "fc_parameter_writes": false,
+    "queries": [
+      {
+        "command": "param show EKF2_OF_CTRL",
+        "response": "\nNuttShell (NSH) NuttX-12.12.0\nnsh> \u001b[Kparam show EKF2_OF_CTRL\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_OF_CTRL [394,642] : 1\n\n 1095/2040 parameters used.\nnsh> \u001b[K",
+        "prompt_seen": true
+      },
+      {
+        "command": "param show EKF2_RNG_CTRL",
+        "response": "param show EKF2_RNG_CTRL\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_RNG_CTRL [422,670] : 1\n\n 1095/2040 parameters used.\nnsh> \u001b[K",
+        "prompt_seen": true
+      },
+      {
+        "command": "param show EKF2_EV_CTRL",
+        "response": "param show EKF2_EV_CTRL\nSymbols: x = used, + = saved, * = unsaved\nx + EKF2_EV_CTRL [342,589] : 1\n\n 1095/2040 parameters used.\nnsh> \u001b[K",
+        "prompt_seen": true
+      },
+      {
+        "command": "param show SENS_FLOW_ROT",
+        "response": "param show SENS_FLOW_ROT\nSymbols: x = used, + = saved, * = unsaved\nx + SENS_FLOW_ROT [936,1434] : 4\n\n 1095/2040 parameters used.\nnsh> \u001b[K",
+        "prompt_seen": true
+      },
+      {
+        "command": "param show SENS_FLOW_SCALE",
+        "response": "param show SENS_FLOW_SCALE\nSymbols: x = used, + = saved, * = unsaved\nx   SENS_FLOW_SCALE [937,1435] : 1.0000\n\n 1095/2040 parameters used.\nnsh> \u001b[K",
+        "prompt_seen": true
+      },
+      {
+        "command": "listener sensor_optical_flow -n 1",
+        "response": "listener sensor_optical_flow -n 1\n\nTOPIC: sensor_optical_flow\n sensor_optical_flow\n    timestamp: 13596680106 (0.006840 seconds ago)\n    timestamp_sample: 13596680104 (2 us before timestamp)\n    device_id: 0 (Type: 0x00, UNKNOWN:0 (0x00))\n    pixel_flow: [0.00000, -0.00176]\n    delta_angle: [0.00000, 0.00000, 0.00000]\n    distance_m: 0.00000\n    integration_timespan_us: 10526\n    error_count: 0\n    max_flow_rate: 7.40000\n    min_ground_distance: 0.08000\n    max_ground_distance: inf\n    delta_angle_available: False\n    distance_available: False\n    quality: 54\n    mode: 0\n\nnsh> \u001b[K",
+        "prompt_seen": true
+      },
+      {
+        "command": "listener vehicle_optical_flow -n 1",
+        "response": "listener vehicle_optical_flow -n 1\n\nTOPIC: vehicle_optical_flow\n vehicle_optical_flow\n    timestamp: 13596701265 (0.014119 seconds ago)\n    timestamp_sample: 13596701248 (17 us before timestamp)\n    device_id: 0 (Type: 0x00, UNKNOWN:0 (0x00))\n    pixel_flow: [-0.00176, -0.00000]\n    delta_angle: [-0.00001, -0.00005, -0.00001]\n    distance_m: nan\n    integration_timespan_us: 21052\n    max_flow_rate: 7.40000\n    min_ground_distance: 0.08000\n    max_ground_distance: 100.00000\n    quality: 47\n\nnsh> \u001b[K",
+        "prompt_seen": true
+      },
+      {
+        "command": "listener distance_sensor -i 0 -n 1",
+        "response": "listener distance_sensor -i 0 -n 1\n\nTOPIC: distance_sensor instance 0 #1\n distance_sensor\n    timestamp: 13596708235 (0.039602 seconds ago)\n    device_id: 14684177 (Type: 0xE0, I2C:2 (0x10))\n    min_distance: 0.10000\n    max_distance: 35.00000\n    current_distance: 0.00300\n    variance: 0.00000\n    h_fov: 0.05235\n    v_fov: 0.05235\n    q: [0.00000, 0.00000, 0.00000, 0.00000] (Roll: 0.0 deg, Pitch: -0.0 deg, Yaw: 0.0 deg)\n    signal_quality: 0\n    type: 0\n    orientation: 25\n    mode: 0\nnsh> \u001b[K",
+        "prompt_seen": true
+      },
+      {
+        "command": "listener distance_sensor -i 1 -n 1",
+        "response": "listener distance_sensor -i 1 -n 1\nnever published\nnsh> \u001b[K",
+        "prompt_seen": true
+      },
+      {
+        "command": "listener estimator_status_flags -n 1",
+        "response": "listener estimator_status_flags -n 1\n\nTOPIC: estimator_status_flags 2 instances\n\nInstance 0:\n estimator_status_flags\n    timestamp: 13595896577 (0.894405 seconds ago)\n    timestamp_sample: 13595708330 (188247 us before timestamp)\n    control_status_changes: 131\n    fault_status_changes: 0\n    innovation_fault_status_changes: 2\n    cs_tilt_align: True\n    cs_yaw_align: True\n    cs_gnss_pos: False\n    cs_opt_flow: False\n    cs_mag_hdg: True\n    cs_mag_3d: False\n    cs_mag_dec: True\n    cs_in_air: False\n    cs_wind: False\n    cs_baro_hgt: True\n    cs_rng_hgt: True\n    cs_gps_hgt: False\n    cs_ev_pos: False\n    cs_ev_yaw: False\n    cs_ev_hgt: False\n    cs_fuse_beta: False\n    cs_mag_field_disturbed: False\n    cs_fixed_wing: False\n    cs_mag_fault: False\n    cs_fuse_aspd: False\n    cs_gnd_effect: False\n    cs_rng_stuck: False\n    cs_gnss_yaw: False\n    cs_mag_aligned_in_flight: False\n    cs_ev_vel: False\n    cs_synthetic_mag_z: False\n    cs_vehicle_at_rest: True\n    cs_gnss_yaw_fault: False\n    cs_rng_fault: False\n    cs_inertial_dead_reckoning: False\n    cs_wind_dead_reckoning: False\n    cs_rng_kin_consistent: True\n    cs_fake_pos: False\n    cs_fake_hgt: False\n    cs_gravity_vector: True\n    cs_mag: True\n    cs_ev_yaw_fault: False\n    cs_mag_heading_consistent: True\n    cs_aux_gpos: False\n    cs_rng_terrain: True\n    cs_opt_flow_terrain: False\n    cs_valid_fake_pos: True\n    cs_constant_pos: False\n    cs_baro_fault: False\n    cs_gnss_vel: False\n    cs_gnss_fault: False\n    cs_yaw_manual: False\n    cs_gnss_hgt_fault: False\n    fs_bad_mag_x: False\n    fs_bad_mag_y: False\n    fs_bad_mag_z: False\n    fs_bad_hdg: False\n    fs_bad_mag_decl: False\n    fs_bad_airspeed: False\n    fs_bad_sideslip: False\n    fs_bad_optflow_x: False\n    fs_bad_optflow_y: False\n    fs_bad_acc_vertical: False\n    fs_bad_acc_clipping: False\n    reject_hor_vel: False\n    reject_ver_vel: False\n    reject_hor_pos: False\n    reject_ver_pos: False\n    reject_yaw: False\n    reject_airspeed: False\n    reject_sideslip: False\n    reject_hagl: False\n    reject_optflow_x: False\n    reject_optflow_y: False\n\n\nInstance 1:\n estimator_status_flags\n    timestamp: 13596684855 (0.201046 seconds ago)\n    timestamp_sample: 13596495317 (189538 us before timestamp)\n    control_status_changes: 133\n    fault_status_changes: 0\n    innovation_fault_status_changes: 2\n    cs_tilt_align: True\n    cs_yaw_align: True\n    cs_gnss_pos: False\n    cs_opt_flow: False\n    cs_mag_hdg: True\n    cs_mag_3d: False\n    cs_mag_dec: True\n    cs_in_air: False\n    cs_wind: False\n    cs_baro_hgt: True\n    cs_rng_hgt: True\n    cs_gps_hgt: False\n    cs_ev_pos: False\n    cs_ev_yaw: False\n    cs_ev_hgt: False\n    cs_fuse_beta: False\n    cs_mag_field_disturbed: False\n    cs_fixed_wing: False\n    cs_mag_fault: False\n    cs_fuse_aspd: False\n    cs_gnd_effect: False\n    cs_rng_stuck: False\n    cs_gnss_yaw: False\n    cs_mag_aligned_in_flight: False\n    cs_ev_vel: False\n    cs_synthetic_mag_z: False\n    cs_vehicle_at_rest: True\n    cs_gnss_yaw_fault: False\n    cs_rng_fault: False\n    cs_inertial_dead_reckoning: False\n    cs_wind_dead_reckoning: False\n    cs_rng_kin_consistent: True\n    cs_fake_pos: False\n    cs_fake_hgt: False\n    cs_gravity_vector: True\n    cs_mag: True\n    cs_ev_yaw_fault: False\n    cs_mag_heading_consistent: True\n    cs_aux_gpos: False\n    cs_rng_terrain: True\n    cs_opt_flow_terrain: False\n    cs_valid_fake_pos: True\n    cs_constant_pos: False\n    cs_baro_fault: False\n    cs_gnss_vel: False\n    cs_gnss_fault: False\n    cs_yaw_manual: False\n    cs_gnss_hgt_fault: False\n    fs_bad_mag_x: False\n    fs_bad_mag_y: False\n    fs_bad_mag_z: False\n    fs_bad_hdg: False\n    fs_bad_mag_decl: False\n    fs_bad_airspeed: False\n    fs_bad_sideslip: False\n    fs_bad_optflow_x: False\n    fs_bad_optflow_y: False\n    fs_bad_acc_vertical: False\n    fs_bad_acc_clipping: False\n    reject_hor_vel: False\n    reject_ver_vel: False\n    reject_hor_pos: False\n    reject_ver_pos: False\n    reject_yaw: False\n    reject_airspeed: False\n    reject_sideslip: False\n    reject_hagl: False\n    reject_optflow_x: False\n    reject_optflow_y: False\n\nnsh> \u001b[K",
+        "prompt_seen": true
+      },
+      {
+        "command": "listener estimator_aid_src_optical_flow -n 1",
+        "response": "listener estimator_aid_src_optical_flow -n 1\n\nTOPIC: estimator_aid_src_optical_flow 2 instances\n\nInstance 0:\n estimator_aid_src_optical_flow\n    timestamp: 13596964765 (0.021071 seconds ago)\n    timestamp_sample: 13596772185 (192580 us before timestamp)\n    time_last_fuse: 3083966\n    observation: [-0.083891, 0.000008]\n    device_id: 0 (Type: 0x00, UNKNOWN:0 (0x00))\n    observation_variance: [0.18348, 0.18348]\n    innovation: [0.13081, -0.08167]\n    innovation_filtered: [0.00614, -0.04268]\n    innovation_variance: [1.89684, 1.90767]\n    test_ratio: [0.00100, 0.00038]\n    test_ratio_filtered: [0.00001, -0.00013]\n    estimator_instance: 0\n    innovation_rejected: False\n    fused: False\n\n\nInstance 1:\n estimator_aid_src_optical_flow\n    timestamp: 13597013075 (0.003786 seconds ago)\n    timestamp_sample: 13596814438 (198637 us before timestamp)\n    time_last_fuse: 3090979\n    observation: [-0.083537, 0.000419]\n    device_id: 0 (Type: 0x00, UNKNOWN:0 (0x00))\n    observation_variance: [0.18943, 0.18943]\n    innovation: [0.09946, 0.02803]\n    innovation_filtered: [0.00514, 0.02226]\n    innovation_variance: [2.38684, 2.38741]\n    test_ratio: [0.00046, 0.00003]\n    test_ratio_filtered: [0.00002, 0.00005]\n    estimator_instance: 1\n    innovation_rejected: False\n    fused: False\n\nnsh> \u001b[K",
+        "prompt_seen": true
+      },
+      {
+        "command": "listener estimator_aid_src_rng_hgt -n 1",
+        "response": "listener estimator_aid_src_rng_hgt -n 1\n\nTOPIC: estimator_aid_src_rng_hgt 2 instances\n\nInstance 0:\n estimator_aid_src_rng_hgt\n    timestamp: 13596997836 (0.074817 seconds ago)\n    timestamp_sample: 13596799812 (198024 us before timestamp)\n    time_last_fuse: 13596802068\n    device_id: 0 (Type: 0x00, UNKNOWN:0 (0x00))\n    observation: 0.02000\n    observation_variance: 0.01168\n    innovation: -0.00008\n    innovation_filtered: -0.00037\n    innovation_variance: 0.01332\n    test_ratio: 0.00000\n    test_ratio_filtered: -0.00000\n    estimator_instance: 0\n    innovation_rejected: False\n    fused: True\n\n\nInstance 1:\n estimator_aid_src_rng_hgt\n    timestamp: 13597092562 (0.012242 seconds ago)\n    timestamp_sample: 13596901324 (191238 us before timestamp)\n    time_last_fuse: 13596902750\n    device_id: 0 (Type: 0x00, UNKNOWN:0 (0x00))\n    observation: 0.02000\n    observation_variance: 0.01167\n    innovation: -0.00013\n    innovation_filtered: -0.00014\n    innovation_variance: 0.01329\n    test_ratio: 0.00000\n    test_ratio_filtered: -0.00000\n    estimator_instance: 1\n    innovation_rejected: False\n    fused: True\n\nnsh> \u001b[K",
+        "prompt_seen": true
+      },
+      {
+        "command": "listener vehicle_visual_odometry -n 1",
+        "response": "listener vehicle_visual_odometry -n 1\nnever published\nnsh> \u001b[K",
+        "prompt_seen": true
+      },
+      {
+        "command": "listener vehicle_local_position -n 1",
+        "response": "listener vehicle_local_position -n 1\n\nTOPIC: vehicle_local_position\n vehicle_local_position\n    timestamp: 13597151798 (0.002982 seconds ago)\n    timestamp_sample: 13597151184 (614 us before timestamp)\n    ref_timestamp: 0\n    ref_lat: nan\n    ref_lon: nan\n    x: -0.12612\n    y: -0.09729\n    z: -0.20410\n    delta_xy: [0.00000, 0.00000]\n    delta_z: 20.29303\n    vx: 0.00071\n    vy: -0.00058\n    vz: 0.00019\n    z_deriv: -0.00011\n    delta_vxy: [-0.00018, -0.00169]\n    delta_vz: -0.00226\n    ax: 0.00802\n    ay: 0.00377\n    az: 0.00043\n    heading: 2.34261\n    heading_var: 0.00045\n    unaided_heading: 0.23594\n    delta_heading: 2.16043\n    tilt_var: 0.00002\n    ref_alt: nan\n    dist_bottom: 0.01989\n    dist_bottom_var: 0.00005\n    delta_dist_bottom: 20.29303\n    eph: 0.01376\n    epv: 0.03998\n    evh: 0.04052\n    evv: 0.03970\n    vxy_max: inf\n    vz_max: inf\n    hagl_min: inf\n    hagl_max_z: inf\n    hagl_max_xy: inf\n    xy_valid: True\n    z_valid: True\n    v_xy_valid: True\n    v_z_valid: True\n    xy_reset_counter: 35\n    z_reset_counter: 3\n    vxy_reset_counter: 36\n    vz_reset_counter: 2\n    heading_reset_counter: 2\n    heading_good_for_control: False\n    xy_global: False\n    z_global: False\n    dist_bottom_valid: True\n    dist_bottom_reset_counter: 3\n    dist_bottom_sensor_bitfield: 1\n    dead_reckoning: False\nnsh> \u001b[K",
+        "prompt_seen": true
+      },
+      {
+        "command": "listener vehicle_attitude -n 1",
+        "response": "listener vehicle_attitude -n 1\n\nTOPIC: vehicle_attitude\n vehicle_attitude\n    timestamp: 13597216069 (0.001698 seconds ago)\n    timestamp_sample: 13597215777 (292 us before timestamp)\n    q: [0.38897, 0.00072, 0.01293, 0.92115] (Roll: 1.4 deg, Pitch: 0.5 deg, Yaw: 134.2 deg)\n    delta_q_reset: [0.47113, -0.00000, 0.00000, 0.88206]\n    quat_reset_counter: 2\n\nnsh> \u001b[K",
+        "prompt_seen": true
+      },
+      {
+        "command": "listener sensor_combined -n 1",
+        "response": "listener sensor_combined -n 1\n\nTOPIC: sensor_combined\n sensor_combined\n    timestamp: 13597235652 (0.003114 seconds ago)\n    gyro_rad: [-0.00082, -0.00225, -0.00189]\n    gyro_integral_dt: 4969\n    accelerometer_timestamp_relative: 0\n    accelerometer_m_s2: [0.12795, -0.22073, -9.80785]\n    accelerometer_integral_dt: 4969\n    accelerometer_clipping: 0\n    gyro_clipping: 0\n    accel_calibration_count: 1\n    gyro_calibration_count: 1\nnsh> \u001b[K",
+        "prompt_seen": true
+      }
+    ],
+    "initial_armed": false
+  }
+}

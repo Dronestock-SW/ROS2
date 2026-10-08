@@ -64,11 +64,14 @@ def main():
                     raise ValueError('invalid_length')
                 self.connection.settimeout(2)
                 data = json.loads(self.rfile.read(size))
-                if set(data) != {'session', 'confirm'} or not isinstance(data['session'], str):
+                if (not isinstance(data, dict) or set(data) != {'session', 'confirm'}
+                        or not isinstance(data['session'], str) or not isinstance(data['confirm'], str)):
                     raise ValueError('invalid_request')
                 result = exchange(args.socket, {'method': self.path.rsplit('/', 1)[-1], **data})
                 self.reply(200 if result.get('ok') else 409, result)
-            except (OSError, ValueError) as error:
+            except ValueError as error:
+                self.reply(400, {'error': str(error)})
+            except OSError as error:
                 self.reply(503, {'error': str(error)})
 
         def log_message(self, *_):

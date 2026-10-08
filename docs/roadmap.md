@@ -9,6 +9,11 @@
 [Jetson 통합 기록](report/local_jetson_integration_20261008.md)을 따른다.
 관측 계약·명령 잠금을 합쳤다. 현장 비행 조건은 미충족이다.
 
+기본 순서는 [10월 8일 후속 시험](report/native_hover_test_20261008.md)을 따른다.
+실제 PX4 가상 이착륙·취소·RC 인계를 통과했다.
+실물 UWB·flow 공동 융합과 실제 비행은 미완료다.
+다음 단계는 [센서 융합 점검](runbooks/position_sensor_check.md)이다.
+
 ## 시스템 개요 (군집 재고조사)
 
 - 드론 2대가 사전 분할된 구역을 각자 순회하며 야간 재고를 스캔한다
