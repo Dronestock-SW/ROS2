@@ -12,5 +12,17 @@
 
 기존 모듈 규모와 배포 경로를 유지했다.
 실행 의존성은 `websockets==13.1`이다.
+
+기본값은 기존 통신 전용 모드다.
+`DRONESTOCK_MISSION_FORWARDING=true`일 때만
+GET 응답을 `/mission/assignment`로 전달한다.
+비행 명령은 `drone_mission`이 담당한다.
+`DRONESTOCK_UWB_TOPIC=/uwb/btf_pose`로 실물 후보를 읽는다.
+`DRONESTOCK_WS_URL`로 로컬의 별도 WS 포트를 지정한다.
+실제 미션 상태가 들어올 때 ACK·단계 보고를 전송한다.
+WebSocket 수신 프레임은 명령으로 해석하지 않는다.
+
+[웹 비행 시험 절차](../../docs/runbooks/web_test_flight.md)와
+[연결 구조](../../docs/architecture/web_test_flight.md)를 따른다.
 [서비스 절차](../../docs/runbooks/companion_platform_service.md)와
 [API 사전](../../docs/reference/companion_platform_api_dictionary.md)을 따른다.

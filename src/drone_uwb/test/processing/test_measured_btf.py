@@ -77,6 +77,8 @@ def test_sequential_real_ranges_keep_sample_times_and_compute_moving_position():
     assert r['report_span_s']==pytest.approx(.012)
     assert r['time_us']==max(msg['sample_time_us'])
     assert r['xy_m']==pytest.approx([2+.1*r['time_us']/1e6,2],abs=.001)
+    assert r['xyz_m']==pytest.approx([2+.1*r['time_us']/1e6,2,1.12],abs=.001)
+    assert r['height_source']=='measured_tof_imu'
     assert r['external_output_allowed'] is False
     assert r['flight_valid'] is False
     assert r['timestamp_calibrated'] is False
@@ -88,6 +90,7 @@ def test_repeated_cycle_and_clock_restart_cannot_repeat_last_good_position():
     for seq in range(1,80):
         end=100_000+seq*22000;msg=cycle(seq,end,a);r=p.process(event(msg,end))
     assert r['ok']
+    assert r['xyz_m'] is None  # Missing ToF cannot manufacture altitude.
     duplicate=p.process(event(msg,end+1000))
     assert not duplicate['ok'] and duplicate['reason']=='duplicate_or_out_of_order'
     restart=p.process(event(cycle(0,20000,a),end+2000))

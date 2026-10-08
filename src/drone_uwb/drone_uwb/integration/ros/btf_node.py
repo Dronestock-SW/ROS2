@@ -7,10 +7,11 @@ from pathlib import Path
 import time
 
 from ament_index_python.packages import get_package_share_directory
-from geometry_msgs.msg import PoseWithCovarianceStamped
+from geometry_msgs.msg import PoseStamped, PoseWithCovarianceStamped
 from mavros_msgs.msg import State, TimesyncStatus
 import rclpy
 from rclpy.node import Node
+from rclpy.executors import ExternalShutdownException
 from rclpy.qos import qos_profile_sensor_data
 from rcl_interfaces.msg import ParameterDescriptor
 from sensor_msgs.msg import Imu, Range
@@ -40,6 +41,8 @@ class BtfNode(Node):
         descriptor = ParameterDescriptor(read_only=True)
         self.declare_parameter('config_file', default, descriptor)
         self.declare_parameter('record_directory', '', descriptor)
+        self.declare_parameter('require_height_for_pose', False, descriptor)
+        self.require_height = self.get_parameter('require_height_for_pose').value
         self.config = json.loads(Path(self.get_parameter('config_file').value).read_text(encoding='utf-8'))
         if self.config['external_output_allowed'] is not False:
             raise ValueError('real_btf_is_observation_only')
@@ -64,6 +67,7 @@ class BtfNode(Node):
         self.status_pub = self.create_publisher(String, '/uwb/btf_status', 10)
         self.decision_pub = self.create_publisher(String, '/uwb/btf_decision', qos_profile_sensor_data)
         self.pose_pub = self.create_publisher(PoseWithCovarianceStamped, '/uwb/btf_pose', qos_profile_sensor_data)
+        self.xyz_pub = self.create_publisher(PoseStamped, '/uwb/btf_xyz', qos_profile_sensor_data)
         self.subs = [
             self.create_subscription(String, '/uwb/received', self.raw, qos_profile_sensor_data),
             self.create_subscription(Range, self.config['tof_topic'], self.tof, qos_profile_sensor_data),
@@ -153,7 +157,10 @@ class BtfNode(Node):
         if result['ok']:
             age = (self.get_clock().now().nanoseconds-result['stamp_ns'])/1e9
             result['publish_age_s'] = age
-            if 0 <= age <= self.config['max_output_age_s']:
+            if self.require_height and result.get('xyz_m') is None:
+                result['pose_blocked_reason'] = 'measured_height_required'
+                self.counts['measured_height_required'] += 1
+            elif 0 <= age <= self.config['max_output_age_s']:
                 pose = PoseWithCovarianceStamped()
                 pose.header.stamp.sec, pose.header.stamp.nanosec = divmod(result['stamp_ns'],1_000_000_000)
                 pose.header.frame_id = 'uwb_map'
@@ -163,6 +170,12 @@ class BtfNode(Node):
                 for index in (14,21,28,35):
                     pose.pose.covariance[index] = 1e6
                 self.pose_pub.publish(pose)
+                if result.get('xyz_m') is not None:
+                    xyz = PoseStamped()
+                    xyz.header = pose.header
+                    xyz.pose.position.x, xyz.pose.position.y, xyz.pose.position.z = result['xyz_m']
+                    xyz.pose.orientation.w = 1.
+                    self.xyz_pub.publish(xyz)
                 result['published'] = True
                 self.counts['published'] += 1
             else:
@@ -177,6 +190,8 @@ class BtfNode(Node):
                'counts':dict(self.counts),'height_counts':dict(self.height_counts),
                'last_reason':self.last.get('reason') if self.last else None,
                'last_xy_m':self.last.get('xy_m') if self.last else None,
+               'last_xyz_m':self.last.get('xyz_m') if self.last else None,
+               'require_height_for_pose':self.require_height,
                'input_age_s':(now_ns-self.last_source_ns)/1e9 if self.last_source_ns else None,
                'fc_output_enabled':False,'timestamp_calibrated':False,'timesync_ready':self.sync_ready(),
                'fc_state':self.fc_state,
@@ -200,7 +215,7 @@ def main(args=None):
     node = BtfNode()
     try:
         rclpy.spin(node)
-    except KeyboardInterrupt:
+    except (KeyboardInterrupt, ExternalShutdownException):
         pass
     finally:
         node.destroy_node()

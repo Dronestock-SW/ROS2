@@ -4,6 +4,7 @@ import hmac
 import json
 from pathlib import Path
 import threading
+import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from unittest.mock import patch
 
@@ -68,6 +69,38 @@ def test_device_signature_matches_wire_get(tmp_path):
     expected = hmac.new(b'test-secret', canonical.encode('utf-8'), hashlib.sha256).hexdigest()
     assert headers['X-DS-Signature'] == expected
     assert cfg.headers()['X-DS-Nonce'] != headers['X-DS-Nonce']
+
+
+def test_device_signature_covers_exact_post_path_and_body(tmp_path):
+    cfg = config(tmp_path, DRONESTOCK_DEVICE_AUTH_ID='test-device',
+                 DRONESTOCK_DEVICE_AUTH_SECRET='test-secret')
+    path = '/api/drones/5/control-action/ack/'
+    body = b'{"contract_version":"1.0","action":"land","request_id":"fixture-1"}'
+    headers = cfg.headers('POST', path, body)
+    canonical = '\n'.join(('POST', path, hashlib.sha256(body).hexdigest(),
+                           headers['X-DS-Timestamp'], headers['X-DS-Nonce']))
+    expected = hmac.new(b'test-secret', canonical.encode('utf-8'), hashlib.sha256).hexdigest()
+    assert headers['X-DS-Signature'] == expected
+
+
+def test_telemetry_expires_by_source_stamp_and_keeps_height_reference(tmp_path):
+    observations = Observations()
+    stamp = time.time_ns()
+    observations.receive_pose(2., 2., 'uwb_map', stamp)
+    observations.receive_height(.72, 'uwb_map', stamp)
+    observations.receive_position((2., 2., .6), 'map', stamp)
+    observations.receive_fc(True, True, 'AUTO.LOITER')
+    observed = observations.fields()
+    assert observed['current_z_m'] == .72
+    assert observed['current_z_source'] == 'tof_imu_uwb_antenna'
+    assert observed['px4_position_enu_m'] == [2., 2., .6]
+    # Receipt was recent, but the sensor's original timestamp has expired.
+    observations.pose = (2., 2., stamp-1_000_000_000, time.monotonic())
+    observations.height = (.72, stamp-1_000_000_000, time.monotonic())
+    observations.position = ([2.,2.,.6], stamp-1_000_000_000, time.monotonic())
+    stale = observations.fields()
+    assert stale['x'] is None and stale['current_z_m'] is None
+    assert stale['px4_position_enu_m'] is None
 
 
 def test_poll_failures_do_not_refresh_last_success(tmp_path):

@@ -13,6 +13,7 @@
 | 데모·임무·SITL 평가 | [drone_demo](src/drone_demo/README.md) |
 | 센서 실행·인쇄 마커 | [drone_bringup](src/drone_bringup/README.md) |
 | 플랫폼 수신·상태 전달 | [drone_platform_link](src/drone_platform_link/README.md) |
+| 로컬 웹 이륙·이동·착륙 시험 | [drone_mission](src/drone_mission/README.md) |
 | 기준·설계·실행 절차 | [문서 색인](docs/README.md) |
 | 측정 원본·계산 결과 | [자료 색인](data/README.md) |
 
@@ -20,6 +21,19 @@
 새 작업은 위 색인의 실제 구현 경로에서 시작한다.
 
 ## 현재 작업 상태
+
+- [로컬·Jetson 세션 인계](docs/runbooks/local_jetson_handoff_20261008.md):
+  전달 브랜치는 `codex/web-flight-handoff-20261008`이다.
+  어제 통합 브랜치의 Tag B·낮은 앵커·FC 설정과 대조가 필요하다.
+  이번 기본 설정을 실물에 바로 적용하지 않는다.
+  이유: 기체·배치·이륙 높이와 명령 실행기가 다르다.
+
+- [로컬 웹 전체 비행 순서](docs/runbooks/web_test_flight.md):
+  RAW UWB·실측 높이·PX4 관측·웹 요청·미션을 연결했다.
+  정상 순서와 UWB 단절의 ROS 통합시험을 통과했다.
+  FC는 시험용 모사 노드다. 실물 융합·비행은 미실시다.
+  [2026-10-08 확인 기록](docs/report/web_test_flight_20261008.md)을 따른다.
+  기본 실행·관측 전달과 물리 확인값은 비활성이다.
 
 - [4앵커 기본 실행 복원](docs/runbooks/uwb_four_anchor_restore_20261007.md):
   A1~A4, `min_anchors=4`, `active_anchor_mask=15`.
@@ -61,7 +75,8 @@
 
 ## 접속 정보
 - Jetson Orin Nano (JetPack 6.2 / Ubuntu 22.04 / ROS2 Humble)
-- SSH: ssh user@100.110.163.94 (Tailscale — 팀원은 Tailscale 설치 + 네트워크 초대 필요)
+- SSH: `ssh arialhanho@100.110.163.94` (2026-10-08 사용자 지정 계정).
+  Tailscale의 같은 tailnet에 연결한다. 원격 계정·주소는 접속 후 확인한다.
 
 ## 받기 (clone)
 LiDAR 드라이버는 제조사 저장소를 서브모듈로 참조한다. `--recursive` 없이 받으면 그 폴더가 빈 채로 온다.
@@ -120,6 +135,9 @@ UWB 연동은 HW팀 정비로 보류했다.
 | Topic | 내용 |
 |---|---|
 | /uwb_pose | UWB 수평 위치 관측. z=0은 미관측 자리값 |
+| /uwb/btf_pose | 높이·시각을 검사한 실물 B_TF 수평 관측 |
+| /uwb/btf_xyz | UWB 태그의 바닥 기준 XYZ 표시. 고도 목표가 아님 |
+| /mission/assignment | HTTP에서 수신한 웹 미션 요청 |
 | /target_pose | 웹에서 들어온 목표 좌표 |
 | /target_valid | 목표 좌표 허용/거부 |
 | /cmd_vel | 이동 명령 (x, y 속도) |

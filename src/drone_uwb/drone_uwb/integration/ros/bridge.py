@@ -20,6 +20,9 @@ from std_msgs.msg import String
 
 from drone_uwb.integration.ros.frames import BridgeSettings, gate, rotate_xy_covariance
 
+PARAMETERS = ('EKF2_EV_CTRL', 'EKF2_EV_DELAY', 'EKF2_EV_NOISE_MD',
+              'EKF2_EV_POS_X', 'EKF2_EV_POS_Y', 'EKF2_EV_POS_Z')
+
 
 class UwbPx4Bridge(Node):
     def __init__(self):
@@ -29,7 +32,8 @@ class UwbPx4Bridge(Node):
         self.settings = BridgeSettings(**{k: self.get_parameter(k).value for k in asdict(BridgeSettings())})
         self.publisher = self.create_publisher(PoseWithCovarianceStamped, '/mavros/vision_pose/pose_cov', 10)
         self.status_pub = self.create_publisher(String, '/uwb/bridge_status', 10)
-        self.create_subscription(PoseWithCovarianceStamped, '/uwb_pose', self.receive_pose, qos_profile_sensor_data)
+        self.create_subscription(PoseWithCovarianceStamped, self.settings.pose_topic,
+                                 self.receive_pose, qos_profile_sensor_data)
         self.create_subscription(State, '/mavros/state', self.receive_state, qos_profile_sensor_data)
         self.client = self.create_client(GetParameters, '/mavros/param/get_parameters')
         self.future = None
@@ -40,7 +44,7 @@ class UwbPx4Bridge(Node):
         self.last_stamp = None
         self.published = self.rejected = 0
         self.last_reason = 'starting'
-        self.create_timer(1.0, self.monitor)
+        self.create_timer(0.1, self.monitor)
 
     def receive_state(self, msg):
         if not msg.connected or not self.connected:
@@ -60,14 +64,16 @@ class UwbPx4Bridge(Node):
         if self.future is not None and now - self.request_time > 2.0:
             self.client.remove_pending_request(self.future)
             self.future = None
-        if self.connected and self.future is None and self.client.service_is_ready():
-            request = GetParameters.Request(names=['EKF2_EV_CTRL', 'EKF2_EV_DELAY', 'EKF2_EV_NOISE_MD'])
+        if (self.connected and self.future is None and now-self.request_time >= 1.0
+                and self.client.service_is_ready()):
+            request = GetParameters.Request(names=list(PARAMETERS))
             self.request_time = now
             self.future = self.client.call_async(request)
             self.future.add_done_callback(self.parameters_received)
         self.status_pub.publish(String(data=json.dumps({
             'gate': self.current_gate(), 'last_reason': self.last_reason,
             'published': self.published, 'rejected': self.rejected,
+            'last_observation_stamp_ns': self.last_stamp,
             'parameters': self.params, 'settings': asdict(self.settings),
         }, ensure_ascii=False)))
 
@@ -77,7 +83,7 @@ class UwbPx4Bridge(Node):
         self.future = None
         if future.exception() is not None:
             return
-        names = ('EKF2_EV_CTRL', 'EKF2_EV_DELAY', 'EKF2_EV_NOISE_MD')
+        names = PARAMETERS
         self.params = {name: val.integer_value if val.type == 2 else val.double_value if val.type == 3 else None
                        for name, val in zip(names, future.result().values)}
         self.param_time = time.monotonic()

@@ -10,8 +10,12 @@
 
 | 찾는 내용 | 위치 |
 |---|---|
+| 다음 로컬·Jetson 세션 시작 | [브랜치·명령 흐름·비행 전 확인](runbooks/local_jetson_handoff_20261008.md) |
 | A~H 단계, 패키지·설정·시험 대응표 | [저장소 구조와 작업 위치](reference/repository_layout.md) |
 | 현재 앵커 배치 | [6.3×4.6m 직사각형 좌표](reference/uwb_anchor_layout.md) |
+| 로컬 웹 이륙·이동·착륙 | [실물 연결·현장 절차](runbooks/web_test_flight.md) |
+| XYZ와 PX4 미션 책임 | [웹 비행 시험 구조](architecture/web_test_flight.md) |
+| 클라우드 비행 순서 검증 | [2026-10-08 확인 기록](report/web_test_flight_20261008.md) |
 | 앵커 배치 변경·검증 | [2026-10-04 배치 고정 기록](report/uwb_anchor_rectangle_20261004.md) |
 | 관련 문서의 현재 기준 동기화 | [관련 문서 동기화](report/uwb_related_reference_sync_20261004.md) |
 | 가상 고도 제거·실측 ToF 표시 | [2026-10-04 수정 기록](report/demo_measured_tof_20261004.md) |

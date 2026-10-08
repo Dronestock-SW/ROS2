@@ -1,0 +1,176 @@
+{
+  "synthetic_fixture": true,
+  "report": {
+    "checked_at": "2026-10-08T02:28:57.805970+00:00",
+    "domain": 99,
+    "duration_s": 3.096,
+    "result": "observation_only",
+    "interpretation": "Topic receipt is not proof of PX4 fusion or flight readiness.",
+    "nodes": [
+      "/synthetic_ground_observer_fixture"
+    ],
+    "topics": {
+      "/flight_state": [
+        "std_msgs/msg/String"
+      ],
+      "/mavros/downward_0": [
+        "sensor_msgs/msg/Range"
+      ],
+      "/mavros/estimator_status": [
+        "mavros_msgs/msg/EstimatorStatus"
+      ],
+      "/mavros/extended_state": [
+        "mavros_msgs/msg/ExtendedState"
+      ],
+      "/mavros/global_position/gp_origin": [
+        "geographic_msgs/msg/GeoPointStamped"
+      ],
+      "/mavros/imu/data": [
+        "sensor_msgs/msg/Imu"
+      ],
+      "/mavros/local_position/odom": [
+        "nav_msgs/msg/Odometry"
+      ],
+      "/mavros/state": [
+        "mavros_msgs/msg/State"
+      ],
+      "/mavros/timesync_status": [
+        "mavros_msgs/msg/TimesyncStatus"
+      ],
+      "/mavros/vision_pose/pose_cov": [
+        "geometry_msgs/msg/PoseWithCovarianceStamped"
+      ],
+      "/parameter_events": [
+        "rcl_interfaces/msg/ParameterEvent"
+      ],
+      "/rosout": [
+        "rcl_interfaces/msg/Log"
+      ],
+      "/uwb/bridge_status": [
+        "std_msgs/msg/String"
+      ],
+      "/uwb/btf_pose": [
+        "geometry_msgs/msg/PoseWithCovarianceStamped"
+      ],
+      "/uwb/btf_status": [
+        "std_msgs/msg/String"
+      ],
+      "/uwb/btf_xyz": [
+        "geometry_msgs/msg/PoseStamped"
+      ],
+      "/uwb/received": [
+        "std_msgs/msg/String"
+      ],
+      "/uwb_pose": [
+        "geometry_msgs/msg/PoseWithCovarianceStamped"
+      ]
+    },
+    "topic_publishers": {
+      "/mavros/state": [
+        "/synthetic_ground_observer_fixture"
+      ],
+      "/mavros/extended_state": [],
+      "/mavros/estimator_status": [],
+      "/mavros/local_position/odom": [],
+      "/mavros/downward_0": [
+        "/synthetic_ground_observer_fixture"
+      ],
+      "/mavros/imu/data": [],
+      "/mavros/timesync_status": [],
+      "/uwb/received": [],
+      "/uwb_pose": [],
+      "/uwb/btf_status": [],
+      "/uwb/btf_pose": [],
+      "/uwb/btf_xyz": [
+        "/synthetic_ground_observer_fixture"
+      ],
+      "/uwb/bridge_status": [],
+      "/mavros/vision_pose/pose_cov": [],
+      "/flight_state": [],
+      "/mavros/global_position/gp_origin": []
+    },
+    "received": {
+      "/mavros/state": {
+        "count": 32,
+        "latest": {
+          "header": {
+            "stamp": {
+              "sec": 1791426540,
+              "nanosec": 901341639
+            },
+            "frame_id": ""
+          },
+          "connected": true,
+          "armed": false,
+          "guided": false,
+          "manual_input": false,
+          "mode": "POSCTL",
+          "system_status": 0
+        },
+        "receipt_age_s": 0.0,
+        "source_age_s": 0.001
+      },
+      "/uwb/btf_xyz": {
+        "count": 31,
+        "latest": {
+          "header": {
+            "stamp": {
+              "sec": 1791426540,
+              "nanosec": 800672756
+            },
+            "frame_id": "uwb_map"
+          },
+          "pose": {
+            "position": {
+              "x": 1.0,
+              "y": 2.0,
+              "z": 0.68
+            },
+            "orientation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0,
+              "w": 1.0
+            }
+          }
+        },
+        "receipt_age_s": 0.101,
+        "source_age_s": 0.102
+      },
+      "/mavros/downward_0": {
+        "count": 31,
+        "latest": {
+          "header": {
+            "stamp": {
+              "sec": 1791426540,
+              "nanosec": 800672756
+            },
+            "frame_id": ""
+          },
+          "radiation_type": 0,
+          "field_of_view": 0.0,
+          "min_range": 0.10000000149011612,
+          "max_range": 12.0,
+          "range": 0.5600000023841858
+        },
+        "receipt_age_s": 0.1,
+        "source_age_s": 0.102
+      }
+    },
+    "mavros_cached_parameters": {
+      "EKF2_EV_CTRL": 1,
+      "EKF2_EV_DELAY": null,
+      "EKF2_EV_NOISE_MD": null,
+      "EKF2_EV_POS_X": null,
+      "EKF2_EV_POS_Y": null,
+      "EKF2_EV_POS_Z": null,
+      "EKF2_HGT_REF": null,
+      "EKF2_RNG_CTRL": null,
+      "MIS_TAKEOFF_ALT": 0.6,
+      "COM_DISARM_LAND": null,
+      "COM_DL_LOSS_T": null,
+      "NAV_DLL_ACT": null
+    },
+    "parameter_service_available": true
+  }
+}

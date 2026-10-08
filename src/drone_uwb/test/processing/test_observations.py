@@ -173,3 +173,18 @@ def test_bridge_requires_every_precondition_and_xy_only_fusion():
     assert gate(ready,True,3,params,0) != 'ready'
     assert gate(ready,True,0,params,6) != 'ready'
     assert gate(ready,True,0,{**params,'EKF2_EV_DELAY':20.},0) != 'ready'
+
+
+@pytest.mark.parametrize('axis', ['x', 'y', 'z'])
+def test_flight_bridge_requires_measured_fc_to_tag_position(axis):
+    settings = BridgeSettings(enabled=True, alignment_confirmed=True,
+        timing_confirmed=True, sensor_mount_confirmed=True, verify_ev_sensor_position=True,
+        expected_ev_pos_x_m=-.14, expected_ev_pos_y_m=0., expected_ev_pos_z_m=-.12,
+        pose_topic='/uwb/btf_pose')
+    params = {'EKF2_EV_CTRL':1, 'EKF2_EV_DELAY':0., 'EKF2_EV_NOISE_MD':0,
+              'EKF2_EV_POS_X':-.14, 'EKF2_EV_POS_Y':0., 'EKF2_EV_POS_Z':-.12}
+    assert gate(settings, True, 0., params, 0.) == 'ready'
+    key = 'EKF2_EV_POS_' + axis.upper()
+    for invalid in (None, True, float('nan'), params[key]+.1):
+        assert gate(settings, True, 0., dict(params, **{key:invalid}), 0.) == (
+            'ev_sensor_position_mismatch_' + axis)

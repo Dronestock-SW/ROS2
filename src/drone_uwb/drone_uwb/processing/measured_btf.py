@@ -161,6 +161,9 @@ class MeasuredBtf:
             btf = self.candidate.process(candidate_input)
             self.last_output_stamp_ns = stamp_ns
             return dict(out, ok=btf['ok'], reason=btf['reason'], xy_m=btf['xy_m'],
+                xyz_m=([*btf['xy_m'], height] if btf['ok'] and height is not None
+                       and all(h is not None for h in heights) else None),
+                height_source='measured_tof_imu' if height is not None else None,
                 stamp_ns=stamp_ns, time_us=stamp, cal_slant_m=corrected.tolist(),
                 height_m=height, height_selection=selections, height_ready=all(h is not None for h in heights),
                 models={'B': b, 'B_TF': btf}, clock_alpha=self.clock.alpha,

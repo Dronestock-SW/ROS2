@@ -11,23 +11,31 @@ class BridgeSettings:
     alignment_confirmed: bool = False
     timing_confirmed: bool = False
     sensor_mount_confirmed: bool = False
+    verify_ev_sensor_position: bool = False
+    expected_ev_pos_x_m: float = 0.0
+    expected_ev_pos_y_m: float = 0.0
+    expected_ev_pos_z_m: float = 0.0
     enu_yaw_deg: float = 0.0
     enu_offset_x_m: float = 0.0
     enu_offset_y_m: float = 0.0
     expected_ev_delay_ms: float = 0.0
     source_frame: str = 'uwb_map'
+    pose_topic: str = '/uwb_pose'
     max_age_s: float = 0.20
     state_timeout_s: float = 2.5
 
     def __post_init__(self):
-        for name in ('enabled', 'alignment_confirmed', 'timing_confirmed', 'sensor_mount_confirmed'):
+        for name in ('enabled', 'alignment_confirmed', 'timing_confirmed', 'sensor_mount_confirmed',
+                     'verify_ev_sensor_position'):
             if not isinstance(getattr(self, name), bool):
                 raise ValueError(name + ' must be boolean')
         for name in ('enu_yaw_deg', 'enu_offset_x_m', 'enu_offset_y_m',
-                     'expected_ev_delay_ms', 'max_age_s', 'state_timeout_s'):
+                     'expected_ev_delay_ms', 'max_age_s', 'state_timeout_s',
+                     'expected_ev_pos_x_m', 'expected_ev_pos_y_m', 'expected_ev_pos_z_m'):
             if not math.isfinite(getattr(self, name)):
                 raise ValueError('nonfinite transform setting')
-        if min(self.max_age_s, self.state_timeout_s) <= 0 or not self.source_frame:
+        if (min(self.max_age_s, self.state_timeout_s) <= 0 or not self.source_frame
+                or not isinstance(self.pose_topic, str) or not self.pose_topic.startswith('/')):
             raise ValueError('invalid bridge timing/frame')
 
 
@@ -48,6 +56,12 @@ def gate(settings, connected, state_age_s, params, param_age_s):
         return 'ev_delay_mismatch'
     if params.get('EKF2_EV_NOISE_MD') != 0:
         return 'require_message_covariance_mode_0'
+    if settings.verify_ev_sensor_position:
+        for axis in ('x', 'y', 'z'):
+            value = params.get('EKF2_EV_POS_' + axis.upper())
+            if (type(value) not in (int, float) or not math.isfinite(value)
+                    or abs(value-getattr(settings, 'expected_ev_pos_' + axis + '_m')) > .01):
+                return 'ev_sensor_position_mismatch_' + axis
     return 'ready'
 
 

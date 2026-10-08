@@ -1,0 +1,35 @@
+/**:
+  ros__parameters:
+    startup_px4_usb_quirk: false
+    plugin_allowlist: [sys_status, sys_time, imu, distance_sensor, command, param, local_position, global_position, setpoint_raw, vision_pose]
+/**/sys:
+  ros__parameters:
+    heartbeat_rate: 1.0
+    conn_timeout: 5.0
+/**/time:
+  ros__parameters:
+    timesync_mode: MAVLINK
+    timesync_rate: 10.0
+    system_time_rate: 0.0
+/**/local_position:
+  ros__parameters:
+    frame_id: map
+    tf.send: false
+/**/vision_pose:
+  ros__parameters:
+    tf.listen: false
+/**/distance_sensor:
+  ros__parameters:
+    config: |
+      downward_0:
+        id: 0
+        frame_id: "downward_0"
+        orientation: PITCH_270
+        field_of_view: 0.04
+        send_tf: false
+      downward_1:
+        id: 1
+        frame_id: "downward_1"
+        orientation: PITCH_270
+        field_of_view: 0.04
+        send_tf: false

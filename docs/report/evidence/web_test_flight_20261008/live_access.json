@@ -1,0 +1,45 @@
+{
+  "recorded_at": "2026-10-08T02:31:32.179558+00:00",
+  "target": "100.110.163.94:22",
+  "ssh_account": "arialhanho",
+  "jetson_powered_on": "reported_by_user",
+  "tailscale_browser_login": "reported_complete_by_user",
+  "observations": [
+    {
+      "checked_at": "2026-10-08T02:17:22.881578+00:00",
+      "route": "environment_proxy",
+      "result": "connection_failed",
+      "error_type": "TimeoutError",
+      "elapsed_s": 8.02
+    },
+    {
+      "checked_at": "2026-10-08T02:22:34.807192+00:00",
+      "route": "environment_proxy",
+      "stage": "ssh_greeting",
+      "result": "ssh_greeting_missing",
+      "http_status": 200,
+      "elapsed_s": 16.02
+    },
+    {
+      "after_user_reported_browser_login": true,
+      "client": "OpenSSH_10.0p2",
+      "route": "environment_proxy",
+      "exit_code": 255,
+      "result": "kex_exchange_identification: Connection closed by remote host"
+    },
+    {
+      "checked_at": "2026-10-08T02:32:05.210708+00:00",
+      "target": "user-desktop.tail720b90.ts.net:22",
+      "route": "environment_proxy",
+      "stage": "proxy_connect_response",
+      "result": "proxy_rejected",
+      "http_status": 403,
+      "elapsed_s": 0.02
+    }
+  ],
+  "ssh_login_verified": false,
+  "live_fc_or_sensor_data_received": false,
+  "interpretation": "Service observations do not establish VPN state or device online status.",
+  "jetson_tailscale_status": "Connected, user screenshot",
+  "jetson_magicdns": "user-desktop.tail720b90.ts.net"
+}

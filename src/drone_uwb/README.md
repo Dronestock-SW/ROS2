@@ -2,6 +2,11 @@
 
 수신·후보정·관측 연결 코드의 입구다. 기능을 수정하거나 해당 시험을 찾을 때 읽는다.
 
+[실물 웹 비행 절차](../../docs/runbooks/web_test_flight.md)는
+`/uwb/btf_pose`를 FC 브리지에 연결한다.
+`/uwb/btf_xyz`는 측정한 태그 높이를 표시한다.
+기존 bench 실행과 기본 `/uwb_pose` 경로는 따로 유지한다.
+
 [단계별 위치표](../../docs/reference/repository_layout.md)의 A~H를 따른다.
 [API 사전](../../docs/reference/uwb_module_api.md)에 단위·실패 계약이 있다.
 
