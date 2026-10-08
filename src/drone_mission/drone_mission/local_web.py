@@ -49,6 +49,8 @@ PX4_ENU:t.px4_position_enu_m??null,경유지:t.active_waypoint_id??null,
 목표적용:t.target_applied??false,착륙확인:t.landing_verified??false,
 출발점복귀확인:t.home_verified??false,비행결과:t.flight_outcome??null,
 작업결과:t.work_outcome??null,스캔결과:t.scan_results??[],
+시도한작업:t.attempted_task_ids??[],남은작업:t.remaining_task_ids??[],
+스캔실패작업:t.failed_scan_task_ids??[],전체경로수행:t.route_complete??false,
 임무완료:t.mission_complete??false,요청검사:t.target_validation??null},null,2);
 if(!s.telemetry_fresh)notice.textContent='기체 텔레메트리 수신 대기 · 현재 동작 상태를 확인할 수 없습니다.';
 }catch(e){notice.textContent='로컬 서버 응답 대기'}setTimeout(update,500)}update();

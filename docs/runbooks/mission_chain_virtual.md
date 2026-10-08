@@ -80,6 +80,20 @@ RAW 센서는 두 태그의 TDMA 계약 중 Tag B 슬롯을 사용한다.
 | tof_long_gap | ToF 5.2초 단절 | LAND·FAILED |
 | scan_missing | 마커 worker 응답 없음 | 복귀·END·작업 미완료 |
 | manual | PX4 POSCTL 실제 전환 | PILOT_OVERRIDE |
+| scan_partial | S1 마커 없음·이후 P2/S2/P3 | 남은 작업 후 END·미완료 |
+| scanner_missing_partial | S1 판독 응답 없음·S2 정상 | 남은 작업 후 END·미완료 |
+| scan_failed_partial | S1 FAILED 응답·S2 정상 | 남은 작업 후 END·미완료 |
+
+스캔 실패 후 후속 작업은 다음 명령으로 재현한다.
+각 미션은 P1·S1·P2·S2·P3를 포함한다.
+S1 실패를 기록하고 S2 성공·P3 도착까지 확인한다.
+
+```bash
+python3 src/drone_mission/test/mission_chain_matrix.py \
+  --px4-root .review/hover-20261008/PX4-Autopilot \
+  --scenarios scan_partial scanner_missing_partial scan_failed_partial \
+  --output /dev/shm/dronestock-new-scan-continuation
+```
 
 반복은 새 `--output` 경로를 사용한다.
 스캐너 성공 응답은 `SIMULATED-SCAN` 식별자다.

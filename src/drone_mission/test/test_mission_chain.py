@@ -244,3 +244,67 @@ def test_marker_refinement_uses_scan_cruise_speed():
     assert s.observe_marker(marker,ns)
     action=step(s,13.,xy=(2.4,2.),mode='AUTO.LOITER',armed=True,landed=2)[0]
     assert action['kind']=='reposition' and action['speed']==.05
+
+
+@pytest.mark.parametrize('first_outcome',['marker_timeout','scanner_timeout','FAILED','SUCCEEDED'])
+def test_scan_outcome_continues_all_remaining_tasks_before_return(first_outcome):
+    s=rig()
+    s._fixture_payload['route_tasks'] += [
+        dict(id='P2',type='waypoint',x=2.6,y=2.3,yaw_deg=10.,dwell_s=0.),
+        dict(s._fixture_payload['route_tasks'][1],id='S2',x=3.,y=2.3,
+             staging_xy_m=[2.6,2.3],marker_id=8,label_id='LABEL8'),
+        dict(id='P3',type='waypoint',x=2.3,y=2.3,yaw_deg=10.,dwell_s=0.)]
+    assert s.submit(s._fixture_payload,10.,WALL)
+    airborne(s)
+    now=12.4;egress_tasks=[];seen_remaining_after_failure=False
+    for _ in range(2500):
+        now+=.05
+        target=s.monitor.target or s.home;yaw=s.target_yaw_deg or 0.
+        if s.phase in ('ALIGNING','SCANNING'):
+            task=s.waypoint();ns=round((WALL+now)*1e9)
+            if task['id']!='S1' or first_outcome!='marker_timeout':
+                marker=dict(execution_id='start-1',task_id=task['id'],window_id=s.scan_window,
+                    marker_id=task['marker_id'],label_id=task['label_id'],calibration_ref=task['calibration_ref'],
+                    mounting_ref=task['mounting_ref'],stamp_ns=ns,frame_id='uwb_map',valid=True,
+                    xy_m=list(target),yaw_deg=yaw)
+                assert s.observe_marker(marker,ns)
+                if s.phase=='SCANNING' and (task['id']!='S1' or first_outcome!='scanner_timeout'):
+                    outcome='FAILED' if task['id']=='S1' and first_outcome=='FAILED' else 'SUCCEEDED'
+                    assert s.observe_scan_result(dict(marker,outcome=outcome,stored=True,result_id='r-'+task['id']),ns)
+        before=s.phase
+        actions=step(s,now,mode='AUTO.LOITER',armed=True,landed=2,xy=target,yaw_deg=yaw)
+        if before!='EGRESS' and s.phase=='EGRESS':egress_tasks.append(s.waypoint()['id'])
+        if s.phase=='MOVING' and s.waypoint()['id']=='P2':
+            assert not s.returning
+            assert s.status()['remaining_task_ids']==['P2','S2','P3']
+            seen_remaining_after_failure=True
+        if s.returning:assert s.completed_waypoints==5
+        for action in actions:
+            s.command_result(action['token'],True,now+.001)
+            if action['kind']=='land':
+                step(s,now+.06,mode='AUTO.LAND',landed=1,armed=False,xy=s.home)
+                status=s.status()
+                assert status['state']=='END' and status['route_complete']
+                assert status['attempted_task_ids']==['P1','S1','P2','S2','P3']
+                assert status['remaining_task_ids']==[] and seen_remaining_after_failure
+                assert egress_tasks==['S1','S2']
+                assert [r['task_id'] for r in status['scan_results']]==['S1','S2']
+                assert status['scan_results'][1]['outcome']=='SUCCEEDED'
+                assert status['mission_complete'] is (first_outcome=='SUCCEEDED')
+                assert status['failed_scan_task_ids']==([] if first_outcome=='SUCCEEDED' else ['S1'])
+                return
+    raise AssertionError(s.status())
+
+
+def test_scan_timeout_waits_for_pending_marker_move_without_overwriting_command():
+    s=rig();airborne(s);s.index=1;s.scan_window='window';s.scan_deadline=14.
+    snap=sample(13.,xy=(2.6,2.),mode='AUTO.LOITER',armed=True,landed=2)
+    assert s.move((2.625,2.),snap,13.,round((WALL+13)*1e9),14.,.05)
+    s.enter('ALIGNING','fixture',13.)
+    token=s.pending['token']
+    assert step(s,14.1,xy=(2.6,2.),mode='AUTO.LOITER',armed=True,landed=2)==[]
+    assert s.pending['token']==token and s.scan_results==[]
+    s.command_result(token,True,14.2)
+    a=step(s,14.3,xy=(2.6,2.),mode='AUTO.LOITER',armed=True,landed=2)[0]
+    assert a['kind']=='reposition' and s.phase=='EGRESS'
+    assert s.scan_results==[dict(task_id='S1',outcome='FAILED',reason='marker_timeout')]

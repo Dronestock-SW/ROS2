@@ -10,6 +10,7 @@
 
 | 찾는 내용 | 위치 |
 |---|---|
+| 스캔 실패 뒤 남은 작업 계속·후속 시험 | [스캔 후속 수행 기록](report/scan_continuation_20261008.md) |
 | 최종 AI 연결·시험 결과·현장 미확인 | [전체 흐름 확인 기록](report/mission_flight_flow_20261008.md) |
 | 내일 전체 미션 현장 설정·지도·실행 | [현장 미션 절차](runbooks/mission_chain_field.md) |
 | RAW UWB 고장·웹 명령·복귀·END 시험 | [가상 전체 미션 절차](runbooks/mission_chain_virtual.md) |

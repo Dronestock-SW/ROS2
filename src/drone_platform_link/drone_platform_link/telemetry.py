@@ -115,7 +115,8 @@ class Observations:
                             'active_waypoint_index', 'active_waypoint_id', 'flight_control_enabled',
                             'mission_complete', 'landing_verified', 'control_ack', 'target_applied',
                             'px4_map_xy_m', 'home_verified', 'flight_outcome', 'work_outcome',
-                            'scan_results', 'scan_window'):
+                            'scan_results', 'scan_window', 'scan_failure_policy',
+                            'attempted_task_ids', 'remaining_task_ids', 'failed_scan_task_ids', 'route_complete'):
                     if key in value:
                         result[key] = value[key]
                 result.update(flight_state=value.get('state'), flight_reason=value.get('reason'),

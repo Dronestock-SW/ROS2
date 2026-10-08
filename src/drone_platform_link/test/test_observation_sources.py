@@ -50,3 +50,14 @@ def test_btf_height_is_same_stamp_xyz_and_never_relabels_px4_height():
     px4.receive_height(.7, 'uwb_map', stamp)
     assert px4.fields()['current_z_m'] == 3.
     assert px4.fields()['coordinate_frame'] == 'px4_local_enu'
+
+
+def test_partial_scan_progress_reaches_web_and_expires_with_mission_state():
+    progress=dict(scan_failure_policy='continue_remaining_tasks',attempted_task_ids=['P1','S1'],
+                  remaining_task_ids=['P2','S2','P3'],failed_scan_task_ids=['S1'],route_complete=False)
+    o=Observations('btf_xy')
+    with patch('drone_platform_link.telemetry.time.monotonic',return_value=10.):
+        o.receive_mission(dict(state='MOVING',**progress))
+        assert all(o.fields()[k]==v for k,v in progress.items())
+    with patch('drone_platform_link.telemetry.time.monotonic',return_value=10.6):
+        assert 'remaining_task_ids' not in o.fields()

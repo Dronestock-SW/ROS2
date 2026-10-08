@@ -18,6 +18,8 @@
 기존 C++ AI의 지도 검사를 native 실행기에 연결했다.
 START·안정화·목표·마커 정렬·복귀·LAND·END를 구현했다.
 [전체 흐름 확인 기록](report/mission_flight_flow_20261008.md)을 읽는다.
+스캔 실패 뒤 대기점 복귀·남은 작업을 계속한다.
+[후속 작업 확인 기록](report/scan_continuation_20261008.md)을 읽는다.
 실물 스캔 adapter와 현장 보정은 미완료다.
 [내일 현장 절차](runbooks/mission_chain_field.md)를 따른다.
 

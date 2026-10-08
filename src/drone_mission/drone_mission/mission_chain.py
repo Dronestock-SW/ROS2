@@ -129,12 +129,18 @@ class MissionChain(FlightSession):
             self.move(p['xy'], s, now, ros_ns, p['yaw_deg'])
 
     def finish_scan(self, result, s, now, ros_ns):
+        # Complete the current handoff before requesting staging egress. An
+        # expired scan window must never overwrite an unconfirmed XY command.
+        if self.pending is not None:
+            return False
         self.scan_results.append(result)
         self.scan_requests.append(self.scan_request('CANCEL'))
         self.scan_window = self.marker = self.scan_result = None
         p = self.waypoint()
         if self.move(p['xy'],s,now,ros_ns,p['yaw_deg']):
             self.enter('EGRESS','scan_result_recorded_return_to_staging',now)
+            return True
+        return False
 
     def observe_marker(self, value, now_ns):
         if self.phase not in ('ALIGNING', 'SCANNING') or self.scan_window is None or not isinstance(value, dict):
@@ -395,6 +401,9 @@ class MissionChain(FlightSession):
             if now-self.entered_s > self.settings.leg_timeout_s:
                 self.abort('dwell_timeout', s, now)
         elif self.phase == 'ALIGNING':
+            if self.scan_deadline is not None and now > self.scan_deadline:
+                self.finish_scan(dict(task_id=self.waypoint()['id'],outcome='FAILED',reason='marker_timeout'),s,now,ros_ns)
+                return self.actions
             marker_fresh = self.marker and 0 <= (ros_ns-self.marker['stamp_ns'])/1e9 <= .1
             if marker_fresh:
                 xy, yaw = self.marker['xy_m'], self.marker['yaw_deg']
@@ -416,9 +425,10 @@ class MissionChain(FlightSession):
                             self.enter('ALIGNING', 'bounded_marker_adjustment', now)
             else:
                 self.stable_since = None
-            if self.scan_deadline is not None and now > self.scan_deadline:
-                self.finish_scan(dict(task_id=self.waypoint()['id'], outcome='FAILED',reason='marker_timeout'),s,now,ros_ns)
         elif self.phase == 'SCANNING':
+            if self.scan_result is None and self.scan_deadline is not None and now > self.scan_deadline:
+                self.finish_scan(dict(task_id=self.waypoint()['id'],outcome='FAILED',reason='scanner_timeout'),s,now,ros_ns)
+                return self.actions
             marker_fresh = self.marker and 0 <= (ros_ns-self.marker['stamp_ns'])/1e9 <= .1
             if (not marker_fresh or math.dist(s.xy, self.marker['xy_m']) > .03
                     or math.hypot(*s.velocity_xy) > .03
@@ -441,7 +451,8 @@ class MissionChain(FlightSession):
 
     def status(self):
         value = super().status()
-        total = sum(p['type']=='scan' for p in self.assignment['waypoints']) if self.assignment else 0
+        tasks = self.assignment['waypoints'] if self.assignment else []
+        total = sum(p['type']=='scan' for p in tasks)
         succeeded = sum(r['outcome']=='SUCCEEDED' for r in self.scan_results)
         flight = (self.phase == 'END' and self.home_verified and self.landing_verified)
         value.update(mission_complete=flight and self.completed_waypoints == len(self.assignment['waypoints'])
@@ -452,4 +463,9 @@ class MissionChain(FlightSession):
                      'PILOT_OVERRIDE' if self.phase == 'PILOT_OVERRIDE' else 'RUNNING',
                      work_outcome='ALL_SUCCEEDED' if len(self.scan_results)==total and succeeded==total
                      and self.assignment and self.completed_waypoints==len(self.assignment['waypoints']) else 'INCOMPLETE')
+        value.update(scan_failure_policy='continue_remaining_tasks',
+                     attempted_task_ids=[p['id'] for p in tasks[:self.index]],
+                     remaining_task_ids=[p['id'] for p in tasks[self.index:]],
+                     failed_scan_task_ids=[r['task_id'] for r in self.scan_results if r['outcome']=='FAILED'],
+                     route_complete=flight and self.completed_waypoints==len(tasks))
         return value

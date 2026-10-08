@@ -4,6 +4,8 @@
 새 세션은 이 문서부터 읽고 실제 장비와 대조한다.
 
 최신 실행 브랜치는 `codex/mission-flight-flow-20261008`이다.
+[스캔 후속 수행 기록](../report/scan_continuation_20261008.md)을 함께 읽는다.
+일부 스캔이 실패해도 남은 작업을 순서대로 수행한다.
 [전체 흐름 확인 기록](../report/mission_flight_flow_20261008.md)부터 읽는다.
 [내일 현장 절차](mission_chain_field.md)로 이어간다.
 기존 AI 지도 검사와 native 단일 명령 흐름을 연결했다.

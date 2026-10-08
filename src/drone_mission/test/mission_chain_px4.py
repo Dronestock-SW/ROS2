@@ -34,7 +34,7 @@ def main():
     p.add_argument('--takeoff-alt',type=float,default=1.7)
     p.add_argument('--mag-type',type=int,choices=[0,1,6],default=0)
     p.add_argument('--transport',choices=['web','ros'],default='web')
-    p.add_argument('--scenario',choices=['nominal','spike','nlos','short_gap','long_gap','tof_short_gap','tof_long_gap','coherent_step','phase_delay','scan_missing','manual'],default='nominal')
+    p.add_argument('--scenario',choices=['nominal','spike','nlos','short_gap','long_gap','tof_short_gap','tof_long_gap','coherent_step','phase_delay','scan_missing','manual','scan_partial','scanner_missing_partial','scan_failed_partial'],default='nominal')
     args=p.parse_args()
     assert 0 <= args.imu_noise_scale <= 1
     assert .6 <= args.takeoff_alt <= 2.
@@ -269,6 +269,13 @@ def main():
                                     dict(id='S1',type='scan',x=3.2,y=2.2,staging_xy_m=[2.7,2.2],
                                          path_validation_ref='VIRTUAL-EMPTY-FLOOR-v1',yaw_deg=15.,marker_id=7,label_id='LABEL7',
                                          calibration_ref='virtual-camera',mounting_ref='virtual-mount')])
+                            if args.scenario in ('scan_partial','scanner_missing_partial','scan_failed_partial'):
+                                assignment['route_tasks'] += [
+                                    dict(id='P2',type='waypoint',x=2.7,y=2.5,yaw_deg=15.,dwell_s=.3),
+                                    dict(id='S2',type='scan',x=3.2,y=2.5,staging_xy_m=[2.7,2.5],
+                                         path_validation_ref='VIRTUAL-EMPTY-FLOOR-v1',yaw_deg=15.,marker_id=8,label_id='LABEL8',
+                                         calibration_ref='virtual-camera',mounting_ref='virtual-mount'),
+                                    dict(id='P3',type='waypoint',x=2.4,y=2.5,yaw_deg=15.,dwell_s=.3)]
                             if web_origin:
                                 req=Request(web_origin+'/local/command',data=json.dumps(dict(action='start',
                                     route_tasks=assignment['route_tasks'])).encode(),
@@ -280,15 +287,18 @@ def main():
                 if assignment and not web_origin:assignmentpub.publish(String(data=json.dumps(assignment)))
                 if args.scenario=='manual' and status['state']=='MOVING' and not manual_sent:
                     shell('commander mode posctl');manual_sent=True
-                if request and status['state'] in ('ALIGNING','SCANNING') and args.scenario!='scan_missing':
+                missing_marker = args.scenario=='scan_missing' or (args.scenario=='scan_partial' and request.get('task_id')=='S1')
+                if request and status['state'] in ('ALIGNING','SCANNING') and not missing_marker:
                     task=request['task'];ns=time.time_ns()
                     marker=dict(execution_id=request['execution_id'],task_id=request['task_id'],window_id=request['window_id'],
                         marker_id=task['marker_id'],calibration_ref=task['calibration_ref'],mounting_ref=task['mounting_ref'],
                         stamp_ns=ns,frame_id='uwb_map',valid=True,xy_m=[task['xy'][0]+.025,task['xy'][1]],yaw_deg=task['yaw_deg']+4.)
                     markerpub.publish(String(data=json.dumps(marker)))
-                    if request['action']=='SCAN' and now-shared['scan_started']>.3 and request['window_id'] not in scan_sent:
+                    missing_scanner = args.scenario=='scanner_missing_partial' and request['task_id']=='S1'
+                    if request['action']=='SCAN' and not missing_scanner and now-shared['scan_started']>.3 and request['window_id'] not in scan_sent:
+                        outcome='FAILED' if args.scenario=='scan_failed_partial' and request['task_id']=='S1' else 'SUCCEEDED'
                         resultpub.publish(String(data=json.dumps(dict(marker,stamp_ns=time.time_ns(),label_id=task['label_id'],
-                            outcome='SUCCEEDED',stored=True,result_id='SIMULATED-SCAN-'+request['window_id']))))
+                            outcome=outcome,stored=True,result_id='SIMULATED-SCAN-'+request['window_id']))))
                         scan_sent.add(request['window_id'])
                 if status['state'] in ('END','FAILED','UNCONFIRMED','PILOT_OVERRIDE'):break
             time.sleep(.02)
@@ -315,7 +325,13 @@ def main():
         assert status.get('state')==expected,summary
         if expected=='END':
             assert status['home_verified'] and status['landing_verified'],summary
-            assert status['mission_complete'] is (args.scenario!='scan_missing'),summary
+            assert status['mission_complete'] is (args.scenario not in ('scan_missing','scan_partial','scanner_missing_partial','scan_failed_partial')),summary
+            if args.scenario in ('scan_partial','scanner_missing_partial','scan_failed_partial'):
+                assert status['attempted_task_ids']==['P1','S1','P2','S2','P3'] and not status['remaining_task_ids'],summary
+                assert status['route_complete'] and status['failed_scan_task_ids']==['S1'],summary
+                assert [(r['task_id'],r['outcome']) for r in status['scan_results']]==[('S1','FAILED'),('S2','SUCCEEDED')],summary
+                telemetry=web_status['telemetry'] if web_status else status
+                assert telemetry['route_complete'] and telemetry['failed_scan_task_ids']==['S1'],summary
             assert np.linalg.norm(np.array(shared['truth']['enu_m'][:2]))<.3,summary
         print('PASS',args.scenario,expected,flush=True)
     finally:

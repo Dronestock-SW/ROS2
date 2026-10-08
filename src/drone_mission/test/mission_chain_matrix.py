@@ -6,7 +6,8 @@ import subprocess
 import sys
 
 SCENARIOS = ('nominal','spike','nlos','coherent_step','phase_delay',
-             'short_gap','long_gap','tof_short_gap','tof_long_gap','scan_missing','manual')
+             'short_gap','long_gap','tof_short_gap','tof_long_gap','scan_missing','manual',
+             'scan_partial','scanner_missing_partial','scan_failed_partial')
 
 
 def main():
