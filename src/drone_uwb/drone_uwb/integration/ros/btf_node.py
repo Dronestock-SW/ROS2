@@ -135,7 +135,10 @@ class BtfNode(Node):
             age_ns = now_ns-event['host_received_ros_ns']
             if not 0 <= age_ns <= 150_000_000:
                 self.counts['receiver_queue_expired'] += 1
-                self.processor.reset()
+                if age_ns < 0:
+                    self.processor.reset()
+                else:
+                    self.processor.reject_queued_input()
                 self.record('inputs',dict(type='uwb_rejected',event=event,reason='receiver_queue_expired'))
                 return
             sync_ready = self.sync_ready()

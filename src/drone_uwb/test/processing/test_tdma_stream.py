@@ -44,6 +44,63 @@ def event(msg, mono):
                 host_received_ros_ns=mono+1_700_000_000_000_000_000)
 
 
+def warmed_measured_processor(tag):
+    c=json.loads((ROOT/'config/runtime/uwb_btf_real.json').read_text(encoding='utf-8'))
+    c.update(tag_id=tag,tdma_mode='required')
+    p=MeasuredBtf(c)
+    p.process(event(status(tag),12_000_000_000))
+    for seq in range(1,81):
+        raw,diag=pair(seq,tag)
+        mono=10_000_000_000+raw['cycle_end_us']*1000
+        p.process(event(raw,mono))
+        result=p.process(event(diag,mono+5_000_000))
+    assert result['ok']
+    return p,mono
+
+
+@pytest.mark.parametrize('tag',['5','6'])
+def test_local_queue_expiry_preserves_status_deadline_and_requires_new_clock_warmup(tag):
+    p,mono=warmed_measured_processor(tag)
+    status_ns=p.validator.status_ns
+    raw,diag=pair(81,tag)
+    p.process(event(raw,mono+25_000_000))
+    p.reject_queued_input()
+    assert p.tdma.pending is None
+    assert p.validator.status_ns==status_ns
+    assert p.tdma.identity==(10,20) and p.tdma.last_sf==80
+    assert not p.clock.ready and p.last_output_stamp_ns is None
+    assert p.process(event(diag,mono+30_000_000))['reason']=='tdma_without_raw'
+    results=[]
+    for seq in range(82,125):
+        raw,diag=pair(seq,tag)
+        now=10_000_000_000+raw['cycle_end_us']*1000
+        p.process(event(raw,now))
+        results.append(p.process(event(diag,now+5_000_000)))
+    assert all(not r['ok'] for r in results[:29])
+    assert any(r['ok'] for r in results[29:])
+    assert p.validator.status_ns==status_ns
+    # Queue rejection cannot extend the original heartbeat deadline.
+    raw,diag=pair(125,tag)
+    now=status_ns+10_001_000_000
+    p.process(event(raw,now))
+    assert p.process(event(diag,now+5_000_000))['reason']=='status_unavailable'
+
+
+@pytest.mark.parametrize('tag',['5','6'])
+def test_queue_expiry_does_not_hide_source_reboot_or_retired_session(tag):
+    p,mono=warmed_measured_processor(tag)
+    p.reject_queued_input()
+    raw,diag=pair(81,tag,boot=11)
+    p.process(event(raw,mono+25_000_000))
+    assert p.process(event(diag,mono+30_000_000))['reason']=='status_unavailable'
+    assert p.validator.status_ns is None
+    assert (10,20) in p.tdma.retired
+    p.reject_queued_input()
+    raw,diag=pair(82,tag)
+    p.process(event(raw,mono+50_000_000))
+    assert p.process(event(diag,mono+55_000_000))['reason']=='retired_tdma_session'
+
+
 @pytest.mark.parametrize('tag',['5','6'])
 def test_mixed_stream_retains_history_and_has_one_output_per_valid_pair(tag):
     p=Processor(LAYOUT,Settings(tag_id=tag,tdma_mode='required',clock_warmup_samples=2,recovery_samples=2))

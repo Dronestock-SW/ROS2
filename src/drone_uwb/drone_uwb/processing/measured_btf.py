@@ -103,6 +103,17 @@ class MeasuredBtf:
         self.clock.reset()
         self.reset_models()
 
+    def reject_queued_input(self):
+        """Drop stale work without treating local callback lag as a tag reboot.
+
+        Keep the original status deadline and TDMA identity/replay protection.
+        No rejected event refreshes them. A real boot/session transition still
+        takes the normal validation path and can invalidate the status.
+        """
+        self.tdma.discard_pending('receiver_queue_expired')
+        self.clock.reset()
+        self.reset_models()
+
     def process(self, event):
         out = {'schema': 1, 'source': 'measured_uwb_btf', 'truth_used': False,
                'external_output_allowed': False, 'flight_valid': False,
