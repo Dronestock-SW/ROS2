@@ -450,6 +450,90 @@ Jetson 패키지 빌드와 웹 상태 수신을 확인했다.
 브라우저 자동 검증은 오류 페이지 URL 정책으로 차단됐다.
 따라서 새 고정 버튼의 실화면 검증 완료로 기록하지 않는다.
 
+## 받침대 상태의 후속 실물 수신·융합 확인
+
+기체를 높인 뒤 flow·거리 융합을 확인했다.
+UWB 연결과 비행 준비 완료는 아직 아니다.
+사용자는 XY를 유지했다고 알렸다.
+프로펠러 장착 상태라 이동 시험은 하지 않았다.
+실물 ARM·모드 변경·이륙 명령도 보내지 않았다.
+
+| 항목 | 13:49~13:56 KST 확인 결과 |
+|---|---|
+| ROS ToF | 약0.40m·센서 min 0.10m 이상 |
+| FC 거리계 | 약0.39m·하방 orientation 25 |
+| flow | 품질105·적분 시간10526us |
+| 두 EKF의 flow | `cs_opt_flow=True`, `fused=True` |
+| 두 EKF의 거리 높이 | `cs_rng_hgt=True`, `fused=True` |
+| innovation | 해당 flow·거리 관측 rejected=False |
+| FC 위치 | `xy_valid=True`, `v_xy_valid=True` |
+| EV 수평 관측 | `cs_ev_pos=False`, aid source 관측 없음 |
+| 외부 odometry | `vehicle_visual_odometry` never published |
+| 전역 원점 | ref_timestamp=0, ref_lat/lon/alt=NaN |
+| B_TF | ToF 입력은 유효. 장착·바닥 확인이 남음 |
+| 웹 | IDLE·disarm·POSCTL, can_start=false |
+
+현재 위치는 flow 기반의 로컬 위치다.
+창고 좌표나 UWB 융합 완료로 해석하지 않는다.
+`CONST_POS_MODE`만으로 수평 위치를 무효 판정하지 않는다.
+이 펌웨어는 at-rest 때도 그 비트를 설정한다.
+예측 상대위치 유효와 실제 aid source를 같이 읽었다.
+앞선 바닥 상태와 이번 받침대 결과를 구분한다.
+
+장착 수평 차이에 대한 사용자 설명도 받았다.
+FC·태그 좌우 차이는 없다고 설명했다.
+ToF·태그 앞뒤·좌우는 최대 약1~2cm다.
+앞서 받은 수직·앞뒤 설명과 함께 후보로 보존했다.
+독립 측량·방향 시험·시각 보정 완료는 아니다.
+실행 설정의 장착 확인값을 true로 바꾸지 않았다.
+
+### 실행기와 직렬 포트를 유지한 FC 읽기
+
+기존 도구에 `--ros-domain` 경로를 추가했다.
+MAVROS router로 고정 읽기 36건을 완료했다.
+현재 MAVROS·센서 수집·웹을 중단하지 않았다.
+FC 파라미터 쓰기와 비행 명령은 허용하지 않는다.
+매 요청 직전 최신 connected·disarm을 확인한다.
+첫 연결·셸 응답 누락 때는 중단하고 기록했다.
+고속 원시 메시지 큐를 1024개로 늘렸다.
+후속 36건은 모두 query echo·종료 prompt를 확인했다.
+부분 기록을 다음 쿼리 성공으로 세지 않았다.
+
+비공개 원본은 다음 파일에 보존했다.
+`ground-preflight-1350.json`은 20초 ROS 관측이다.
+`fc-raised-readback.json`은 중단된 부분 기록이다.
+`fc-raised-readback-final.json`은 완료된 FC 조회다.
+원본 파라미터·실측 후보는 Git에 넣지 않았다.
+
+| 검증 구분 | 이번 결과 |
+|---|---|
+| 기존 미션·웹·RC·저장 회귀 | 143 passed |
+| 고정 읽기·쓰기 거부·상태 보호 | 20 passed |
+| 실물 지상 관측 | ROS 20초·FC 읽기36건 완료 |
+| SITL | 이번 도구 변경에서는 미실시 |
+| 실물 비행 | 미실시·명령 출력 비활성 |
+
+```powershell
+$env:PYTHONPATH="$PWD/src/drone_mission;$PWD/src/drone_uwb;$PWD/src/drone_demo"
+python -m pytest src/drone_mission/test/test_session.py `
+  src/drone_mission/test/test_mission_chain.py `
+  src/drone_mission/test/test_preflight.py `
+  src/drone_mission/test/test_field_presets.py `
+  src/drone_mission/test/test_mission_store.py `
+  src/drone_mission/test/test_local_web.py `
+  src/drone_mission/test/test_site.py -q
+python -m pytest src/sangwon_AI/tests/test_mavros_readback.py -q
+```
+
+FC 실행 명령은 [센서 점검 절차](../runbooks/position_sensor_check.md)를 따른다.
+다음 실물 단계는 프로펠러 제거 후 방향·거리 시험이다.
+이후 시각·장착 보정과 지상 EV 융합을 검증한다.
+실측 지도와 전역 원점 연결도 별도로 필요하다.
+현재 native 자동 모드는 전역 기준을 사용한다.
+PX4의 [외부 위치 안내](https://docs.px4.io/main/en/ros/external_position_estimation#enabling-auto-modes-with-a-local-position)를 참고한다.
+원점 누락을 임의 GPS 좌표로 대체하지 않았다.
+받침대 출발은 바닥 출발 정책 검증을 대신하지 않는다.
+
 ## 카메라·스캐너·LiDAR 잔여 작업
 
 장치가 보이는 것과 미션 연결 완료를 구분한다.

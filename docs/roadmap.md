@@ -13,6 +13,9 @@
 중복 START를 막고 웹 재시작 시 명령을 재전송하지 않는다.
 [미션 관리 절차](runbooks/field_web_settings.md)를 따른다.
 실물 좌표·장착·시각·융합·RC 시험은 아직 남았다.
+10월 9일 받침대에서 flow·ToF 융합을 확인했다.
+UWB 외부 관측과 창고 좌표 연결은 아직 미완료다.
+실행 중 MAVROS를 유지하는 고정 읽기 도구를 추가했다.
 
 2026-10-08 로컬 통합판의 상태는
 [Jetson 통합 기록](report/local_jetson_integration_20261008.md)을 따른다.

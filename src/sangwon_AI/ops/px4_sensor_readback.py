@@ -21,6 +21,7 @@ QUERIES = (
     'listener sensor_optical_flow -n 1', 'listener vehicle_optical_flow -n 1',
     'listener distance_sensor -i 0 -n 1', 'listener distance_sensor -i 1 -n 1',
     'listener estimator_status_flags -n 1', 'listener estimator_aid_src_optical_flow -n 1',
+    'listener estimator_aid_src_ev_pos -n 1',
     'listener estimator_aid_src_rng_hgt -n 1', 'listener vehicle_visual_odometry -n 1',
     'listener vehicle_local_position -n 1', 'listener vehicle_attitude -n 1',
     'listener sensor_combined -n 1',
@@ -36,25 +37,33 @@ def completed(text, query):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--ros-domain', type=int, choices=(1, 2, 99),
+                        help='Use the existing /uas1 MAVROS router; never open the FC serial port.')
     args = parser.parse_args()
     os.environ['MAVLINK20'] = '1'
     from pymavlink import mavutil
-    owner = subprocess.run(['fuser', '/dev/pixhawk'], capture_output=True)
-    if owner.returncode==0:
-        raise RuntimeError('FC port already owned; do not open a second connection')
-    result = dict(checked_at_utc=datetime.now(timezone.utc).isoformat(), device='/dev/pixhawk',
+    if args.ros_domain is None:
+        owner = subprocess.run(['fuser', '/dev/pixhawk'], capture_output=True)
+        if owner.returncode==0:
+            raise RuntimeError('FC port already owned; use --ros-domain or stop the owner explicitly')
+        connection = mavutil.mavlink_connection('/dev/pixhawk', baud=921600,
+                                              source_system=255, source_component=197)
+    else:
+        from px4_mavros_readback import MavrosReadback
+        connection = MavrosReadback(args.ros_domain, QUERIES)
+    result = dict(checked_at_utc=datetime.now(timezone.utc).isoformat(),
+                  device='/dev/pixhawk' if args.ros_domain is None else '/uas1/mavlink_sink',
+                  ros_domain=args.ros_domain,
                   outbound=['SERIAL_CONTROL fixed param show/listener queries only'],
                   physical_flight=False, fc_parameter_writes=False, queries=[])
-    connection = mavutil.mavlink_connection('/dev/pixhawk', baud=921600,
-                                          source_system=255, source_component=197)
-    heartbeat = connection.wait_heartbeat(timeout=8)
-    if heartbeat is None or heartbeat.get_srcSystem()!=1 or heartbeat.get_srcComponent()!=1:
-        raise RuntimeError('Expected FC heartbeat missing')
-    if heartbeat.base_mode & 128:
-        raise RuntimeError('FC armed; readback requires a disarmed bench')
-    result['initial_armed'] = False
     flags = mavutil.mavlink.SERIAL_CONTROL_FLAG_EXCLUSIVE | mavutil.mavlink.SERIAL_CONTROL_FLAG_RESPOND
     try:
+        heartbeat = connection.wait_heartbeat(timeout=8)
+        if heartbeat is None or heartbeat.get_srcSystem()!=1 or heartbeat.get_srcComponent()!=1:
+            raise RuntimeError('Expected FC heartbeat missing')
+        if heartbeat.base_mode & 128:
+            raise RuntimeError('FC armed; readback requires a disarmed bench')
+        result['initial_armed'] = False
         for query in QUERIES:
             while connection.recv_match(blocking=False):
                 pass
@@ -79,10 +88,12 @@ def main():
             if not complete:
                 raise RuntimeError('Incomplete shell query; stop rather than misattribute the next response')
     finally:
-        connection.mav.serial_control_send(10, 0, 0, 0, 0, [0]*70)
-        connection.close()
-        args.output.parent.mkdir(parents=True, exist_ok=True)
-        args.output.write_text(json.dumps(result, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
+        try:
+            connection.mav.serial_control_send(10, 0, 0, 0, 0, [0]*70)
+        finally:
+            connection.close()
+            args.output.parent.mkdir(parents=True, exist_ok=True)
+            args.output.write_text(json.dumps(result, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
     print(f'{len(result["queries"])} fixed readbacks saved: {args.output}', flush=True)
 
 

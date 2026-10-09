@@ -34,7 +34,33 @@ IMU 자세 안정과 지도상의 직진은 다른 검사다.
 
 ## 1. FC 읽기
 
-기존 MAVROS를 중단한 검토 환경에서만 읽는다.
+MAVROS 실행 중에는 ROS 경유 읽기를 사용한다.
+실행기·센서 수집·직렬 포트 소유자를 유지한다.
+고정된 `param show`·`listener`만 요청한다.
+매 요청 직전 FC 연결·disarm·상태 시각을 검사한다.
+명령 누락·불완전한 응답에서는 즉시 중지한다.
+이유: 이전 응답을 다음 항목에 붙이면 오판한다.
+
+```bash
+cd /home/arialhanho/ROS2-review-20261008-codex
+source /opt/ros/humble/setup.bash
+export ROS_DOMAIN_ID=2 ROS_LOCALHOST_ONLY=1
+PYTHONPATH=/home/arialhanho/ROS2-integration-20261007/.test-deps:$PYTHONPATH \
+python3 src/sangwon_AI/ops/px4_sensor_readback.py \
+  --ros-domain 2 --output .review/sensor-readback-ros.json
+```
+
+기본 UAS1·FC system 1/component 1을 대조한다.
+다른 기체에 확인 없이 주소를 재사용하지 않는다.
+`/uas1/mavlink_source`를 구독한다.
+`/uas1/mavlink_sink`에는 진단용 SERIAL_CONTROL만 보낸다.
+파라미터 변경·ARM·이륙·모드 명령은 허용하지 않는다.
+셸 release 패킷은 빈 데이터만 허용한다.
+원시 MAVLink 큐는 고속 메시지에 대비해 1024개다.
+이 수신은 시각 보정이나 비행 승인으로 세지 않는다.
+
+직렬 직접 읽기는 포트 소유자가 없을 때만 쓴다.
+`--ros-domain`을 생략하면 기존 직렬 경로다.
 포트를 중복으로 열지 않는다.
 이유: 읽기 충돌도 센서·명령 링크를 훼손할 수 있다.
 
@@ -51,6 +77,10 @@ python3 src/sangwon_AI/ops/px4_sensor_readback.py \
 시동·모드·파라미터 쓰기 기능은 없다.
 불완전한 셸 응답은 다음 쿼리에 붙이지 않는다.
 여러 EKF 인스턴스가 있으면 각각 읽는다.
+
+2026-10-09 받침대 정지 상태에서 36건을 읽었다.
+flow와 거리 융합은 두 EKF 인스턴스 모두 확인했다.
+EV 관측·융합은 없었다. [현장 기록](../report/field_readiness_20261009.md)을 따른다.
 
 | 단계 | 읽을 항목 | 확인할 내용 |
 |---|---|---|
