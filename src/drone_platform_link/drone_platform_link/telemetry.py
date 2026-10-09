@@ -10,10 +10,14 @@ SOURCES = {
 
 
 class Observations:
-    def __init__(self, source='uwb_xy'):
+    def __init__(self, source='uwb_xy', ground_antenna_height_m=None):
         if source not in SOURCES:
             raise ValueError('unsupported_pose_source')
         self.source = source
+        if ground_antenna_height_m is not None and (type(ground_antenna_height_m) not in (int, float)
+                or not math.isfinite(ground_antenna_height_m) or not 0 < ground_antenna_height_m <= 1.):
+            raise ValueError('invalid_ground_antenna_height')
+        self.ground_antenna_height_m = ground_antenna_height_m
         self.pose = None
         self.battery = None
         self.height = self.fc = self.position = self.mission = None
@@ -66,7 +70,7 @@ class Observations:
     def fields(self):
         topic, _, reference, kind = SOURCES[self.source]
         result = dict(fix=False,telemetry_verified=False,x=None,y=None,current_z_m=None,
-            current_z_source=None,current_z_trusted=False,xyz_valid=False,
+            current_z_source=None,current_z_trusted=False,current_z_estimated=False,xyz_valid=False,
             uwb_age_ms=None,source_age_ms=None,source_stamp_ns=None,source_received_at_ms=None,
             pose_source=self.source,pose_topic=topic,position_kind=kind,
             coordinate_frame='px4_local_enu' if self.source=='px4_local' else 'uwb_map',
@@ -121,4 +125,14 @@ class Observations:
                         result[key] = value[key]
                 result.update(flight_state=value.get('state'), flight_reason=value.get('reason'),
                               target_validation=value.get('validation'))
+        # Operator-entered antenna installation height for display only.
+        # ARM does not imply airborne; require a fresh PX4 ON_GROUND report.
+        # This never feeds B_TF, an EKF observation, arrival or flight readiness.
+        if (self.source != 'px4_local' and self.ground_antenna_height_m is not None
+                and result['current_z_m'] is None and result['fc_connected'] is True
+                and type(result['fc_armed']) is bool and result.get('fc_landed') == 1):
+            result.update(current_z_m=self.ground_antenna_height_m,
+                current_z_source='ground_antenna_reference', current_z_reference='floor',
+                current_z_estimated=True, current_z_trusted=False, xyz_valid=False,
+                z_source='ground_antenna_reference')
         return result

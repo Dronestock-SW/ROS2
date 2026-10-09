@@ -14,7 +14,7 @@ pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px}.hint{color:#5261
 @media(max-width:550px){body{padding-bottom:245px}.flightbar button{font-size:12px;padding:10px 8px}}
 </style><h1>Dronestock 비행 시험</h1>
 <p>미션을 저장하고 선택한 뒤 START로 실행합니다. 저장·불러오기·삭제는 기체를 움직이지 않습니다.</p>
-<section><h2>현장 설정</h2><label for="ceiling">천장 높이 · 바닥 기준 m</label>
+<p><a href="http://127.0.0.1:8350/">제자리 이륙·2초 호버·착륙 전용 시험</a> · 전체 창고 미션 준비와 별도입니다.</p><section><h2>현장 설정</h2><label for="ceiling">천장 높이 · 바닥 기준 m</label>
 <input id="ceiling" type="number" min="0.5" max="100" step="0.1" placeholder="예: 3.0">
 <button id="setceiling">천장 설정 저장</button><span id="site"></span>
 <p class="hint">천장은 실측 지도의 상한을 제한합니다. 이륙 높이는 PX4 설정을 사용합니다. 출발점은 START 시 검증된 PX4 기체 위치에서 자동 확인합니다.</p></section>
@@ -69,7 +69,7 @@ by('setceiling').disabled=!s.site_editable;by('site').textContent=(s.site.ceilin
 by('runstate').textContent=(s.active_run_id==null?'진행 미션 없음':'실행 '+s.active_run_id+' · 중복 START 잠금')+' / '+(t.flight_state??'연결 대기')+' / '+(t.fc_mode??'모드 미확인');
 const checks=(t.preflight?.checks??[]).map(c=>({...c,title:c.code==='estimator'?'PX4 수평 위치 추정 유효':c.title})),remaining=checks.filter(c=>!c.passed);by('readiness').textContent=!s.telemetry_fresh?'기체 연결 확인 대기':s.active_run_id!=null?'진행 미션 확인 중 · 새 START 잠금':s.can_start?'시작 조건 충족 · 선택 미션과 주변을 확인 후 START':remaining.length?'준비 대기 '+remaining.length+'개 · '+remaining.slice(0,3).map(c=>c.title).join(' / '):'START 대기 · 실행기·지상 상태 확인';
 by('checks').replaceChildren();for(const c of checks){const row=document.createElement('div');row.textContent=(c.passed?'✓ ':'대기 · ')+c.title;by('checks').appendChild(row);}
-by('state').textContent=JSON.stringify({기체:s.assignment.drone_id,배치:s.assignment.anchor_layout_id,텔레메트리수신:s.telemetry_fresh,상태:t.flight_state,사유:t.flight_reason,시동:t.fc_armed,PX4모드:t.fc_mode,UWB_XYZ:[t.x,t.y,t.current_z_m],PX4_ENU:t.px4_position_enu_m,자동출발점_창고XY:s.automatic_start_xy_m,고정복귀점_창고XY:t.home_xy_m,착륙확인:t.landing_verified,출발점복귀확인:t.home_verified,비행결과:t.flight_outcome,작업결과:t.work_outcome,스캔결과:t.scan_results,요청검사:t.target_validation},null,2);
+by('state').textContent=JSON.stringify({기체:s.assignment.drone_id,배치:s.assignment.anchor_layout_id,텔레메트리수신:s.telemetry_fresh,상태:t.flight_state,사유:t.flight_reason,시동:t.fc_armed,PX4모드:t.fc_mode,UWB_XYZ:[t.x,t.y,t.current_z_m],Z출처:t.current_z_source,Z지상기준추정:t.current_z_estimated,Z실측유효:t.current_z_trusted,XYZ실측유효:t.xyz_valid,PX4_ENU:t.px4_position_enu_m,자동출발점_창고XY:s.automatic_start_xy_m,고정복귀점_창고XY:t.home_xy_m,착륙확인:t.landing_verified,출발점복귀확인:t.home_verified,비행결과:t.flight_outcome,작업결과:t.work_outcome,스캔결과:t.scan_results,요청검사:t.target_validation},null,2);
 if(++polls%6===0)await refreshCatalog();
 }catch(e){by('start').disabled=true;by('land').disabled=true;by('home').disabled=true;by('runstate').textContent='연결 대기 · 이전 미션을 자동 실행하지 않습니다.';by('readiness').textContent='웹 연결 끊김 · START 대기';}setTimeout(update,500);}
 refreshCatalog().catch(e=>{notice.textContent=e.message;});update();

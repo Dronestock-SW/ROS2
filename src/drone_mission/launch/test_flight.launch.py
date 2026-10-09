@@ -47,6 +47,7 @@ def components(context):
                  'DRONESTOCK_DRONE_ID':settings.drone_id,
                  'DRONESTOCK_UWB_TOPIC':'/uwb/btf_pose',
                  'DRONESTOCK_POSE_SOURCE':'btf_xy',
+                 'DRONESTOCK_GROUND_ANTENNA_HEIGHT_M':value('ground_antenna_height_m'),
                  'DRONESTOCK_MISSION_FORWARDING':'true',
                  **({'DRONESTOCK_STATE_DIR':record_path('platform')} if record else {})}),
     ]
@@ -70,6 +71,7 @@ def generate_launch_description():
         DeclareLaunchArgument('bridge_enabled',default_value='false',choices=['true','false']),
         DeclareLaunchArgument('execute',default_value='false',choices=['true','false']),
         DeclareLaunchArgument('record_directory',default_value=''),
+        DeclareLaunchArgument('ground_antenna_height_m',default_value=''),
         DeclareLaunchArgument('native_plan_binary',default_value=''),
         DeclareLaunchArgument('native_map_file',default_value=''),
         DeclareLaunchArgument('native_map_sha256',default_value=''),

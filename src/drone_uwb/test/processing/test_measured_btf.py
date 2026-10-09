@@ -4,12 +4,24 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-from drone_uwb.processing.measured_btf import MeasuredBtf, MeasuredHeight
+from drone_uwb.processing.measured_btf import MeasuredBtf, MeasuredHeight, ground_xy_without_height
 from drone_uwb.processing.experiments.h80_b import H80Window, BSettings
 from drone_uwb.processing.experiments.tof_subset import ToFTrackedSubsetCandidate
 from drone_uwb.acquisition.validation import Cycle
 
 CONFIG = Path(__file__).parents[2]/'config/runtime/uwb_btf_real.json'
+
+
+def test_ground_xy_never_inserts_a_height_or_accepts_a_tof_subset():
+    result = dict(ok=True, xyz_m=None, models={'B_TF': {'source': 'unchanged_B4'}})
+    state = dict(enabled=True, connected=True, landed=1, state_age_s=.1, landed_age_s=.1)
+    assert ground_xy_without_height(result, **state)
+    assert result['xyz_m'] is None
+    for key, value in [('enabled', False), ('connected', False), ('landed', 2), ('landed', True),
+                       ('landed_age_s', 2.), ('state_age_s', 2.)]:
+        assert not ground_xy_without_height(result, **dict(state, **{key: value}))
+    for source in ('ToF_validated_B3', 'ToF_tracked_B3', 'rejected'):
+        assert not ground_xy_without_height(dict(result, models={'B_TF': {'source': source}}), **state)
 
 
 def config():

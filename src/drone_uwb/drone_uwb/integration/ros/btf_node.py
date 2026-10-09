@@ -8,7 +8,7 @@ import time
 
 from ament_index_python.packages import get_package_share_directory
 from geometry_msgs.msg import PoseStamped, PoseWithCovarianceStamped
-from mavros_msgs.msg import State, TimesyncStatus
+from mavros_msgs.msg import State, TimesyncStatus, ExtendedState
 import rclpy
 from rclpy.node import Node
 from rclpy.executors import ExternalShutdownException
@@ -17,7 +17,7 @@ from rcl_interfaces.msg import ParameterDescriptor
 from sensor_msgs.msg import Imu, Range
 from std_msgs.msg import String
 
-from drone_uwb.processing.measured_btf import MeasuredBtf
+from drone_uwb.processing.measured_btf import MeasuredBtf, ground_xy_without_height
 from drone_uwb.integration.ros.qos import received_stream_qos
 from drone_uwb.integration.async_recording import AsyncRecording
 
@@ -66,6 +66,8 @@ class BtfNode(Node):
         self.sync_offset = None
         self.sync_count = 0
         self.fc_state = None
+        self.fc_state_at = self.landed_at = float('-inf')
+        self.landed = None
         self.started = time.monotonic()
         self.status_pub = self.create_publisher(String, '/uwb/btf_status', 10)
         self.decision_pub = self.create_publisher(String, '/uwb/btf_decision', qos_profile_sensor_data)
@@ -77,6 +79,7 @@ class BtfNode(Node):
             self.create_subscription(Imu, self.config['imu_topic'], self.imu, qos_profile_sensor_data),
             self.create_subscription(TimesyncStatus, '/mavros/timesync_status', self.sync, qos_profile_sensor_data),
             self.create_subscription(State, '/mavros/state', self.state, qos_profile_sensor_data),
+            self.create_subscription(ExtendedState, '/mavros/extended_state', self.extended, qos_profile_sensor_data),
         ]
         self.create_timer(1., self.status)
         self.get_logger().info('Measured B_TF started; output=/uwb/btf_pose; FC output disabled')
@@ -87,7 +90,13 @@ class BtfNode(Node):
 
     def state(self, msg):
         self.fc_state = dict(connected=msg.connected,armed=msg.armed,mode=msg.mode)
+        self.fc_state_at = (time.monotonic() if 0 <= self.get_clock().now().nanoseconds-stamp_ns(msg) <= 1_500_000_000 else float('-inf'))
         self.record('inputs',dict(type='fc_state',received_ros_ns=self.get_clock().now().nanoseconds,**self.fc_state))
+
+    def extended(self, msg):
+        self.landed = msg.landed_state
+        self.landed_at = (time.monotonic() if 0 <= self.get_clock().now().nanoseconds-stamp_ns(msg) <= 1_500_000_000 else float('-inf'))
+        self.record('inputs',dict(type='fc_landed',stamp_ns=stamp_ns(msg),landed_state=msg.landed_state))
 
     def sync(self, msg):
         valid = (math.isfinite(msg.round_trip_time_ms) and 0 <= msg.round_trip_time_ms <= 20
@@ -168,7 +177,12 @@ class BtfNode(Node):
         if result['ok'] and not (self.recorder and self.recorder.error):
             age = (self.get_clock().now().nanoseconds-result['stamp_ns'])/1e9
             result['publish_age_s'] = age
-            if self.require_height and result.get('xyz_m') is None:
+            ground_xy = ground_xy_without_height(result,
+                enabled=self.config.get('allow_ground_xy_without_tof', False),
+                connected=(self.fc_state or {}).get('connected'), landed=self.landed,
+                state_age_s=time.monotonic()-self.fc_state_at, landed_age_s=time.monotonic()-self.landed_at)
+            result['ground_xy_without_measured_height'] = ground_xy
+            if self.require_height and result.get('xyz_m') is None and not ground_xy:
                 result['pose_blocked_reason'] = 'measured_height_required'
                 self.counts['measured_height_required'] += 1
             elif 0 <= age <= self.config['max_output_age_s']:

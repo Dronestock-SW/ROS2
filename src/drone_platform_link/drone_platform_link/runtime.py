@@ -49,6 +49,8 @@ class Config:
                 or url.username or url.password or url.path or url.query or url.fragment):
             raise ValueError('DRONESTOCK_SERVER_URL must be an HTTP(S) origin')
         self.pose_source = env.get('DRONESTOCK_POSE_SOURCE', 'btf_xy')
+        self.ground_antenna_height_m = (interval(env, 'DRONESTOCK_GROUND_ANTENNA_HEIGHT_M', 0, .01, 1.)
+            if env.get('DRONESTOCK_GROUND_ANTENNA_HEIGHT_M') else None)
         poll_enabled = env.get('DRONESTOCK_MISSION_POLL_ENABLED', 'false').lower()
         if poll_enabled not in ('true', 'false'):
             raise ValueError('DRONESTOCK_MISSION_POLL_ENABLED must be true or false')
@@ -196,7 +198,7 @@ def error_code(exc):
 class Runtime:
     def __init__(self, config):
         self.config = config
-        self.observations = Observations(config.pose_source)
+        self.observations = Observations(config.pose_source, config.ground_antenna_height_m)
         self.started = time.time()
         self.mission = None
         self.mission_at = None
@@ -432,7 +434,7 @@ class Runtime:
 
 async def async_main(config):
     from .ros_monitor import start
-    observations = Observations(config.pose_source)
+    observations = Observations(config.pose_source, config.ground_antenna_height_m)
     mission_queue = queue.Queue(maxsize=1) if config.mission_forwarding else None
     monitor_stop = threading.Event()
     monitor = start(observations, config, mission_queue, monitor_stop)

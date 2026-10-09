@@ -63,3 +63,39 @@ def test_partial_scan_progress_reaches_web_and_expires_with_mission_state():
     with patch('drone_platform_link.telemetry.time.monotonic',return_value=10.6):
         assert 'remaining_task_ids' not in o.fields()
         assert 'preflight' not in o.fields()
+
+
+@pytest.mark.parametrize('armed', [False, True])
+def test_explicit_ground_reference_is_estimated_for_armed_and_disarmed(armed):
+    o = Observations('btf_xy', .15)
+    with patch('drone_platform_link.telemetry.time.monotonic', return_value=10.):
+        o.receive_fc(True, armed, 'POSCTL')
+        o.receive_mission(dict(state='IDLE', fc_landed=1))
+        f = o.fields()
+        assert f['current_z_m'] == .15 and f['current_z_estimated']
+        assert f['current_z_source'] == 'ground_antenna_reference'
+        assert not f['current_z_trusted'] and not f['xyz_valid'] and not f['fix']
+    with patch('drone_platform_link.telemetry.time.monotonic', return_value=10.6):
+        assert o.fields()['current_z_m'] is None
+
+
+@pytest.mark.parametrize('landed', [None, 0, 2, 3, 4])
+def test_no_fixed_height_in_air_or_unknown_ground_state(landed):
+    o = Observations('btf_xy', .15)
+    o.receive_fc(True, True, 'AUTO.TAKEOFF')
+    o.receive_mission(dict(state='TAKING_OFF', fc_landed=landed))
+    assert o.fields()['current_z_m'] is None
+
+
+def test_real_height_wins_and_px4_height_is_never_replaced():
+    for source in ('btf_xy', 'px4_local'):
+        o = Observations(source, .15)
+        o.receive_fc(True, True, 'POSCTL')
+        o.receive_mission(dict(state='IDLE', fc_landed=1))
+        now = time.time_ns()
+        o.receive_height(.62, 'uwb_map', now)
+        if source == 'px4_local':
+            o.receive_pose(0., 0., 'map', now, now_ns=now, z=-.07)
+        f = o.fields()
+        assert f['current_z_m'] == (.62 if source=='btf_xy' else -.07)
+        assert f['current_z_trusted'] and not f['current_z_estimated']

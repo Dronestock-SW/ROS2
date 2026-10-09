@@ -20,6 +20,18 @@ from drone_uwb.processing.solvers.observations import solve_xy
 from drone_uwb.processing.observation_guard import ObservationGuard
 
 
+def ground_xy_without_height(result, *, enabled, connected, landed, state_age_s, landed_age_s):
+    """Allow the already accepted four-anchor XY solution on a fresh ground state.
+
+    No height is inserted into B_TF. The three-anchor ToF selection remains
+    unavailable without a measurement; only unchanged_B4 can pass this gate.
+    """
+    return (enabled is True and connected is True and type(landed) is int and landed == 1
+            and 0 <= state_age_s <= 1.5 and 0 <= landed_age_s <= 1.5
+            and result.get('ok') is True and result.get('xyz_m') is None
+            and result.get('models', {}).get('B_TF', {}).get('source') == 'unchanged_B4')
+
+
 class MeasuredHeight:
     def __init__(self, config):
         self.config = config
