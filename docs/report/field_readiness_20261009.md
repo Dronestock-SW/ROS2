@@ -1256,6 +1256,21 @@ SHA256: `7e23d5415539b8d368b8ccee7805a249e32a151d79469ddf66fd63327bcc5361`.
 고정 shell 읽기는 DDS sink 발견을 기다리도록 고쳤다.
 매 요청의 DISARM·단일 sink 검사는 유지한다.
 
+Windows 단위시험55개가 통과했다.
+Jetson에서도 같은55개가 통과했다.
+`colcon build --symlink-install --packages-select drone_uwb`가 성공했다.
+실행 중 운영 MAVROS는 빌드 때문에 재시작하지 않았다.
+최종 검사 명령은 다음과 같다.
+
+```bash
+python3 -m pytest -q \
+  src/drone_uwb/test/processing/test_ground_ev_trial.py \
+  src/sangwon_AI/tests/test_mavros_readback.py
+```
+
+이번 진단 도구 변경으로 SITL을 새로 반복하지 않았다.
+앞 절의 GPS 없는 가상 비행과 실물 정지 시험을 구분한다.
+
 ### 16:37 KST 저장 공간 정리·웹 재연결
 
 256MiB 기록 여유 검사로 운영 관측 발행이 멈췄다.
