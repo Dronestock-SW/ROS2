@@ -67,7 +67,11 @@ def fit_h80(anchors, idx, s, r, t_ref_s, settings):
         fit.reason = 'outside_causal_window'
         return fit
     part, counts = participating(idx, settings)
-    keep = np.isin(idx, part)
+    # idx is already validated in [0, 3]. A fixed membership table avoids the
+    # generic sorting/range dispatch of isin on every four-anchor fit.
+    included = np.zeros(4, dtype=bool)
+    included[part] = True
+    keep = included[idx]
     n = int(keep.sum())
     mask = sum(1 << i for i in part)
     fit = H80Fit(False, t_ref_s=t_ref_s, n=n, mask=mask, counts=counts)
@@ -90,7 +94,8 @@ def fit_h80(anchors, idx, s, r, t_ref_s, settings):
         return fit
     scaled = design / scale
     denom = 2 * np.maximum(rr, 0.1)
-    weight = 1.0 / var
+    base_weight = 1.0 / var
+    weight = base_weight
 
     def solve(w):
         root = np.sqrt(w)
@@ -111,8 +116,11 @@ def fit_h80(anchors, idx, s, r, t_ref_s, settings):
             for _ in range(settings.h80_irls_iterations):
                 theta = solve(weight)
                 e = (design @ theta - rhs) / denom
-                updated = (1.0 / var) * np.minimum(1.0, settings.huber_m / np.maximum(np.abs(e), 1e-12))
-                fit.converged = bool(np.allclose(updated, weight, rtol=1e-6, atol=0.0))
+                updated = base_weight * np.minimum(1.0, settings.huber_m / np.maximum(np.abs(e), 1e-12))
+                # Weights reaching this point are finite nonnegative floats.
+                # This is allclose(rtol=1e-6, atol=0) without its scalar/NaN/
+                # infinity dispatch. Keep the same SVD and stopping tolerance.
+                fit.converged = bool(np.all(np.abs(updated-weight) <= 1e-6*np.abs(weight)))
                 weight = updated
                 fit.iterations += 1
                 if fit.converged:

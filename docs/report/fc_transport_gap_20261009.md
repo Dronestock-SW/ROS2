@@ -4,6 +4,8 @@
 실제 발행·START 적용 전에 이 결과를 확인한다.
 현재 결과만으로 하드웨어 고장을 단정하지 않는다.
 
+다음 적용은 [현장 이륙 연결 절차](../runbooks/field_hover_completion_20261009.md)를 따른다.
+
 ## 실물 수신 기록
 
 90초 관측에서는 긴 공백이 재현되지 않았다.
@@ -263,3 +265,48 @@ X 최적값은 탐색 범위 끝에 있었다.
 이 범위는 통계적 신뢰구간이 아닌 적합도 비교다.
 근거 파일은 `motion-only-reanalysis-1025.json`이다.
 비행용 발행·START 활성·실물 비행은 여전히 미완료다.
+
+## 좌표 계산 부하 개선
+
+H80의 반복 계산을 줄여 같은 수치 결과를 유지했다.
+4개 앵커 소속 검사를 고정 크기 표로 바꿨다.
+역분산은 반복 밖에서 계산한다.
+유한 가중치의 수렴 비교는 같은 허용값을 유지한다.
+SVD·IRLS 횟수·잔차·조건수 기준은 바꾸지 않았다.
+
+Jetson에서 최근 실측 160개로 비교했다.
+구현을 교대로 5회 실행해 부하 순서 영향을 줄였다.
+B와 B_TF의 모든 출력 필드가 정확히 같았다.
+기존 저장 결과와도 일치했다.
+
+| 항목 | 기존 | 변경 |
+|---|---:|---:|
+| 회당 평균의 중앙값 | 10.147ms | 9.066ms |
+| 계산 시간 감소 | — | 10.7% |
+
+비교는 ROS 발행 없는 수치 재생이다.
+라이브 수신 공백 해소로 해석하지 않는다.
+근거는 `btf-kernel-profile-1940/comparison.json`이다.
+`compare.py`와 입력·시험 출력도 같은 곳에 남겼다.
+원본 실측은 Git에 넣지 않았다.
+
+Jetson에서 변경 solver를 별도 로딩해 시험했다.
+실행 중 관측 프로세스는 교체하지 않았다.
+H80·subset·지상 초기화·measured B_TF 64개 통과다.
+Windows에서는 3개 모듈의 수집이 실패했다.
+원인은 기존 앵커 JSON 심볼릭 링크의 텍스트 checkout이다.
+동일 시험을 Linux에서 실행해 통과했다.
+
+```bash
+python3 -m pytest -q \
+  src/drone_uwb/test/experiments/test_h80_b.py \
+  src/drone_uwb/test/experiments/test_subset_models.py \
+  src/drone_uwb/test/experiments/test_subset_comparison.py \
+  src/drone_uwb/test/processing/test_ground_initialization.py \
+  src/drone_uwb/test/processing/test_measured_btf.py
+```
+
+현재 ground-only 발행은 계속 유지했다.
+이 패치는 라이브 프로세스의 hot reload가 아니다.
+실행 적용 뒤 지연 재측정은 남아 있다.
+실제 비행 명령·SITL 시험은 이번 수정에서 미실시다.
