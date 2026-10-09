@@ -26,7 +26,7 @@ def field_preflight(settings, sample, *, map_loaded, recording_ok):
           and 0 <= sample.landed_age_s <= settings.state_timeout_s)
     check('mode', 'Position 또는 Hold 모드', sample.mode in ('POSCTL', 'AUTO.LOITER'))
     check('services', 'MAVROS 명령 서비스', sample.command_services_ready)
-    check('estimator', 'PX4 외부 위치 관측 사용', sample.estimator_valid and 0 <= sample.estimator_age_s <= .5)
+    check('estimator', 'PX4 수평 위치 추정 유효', sample.estimator_valid and 0 <= sample.estimator_age_s <= .5)
     check('pose', 'PX4 위치·현장 경계', bool(sample.xy) and settings.inside(sample.xy)
           and 0 <= sample.pose_age_s <= settings.pose_timeout_s)
     check('uwb', '최근 B_TF 수평 관측', 0 <= sample.uwb_age_s <= .25)

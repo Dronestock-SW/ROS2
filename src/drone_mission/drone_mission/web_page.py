@@ -3,13 +3,15 @@
 PAGE = '''<!doctype html><html lang="ko"><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Dronestock 비행 시험 · 미션 관리</title>
-<style>body{max-width:960px;margin:30px auto;padding:0 18px;font:16px sans-serif;background:#f6f7f9;color:#182332}
+<style>body{max-width:960px;margin:30px auto;padding:0 18px 200px;font:16px sans-serif;background:#f6f7f9;color:#182332}
 section{padding:18px;background:white;border-radius:10px;margin:16px 0}h2{font-size:19px;margin-top:0}
 input,select{padding:10px;max-width:100%;box-sizing:border-box}textarea{box-sizing:border-box;width:100%;min-height:100px;font:14px monospace;padding:12px}
 button{padding:11px 15px;margin:7px 6px 7px 0;border:0;border-radius:6px;background:#164abd;color:white;cursor:pointer}
 button:disabled{background:#8d99aa;cursor:not-allowed}.quiet{background:#536477}#land{background:#ae3030}#land:disabled{background:#8d99aa}
 table{width:100%;border-collapse:collapse;font-size:14px}td,th{text-align:left;padding:9px;border-bottom:1px solid #ddd}
 pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px}.hint{color:#526176;font-size:14px}#notice{padding:12px;background:#e8eef9;white-space:pre-wrap}
+.flightbar{position:fixed;bottom:0;left:0;right:0;z-index:10;background:#fff;border-top:2px solid #d9e1ed;box-shadow:0 -3px 14px #18233218;padding:10px 18px calc(10px + env(safe-area-inset-bottom));box-sizing:border-box}.flightbar>div{max-width:960px;margin:auto}.flightbar p{margin:3px 0;font-size:14px}.flightbar button{margin:5px 4px 3px 0}#readiness{color:#7d3a12}#checks{margin-top:12px}
+@media(max-width:550px){body{padding-bottom:245px}.flightbar button{font-size:12px;padding:10px 8px}}
 </style><h1>Dronestock 비행 시험</h1>
 <p>미션을 저장하고 선택한 뒤 START로 실행합니다. 저장·불러오기·삭제는 기체를 움직이지 않습니다.</p>
 <section><h2>현장 설정</h2><label for="ceiling">천장 높이 · 바닥 기준 m</label>
@@ -24,12 +26,13 @@ pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px}.hint{color:#5261
 <button id="save">미션 저장</button><button id="make" class="quiet">시험 경로 미리보기</button>
 <details><summary>고급 · A1 기준 수평 경유지 JSON</summary><label for="route">x/y 단위 m · z 목표는 입력하지 않습니다.</label><textarea id="route">[]</textarea></details>
 <p class="hint">시험 종류는 앵커 연결 전에도 저장할 수 있습니다. 실제 경로는 START 때 출발점에서 다시 계산합니다. 같은 내용의 중복 저장은 기존 미션을 선택합니다.</p></section>
-<section><h2>기체 실행</h2><p id="runstate">연결 확인 중</p>
-<button id="start" disabled>이륙 · 경유지 이동 · 착륙</button><button id="home" disabled>출발점 복귀 · 착륙</button><button id="land" disabled>착륙 요청</button>
+<section><h2>비행 준비 확인</h2><p>저장 미션 불러오기 → 준비 확인 → 하단 START → ARM·이륙 → 미션 → 착륙. 별도로 먼저 시동을 걸지 않습니다.</p>
 <p id="notice" role="status">저장 미션을 선택하거나 새로 작성하세요.</p><div id="checks"></div></section>
 <section><h2>실행 이력</h2><p class="hint">삭제한 저장 미션의 실행 이력도 보존됩니다. 기록 닫기는 비행 취소나 RC 인계 해제가 아닙니다. 다음 비행은 실행기가 IDLE인 새 지상 세션에서 시작합니다.</p>
 <table><thead><tr><th>실행</th><th>미션</th><th>상태·결과</th><th>관리</th></tr></thead><tbody id="history"></tbody></table></section>
 <details><summary>실시간 관측 상세</summary><pre id="state">상태 대기</pre></details>
+<footer class="flightbar" aria-label="비행 명령"><div><p id="runstate">연결 확인 중</p><p id="readiness" role="status">연결 확인 전 · START 대기</p>
+<button id="start" disabled>미션 START · ARM·이륙 포함</button><button id="home" disabled>출발점 복귀 · 착륙</button><button id="land" disabled>착륙 요청</button><p class="hint">회색 START는 준비 조건 미충족입니다. 체크는 수신 상태와 검증 근거로 갱신됩니다.</p></div></footer>
 <script>
 const by=id=>document.getElementById(id),notice=by('notice'),route=by('route');
 let catalog={drafts:[],runs:[]},selected=null,dirty=false,busy=false,lastStatus={},pending=null;
@@ -64,9 +67,10 @@ const control=s.telemetry_fresh&&t.fc_connected&&s.active_run_id!=null&&['missio
 by('land').disabled=busy||(!control&&pending?.action!=='land');by('home').disabled=busy||(!control&&pending?.action!=='return_to_home');
 by('setceiling').disabled=!s.site_editable;by('site').textContent=(s.site.ceiling_height_m??'미설정')+' m · 이륙 '+s.expected_takeoff_height_m+' m';
 by('runstate').textContent=(s.active_run_id==null?'진행 미션 없음':'실행 '+s.active_run_id+' · 중복 START 잠금')+' / '+(t.flight_state??'연결 대기')+' / '+(t.fc_mode??'모드 미확인');
+const checks=t.preflight?.checks??[],remaining=checks.filter(c=>!c.passed);by('readiness').textContent=!s.telemetry_fresh?'기체 연결 확인 대기':s.active_run_id!=null?'진행 미션 확인 중 · 새 START 잠금':s.can_start?'시작 조건 충족 · 선택 미션과 주변을 확인 후 START':remaining.length?'준비 대기 '+remaining.length+'개 · '+remaining.slice(0,3).map(c=>c.title).join(' / '):'START 대기 · 실행기·지상 상태 확인';
 by('checks').replaceChildren();for(const c of t.preflight?.checks??[]){const row=document.createElement('div');row.textContent=(c.passed?'✓ ':'대기 · ')+c.title;by('checks').appendChild(row);}
 by('state').textContent=JSON.stringify({기체:s.assignment.drone_id,배치:s.assignment.anchor_layout_id,텔레메트리수신:s.telemetry_fresh,상태:t.flight_state,사유:t.flight_reason,시동:t.fc_armed,PX4모드:t.fc_mode,UWB_XYZ:[t.x,t.y,t.current_z_m],PX4_ENU:t.px4_position_enu_m,자동출발점_창고XY:s.automatic_start_xy_m,고정복귀점_창고XY:t.home_xy_m,착륙확인:t.landing_verified,출발점복귀확인:t.home_verified,비행결과:t.flight_outcome,작업결과:t.work_outcome,스캔결과:t.scan_results,요청검사:t.target_validation},null,2);
 if(++polls%6===0)await refreshCatalog();
-}catch(e){by('start').disabled=true;by('land').disabled=true;by('home').disabled=true;by('runstate').textContent='연결 대기 · 이전 미션을 자동 실행하지 않습니다.';}setTimeout(update,500);}
+}catch(e){by('start').disabled=true;by('land').disabled=true;by('home').disabled=true;by('runstate').textContent='연결 대기 · 이전 미션을 자동 실행하지 않습니다.';by('readiness').textContent='웹 연결 끊김 · START 대기';}setTimeout(update,500);}
 refreshCatalog().catch(e=>{notice.textContent=e.message;});update();
 </script></html>'''.encode('utf-8')
