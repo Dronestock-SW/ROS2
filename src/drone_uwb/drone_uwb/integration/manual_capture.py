@@ -1,0 +1,170 @@
+"""Bounded, asynchronous evidence storage. No ROS or vehicle control imports."""
+from collections import Counter
+from datetime import datetime, timezone
+import hashlib
+import json
+import math
+from pathlib import Path
+import shutil
+import time
+
+from drone_uwb.integration.async_recording import AsyncRecording
+
+
+def json_value(value):
+    """Keep nonfinite sensor values distinguishable from missing/null values."""
+    if isinstance(value, float) and not math.isfinite(value):
+        return 'NaN' if math.isnan(value) else ('Infinity' if value > 0 else '-Infinity')
+    if isinstance(value, dict):
+        return {str(k): json_value(v) for k, v in value.items()}
+    if isinstance(value, (tuple, list)):
+        return [json_value(v) for v in value]
+    return value
+
+
+def atomic_json(path, value):
+    path = Path(path)
+    temporary = path.with_suffix('.tmp')
+    temporary.write_text(json.dumps(json_value(value), ensure_ascii=False, allow_nan=False,
+                                    indent=2)+'\n', encoding='utf-8')
+    temporary.replace(path)
+
+
+def clock_record():
+    return dict(monotonic_ns=time.monotonic_ns(), wall_ns=time.time_ns(),
+                utc=datetime.now(timezone.utc).isoformat())
+
+
+def boot_id():
+    path = Path('/proc/sys/kernel/random/boot_id')
+    return path.read_text(encoding='utf-8').strip() if path.exists() else None
+
+
+class Capture:
+    def __init__(self, directory, metadata, *, max_bytes=192*1024*1024,
+                 min_free_bytes=512*1024*1024, writer_factory=AsyncRecording):
+        if max_bytes <= 0 or min_free_bytes < 0:
+            raise ValueError('invalid_capture_capacity')
+        self.directory = Path(directory)
+        self.directory.mkdir(parents=True, exist_ok=False)
+        if shutil.disk_usage(self.directory).free < min_free_bytes:
+            raise OSError('capture_disk_reserve_low')
+        self.started = clock_record()
+        self.max_bytes, self.queued_bytes = max_bytes, 0
+        self.required = list(metadata.get('required_topics', []))
+        self.expected = list(metadata.get('topics', {}))
+        self.stats, self.message_ids, self.fc_state = {}, Counter(), None
+        self.transitions = []
+        self.error = None
+        self.rejected = 0
+        self.closed = False
+        self.manifest = dict(metadata, schema=1, started=self.started, boot_id=boot_id(),
+            scope='manual_flight_receive_only', flight_authorized=False,
+            alignment_confirmed=False, timing_confirmed=False,
+            fc_commands_sent=0, parameter_writes=0,
+            nonfinite_encoding='NaN/Infinity/-Infinity strings; null remains missing',
+            max_event_bytes=max_bytes, min_free_bytes=min_free_bytes)
+        atomic_json(self.directory/'manifest.json', self.manifest)
+        stream = (self.directory/'events.jsonl').open('x', encoding='utf-8', buffering=64*1024)
+        self.writer = writer_factory({'events': stream}, min_free_bytes=min_free_bytes)
+
+    def add(self, topic, type_name, data, *, mono_ns, ros_ns, header_ns=None):
+        if self.closed or self.error or self.writer.error:
+            self.rejected += 1
+            return False
+        stat = self.stats.setdefault(topic, dict(received=0, queued=0, max_gap_s=0.,
+            gaps_over_250ms=0, negative_header_age_count=0, max_header_age_s=None,
+            first_mono_ns=mono_ns, last_mono_ns=mono_ns))
+        if stat['received']:
+            gap = (mono_ns-stat['last_mono_ns'])/1e9
+            stat['max_gap_s'] = max(stat['max_gap_s'], gap)
+            stat['gaps_over_250ms'] += int(gap > .25)
+        stat['received'] += 1
+        stat['last_mono_ns'] = mono_ns
+        if header_ns is not None and header_ns > 0:
+            age = (ros_ns-header_ns)/1e9
+            stat['negative_header_age_count'] += int(age < 0)
+            stat['max_header_age_s'] = max(age, stat['max_header_age_s']) if stat['max_header_age_s'] is not None else age
+        row = dict(topic=topic, type=type_name, received_monotonic_ns=mono_ns,
+                   received_ros_ns=ros_ns, header_ns=header_ns, data=data)
+        line = json.dumps(json_value(row), ensure_ascii=False, allow_nan=False,
+                          separators=(',', ':'))+'\n'
+        size = len(line.encode('utf-8'))
+        if self.queued_bytes+size > self.max_bytes:
+            self.error = 'capture_byte_limit'
+            self.rejected += 1
+            return False
+        if not self.writer.write('events', line):
+            self.error = self.writer.error or 'capture_enqueue_failed'
+            self.rejected += 1
+            return False
+        self.queued_bytes += size
+        stat['queued'] += 1
+        if type_name == 'mavros_msgs/msg/Mavlink':
+            self.message_ids[f'{topic}:{data.get("msgid")}'] += 1
+        if topic == '/mavros/state':
+            state = {k: data.get(k) for k in ('connected', 'armed', 'mode')}
+            if state != self.fc_state:
+                if len(self.transitions) < 256:
+                    self.transitions.append(dict(monotonic_ns=mono_ns, **state))
+                self.fc_state = state
+        return True
+
+    def report(self, reason='recording', *, completed=False):
+        error = self.error or self.writer.error
+        flow = any(self.message_ids.get('/uas1/mavlink_source:'+str(i), 0) for i in (100, 106))
+        flow = flow or any(self.stats.get(t, {}).get('queued', 0) for t in self.expected if '/px4flow/' in t)
+        now = time.monotonic_ns()
+        return dict(schema=1, scope='manual_flight_receive_only', updated=clock_record(),
+            duration_s=(now-self.started['monotonic_ns'])/1e9, stopped=completed,
+            reason=reason, error=error, queued_event_bytes=self.queued_bytes,
+            rejected_events=self.rejected, writer_drained=completed and error is None,
+            required_topics_missing=[t for t in self.required if not self.stats.get(t, {}).get('queued')],
+            optional_topics_missing=[t for t in self.expected if t not in self.required and not self.stats.get(t, {}).get('queued')],
+            topics={t:dict(s, last_receipt_age_s=(now-s['last_mono_ns'])/1e9) for t,s in self.stats.items()},
+            mavlink_message_ids=dict(self.message_ids), fc_state=self.fc_state,
+            state_transitions=self.transitions, raw_optical_flow_received=bool(flow),
+            px4_ulog_attached=False, independent_reference_verified=False,
+            alignment_confirmed=False, timing_confirmed=False, flight_authorized=False,
+            fc_commands_sent=0, parameter_writes=0,
+            limitation='Capture completeness is not flight readiness or calibration proof. Join matching PX4 ULog for internal fusion state.')
+
+    def checkpoint(self):
+        self.writer.flush()
+        atomic_json(self.directory/'summary.json', self.report())
+
+    def close(self, reason):
+        self.closed = True
+        try:
+            self.writer.close()
+        except OSError as exc:
+            self.error = self.error or str(exc)
+        summary = self.report(reason, completed=True)
+        atomic_json(self.directory/'summary.json', summary)
+        return summary
+
+
+def add_marker(directory, label):
+    directory = Path(directory)
+    manifest = json.loads((directory/'manifest.json').read_text(encoding='utf-8'))
+    if not label.strip() or len(label) > 160:
+        raise ValueError('marker_requires_1_to_160_characters')
+    if manifest['boot_id'] != boot_id():
+        raise ValueError('marker_must_use_capture_host_boot')
+    row = dict(clock_record(), label=label, kind='operator_annotation_not_measurement',
+               boot_id=manifest['boot_id'])
+    with (directory/'markers.jsonl').open('a', encoding='utf-8') as stream:
+        stream.write(json.dumps(row, ensure_ascii=False, allow_nan=False)+'\n')
+    return row
+
+
+def config_evidence(paths):
+    evidence = []
+    for path in paths:
+        path = Path(path)
+        content = path.read_bytes()
+        if len(content) > 1024*1024:
+            raise ValueError('config_evidence_exceeds_1MiB')
+        evidence.append(dict(name=path.name, sha256=hashlib.sha256(content).hexdigest(),
+                             content_utf8=content.decode('utf-8')))
+    return evidence
