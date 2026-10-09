@@ -9,6 +9,7 @@ import time
 from ament_index_python.packages import get_package_share_directory
 from geometry_msgs.msg import PoseStamped, PoseWithCovarianceStamped
 from mavros_msgs.msg import State, TimesyncStatus, ExtendedState
+from nav_msgs.msg import Odometry
 import rclpy
 from rclpy.node import Node
 from rclpy.executors import ExternalShutdownException
@@ -68,6 +69,13 @@ class BtfNode(Node):
         self.fc_state = None
         self.fc_state_at = self.landed_at = float('-inf')
         self.landed = None
+        self.landed_stamp_ns = 0
+        self.ground_velocity_ok = False
+        self.ground_velocity_at = float('-inf')
+        self.ground_height = self.config.get('ground_antenna_height_m')
+        if self.ground_height is not None and (type(self.ground_height) not in (int,float)
+                or not math.isfinite(self.ground_height) or not 0 < self.ground_height <= 1.):
+            raise ValueError('invalid_ground_antenna_height')
         self.started = time.monotonic()
         self.status_pub = self.create_publisher(String, '/uwb/btf_status', 10)
         self.decision_pub = self.create_publisher(String, '/uwb/btf_decision', qos_profile_sensor_data)
@@ -80,6 +88,7 @@ class BtfNode(Node):
             self.create_subscription(TimesyncStatus, '/mavros/timesync_status', self.sync, qos_profile_sensor_data),
             self.create_subscription(State, '/mavros/state', self.state, qos_profile_sensor_data),
             self.create_subscription(ExtendedState, '/mavros/extended_state', self.extended, qos_profile_sensor_data),
+            self.create_subscription(Odometry, '/mavros/local_position/odom', self.ground_velocity, qos_profile_sensor_data),
         ]
         self.create_timer(1., self.status)
         self.get_logger().info('Measured B_TF started; output=/uwb/btf_pose; FC output disabled')
@@ -95,8 +104,16 @@ class BtfNode(Node):
 
     def extended(self, msg):
         self.landed = msg.landed_state
+        self.landed_stamp_ns = stamp_ns(msg)
         self.landed_at = (time.monotonic() if 0 <= self.get_clock().now().nanoseconds-stamp_ns(msg) <= 1_500_000_000 else float('-inf'))
         self.record('inputs',dict(type='fc_landed',stamp_ns=stamp_ns(msg),landed_state=msg.landed_state))
+
+    def ground_velocity(self, msg):
+        v=msg.twist.twist.linear
+        self.ground_velocity_ok=(all(math.isfinite(x) for x in (v.x,v.y,v.z)) and abs(v.z)<=.05
+            and math.sqrt(v.x*v.x+v.y*v.y+v.z*v.z)<=.1
+            and 0<=self.get_clock().now().nanoseconds-stamp_ns(msg)<=200_000_000)
+        self.ground_velocity_at=time.monotonic()
 
     def sync(self, msg):
         valid = (math.isfinite(msg.round_trip_time_ms) and 0 <= msg.round_trip_time_ms <= 20
@@ -160,6 +177,12 @@ class BtfNode(Node):
             if not sync_ready:
                 self.processor.height.samples['tof'].clear()
                 self.processor.height.samples['imu'].clear()
+            ground = (self.ground_height is not None and sync_ready and (self.fc_state or {}).get('connected') is True
+                and self.landed==1 and time.monotonic()-self.fc_state_at<=1.5
+                and time.monotonic()-self.landed_at<=1.5 and self.ground_velocity_ok
+                and time.monotonic()-self.ground_velocity_at<=.2)
+            self.processor.height.ground_reference = (dict(height_m=self.ground_height,
+                selection_stamp_ns=now_ns,ground_state_stamp_ns=self.landed_stamp_ns) if ground else None)
             result = self.processor.process(event)
         except (KeyError, TypeError, ValueError):
             self.counts['invalid_envelope'] += 1
@@ -195,7 +218,7 @@ class BtfNode(Node):
                 for index in (14,21,28,35):
                     pose.pose.covariance[index] = 1e6
                 self.pose_pub.publish(pose)
-                if result.get('xyz_m') is not None:
+                if result.get('xyz_m') is not None and result.get('height_source')=='measured_tof_imu':
                     xyz = PoseStamped()
                     xyz.header = pose.header
                     xyz.pose.position.x, xyz.pose.position.y, xyz.pose.position.z = result['xyz_m']

@@ -28,6 +28,30 @@ def config():
     return json.loads(CONFIG.read_text(encoding='utf-8'))
 
 
+def test_ground_height_is_an_expiring_model_not_a_tof_sample():
+    h=MeasuredHeight(config()['height'])
+    h.add('imu',dict(stamp_ns=1_000_000_000,valid=True,quaternion_wxyz=[1,0,0,0]))
+    assert h.at(1_000_000_000)[0] is None
+    h.ground_reference=dict(height_m=.15, selection_stamp_ns=1_010_000_000, ground_state_stamp_ns=990_000_000)
+    height,meta=h.at(1_000_000_000)
+    assert height==.15 and meta['estimated'] and meta['ground_state_stamp_ns']==990_000_000
+    assert not h.samples['tof']
+    assert h.at(700_000_000)[0] is None
+    h.add('tof',dict(stamp_ns=1_000_000_000,valid=True,range_m=.5))
+    assert h.at(1_000_000_000)[0]==pytest.approx(.62)
+    h.samples['tof'].clear();h.ground_reference=None
+    assert h.at(1_000_000_000)[0] is None
+
+
+def test_ground_model_requires_level_attitude_and_known_mount():
+    for tilted, confirmed in [(True,True),(False,False)]:
+        c=config()['height'];c['mount_confirmed']=confirmed;h=MeasuredHeight(c)
+        h.ground_reference=dict(height_m=.15,selection_stamp_ns=1_010_000_000,ground_state_stamp_ns=990_000_000)
+        q=[.9238795325,.3826834324,0,0] if tilted else [1,0,0,0]
+        h.add('imu',dict(stamp_ns=1_000_000_000,valid=True,quaternion_wxyz=q))
+        assert h.at(1_000_000_000)[0] is None
+
+
 def test_mount_projects_to_antenna_height_and_never_uses_future_or_old_sensor():
     h = MeasuredHeight(config()['height'])
     h.add('imu',dict(stamp_ns=1_000_000_000,valid=True,quaternion_wxyz=[1,0,0,0]))
@@ -116,7 +140,9 @@ def test_missing_anchor_does_not_return_a_position():
     assert p.process(event(msg,122000))['reason']=='four_valid_ranges_required'
 
 
-def test_async_subset_uses_per_anchor_heights_and_rejects_unavailable_height():
+@pytest.mark.parametrize('height_source,prefix', [
+    ('measured_tof_imu', 'ToF_'), ('ground_antenna_reference', 'ground_reference_')])
+def test_async_subset_uses_per_anchor_heights_and_rejects_unavailable_height(height_source, prefix):
     c=config(); b=H80Window(c['anchors_xyz_m'],c['bias_m'],BSettings(**c['B']))
     candidate=ToFTrackedSubsetCandidate(c,**c['tof_subset'])
     a=np.asarray(c['anchors_xyz_m']); decisions=[]
@@ -127,10 +153,11 @@ def test_async_subset_uses_per_anchor_heights_and_rejects_unavailable_height():
         cy=Cycle(seq,ts[0],end,15,raw,ts,['ok']*4,list(range(4)))
         base=b.process(cy,seq)
         row=dict(time_us=end,sample_time_us=ts,cal_slant_m=raw.tolist(),height_m=1.12,
-                 sample_height_m=[1.12]*4,height_source='measured_tof_imu',models={'B':base})
+                 sample_height_m=[1.12]*4,height_source=height_source,models={'B':base})
         decisions.append(candidate.process(row))
     used=[d for d in decisions[100:] if d['ok'] and d['source']!='unchanged_B4']
     assert used
+    assert all(d['source'].startswith(prefix) for d in used)
     assert all(d['best_excluded_anchor']==2 for d in used)
     assert used[-1]['xy_m']==pytest.approx([2+.12*end/1e6,2.],abs=.005)
     row['time_us']+=22000; row['sample_time_us']=[t+22000 for t in ts]

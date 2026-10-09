@@ -37,7 +37,7 @@ class ToFSubsetCandidate:
         rms=(b.get('fit') or {}).get('rms_m')
         if type(rms) not in [int,float] or not np.isfinite(rms):return dict(output,reason='missing_fit_integrity')
         if 0<=rms<self.limit:return dict(output,ok=True,xy_m=list(b['xy_m']),source='unchanged_B4',reason='original_fit_consistent')
-        if type(height) not in [int,float] or not np.isfinite(height) or result.get('height_source') not in ('gazebo_tof_imu','measured_tof_imu'):return dict(output,reason='measured_height_unavailable')
+        if type(height) not in [int,float] or not np.isfinite(height) or result.get('height_source') not in ('gazebo_tof_imu','measured_tof_imu','ground_antenna_reference'):return dict(output,reason='measured_height_unavailable')
         hist=list(self.history);t=np.array([(row['time_us']-stamp)/1e6 for row in hist]);ranges=np.array([row['ranges'] for row in hist]);z=np.array([np.nan if row['height'] is None else row['height'] for row in hist]);valid_height=np.isfinite(z)
         idx=np.tile(np.arange(4),len(hist));times=np.repeat(t,4);all_ranges=ranges.reshape(-1)
         asynchronous=any(row['asynchronous'] for row in hist)
@@ -75,7 +75,8 @@ class ToFSubsetCandidate:
         best,second=eligible[:2];margin=second['physical_range_rms_m']-best['physical_range_rms_m'];output.update(best_excluded_anchor=best['excluded_anchor'],best_score_m=best['physical_range_rms_m'],score_margin_m=margin)
         if best['physical_range_rms_m']>=self.limit:return dict(output,reason='no_height_consistent_subset')
         if margin<self.margin:return dict(output,reason='ambiguous_subset')
-        return dict(output,ok=True,xy_m=best['xy_m'],source='ToF_validated_B3',reason='unique_height_consistent_subset')
+        source = 'ground_reference_B3' if result.get('height_source') == 'ground_antenna_reference' else 'ToF_validated_B3'
+        return dict(output,ok=True,xy_m=best['xy_m'],source=source,reason='unique_height_consistent_subset')
 
 
 class ToFTrackedSubsetCandidate(ToFSubsetCandidate):
@@ -100,9 +101,10 @@ class ToFTrackedSubsetCandidate(ToFSubsetCandidate):
                 h=hypotheses[0];step=float(np.linalg.norm(np.asarray(h['xy_m'])-self.prior_xy));limit=self.continuity_margin+self.max_speed*prior_age
                 decision.update(tracked_excluded_anchor=self.selected_anchor,tracking_step_m=step,tracking_limit_m=limit)
                 if h['physical_range_rms_m']<self.limit and step<=limit:
-                    decision.update(ok=True,xy_m=h['xy_m'],source='ToF_tracked_B3',reason='previously_unique_subset_still_consistent',best_excluded_anchor=self.selected_anchor)
+                    source = 'ground_reference_tracked_B3' if result.get('height_source') == 'ground_antenna_reference' else 'ToF_tracked_B3'
+                    decision.update(ok=True,xy_m=h['xy_m'],source=source,reason='previously_unique_subset_still_consistent',best_excluded_anchor=self.selected_anchor)
         if decision['ok']:
-            if decision['source'] in ['ToF_validated_B3','ToF_tracked_B3']:
+            if decision['source'] in ['ToF_validated_B3','ToF_tracked_B3','ground_reference_B3','ground_reference_tracked_B3']:
                 if not prior_fresh:
                     decision.update(ok=False,xy_m=None,source='rejected',reason='no_fresh_continuity_prior')
                 else:

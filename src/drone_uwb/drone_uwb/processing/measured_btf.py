@@ -36,6 +36,7 @@ class MeasuredHeight:
     def __init__(self, config):
         self.config = config
         self.samples = {'tof': deque(maxlen=1000), 'imu': deque(maxlen=2000)}
+        self.ground_reference = None
 
     def add(self, kind, sample):
         target = self.samples[kind]
@@ -48,6 +49,23 @@ class MeasuredHeight:
         return True
 
     def at(self, stamp_ns):
+        height, meta = self.measured_at(stamp_ns)
+        reference = self.ground_reference
+        if (height is None and meta['reason'] in ('tof_unavailable','tof_stale','tof_invalid')
+                and reference is not None and 0 <= reference['selection_stamp_ns']-stamp_ns <= 200_000_000
+                and type(reference['height_m']) in (int,float) and math.isfinite(reference['height_m'])
+                and 0 < reference['height_m'] <= 1.
+                and self.config['mount_confirmed'] and self.config['flat_floor_confirmed']):
+            imu = next((r for r in reversed(self.samples['imu']) if r['stamp_ns'] <= stamp_ns), None)
+            if imu and imu['valid'] and 0 <= stamp_ns-imu['stamp_ns'] <= 100_000_000:
+                rotation = rotation_world_body(imu['quaternion_wxyz'])
+                if rotation[2,2] >= .95:
+                    return reference['height_m'], dict(meta, reason='ground_antenna_reference',
+                        estimated=True, ground_state_stamp_ns=reference['ground_state_stamp_ns'],
+                        selection_stamp_ns=reference['selection_stamp_ns'])
+        return height, meta
+
+    def measured_at(self, stamp_ns):
         c = self.config
         tof = next((r for r in reversed(self.samples['tof']) if r['stamp_ns'] <= stamp_ns), None)
         if tof is None:
@@ -198,6 +216,8 @@ class MeasuredBtf:
                 selections.append(selection)
             latest_index = cycle.sample_us.index(stamp)
             height = heights[latest_index]
+            height_source = ('ground_antenna_reference' if any(s.get('estimated') for s in selections)
+                             else 'measured_tof_imu') if height is not None else None
             corrected = cycle.raw-np.asarray(self.config['bias_m'])
             # Detect coherent four-link steps before the 0.8s window can smear
             # them into a plausible slow trajectory. NLOS-inconsistent cycles
@@ -211,14 +231,14 @@ class MeasuredBtf:
             b = self.window.process(cycle, cycle.seq)
             candidate_input = {'time_us': stamp, 'sample_time_us': cycle.sample_us,
                  'cal_slant_m': corrected.tolist(), 'height_m': height,
-                 'sample_height_m': heights, 'height_source': 'measured_tof_imu' if height is not None else None,
+                 'sample_height_m': heights, 'height_source': height_source,
                  'models': {'B': b}}
             btf = self.candidate.process(candidate_input)
             self.last_output_stamp_ns = stamp_ns
             return dict(out, ok=btf['ok'], reason=btf['reason'], xy_m=btf['xy_m'],
                 xyz_m=([*btf['xy_m'], height] if btf['ok'] and height is not None
                        and all(h is not None for h in heights) else None),
-                height_source='measured_tof_imu' if height is not None else None,
+                height_source=height_source,
                 stamp_ns=stamp_ns, time_us=stamp, cal_slant_m=corrected.tolist(),
                 height_m=height, height_selection=selections, height_ready=all(h is not None for h in heights),
                 models={'B': b, 'B_TF': btf}, clock_alpha=self.clock.alpha,
