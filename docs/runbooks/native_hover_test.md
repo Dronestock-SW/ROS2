@@ -132,6 +132,7 @@ ssh -N -L 8350:127.0.0.1:8350 arialhanho@100.110.163.94
 |---|---|
 | 현장 | 배터리·기체·시험 공간·조종자 준비 |
 | PX4 추정 | 최신 위치·속도·고도·예측 수평 위치 플래그 |
+| 전역 기준 | EKF 전역 수평 플래그·유한한 전역 위치 수신 |
 | 기본 상태 | disarmed·ON_GROUND·POSCTL·정지 |
 | 정지 유지 | 최신 입력으로 3초 유지. XY 변화 0.1m 이하 |
 | RC | 최신 유효 8채널·스틱 중앙·스위치 매핑 일치 |
@@ -153,6 +154,40 @@ FC 설정과 물리 인계 시험을 함께 확인한다.
 증거를 확인한 현장 조종자가 출력을 활성화한다.
 인계 확인 플래그는 RC 수신만으로 켜지 않는다.
 이유: 유효 채널과 실제 조종권 인계는 다르다.
+
+현장 조종자가 첫 비행에서 인계를 평가하기로 선택하면
+`--rc-handoff-verified` 대신 `--evaluate-rc-in-flight`를 쓴다.
+2026-10-09 사용자가 이 시험 방식을 명시했다.
+화면은 실물 인계를 계속 미검증으로 표시한다.
+RC 수신·매핑·자동 override bit 검사는 유지한다.
+이 선택은 제자리 1회 hover 실행기에만 적용한다.
+창고 이동·AI 미션의 검증 플래그는 바꾸지 않는다.
+
+### 전역 기준점 연결
+
+GPS 센서값을 생성하는 작업이 아니다.
+지역 좌표에 지리 기준을 붙인다.
+수평 위치 관측과 PX4 융합은 따로 필요하다.
+`quality=regional_approximation`은 지도 근사값이다.
+실측 위치·고도나 창고 정렬 근거로 쓰지 않는다.
+현재 장소의 위도·경도·AMSL 기준과 출처를 JSON에 기록한다.
+실제 현장값은 비공개 `.review/`에 저장한다.
+
+```bash
+export ROS_DOMAIN_ID=2 ROS_LOCALHOST_ONLY=1
+python3 src/sangwon_AI/ops/px4_local_reference.py \
+  --reference .review/site-regional-reference.json \
+  --output .review/origin-preview.json
+# preview 확인 후 같은 입력에 --apply를 붙인다.
+# 결과 파일은 새 이름을 사용한다.
+```
+
+도구는 DISARM·지상·POSCTL·정지를 요구한다.
+기존 origin이 있으면 덮어쓰지 않는다.
+단일 SET_GPS_GLOBAL_ORIGIN만 보낸다.
+전후 PX4 좌표·유효성·원점을 직접 조회한다.
+ARM·모드·파라미터 명령은 보내지 않는다.
+재부팅 후 저장된 측량값처럼 재사용하지 않는다.
 
 ```bash
 python3 src/sangwon_AI/ops/native_hover_launch.py \

@@ -22,7 +22,7 @@ from mavros_msgs.srv import CommandBool, ParamPull, SetMode
 from nav_msgs.msg import Odometry
 from rcl_interfaces.msg import ParameterValue
 from rcl_interfaces.srv import GetParameters
-from sensor_msgs.msg import BatteryState
+from sensor_msgs.msg import BatteryState, NavSatFix
 
 ROOT = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location('hover_web', ROOT / 'ops/native_hover_web.py')
@@ -45,7 +45,8 @@ class FC:
             ('state', State, '/mavros/state'), ('landed', ExtendedState, '/mavros/extended_state'),
             ('odom', Odometry, '/mavros/local_position/odom'),
             ('estimator', EstimatorStatus, '/mavros/estimator_status'),
-            ('rc', RCIn, '/mavros/rc/in'), ('battery', BatteryState, '/mavros/battery'))}
+            ('rc', RCIn, '/mavros/rc/in'), ('battery', BatteryState, '/mavros/battery'),
+            ('global', NavSatFix, '/mavros/global_position/global'))}
         self.reset('nominal')
         self.stop_publishing = threading.Event()
         self.publisher_thread = threading.Thread(target=self.publish_loop)
@@ -121,7 +122,8 @@ class FC:
         odom.pose.pose.orientation.w = 1.
         estimator = EstimatorStatus(attitude_status_flag=True, velocity_horiz_status_flag=True,
             velocity_vert_status_flag=True, pos_horiz_rel_status_flag=True,
-            pos_vert_abs_status_flag=True, pred_pos_horiz_rel_status_flag=True)
+            pos_vert_abs_status_flag=True, pred_pos_horiz_rel_status_flag=True,
+            pos_horiz_abs_status_flag=self.scenario != 'local_only')
         rc = RCIn(channels=[1500]*8, rssi=255)
         if self.fault and self.scenario == 'rc_loss':
             rc.channels = [0]*8
@@ -130,8 +132,16 @@ class FC:
         if self.fault and self.scenario == 'manual_mode':
             self.mode, state.mode = 'ALTCTL', 'ALTCTL'
         battery = BatteryState(present=True, voltage=24., percentage=.9)
+        global_position = NavSatFix(latitude=47.397, longitude=8.546, altitude=488.+self.z)
+        global_position.status.status = -1  # No raw GNSS fix: EKF output is independent.
+        if self.scenario == 'global_nan':
+            global_position.altitude = float('nan')
         for name, message in (('state', state), ('landed', landed), ('odom', odom),
-                              ('estimator', estimator), ('rc', rc), ('battery', battery)):
+                              ('estimator', estimator), ('rc', rc), ('battery', battery),
+                              ('global', global_position)):
+            if name == 'global' and (self.scenario == 'global_missing' or
+                    self.fault and self.scenario == 'global_loss'):
+                continue
             message.header.stamp = stamp
             self.pubs[name].publish(message)
 
@@ -161,6 +171,14 @@ def run(binary, fc, directory, scenario):
                 time.sleep(.05)
             raise AssertionError((scenario, 'timeout', last, fc.calls))
 
+        if scenario in ('local_only', 'global_nan', 'global_missing'):
+            status = wait(lambda s: s['preflight_checks']['telemetry'] and s['parameter_readback_ok'])
+            time.sleep(3.2)
+            status = wait(lambda s: s['start_blocker'] == 'PX4_GLOBAL_REFERENCE_NOT_READY')
+            rejected = web.exchange(path/'hover.sock', dict(method='start', session=status['session'],
+                confirm='TAKEOFF_HOVER_2S_LAND'))
+            assert not rejected['ok'] and not fc.calls and not status['preflight_checks']['global_reference']
+            return dict(scenario=scenario, calls=fc.calls, status=status, actual_px4=False, physical_flight=False)
         status = wait(lambda s: not s['start_blocker'])
         assert not fc.calls, 'boot emitted a command'
         invalid = web.exchange(path / 'hover.sock', {'method': 'start', 'session': 'old',
@@ -203,18 +221,21 @@ def run(binary, fc, directory, scenario):
             pending = wait(lambda s: s['command_pending'])
             assert not pending['landing_verified']
             cancelled_while_pending = True
-        elif scenario in ('duplicate_stamp', 'rc_loss', 'rc_stick', 'manual_mode'):
+        elif scenario in ('duplicate_stamp', 'rc_loss', 'rc_stick', 'manual_mode', 'global_loss'):
             wait(lambda s: s['phase'] == 'CLIMB')
             fc.fault = True
         result = wait(lambda s: s['phase'] in ('COMPLETE', 'FAILED', 'CANCELLED', 'RELEASED'), 14)
         expected = {'nominal': 'COMPLETE', 'arm_rejected': 'FAILED',
                     'takeoff_not_applied': 'FAILED', 'delayed_arm_cancel': 'CANCELLED',
                     'duplicate_stamp': 'RELEASED', 'rc_loss': 'RELEASED', 'rc_stick': 'RELEASED',
-                    'manual_mode': 'RELEASED', 'land_rejected': 'RELEASED', 'arm_reply_timeout': 'RELEASED'}[scenario]
+                    'manual_mode': 'RELEASED', 'land_rejected': 'RELEASED', 'arm_reply_timeout': 'RELEASED',
+                    'global_loss': 'FAILED'}[scenario]
         assert result['phase'] == expected, result
         if scenario == 'nominal':
             assert fc.calls == ['AUTO.TAKEOFF', 'ARM', 'AUTO.LAND'], fc.calls
             assert result['outcome'] == 'PASS' and result['landing_verified']
+        if scenario == 'global_loss':
+            assert result['reason'] == 'ESTIMATOR_LOST' and 'AUTO.LAND' in fc.calls
         if scenario == 'delayed_arm_cancel':
             assert fc.calls == ['AUTO.TAKEOFF', 'ARM', 'DISARM', 'POSCTL'], fc.calls
             assert result['landing_verified'] and result['outcome'] == 'CANCELLED'
@@ -262,7 +283,8 @@ def main():
     try:
         results = [run(sys.argv[1], fc, directory, s) for s in (
             'nominal', 'arm_rejected', 'takeoff_not_applied', 'delayed_arm_cancel',
-            'duplicate_stamp', 'rc_loss', 'rc_stick', 'manual_mode', 'land_rejected', 'arm_reply_timeout')]
+            'duplicate_stamp', 'rc_loss', 'rc_stick', 'manual_mode', 'land_rejected', 'arm_reply_timeout',
+            'local_only', 'global_nan', 'global_missing', 'global_loss')]
         (directory / 'summary.json').write_text(json.dumps(results, indent=2)+'\n', encoding='utf-8')
         print(f'PASS {len(results)} C++/ROS/HTTP/IPC scenarios; synthetic FC; {directory}', flush=True)
     finally:

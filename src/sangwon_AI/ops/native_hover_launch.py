@@ -22,9 +22,12 @@ def main():
     parser.add_argument('--port', type=int, default=8350)
     parser.add_argument('--enable-output', action='store_true')
     parser.add_argument('--rc-handoff-verified', action='store_true', help='Only after a documented physical RC handoff test')
+    parser.add_argument('--evaluate-rc-in-flight', action='store_true', help='Operator-selected first-hover evaluation; does not claim physical RC verification')
     args = parser.parse_args()
-    if args.profile == 'FLIGHT' and args.enable_output and not args.rc_handoff_verified:
-        parser.error('FLIGHT output requires completed physical RC handoff evidence and --rc-handoff-verified')
+    if args.rc_handoff_verified and args.evaluate_rc_in_flight:
+        parser.error('Choose verified evidence or a pending first-flight evaluation, not both')
+    if args.profile == 'FLIGHT' and args.enable_output and not (args.rc_handoff_verified or args.evaluate_rc_in_flight):
+        parser.error('FLIGHT output requires RC handoff evidence or an explicitly selected first-hover evaluation')
     domain = '173' if args.profile == 'SITL' else '2'
     if args.profile == 'SITL':
         if args.fcu_url and args.fcu_url != 'udp://127.0.0.1:14540@127.0.0.1:14580':
@@ -46,6 +49,7 @@ def main():
     config = state/'config.json'
     config.write_text(json.dumps(dict(profile=args.profile, ros_domain_id=int(domain),
         output_enabled=args.enable_output, rc_auto_mode_handoff_verified=args.rc_handoff_verified,
+        evaluate_rc_in_flight=args.evaluate_rc_in_flight,
         takeoff_height_m=1.3, state_dir=str(state)), indent=2)+'\n', encoding='utf-8')
     processes, logs = [], []
 

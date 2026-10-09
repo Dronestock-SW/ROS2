@@ -14,6 +14,7 @@
 #include <rcl_interfaces/srv/get_parameters.hpp>
 #include <nav_msgs/msg/odometry.hpp>
 #include <sensor_msgs/msg/battery_state.hpp>
+#include <sensor_msgs/msg/nav_sat_fix.hpp>
 #include <sys/file.h>
 #include <sys/socket.h>
 #include <sys/stat.h>
@@ -52,6 +53,8 @@ class HoverNode : public rclcpp::Node {
     controller_.enabled=c.at("output_enabled").get<bool>();
     // Keep the observer usable even when physical verification is pending.
     handoff_verified_=profile_=="SITL" || c.at("rc_auto_mode_handoff_verified").get<bool>();
+    handoff_evaluation_=profile_=="FLIGHT" && c.value("evaluate_rc_in_flight",false);
+    require(!(handoff_verified_ && handoff_evaluation_),"CONFLICTING_RC_EVIDENCE_POLICY");
     if(controller_.enabled) writer_lock_=std::make_unique<sangwon::WriterLock>(std::stoi(domain));
     controller_.height=c.at("takeoff_height_m").get<double>();
     require(std::isfinite(controller_.height) && controller_.height>=0.3 && controller_.height<=2.0,"INVALID_HEIGHT");
@@ -86,11 +89,20 @@ class HoverNode : public rclcpp::Node {
     estimator_sub_=create_subscription<mavros_msgs::msg::EstimatorStatus>("/mavros/estimator_status",q,[this](mavros_msgs::msg::EstimatorStatus::ConstSharedPtr m){
       auto accepted=stamp(m->header.stamp,2.5,"estimator"); if(accepted<0)return;
       estimator_at_=accepted; const_pos_=m->const_pos_mode_status_flag;
+      global_estimator_good_=m->pos_horiz_abs_status_flag && m->pos_vert_abs_status_flag;
       estimator_good_=m->attitude_status_flag && m->velocity_horiz_status_flag && m->velocity_vert_status_flag &&
         (m->pos_horiz_abs_status_flag || m->pos_horiz_rel_status_flag) && m->pos_vert_abs_status_flag &&
         // PX4 v1.17 sets CONST_POS at rest even with healthy GNSS aiding.
         // PRED_POS identifies active horizontal aiding; finite local XYZ alone does not.
         (m->pred_pos_horiz_rel_status_flag || m->pred_pos_horiz_abs_status_flag) && !m->accel_error_status_flag && !m->gps_glitch_status_flag;
+    });
+    global_sub_=create_subscription<sensor_msgs::msg::NavSatFix>("/mavros/global_position/global",q,[this](sensor_msgs::msg::NavSatFix::ConstSharedPtr m){
+      auto accepted=stamp(m->header.stamp,1.5,"global"); if(accepted<0)return;
+      // This is GLOBAL_POSITION_INT from the EKF, not the raw GPS fix topic.
+      // A local-aided EKF may be valid with no GNSS fix; use estimator flags.
+      global_at_=accepted;
+      global_message_good_=std::isfinite(m->latitude) && std::abs(m->latitude)<=90 &&
+        std::isfinite(m->longitude) && std::abs(m->longitude)<=180 && std::isfinite(m->altitude);
     });
     rc_sub_=create_subscription<mavros_msgs::msg::RCIn>("/mavros/rc/in",q,[this](mavros_msgs::msg::RCIn::ConstSharedPtr m){
       auto accepted=stamp(m->header.stamp,.5,"rc"); if(accepted<0)return;
@@ -116,7 +128,8 @@ class HoverNode : public rclcpp::Node {
   int server_{-1},lock_{-1}; std::vector<std::pair<int,double>> peers_; std::ofstream log_;
   sangwon::bench::NativeHover controller_; sangwon::bench::Sample sample_;
   double state_at_{-1e9},landed_at_{-1e9},pose_at_{-1e9},estimator_at_{-1e9},rc_at_{-1e9},param_at_{-1e9},param_try_{-1e9},command_at_{-1e9},command_done_{-1e9},pull_at_{-1e9},battery_at_{-1e9},battery_fraction_{},status_at_{},ground_stable_{-1},ground_x_{},ground_y_{};
-  bool handoff_verified_{},battery_good_{},log_good_{true},auto_override_{};
+  bool handoff_verified_{},handoff_evaluation_{},battery_good_{},log_good_{true},auto_override_{};
+  double global_at_{-1e9}; bool global_estimator_good_{},global_message_good_{};
   Json parameter_readback_=Json::object();
   std::map<std::string,int64_t> stamps_;
   bool estimator_good_{},rc_good_{},const_pos_{},pulled_{},pull_pending_{},param_pending_{},command_pending_{},param_good_{};
@@ -128,6 +141,7 @@ class HoverNode : public rclcpp::Node {
   rclcpp::Subscription<mavros_msgs::msg::StatusText>::SharedPtr text_sub_;
   rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odom_sub_;
   rclcpp::Subscription<sensor_msgs::msg::BatteryState>::SharedPtr battery_sub_;
+  rclcpp::Subscription<sensor_msgs::msg::NavSatFix>::SharedPtr global_sub_;
   rclcpp::Client<mavros_msgs::srv::SetMode>::SharedPtr mode_;
   rclcpp::Client<mavros_msgs::srv::CommandBool>::SharedPtr arm_;
   rclcpp::Client<mavros_msgs::srv::ParamPull>::SharedPtr pull_;
@@ -142,7 +156,7 @@ class HoverNode : public rclcpp::Node {
   void event(Json e) { e["steady_s"]=steady(); log_<<e.dump()<<'\n'; log_.flush(); if(!log_) { log_good_=false; controller_.rejected("LOG_WRITE_FAILED"); } }
   void refresh(double t) {
     sample_.fresh=t-state_at_<2.5 && t-landed_at_<1.5 && t-pose_at_<.3;
-    sample_.estimator_ok=estimator_good_ && t-estimator_at_<2.5;
+    sample_.estimator_ok=estimator_good_ && t-estimator_at_<2.5 && global_ready();
     sample_.rc_ok=rc_good_ && t-rc_at_<.5;
     sample_.command_pending=command_pending_;
     sample_.completion_fresh=state_at_>command_done_ && landed_at_>command_done_;
@@ -160,8 +174,9 @@ class HoverNode : public rclcpp::Node {
     }
   }
   std::string readiness() const {
+    if(controller_.enabled && !global_ready())return "PX4_GLOBAL_REFERENCE_NOT_READY";
     auto r=controller_.readiness(sample_); if(!r.empty())return r;
-    if(!handoff_verified_)return "RC_HANDOFF_NOT_VERIFIED";
+    if(!handoff_verified_ && !handoff_evaluation_)return "RC_HANDOFF_NOT_VERIFIED";
     if(ground_stable_<0 || steady()-ground_stable_<3)return "WAIT_STATIONARY_3_SECONDS";
     if(profile_=="FLIGHT" && !auto_override_)return "PX4_AUTO_RC_OVERRIDE_DISABLED";
     if(!log_good_)return "LOG_WRITE_FAILED";
@@ -173,24 +188,30 @@ class HoverNode : public rclcpp::Node {
     for(size_t i=0;i<4;++i) if(std::abs(rc_[i]-1500)>100)return "CENTER_RC_STICKS";
     return {};
   }
+  bool global_ready() const {
+    return global_estimator_good_ && steady()-estimator_at_<2.5 &&
+      global_message_good_ && steady()-global_at_<1.5;
+  }
   Json status() const { return {{"session",session_},{"profile",profile_},{"output_enabled",controller_.enabled},
     {"phase",controller_.phase},{"reason",controller_.reason},{"start_blocker",readiness()},
     {"outcome",controller_.outcome},{"landing_verified",controller_.landing_verified},{"command_pending",command_pending_},
     {"takeoff_height_m",controller_.height},{"hover_seconds",controller_.hover_s},{"mode",sample_.mode},
     {"armed",sample_.armed},{"landed",sample_.landed},{"telemetry_fresh",sample_.fresh},{"px4_estimator_ok",sample_.estimator_ok},
     {"stream_age_s",{{"state",steady()-state_at_},{"landed",steady()-landed_at_},{"odom",steady()-pose_at_},
-      {"estimator",steady()-estimator_at_},{"rc",steady()-rc_at_},{"battery",steady()-battery_at_}}},
+      {"estimator",steady()-estimator_at_},{"global",steady()-global_at_},{"rc",steady()-rc_at_},{"battery",steady()-battery_at_}}},
     {"const_pos_mode",const_pos_},{"rc_ok",sample_.rc_ok},{"xyz_px4_enu_m",{sample_.x,sample_.y,sample_.z}},
     {"parameter_readback_ok",param_good_},{"parameters",parameter_readback_},{"rc_channels",rc_},
     {"preflight_checks",{{"output_enabled",controller_.enabled},{"telemetry",sample_.connected && sample_.fresh},
-      {"estimator",sample_.estimator_ok},{"rc",sample_.rc_ok},{"disarmed_on_ground",!sample_.armed && sample_.landed},
-      {"position_mode",sample_.mode=="POSCTL"},{"rc_handoff",handoff_verified_},
+      {"estimator",estimator_good_ && steady()-estimator_at_<2.5},{"global_reference",global_ready()},
+      {"rc",sample_.rc_ok},{"disarmed_on_ground",!sample_.armed && sample_.landed},
+      {"position_mode",sample_.mode=="POSCTL"},{"rc_handoff_policy",handoff_verified_ || handoff_evaluation_},
       {"stationary_hold",ground_stable_>=0 && steady()-ground_stable_>=3},
       {"px4_auto_rc_override",profile_=="SITL" || auto_override_},
       {"battery",battery_good_ && steady()-battery_at_<3 && battery_fraction_>=.2},
       {"parameters",param_good_ && steady()-param_at_<3},{"command_services",mode_->service_is_ready() && arm_->service_is_ready()},
       {"unused_session",!controller_.used},{"log",log_good_}}},
-    {"rc_handoff_verified",handoff_verified_},{"battery_ok",battery_good_ && steady()-battery_at_<3},
+    {"rc_handoff_verified",handoff_verified_},{"rc_handoff_evaluation",handoff_evaluation_},
+    {"battery_ok",battery_good_ && steady()-battery_at_<3},
     {"battery_fraction",battery_good_?Json(battery_fraction_):Json(nullptr)},
     {"last_reply",last_reply_},{"px4_text",last_text_},{"uwb_fusion_verified",false}}; }
   Json handle(const Json& q) {
