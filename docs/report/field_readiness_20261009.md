@@ -333,6 +333,26 @@ Jetson 검증은 `/dev/shm`의 별도 소스로 실행했다.
 `mission-web-final-tests.log`가 최종 결과다.
 [미션 관리 절차](../runbooks/field_web_settings.md)를 따른다.
 
+Jetson의 `drone_mission` 빌드도 통과했다.
+`colcon build --symlink-install --packages-select drone_mission`을 사용했다.
+리뷰 checkout만 정확한 Git bundle로 전진시켰다.
+기존 integration 수정과 원격 저장소 설정은 보존했다.
+최신 IDLE·착륙·disarm 상태에서 시험 웹만 교체했다.
+기존 관측 실행기와 MAVROS는 유지했다.
+교체 전 웹 상태는 비공개 파일로 보존했다.
+미션 ID가 없던 오래된 착륙 요청은 재전송하지 않았다.
+
+실물 웹에 네 시험 종류를 저장했다.
+호버 2초·X 왕복·Y 왕복·XY 역순 복귀다.
+저장 미션 4개·실행 기록 0개를 확인했다.
+실제 화면에서 호버 미션 불러오기를 확인했다.
+웹 주소는 PC의 `http://127.0.0.1:8351/`이다.
+끊겼던 SSH 터널을 localhost 범위로 복구했다.
+저장 파일은 `.review/field-20261009/mission-library.sqlite3`다.
+명령 출력·UWB 브리지는 계속 비활성이다.
+기체는 POSCTL·disarm이며 START 조건은 미충족이다.
+현장 배치·장착·시각·융합·전원 검증이 남았다.
+
 ## 카메라·스캐너·LiDAR 잔여 작업
 
 장치가 보이는 것과 미션 연결 완료를 구분한다.

@@ -7,7 +7,7 @@ PAGE = '''<!doctype html><html lang="ko"><meta charset="utf-8">
 section{padding:18px;background:white;border-radius:10px;margin:16px 0}h2{font-size:19px;margin-top:0}
 input,select{padding:10px;max-width:100%;box-sizing:border-box}textarea{box-sizing:border-box;width:100%;min-height:100px;font:14px monospace;padding:12px}
 button{padding:11px 15px;margin:7px 6px 7px 0;border:0;border-radius:6px;background:#164abd;color:white;cursor:pointer}
-button:disabled{background:#8d99aa;cursor:not-allowed}.quiet{background:#536477}#land{background:#ae3030}
+button:disabled{background:#8d99aa;cursor:not-allowed}.quiet{background:#536477}#land{background:#ae3030}#land:disabled{background:#8d99aa}
 table{width:100%;border-collapse:collapse;font-size:14px}td,th{text-align:left;padding:9px;border-bottom:1px solid #ddd}
 pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px}.hint{color:#526176;font-size:14px}#notice{padding:12px;background:#e8eef9;white-space:pre-wrap}
 </style><h1>Dronestock 비행 시험</h1>
