@@ -21,9 +21,13 @@ def main():
     parser.add_argument('--fcu-url')
     parser.add_argument('--port', type=int, default=8350)
     parser.add_argument('--enable-output', action='store_true')
+    parser.add_argument('--ground-ev-summary', type=Path,
+                        help='Show the ground-only EV sender status on the observation web')
     parser.add_argument('--rc-handoff-verified', action='store_true', help='Only after a documented physical RC handoff test')
     parser.add_argument('--evaluate-rc-in-flight', action='store_true', help='Operator-selected first-hover evaluation; does not claim physical RC verification')
     args = parser.parse_args()
+    if args.ground_ev_summary and args.enable_output:
+        parser.error('Ground-only EV diagnostics must not be presented as a flight-enabled session')
     if args.rc_handoff_verified and args.evaluate_rc_in_flight:
         parser.error('Choose verified evidence or a pending first-flight evaluation, not both')
     if args.profile == 'FLIGHT' and args.enable_output and not (args.rc_handoff_verified or args.evaluate_rc_in_flight):
@@ -71,7 +75,10 @@ def main():
                 '--params-file', str(ROOT/'config/mavros.native_hover.yaml'),
                 '-p', 'fcu_url:='+url, '-p', 'gcs_url:=""', '-p', 'tgt_system:=1', '-p', 'tgt_component:=1', '-p', 'fcu_protocol:=v2.0'])
         spawn('controller', [str(args.binary), '--config', str(config)])
-        spawn('web', [sys.executable, str(ROOT/'ops/native_hover_web.py'), '--socket', str(state/'hover.sock'), '--port', str(args.port)])
+        web_command = [sys.executable, str(ROOT/'ops/native_hover_web.py'), '--socket', str(state/'hover.sock'), '--port', str(args.port)]
+        if args.ground_ev_summary:
+            web_command += ['--ground-ev-summary', str(args.ground_ev_summary.resolve())]
+        spawn('web', web_command)
         (state/'pids.json').write_text(json.dumps({'launcher': os.getpid(), 'children': [p.pid for p in processes]}), encoding='utf-8')
         print(f'{args.profile} domain {domain}; output={args.enable_output}; http://127.0.0.1:{args.port}', flush=True)
         print(f'logs: {state}; START is a separate operator request', flush=True)

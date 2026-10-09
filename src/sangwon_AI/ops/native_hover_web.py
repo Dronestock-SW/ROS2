@@ -5,7 +5,39 @@ import json
 from pathlib import Path
 import secrets
 import socket
+import time
 from urllib.parse import urlsplit
+
+
+def ground_observation_status(path, now=None):
+    """Read diagnostic evidence only; never change the C++ readiness decision."""
+    if path is None:
+        return None
+    now = time.time() if now is None else now
+    try:
+        stat = path.stat()
+        if stat.st_size > 1_000_000:
+            raise ValueError('oversized_summary')
+        row = json.loads(path.read_text(encoding='utf-8'),
+                         parse_constant=lambda value: (_ for _ in ()).throw(ValueError(value)))
+        if (not isinstance(row, dict) or row.get('scope') != 'continuous_disarmed_static_ev'
+                or row.get('flight_authorized') is not False):
+            raise ValueError('not_ground_evidence')
+        result = row.get('result')
+        gate = row.get('gate')
+        if not isinstance(result, str) or not isinstance(gate, str):
+            raise ValueError('missing_result')
+        age = now - stat.st_mtime
+        if result not in ('streaming_ground_only', 'startup_timeout'):
+            state = 'stopped'
+        elif not 0 <= age <= 5:
+            state = 'stale'
+        else:
+            state = 'reporting' if gate == 'ready' else 'paused'
+        return dict(scope='ground_only', state=state, result=result, gate=gate,
+                    report_age_s=round(age, 2), flight_authorized=False)
+    except (OSError, ValueError, TypeError):
+        return dict(scope='ground_only', state='unavailable', flight_authorized=False)
 
 
 def exchange(path, request):
@@ -20,6 +52,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--socket', type=Path, required=True)
     parser.add_argument('--port', type=int, default=8350)
+    parser.add_argument('--ground-ev-summary', type=Path,
+                        help='Read-only ground EV diagnostic summary; never flight authorization')
     args = parser.parse_args()
     token = secrets.token_urlsafe(32)
 
@@ -48,6 +82,7 @@ def main():
             try:
                 result = exchange(args.socket, {'method': 'status'})
                 result['csrf'] = token
+                result['ground_observation'] = ground_observation_status(args.ground_ev_summary)
                 self.reply(200, result)
             except (OSError, ValueError):
                 self.reply(503, {'error': 'controller_unavailable'})
