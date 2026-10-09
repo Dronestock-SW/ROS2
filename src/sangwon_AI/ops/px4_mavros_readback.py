@@ -77,7 +77,10 @@ class MavrosReadback:
         end = time.monotonic() + timeout
         while time.monotonic() < end:
             self.recv_match(blocking=True, timeout=.1)
-            if self.heartbeat is not None and self.state is not None:
+            if (self.heartbeat is not None and self.state is not None
+                    and self.publisher.get_subscription_count() == 1):
+                # The source may be discovered before the router's sink.
+                # Wait for discovery without weakening the per-query guard.
                 return self.heartbeat
         if self.decode_error:
             raise RuntimeError('MAVROS frame decode failed: '+self.decode_error)

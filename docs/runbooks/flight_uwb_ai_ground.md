@@ -6,6 +6,51 @@ Tag A/B를 각각 독립 companion에서 시험할 때 읽는다.
 ARM·이륙·FC 파라미터 변경을 실행하지 않는다.
 이유: 실측·융합·실제 SITL 검증이 남아 있다.
 
+## 제한된 정지 EV 전달 진단
+
+Tag B의 실제 입력 경로만 시험하는 별도 도구다.
+비행 준비 확인이나 상시 운영 bridge를 대신하지 않는다.
+운영 bridge·미션 출력이 비활성일 때만 동작한다.
+최신 DISARM·지상·CH7 kill ON·정지 상태를 요구한다.
+공유 명령 잠금으로 다른 미션 실행기와 동시 실행을 막는다.
+명시한 5~60초 뒤 종료한다. 상태 상실 때 출력을 닫는다.
+보정 확인값을 true로 바꾸지 않는다.
+
+비공개 후보 JSON에 다음 항목을 기록한다.
+실측하지 않은 항목은 채우지 말고 시험을 중단한다.
+
+| 항목 | 내용 |
+|---|---|
+| purpose | DISARMED_UWB_EV_TRANSPORT_TRIAL |
+| flight_authorized | false |
+| enu_yaw_deg·enu_offset_x_m·enu_offset_y_m | 고정 후보 변환·근거 기록 |
+| map_y_axis_sign | 실제 앵커 도표 방향 ±1 |
+| evidence_reference | 후보 자료의 비공개 경로·한계 |
+| sensor_mount_confirmed | 실측 근거가 있을 때만 true |
+| measured_mount_frd_m | FC→안테나의 앞·오른쪽·아래 벡터(m) |
+
+FC EV_CTRL=1·NOISE_MD=0·DELAY=0을 요구한다.
+DELAY=0은 정지 진단 조건이며 보정 완료를 뜻하지 않는다.
+FC EV_POS는 명시한 실측 벡터와 같아야 한다.
+파라미터 변경은 도구가 수행하지 않는다.
+별도 허가된 변경은 먼저 백업하고 종료 후 복원한다.
+원복은 실제 FC 읽기로 확인한다.
+
+```bash
+source /opt/ros/humble/setup.bash
+source install/setup.bash
+export ROS_DOMAIN_ID=2 ROS_LOCALHOST_ONLY=1
+python3 src/drone_uwb/tools/ground_ev_trial.py \
+  --candidate /absolute/private/candidate.json \
+  --output /absolute/private/new-trial-directory --seconds 45
+```
+
+별도 고정 읽기로 vehicle_visual_odometry를 확인한다.
+estimator_aid_src_ev_pos·estimator_status_flags도 읽는다.
+단순 ROS 발행 수를 실제 FC 융합 성공으로 쓰지 않는다.
+첫 실물 결과는 [현장 기록](../report/field_readiness_20261009.md)을 따른다.
+운영 START는 기존 좌표·시각·RC·비행 조건을 따른다.
+
 ## 작업 보존
 
 기존 실행 경로와 통합 checkout을 분리한다.

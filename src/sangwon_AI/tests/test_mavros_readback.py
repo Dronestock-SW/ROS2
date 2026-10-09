@@ -45,6 +45,24 @@ def test_release_has_no_payload():
     assert not packet('commander arm\n', flags=0, count=0)
 
 
+@pytest.mark.parametrize('counts,expected', [([0,0,1],True),([2,2,2],False)])
+def test_heartbeat_waits_for_one_discovered_router(monkeypatch,counts,expected):
+    transport=module.MavrosReadback.__new__(module.MavrosReadback)
+    transport.heartbeat=SimpleNamespace(base_mode=0)
+    transport.state=SimpleNamespace(connected=True,armed=False)
+    transport.decode_error=None
+    clock=[0.]
+    calls=[]
+    transport.publisher=SimpleNamespace(get_subscription_count=lambda:counts[min(len(calls)-1,len(counts)-1)])
+    def receive(**kwargs):
+        calls.append(1)
+        clock[0]+=.1
+    transport.recv_match=receive
+    monkeypatch.setattr(module.time,'monotonic',lambda:clock[0])
+    assert (transport.wait_heartbeat(.3) is transport.heartbeat) is expected
+    assert len(calls)==3
+
+
 @pytest.mark.parametrize('change', [dict(state_at=0), dict(heartbeat_at=0),
     dict(state=SimpleNamespace(connected=False, armed=False)),
     dict(state=SimpleNamespace(connected=True, armed=True)),
