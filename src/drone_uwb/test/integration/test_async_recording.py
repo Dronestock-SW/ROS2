@@ -54,3 +54,14 @@ def test_disk_error_is_reported_and_rejects_further_recording():
     assert sink.write('raw','source data')
     with pytest.raises(OSError,match='recording_write_failed:OSError'):sink.close()
     assert not sink.write('raw','more')
+
+
+def test_low_disk_reserve_stops_recording_before_consuming_remaining_space(tmp_path,monkeypatch):
+    from types import SimpleNamespace
+    monkeypatch.setattr('drone_uwb.integration.async_recording.shutil.disk_usage',
+                        lambda path:SimpleNamespace(free=255*1024*1024))
+    output=tmp_path/'raw'
+    sink=AsyncRecording({'raw':output.open('w')})
+    assert sink.write('raw','must not consume reserve')
+    with pytest.raises(OSError,match='recording_disk_reserve_low'):sink.close()
+    assert output.read_bytes()==b''

@@ -1,10 +1,13 @@
 """Bounded FIFO recording; storage latency must not block sensor callbacks."""
 from collections import deque
+from pathlib import Path
+import shutil
 import threading
 
 
 class AsyncRecording:
-    def __init__(self, streams, max_pending_bytes=16*1024*1024, max_pending_items=8192):
+    def __init__(self, streams, max_pending_bytes=16*1024*1024, max_pending_items=8192,
+                 min_free_bytes=256*1024*1024):
         if max_pending_bytes <= 0 or max_pending_items <= 0:
             raise ValueError('positive_recording_capacity_required')
         self.streams = streams
@@ -15,6 +18,10 @@ class AsyncRecording:
         self.condition = threading.Condition()
         self.closing = False
         self.flush_pending = False
+        self.min_free_bytes = min_free_bytes
+        self.space_paths = {Path(s.name).parent for s in streams.values()
+                            if isinstance(getattr(s, 'name', None), str)}
+        self.bytes_since_space_check = 1024*1024
         self.thread = threading.Thread(target=self._run, name='uwb-recording', daemon=True)
         self.thread.start()
 
@@ -54,7 +61,13 @@ class AsyncRecording:
                     for stream in self.streams.values():
                         stream.flush()
                 else:
+                    if self.bytes_since_space_check >= 1024*1024:
+                        if any(shutil.disk_usage(p).free < self.min_free_bytes for p in self.space_paths):
+                            self.error = 'recording_disk_reserve_low'
+                            break
+                        self.bytes_since_space_check = 0
                     self.streams[name].write(data)
+                    self.bytes_since_space_check += size
                 with self.condition:
                     self.pending_bytes -= size
                     if name is None:
