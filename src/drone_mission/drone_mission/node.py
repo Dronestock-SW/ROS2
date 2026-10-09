@@ -26,6 +26,7 @@ from sensor_msgs.msg import BatteryState
 
 from drone_uwb.processing.gazebo_geometry import rotation_world_body
 from drone_uwb.integration.sitl.sitl_target_contract import PX4GlobalReference
+from drone_uwb.integration.planar import enu_xy_to_map, enu_vector_to_map, enu_yaw_to_map
 from .contracts import Settings, finite
 from .session import FlightSession, Snapshot, native_estimator_valid
 from .mission_chain import MissionChain
@@ -288,15 +289,12 @@ class FlightNode(Node):
                     velocity = (v.x, v.y, v.z)
                 else:
                     raise ValueError('invalid_fc_velocity_frame')
-                a = math.radians(self.settings.enu_yaw_deg)
-                x, y = p.x-self.settings.enu_offset_x_m, p.y-self.settings.enu_offset_y_m
-                s.xy = (math.cos(a)*x+math.sin(a)*y, -math.sin(a)*x+math.cos(a)*y)
-                s.velocity_xy = tuple(map(float, (math.cos(a)*velocity[0]+math.sin(a)*velocity[1],
-                                 -math.sin(a)*velocity[0]+math.cos(a)*velocity[1])))
+                s.xy = tuple(enu_xy_to_map((p.x, p.y), self.settings))
+                s.velocity_xy = tuple(enu_vector_to_map(velocity[:2], self.settings))
                 s.vertical_speed_m_s = float(velocity[2])
                 s.pose_stamp_ns, s.pose_age_s = stamp_ns(msg), self.age('pose')
-                s.yaw_deg = math.degrees(math.atan2(2*(q.w*q.z+q.x*q.y),
-                                        1-2*(q.y*q.y+q.z*q.z)))-self.settings.enu_yaw_deg
+                s.yaw_deg = enu_yaw_to_map(math.degrees(math.atan2(2*(q.w*q.z+q.x*q.y),
+                                        1-2*(q.y*q.y+q.z*q.z))), self.settings)
             except (ValueError, TypeError):
                 pass
         if 'uwb' in self.samples:
@@ -326,6 +324,8 @@ class FlightNode(Node):
                 and cfg.get('layout_confirmed') is True
                 and (not self.settings.execute or cfg.get('ground_only') is False)
                 and cfg.get('source_frame') == 'uwb_map'
+                and type(cfg.get('map_y_axis_sign', 1)) is int
+                and cfg.get('map_y_axis_sign', 1) == self.settings.map_y_axis_sign
                 and all(finite(cfg.get(k)) and abs(cfg[k]-getattr(self.settings, k)) < 1e-6
                         for k in ('enu_yaw_deg', 'enu_offset_x_m', 'enu_offset_y_m',
                                   'expected_ev_delay_ms'))

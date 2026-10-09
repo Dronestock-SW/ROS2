@@ -7,6 +7,7 @@ import math
 
 from drone_demo.mission import MissionConfig, MissionMonitor
 from drone_uwb.integration.sitl.sitl_target_contract import ned_to_global
+from drone_uwb.integration.planar import map_xy_to_enu
 from .contracts import finite, parse_request
 
 
@@ -232,9 +233,7 @@ class FlightSession:
         if not self.settings.inside(target) or math.dist(target, s.xy) > self.settings.max_leg_m:
             self.abort('target_exceeds_trial_limit', s, now)
             return
-        angle = math.radians(self.settings.enu_yaw_deg)
-        enu_x = math.cos(angle)*target[0]-math.sin(angle)*target[1]+self.settings.enu_offset_x_m
-        enu_y = math.sin(angle)*target[0]+math.cos(angle)*target[1]+self.settings.enu_offset_y_m
+        enu_x, enu_y = map_xy_to_enu(target, self.settings)
         latitude, longitude = ned_to_global(enu_y, enu_x, s.origin)
         x, y = round(latitude*1e7), round(longitude*1e7)
         self.target_global = (x/1e7, y/1e7)

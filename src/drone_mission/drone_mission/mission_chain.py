@@ -6,6 +6,7 @@ controller, integrated flow or duplicate UWB observations are produced here.
 import math
 import secrets
 from dataclasses import replace
+from drone_uwb.integration.planar import map_yaw_to_enu
 from .contracts import finite
 from .session import FlightSession
 
@@ -120,7 +121,7 @@ class MissionChain(FlightSession):
             self.actions[-1]['speed'] = min(speed_m_s, self.settings.speed_m_s)
         if self.actions and self.actions[-1]['kind'] == 'reposition' and yaw_deg is not None:
             # PX4 d6f12ad navigator consumes DO_REPOSITION yaw in NED radians.
-            self.actions[-1]['yaw_rad'] = math.radians(90-yaw_deg-self.settings.enu_yaw_deg)
+            self.actions[-1]['yaw_rad'] = math.radians(90-map_yaw_to_enu(yaw_deg, self.settings))
         return True
 
     def waypoint(self):

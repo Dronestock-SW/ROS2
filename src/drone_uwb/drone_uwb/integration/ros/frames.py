@@ -3,6 +3,7 @@ from dataclasses import dataclass
 import math
 
 import numpy as np
+from drone_uwb.integration.planar import map_to_enu_matrix, y_axis_sign
 
 
 @dataclass(frozen=True)
@@ -16,6 +17,7 @@ class BridgeSettings:
     timing_confirmed: bool = False
     sensor_mount_confirmed: bool = False
     enu_yaw_deg: float = 0.0
+    map_y_axis_sign: int = 1
     enu_offset_x_m: float = 0.0
     enu_offset_y_m: float = 0.0
     expected_ev_delay_ms: float = 0.0
@@ -28,6 +30,7 @@ class BridgeSettings:
     state_timeout_s: float = 2.5
 
     def __post_init__(self):
+        y_axis_sign(self)
         for name in ('enabled', 'ground_only', 'layout_confirmed', 'alignment_confirmed', 'timing_confirmed', 'sensor_mount_confirmed'):
             if not isinstance(getattr(self, name), bool):
                 raise ValueError(name + ' must be boolean')
@@ -93,8 +96,6 @@ def rotate_xy_covariance(x, y, covariance, settings):
         raise ValueError('invalid XY observation')
     if not np.allclose(matrix, matrix.T, atol=1e-9, rtol=0) or np.min(np.linalg.eigvalsh(matrix)) <= 0:
         raise ValueError('invalid XY covariance')
-    angle = math.radians(settings.enu_yaw_deg)
-    rotation = np.array([[math.cos(angle), -math.sin(angle)],
-                         [math.sin(angle), math.cos(angle)]])
+    rotation = map_to_enu_matrix(settings)
     return (rotation @ vector + [settings.enu_offset_x_m, settings.enu_offset_y_m],
             rotation @ matrix @ rotation.T)

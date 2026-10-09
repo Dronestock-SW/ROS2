@@ -3,6 +3,7 @@
 from dataclasses import dataclass
 from datetime import datetime
 import math
+from drone_uwb.integration.planar import y_axis_sign
 
 
 LAYOUT = 'warehouse-rectangle-6p3x4p6-z2p2-20261004'
@@ -31,6 +32,7 @@ class Settings:
     expected_ekf2_mag_type: int = 0
     expected_mis_takeoff_alt_m: float = 0.6
     enu_yaw_deg: float = 0.0
+    map_y_axis_sign: int = 1
     enu_offset_x_m: float = 0.0
     enu_offset_y_m: float = 0.0
     expected_ev_delay_ms: float = 0.0
@@ -52,6 +54,7 @@ class Settings:
     layout_id: str = LAYOUT
 
     def __post_init__(self):
+        y_axis_sign(self)
         if type(self.expected_ekf2_mag_type) is not int or self.expected_ekf2_mag_type not in (0, 1, 6):
             raise ValueError('supported_native_heading_policy_required')
         for name in ('execute', 'full_mission', 'layout_confirmed', 'alignment_confirmed', 'fusion_confirmed',

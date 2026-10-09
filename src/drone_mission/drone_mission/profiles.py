@@ -25,7 +25,7 @@ def trial_profile(tag, mission_share, uwb_share, config='', btf_config='', ancho
     anchors = matched_anchor_path(uwb_share, measured, anchor_file)
     bridge = {name: getattr(settings, name) for name in (
         'layout_confirmed', 'alignment_confirmed', 'timing_confirmed', 'sensor_mount_confirmed',
-        'enu_yaw_deg', 'enu_offset_x_m', 'enu_offset_y_m', 'expected_ev_delay_ms')}
+        'enu_yaw_deg', 'map_y_axis_sign', 'enu_offset_x_m', 'enu_offset_y_m', 'expected_ev_delay_ms')}
     bridge.update(input_source='btf_xy', tag_id=tag_id)
     bridge.update({f'antenna_body_frd_{axis}_m': getattr(settings, f'expected_ev_pos_{axis}_m')
                    for axis in ('x', 'y', 'z')})

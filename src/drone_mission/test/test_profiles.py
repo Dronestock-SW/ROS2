@@ -43,3 +43,13 @@ def test_real_launch_loads_rc_plugin_required_by_mission_start():
     assert 'rc_io' in plugins, 'MissionChain requires /mavros/rc/in on real domains'
     for plugin in ('sys_status', 'command', 'param', 'global_position', 'local_position', 'vision_pose'):
         assert plugin in plugins
+
+
+def test_clockwise_axis_sign_reaches_the_bridge_without_enabling_it(tmp_path):
+    config = json.loads((MISSION/'config/flight_tag_b.json').read_text(encoding='utf-8'))
+    config['map_y_axis_sign'] = -1
+    path = tmp_path/'clockwise.json'
+    path.write_text(json.dumps(config), encoding='utf-8')
+    settings, _, _, _, _, bridge = trial_profile('B', MISSION, UWB, config=path)
+    assert settings.map_y_axis_sign == BridgeSettings(**bridge).map_y_axis_sign == -1
+    assert not settings.alignment_confirmed and not BridgeSettings(**bridge).enabled

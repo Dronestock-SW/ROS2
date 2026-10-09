@@ -10,6 +10,7 @@ import math
 import numpy as np
 
 from drone_uwb.processing.geometry.gazebo_geometry import rotation_world_body
+from drone_uwb.integration.planar import map_xy_to_enu, enu_xy_to_map, y_axis_sign
 
 
 @dataclass(frozen=True)
@@ -80,10 +81,7 @@ def map_reference_xy_to_ned(map_xy_m, settings):
     point = np.asarray(map_xy_m, dtype=float)
     if point.shape != (2,) or not np.isfinite(point).all():
         raise ValueError('finite_map_xy_required')
-    angle = math.radians(settings.enu_yaw_deg)
-    c, s = math.cos(angle), math.sin(angle)
-    rotation = np.array([[c, -s], [s, c]])
-    enu = rotation@point+np.array([settings.enu_offset_x_m, settings.enu_offset_y_m])
+    enu = map_xy_to_enu(point, settings)
     return [float(enu[1]), float(enu[0])]
 
 
@@ -91,12 +89,7 @@ def ned_xy_to_map_reference(ned_xy_m, settings):
     point = np.asarray(ned_xy_m, dtype=float)
     if point.shape != (2,) or not np.isfinite(point).all():
         raise ValueError('finite_ned_xy_required')
-    angle = math.radians(settings.enu_yaw_deg)
-    c, s = math.cos(angle), math.sin(angle)
-    rotation = np.array([[c, -s], [s, c]])
-    enu = np.array([point[1], point[0]])
-    world = rotation.T@(enu-np.array([settings.enu_offset_x_m, settings.enu_offset_y_m]))
-    return world.tolist()
+    return enu_xy_to_map((point[1], point[0]), settings)
 
 
 def map_tag_to_px4_ned(tag_xyz_world_m, attitude_wxyz, covariance_tag_xy_m2, settings):
@@ -105,6 +98,8 @@ def map_tag_to_px4_ned(tag_xyz_world_m, attitude_wxyz, covariance_tag_xy_m2, set
     The attitude maps body FLU to the UWB/Gazebo world. PX4 reference position
     is compensated once here, so the EV sensor-offset parameters must be zero.
     """
+    if y_axis_sign(settings) != 1:
+        raise ValueError('planar_reflection_is_not_a_3d_attitude_frame')
     point = np.asarray(tag_xyz_world_m, dtype=float)
     covariance = np.asarray(covariance_tag_xy_m2, dtype=float)
     if point.shape != (3,) or not np.isfinite(point).all():

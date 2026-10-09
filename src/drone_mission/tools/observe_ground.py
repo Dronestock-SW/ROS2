@@ -10,6 +10,7 @@ import datetime
 import json
 import math
 import os
+from pathlib import Path
 import sys
 import time
 
@@ -29,9 +30,12 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--seconds', type=float, default=10.)
     parser.add_argument('--domain', type=int, choices=(1, 2, 99), required=True)
+    parser.add_argument('--trace', type=Path,
+                        help='New JSONL file for received FC pose, ToF, IMU and RC/state samples.')
     args = parser.parse_args()
-    if not 1 <= args.seconds <= 30:
-        parser.error('--seconds must be from 1 to 30.')
+    maximum = 180 if args.trace else 30
+    if not 1 <= args.seconds <= maximum:
+        parser.error(f'--seconds must be from 1 to {maximum}.')
     current_domain = int(os.environ.get('ROS_DOMAIN_ID', '0'))
     if current_domain != args.domain:
         parser.error('Source the existing ROS environment and set the matching ROS_DOMAIN_ID.')
@@ -57,12 +61,20 @@ def main():
     checked_at = datetime.datetime.now(datetime.timezone.utc).isoformat()
     samples = {}
     subscriptions = []
+    trace = args.trace.open('x', encoding='utf-8') if args.trace else None
+    trace_topics = {'/mavros/state', '/mavros/rc/in', '/mavros/extended_state',
+                    '/mavros/local_position/odom', '/mavros/downward_0', '/mavros/imu/data'}
 
     def receive(topic, message):
         row = samples.setdefault(topic, {'count': 0})
         row['count'] += 1
         row['received_monotonic'] = time.monotonic()
         row['latest'] = message_to_ordereddict(message)
+        if trace is not None and topic in trace_topics:
+            trace.write(json.dumps(safe(dict(topic=topic,
+                received_monotonic_ns=time.monotonic_ns(),
+                received_ros_ns=node.get_clock().now().nanoseconds,
+                message=row['latest'])), allow_nan=False)+'\n')
         if isinstance(message, String):
             if len(message.data) <= 65536:
                 try:
@@ -154,6 +166,8 @@ def main():
             'parameter_service_available': client.service_is_ready(),
         }
     finally:
+        if trace is not None:
+            trace.close()
         node.destroy_node()
         rclpy.shutdown()
     print(json.dumps(safe(report), ensure_ascii=False, allow_nan=False, indent=2))

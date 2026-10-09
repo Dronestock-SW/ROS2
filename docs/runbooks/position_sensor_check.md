@@ -118,6 +118,27 @@ PX4는 flow 사용 시 바닥 높이 범위도 검사한다.
 | 방향 회전 | 표시한 두 기체 방향 | heading·지도 회전·flow body 축 대응 |
 | 왕복 | 같은 시작 표식 | 원점 복귀·누적 편향·UWB 재정착 |
 
+앵커 도표 방향도 먼저 기록한다.
+A1에서 A2를 볼 때 A3가 왼쪽이면 `map_y_axis_sign=1`이다.
+오른쪽이면 `map_y_axis_sign=-1`이다.
+이는 기체가 향한 방향과 별개다.
+뒤로 이동했다는 이유로 지도 축을 다시 바꾸지 않는다.
+이유: 기체 heading이 변해도 앵커 좌표는 고정이다.
+관측·공분산·목표·역변환·방위에 같은 값을 사용한다.
+실행기는 브리지와 이 값이 다르면 정렬을 거부한다.
+값을 정해도 회전·원점·시각·장착 검증은 남는다.
+
+180초 지상 이동 기록은 다음처럼 수집한다.
+출력 파일은 새 이름이어야 한다. 기존 기록을 덮지 않는다.
+FC 위치·ToF·IMU·RC·지상 상태의 원본 시각을 보존한다.
+UWB 원문은 기존 관측 launch의 record 폴더를 사용한다.
+
+```bash
+python3 src/drone_mission/tools/observe_ground.py --domain 2 \
+  --seconds 180 --trace .review/new-motion-trace.jsonl \
+  > .review/new-motion-summary.json
+```
+
 실측 장착 벡터와 좌표 회전을 저장한다.
 검증되지 않은 0 벡터·0도는 그대로 잠근다.
 원시 거리·ToF·자세·FC 융합을 같은 시각에 기록한다.
