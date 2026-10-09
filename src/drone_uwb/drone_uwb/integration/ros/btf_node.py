@@ -21,6 +21,7 @@ from std_msgs.msg import String
 from drone_uwb.processing.measured_btf import MeasuredBtf, ground_xy_without_height
 from drone_uwb.integration.ros.qos import received_stream_qos
 from drone_uwb.integration.async_recording import AsyncRecording
+from drone_uwb.integration.clock_readiness import ClockReadiness
 
 
 def safe_json(value):
@@ -63,9 +64,7 @@ class BtfNode(Node):
         self.height_counts = Counter()
         self.last = None
         self.last_source_ns = None
-        self.sync_received = None
-        self.sync_offset = None
-        self.sync_count = 0
+        self.clock_readiness = ClockReadiness()
         self.fc_state = None
         self.fc_state_at = self.landed_at = float('-inf')
         self.landed = None
@@ -98,8 +97,11 @@ class BtfNode(Node):
             self.recorder.write(name, json.dumps(safe_json(row), ensure_ascii=False, allow_nan=False)+'\n')
 
     def state(self, msg):
+        fresh = 0 <= self.get_clock().now().nanoseconds-stamp_ns(msg) <= 1_500_000_000
+        if not fresh or not msg.connected:
+            self.clock_readiness.reset()
         self.fc_state = dict(connected=msg.connected,armed=msg.armed,mode=msg.mode)
-        self.fc_state_at = (time.monotonic() if 0 <= self.get_clock().now().nanoseconds-stamp_ns(msg) <= 1_500_000_000 else float('-inf'))
+        self.fc_state_at = time.monotonic() if fresh else float('-inf')
         self.record('inputs',dict(type='fc_state',received_ros_ns=self.get_clock().now().nanoseconds,**self.fc_state))
 
     def extended(self, msg):
@@ -116,23 +118,21 @@ class BtfNode(Node):
         self.ground_velocity_at=time.monotonic()
 
     def sync(self, msg):
-        valid = (math.isfinite(msg.round_trip_time_ms) and 0 <= msg.round_trip_time_ms <= 20
-                 and msg.remote_timestamp_ns > 0)
-        if self.sync_offset is not None and abs(msg.estimated_offset_ns-self.sync_offset) > 5_000_000:
-            valid = False
+        accepted, changed = self.clock_readiness.observe(now=time.monotonic(),
+            remote_ns=msg.remote_timestamp_ns, offset_ns=msg.estimated_offset_ns,
+            rtt_ms=msg.round_trip_time_ms)
+        if changed:
             self.processor.height.samples['tof'].clear()
             self.processor.height.samples['imu'].clear()
             self.processor.reset_models()
-        self.sync_count = self.sync_count+1 if valid else 0
-        self.sync_offset = msg.estimated_offset_ns
-        self.sync_received = time.monotonic()
         self.counts['timesync'] += 1
         self.record('inputs', {'type':'timesync','received_ros_ns':self.get_clock().now().nanoseconds,
              'remote_timestamp_ns':msg.remote_timestamp_ns,'estimated_offset_ns':msg.estimated_offset_ns,
-             'round_trip_time_ms':msg.round_trip_time_ms,'stable_count':self.sync_count})
+             'round_trip_time_ms':msg.round_trip_time_ms,'stable_count':self.clock_readiness.stable_samples,
+             'accepted':accepted,'clock_changed':changed})
 
     def sync_ready(self):
-        return self.sync_count >= 30 and self.sync_received is not None and time.monotonic()-self.sync_received < .5
+        return self.clock_readiness.ready(time.monotonic())
 
     def sensor(self, kind, row):
         row['received_ros_ns'] = self.get_clock().now().nanoseconds

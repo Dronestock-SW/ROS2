@@ -95,13 +95,15 @@ def test_delayed_clock_probe_does_not_refresh_or_destroy_valid_clock(monkeypatch
     pytest.importorskip('rclpy')
     from drone_uwb.integration.ros import bridge
     monkeypatch.setattr(bridge.time,'monotonic',lambda:10.1)
-    obj=NS(sync_count=30,sync_time=10.,sync_offset=1000000000,sync_remote_ns=100)
+    from drone_uwb.integration.clock_readiness import ClockReadiness
+    obj=NS(clock_readiness=ClockReadiness(30,10.,1000000000,100,True))
     late=NS(remote_timestamp_ns=200,round_trip_time_ms=25.,estimated_offset_ns=1000000000)
     bridge.UwbPx4Bridge.receive_sync(obj,late)
-    assert obj.sync_count==30 and obj.sync_time==10. and obj.sync_remote_ns==100
+    assert obj.clock_readiness.stable_samples==30 and obj.clock_readiness.last_valid_s==10.
+    assert obj.clock_readiness.remote_ns==100
     jump=NS(remote_timestamp_ns=200,round_trip_time_ms=1.,estimated_offset_ns=1010000000)
     bridge.UwbPx4Bridge.receive_sync(obj,jump)
-    assert obj.sync_count==1  # A clock change requires acquisition again.
+    assert obj.clock_readiness.stable_samples==1  # A clock change requires acquisition again.
 
 
 def test_continuous_bridge_keeps_publishing_across_arm_and_disarm(monkeypatch):

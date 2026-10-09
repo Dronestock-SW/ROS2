@@ -210,3 +210,5 @@ ARM→DISARM 전환 중 관측 지속을 합성 입력으로 확인했다.
 Jetson의기존 profile·관측 시험32개도 통과했다.
 Windows의추가 시험은fixture 심볼릭 링크를 읽지 못했다.
 같은 시험은실행 대상인Jetson에서 통과했다.
+
+후속 수신 공백 조사는[FC 관측 공백 기록](fc_transport_gap_20261009.md)에 남긴다.

@@ -5,7 +5,6 @@ Configuration is immutable after startup; restart to apply surveyed values.
 """
 from dataclasses import asdict
 import json
-import math
 import os
 import sys
 import time
@@ -22,6 +21,7 @@ from std_msgs.msg import String
 
 from drone_uwb.integration.ros.frames import BridgeSettings, gate, observation_xy
 from drone_uwb.processing.observation_guard import ObservationGuard
+from drone_uwb.integration.clock_readiness import ClockReadiness
 
 PARAMETERS = ('EKF2_EV_CTRL', 'EKF2_EV_DELAY', 'EKF2_EV_NOISE_MD',
               'EKF2_EV_POS_X', 'EKF2_EV_POS_Y', 'EKF2_EV_POS_Z')
@@ -51,46 +51,45 @@ class UwbPx4Bridge(Node):
         self.param_time = self.state_time = float('-inf')
         self.connected = False
         self.armed = False
-        self.sync_count = 0
-        self.sync_time = float('-inf')
-        self.sync_offset = None
-        self.sync_remote_ns = 0
+        self.clock_readiness = ClockReadiness()
         self.last_stamp = None
         self.published = self.rejected = 0
         self.last_reason = 'starting'
         self.observation_guard = ObservationGuard()
         self.create_timer(0.1, self.monitor)
 
+    @property
+    def sync_count(self):
+        return self.clock_readiness.stable_samples
+
+    @property
+    def sync_time(self):
+        return self.clock_readiness.last_valid_s
+
+    @property
+    def sync_offset(self):
+        return self.clock_readiness.offset_ns
+
+    @property
+    def sync_remote_ns(self):
+        return self.clock_readiness.remote_ns
+
     def receive_state(self, msg):
         stamp = msg.header.stamp.sec*1_000_000_000+msg.header.stamp.nanosec
         if stamp <= 0 or not 0 <= (self.get_clock().now().nanoseconds-stamp)/1e9 <= self.settings.state_timeout_s:
             self.connected = False
-            self.sync_count = 0
+            self.clock_readiness.reset()
             return
         if not msg.connected or not self.connected:
             self.params = {}
             self.param_time = float('-inf')
-            self.sync_count = 0
+            self.clock_readiness.reset()
         self.connected, self.state_time = msg.connected, time.monotonic()
         self.armed = msg.armed
 
     def receive_sync(self, msg):
-        now = time.monotonic()
-        valid = (msg.remote_timestamp_ns > self.sync_remote_ns and math.isfinite(msg.round_trip_time_ms)
-                 and 0 <= msg.round_trip_time_ms <= 20)
-        offset_jump = (self.sync_offset is not None and
-                       abs(msg.estimated_offset_ns-self.sync_offset) > 5_000_000)
-        if not valid:
-            # A delayed probe is not a new valid clock observation. Keep the
-            # last valid clock's age; a real offset jump still closes the gate.
-            if offset_jump:
-                self.sync_count = 0
-            return
-        stable = (now-self.sync_time < .5 and self.sync_offset is not None
-                  and abs(msg.estimated_offset_ns-self.sync_offset) <= 5_000_000)
-        self.sync_count = min(30,self.sync_count+1) if stable else 1
-        self.sync_time, self.sync_offset = now, msg.estimated_offset_ns
-        self.sync_remote_ns = msg.remote_timestamp_ns
+        self.clock_readiness.observe(now=time.monotonic(), remote_ns=msg.remote_timestamp_ns,
+            offset_ns=msg.estimated_offset_ns, rtt_ms=msg.round_trip_time_ms)
 
     def current_gate(self):
         now = time.monotonic()
