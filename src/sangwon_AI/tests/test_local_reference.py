@@ -36,6 +36,16 @@ local_altitude_invalid: False
 
 
 class ReferenceTest(unittest.TestCase):
+    def test_preserve_existing_vertical_frame(self):
+        before = LOCAL+'dist_bottom: 0.39\ndist_bottom_valid: True\nz_reset_counter: 2\n'
+        after = before.replace('z: -0.3\n', 'z: 63.34\n').replace('ref_alt: nan', 'ref_alt: 58').replace('z_reset_counter: 2','z_reset_counter: 3')+'delta_z: -63.64\n'
+        self.assertAlmostEqual(ref.original_vertical_datum(before, after), -5.64)
+        for bad in (after.replace('dist_bottom: 0.39','dist_bottom: 1.1'),
+                    after.replace('z_reset_counter: 3','z_reset_counter: 4'),
+                    after.replace('delta_z: -63.64','delta_z: 63.64')):
+            with self.subTest(bad=bad), self.assertRaises(ValueError):
+                ref.original_vertical_datum(before, bad)
+
     def test_valid_ground(self):
         ref.validate_ground(LOCAL, ARMED, FLAGS)
 

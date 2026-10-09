@@ -184,10 +184,20 @@ python3 src/sangwon_AI/ops/px4_local_reference.py \
 
 도구는 DISARM·지상·POSCTL·정지를 요구한다.
 기존 origin이 있으면 덮어쓰지 않는다.
-단일 SET_GPS_GLOBAL_ORIGIN만 보낸다.
+SET_GPS_GLOBAL_ORIGIN으로 기준점을 지정한다.
+지상·kill ON에서만 적용한다.
+기존 내부 고도 기준이 바뀌면 재설정 값을 대조한다.
+ToF·XY가 유지된 단일 재설정만 복원한다.
+최대 한 번 복원하고 다시 좌표를 확인한다.
+지도 지형 고도를 기체 고도로 사용하지 않는다.
 전후 PX4 좌표·유효성·원점을 직접 조회한다.
 ARM·모드·파라미터 명령은 보내지 않는다.
 재부팅 후 저장된 측량값처럼 재사용하지 않는다.
+
+1.3m는 START 순간 PX4 고도에서의 상승량이다.
+받침대에서 시작하면 바닥 기준 높이는 더 높다.
+ToF는 바닥 거리다. FC local z 절대 숫자와 다르다.
+기체 높이는 실측 센서와 PX4가 추정한다.
 
 ```bash
 python3 src/sangwon_AI/ops/native_hover_launch.py \

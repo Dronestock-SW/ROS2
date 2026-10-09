@@ -1328,6 +1328,75 @@ web PID4374·launch PID4375이며 실행 출력은 비활성이다.
 실물 ARM·이륙·자동 모드 명령은 보내지 않았다.
 이번 변경은 현장 설정·문서다. 새 코드 빌드·SITL은 미실시다.
 
+### 17시대 전역 기준·현재 부팅 UWB·첫 호버 화면
+
+제자리 호버와 전체 창고 미션을 분리했다.
+사용자는 RC 실물 인계를 첫 비행에서 평가하기로 했다.
+`--evaluate-rc-in-flight`는 그 선택을 표시한다.
+`rc_handoff_verified`는 여전히 false다.
+RC 수신·채널 매핑·AUTO override 검사는 유지한다.
+
+한남대 지도 위치를 전역 기준으로 사용했다.
+공개 지형 모델의58m는 실내 측량 고도가 아니다.
+최초 지정 때 local NED z가 약63.636m 변했다.
+도구가 실패를 기록했다. 비행 출력은 비활성이었다.
+PX4가 보고한 delta_z로 기존 고도 기준을 복원했다.
+복원 뒤 local ENU z는 약0.296m였다.
+ToF 바닥 거리는 약0.39m로 유지됐다.
+최종 수직 기준은 FC의 기존 내부 기준이다.
+AMSL 측량 고도로 해석하지 않는다.
+자동 복원 코드는 이 실측 기록의 수치로 재생 시험했다.
+자동 복원 전체 실물 반복은 하지 않았다.
+현재 설정·원점은 이번 FC 부팅에만 해당한다.
+
+| 실물 확인 | 결과 |
+|---|---|
+| 전역·home 유효성 | PX4 invalid=false |
+| DISARM 모드 시험 | AUTO.LOITER 실제 진입 후 POSCTL 복귀 |
+| 모터 명령 | ARM0건·이륙0건 |
+| 현재 부팅 UWB 기준 |118개 정지 표본·현재 FC 위치·사용자 -X heading |
+| UWB 실제 전송 |45초·1,650건·duration_complete |
+| PX4 EV position |두 EKF fused=true·innovation_rejected=false |
+| 동시 flow·range 융합 |true |
+| 동적 회전·고정 지연 보정 |미확인. 확인 플래그 유지 |
+| 임시 EV 장착 파라미터 |시험 종료 후 원래0,0,0으로 복원 |
+
+첫 기준점의 UWB 안테나 XY는 약(4.936,2.122)m다.
+FC ENU는 약(0.031,-0.029,0.296)m였다.
+이 둘의 값이 같아야 하는 것은 아니다.
+안테나 장착값과 현재 부팅 원점을 반영한다.
+정지·추정 heading으로 얻은 변환은 동적 보정 근거가 아니다.
+지상 진단 발행은45초 후 종료했다.
+상시 비행용 UWB bridge와 전체 미션은 계속 비활성이다.
+
+첫 호버 화면은 PC8350·Jetson8350이다.
+기존 전체 미션8351과 MAVROS는 그대로 유지했다.
+원점·모드·RC·배터리·서비스를 실제 FC에서 확인한다.
+현재 출력 프로필은 flow·ToF 기반 제자리 시험이다.
+START 때 실제 FC 위치를 출발점으로 저장한다.
+목표 상승량1.3m·안정 후2초·PX4 LAND를 사용한다.
+지리 고도58m나 UWB z=0을 목표로 쓰지 않는다.
+비상정지 ON이면 화면의 START를 잠근다.
+RC 개입 뒤 자동 재개하지 않는다.
+
+검증 명령:
+
+```bash
+colcon build --symlink-install --packages-select sangwon_ai_replay
+ctest --test-dir build/sangwon_ai_replay -R native_hover --output-on-failure
+python3 -m unittest discover -s src/sangwon_AI/tests -p test_local_reference.py
+# GPS 없는 SIH-as-SITL: native_hover_px4.py --local-origin --position-source ideal-ev
+```
+
+최종 C++ 빌드·sequence·14개 ROS/HTTP/IPC 시나리오 통과.
+전역 기준 누락·NaN·유실에서 START 차단·LAND를 확인했다.
+GNSS 융합을 끈 PX4 가상 시험도 COMPLETE·DISARM으로 끝났다.
+ideal EV 입력이다. 실제 flow 비행 증거와 구분한다.
+초기 배포 순서 오류로 구 바이너리 시험이 한 번 실패했다.
+새 커밋을 빌드한 뒤 같은 시험을 통과했다.
+원점 검사·고도 기준 복원 단위시험7개를 통과했다.
+실제 이륙·RC 공중 인계·창고 이동·스캔은 미실시다.
+
 ## 카메라·스캐너·LiDAR 잔여 작업
 
 장치가 보이는 것과 미션 연결 완료를 구분한다.

@@ -59,6 +59,29 @@ def validate_ground(local, armed, flags, require_unset=True):
         raise ValueError('existing_origin_preserved')
 
 
+def original_vertical_datum(before, after):
+    """Recover only a directly observed, single PX4 origin reset on the ground.
+
+    With barometer initialization PX4 may already have an internal vertical
+    datum while its public ref_alt remains NaN until a horizontal origin exists.
+    Keep that datum; a map elevation must not become a flight height correction.
+    """
+    for name in ('x', 'y', 'dist_bottom'):
+        if abs(float(field(after, name))-float(field(before, name))) > .03:
+            raise ValueError('movement_during_origin_assignment')
+    if any(field(row, 'dist_bottom_valid') != 'True' for row in (before, after)):
+        raise ValueError('range_required_for_datum_restoration')
+    dz = float(field(after, 'z'))-float(field(before, 'z'))
+    reset = float(field(after, 'delta_z'))
+    if (int(field(after, 'z_reset_counter')) != (int(field(before, 'z_reset_counter'))+1) % 256 or
+            not math.isfinite(dz) or not math.isfinite(reset) or abs(dz+reset) > .03):
+        raise ValueError('vertical_reset_not_explained')
+    original = float(field(after, 'ref_alt'))+reset
+    if not math.isfinite(original) or not -500 <= original <= 9000:
+        raise ValueError('invalid_original_vertical_datum')
+    return original
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--reference', type=Path, required=True)
@@ -137,6 +160,8 @@ def main():
         before = result['before'][QUERIES[0]]
         validate_ground(before, result['before'][QUERIES[1]], result['before'][QUERIES[2]])
         if args.apply:
+            if field(result['before'][QUERIES[1]], 'kill') != 'True':
+                raise RuntimeError('kill_switch_required_for_origin_assignment')
             connection.ground()
             packet = connection.encoder.set_gps_global_origin_encode(1, round(reference['latitude']*1e7),
                 round(reference['longitude']*1e7), round(reference['altitude_amsl_m']*1000))
@@ -161,6 +186,32 @@ def main():
                     field(result['after'][QUERIES[2]], 'global_position_invalid') != 'False'):
                 raise RuntimeError('global_origin_not_confirmed')
             result['local_delta_m'] = [float(field(after, n))-float(field(before, n)) for n in ('x','y','z')]
+            if abs(result['local_delta_m'][2]) > .2:
+                altitude = original_vertical_datum(before, after)
+                result['frame_rebase_review'] = dict(intermediate=result['after'],
+                    restored_vertical_datum_m=altitude, surveyed_altitude=False)
+                connection.ground()
+                if field(result['after'][QUERIES[1]], 'kill') != 'True':
+                    raise RuntimeError('kill_switch_required_for_datum_restoration')
+                # One bounded correction, solely to retain the original local
+                # height frame. No boot retry or flight-time correction exists.
+                packet = connection.encoder.set_gps_global_origin_encode(1,
+                    round(reference['latitude']*1e7), round(reference['longitude']*1e7), round(altitude*1000))
+                packet.pack(connection.encoder)
+                connection.encoder.seq = (connection.encoder.seq+1) % 256
+                connection.publisher.publish(connection.to_ros(packet))
+                end = time.monotonic()+4
+                while time.monotonic() < end:
+                    connection.recv_match(blocking=True, timeout=.1)
+                    connection.ground()
+                result['after'] = {q: connection.query(q) for q in QUERIES}
+                after = result['after'][QUERIES[0]]
+                validate_ground(after, result['after'][QUERIES[1]], result['after'][QUERIES[2]], require_unset=False)
+                if (abs(float(field(after, 'ref_alt'))-altitude) > .01 or
+                        field(result['after'][QUERIES[2]], 'global_position_invalid') != 'False' or
+                        abs(float(field(after, 'dist_bottom'))-float(field(before, 'dist_bottom'))) > .03):
+                    raise RuntimeError('vertical_datum_restoration_not_confirmed')
+                result['local_delta_m'] = [float(field(after, n))-float(field(before, n)) for n in ('x','y','z')]
             if max(abs(n) for n in result['local_delta_m']) > .2:
                 raise RuntimeError('local_position_changed_review_required')
         result['passed'] = True
