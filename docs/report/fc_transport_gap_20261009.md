@@ -101,14 +101,64 @@ B_TF 노드도기록 오류 시즉시 반환했다.
 `test_recording_independence.py`는저장 실패를 주입한다.
 정상 입력·거부 입력·만료 입력을 구분한다.
 미관측 고도를채우지 않는지도 확인한다.
-대상ROS 환경 실행 결과는배포 후 추가한다.
+Jetson에서저장·시계 관련23개 시험을 통과했다.
+이 중7개는관측 노드의저장 오류 주입 시험이다.
+`drone_uwb`의colcon 빌드도 통과했다.
 
 090427 관측 세션을정상 종료했다.
 닫힌 로그1,821,200,354bytes를백업 대상으로 묶었다.
 압축본은247,756,074bytes다.
 SHA256은`2fb66f9e63a450c2ed37b1798cec7622cca292e1b0ea662aca55031c75c28c1f`다.
-PC 복사본 해시 확인 후에만원본을 정리한다.
+PC 복사본 해시가일치했다.
+열린 파일이없고원본 해시가그대로임을 확인했다.
+그 후닫힌 원본만 정리했다.
+직후 디스크 여유는1,995MiB였다.
 FC 재부팅·파라미터 쓰기는하지 않았다.
+
+```bash
+python3 -m pytest -q \
+  src/drone_uwb/test/integration/test_recording_independence.py \
+  src/drone_uwb/test/integration/test_async_recording.py \
+  src/drone_uwb/test/integration/test_btf_clock_adapter.py \
+  src/drone_uwb/test/integration/test_clock_readiness.py
+colcon build --symlink-install --packages-select drone_uwb
+```
+
+## 수정 후 지상 수신 — 19:15 KST
+
+웹·MAVROS·UWB 관측을 복구했다.
+8350·8351 HTTP 연결을 확인했다.
+FC는 DISARM·지상·POSCTL 상태였다.
+웹에는 최신 FC 상태가 도착했다.
+새 세션은 `field-ground-101412-281553c0`이다.
+적용 코드는 `9f6ecf9`다.
+다른 현장 체크아웃·서비스는 보존했다.
+
+30초 읽기 전용 기록은 모든 토픽을 수신했다.
+FC 원시 메시지 13,756개를 받았다.
+IMU 2,916개·ToF 290개를 받았다.
+B_TF XY 1,102개를 받았다.
+새 기록 오류는 없었다.
+XY는 약 (5.266, 2.108)m였다.
+ToF의 유효 측정 수는 0이었다.
+표시 높이 0.15m는 지상 안테나 기준이다.
+실측 ToF 고도로 분류하지 않는다.
+
+약 0.34초 수신 공백은 다시 나타났다.
+FC 원시 최대 간격은 337.2ms였다.
+XY는 339.8ms, ToF는 390.5ms였다.
+동시에 UWB ROS 수신도 358.3ms 벌어졌다.
+관측 도구 타이머 최대 간격은 76.1ms였다.
+저장 결합 수정만으로 통신 문제는 해결되지 않았다.
+근거는 `transport-after-recording-fix-1014`다.
+
+정상 bridge는 비활성 상태로 복구했다.
+실제 설정의 좌표·시간 보정은 미확정이다.
+FC 위치 추정 유효 상태도 false였다.
+지상 임시 발행기를 비행용으로 재시작하지 않았다.
+START와 명령 출력은 계속 잠겨 있다.
+RC 존재를 이유로 미확정 값을 true로 쓰지 않았다.
+SITL·실비행 검증은 이번 수정에서 미실시다.
 
 ## 검증 범위
 
