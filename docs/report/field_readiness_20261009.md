@@ -179,6 +179,16 @@ python3 src/drone_mission/test/mission_chain_px4.py \
 `observation-processes.json`에 생성한 PID를 기록했다.
 웹은 Jetson localhost8001, WS8002를 쓴다.
 PC8351은 SSH tunnel이다. 기존8347은 보존했다.
+코드 commit `67e23e8`을 GitHub에 push했다.
+Jetson 검토 폴더의 origin은 이전 로컬 폴더다.
+이를 바꾸지 않고 Git bundle로 같은 commit을 전달했다.
+검토 폴더의 시험 중 수정은 stash에도 보존했다.
+이 폴더의 단순 `git pull origin`은 GitHub 갱신이 아니다.
+다음 갱신도 GitHub commit을 대조해야 한다.
+최종 웹은 IDLE·disarmed·천장3m로 읽혔다.
+자동 출발점은 null로 표시된다.
+이유: 실물 위치·좌표 변환 확인이 아직 없기 때문이다.
+`execute=false`·`bridge_enabled=false`로 관측을 재개했다.
 재부팅 자동 실행으로 ARM을 시작하지 않는다.
 Jetson 저장소의 남은 용량은 약1.5GB였다.
 장시간 원본 수집 전에 저장 공간을 확보해야 한다.
