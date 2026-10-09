@@ -158,7 +158,8 @@ class BtfNode(Node):
     def raw(self, msg):
         if self.recorder and self.recorder.error:
             self.counts['recording_failed'] += 1
-            return
+            # Retain fresh observations when diagnostic storage fails.
+            # status still reports the failure; validity gates below remain.
         started = time.perf_counter()
         now_ns = self.get_clock().now().nanoseconds
         try:
@@ -197,7 +198,7 @@ class BtfNode(Node):
             self.height_counts[selection['reason']] += 1
         result['processing_ms'] = (time.perf_counter()-started)*1000
         result['published'] = False
-        if result['ok'] and not (self.recorder and self.recorder.error):
+        if result['ok']:
             age = (self.get_clock().now().nanoseconds-result['stamp_ns'])/1e9
             result['publish_age_s'] = age
             ground_xy = ground_xy_without_height(result,
@@ -255,7 +256,10 @@ class BtfNode(Node):
         if rclpy.ok():
             self.status()
         if self.recorder:
-            self.recorder.close()
+            try:
+                self.recorder.close()
+            except OSError as exc:
+                self.get_logger().error('Recording shutdown: ' + str(exc))
         return super().destroy_node()
 
 

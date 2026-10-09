@@ -109,9 +109,9 @@ class UwbNode(Node):
         if 'raw' in self.record_files:
             self.recorder.write('raw', chunk)
         if self.recorder and self.recorder.error:
-            self.last_decision = self.recorder.error
             self.counts['recording_failed'] += 1
-            return
+            # Diagnostic storage must not interrupt live sensor input.
+            # publish_status reports the latched recording error separately.
         for line in self.framer.feed(chunk):
             try:
                 msg = decode_line(line)
@@ -132,9 +132,6 @@ class UwbNode(Node):
             received = {'host_received_monotonic_ns': mono_ns,
                         'host_received_ros_ns': ros_ns, 'message': msg}
             self.record('received', received)
-            if self.recorder and self.recorder.error:
-                self.last_decision = self.recorder.error
-                return
             self.received_pub.publish(String(data=json.dumps(received, ensure_ascii=False)))
             result = self.processor.process(msg, mono_ns, ros_ns)
             if not result.reason.startswith('sideband_') and result.reason != 'awaiting_tdma':
@@ -143,7 +140,7 @@ class UwbNode(Node):
             self.record('decisions', {'host_received_monotonic_ns': mono_ns,
                                      'reason': result.reason, 'details': result.details,
                                      'observation': asdict(result.observation) if result.observation else None})
-            if result.observation and not (self.recorder and self.recorder.error):
+            if result.observation:
                 obs = result.observation
                 pose = PoseWithCovarianceStamped()
                 pose.header.stamp.sec = obs.stamp_ns // 1_000_000_000
@@ -192,7 +189,10 @@ class UwbNode(Node):
         self.publish_status()
         self.close_serial()
         if self.recorder:
-            self.recorder.close()
+            try:
+                self.recorder.close()
+            except OSError as exc:
+                self.get_logger().error('Recording shutdown: ' + str(exc))
         return super().destroy_node()
 
 
