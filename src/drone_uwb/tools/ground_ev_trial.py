@@ -12,6 +12,8 @@ import math
 import os
 from pathlib import Path
 import time
+import signal
+from collections import deque
 
 
 def main():
@@ -19,10 +21,14 @@ def main():
     parser.add_argument('--candidate',type=Path,required=True)
     parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--seconds',type=float,default=45.)
+    parser.add_argument('--continuous-ground',action='store_true',
+        help='Keep this boot\'s static DISARM/kill-ON observation stream running; never enables flight')
     args=parser.parse_args()
     if not 5 <= args.seconds <= 60 or os.environ.get('ROS_DOMAIN_ID')!='2':
         parser.error('Tag B domain 2 and bounded 5..60 seconds required')
     cfg=json.loads(args.candidate.read_text(encoding='utf-8'))
+    if args.continuous_ground and cfg.get('boot_id')!=Path('/proc/sys/kernel/random/boot_id').read_text().strip():
+        parser.error('Continuous ground mode requires this boot\'s captured reference')
     if cfg.get('purpose')!='DISARMED_UWB_EV_TRANSPORT_TRIAL' or cfg.get('flight_authorized') is not False:
         parser.error('Explicit ground-only candidate required')
     for name in ('enu_yaw_deg','enu_offset_x_m','enu_offset_y_m'):
@@ -66,7 +72,7 @@ def main():
             self.landed=None; self.kill_channel=0
             self.landed_at=self.rc_at=self.production_at=self.flight_at=self.odom_at=float('-inf')
             self.production_disabled=self.execution_disabled=False
-            self.static_ok=False; self.baseline=None; self.rows=[]
+            self.static_ok=False; self.baseline=None; self.rows=deque(maxlen=1000)
             self.create_subscription(ExtendedState,'/mavros/extended_state',self.extended,qos)
             self.create_subscription(RCIn,'/mavros/rc/in',self.rc,qos)
             self.create_subscription(String,'/uwb/bridge_status',self.production,qos)
@@ -143,32 +149,48 @@ def main():
                     source_covariance_xy=[msg.pose.covariance[i] for i in (0,1,6,7)]))
 
     lock=WriterLock(2)
-    node=Trial(); started=time.monotonic(); first=None; result='startup_timeout'
+    node=Trial(); started=time.monotonic(); first=None; result='startup_timeout';saved_at=0.
+    def report():
+        return dict(scope='continuous_disarmed_static_ev' if args.continuous_ground else 'disarmed_static_ev_transport_trial_not_flight',
+            candidate=cfg,alignment_confirmed=False,timing_confirmed=False,fusion_confirmed=False,
+            flight_authorized=False,physical_flight_commands=False,fc_parameter_writes=False,
+            result=result,gate=node.current_gate(),last_reason=node.last_reason,
+            published=node.published,rejected=node.rejected,duration_s=time.monotonic()-started,
+            last_source_stamp_ns=node.last_stamp,covariance_test_allowance_m2=.25,
+            parameters=node.params,source_samples=list(node.rows))
+    def save():
+        temporary=args.output/'summary.tmp'
+        temporary.write_text(json.dumps(report(),indent=2),encoding='utf-8')
+        temporary.replace(args.output/'summary.json')
+    def stop(*_):raise KeyboardInterrupt
+    signal.signal(signal.SIGTERM,stop)
     try:
-        while rclpy.ok() and time.monotonic()-started<args.seconds+20:
+        while rclpy.ok() and (args.continuous_ground or time.monotonic()-started<args.seconds+20):
             rclpy.spin_once(node,timeout_sec=.02)
             now=time.monotonic()
+            if now-saved_at>=2:
+                save();saved_at=now
             if node.published and first is None:
                 first=now
+                result='streaming_ground_only'
                 print('GROUND_EV_PUBLISHING',flush=True)
             if first is not None:
-                if node.current_gate()!='ready':result=node.current_gate();break
-                if now-first>=args.seconds:result='duration_complete';break
+                reason=node.current_gate()
+                # Short sensor/clock gaps pause publication. Authority changes
+                # terminate the session and require a new explicit invocation.
+                recoverable={'stable_timesync_required','stationary_ground_required','unique_source_required'}
+                if reason!='ready' and not (args.continuous_ground and reason in recoverable):
+                    result=reason;break
+                if not args.continuous_ground and now-first>=args.seconds:result='duration_complete';break
             elif now-started>20:break
     except KeyboardInterrupt:
         result='interrupted'
     finally:
-        report=dict(scope='disarmed_static_ev_transport_trial_not_flight',candidate=cfg,
-            alignment_confirmed=False,timing_confirmed=False,fusion_confirmed=False,
-            flight_authorized=False,physical_flight_commands=False,fc_parameter_writes=False,
-            result=result,gate=node.current_gate(),last_reason=node.last_reason,
-            published=node.published,rejected=node.rejected,duration_s=time.monotonic()-started,
-            covariance_test_allowance_m2=.25,parameters=node.params,source_samples=node.rows)
+        save();final_report=report()
         node.destroy_node();rclpy.shutdown()
         lock.close()
-        (args.output/'summary.json').write_text(json.dumps(report,indent=2),encoding='utf-8')
-        print(json.dumps({k:v for k,v in report.items() if k!='source_samples'},indent=2),flush=True)
-    return 0 if result=='duration_complete' and report['published']>0 else 2
+        print(json.dumps({k:v for k,v in final_report.items() if k!='source_samples'},indent=2),flush=True)
+    return 0 if result=='duration_complete' and final_report['published']>0 else 2
 
 
 if __name__=='__main__':

@@ -86,6 +86,7 @@ class ToFTrackedSubsetCandidate(ToFSubsetCandidate):
         super().__init__(config,rms_limit_m=rms_limit_m,score_margin_m=score_margin_m)
         self.max_speed=max_speed_m_s;self.continuity_margin=continuity_margin_m;self.max_prior_age=max_prior_age_s
         self.selected_anchor=None;self.prior_xy=None;self.prior_stamp=None
+        self.ground_initializer = GroundSubsetInitialization() if config.get('ground_subset_initialization') is True else None
 
     def process(self,result):
         stamp=result['time_us']
@@ -94,6 +95,14 @@ class ToFTrackedSubsetCandidate(ToFSubsetCandidate):
         decision=super().process(result)
         prior_age=None if self.prior_stamp is None else (stamp-self.prior_stamp)/1e6
         prior_fresh=prior_age is not None and 0<prior_age<=self.max_prior_age
+        initial = False
+        if self.ground_initializer is not None:
+            near_prior = (self.prior_xy is None or decision.get('xy_m') is not None
+                and np.linalg.norm(np.asarray(decision['xy_m'])-self.prior_xy)<=.1)
+            initial, evidence = self.ground_initializer.check(stamp, decision,
+                ground=result.get('height_source')=='ground_antenna_reference' and near_prior,
+                already_initialized=prior_fresh)
+            decision['ground_initialization'] = evidence
         decision['tracking_prior_age_s']=prior_age
         if self.selected_anchor is not None and decision['reason']=='ambiguous_subset':
             hypotheses=[h for h in decision['hypotheses'] if h.get('excluded_anchor')==self.selected_anchor and 'physical_range_rms_m' in h]
@@ -105,9 +114,9 @@ class ToFTrackedSubsetCandidate(ToFSubsetCandidate):
                     decision.update(ok=True,xy_m=h['xy_m'],source=source,reason='previously_unique_subset_still_consistent',best_excluded_anchor=self.selected_anchor)
         if decision['ok']:
             if decision['source'] in ['ToF_validated_B3','ToF_tracked_B3','ground_reference_B3','ground_reference_tracked_B3']:
-                if not prior_fresh:
+                if not prior_fresh and not initial:
                     decision.update(ok=False,xy_m=None,source='rejected',reason='no_fresh_continuity_prior')
-                else:
+                elif prior_fresh:
                     step=float(np.linalg.norm(np.asarray(decision['xy_m'])-self.prior_xy));limit=self.continuity_margin+self.max_speed*prior_age
                     decision.update(tracking_step_m=step,tracking_limit_m=limit)
                     if step>limit:decision.update(ok=False,xy_m=None,source='rejected',reason='subset_position_discontinuous')
@@ -116,3 +125,41 @@ class ToFTrackedSubsetCandidate(ToFSubsetCandidate):
                 self.prior_xy=np.asarray(decision['xy_m'],float);self.prior_stamp=stamp
         if self.prior_stamp is not None and (stamp-self.prior_stamp)/1e6>self.max_prior_age:self.selected_anchor=None
         return decision
+
+
+class GroundSubsetInitialization:
+    """Acquire a first measurement from a unique, stationary ground subset.
+
+    This does not predict a pose or borrow FC XY. Ground eligibility is supplied
+    by the height adapter. Every sample must pass the existing range integrity
+    and subset uniqueness checks before entering the two-second acquisition.
+    """
+    def __init__(self):
+        self.started = self.last = self.anchor = self.origin = None
+        self.count = 0
+
+    def clear(self):
+        self.started = self.last = self.anchor = self.origin = None
+        self.count = 0
+
+    def check(self, stamp, decision, *, ground, already_initialized):
+        eligible = (ground and not already_initialized and decision.get('ok') is True
+            and decision.get('source') == 'ground_reference_B3'
+            and decision.get('reason') == 'unique_height_consistent_subset')
+        if not eligible:
+            self.clear()
+            return False, {'ready': False, 'reason': 'ground_unique_subset_required'}
+        xy=np.asarray(decision['xy_m'],float);anchor=decision['best_excluded_anchor']
+        if (xy.shape!=(2,) or not np.isfinite(xy).all() or type(stamp) is not int or stamp<=0):
+            self.clear()
+            return False, {'ready': False, 'reason': 'invalid_ground_candidate'}
+        if (self.last is not None and (not 0<stamp-self.last<=100_000
+                or anchor!=self.anchor or np.linalg.norm(xy-self.origin)>.05)):
+            self.clear()
+        if self.started is None:
+            self.started=stamp;self.anchor=anchor;self.origin=xy.copy()
+        self.last=stamp;self.count+=1
+        elapsed=(stamp-self.started)/1e6
+        ready=elapsed>=2. and self.count>=30
+        return ready, {'ready':bool(ready),'elapsed_s':elapsed,'samples':self.count,
+            'excluded_anchor':anchor,'reason':'stable_ground_subset' if ready else 'acquiring_ground_subset'}
