@@ -1296,6 +1296,38 @@ PC8351에서 새 XYZ·DISARM·IDLE 수신을 확인했다.
 기록이 계속 증가하므로 남은 공간 감시는 필요하다.
 시험 후 배터리는26%였고 기존 시작 하한 미만이었다.
 
+### 16:51 KST 배터리 교체 후 재연결
+
+새 배터리100%·25.645V와 웹 XYZ 수신을 확인했다.
+Jetson boot ID는 `281553c0-5c2e-4e4c-a12d-4a37e8e7c1d3`다.
+기존 직접 IP 연결은 재부팅 중 끊겼다.
+Tailscale SSH로 복구하고 PC8351 터널을 다시 만들었다.
+기존 sangwon 서비스5개는 계속 유지했다.
+USB 포트가 비어 있음을 확인한 뒤 관측을 시작했다.
+
+새 FC 위치는 ENU 약(0.009, -0.023)m였다.
+앞선 부팅의 원점·후보 변환을 재사용하지 않았다.
+flow·range 융합은 true였다. EV position은 false였다.
+visual odometry는 never published였다.
+global/home position은 invalid였다.
+DISARM·POSCTL이었다. kill은 false로 읽혔다.
+이전 부팅의 kill=true를 현재 상태로 간주하지 않는다.
+
+FC에서 MIS_TAKEOFF_ALT=1.3과 COM_TAKEOFF_ACT=0을 읽었다.
+MAG_TYPE=6·RC_IN_MODE=0·RC_OVERRIDE=3도 일치했다.
+이 근거로 현장 takeoff_settings_confirmed만 true로 갱신했다.
+파라미터를 변경하거나 새 실측값을 생성하지 않았다.
+원본 설정·읽기 결과·적용 근거를 비공개로 백업했다.
+반영 후 웹에서 이륙 설정 항목의 완료를 확인했다.
+운영 관측은 `field-ground-075500-281553c0`다.
+web PID4374·launch PID4375이며 실행 출력은 비활성이다.
+
+앞선 정지 EV 시험 결과는 보존한다.
+새 부팅의 현재 융합·좌표 확인을 대체하지 않는다.
+남은 확인값을 일괄 true로 바꾸지 않았다.
+실물 ARM·이륙·자동 모드 명령은 보내지 않았다.
+이번 변경은 현장 설정·문서다. 새 코드 빌드·SITL은 미실시다.
+
 ## 카메라·스캐너·LiDAR 잔여 작업
 
 장치가 보이는 것과 미션 연결 완료를 구분한다.
