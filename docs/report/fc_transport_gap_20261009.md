@@ -310,3 +310,10 @@ python3 -m pytest -q \
 이 패치는 라이브 프로세스의 hot reload가 아니다.
 실행 적용 뒤 지연 재측정은 남아 있다.
 실제 비행 명령·SITL 시험은 이번 수정에서 미실시다.
+
+수정 커밋 `d06926f`를 같은 브랜치에 push했다.
+Jetson의 같은 브랜치도 fast-forward했다.
+`colcon build --symlink-install --packages-select drone_uwb`는 통과했다.
+MAVROS·UWB·B_TF·mission·platform PID를 유지했다.
+실행 중 Python은 기존 solver를 이미 읽은 상태다.
+새 solver는 다음 관측 프로세스 시작부터 적용된다.
