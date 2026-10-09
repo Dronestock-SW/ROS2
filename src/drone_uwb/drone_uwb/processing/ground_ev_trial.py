@@ -2,6 +2,17 @@
 import math
 
 
+class GroundAuthorityLatch:
+    """Fresh authority loss ends the ground session; missing data only pauses it."""
+    def __init__(self):
+        self.revoked = False
+
+    def observe(self, *, fresh, armed=False, connected=True, landed=1, kill_channel=1999):
+        if fresh and (armed or not connected or landed in (2,3,4) or not 1900<=kill_channel<=2100):
+            self.revoked = True
+        return self.revoked
+
+
 def inflated_xy_covariance(values):
     """Validate the original covariance before adding the static trial allowance."""
     if len(values) != 4 or any(not math.isfinite(x) for x in values):

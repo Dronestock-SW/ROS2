@@ -48,7 +48,7 @@ def main():
     from nav_msgs.msg import Odometry
     from std_msgs.msg import String
     from drone_uwb.integration.ros import bridge
-    from drone_uwb.processing.ground_ev_trial import ground_trial_gate, inflated_xy_covariance
+    from drone_uwb.processing.ground_ev_trial import ground_trial_gate, inflated_xy_covariance, GroundAuthorityLatch
     from drone_mission.writer_lock import WriterLock
 
     bridge.PARAMETERS=(*bridge.PARAMETERS,'RC_MAP_KILL_SW')
@@ -64,6 +64,7 @@ def main():
 
     class Trial(bridge.UwbPx4Bridge):
         def __init__(self):
+            self.authority=GroundAuthorityLatch()
             super().__init__()
             # Do not remap the topic: the production-status subscriber below
             # must still observe the real production bridge.
@@ -84,18 +85,26 @@ def main():
             return stamp>0 and 0 <= (self.get_clock().now().nanoseconds-stamp)/1e9 <= limit
 
         def extended(self,msg):
-            self.landed=msg.landed_state if self.fresh_stamp(msg,1.5) else None
+            fresh=self.fresh_stamp(msg,1.5)
+            self.authority.observe(fresh=fresh,landed=msg.landed_state)
+            self.landed=msg.landed_state if fresh else None
             self.landed_at=time.monotonic()
 
         def rc(self,msg):
-            self.kill_channel=msg.channels[6] if len(msg.channels)>=8 and self.fresh_stamp(msg,.3) else 0
-            self.rc_at=time.monotonic()
+            if len(msg.channels)>=8 and self.fresh_stamp(msg,.3):
+                self.kill_channel=msg.channels[6];self.rc_at=time.monotonic()
+                self.authority.observe(fresh=True,kill_channel=self.kill_channel)
+
+        def receive_state(self,msg):
+            super().receive_state(msg)
+            self.authority.observe(fresh=self.fresh_stamp(msg,1.5),armed=msg.armed,connected=msg.connected)
 
         def production(self,msg):
             try: row=json.loads(msg.data)
             except ValueError: self.production_disabled=False; return
             self.production_disabled=(row.get('gate')=='disabled' and row.get('published')==0
                 and row.get('settings',{}).get('enabled') is False)
+            if not self.production_disabled:self.authority.revoked=True
             self.production_at=time.monotonic()
 
         def flight(self,msg):
@@ -104,6 +113,7 @@ def main():
             checks={c['code']:c['passed'] for c in row.get('preflight',{}).get('checks',[])}
             self.execution_disabled=(checks.get('execution') is False and row.get('state')=='IDLE'
                 and row.get('control_ack') is None and row.get('flight_control_enabled') is False)
+            if not self.execution_disabled:self.authority.revoked=True
             self.flight_at=time.monotonic()
 
         def odom(self,msg):
@@ -116,6 +126,7 @@ def main():
             self.odom_at=time.monotonic()
 
         def current_gate(self):
+            if self.authority.revoked:return 'ground_authority_revoked'
             now=time.monotonic()
             reason=ground_trial_gate(connected=self.connected,armed=self.armed,state_age_s=now-self.state_time,
                 landed=self.landed,landed_age_s=now-self.landed_at,kill_channel=self.kill_channel,rc_age_s=now-self.rc_at,
@@ -178,7 +189,9 @@ def main():
                 reason=node.current_gate()
                 # Short sensor/clock gaps pause publication. Authority changes
                 # terminate the session and require a new explicit invocation.
-                recoverable={'stable_timesync_required','stationary_ground_required','unique_source_required'}
+                recoverable={'stable_timesync_required','stationary_ground_required','unique_source_required',
+                    'fresh_disarmed_fc_required','fresh_ground_state_required','mapped_kill_switch_on_required',
+                    'production_bridge_must_remain_disabled','mission_output_must_remain_disabled','parameters_stale'}
                 if reason!='ready' and not (args.continuous_ground and reason in recoverable):
                     result=reason;break
                 if not args.continuous_ground and now-first>=args.seconds:result='duration_complete';break

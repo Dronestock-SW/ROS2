@@ -1,5 +1,16 @@
 import pytest
 from drone_uwb.processing.ground_ev_trial import ground_trial_gate, inflated_xy_covariance
+from drone_uwb.processing.ground_ev_trial import GroundAuthorityLatch
+
+
+@pytest.mark.parametrize('event', [dict(armed=True),dict(connected=False),dict(landed=2),
+    dict(landed=3),dict(landed=4),dict(kill_channel=1000)])
+def test_fresh_authority_loss_cannot_resume_the_same_ground_stream(event):
+    latch=GroundAuthorityLatch()
+    assert not latch.observe(fresh=False,**event)
+    assert not latch.observe(fresh=True)
+    assert latch.observe(fresh=True,**event)
+    assert latch.observe(fresh=True)  # Fresh normal values never undo a takeover.
 
 
 @pytest.mark.parametrize('source', [(-.1,0,0,.1),(0,0,0,0),(.1,.2,.2,.1),
