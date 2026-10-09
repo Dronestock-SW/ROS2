@@ -18,6 +18,7 @@ from sensor_msgs.msg import Imu, Range
 from std_msgs.msg import String
 
 from drone_uwb.processing.measured_btf import MeasuredBtf
+from drone_uwb.integration.ros.qos import received_stream_qos
 
 
 def safe_json(value):
@@ -69,7 +70,7 @@ class BtfNode(Node):
         self.pose_pub = self.create_publisher(PoseWithCovarianceStamped, '/uwb/btf_pose', qos_profile_sensor_data)
         self.xyz_pub = self.create_publisher(PoseStamped, '/uwb/btf_xyz', qos_profile_sensor_data)
         self.subs = [
-            self.create_subscription(String, '/uwb/received', self.raw, qos_profile_sensor_data),
+            self.create_subscription(String, '/uwb/received', self.raw, received_stream_qos()),
             self.create_subscription(Range, self.config['tof_topic'], self.tof, qos_profile_sensor_data),
             self.create_subscription(Imu, self.config['imu_topic'], self.imu, qos_profile_sensor_data),
             self.create_subscription(TimesyncStatus, '/mavros/timesync_status', self.sync, qos_profile_sensor_data),

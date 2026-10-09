@@ -22,6 +22,7 @@ from drone_uwb.acquisition.framing import LineFramer
 from drone_uwb.integration.recording import open_record_files
 from drone_uwb.acquisition.serial_io import SerialInput
 from drone_uwb.integration.ros.layout_selection import anchor_path
+from drone_uwb.integration.ros.qos import received_stream_qos
 
 
 class UwbNode(Node):
@@ -45,7 +46,7 @@ class UwbNode(Node):
         self.framer = LineFramer()
         self.pose_pub = self.create_publisher(PoseWithCovarianceStamped, '/uwb_pose', qos_profile_sensor_data)
         self.raw_pub = self.create_publisher(String, '/uwb/raw', qos_profile_sensor_data)
-        self.received_pub = self.create_publisher(String, '/uwb/received', qos_profile_sensor_data)
+        self.received_pub = self.create_publisher(String, '/uwb/received', received_stream_qos())
         self.status_pub = self.create_publisher(String, '/uwb/status', 10)
         self.counts = Counter()
         self.last_decision = 'starting'
