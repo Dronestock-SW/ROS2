@@ -31,6 +31,7 @@ from .session import FlightSession, Snapshot, native_estimator_valid
 from .mission_chain import MissionChain
 from .writer_lock import WriterLock
 from .native_ai import NativePlanner
+from .preflight import field_preflight
 
 
 def stamp_ns(msg):
@@ -342,6 +343,12 @@ class FlightNode(Node):
             channels = self.samples['rc'][0].channels
             s.rc_valid = len(channels) >= 4 and all(800 <= v <= 2200 for v in channels[:4])
             s.rc_age_s = self.age('rc')
+            s.rc_channels = tuple(channels)
+            mappings = getattr(self, 'rc_mappings', ())
+            s.rc_mapping_valid = (len(mappings)==3 and all(type(v) is int and 0 <= v <= len(channels) for v in mappings)
+                                  and mappings[0]>0 and all(800 <= channels[v-1] <= 2200 for v in mappings if v))
+            if s.rc_mapping_valid:
+                s.rc_switch_channels = tuple(sorted(set(v for v in mappings if v)))
         if 'battery' in self.samples:
             b = self.samples['battery'][0]
             if b.present and finite(b.voltage, b.percentage) and b.voltage > 0 and 0 <= b.percentage <= 1:
@@ -358,7 +365,8 @@ class FlightNode(Node):
             self.param_requested = now
             names = ['MIS_TAKEOFF_ALT', 'COM_TAKEOFF_ACT']
             if self.settings.full_mission:
-                names.extend(['EKF2_MAG_TYPE', 'COM_RC_OVERRIDE', 'COM_RC_IN_MODE'])
+                names.extend(['EKF2_MAG_TYPE', 'COM_RC_OVERRIDE', 'COM_RC_IN_MODE',
+                              'RC_MAP_FLTMODE', 'RC_MAP_ARM_SW', 'RC_MAP_KILL_SW'])
             self.param_future = self.param_client.call_async(GetParameters.Request(names=names))
             self.param_future.add_done_callback(self.parameters_received)
         if self.stream_client.service_is_ready():
@@ -394,6 +402,7 @@ class FlightNode(Node):
                 self.rc_override = rc.integer_value if rc.type == 2 else None
                 mode = future.result().values[4]
                 self.rc_mode = mode.integer_value if mode.type == 2 else None
+                self.rc_mappings = tuple(v.integer_value if v.type == 2 else None for v in future.result().values[5:8])
         except Exception:
             self.param_value = None
 
@@ -468,10 +477,14 @@ class FlightNode(Node):
         status = self.session.status()
         fresh_state = 0 <= s.state_age_s <= self.settings.state_timeout_s
         status.update(fc_connected=s.connected if fresh_state else None,
+                      fc_landed=s.landed if 0 <= s.landed_age_s <= self.settings.state_timeout_s else None,
                       fc_armed=s.armed if fresh_state else None,
                       fc_mode=s.mode if fresh_state else None,
                       px4_map_xy_m=list(s.xy) if s.xy and s.pose_age_s <= self.settings.pose_timeout_s else None)
         if self.settings.full_mission:
+            status['preflight'] = field_preflight(self.settings, s,
+                map_loaded=self.native_planner is not None,
+                recording_ok=self.log is not None and not self.record_fault)
             status['target_feedback'] = self.target_feedback
             status['target_requested_global'] = self.session.target_global
             status['input_checks'] = dict(estimator_valid=s.estimator_valid,
@@ -487,7 +500,8 @@ class FlightNode(Node):
                 bridge_reason=self.samples.get('bridge',({},0))[0].get('last_reason'),
                 takeoff_alt_m=s.takeoff_alt_m, takeoff_action=s.takeoff_action, mag_type=s.mag_type,
                 battery=s.battery, rc_required=s.rc_required, rc_valid=s.rc_valid,
-                rc_age_s=s.rc_age_s if math.isfinite(s.rc_age_s) else None, rc_override=s.rc_override, rc_mode=s.rc_mode)
+                rc_age_s=s.rc_age_s if math.isfinite(s.rc_age_s) else None, rc_override=s.rc_override, rc_mode=s.rc_mode,
+                rc_mapping_valid=s.rc_mapping_valid, rc_switch_channels=s.rc_switch_channels)
         changed = self.session.phase != self.previous_state
         if changed:
             self.record(dict(type='transition', **status))

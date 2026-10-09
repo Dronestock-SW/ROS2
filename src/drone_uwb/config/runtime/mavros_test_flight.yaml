@@ -1,7 +1,7 @@
 /**:
   ros__parameters:
     startup_px4_usb_quirk: false
-    plugin_allowlist: [sys_status, sys_time, imu, distance_sensor, command, param, local_position, global_position, setpoint_raw, vision_pose]
+    plugin_allowlist: [sys_status, sys_time, imu, distance_sensor, command, param, rc_io, local_position, global_position, setpoint_raw, vision_pose]
 /**/sys:
   ros__parameters:
     heartbeat_rate: 1.0

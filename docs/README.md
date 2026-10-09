@@ -10,6 +10,8 @@
 
 | 찾는 내용 | 위치 |
 |---|---|
+| 자동 출발점·천장 명령·RC 인계·실물 상태 | [10월 9일 현장 준비 기록](report/field_readiness_20261009.md) |
+| 현장 웹 명령·출발점·RC 점검 순서 | [웹 현장 설정 절차](runbooks/field_web_settings.md) |
 | 스캔 실패 뒤 남은 작업 계속·후속 시험 | [스캔 후속 수행 기록](report/scan_continuation_20261008.md) |
 | 최종 AI 연결·시험 결과·현장 미확인 | [전체 흐름 확인 기록](report/mission_flight_flow_20261008.md) |
 | 내일 전체 미션 현장 설정·지도·실행 | [현장 미션 절차](runbooks/mission_chain_field.md) |

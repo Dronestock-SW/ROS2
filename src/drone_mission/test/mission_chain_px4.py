@@ -34,7 +34,8 @@ def main():
     p.add_argument('--takeoff-alt',type=float,default=1.7)
     p.add_argument('--mag-type',type=int,choices=[0,1,6],default=0)
     p.add_argument('--transport',choices=['web','ros'],default='web')
-    p.add_argument('--scenario',choices=['nominal','spike','nlos','short_gap','long_gap','tof_short_gap','tof_long_gap','coherent_step','phase_delay','scan_missing','manual','scan_partial','scanner_missing_partial','scan_failed_partial'],default='nominal')
+    p.add_argument('--trial-case',choices=['hover','x','y','xy'],default=None)
+    p.add_argument('--scenario',choices=['nominal','spike','nlos','short_gap','long_gap','tof_short_gap','tof_long_gap','coherent_step','phase_delay','scan_missing','manual','rc_stick','scan_partial','scanner_missing_partial','scan_failed_partial'],default='nominal')
     args=p.parse_args()
     assert 0 <= args.imu_noise_scale <= 1
     assert .6 <= args.takeoff_alt <= 2.
@@ -53,6 +54,7 @@ def main():
     from std_msgs.msg import String
     from nav_msgs.msg import Odometry
     from drone_mission.contracts import Settings,LAYOUT
+    from drone_mission.field_presets import field_route
     from drone_uwb.processing.gazebo_geometry import rotation_world_body
 
     root=Path(__file__).resolve().parents[2]
@@ -170,6 +172,7 @@ def main():
             http_port,ws_port=free_port(),free_port()
             web_origin=f'http://127.0.0.1:{http_port}'
             spawn('web',['ros2','run','drone_mission','local_flight_web','--config',str(output/'mission.json'),
+                         '--site-config',str(output/'site.json'),
                          '--http-port',str(http_port),'--ws-port',str(ws_port)])
             spawn('platform',['python3','-m','drone_platform_link.runtime'],env=dict(os.environ,
                 DRONESTOCK_SERVER_URL=web_origin,DRONESTOCK_WS_URL=f'ws://127.0.0.1:{ws_port}/ws/drones/6/',
@@ -196,7 +199,9 @@ def main():
                             last_packet=packet;last_hil_seq=packet.get_seq();last_hil_received=time.monotonic()
                     if now-last_hb>1:
                         connection.mav.heartbeat_send(6,8,0,0,4);last_hb=now
-                    connection.mav.manual_control_send(1,0,0,500,0,0)
+                    stick = (700 if shared.get('stick_at') is not None
+                             and 0 <= now-shared['stick_at'] <= .5 else 0)
+                    connection.mav.manual_control_send(1,stick,0,500,0,0)
                     if last_packet is None or now-last_hil_received>.1 or now-last_send<.025:
                         stopped.wait(.003);continue
                     dt=min(.06,now-last_send) if last_send else .025
@@ -260,11 +265,16 @@ def main():
                     if status.get('fc_mode')!='POSCTL' and now-last_mode>3:
                         shell('commander mode posctl');last_mode=now
                     if now>warmup:
+                        if args.trial_case and assignment is None:
+                            checks={r['code']:r['passed'] for r in status.get('preflight',{}).get('checks',[])}
+                            if not all(checks.get(k) for k in ('layout_confirmed','alignment_confirmed','transform','pose','estimator')):
+                                time.sleep(.02);continue
                         if assignment is None:
                             assignment=dict(ok=True,contract_version='1.0',drone_id='6',status='ACTIVE',control_action='start',
                                 control_request_id='virtual-'+args.scenario,control_requested_at=datetime.now(timezone.utc).isoformat(),
                                 mission_db_id=1,mission_code='VIRTUAL-CHAIN',route_revision='r1',anchor_layout_id=LAYOUT,
                                 coordinate_frame='UWB_ANCHOR_LOCAL',origin='A1',x_axis='A1_TO_A2',y_axis='A1_TO_A3',z_axis='UP_FROM_FLOOR',unit='meter',
+                                ceiling_height_m=3.0,
                                 route_tasks=[dict(id='P1',type='waypoint',x=2.4,y=2.,yaw_deg=0.,dwell_s=.5),
                                     dict(id='S1',type='scan',x=3.2,y=2.2,staging_xy_m=[2.7,2.2],
                                          path_validation_ref='VIRTUAL-EMPTY-FLOOR-v1',yaw_deg=15.,marker_id=7,label_id='LABEL7',
@@ -276,9 +286,17 @@ def main():
                                          path_validation_ref='VIRTUAL-EMPTY-FLOOR-v1',yaw_deg=15.,marker_id=8,label_id='LABEL8',
                                          calibration_ref='virtual-camera',mounting_ref='virtual-mount'),
                                     dict(id='P3',type='waypoint',x=2.4,y=2.5,yaw_deg=15.,dwell_s=.3)]
+                            if args.trial_case:
+                                assignment['route_tasks']=field_route(args.trial_case,status['px4_map_xy_m'],settings)
+                                assignment['planned_launch_xy_m']=status['px4_map_xy_m']
                             if web_origin:
-                                req=Request(web_origin+'/local/command',data=json.dumps(dict(action='start',
-                                    route_tasks=assignment['route_tasks'])).encode(),
+                                req=Request(web_origin+'/local/command',data=json.dumps(dict(action='set_ceiling',ceiling_height_m=3.)).encode(),
+                                    headers={'Content-Type':'application/json'},method='POST')
+                                with urlopen(req,timeout=2) as response:
+                                    assert json.load(response)['flight_command_sent'] is False
+                                body=dict(action='start',route_tasks=assignment['route_tasks'])
+                                if args.trial_case:body['trial_case']=args.trial_case
+                                req=Request(web_origin+'/local/command',data=json.dumps(body).encode(),
                                     headers={'Content-Type':'application/json'},method='POST')
                                 with urlopen(req,timeout=2) as response:assignment=json.load(response)
                                 (output/'web_command.json').write_text(json.dumps(assignment,indent=2)+'\n',encoding='utf-8')
@@ -287,6 +305,8 @@ def main():
                 if assignment and not web_origin:assignmentpub.publish(String(data=json.dumps(assignment)))
                 if args.scenario=='manual' and status['state']=='MOVING' and not manual_sent:
                     shell('commander mode posctl');manual_sent=True
+                if args.scenario=='rc_stick' and status['state']=='MOVING' and not manual_sent:
+                    shared['stick_at']=now;manual_sent=True
                 missing_marker = args.scenario=='scan_missing' or (args.scenario=='scan_partial' and request.get('task_id')=='S1')
                 if request and status['state'] in ('ALIGNING','SCANNING') and not missing_marker:
                     task=request['task'];ns=time.time_ns()
@@ -300,6 +320,15 @@ def main():
                         resultpub.publish(String(data=json.dumps(dict(marker,stamp_ns=time.time_ns(),label_id=task['label_id'],
                             outcome=outcome,stored=True,result_id='SIMULATED-SCAN-'+request['window_id']))))
                         scan_sent.add(request['window_id'])
+                if status['state']=='PILOT_OVERRIDE' and args.scenario=='rc_stick':
+                    if 'override_at' not in shared:
+                        assert status.get('fc_mode') in ('POSCTL','ALTCTL'),status
+                        shared['override_at']=now
+                    # Virtual-only mode return proves the mission never reclaims
+                    # control after the operator releases the sticks.
+                    if now-shared['override_at']>1 and not shared.get('hold_returned'):
+                        shell('commander mode auto:loiter');shared['hold_returned']=True
+                    if now-shared['override_at']<3:continue
                 if status['state'] in ('END','FAILED','UNCONFIRMED','PILOT_OVERRIDE'):break
             time.sleep(.02)
         shell('listener estimator_status_flags 1');shell('listener estimator_aid_src_optical_flow 1')
@@ -319,9 +348,10 @@ def main():
             isolated_cpu_sets=pins,
             virtual_imu_noise_scale=args.imu_noise_scale,
             uwb_source='SEEDED_RAW_DS_TWR_MODEL',scenario=args.scenario,status=dict(status),stats=stats,
+            trial_case=args.trial_case,
             simulation_parameters=values,truth=shared['truth'],px4_commit='d6f12ad1c4f70ad3230afd7d86e971421e02fef4')
         (output/'summary.json').write_text(json.dumps(summary,indent=2)+'\n',encoding='utf-8')
-        expected='FAILED' if args.scenario in ('long_gap','tof_long_gap') else 'PILOT_OVERRIDE' if args.scenario=='manual' else 'END'
+        expected='FAILED' if args.scenario in ('long_gap','tof_long_gap') else 'PILOT_OVERRIDE' if args.scenario in ('manual','rc_stick') else 'END'
         assert status.get('state')==expected,summary
         if expected=='END':
             assert status['home_verified'] and status['landing_verified'],summary

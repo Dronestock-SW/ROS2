@@ -67,3 +67,29 @@ def test_tag_b_web_request_uses_selected_layout_end_to_end():
     request = platform.command('start',[dict(id='P1',x=2.3,y=2.)])
     assert request['drone_id'] == '6' and request['anchor_layout_id'] == settings.layout_id
     assert parse_request(request,settings,time.time())['action'] == 'start'
+
+
+def test_preset_is_read_only_and_never_issues_start(local_http):
+    platform, origin = local_http
+    platform.telemetry=dict(flight_state='IDLE',fc_armed=False,fc_landed=1,px4_map_xy_m=[4.2,2.],
+        preflight={'checks':[dict(code=k,passed=True) for k in ('layout_confirmed','alignment_confirmed','transform','pose','estimator')]})
+    platform.telemetry_received_s=time.monotonic()
+    with urlopen(origin+'/local/preset?case=xy',timeout=2) as response:
+        route=json.load(response)['route_tasks']
+    assert len(route)==9 and route[0]['dwell_s']==2
+    assert platform.assignment['control_action'] is None
+    platform.telemetry['px4_map_xy_m']=[float('nan'),2.]
+    with pytest.raises(HTTPError) as error:
+        urlopen(origin+'/local/preset?case=x',timeout=2)
+    assert error.value.code==400
+
+
+def test_ceiling_http_command_is_configuration_only(local_http):
+    p,origin=local_http
+    req=Request(origin+'/local/command',data=b'{"action":"set_ceiling","ceiling_height_m":3.0}',
+                headers={'Content-Type':'application/json'},method='POST')
+    with urlopen(req,timeout=2) as response:
+        assert json.load(response)['flight_command_sent'] is False
+    assert p.assignment['control_action'] is None
+    with urlopen(origin+'/local/status',timeout=2) as response:
+        assert json.load(response)['site']['ceiling_height_m']==3

@@ -31,5 +31,5 @@
   "scan_timeout_s": 20.0,
   "scan_speed_m_s": 0.05,
   "pose_timeout_s": 0.2,
-  "expected_ekf2_mag_type": 0
+  "expected_ekf2_mag_type": 6
 }

@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+import yaml
 
 import pytest
 
@@ -34,3 +35,11 @@ def test_wrong_tag_and_layout_rejected_before_any_process(tmp_path):
     path.write_text(json.dumps(config),encoding='utf-8')
     with pytest.raises(ValueError, match='layout must match'):
         trial_profile('B', MISSION, UWB, config=path)
+
+
+def test_real_launch_loads_rc_plugin_required_by_mission_start():
+    profile = yaml.safe_load((UWB/'config/runtime/mavros_test_flight.yaml').read_text(encoding='utf-8'))
+    plugins = profile['/**']['ros__parameters']['plugin_allowlist']
+    assert 'rc_io' in plugins, 'MissionChain requires /mavros/rc/in on real domains'
+    for plugin in ('sys_status', 'command', 'param', 'global_position', 'local_position', 'vision_pose'):
+        assert plugin in plugins

@@ -2,8 +2,11 @@
 import copy
 import hashlib
 import json
+import math
 from pathlib import Path
 import subprocess
+from .site import ceiling_map
+from .contracts import finite
 
 
 class NativePlanner:
@@ -34,10 +37,16 @@ class NativePlanner:
         return dict(payload, route_tasks=tasks), proof
 
     def compile(self, payload, launch_xy, settings):
+        planned = payload.get('planned_launch_xy_m')
+        if planned is not None and (not isinstance(planned,list) or len(planned)!=2
+                or not finite(*planned) or math.dist(planned,launch_xy) > .1):
+            raise ValueError('automatic_launch_position_changed_regenerate_trial')
         key = self.key(payload)
         if key in self.cache:
             return self.reuse(payload)
-        source = dict(schema='sangwon-native-plan/1', map=self.map, assignment=payload,
+        site_map = (ceiling_map(self.map, payload['ceiling_height_m'])
+                    if 'ceiling_height_m' in payload else self.map)
+        source = dict(schema='sangwon-native-plan/1', map=site_map, assignment=payload,
                       mag_type=settings.expected_ekf2_mag_type,
                       native_height_m=settings.expected_mis_takeoff_alt_m,
                       max_leg_m=settings.max_leg_m, launch_xy_m=list(launch_xy))
@@ -60,7 +69,8 @@ class NativePlanner:
             if a != b:
                 raise ValueError('native_plan_changed_mission')
         proof = dict(plan_ref=plan['plan_ref'], map_sha256=self.map_sha256,
-                     launch_xy_m=list(launch_xy), scope=plan['scope'])
+                     launch_xy_m=list(launch_xy), scope=plan['scope'],
+                     ceiling_height_m=payload.get('ceiling_height_m'))
         # One process executes at most one mission. Bound rejected/pending requests too.
         if len(self.cache) >= 20:
             raise ValueError('native_plan_request_budget_exceeded')

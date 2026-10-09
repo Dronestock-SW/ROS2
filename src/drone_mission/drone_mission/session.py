@@ -31,6 +31,9 @@ class Snapshot:
     rc_age_s: float = math.inf
     rc_override: object = None
     rc_mode: object = None
+    rc_channels: tuple = ()
+    rc_switch_channels: tuple = ()
+    rc_mapping_valid: bool = False
     command_services_ready: bool = False
     land_service_ready: bool = False
     connected: bool = False
@@ -64,7 +67,7 @@ class Snapshot:
 def route_fingerprint(payload):
     keys = ('mission_db_id', 'mission_code', 'route_revision', 'route_tasks',
             'coordinate_frame', 'origin', 'x_axis', 'y_axis', 'z_axis', 'unit',
-            'anchor_layout_id')
+            'anchor_layout_id', 'ceiling_height_m', 'planned_launch_xy_m')
     body = json.dumps({k: payload.get(k) for k in keys}, sort_keys=True,
                       allow_nan=False, separators=(',', ':'))
     return hashlib.sha256(body.encode()).hexdigest()

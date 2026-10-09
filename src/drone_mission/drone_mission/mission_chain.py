@@ -33,8 +33,12 @@ class MissionChain(FlightSession):
         self.scan_deadline = None
         self.ground_since = self.ground_xy = None
         self.started_s = None
+        self.rc_switch_reference = None
 
     def submit(self, payload, now, wall_s):
+        if self.phase == 'PILOT_OVERRIDE':
+            self.validation = {'accepted': False, 'reason': 'pilot_authority_latched_new_ground_session_required'}
+            return False
         if (self.assignment and isinstance(payload, dict) and payload.get('control_action') == 'start'
                 and payload.get('control_request_id') not in self.consumed):
             self.validation = {'accepted': False, 'reason': 'execution_requires_new_ground_session'}
@@ -57,6 +61,8 @@ class MissionChain(FlightSession):
             return 'live_rc_input_required'
         if ground and s.rc_required and s.rc_mode != 0:
             return 'physical_rc_receiver_mode_required'
+        if ground and s.rc_required and not s.rc_mapping_valid:
+            return 'physical_rc_switch_mapping_required'
         if (not finite(s.battery) or not 0 <= s.battery <= 1
                 or not 0 <= s.battery_age_s <= 3):
             return 'battery_unavailable'
@@ -73,8 +79,24 @@ class MissionChain(FlightSession):
         return 'ready'
 
     def end(self, phase, reason, now):
+        if phase == 'PILOT_OVERRIDE' and self.scan_window is not None:
+            self.scan_requests.append(self.scan_request('CANCEL'))
+            self.scan_window = self.marker = self.scan_result = None
         self.pending = self.intent = None
         self.enter(phase, reason, now)
+
+    def expected_mode(self, mode):
+        # AUTO.LAND requested by a pilot/failsafe is also an external takeover
+        # during movement. Do not send HOLD or a new LAND over that selection.
+        if self.phase == 'PREPARING':
+            return mode in ('POSCTL', 'AUTO.LOITER', 'AUTO.TAKEOFF')
+        if self.phase == 'ARMING':
+            return mode == 'AUTO.TAKEOFF'
+        if self.phase == 'TAKING_OFF':
+            return mode in ('AUTO.TAKEOFF', 'AUTO.LOITER')
+        if self.phase == 'LANDING':
+            return mode in self.AUTO_MODES
+        return mode == 'AUTO.LOITER'
 
     def abort(self, reason, s, now):
         self.failure = reason
@@ -219,12 +241,23 @@ class MissionChain(FlightSession):
             return []
         if (self.phase in ('IDLE','READY') and s.connected and s.armed and s.landed == 2
                 and 0 <= s.state_age_s <= self.settings.state_timeout_s):
-            self.abort('airborne_without_active_session',s,now)
-            return self.actions
+            self.end('UNCONFIRMED', 'airborne_without_active_session_no_authority', now)
+            return []
         if self.phase in self.ACTIVE:
+            if (s.rc_required and self.rc_switch_reference and s.rc_valid and s.rc_mapping_valid
+                    and 0 <= s.rc_age_s <= 1.):
+                # Only mapped flight switches, not accessory controls. These
+                # receiver values are microseconds. PX4 still owns RC handling.
+                changed = (tuple(self.rc_switch_reference) != s.rc_switch_channels
+                           or any(abs(s.rc_channels[ch-1]-value) >= 100
+                                  for ch,value in self.rc_switch_reference.items()
+                                  if ch <= len(s.rc_channels)))
+                if changed:
+                    self.end('PILOT_OVERRIDE', 'mapped_rc_switch_changed', now)
+                    return []
             if (s.connected and 0 <= s.state_age_s <= self.settings.state_timeout_s
-                    and s.armed and s.mode not in self.AUTO_MODES
-                    and not (self.phase == 'ARMING' and s.landed == 1 and s.mode == 'POSCTL')):
+                    and (s.armed or self.phase in ('PREPARING', 'ARMING'))
+                    and not self.expected_mode(s.mode)):
                 self.end('PILOT_OVERRIDE', 'manual_or_px4_failsafe_has_priority', now)
                 return []
             if self.pending and now-self.pending['sent_s'] > self.settings.command_timeout_s:
@@ -252,6 +285,7 @@ class MissionChain(FlightSession):
                     self.consume(request)
                     self.assignment, self.intent = request, None
                     self.home, self.origin = tuple(s.xy), s.origin
+                    self.rc_switch_reference = {ch:s.rc_channels[ch-1] for ch in s.rc_switch_channels}
                     self.started_s = now
                     self.enter('PREPARING', 'native_takeoff_mode_before_arm', now)
                     self.issue('takeoff_mode', now)
@@ -457,7 +491,8 @@ class MissionChain(FlightSession):
         flight = (self.phase == 'END' and self.home_verified and self.landing_verified)
         value.update(mission_complete=flight and self.completed_waypoints == len(self.assignment['waypoints'])
                      and len(self.scan_results) == total and succeeded == total,
-                     home_verified=self.home_verified, scan_window=self.scan_window,
+                     home_verified=self.home_verified, home_xy_m=list(self.home) if self.home is not None else None,
+                     scan_window=self.scan_window,
                      scan_results=self.scan_results, flight_outcome='SUCCEEDED' if flight else
                      'FAILED' if self.phase in ('FAILED','UNCONFIRMED') else
                      'PILOT_OVERRIDE' if self.phase == 'PILOT_OVERRIDE' else 'RUNNING',

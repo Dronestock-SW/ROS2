@@ -22,6 +22,8 @@ def rig():
 def sample(now, **changes):
     return snapshot(now, **dict(dict(battery=.9, battery_age_s=0.,yaw_deg=0.,takeoff_action=0,mag_type=6,
                     rc_valid=True,rc_age_s=0.,rc_override=3,rc_mode=0,
+                    rc_channels=(1500,1500,1000,1500,1500,1000,1000,1000),
+                    rc_switch_channels=(5,7,8),rc_mapping_valid=True,
                     vertical_speed_m_s=0.,
                     takeoff_alt_m=1.3), **changes))
 
@@ -154,8 +156,33 @@ def test_short_gap_recovers_original_target_without_consuming_a_new_start():
 
 def test_restart_does_not_adopt_an_airborne_execution():
     s=MissionChain(settings(full_mission=True))
-    a=s.tick(sample(12.,mode='AUTO.LOITER',armed=True,landed=2),12.,WALL,round(WALL*1e9))[0]
-    assert a['kind']=='land' and s.failure=='airborne_without_active_session'
+    assert s.tick(sample(12.,mode='AUTO.LOITER',armed=True,landed=2),12.,WALL,round(WALL*1e9))==[]
+    assert s.phase=='UNCONFIRMED' and s.reason=='airborne_without_active_session_no_authority'
+
+
+@pytest.mark.parametrize('mode', ['POSCTL', 'ALTCTL', 'STABILIZED', 'AUTO.RTL', 'AUTO.LAND'])
+def test_pilot_or_failsafe_selection_latches_and_ignores_late_reply_and_web_commands(mode):
+    s=rig();airborne(s)
+    s.index=1;s.enter('SCANNING','fixture',13.);s.scan_window='active-scan'
+    s.issue('reposition',13.)
+    token=s.pending['token']
+    assert step(s,13.1,mode=mode,armed=True,landed=2)==[]
+    assert s.phase=='PILOT_OVERRIDE' and s.pending is None
+    assert [r['action'] for r in s.scan_requests]==['CANCEL']
+    s.command_result(token,True,13.2)
+    for action in ('start','land','return_to_home'):
+        assert not s.submit(payload(action,'late-'+action),13.3,WALL+.3)
+        assert step(s,13.4,mode='AUTO.LOITER',armed=True,landed=2)==[]
+        assert s.phase=='PILOT_OVERRIDE'
+
+
+def test_mode_switch_while_awaiting_arm_never_retries_or_sends_land():
+    s=rig();a=step(s,10.)[0];s.command_result(a['token'],True,10.01)
+    arm=step(s,10.1,mode='AUTO.TAKEOFF')[0]
+    assert step(s,10.2,mode='ALTCTL',armed=False)==[]
+    assert s.phase=='PILOT_OVERRIDE'
+    s.command_result(arm['token'],True,10.3)
+    assert step(s,10.4,mode='ALTCTL',armed=True)==[]
 
 
 def test_changed_marker_target_feedback_stays_required_after_move_phase():
@@ -205,11 +232,35 @@ def test_unconfirmed_native_heading_blocks_start_before_mode_and_arm():
     (dict(rc_valid=False),'live_rc_input_required'),
     (dict(rc_age_s=1.1),'live_rc_input_required'),
     (dict(rc_override=0),'px4_auto_rc_override_required'),
-    (dict(rc_mode=1),'physical_rc_receiver_mode_required')])
+    (dict(rc_mode=1),'physical_rc_receiver_mode_required'),
+    (dict(rc_mapping_valid=False),'physical_rc_switch_mapping_required')])
 def test_field_rc_is_live_before_arm(changes,reason):
     s=rig()
     assert s.tick(sample(10.,**changes),10.,WALL,round(WALL*1e9))==[]
     assert s.phase=='READY' and s.reason==reason
+
+
+@pytest.mark.parametrize('channel',[5,7,8])
+def test_mapped_rc_switch_stops_mission_even_without_mode_change(channel):
+    s=rig();airborne(s)
+    channels=list(sample(13.).rc_channels);channels[channel-1]+=500
+    assert step(s,13.,mode='AUTO.LOITER',armed=True,landed=2,rc_channels=tuple(channels))==[]
+    assert s.phase=='PILOT_OVERRIDE' and s.reason=='mapped_rc_switch_changed'
+    assert step(s,14.,mode='AUTO.LOITER',armed=True,landed=2)==[]
+
+
+def test_rc_switch_jitter_and_accessory_channel_do_not_claim_pilot_override():
+    s=rig();airborne(s)
+    channels=list(sample(13.).rc_channels);channels[4]+=10;channels[5]+=500
+    step(s,13.,mode='AUTO.LOITER',armed=True,landed=2,rc_channels=tuple(channels))
+    assert s.phase!='PILOT_OVERRIDE'
+
+
+def test_home_display_is_fixed_px4_start_and_never_tracks_antenna_or_later_motion():
+    s=rig();airborne(s)
+    assert s.status()['home_xy_m']==[2.,2.]
+    step(s,13.,mode='AUTO.LOITER',armed=True,landed=2,xy=(2.3,2.),uwb_xy=(2.4,2.))
+    assert s.status()['home_xy_m']==[2.,2.]
 
 
 @pytest.mark.parametrize('actual,expected,height,reason', [

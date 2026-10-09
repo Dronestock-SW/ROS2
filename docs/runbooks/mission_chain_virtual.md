@@ -80,6 +80,7 @@ RAW 센서는 두 태그의 TDMA 계약 중 Tag B 슬롯을 사용한다.
 | tof_long_gap | ToF 5.2초 단절 | LAND·FAILED |
 | scan_missing | 마커 worker 응답 없음 | 복귀·END·작업 미완료 |
 | manual | PX4 POSCTL 실제 전환 | PILOT_OVERRIDE |
+| rc_stick | MAVLink 가상 스틱 70%·중립 복귀 | PX4 수동 인계·미션 재개 없음 |
 | scan_partial | S1 마커 없음·이후 P2/S2/P3 | 남은 작업 후 END·미완료 |
 | scanner_missing_partial | S1 판독 응답 없음·S2 정상 | 남은 작업 후 END·미완료 |
 | scan_failed_partial | S1 FAILED 응답·S2 정상 | 남은 작업 후 END·미완료 |
@@ -96,6 +97,11 @@ python3 src/drone_mission/test/mission_chain_matrix.py \
 ```
 
 반복은 새 `--output` 경로를 사용한다.
+`--takeoff-alt 1.3 --mag-type 6`으로 낮은 이륙을 시험한다.
+`--trial-case hover/x/y/xy`는 웹의 자동 출발점 경로다.
+`--trial-case`에는 네 값 중 하나만 지정한다.
+가상 RC_IN_MODE=1은 실물 RC_IN_MODE=0과 다르다.
+실제 수신기·스위치·스틱 검증을 대신하지 않는다.
 스캐너 성공 응답은 `SIMULATED-SCAN` 식별자다.
 실물 판독 데이터와 혼용하지 않는다.
 

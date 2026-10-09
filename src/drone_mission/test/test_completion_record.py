@@ -33,7 +33,7 @@ def test_first_terminal_publication_requires_completion_fsync(tmp_path, monkeypa
     with (tmp_path/'events.jsonl').open('w') as log:
         adapter = SimpleNamespace(session=session, settings=session.settings,
             snapshot=lambda: sample(12.), record_fault=False, log=log,
-            previous_state='LANDING', samples={}, target_feedback=None,
+            previous_state='LANDING', samples={}, target_feedback=None, native_planner=None,
             get_clock=lambda: clock, status_pub=pub, result_pub=pub,
             get_logger=lambda: SimpleNamespace(info=lambda _: None))
         adapter.record=lambda event: FlightNode.record(adapter, event)

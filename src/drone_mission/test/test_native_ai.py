@@ -50,3 +50,27 @@ def test_compiler_cannot_change_route(tmp_path,monkeypatch):
                               route_tasks=[dict(id='P',x=4,y=2)]))))
     with pytest.raises(ValueError,match='changed_mission'):
         p.compile(dict(route_tasks=[dict(id='P',x=2.4,y=2)]),(2,2),Settings())
+
+
+def test_web_ceiling_reaches_geometry_checker_and_is_bound_to_cached_proof(tmp_path,monkeypatch):
+    volume=dict(z_min_m=0,z_max_m=3)
+    m=dict(survey_status='SURVEYED',native_body_floor_height_m=1.5,clearance_z_m=.25,
+           boundary=[volume],altitude_zones=[volume],yaw_zones=[volume],forbidden=[])
+    path=tmp_path/'map';path.write_text(json.dumps(m),encoding='utf-8')
+    p=NativePlanner('bin',path,hashlib.sha256(path.read_bytes()).hexdigest())
+    route=[dict(id='P',x=2.4,y=2)]
+    calls=[]
+    def run(*args,**kwargs):
+        calls.append(json.loads(kwargs['input']))
+        return SimpleNamespace(returncode=0,stdout=json.dumps(dict(schema='sangwon-native-plan/1',validated=True,
+            flight_authority=False,route_tasks=route,plan_ref='test',scope='SINGLE_ALTITUDE_STATIC_MAP')))
+    monkeypatch.setattr('drone_mission.native_ai.subprocess.run',run)
+    payload=dict(route_tasks=route,ceiling_height_m=2)
+    _,proof=p.compile(payload,(2,2),Settings())
+    assert calls[0]['map']['boundary'][0]['z_max_m']==2 and proof['ceiling_height_m']==2
+    assert p.map['boundary'][0]['z_max_m']==3
+    with pytest.raises(ValueError,match='not_prepared'):p.reuse(dict(payload,ceiling_height_m=3))
+    with pytest.raises(ValueError,match='clearance'):p.compile(dict(payload,ceiling_height_m=1.6),(2,2),Settings())
+    assert len(calls)==1
+    with pytest.raises(ValueError,match='launch_position_changed'):
+        p.compile(dict(payload,planned_launch_xy_m=[2.2,2]),(2,2),Settings())
