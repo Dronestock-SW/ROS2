@@ -72,6 +72,18 @@ def test_mount_and_floor_must_be_confirmed():
         assert h.at(100)[0] is None
 
 
+@pytest.mark.parametrize('kind', ['tof', 'imu'])
+def test_duplicate_sensor_preserves_history_but_backward_stamp_invalidates(kind):
+    h = MeasuredHeight(config()['height'])
+    assert h.add(kind, dict(stamp_ns=100, valid=True))
+    assert h.add(kind, dict(stamp_ns=200, valid=True))
+    assert not h.add(kind, dict(stamp_ns=200, valid=False))
+    assert [r['stamp_ns'] for r in h.samples[kind]] == [100, 200]
+    assert h.samples[kind][-1]['valid']
+    assert not h.add(kind, dict(stamp_ns=150, valid=True))
+    assert not h.samples[kind]
+
+
 def event(msg, source_us):
     mono = 20_000_000_000+source_us*1000+2_000_000
     return dict(message=msg,host_received_monotonic_ns=mono,
@@ -138,6 +150,33 @@ def test_missing_anchor_does_not_return_a_position():
     p=MeasuredBtf(config());p.process(event(status(),100_000))
     msg=cycle(1,122000,np.asarray(config()['anchors_xyz_m']));msg['valid_mask']=7
     assert p.process(event(msg,122000))['reason']=='four_valid_ranges_required'
+
+
+@pytest.mark.parametrize('restart', ['disconnect', 'boot'])
+def test_real_source_restart_forgets_old_jump_prior_but_warms_up_again(restart):
+    c=config(); p=MeasuredBtf(c); anchors=np.asarray(c['anchors_xyz_m'])
+    p.process(event(status(),100_000))
+    for seq in range(1,80):
+        end=100_000+seq*22000; r=p.process(event(cycle(seq,end,anchors),end))
+    assert r['ok'] and p.raw_guard.prior_xy is not None
+    if restart=='disconnect': p.reset()
+    p.process(event(dict(status(),event='boot'),end+1000))
+    assert p.raw_guard.prior_xy is None
+    outcomes=[]
+    for seq in range(1,90):
+        t=end+2000+seq*22000; msg=cycle(seq,t,anchors)
+        msg['raw_slant_m']=[float(np.linalg.norm(np.array([4,3,1.12])-a)) for a in anchors]
+        outcomes.append(p.process(event(msg,t)))
+    assert not outcomes[0]['ok'] and outcomes[0]['clock']['reason']=='insufficient_samples'
+    assert outcomes[-1]['ok'] and outcomes[-1]['xy_m']==pytest.approx([4,3],abs=.001)
+
+
+def test_queue_rejection_does_not_erase_quarantined_jump():
+    p=MeasuredBtf(config())
+    p.raw_guard.check((1.,1.),1_000_000_000)
+    assert p.raw_guard.check((3.,3.),1_100_000_000)=='observation_jump_quarantined'
+    p.reject_queued_input()
+    assert p.raw_guard.check((3.,3.),2_000_000_000)=='observation_jump_quarantined'
 
 
 @pytest.mark.parametrize('height_source,prefix', [

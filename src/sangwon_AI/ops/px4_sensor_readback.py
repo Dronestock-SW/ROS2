@@ -31,6 +31,17 @@ QUERIES = (
     'listener vehicle_status -n 1', 'listener battery_status -n 1', 'listener input_rc -n 1',
 )
 
+# A short, reproducible snapshot to attach before/after a manual hover trial.
+# Logger status is read only; it does not start logging or alter SDLOG_MODE.
+MANUAL_FLIGHT_QUERIES = (
+    'param show EKF2_MAG_TYPE', 'param show EKF2_EV_CTRL',
+    'param show EKF2_OF_CTRL', 'param show EKF2_RNG_CTRL', 'param show EKF2_HGT_REF',
+    'param show SENS_FLOW_ROT', 'param show SENS_FLOW_SCALE',
+    'param show COM_RC_IN_MODE', 'param show COM_RC_OVERRIDE', 'param show MIS_TAKEOFF_ALT',
+    'param show SDLOG_MODE', 'param show SDLOG_PROFILE', 'logger status',
+    'listener estimator_status_flags -n 1', 'listener vehicle_local_position -n 1',
+)
+
 
 def completed(text, query):
     terminal = re.sub(r'\x1b\[[0-?]*[ -/]*[@-~]', '', text)
@@ -40,9 +51,11 @@ def completed(text, query):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--profile', choices=('sensors','manual-flight'), default='sensors')
     parser.add_argument('--ros-domain', type=int, choices=(1, 2, 99),
                         help='Use the existing /uas1 MAVROS router; never open the FC serial port.')
     args = parser.parse_args()
+    queries = MANUAL_FLIGHT_QUERIES if args.profile == 'manual-flight' else QUERIES
     os.environ['MAVLINK20'] = '1'
     from pymavlink import mavutil
     if args.ros_domain is None:
@@ -53,11 +66,12 @@ def main():
                                               source_system=255, source_component=197)
     else:
         from px4_mavros_readback import MavrosReadback
-        connection = MavrosReadback(args.ros_domain, QUERIES)
+        connection = MavrosReadback(args.ros_domain, queries)
     result = dict(checked_at_utc=datetime.now(timezone.utc).isoformat(),
                   device='/dev/pixhawk' if args.ros_domain is None else '/uas1/mavlink_sink',
                   ros_domain=args.ros_domain,
-                  outbound=['SERIAL_CONTROL fixed param show/listener queries only'],
+                  profile=args.profile,
+                  outbound=['SERIAL_CONTROL fixed read-only queries only'],
                   physical_flight=False, fc_parameter_writes=False, queries=[])
     flags = mavutil.mavlink.SERIAL_CONTROL_FLAG_EXCLUSIVE | mavutil.mavlink.SERIAL_CONTROL_FLAG_RESPOND
     try:
@@ -67,7 +81,7 @@ def main():
         if heartbeat.base_mode & 128:
             raise RuntimeError('FC armed; readback requires a disarmed bench')
         result['initial_armed'] = False
-        for query in QUERIES:
+        for query in queries:
             while connection.recv_match(blocking=False):
                 pass
             encoded = (query+'\n').encode('ascii')

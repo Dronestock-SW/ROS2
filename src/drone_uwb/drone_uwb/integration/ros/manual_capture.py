@@ -6,7 +6,7 @@ from pathlib import Path
 import signal
 import time
 
-from drone_uwb.integration.manual_capture import Capture, add_marker, config_evidence
+from drone_uwb.integration.manual_capture import Capture, add_marker, config_evidence, inspect_capture
 
 
 TOPICS = {
@@ -175,7 +175,9 @@ def main(argv=None):
     if args.command == 'mark':
         print(json.dumps(add_marker(args.directory, args.label), ensure_ascii=False)); return 0
     if args.command == 'status':
-        print((args.directory/'summary.json').read_text(encoding='utf-8')); return 0
+        result = inspect_capture(args.directory)
+        print(json.dumps(result, ensure_ascii=False))
+        return 0 if result['recording_active'] else 1
     if not (10 <= args.seconds <= 3600 and 5 <= args.post_disarm_seconds <= 120
             and 1 <= args.max_mib <= 1024 and args.reserve_mib >= 256):
         parser.error('seconds 10..3600; post-disarm 5..120; max MiB 1..1024; reserve >=256 MiB')

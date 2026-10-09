@@ -43,9 +43,15 @@ cd ~/ROS2-review-20261008-codex
 source /opt/ros/humble/setup.bash
 source install/setup.bash
 export ROS_DOMAIN_ID=2 ROS_LOCALHOST_ONLY=1
-CAPTURE="$HOME/flight-records/manual-$(date -u +%Y%m%dT%H%M%SZ)"
+export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1
+# 이 현장 설치에서 ROS Python 의존성을 제공하는 기존 경로.
+export PYTHONPATH="$HOME/ROS2-integration-20261007/.test-deps:$PYTHONPATH"
+df -h /dev/shm
+CAPTURE="/dev/shm/manual-$(date -u +%Y%m%dT%H%M%SZ)"
 ros2 run drone_uwb uwb_manual_capture record \
-  --tag B --output "$CAPTURE" --seconds 900 \
+  --tag B --output "$CAPTURE" --seconds 900 --max-mib 1024 \
+  --config .review/field-20261009/field-btf.json \
+  --config .review/field-20261009/field-mission.json \
   --source-revision "$(git rev-parse HEAD)"
 ```
 
@@ -74,10 +80,19 @@ touch "$CAPTURE/STOP"
 
 `summary.json`은 2초마다 갱신한다.
 필수 토픽 누락과 마지막 수신 경과를 확인한다.
+`status`의 `recording_active`도 확인한다.
+다른 부팅·5초 넘은 요약·종료·오류면 false다.
+상태 명령도 이때 종료 코드 1을 반환한다.
+이는 토픽 완전성이나 비행 허가 판정이 아니다.
 ARM·모드 변화와 토픽별 최대 공백도 남긴다.
 오래된 summary는 수집기 생존 근거가 아니다.
 
 기본 사건 파일 한도는 192MiB다.
+위 현장 명령은 1GiB를 명시해 사용한다.
+오늘 기록 속도는 약 0.76MB/s였다.
+192MiB는 이 속도에서 약 4분이면 소진된다.
+`estimated_capacity_remaining_s`로 남은 시간을 확인한다.
+이 값은 지금까지 평균 속도에 따른 추정이다.
 저장공간 512MiB를 남기고 기록을 중단한다.
 큐·디스크 오류를 숨기지 않고 요약에 남긴다.
 센서 콜백은 디스크 쓰기를 기다리지 않는다.
@@ -100,6 +115,11 @@ python src/drone_uwb/tools/mirror_manual_capture.py \
 `mirror-status.json`의 바이트 수·갱신 시각을 확인한다.
 완료 후 SHA256 일치 전에는 전원 차단 손실 가능성이 있다.
 SSH 재접속 시 마지막 복사 바이트부터 이어받는다.
+재개할 때 처음·경계 64KiB의 해시를 확인한다.
+원격 부팅·PID 시작 시각·요약 갱신도 확인한다.
+원본 소실·PID 재사용·파일 축소면 오류로 끝난다.
+무한 `tail` 대기를 사용하지 않는다.
+전송 중에도 요약 파일과 복사 잔량을 갱신한다.
 SSH 전송만 압축하며 저장 원본은 바꾸지 않는다.
 같은 LAN의 확인된 IP는 `--connect-address`로 지정한다.
 원래 SSH 호스트 키 검증은 유지한다.
@@ -112,6 +132,39 @@ ROS 위치 유효성만으로 EV·광류 융합을 확정하지 않는다.
 ULog에는 실제 기록된 토픽을 먼저 확인한다.
 필요 입력이 없으면 미수집으로 남긴다.
 수집기가 PX4 로그 설정을 바꾸지는 않는다.
+
+DISARM 상태의 시험 전후에는 고정 읽기를 저장한다.
+logger 동작과 실제 파일 경로도 이 결과에 남긴다.
+지상 읽기를 공중 융합 근거로 소급하지 않는다.
+
+```bash
+python3 src/sangwon_AI/ops/px4_sensor_readback.py \
+  --ros-domain 2 --profile manual-flight \
+  --output /dev/shm/manual-fc-before.json
+```
+
+종료 후 `manual-fc-after.json`에도 같은 읽기를 저장한다.
+실제 ULog는 같은 FC 부팅·시행인지 확인해 PC에 복사한다.
+과거 날짜 폴더명만으로 연결하지 않는다.
+아래 분석기는 로컬 파일만 읽는다.
+
+```bash
+PYTHONPATH=src/drone_uwb python3 -m drone_uwb.integration.manual_analysis \
+  /path/to/PC-CAPTURE --output /path/to/manual-analysis.json
+```
+
+Windows에서는 저장소 위치에서 다음과 같이 실행한다.
+
+```powershell
+$env:PYTHONPATH='src/drone_uwb'
+python -m drone_uwb.integration.manual_analysis `
+  C:/path/to/CAPTURE --output C:/path/to/manual-analysis.json
+```
+
+거부 사유·토픽 공백·RC 모드·시계 비율을 요약한다.
+시계 단계만 재생하며 B_TF 전체 재현은 아니다.
+새 원시 단조 시계 기록은 호스트 시계 변화를 구분한다.
+원래 측정·ROS 시각을 고치거나 지연을 확정하지 않는다.
 
 1. 지상·ARM·공중·착륙·수동 모드 구간을 나눈다.
 2. UWB 거리와 B_TF의 거부·공백을 확인한다.
@@ -135,3 +188,4 @@ ULog의 광류 융합 상태와 독립 기준을 구분한다.
 근거: [PX4 로그](https://docs.px4.io/main/en/dev_log/logging),
 [외부 위치의 시간 보정](https://docs.px4.io/main/en/ros/external_position_estimation#tuning-ekf2-ev-delay).
 구현 확인은 [수집기 시험 기록](../report/manual_flight_capture_20261009.md)에 남긴다.
+수동 시험 뒤 수정은 [관측·기록 수정](../report/manual_capture_repairs_20261009.md)을 읽는다.

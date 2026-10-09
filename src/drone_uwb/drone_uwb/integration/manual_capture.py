@@ -4,6 +4,7 @@ from datetime import datetime, timezone
 import hashlib
 import json
 import math
+import os
 from pathlib import Path
 import shutil
 import time
@@ -32,7 +33,21 @@ def atomic_json(path, value):
 
 def clock_record():
     return dict(monotonic_ns=time.monotonic_ns(), wall_ns=time.time_ns(),
+                monotonic_raw_ns=monotonic_raw_ns(),
                 utc=datetime.now(timezone.utc).isoformat())
+
+
+def monotonic_raw_ns():
+    """Linux unslewed clock, diagnostic only; never a replacement ROS stamp."""
+    clock = getattr(time, 'CLOCK_MONOTONIC_RAW', None)
+    return time.clock_gettime_ns(clock) if clock is not None else None
+
+
+def process_identity():
+    path = Path('/proc/self/stat')
+    # comm may contain spaces or parentheses. Field 22 follows the last ')'.
+    ticks = path.read_text().rsplit(')', 1)[1].split()[19] if path.exists() else None
+    return dict(pid=os.getpid(), start_ticks=ticks)
 
 
 def boot_id():
@@ -59,6 +74,7 @@ class Capture:
         self.rejected = 0
         self.closed = False
         self.manifest = dict(metadata, schema=1, started=self.started, boot_id=boot_id(),
+            process=process_identity(),
             scope='manual_flight_receive_only', flight_authorized=False,
             alignment_confirmed=False, timing_confirmed=False,
             fc_commands_sent=0, parameter_writes=0,
@@ -115,8 +131,12 @@ class Capture:
         flow = any(self.message_ids.get('/uas1/mavlink_source:'+str(i), 0) for i in (100, 106))
         flow = flow or any(self.stats.get(t, {}).get('queued', 0) for t in self.expected if '/px4flow/' in t)
         now = time.monotonic_ns()
+        rate = self.queued_bytes/max((now-self.started['monotonic_ns'])/1e9, 1e-9)
+        remaining = max(0, self.max_bytes-self.queued_bytes)
         return dict(schema=1, scope='manual_flight_receive_only', updated=clock_record(),
             duration_s=(now-self.started['monotonic_ns'])/1e9, stopped=completed,
+            average_event_bytes_per_s=rate, remaining_event_bytes=remaining,
+            estimated_capacity_remaining_s=remaining/rate if rate else None,
             reason=reason, error=error, queued_event_bytes=self.queued_bytes,
             rejected_events=self.rejected, writer_drained=completed and error is None,
             required_topics_missing=[t for t in self.required if not self.stats.get(t, {}).get('queued')],
@@ -142,6 +162,19 @@ class Capture:
         summary = self.report(reason, completed=True)
         atomic_json(self.directory/'summary.json', summary)
         return summary
+
+
+def inspect_capture(directory):
+    """A persisted summary is not proof that this boot's recorder is alive."""
+    root = Path(directory)
+    manifest = json.loads((root/'manifest.json').read_text(encoding='utf-8'))
+    summary = json.loads((root/'summary.json').read_text(encoding='utf-8'))
+    same_boot = manifest['boot_id'] is not None and manifest['boot_id'] == boot_id()
+    age = (time.monotonic_ns()-summary['updated']['monotonic_ns'])/1e9 if same_boot else None
+    fresh = age is not None and 0 <= age <= 5
+    return dict(summary, inspected=clock_record(), same_host_boot=same_boot,
+                checkpoint_age_s=age, recording_active=same_boot and fresh
+                and not summary['stopped'] and not summary['error'])
 
 
 def add_marker(directory, label):

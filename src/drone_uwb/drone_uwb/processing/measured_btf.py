@@ -43,7 +43,10 @@ class MeasuredHeight:
         if type(sample['stamp_ns']) is not int or sample['stamp_ns'] <= 0:
             return False
         if target and sample['stamp_ns'] <= target[-1]['stamp_ns']:
-            target.clear()
+            # A duplicate carries no new information. It must not erase all
+            # earlier heights/attitudes used by asynchronous anchor samples.
+            if sample['stamp_ns'] < target[-1]['stamp_ns']:
+                target.clear()
             return False
         target.append(dict(sample))
         return True
@@ -132,6 +135,7 @@ class MeasuredBtf:
         self.validator.disconnect()
         self.clock.reset()
         self.reset_models()
+        self.raw_guard = ObservationGuard()
 
     def reject_queued_input(self):
         """Drop stale work without treating local callback lag as a tag reboot.
@@ -167,6 +171,7 @@ class MeasuredBtf:
                 self.validator.reset()
                 self.clock.reset()
                 self.reset_models()
+                self.raw_guard = ObservationGuard()
             if dispatch.clear_status:
                 self.validator.disconnect()
             if dispatch.message is None:
@@ -182,6 +187,7 @@ class MeasuredBtf:
                     self.validator.disconnect()
                     self.clock.reset()
                     self.reset_models()
+                    self.raw_guard = ObservationGuard()
                 self.validator.on_status(msg, mono)
                 if msg.get('range_bias_applied') is True:
                     raise InvalidInput('already_bias_corrected_input', reset=True)
@@ -195,10 +201,12 @@ class MeasuredBtf:
                 self.reset_models()
                 raise InvalidInput('four_valid_ranges_required')
             self.clock.update(cycle.end_us, mono)
+            out['clock'] = self.clock.diagnostics()
             if not self.clock.ready:
                 self.reset_models()
                 return dict(out, reason='clock_unsynced')
             queue_age = (mono/1e9-self.clock.host_s(cycle.end_us))
+            out['queue_age_s'] = queue_age
             if not 0 <= queue_age <= self.input_settings.max_queue_s:
                 self.reset_models()
                 return dict(out, reason='queued_sample')

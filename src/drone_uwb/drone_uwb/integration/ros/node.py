@@ -21,6 +21,7 @@ from drone_uwb.contracts.protocol import InvalidSample, decode_line
 from drone_uwb.acquisition.framing import LineFramer
 from drone_uwb.integration.recording import open_record_files
 from drone_uwb.integration.async_recording import AsyncRecording
+from drone_uwb.integration.manual_capture import monotonic_raw_ns
 from drone_uwb.acquisition.serial_io import SerialInput
 from drone_uwb.integration.ros.layout_selection import anchor_path
 from drone_uwb.integration.ros.qos import received_stream_qos
@@ -106,6 +107,7 @@ class UwbNode(Node):
         if chunk is None:
             return
         mono_ns, ros_ns = time.monotonic_ns(), self.get_clock().now().nanoseconds
+        raw_clock_ns = monotonic_raw_ns()
         if 'raw' in self.record_files:
             self.recorder.write('raw', chunk)
         if self.recorder and self.recorder.error:
@@ -130,6 +132,7 @@ class UwbNode(Node):
                 self.last_cycle_mono = mono_ns
             self.raw_pub.publish(String(data=json.dumps(msg, ensure_ascii=False)))
             received = {'host_received_monotonic_ns': mono_ns,
+                        'host_received_monotonic_raw_ns': raw_clock_ns,
                         'host_received_ros_ns': ros_ns, 'message': msg}
             self.record('received', received)
             self.received_pub.publish(String(data=json.dumps(received, ensure_ascii=False)))

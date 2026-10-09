@@ -6,11 +6,26 @@ import pytest
 
 from drone_uwb.integration.manual_capture import Capture, add_marker, atomic_json, config_evidence
 from drone_uwb.integration.ros.manual_capture import FlightEnd, TOPICS, main
+from drone_uwb.integration import manual_capture
 
 
 def capture(tmp_path, **kwargs):
     return Capture(tmp_path/'capture', dict(required_topics=['/uwb/received'], topics=TOPICS),
                    min_free_bytes=0, **kwargs)
+
+
+def test_status_does_not_call_an_old_boot_or_stale_checkpoint_active(tmp_path, monkeypatch):
+    monkeypatch.setattr(manual_capture, 'boot_id', lambda:'first')
+    c=capture(tmp_path); c.checkpoint()
+    assert manual_capture.inspect_capture(c.directory)['recording_active']
+    monkeypatch.setattr(manual_capture, 'boot_id', lambda:'second')
+    assert not manual_capture.inspect_capture(c.directory)['recording_active']
+    monkeypatch.setattr(manual_capture, 'boot_id', lambda:'first')
+    s=json.loads((c.directory/'summary.json').read_text()); s['updated']['monotonic_ns']-=10_000_000_000
+    atomic_json(c.directory/'summary.json',s)
+    assert not manual_capture.inspect_capture(c.directory)['recording_active']
+    c.close('test')
+    assert not manual_capture.inspect_capture(c.directory)['recording_active']
 
 
 def test_keeps_original_measurement_and_receipt_clocks_nonfinite_and_raw(tmp_path):
