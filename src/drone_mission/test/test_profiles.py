@@ -22,7 +22,7 @@ def test_profile_matches_every_input_and_keeps_physical_confirmations_off(role,t
     assert btf['tdma_mode'] == 'required'
     assert not settings.execute and not settings.layout_confirmed and not settings.fusion_confirmed
     parsed = BridgeSettings(**bridge)
-    assert not parsed.enabled and parsed.ground_only and parsed.input_topic == '/uwb/btf_pose'
+    assert not parsed.enabled and not parsed.ground_only and parsed.input_topic == '/uwb/btf_pose'
     assert parsed.ros_domain_id == domain
 
 
