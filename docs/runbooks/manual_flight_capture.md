@@ -100,6 +100,9 @@ python src/drone_uwb/tools/mirror_manual_capture.py \
 `mirror-status.json`의 바이트 수·갱신 시각을 확인한다.
 완료 후 SHA256 일치 전에는 전원 차단 손실 가능성이 있다.
 SSH 재접속 시 마지막 복사 바이트부터 이어받는다.
+SSH 전송만 압축하며 저장 원본은 바꾸지 않는다.
+같은 LAN의 확인된 IP는 `--connect-address`로 지정한다.
+원래 SSH 호스트 키 검증은 유지한다.
 재부팅 후에는 새 세션과 새 파일을 만든다.
 
 ## 4. 보정 분석

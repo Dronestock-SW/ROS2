@@ -7,6 +7,7 @@ No key/password is accepted on the command line; use existing SSH key access.
 import argparse
 from datetime import datetime, timezone
 import hashlib
+import ipaddress
 import json
 from pathlib import Path
 import shlex
@@ -25,6 +26,7 @@ def digest(path):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--host', required=True)
+    parser.add_argument('--connect-address', help='Optional verified LAN IP; retain original host-key identity')
     parser.add_argument('--remote-dir', required=True)
     parser.add_argument('--pid', type=int, required=True)
     parser.add_argument('--output', type=Path, required=True)
@@ -40,12 +42,20 @@ def main():
     if identity.exists() and json.loads(identity.read_text(encoding='utf-8')) != source:
         raise ValueError('refusing_to_mix_capture_sessions')
     identity.write_text(json.dumps(source), encoding='utf-8')
-    ssh = ['ssh', '-T', '-o', 'BatchMode=yes', '-o', 'ConnectTimeout=6',
-           '-o', 'ServerAliveInterval=5', '-o', 'ServerAliveCountMax=2', args.host]
+    # JSON evidence is highly compressible. Compress only on the SSH transport;
+    # byte offsets and SHA256 still refer to the unchanged source file.
+    ssh = ['ssh', '-C', '-T', '-o', 'BatchMode=yes', '-o', 'ConnectTimeout=6',
+           '-o', 'ServerAliveInterval=5', '-o', 'ServerAliveCountMax=2']
+    if args.connect_address:
+        address = str(ipaddress.ip_address(args.connect_address))
+        ssh += ['-o', 'Hostname='+address, '-o', 'HostKeyAlias='+args.host.rsplit('@',1)[-1],
+                '-o', 'CheckHostIP=no']
+    ssh.append(args.host)
     errors = (args.output/'mirror-ssh.log').open('ab')
     events = args.output/'events.jsonl'
     remote_file = args.remote_dir.rstrip('/')+'/events.jsonl'
-    status = dict(complete=False, sha256_verified=False, fc_commands_sent=0)
+    status = dict(complete=False, sha256_verified=False, fc_commands_sent=0,
+                  connect_address=args.connect_address)
 
     def remote(command):
         return subprocess.run(ssh+[command], stdout=subprocess.PIPE, stderr=errors, timeout=30)
@@ -74,6 +84,7 @@ def main():
         temporary.replace(args.output/'mirror-status.json')
 
     disconnected_since = None
+    last_checkpoint = 0.
     try:
         while True:
             try:
@@ -89,7 +100,9 @@ def main():
                                     break
                                 output.write(block)
                                 disconnected_since = None
-                                checkpoint()
+                                if time.monotonic()-last_checkpoint >= 1.:
+                                    checkpoint()
+                                    last_checkpoint = time.monotonic()
                     except BaseException:
                         process.terminate()
                         raise
