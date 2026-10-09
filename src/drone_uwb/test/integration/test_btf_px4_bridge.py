@@ -13,7 +13,7 @@ PARAMS = dict(EKF2_EV_CTRL=1, EKF2_EV_DELAY=0., EKF2_EV_NOISE_MD=0,
 
 
 def ready():
-    return BridgeSettings(enabled=True, input_source='btf_xy', tag_id='6',
+    return BridgeSettings(enabled=True, input_source='btf_xy', tag_id='6', ground_only=True,
         layout_confirmed=True, alignment_confirmed=True, timing_confirmed=True,
         sensor_mount_confirmed=True, antenna_body_frd_x_m=.14,
         antenna_body_frd_y_m=-.02, antenna_body_frd_z_m=-.12)
@@ -102,3 +102,39 @@ def test_delayed_clock_probe_does_not_refresh_or_destroy_valid_clock(monkeypatch
     jump=NS(remote_timestamp_ns=200,round_trip_time_ms=1.,estimated_offset_ns=1010000000)
     bridge.UwbPx4Bridge.receive_sync(obj,jump)
     assert obj.sync_count==1  # A clock change requires acquisition again.
+
+
+def test_continuous_bridge_keeps_publishing_across_arm_and_disarm(monkeypatch):
+    pytest.importorskip('rclpy')
+    from geometry_msgs.msg import PoseWithCovarianceStamped
+    from mavros_msgs.msg import State
+    from drone_uwb.integration.ros import bridge
+    from drone_uwb.processing.observation_guard import ObservationGuard
+    monkeypatch.setattr(bridge.time, 'monotonic', lambda:10.)
+    clock = NS(nanoseconds=2_000_000_000)
+    outputs = []
+    obj = NS(settings=replace(ready(), ground_only=False), connected=True, armed=False,
+        state_time=10., params=PARAMS.copy(), param_time=10., sync_count=30, sync_time=10.,
+        input_topic='/uwb/btf_pose', count_publishers=lambda topic:1, test_mode=True,
+        get_clock=lambda:NS(now=lambda:clock), last_stamp=None, published=0, rejected=0,
+        publisher=NS(publish=outputs.append), observation_guard=ObservationGuard())
+    obj.current_gate = lambda:bridge.UwbPx4Bridge.current_gate(obj)
+    obj.observation_guard.check((2.,1.),1_650_000_000)
+    for index, armed in enumerate((False, True, True, False)):
+        clock.nanoseconds = 2_000_000_000+index*20_000_000
+        state = State(connected=True, armed=armed)
+        state.header.stamp.sec = 2
+        state.header.stamp.nanosec = index*20_000_000
+        bridge.UwbPx4Bridge.receive_state(obj, state)
+        msg = PoseWithCovarianceStamped()
+        stamp = clock.nanoseconds-100_000_000
+        msg.header.frame_id = 'uwb_map'
+        msg.header.stamp.sec, msg.header.stamp.nanosec = divmod(stamp,1_000_000_000)
+        msg.pose.pose.position.x, msg.pose.pose.position.y = 2.,1.
+        msg.pose.covariance[0] = msg.pose.covariance[7] = .09
+        bridge.UwbPx4Bridge.receive_pose(obj,msg)
+        assert obj.current_gate() == 'ready'
+        assert len(outputs) == index+1
+    # A stale/duplicate pose still cannot be kept alive by the constant stream.
+    bridge.UwbPx4Bridge.receive_pose(obj,msg)
+    assert obj.rejected == 1 and len(outputs) == 4

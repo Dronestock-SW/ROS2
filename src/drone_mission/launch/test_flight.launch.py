@@ -24,8 +24,9 @@ def components(context):
     execute = value('execute').lower() == 'true'
     record = value('record_directory')
     record_path = lambda name: str(Path(record)/name) if record else ''
-    # Only explicit execution allows armed observations; ground launch retains the gate.
-    bridge.update(enabled=enabled, ground_only=not execute)
+    # Sensor observations and mission command authority have separate lifecycles.
+    # RC/manual flight still needs valid observations when web execution is off.
+    bridge.update(enabled=enabled, ground_only=value('bridge_ground_only').lower() == 'true')
     role = value('tag').lower()
     children = [
         Node(package='drone_uwb', executable='uwb_node', output='screen',
@@ -69,6 +70,8 @@ def generate_launch_description():
         DeclareLaunchArgument('uwb_port',default_value='/dev/uwb'),
         DeclareLaunchArgument('start_mavros',default_value='false',choices=['true','false']),
         DeclareLaunchArgument('bridge_enabled',default_value='false',choices=['true','false']),
+        DeclareLaunchArgument('bridge_ground_only',default_value='false',choices=['true','false'],
+            description='Explicit DISARM-only diagnostic mode; independent of mission execute'),
         DeclareLaunchArgument('execute',default_value='false',choices=['true','false']),
         DeclareLaunchArgument('record_directory',default_value=''),
         DeclareLaunchArgument('ground_antenna_height_m',default_value=''),

@@ -128,6 +128,8 @@ class UwbPx4Bridge(Node):
             'parameters': self.params, 'settings': asdict(self.settings),
             'input_topic': self.input_topic, 'position_reference': 'uwb_antenna',
             'lever_arm_owner': 'PX4_EKF2', 'z_observed': False,
+            'observation_scope': 'ground_only' if self.settings.ground_only else 'continuous',
+            'command_authority_linked': False,
             'flight_commands_enabled': False, 'fusion_verified': False,
         }, ensure_ascii=False)))
 

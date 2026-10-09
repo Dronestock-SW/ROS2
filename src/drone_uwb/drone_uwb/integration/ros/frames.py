@@ -11,7 +11,9 @@ class BridgeSettings:
     enabled: bool = False
     input_source: str = 'uwb_xy'
     tag_id: str = '5'
-    ground_only: bool = True
+    # Sensor fusion continues through ARM and manual takeover. Opt in to a
+    # DISARM-only mode only for an explicitly scoped diagnostic session.
+    ground_only: bool = False
     layout_confirmed: bool = False
     alignment_confirmed: bool = False
     timing_confirmed: bool = False

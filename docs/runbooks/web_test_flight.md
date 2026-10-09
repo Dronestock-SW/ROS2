@@ -171,12 +171,17 @@ launch도 `tag:=B config:=/path/to/flight_tag_b.json`을 사용한다.
 
 프로펠러를 제거한 지상 시험에서 관측부터 확인한다.
 `execute=false`는 arm·takeoff 요청을 보내지 않는다.
+관측 브리지는 명령 실행 권한과 독립이다.
+`bridge_ground_only=false`가 기본값이다.
+ARM·RC 개입만으로 유효한 관측을 끊지 않는다.
+DISARM 전용 진단에는 명시적으로true를 지정한다.
+`execute=true`도 관측 보정 확인을 대신하지 않는다.
 
 ```bash
 export ROS_DOMAIN_ID=1
 ros2 launch drone_mission test_flight.launch.py \
   config:="$HOME/.config/dronestock-flight/flight.json" \
-  bridge_enabled:=true execute:=false \
+  bridge_enabled:=true bridge_ground_only:=true execute:=false \
   record_directory:="$HOME/flight-records/ground-$(date +%Y%m%d-%H%M%S)"
 ```
 
@@ -220,7 +225,7 @@ PX4 ENU는 FC 추정값이다.
 ```bash
 ros2 launch drone_mission test_flight.launch.py \
   config:="$HOME/.config/dronestock-flight/flight.json" \
-  bridge_enabled:=true execute:=true \
+  bridge_enabled:=true bridge_ground_only:=false execute:=true \
   record_directory:="$HOME/flight-records/flight-$(date +%Y%m%d-%H%M%S)"
 ```
 
