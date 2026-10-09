@@ -129,3 +129,9 @@ def test_cli_duration_bound_and_no_control_dependencies():
     text = source.read_text(encoding='utf-8')
     assert 'create_client(' not in text and 'create_publisher(' not in text
     assert 'serial.Serial' not in text and 'subprocess' not in text
+
+
+def test_capture_does_not_change_command_sink_subscriber_guard():
+    assert '/uas1/mavlink_source' in TOPICS
+    assert '/uas1/mavlink_sink' not in TOPICS
+    assert '/mavros/vision_pose/pose_cov' in TOPICS

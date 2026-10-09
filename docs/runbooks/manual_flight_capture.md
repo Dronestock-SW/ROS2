@@ -23,10 +23,11 @@ PX4 상태·자세·위치·시각도 함께 저장한다.
 | MAVROS RC·state·extended_state | 채널·모드·ARM·착륙 상태 |
 | MAVROS TIMESYNC·estimator_status | 시계 상태·위치 유효성 |
 | `/mavros/vision_pose/pose_cov` | FC 전달 전 EV 관측 |
-| MAVLink source·sink | 수신·송신 패킷 원본 전체 |
+| MAVLink source | FC 수신 패킷 원본 전체 |
 | 광류 토픽 | 존재하면 원시 적분값·품질 |
 
-MAVLink sink는 구독만 한다.
+MAVLink 명령 sink는 구독하지 않는다.
+기존 진단 도구의 단일 라우터 조건을 보존한다.
 수집기는 FC 포트·서비스·명령 발행기를 만들지 않는다.
 관측이 없으면 누락으로 기록한다.
 ToF 결측을 가상 높이로 바꾸지 않는다.
@@ -83,6 +84,23 @@ ARM·모드 변화와 토픽별 최대 공백도 남긴다.
 한도·오류로 중단된 기록을 완전한 기록으로 취급하지 않는다.
 비정상 전원 차단은 마지막 기록 일부를 잃을 수 있다.
 종료 후 파일을 PC에 복사하고 해시를 대조한다.
+
+저장장치가 부족하면 `/dev/shm`에 제한해 기록한다.
+이 위치는 전원 차단 때 사라진다.
+PC에서 아래 도구를 함께 실행해 지속 복사한다.
+`PID`는 수집기가 표시한 실제 Python PID다.
+
+```bash
+python src/drone_uwb/tools/mirror_manual_capture.py \
+  --host arialhanho@100.110.163.94 \
+  --remote-dir /dev/shm/SESSION --pid PID --output ./SESSION
+```
+
+복사가 수집 속도를 따라가지 못하면 지연될 수 있다.
+`mirror-status.json`의 바이트 수·갱신 시각을 확인한다.
+완료 후 SHA256 일치 전에는 전원 차단 손실 가능성이 있다.
+SSH 재접속 시 마지막 복사 바이트부터 이어받는다.
+재부팅 후에는 새 세션과 새 파일을 만든다.
 
 ## 4. 보정 분석
 
