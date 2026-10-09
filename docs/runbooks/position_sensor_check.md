@@ -6,6 +6,26 @@
 현재 UWB→PX4 전달과 장착·정렬 검증은 미완료다.
 수신·융합·방향·독립 오차를 순서대로 확인한다.
 
+장착 후보는 기존 MAVROS를 유지하며 시험할 수 있다.
+아래 도구는 진단 토픽으로만 B_TF를 발행한다.
+기존 `/uwb/btf_pose` 발행자와 섞지 않는다.
+시리얼·FC 명령·파라미터 쓰기는 없다.
+
+```bash
+source /opt/ros/humble/setup.bash
+source install/setup.bash
+export ROS_DOMAIN_ID=2 ROS_LOCALHOST_ONLY=1
+python3 src/drone_uwb/tools/observe_measured_btf.py \
+  --domain 2 --seconds 30 --config /path/to/measured-btf.json \
+  --output /path/to/new-ground-capture
+```
+
+태그·domain·TDMA·관측 전용 설정을 검사한다.
+출력은 `/diagnostic/uwb/btf_*` 네 토픽이다.
+5~60초 뒤 종료하고 입력·판정·요약을 보존한다.
+확인 플래그를 이 도구가 바꾸지 않는다.
+이유: 관측 성공은 시각 보정·FC 융합 증거가 아니다.
+
 ```text
 UWB 네 거리 -> B_TF -> 안테나 XY
                 ^         |
