@@ -78,7 +78,16 @@ RC 스틱 / 모드 스위치 ──────> PX4 제어·failsafe
 ```
 
 현재 읽힌 매핑은 모드 CH5·시동 CH8·킬 CH7이다.
-실제 스위치 위치의 동작을 확인한 값은 아니다.
+2026-10-09 모드 스위치의 실제 전환을 확인했다.
+사용자 승인으로 중앙 OFFBOARD를 Position으로 바꿨다.
+현재 배치는 Altitude / Position / Land다.
+`COM_FLTMODE4=2`를 저장·재조회했다.
+이후 실제 ALTCTL→POSCTL 전환도 확인했다.
+설정 변경 뒤 스위치를 한 번 전환해 실제 모드를 확인한다.
+웹 START 전에 Position에서 대기한다.
+웹 실행은 PX4 native 자동 모드를 요청한다.
+RC OFFBOARD 위치는 필요하지 않다.
+시동·킬 스위치와 공중 인계 시험은 아직 남았다.
 프로펠러를 제거하고 수신·매핑·보정을 먼저 확인한다.
 모드 스위치로 Position/Altitude 전환을 확인한다.
 실제 stick override 비행 검증은 조종자가 별도로 수행한다.

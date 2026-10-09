@@ -4,7 +4,8 @@ Tag B 현장 시험을 재개할 때 읽는다.
 
 소프트웨어 시험과 실물 준비를 구분한다.
 실물은 아직 비행 준비 완료가 아니다.
-앵커·RC·추진 배터리는 사용자가 준비 중이다.
+최초 확인 때 앵커·RC·추진 배터리는 준비 중이었다.
+후속 RC 지상 확인은 아래 별도 기록을 따른다.
 실물 ARM·TAKEOFF·이동·LAND 명령은 보내지 않았다.
 
 ## 기준과 보존
@@ -193,6 +194,82 @@ Jetson 검토 폴더의 origin은 이전 로컬 폴더다.
 Jetson 저장소의 남은 용량은 약1.5GB였다.
 장시간 원본 수집 전에 저장 공간을 확보해야 한다.
 기존 기록은 임의로 삭제하지 않았다.
+
+## 후속 RC 지상 확인
+
+사용자가 RC 연결을 알린 뒤 다시 확인했다.
+프로펠러 제거·추진 배터리 분리를 확인했다.
+Jetson은 재부팅된 상태였다.
+기존 자동 실행 서비스 5개는 정상 동작했다.
+시험 웹·관측 노드만 다시 시작했다.
+명령 출력과 UWB 브리지는 계속 비활성이다.
+
+| 항목 | 실제 확인 |
+|---|---|
+| RC 링크 | 16채널·link quality 100·lost/failsafe false |
+| 스틱 | CH1 롤·CH2 피치·CH3 스로틀·CH4 요의 변화 수신 |
+| 관측 가동범위 | CH1 1086~1999·CH2 1000~1999·CH3/4 1002~1999μs |
+| 모드 스위치 | CH5의 1000/1500/1999 수신 |
+| 기존 모드 반영 | OFFBOARD·ALTCTL·AUTO.LAND 전환 관측 |
+| 시동·킬 | CH8·CH7 매핑, 조작 시험 미실시 |
+| 추진 전원 | battery connected=false |
+| ARM | 수집 중 false 유지 |
+| UWB | Tag B heartbeat만 수신·앵커 미연결 |
+| ToF 바닥 상태 | 최소 0.1m보다 작은 거리·유효 높이 아님 |
+
+중앙 모드에 Position이 없음을 발견했다.
+사용자가 중앙 Position 변경을 명시 승인했다.
+`COM_FLTMODE4`만 7에서 2로 변경했다.
+새 배치는 Altitude / Position / Land다.
+기존 RC 채널·이륙 높이·override 값은 보존했다.
+저장 명령 ACK=0과 강제 파라미터 읽기를 확인했다.
+1096개 읽기 뒤 변경값 2를 확인했다.
+이 변경에서는 FC를 재부팅하지 않았다.
+스위치를 움직이지 않으면 이전 모드가 남을 수 있다.
+변경 후 ALTCTL→POSCTL 전환을 실제 확인했다.
+FC manual_input=true·armed=false를 확인했다.
+CH1 최저값은 보정값 1002μs에 못 미쳤다.
+전체 가동범위·방향 보정 완료로 기록하지 않았다.
+
+웹 START는 PX4 native 자동 모드를 요청한다.
+RC를 OFFBOARD에 둘 필요가 없다.
+실제 펌웨어의 stick override는 ARM 조건을 요구한다.
+따라서 지상 입력 시험을 공중 인계 성공으로 기록하지 않는다.
+RC 수신과 파라미터 저장도 비행 준비 완료를 뜻하지 않는다.
+사용자는 송신기 전원 차단 후 재연결을 우려했다.
+전원 차단·재연결 시험은 시행하지 않았다.
+신호 상실·복구와 실제 공중 인계는 미검증이다.
+
+사용자가 ToF의 바닥 가림을 해소했다.
+맞춘 높이는 대략값이라고 명시했다.
+ROS 거리는 15초 동안 약 0.38m로 수신됐다.
+직접 FC 조회에서는 0.386m였다.
+이 비교를 거리 교정 완료로 기록하지 않았다.
+
+| 높이 확보 후 FC 입력 | 읽기 결과 |
+|---|---|
+| 원시 flow | quality 155·적분 10526μs |
+| PX4 처리 flow | quality 157·distance 0.387m |
+| EKF 인스턴스 0·1 | cs_opt_flow=true·cs_rng_hgt=true |
+| flow aid 인스턴스 0·1 | fused=true·innovation_rejected=false |
+| range aid 인스턴스 0·1 | fused=true·innovation_rejected=false |
+| UWB 융합 | cs_ev_pos=false |
+| 전역 기준점 | xy_global=false·ref_lat/lon=NaN |
+
+이는 지상 정지 상태의 flow·거리 융합 증거다.
+동적 축·장착·실측 높이·UWB 공동 융합은 남았다.
+설정의 fusion_confirmed는 false를 유지한다.
+고정 FC 조회 중 이번 관측 launch만 잠시 중단했다.
+포트 해제를 확인하고 읽은 뒤 즉시 재시작했다.
+이 관측 공백을 RC 전파 단절로 해석하지 않는다.
+기존 자동 실행 서비스와 RC 전원은 유지했다.
+
+원시 수집은 비공개 `rc-ground-030634`에 있다.
+`rc-input.jsonl`은 ROS 구독으로만 수집했다.
+`set_rc_position.json`은 변경 전후와 ACK를 보존한다.
+`tof-raised-readback.json`은 FC 원문을 보존한다.
+앵커 연결 후 좌표·장착·시각·융합 검증이 남았다.
+[PX4 모드 값](https://docs.px4.io/v1.17/en/advanced_config/parameter_reference#COM_FLTMODE1)을 대조했다.
 
 ## 카메라·스캐너·LiDAR 잔여 작업
 
