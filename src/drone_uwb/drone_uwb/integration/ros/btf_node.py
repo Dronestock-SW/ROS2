@@ -19,6 +19,7 @@ from std_msgs.msg import String
 
 from drone_uwb.processing.measured_btf import MeasuredBtf
 from drone_uwb.integration.ros.qos import received_stream_qos
+from drone_uwb.integration.async_recording import AsyncRecording
 
 
 def safe_json(value):
@@ -56,6 +57,7 @@ class BtfNode(Node):
             (root/'config.json').write_text(json.dumps(self.config, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
             for name in ('inputs', 'decisions', 'status'):
                 self.files[name] = (root/(name+'.jsonl')).open('x', encoding='utf-8')
+        self.recorder = AsyncRecording(self.files) if self.files else None
         self.counts = Counter()
         self.height_counts = Counter()
         self.last = None
@@ -81,7 +83,7 @@ class BtfNode(Node):
 
     def record(self, name, row):
         if name in self.files:
-            self.files[name].write(json.dumps(safe_json(row), ensure_ascii=False, allow_nan=False)+'\n')
+            self.recorder.write(name, json.dumps(safe_json(row), ensure_ascii=False, allow_nan=False)+'\n')
 
     def state(self, msg):
         self.fc_state = dict(connected=msg.connected,armed=msg.armed,mode=msg.mode)
@@ -128,6 +130,9 @@ class BtfNode(Node):
         self.sensor('imu', {'stamp_ns':stamp_ns(msg),'quaternion_wxyz':q,'valid':valid,'frame_id':msg.header.frame_id})
 
     def raw(self, msg):
+        if self.recorder and self.recorder.error:
+            self.counts['recording_failed'] += 1
+            return
         started = time.perf_counter()
         now_ns = self.get_clock().now().nanoseconds
         try:
@@ -160,7 +165,7 @@ class BtfNode(Node):
             self.height_counts[selection['reason']] += 1
         result['processing_ms'] = (time.perf_counter()-started)*1000
         result['published'] = False
-        if result['ok']:
+        if result['ok'] and not (self.recorder and self.recorder.error):
             age = (self.get_clock().now().nanoseconds-result['stamp_ns'])/1e9
             result['publish_age_s'] = age
             if self.require_height and result.get('xyz_m') is None:
@@ -200,19 +205,20 @@ class BtfNode(Node):
                'require_height_for_pose':self.require_height,
                'input_age_s':(now_ns-self.last_source_ns)/1e9 if self.last_source_ns else None,
                'fc_output_enabled':False,'timestamp_calibrated':False,'timesync_ready':self.sync_ready(),
+               'recording_error':self.recorder.error if self.recorder else None,
                'fc_state':self.fc_state,
                'height_mount_confirmed':self.config['height']['mount_confirmed'],
                'flat_floor_confirmed':self.config['height']['flat_floor_confirmed']}
         self.status_pub.publish(String(data=json.dumps(row,ensure_ascii=False)))
         self.record('status',row)
-        for file in self.files.values():
-            file.flush()
+        if self.recorder:
+            self.recorder.flush()
 
     def destroy_node(self):
         if rclpy.ok():
             self.status()
-        for file in self.files.values():
-            file.close()
+        if self.recorder:
+            self.recorder.close()
         return super().destroy_node()
 
 

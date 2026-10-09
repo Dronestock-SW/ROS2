@@ -20,6 +20,7 @@ from drone_uwb.processing.solvers.observations import Processor, Settings
 from drone_uwb.contracts.protocol import InvalidSample, decode_line
 from drone_uwb.acquisition.framing import LineFramer
 from drone_uwb.integration.recording import open_record_files
+from drone_uwb.integration.async_recording import AsyncRecording
 from drone_uwb.acquisition.serial_io import SerialInput
 from drone_uwb.integration.ros.layout_selection import anchor_path
 from drone_uwb.integration.ros.qos import received_stream_qos
@@ -66,13 +67,14 @@ class UwbNode(Node):
                 'serial_payload_bytes_written': 0,
                 'flight_state_estimator': 'PX4 EKF2 only',
             })
+        self.recorder = AsyncRecording(self.record_files) if self.record_files else None
         self.create_timer(0.005, self.poll)
         self.create_timer(1.0, self.publish_status)
         self.get_logger().info('UWB source=' + self.settings.source_mode + ', frame=' + self.layout['coordinate_frame'])
 
     def record(self, name, value):
         if name in self.record_files:
-            self.record_files[name].write(json.dumps(value, ensure_ascii=False, allow_nan=False) + '\n')
+            self.recorder.write(name, json.dumps(value, ensure_ascii=False, allow_nan=False) + '\n')
 
     def poll(self):
         now = time.monotonic()
@@ -105,7 +107,11 @@ class UwbNode(Node):
             return
         mono_ns, ros_ns = time.monotonic_ns(), self.get_clock().now().nanoseconds
         if 'raw' in self.record_files:
-            self.record_files['raw'].write(chunk)
+            self.recorder.write('raw', chunk)
+        if self.recorder and self.recorder.error:
+            self.last_decision = self.recorder.error
+            self.counts['recording_failed'] += 1
+            return
         for line in self.framer.feed(chunk):
             try:
                 msg = decode_line(line)
@@ -125,8 +131,11 @@ class UwbNode(Node):
             self.raw_pub.publish(String(data=json.dumps(msg, ensure_ascii=False)))
             received = {'host_received_monotonic_ns': mono_ns,
                         'host_received_ros_ns': ros_ns, 'message': msg}
-            self.received_pub.publish(String(data=json.dumps(received, ensure_ascii=False)))
             self.record('received', received)
+            if self.recorder and self.recorder.error:
+                self.last_decision = self.recorder.error
+                return
+            self.received_pub.publish(String(data=json.dumps(received, ensure_ascii=False)))
             result = self.processor.process(msg, mono_ns, ros_ns)
             if not result.reason.startswith('sideband_') and result.reason != 'awaiting_tdma':
                 self.last_decision = result.reason
@@ -134,7 +143,7 @@ class UwbNode(Node):
             self.record('decisions', {'host_received_monotonic_ns': mono_ns,
                                      'reason': result.reason, 'details': result.details,
                                      'observation': asdict(result.observation) if result.observation else None})
-            if result.observation:
+            if result.observation and not (self.recorder and self.recorder.error):
                 obs = result.observation
                 pose = PoseWithCovarianceStamped()
                 pose.header.stamp.sec = obs.stamp_ns // 1_000_000_000
@@ -161,14 +170,15 @@ class UwbNode(Node):
                  'tag_status': self.processor.status,
                  'timestamp_method': 'approximate_mean_report_read_time',
                  'timestamp_calibrated': False,
+                 'recording_error': self.recorder.error if self.recorder else None,
                  'framing_overflows': self.framer.overflows}
         value['tdma_required'] = self.processor.tdma.required
         value['tdma_counts'] = dict(self.processor.tdma.counts)
         if rclpy.ok():
             self.status_pub.publish(String(data=json.dumps(value, ensure_ascii=False)))
         self.record('status', value)
-        for file in self.record_files.values():
-            file.flush()
+        if self.recorder:
+            self.recorder.flush()
 
     def close_serial(self):
         if self.serial is not None:
@@ -181,8 +191,8 @@ class UwbNode(Node):
     def destroy_node(self):
         self.publish_status()
         self.close_serial()
-        for file in self.record_files.values():
-            file.close()
+        if self.recorder:
+            self.recorder.close()
         return super().destroy_node()
 
 
