@@ -72,6 +72,33 @@ companion은 추가 명령을 보내지 않는다.
 
 ## 3. 실물 관측 화면
 
+### GPS 없는 실내 기준점의 가상 시험
+
+GNSS 융합을 끈 별도 SITL은 다음 옵션을 사용한다.
+새 출력 폴더마다 별도 PX4 rootfs를 만든다.
+기존 SITL 파라미터와 실물 설정은 건드리지 않는다.
+
+```bash
+export ROS_DOMAIN_ID=173 ROS_LOCALHOST_ONLY=1
+export PYTHONPATH=/home/arialhanho/ROS2-integration-20261007/.test-deps:${PYTHONPATH:-}
+python3 src/sangwon_AI/tests/native_hover_px4.py \
+  --local-origin --position-source ideal-ev \
+  --px4-root .review/hover-20261008/PX4-Autopilot \
+  --binary install/sangwon_ai_replay/bin/sangwon_native_hover \
+  --output /dev/shm/new-native-local-reference
+```
+
+`EKF2_GPS_CTRL=0`은 EKF 시작 전부터 적용한다.
+SIH의 첫 실제 가상 위치로 지역 기준점을 정한다.
+이 값은 GPS 센서 관측이나 실물 지리 측량값이 아니다.
+출발점 XY는 START 때 PX4 위치에서 저장한다.
+기준점을 넣어도 유효한 위치 관측은 따로 필요하다.
+`--local-origin`과 `gnss` 입력의 조합은 거절한다.
+10월9일 가상 결과는 [현장 기록](../report/field_readiness_20261009.md)을 따른다.
+이 시험의 ideal EV는 실물 UWB·flow 검증을 대신하지 않는다.
+
+### 실물 관측 실행
+
 기본 실행은 명령 출력을 잠근다.
 포트 소유자를 먼저 확인한다.
 이미 MAVROS가 실행 중이면 재사용한다.

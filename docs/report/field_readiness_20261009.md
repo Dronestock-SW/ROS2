@@ -1112,6 +1112,78 @@ SHA256: `3c80a1a62d01b490532a9e98a3f670b7d47a00b4c4788431ad6bff24c240cc7c`.
 현재065016 관측 기록과 기존 사용자 파일은 유지했다.
 정리 직후 루트 파일시스템 여유는549MiB였다.
 
+### 추가 이동 생략과 GPS 없는 가상 경로 확인
+
+사용자는 추가 X·Y 왕복을 생략하라고 요청했다.
+사용자는 현재 주변 장애물이 없다고 답했다.
+공간 치수의 실측 지도는 아직 작성하지 않았다.
+출발점은 현재 기체 위치를 쓰도록 요청했다.
+생략 요청 뒤 새 움직임을 요구하지 않았다.
+정지 기록을 보정 성공으로 쓰지 않았다.
+
+FC를 다시 읽으니 armed=false·kill=true였다.
+RC channel7=1999·kill_switch=1이었다.
+RC_MAP_KILL_SW=7·16채널·rc_lost=false를 읽었다.
+앞선 kill=false 기록은 해당 시점의 기록으로 보존한다.
+현재 ON이라는 사용자 답변과 새 FC 읽기는 일치했다.
+원본은 `kill-mapping-0708-readback.json`이다.
+
+기존 이동 기록을 움직인 구간만 분리해 다시 분석했다.
+공동 관측213점의 시간 후보는-0.195~0.095초로 넓었다.
+이는 최소 잔차+5mm 후보 범위이며 신뢰구간이 아니다.
+이동 중 관측 공백은0.713~1.687초였다.
+회전·원점·고정 지연을 확정하지 않았다.
+원본은 `post-storage-xy-motion-coverage.json`이다.
+
+GPS 수신과 실내 출발점은 구분한다.
+출발점 저장은 기존 코드가 START 시 PX4 위치로 수행한다.
+현재 native 경유점 경로는 별도의 지리 투영 기준을 쓴다.
+지역 기준점은 위치 센서 관측을 대신하지 않는다.
+정확한 건물 지도 핀만이 가능한 연결 방법은 아니다.
+[PX4 v1.17 모드 조건](https://github.com/PX4/PX4-Autopilot/blob/v1.17.0/src/modules/commander/ModeUtil/mode_requirements.cpp)은
+멀티콥터 Takeoff와 Hold의 위치 조건을 구분한다.
+현재 Hold 경로는 global position 유효성을 요구한다.
+
+`native_hover_px4.py --local-origin` 가상 시험을 추가했다.
+GPS 융합을 부팅 전부터 끄고 새 rootfs를 사용한다.
+domain173·localhost UDP만 사용한다.
+실물 domain2·직렬 포트·FC 파라미터는 변경하지 않는다.
+
+| 가상 시험 | 결과 |
+|---|---|
+| 임의 기준점0도·0도·0m | ARM_REJECTED·FAIL |
+| 첫 SIH 위치의 지역 기준점 | 이륙→호버→착륙·DISARM·COMPLETE |
+| 목표·호버 시간 | MIS_TAKEOFF_ALT=1.3m·2초 |
+| 마지막 연속 HOVER phase | 2.000393초 |
+| ULog 초기 EKF2_GPS_CTRL | 0 |
+| ULog GNSS position/velocity/height/yaw 융합 | 모두0건 |
+| ULog EV position·velocity 활성 | 각각61/75 상태 샘플 |
+| ULog dropout | 0 |
+
+첫 실패에서 FC는 자기장 간섭·heading 불안정을 보고했다.
+임의 0도 기준점을 실물에 적용하지 않았다.
+양성 시험은 SIH 위치와 지역 자기장 기준을 일치시켰다.
+가상 기준점은 실물의 측량 위치로 표시하지 않는다.
+가상 센서는 ideal EV 위치·속도다. EKF2_EV_CTRL=5다.
+실물의 UWB XY·EV_CTRL=1·flow/ToF 조합과 다르다.
+실물 융합·비행 성공으로 확대하지 않는다.
+
+PX4 source는 `d6f12ad1c4f70ad3230afd7d86e971421e02fef4`다.
+두 SITL·정지 수신 원본을 PC에 검증 백업했다.
+묶음 SHA256: `0291983ef76b5072570c11f5a7641cca65d3900c478c2728bd1af6ee8a347ad0`.
+ULog은 PC의 별도 pyulog 환경에서 검사했다.
+GNSS 입력과 local-origin의 잘못된 조합도 거절했다.
+Windows는 POSIX pty 실행을 지원하지 않아 실제 실행은 Jetson에서 했다.
+모사 기체 프로세스는 종료했다. 실물 관측 프로세스는 유지했다.
+
+로그 중복본4개는 PC SHA256을 다시 확인하고 Jetson에서만 정리했다.
+대상은043144·053358·055441·061245의 기존 압축본이다.
+PC 원본 압축본·manifest와 현재 관측 기록은 보존했다.
+현재 실물 좌표 정렬·시각·EV 융합 확인값은 false다.
+비행 START는 열지 않았고 실물 ARM·이륙은 보내지 않았다.
+UWB 장기 누락 대응 LAND가 좌표 정렬 검증을 대신하지 않는다.
+companion·FC 연결 자체를 잃으면 명령 전달도 보장되지 않는다.
+
 ## 카메라·스캐너·LiDAR 잔여 작업
 
 장치가 보이는 것과 미션 연결 완료를 구분한다.

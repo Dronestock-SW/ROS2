@@ -26,7 +26,11 @@ def main():
     parser.add_argument('--position-source', choices=['gnss', 'ideal-ev'], default='gnss',
                         help='ideal-ev feeds SIH ground truth into PX4 EKF; never into the controller')
     parser.add_argument('--scenario', choices=['nominal', 'operator_cancel', 'rc_stick'], default='nominal')
+    parser.add_argument('--local-origin', action='store_true',
+                        help='SITL only: disable GNSS at boot and initialize the site datum from simulated truth')
     args = parser.parse_args()
+    if args.local_origin and args.position_source != 'ideal-ev':
+        parser.error('--local-origin requires ideal-ev; it is not a substitute for position aiding')
     assert os.environ.get('ROS_DOMAIN_ID') == '173' and os.environ.get('ROS_LOCALHOST_ONLY') == '1'
     os.environ['MAVLINK20'] = '1'
     from pymavlink import mavutil
@@ -35,12 +39,15 @@ def main():
     from rclpy.qos import qos_profile_sensor_data
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=True)
-    state = Path('/tmp/px4-native-hover')
+    state = output/'controller' if args.local_origin else Path('/tmp/px4-native-hover')
     state.mkdir(mode=0o700, exist_ok=True)
     assert len(str(state/'hover.sock')) < 108
     px4_root = args.px4_root.resolve()
     px4_binary = px4_root/'build/px4_sitl_hover/bin/px4'
     work = px4_root/'build/px4_sitl_hover/rootfs'
+    if args.local_origin:
+        work = output/'rootfs'
+        work.mkdir(exist_ok=False)
     assert px4_binary.is_file()
     master, slave = pty.openpty()
     px4_log = (output/'px4.log').open('wb')
@@ -73,7 +80,12 @@ def main():
 
     try:
         env = dict(os.environ, PX4_SIM_MODEL='sihsim_quadx', PX4_SIMULATOR='sihsim')
-        px4 = subprocess.Popen([str(px4_binary)], cwd=work, stdin=slave, stdout=slave, stderr=slave, env=env, start_new_session=True)
+        command = [str(px4_binary)]
+        if args.local_origin:
+            # Apply before EKF startup, not after a GNSS reference already exists.
+            env['PX4_PARAM_EKF2_GPS_CTRL'] = '0'
+            command += [str(px4_root/'build/px4_sitl_hover/etc'), '-w', str(work)]
+        px4 = subprocess.Popen(command, cwd=work, stdin=slave, stdout=slave, stderr=slave, env=env, start_new_session=True)
         processes.append(px4)
         os.close(slave)
         thread.start()
@@ -87,6 +99,8 @@ def main():
         # Explicit simulator sensor profile. Production gates and FC params stay unchanged.
         values.update(EKF2_EV_CTRL=5 if args.position_source=='ideal-ev' else 0,
                       EKF2_EVP_NOISE=.02, EKF2_EVV_NOISE=.02)
+        if args.local_origin:
+            values['EKF2_GPS_CTRL'] = 0
         for name, value in values.items():
             shell(f'param set {name} {value}')
         connection = mavutil.mavlink_connection('udpout:127.0.0.1:18570', source_system=255, source_component=190)
@@ -159,6 +173,15 @@ def main():
                     if origin is None:
                         origin = (packet.lat*1e-7, packet.lon*1e-7, packet.alt*.001)
                         sensor_stats['origin'] = origin
+                        if args.local_origin:
+                            # Keep the simulator's regional magnetic reference consistent.
+                            # This initializes a datum; GNSS fusion remains disabled.
+                            connection.mav.set_gps_global_origin_send(
+                                1, packet.lat, packet.lon, packet.alt, time.time_ns()//1000)
+                            sensor_stats['local_reference'] = dict(
+                                kind='simulated_site_datum', latitude_deg=origin[0],
+                                longitude_deg=origin[1], altitude_m=origin[2],
+                                measured_geographic_fix=False)
                     north = math.radians(packet.lat*1e-7-origin[0])*6371000
                     east = math.radians(packet.lon*1e-7-origin[1])*6371000*math.cos(math.radians(origin[0]))
                     down = origin[2]-packet.alt*.001
@@ -216,6 +239,7 @@ def main():
         summary = dict(actual_px4=True, px4_source_commit='d6f12ad1c4f70ad3230afd7d86e971421e02fef4',
             simulator='SIH-as-SITL quadx', physical_flight=False, synthetic_rc_input=True,
             position_source=args.position_source, scenario=args.scenario, sensor_stats=sensor_stats,
+            local_reference=sensor_stats.get('local_reference'),
             simulation_parameters=values, status=result)
         (output/'summary.json').write_text(json.dumps(summary, indent=2)+'\n', encoding='utf-8')
         if args.scenario=='rc_stick':
