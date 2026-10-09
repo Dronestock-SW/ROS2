@@ -256,7 +256,8 @@ def test_local_web_raw_btf_px4_mission_telemetry(tmp_path,scenario):
                 DRONESTOCK_MISSION_FORWARDING='true',DRONESTOCK_UWB_TOPIC='/uwb/btf_pose',
                 DRONESTOCK_STATE_DIR=str(tmp_path/'platform'))
             launch('platform',['python3','-m','drone_platform_link.runtime'],env)
-            await wait_for(lambda:len(fc.vision)>10 and platform.telemetry.get('current_z_m') is not None)
+            await wait_for(lambda:len(fc.vision)>10 and platform.telemetry.get('current_z_m') is not None
+                           and platform.can_start())
             assert fc.calls==[]
             assert all(m.pose.pose.position.z==0. and m.pose.covariance[14]==1e6 for m in fc.vision)
             request=Request(f'http://127.0.0.1:{http.server_port}/local/command',

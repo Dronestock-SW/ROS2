@@ -17,6 +17,8 @@ def test_site_save_reload_and_start_snapshot(tmp_path):
     assert result['flight_command_sent'] is False
     assert p.assignment['control_action'] is None
     p=LocalPlatform(settings=settings,site_file=path)
+    p.telemetry=dict(fc_connected=True,fc_armed=False,fc_landed=1,flight_state='IDLE',preflight={'checked_inputs_passed':True})
+    p.telemetry_received_s=time.monotonic()
     first=p.command('start',[dict(id='P',x=2,y=2)])
     assert first['ceiling_height_m']==3
     with pytest.raises(ValueError):p.command('set_ceiling',ceiling=4)
@@ -58,7 +60,7 @@ def test_ceiling_only_tightens_survey_and_keeps_obstacles():
 
 def test_trial_start_recaptures_px4_body_origin_and_rejects_stale_or_unaligned():
     p=LocalPlatform()
-    p.telemetry=dict(flight_state='IDLE',fc_armed=False,fc_landed=1,px4_map_xy_m=[2.1,1.8],x=5.,y=4.,
+    p.telemetry=dict(flight_state='IDLE',fc_connected=True,fc_armed=False,fc_landed=1,px4_map_xy_m=[2.1,1.8],x=5.,y=4.,
         preflight={'checks':[dict(code=k,passed=True) for k in ('layout_confirmed','alignment_confirmed','transform','pose','estimator')]})
     p.telemetry_received_s=time.monotonic()
     assert p.automatic_start()==(2.1,1.8)  # Never antenna XY.

@@ -271,6 +271,68 @@ ROS 거리는 15초 동안 약 0.38m로 수신됐다.
 앵커 연결 후 좌표·장착·시각·융합 검증이 남았다.
 [PX4 모드 값](https://docs.px4.io/v1.17/en/advanced_config/parameter_reference#COM_FLTMODE1)을 대조했다.
 
+## 시험 웹 미션 관리 검증
+
+사용자가 현장 이동 전에 미션 관리를 요청했다.
+저장 미션과 실제 실행 기록을 분리했다.
+SQLite에 미션·버전·실행·요청 접수를 보존한다.
+같은 내용은 기존 미션을 반환한다.
+같은 이름의 다른 미션은 생성하지 않는다.
+실행 중인 미션 원본은 수정·삭제할 수 없다.
+
+열린 실행 기록은 하나만 허용한다.
+동시 START와 응답 유실 재시도를 검사했다.
+저장 후에만 companion에 명령을 노출한다.
+저장소 쓰기 실패 시 START는 노출되지 않는다.
+웹 재시작 후 경로는 복원한다.
+이전 START·복귀·착륙 명령은 재전송하지 않는다.
+RC 인계 뒤 새 제어 명령도 거부한다.
+다른 실행의 텔레메트리는 결과로 채택하지 않는다.
+복귀·착륙은 현재 실행 식별자와 연결을 대조한다.
+
+실행 기록 닫기는 companion 초기화가 아니다.
+최신 착륙·disarm과 종료 상태를 확인한다.
+만료 미수락 요청은 IDLE에서 정리할 수 있다.
+그 기록을 성공·END로 바꾸지 않는다.
+새 비행은 새 지상 IDLE 세션을 준비해야 한다.
+
+| 검증 구분 | 결과 |
+|---|---|
+| Windows 단위·HTTP | 42 passed |
+| Jetson 단위·HTTP·ROS 합성 | 46 passed·49.50초 |
+| ROS 합성 사례 | 정상 복귀·취소·웹 단절·실행기 재시작 |
+| 브라우저 | 별도 8352에서 저장·중복·수정·삭제 확인 |
+| JavaScript 구문·diff | node --check·git diff --check 통과 |
+| 이번 변경의 실제 SITL | 미실시·ROS 합성 시험과 구분 |
+| 이번 변경의 실제 비행 | 미실시·실물 명령 출력 비활성 |
+
+최초 ROS 시험은 3건 실패했다.
+2건은 시험 코드가 최신 지상 상태 전에 START를 보냈다.
+서버 준비 조건을 기다리도록 시험을 고쳤다.
+1건은 합성 높이 관측 공백으로 중단됐다.
+높이 유효성 기준은 완화하지 않았다.
+동일 관측 기준의 재시험 4건을 통과했다.
+최종 전체 46건도 통과했다.
+
+```bash
+source /opt/ros/humble/setup.bash
+source install/setup.bash
+export ROS_DOMAIN_ID=99 ROS_LOCALHOST_ONLY=1
+export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1
+python3 -m pytest src/drone_mission/test/test_mission_store.py \
+  src/drone_mission/test/test_local_web.py \
+  src/drone_mission/test/test_site.py \
+  src/drone_mission/test/test_local_flight_ros.py -q
+```
+
+Jetson 검증은 `/dev/shm`의 별도 소스로 실행했다.
+시험 파일은 실물 현장 저장 파일과 분리했다.
+합성 ROS는 domain 99·localhost만 사용했다.
+실물 domain 2·FC 파라미터·관측 실행기는 보존했다.
+시험 로그는 비공개 `.review/field-20261009`에 있다.
+`mission-web-final-tests.log`가 최종 결과다.
+[미션 관리 절차](../runbooks/field_web_settings.md)를 따른다.
+
 ## 카메라·스캐너·LiDAR 잔여 작업
 
 장치가 보이는 것과 미션 연결 완료를 구분한다.
