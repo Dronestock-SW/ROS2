@@ -49,14 +49,94 @@ FC 파라미터·모드·융합·제어 경로는 변경하지 않았다.
 
 ## 검증
 
-Windows 단위·회귀 시험 51개가 통과했다.
+Windows와 Jetson에서 각각 51개가 통과했다.
 대상은 checkpoint, recording, capture, boot,
 transport audit, analysis, mirror다.
 지연 파일 쓰기 중 콜백 지속을 시험했다.
 최종 상태 순서·오류 전파·원본 ns 보존도 시험했다.
 실제 과거 조각의 분석 수치를 재현했다.
-Jetson 배포 뒤 관측 결과는 후속 기록으로 남긴다.
+Jetson `colcon build --symlink-install --packages-select drone_uwb`가 통과했다.
+코드 배포 기준은 `52c43a0`이다.
+수집 서비스만 재시작했다.
+MAVROS PID 2674는 재시작 전후 동일했다.
+직전 FC 연결·DISARM·최신 state를 확인했다.
+새 조각의 source_revision도 같은 커밋이다.
 SITL·수동 호버·자동 비행은 이번에 실행하지 않았다.
+
+Jetson 시험 명령은 다음과 같다.
+
+```bash
+source /opt/ros/humble/setup.bash
+source install/setup.bash
+python3 -m pytest src/drone_uwb/test/integration/test_{async_checkpoint,async_recording,capture_transport_audit,manual_capture,boot_capture,manual_analysis,capture_mirror}.py -q
+```
+
+기존 현장 Python 의존성 경로도 함께 사용했다.
+
+## 배포 후 지상 수신
+
+180.585초 조각이 정상 종료됐다.
+141,126행·119,583,430바이트를 기록했다.
+저장 오류가 없고 writer_drained=true다.
+같은 조각을 설치된 C++ 실행기로 읽었다.
+종료 코드 0이며 schema 1 호환을 확인했다.
+`can_start`·`flight_authority`·`fusion_verified`는 false다.
+
+events SHA256은 다음과 같다.
+`842d5b53a6c0a681b449f269ce2656c7735381928686bb943a639a0c9b40d542`
+
+| 입력 | 전체 조각 최대 공백 | 별도 관측기와 겹친 120초의 최대 공백 |
+|---|---:|---:|
+| UWB 원시 메시지 | 0.0297초 | 0.0297초 |
+| IMU | 0.3379초 | 0.0271초 |
+| PX4 odom | 0.3530초 | 0.0468초 |
+| FC state, 원래 1Hz | 1.0068초 | 1.0068초 |
+| B_TF pose | 24.1272초 | 검사 탈락에 따른 발행 공백 존재 |
+
+가벼운 별도 관측기도 120초 함께 기록했다.
+이 관측기는 ROS 메시지의 시각·횟수만 보관했다.
+별도 관측기의 IMU 최대 공백은 0.0356초다.
+odom은 0.0449초다. 기록기는 0.0468초였다.
+전체 조각의 0.35초 공백은 이 비교 구간 이전이다.
+그 원인과 장시간 안정성은 아직 확정하지 않는다.
+이 조각의 IMU·odom 미래 헤더 수는 0이다.
+기존 약 18초 정체는 이 짧은 구간에서 재현되지 않았다.
+동일 조건의 원인 제거 시험으로 확대 해석하지 않는다.
+
+지상 기록 도중 앵커 원시 수신이 시작됐다.
+주요 B_TF 사유는 `no_height_consistent_subset`이다.
+일부 좌표가 나와도 연속 유효 좌표로 간주하지 않는다.
+사용자는 현장 배치 준비 중이며 수동 비행은 하지 않았다.
+설정은 6.3×4.6m, 앵커 높이 0.15m를 유지했다.
+새 배치의 정확한 좌표·높이는 실측 대조가 필요하다.
+
+증거 파일은 `after-gap-audit.json`, `reference-gap-audit.json`,
+`overlap-gap-audit.json`, `after-cpp-replay.json`이다.
+후속 조각 원본은 같은 증거 폴더의 `post-deploy/`에 둔다.
+이 원본은 Jetson에도 보존한다.
+
+## 저장공간 복구
+
+종료 기록 29개를 PC에 백업했다.
+events·manifest·summary 총 87개 파일이다.
+원본 합계는 1,965,764,098바이트다.
+PC 압축본을 열어 파일별 SHA256을 대조했다.
+Jetson 원본도 다시 해시 대조한 뒤 정리했다.
+현재 조각과 미완성 조각은 보존했다.
+정리 직후 여유는 3,199,148,032바이트였다.
+수집기는 공간 확보 뒤 자동 재개했다.
+
+PC 증거 폴더는 다음 위치다.
+`Documents/Drone5-evidence/20261010/capture-audit/`
+파일별 목록은 `manifest.json`에 있다.
+압축본 검증은 `verified.json`에 있다.
+정리 결과는 `reclaimed-first.json`, `reclaimed-rest.json`이다.
+원본·개인 현장 설정은 Git에 추가하지 않았다.
+
+전체 기록을 무기한 보존할 공간은 아니다.
+같은 저장속도라도 새 UWB 입력량에 따라 용량이 달라진다.
+비행 전 `status.json`과 실제 파일 증가를 확인한다.
+오래된 미검증 조각을 삭제해 통과시키지 않는다.
 
 ## 남은 작업
 
