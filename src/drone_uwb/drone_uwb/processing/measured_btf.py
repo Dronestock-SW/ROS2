@@ -122,7 +122,25 @@ class MeasuredBtf:
         self.last_ros_offset = None
         self.last_output_stamp_ns = None
         self.raw_guard = ObservationGuard()
+        self.observation_session = 0
         self.reset_models()
+
+    def start_ground_session(self, *, connected, armed, landed, state_age_s,
+                             landed_age_s, stationary, velocity_age_s):
+        """Explicit new test point, never automatic airborne jump recovery.
+
+        Keep source clock/TDMA identity and replay protection. Only geometric
+        history belongs to the relocated test point. No measured flag changes.
+        """
+        if (connected is not True or armed is not False or type(landed) is not int
+                or landed != 1 or stationary is not True
+                or not 0 <= state_age_s <= 1.5 or not 0 <= landed_age_s <= 1.5
+                or not 0 <= velocity_age_s <= .2):
+            return False, 'fresh_disarmed_stationary_ground_required'
+        self.reset_models()
+        self.raw_guard = ObservationGuard()
+        self.observation_session += 1
+        return True, 'ground_observation_history_reset'
 
     def reset_models(self):
         c = self.config
@@ -152,6 +170,7 @@ class MeasuredBtf:
         out = {'schema': 1, 'source': 'measured_uwb_btf', 'truth_used': False,
                'external_output_allowed': False, 'flight_valid': False,
                'timestamp_calibrated': False, 'ok': False}
+        out['observation_session'] = self.observation_session
         try:
             msg = event['message']
             mono, ros = event['host_received_monotonic_ns'], event['host_received_ros_ns']
@@ -231,7 +250,14 @@ class MeasuredBtf:
             # them into a plausible slow trajectory. NLOS-inconsistent cycles
             # still go to the existing ToF/subset integrity calculation.
             raw_xy, raw_residual = solve_xy(np.asarray(self.config['anchors_xyz_m']), corrected, list(range(4)))
+            out['raw_fit_rms_m'] = float(raw_residual)
             if raw_residual < .06:
+                if self.raw_guard.prior_stamp is not None:
+                    age=(stamp_ns-self.raw_guard.prior_stamp)/1e9
+                    out['jump_check'] = dict(prior_age_s=age,
+                        step_m=math.dist(raw_xy,self.raw_guard.prior_xy),
+                        limit_m=self.raw_guard.config.jump_margin_m+self.raw_guard.config.max_speed_m_s
+                            *min(age,self.raw_guard.config.max_gap_s))
                 raw_reason = self.raw_guard.check(tuple(map(float, raw_xy)), stamp_ns)
                 if raw_reason == 'observation_jump_quarantined':
                     self.window.reset('coherent_raw_step')

@@ -24,9 +24,11 @@ case "${1:-}" in
       "btf_config:=$MANUAL_BTF_CONFIG" "anchor_file:=$MANUAL_ANCHORS"
     ;;
   capture)
+    extra=()
+    if [[ "${MANUAL_CAPTURE_LIDAR:-0}" == 1 ]]; then extra+=(--with-lidar); fi
     exec python3 -m drone_uwb.integration.boot_capture --root "$MANUAL_CAPTURE_ROOT" \
       --tag "$MANUAL_TAG" --config "$MANUAL_BTF_CONFIG" --config "$MANUAL_ANCHORS" \
-      --source-revision "$(git rev-parse HEAD)"
+      --source-revision "$(git rev-parse HEAD)" "${extra[@]}"
     ;;
   *) echo 'Expected observe or capture'; exit 64;;
 esac

@@ -38,6 +38,13 @@ REQUIRED = ['/uwb/received', '/uwb/btf_decision', '/mavros/state',
             '/mavros/timesync_status', '/mavros/downward_0', '/mavros/rc/in',
             '/uas1/mavlink_source']
 
+LIDAR_TOPICS = {'/scan': 'sensor_msgs/msg/LaserScan',
+                '/tf': 'tf2_msgs/msg/TFMessage', '/tf_static': 'tf2_msgs/msg/TFMessage'}
+
+
+def selected_topics(with_lidar=False):
+    return {**TOPICS, **(LIDAR_TOPICS if with_lidar else {})}
+
 
 class FlightEnd:
     """Automatic stop only after observed ARM, then fresh landed + DISARM."""
@@ -84,10 +91,12 @@ def record(args):
     if domain != expected_domain and not (domain == 99 and os.environ.get('ROS_LOCALHOST_ONLY') == '1'):
         node.destroy_node(); rclpy.shutdown()
         raise ValueError('capture_tag_domain_mismatch')
-    topics = dict(TOPICS)
+    topics = selected_topics(args.with_lidar)
     # A new observer uses BEST_EFFORT so it never pressures reliable sensor writers.
     qos = QoSProfile(history=HistoryPolicy.KEEP_LAST, depth=100,
         reliability=ReliabilityPolicy.BEST_EFFORT, durability=DurabilityPolicy.VOLATILE)
+    static_qos = QoSProfile(history=HistoryPolicy.KEEP_LAST, depth=100,
+        reliability=ReliabilityPolicy.BEST_EFFORT, durability=DurabilityPolicy.TRANSIENT_LOCAL)
     capture = Capture(args.output, dict(tag=args.tag, tag_id={'A':'5','B':'6'}[args.tag],
         ros_domain_id=domain, topics=topics, required_topics=REQUIRED,
         source_revision=args.source_revision, operator_note=args.note,
@@ -115,7 +124,7 @@ def record(args):
     try:
         for topic, name in topics.items():
             subscriptions.append(node.create_subscription(get_message(name), topic,
-                lambda msg,t=topic,n=name:callback(msg,t,n), qos))
+                lambda msg,t=topic,n=name:callback(msg,t,n), static_qos if topic=='/tf_static' else qos))
         started = last_checkpoint = time.monotonic()
         capture.checkpoint()
         print(json.dumps(dict(recording=str(args.output), pid=os.getpid(),
@@ -166,6 +175,7 @@ def main(argv=None):
     run.add_argument('--config', type=Path, action='append', default=[])
     run.add_argument('--source-revision', default='unspecified')
     run.add_argument('--note', default='')
+    run.add_argument('--with-lidar', action='store_true', help='Also record /scan and TF; never starts a sensor driver')
     marker = sub.add_parser('mark')
     marker.add_argument('directory', type=Path)
     marker.add_argument('label')

@@ -41,6 +41,11 @@ B4의 6cm 기준은 내부 거리 RMS다.
 초기화 절차와 B4 물리 잔차 차단은 미구현이다.
 실물 비행 검증도 남아 있다.
 
+후속 작업에서 [지상 초기화](../runbooks/btf_observation_session.md)를 구현했다.
+단위·ROS callback 시험을 통과했다. 현장 적용은 남아 있다.
+B4 물리 잔차 차단과 공중 재획득은 여전히 미완료다.
+[비행 기록 비교](hover_gap_analysis_20261010.md)를 함께 확인한다.
+
 [전체 검사 보고서](evidence/uwb_field_20261010/B_TF_검사결과_20261010.txt)
 [재생 결과](evidence/uwb_field_20261010/btf_history_replay_20261010.json)
 [검사 요약](evidence/uwb_field_20261010/btf_validation_summary_20261010.json)

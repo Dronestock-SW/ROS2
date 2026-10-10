@@ -12,6 +12,26 @@ from drone_uwb.acquisition.validation import Cycle
 CONFIG = Path(__file__).parents[2]/'config/runtime/uwb_btf_real.json'
 
 
+def test_explicit_ground_session_resets_geometry_not_clock_or_source_identity():
+    p = MeasuredBtf(config())
+    p.raw_guard.check((1.,1.),1_000_000_000)
+    assert p.raw_guard.check((3.,3.),2_000_000_000)=='observation_jump_quarantined'
+    clock, tdma, validator = p.clock, p.tdma, p.validator
+    valid = dict(connected=True,armed=False,landed=1,state_age_s=.1,
+                 landed_age_s=.1,stationary=True,velocity_age_s=.05)
+    for key,value in [('armed',True),('armed',None),('connected',False),('landed',2),
+                      ('landed',True),('stationary',False),('state_age_s',1.6),
+                      ('state_age_s',-.1),('landed_age_s',2.),('velocity_age_s',.21)]:
+        assert not p.start_ground_session(**dict(valid,**{key:value}))[0]
+        assert p.raw_guard.prior_xy == (1.,1.) and p.observation_session == 0
+    assert p.start_ground_session(**valid)[0]
+    assert p.raw_guard.prior_xy is None and p.observation_session==1
+    assert p.clock is clock and p.tdma is tdma and p.validator is validator
+    assert p.raw_guard.check((3.,3.),3_000_000_000)=='observation_acquiring'
+    assert p.raw_guard.check((3.,3.),3_300_000_000)=='observation_acquiring'  # gap restarts acquisition
+    assert p.raw_guard.check((5.,3.),3_320_000_000)=='observation_jump_quarantined'
+
+
 def test_ground_xy_never_inserts_a_height_or_accepts_a_tof_subset():
     result = dict(ok=True, xyz_m=None, models={'B_TF': {'source': 'unchanged_B4'}})
     state = dict(enabled=True, connected=True, landed=1, state_age_s=.1, landed_age_s=.1)

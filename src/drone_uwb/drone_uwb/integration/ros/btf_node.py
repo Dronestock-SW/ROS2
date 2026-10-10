@@ -17,6 +17,7 @@ from rclpy.qos import qos_profile_sensor_data
 from rcl_interfaces.msg import ParameterDescriptor
 from sensor_msgs.msg import Imu, Range
 from std_msgs.msg import String
+from std_srvs.srv import Trigger
 
 from drone_uwb.processing.measured_btf import MeasuredBtf, ground_xy_without_height
 from drone_uwb.integration.ros.qos import received_stream_qos
@@ -90,11 +91,28 @@ class BtfNode(Node):
             self.create_subscription(Odometry, '/mavros/local_position/odom', self.ground_velocity, qos_profile_sensor_data),
         ]
         self.create_timer(1., self.status)
+        self.create_service(Trigger, '/uwb/reset_observation_history', self.reset_ground_history)
         self.get_logger().info('Measured B_TF started; output=/uwb/btf_pose; FC output disabled')
 
     def record(self, name, row):
         if name in self.files:
             self.recorder.write(name, json.dumps(safe_json(row), ensure_ascii=False, allow_nan=False)+'\n')
+
+    def reset_ground_history(self, request, response):
+        now = time.monotonic()
+        response.success, response.message = self.processor.start_ground_session(
+            connected=(self.fc_state or {}).get('connected'), armed=(self.fc_state or {}).get('armed'),
+            landed=self.landed, state_age_s=now-self.fc_state_at, landed_age_s=now-self.landed_at,
+            stationary=self.ground_velocity_ok, velocity_age_s=now-self.ground_velocity_at)
+        row = dict(type='ground_session_reset', accepted=response.success, reason=response.message,
+            observation_session=self.processor.observation_session,
+            received_ros_ns=self.get_clock().now().nanoseconds)
+        if response.success:
+            self.last = None
+            self.last_source_ns = None
+        self.record('inputs', row)
+        self.decision_pub.publish(String(data=json.dumps(row)))
+        return response
 
     def state(self, msg):
         fresh = 0 <= self.get_clock().now().nanoseconds-stamp_ns(msg) <= 1_500_000_000
@@ -171,7 +189,11 @@ class BtfNode(Node):
                     self.processor.reset()
                 else:
                     self.processor.reject_queued_input()
-                self.record('inputs',dict(type='uwb_rejected',event=event,reason='receiver_queue_expired'))
+                self.record('inputs',dict(type='uwb_rejected',event=event,reason='receiver_queue_expired',
+                    reset_scope='all' if age_ns<0 else 'queued_models', age_ns=age_ns))
+                self.decision_pub.publish(String(data=json.dumps(dict(
+                    schema=1,ok=False,published=False,reason='receiver_queue_expired',
+                    receiver_age_ns=age_ns,observation_session=self.processor.observation_session))))
                 return
             sync_ready = self.sync_ready()
             self.record('inputs',dict(type='uwb',event=event,clock_sync_ready=sync_ready))
@@ -229,6 +251,7 @@ class BtfNode(Node):
                 self.counts['published'] += 1
             else:
                 self.counts['output_expired'] += 1
+                result['pose_blocked_reason'] = 'output_expired'
         self.last = result
         self.record('decisions',result)
         self.decision_pub.publish(String(data=json.dumps(safe_json(result),ensure_ascii=False,allow_nan=False)))
@@ -247,6 +270,7 @@ class BtfNode(Node):
                'fc_state':self.fc_state,
                'height_mount_confirmed':self.config['height']['mount_confirmed'],
                'flat_floor_confirmed':self.config['height']['flat_floor_confirmed']}
+        row['observation_session'] = self.processor.observation_session
         self.status_pub.publish(String(data=json.dumps(row,ensure_ascii=False)))
         self.record('status',row)
         if self.recorder:
