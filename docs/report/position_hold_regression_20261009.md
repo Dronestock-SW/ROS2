@@ -316,3 +316,35 @@ ARM·모드 변경·이륙 명령은 보내지 않았다.
 근거는 PC 외부 증거 폴더에 보관했다.
 `Documents/Drone5-evidence/20261010/hover-regression/`의
 `flow-rotation-change.json`, `flow-change-readback.json`이다.
+## 2026-10-10: perfect_holdv2 전체 설정 복원
+
+사용자는 0 회전 시험 뒤에도 호버가 안 된다고 보고했다.
+첨부한 QGroundControl Parameters/perfect_holdv2.params로 복원했다.
+파일 SHA256: 389b802cb7cecad0c71c4f70745c9c125959da9e3fe146cfb22ca44725c8fd46.
+
+첫 시도 때 ARM·공중 상태로 바뀌어 쓰기를 중단했다.
+사용자 착륙 통보 후 최신 DISARM·ON_GROUND를 확인했다.
+현재 전체 설정을 PC 증거 폴더에 먼저 백업했다.
+센서 ID는 첨부 파일과 모두 같았다.
+1095항목 중 22개 차이가 있었다.
+설정 20개를 복원했다. 보정 offset 12개도 포함한다.
+비행 번호·누적 비행시간 2개 차이는 이력으로 보존했다.
+
+복원값: FLOW_ROT=4, EV_CTRL=0, RC_IN_MODE=3,
+RC_OVERRIDE=1, MIS_TAKEOFF_ALT=2.5m.
+MAG_TYPE=0, MPC_THR_HOVER=0.35는 기존부터 같았다.
+MAVROS ParamSetV2 응답과 저장 ACK 성공을 확인했다.
+FC 재부팅 ACK와 재연결·DISARM을 확인했다.
+재부팅 직후 첫 전체 pull은 실패했다.
+재시도에서 1095개 모두 조회했다.
+보존한 이력 2개 외 파일과 설정 차이는 없었다.
+부동소수 비교 허용치는 상대 1e-6, 절대 1e-7이다.
+
+복원 후 호버는 미검증이다. ARM·이륙 명령은 보내지 않았다.
+자동비행 설정은 이전 시험과 달라졌다.
+특히 자동 이륙 기본 높이는 2.5m로 복원됐다.
+기존 웹 자동 시험 준비 완료를 의미하지 않는다.
+
+PC 외부 증거 폴더 hover-regression의 rollback-before.json,
+rollback-diff.json, rollback-result.json,
+rollback-after-reboot.json, rollback-after-diff.json에 보관했다.
