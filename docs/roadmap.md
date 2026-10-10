@@ -19,6 +19,9 @@ MAVROS 비정상 종료와 FC 로그 크기 상한도 확인했다.
 10월 10일 [부팅 수집](runbooks/manual_capture_boot.md)을 추가했다.
 다음 순서는 수동 호버 기록 → UWB 융합 → C++ 이식이다.
 웹 UI 수정은 그 뒤 사용자 요청에 맞춘다.
+호버 대기 중 [C++ 관측 입력](architecture/cpp_observation_input.md)을 준비했다.
+원본 로그 재생·관측 검사를 연결했다. FC 출력은 추가하지 않았다.
+[준비 결과](report/cpp_observation_preparation_20261010.md)에서 검증 범위를 확인한다.
 아래 현장 기록은 이전 시점의 상태다.
 
 현재 현장 상태는 [10월 9일 기록](report/field_readiness_20261009.md)을 따른다.

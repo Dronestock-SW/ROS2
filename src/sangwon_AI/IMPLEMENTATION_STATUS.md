@@ -3,6 +3,14 @@
 기존 AI의 구현·검증 범위를 기록하는 문서다.
 현장 실행 경로와 REPLAY 범위를 확인할 때 읽는다.
 
+2026-10-10: `CaptureObservations`와 파일 재생 실행기를 추가했다.
+수동 수집기 schema 1의 원본 JSONL을 직접 읽는다.
+관측·시각·frame·공분산 검사는 C++에서 수행한다.
+기존 BT·명령 서비스에 실물 입력을 주입하지 않는다.
+동적 보정과 PX4 융합 후 실물 명령 경로를 연결한다.
+고도 기준과 Native/Offboard 정책 조정도 후속이다.
+[준비 결과](../../docs/report/cpp_observation_preparation_20261010.md)를 따른다.
+
 2026-10-08 후속: `sangwon_native_plan`을 추가했다.
 기존 기하·지도 검사로 native 미션 전체를 검사한다.
 출발점·이륙 공간·XY 구간·마커 보정·역순 복귀를 확인한다.

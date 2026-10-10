@@ -2,6 +2,12 @@
 이 디렉터리는 실내 자율비행 행동 계층의 설계를 모은다.
 설계 결정·구현 범위·검증 근거를 검토할 때 읽는다.
 
+2026-10-10: 수동 수집 로그를 C++ 입력에 직접 연결했다.
+`sangwon_capture_replay`는 원본 시각·좌표계·공분산을 검사한다.
+UWB XY와 PX4 상태를 분리한다. FC 출력은 추가하지 않는다.
+[관측 입력 계약](../../docs/architecture/cpp_observation_input.md)과
+[준비 결과·실행 명령](../../docs/report/cpp_observation_preparation_20261010.md)을 따른다.
+
 2026-10-08 전체 미션은 기존 geometry를 native 경로에 연결했다.
 `sangwon_native_plan`은 지도·기체 여유·마커 보정 구역을 검사한다.
 Python MissionChain이 유일한 FC 명령 주체다.
