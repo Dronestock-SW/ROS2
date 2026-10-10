@@ -193,3 +193,72 @@ HTTP 200·최신 FC 연결·DISARM·지상 상태를 확인했다.
 웹 START는 비활성이고 실제 비행 명령은 보내지 않았다.
 FC logger는 재부팅 뒤 `not running`으로 읽혔다.
 다음 비교 시험에서는 실제 ULog 기록 시작도 확인해야 한다.
+
+## 10월 10일 재조회: 회전·추력 기준은 유지됨
+
+수평 흐름만으로 FLOW_ROT를 0으로 바꾸지 않는다.
+12:31~12:34 KST에 FC를 직접 읽었다.
+MAVROS가 종료되어 직렬 포트 소유자가 없었다.
+읽기 도구는 DISARM heartbeat를 확인했다.
+파라미터 쓰기·ARM·모드 명령은 보내지 않았다.
+
+| 항목 | 현재 FC | perfect_holdv2 기준 |
+|---|---:|---:|
+| SENS_FLOW_ROT | 4 | 4 |
+| SENS_FLOW_RATE | 70 | 70 |
+| SENS_FLOW_SCALE | 1 | 1 |
+| EKF2_OF_CTRL | 1 | 1 |
+| EKF2_RNG_CTRL | 1 | 1 |
+| MPC_THR_HOVER | 0.35 | 0.35 |
+| MPC_USE_HTE | 1 | 1 |
+| EKF2_GPS_CTRL | 0 | 0 |
+| EKF2_BARO_CTRL | 1 | 1 |
+| EKF2_HGT_REF | 0 | 0 |
+| MPC_ALT_MODE | 0 | 0 |
+| EKF2_MAG_TYPE | 0 | 0 |
+| EKF2_EV_CTRL | 1 | 0 |
+
+FLOW_ROT=4는 기체 기준 센서 yaw 180도다.
+기체의 창고 heading에 따라 바꾸는 값이 아니다.
+실제 센서 장착이 같다면 기존 보정을 유지한다.
+HTE=1에서는 추정 호버 추력을 사용한다.
+0.35는 항상 고정되는 실제 모터 출력이 아니다.
+[PX4 파라미터 정의](https://docs.px4.io/v1.17/en/advanced_config/parameter_reference#SENS_FLOW_ROT)를 따른다.
+
+현재 지상 광류는 들어오지만 융합은 false다.
+광류 품질은 30~31이다.
+ToF 원본은 0.011m, 명시 최소거리는 0.1m다.
+광류 명시 최소 높이도 0.08m다.
+이 지상 상태로 이전 비행 중 융합을 판단하지 않는다.
+두 EKF 인스턴스 모두 EV 위치 융합은 false다.
+선택 인스턴스는 1이며 heading 제어 적합성은 false다.
+기존 수동 비행과 같은 시행의 ULog 분석은 남았다.
+
+관측 연결 중단과 수동 흐름은 별도로 조사한다.
+10일 09:51 KST에 MAVROS가 SIGABRT로 종료됐다.
+로그는 `malloc(): unaligned fastbin chunk detected`다.
+launch가 나머지 관측 노드도 종료했다.
+이 로그만으로 메모리 부족이나 원인을 확정하지 않는다.
+Jetson 루트 가용량은 약 495MiB다.
+이번 읽기 결과는 RAM과 PC에 보존했다.
+
+FC ULog 기록 중단 원인은 별도로 확인됐다.
+`logger status`는 실행 중이나 `Not logging`이다.
+`dmesg`에 `errno:27 (File too large)`가 남았다.
+해당 파일은 2,147,482,325 bytes다.
+파일명 날짜만으로 수동 시험 로그로 간주하지 않는다.
+다음 시험 전 새 로그의 실제 증가를 확인해야 한다.
+이번에는 로그 삭제나 logger 재시작을 하지 않았다.
+
+증거 파일은 PC `.integration`에 별도 보존한다.
+`hover-baseline-compare-20261010.json`은 13개 조회다.
+`manual-fc-current-20261010.json`은 15개 조회다.
+센서 진단은 `hover-diagnostics-20261010.json`이다.
+SD 목록과 오류는 `hover-log-index-20261010.json`이다.
+원본과 장치 식별자는 Git에 넣지 않는다.
+
+최종 임무 실행 주체는 기존 C++ 설계를 따른다.
+Python 시험 미션을 최종 AI 통합으로 보지 않는다.
+C++ 계획 검사와 C++ 전체 실행기는 구분한다.
+수동 Position 호버는 PX4의 센서 융합·제어 경로다.
+C++ 이관 완료만으로 수동 호버 회복을 선언하지 않는다.
