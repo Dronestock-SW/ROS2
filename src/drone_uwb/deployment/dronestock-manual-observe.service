@@ -1,0 +1,17 @@
+[Unit]
+Description=Manual flight sensor observations (no mission or EV output)
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+EnvironmentFile=%h/.config/dronestock/manual-capture.env
+ExecStart=/bin/bash %h/.local/libexec/dronestock/run_manual_capture.sh observe
+Restart=always
+RestartSec=10
+KillSignal=SIGINT
+TimeoutStopSec=20
+UMask=0077
+NoNewPrivileges=true
+
+[Install]
+WantedBy=default.target

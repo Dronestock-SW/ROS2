@@ -6,3 +6,4 @@ __pycache__/
 /.integration-evidence/
 /.test-deps/
 /.test-venv/
+/.review/

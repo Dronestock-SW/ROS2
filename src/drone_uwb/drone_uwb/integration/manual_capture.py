@@ -55,6 +55,39 @@ def boot_id():
     return path.read_text(encoding='utf-8').strip() if path.exists() else None
 
 
+class GroundObservation:
+    """Conservative retention evidence, not aircraft readiness."""
+    def __init__(self, started_ns):
+        self.started_ns = started_ns
+        self.proof = dict(all_ground=True, all_disarmed=True, all_connected=True, all_fresh=True,
+                          state_count=0, landed_count=0, max_state_gap_s=0., max_landed_gap_s=0.)
+        self.last = {}
+
+    def observe(self, topic, data, mono_ns, ros_ns, header_ns):
+        kind = {'/mavros/state':'state', '/mavros/extended_state':'landed'}.get(topic)
+        if kind is None:
+            return
+        p = self.proof
+        p['all_fresh'] &= header_ns is not None and header_ns > 0 and 0 <= ros_ns-header_ns <= 1_500_000_000
+        p[kind+'_count'] += 1
+        if kind in self.last:
+            gap = (mono_ns-self.last[kind])/1e9
+            p['max_'+kind+'_gap_s'] = max(p['max_'+kind+'_gap_s'], gap)
+            p['all_fresh'] &= gap >= 0
+        else:
+            p['first_'+kind+'_delay_s'] = (mono_ns-self.started_ns)/1e9
+            p['all_fresh'] &= mono_ns >= self.started_ns
+        self.last[kind] = mono_ns
+        if kind == 'state':
+            p['all_disarmed'] &= data.get('armed') is False
+            p['all_connected'] &= data.get('connected') is True
+        else:
+            p['all_ground'] &= data.get('landed_state') == 1
+
+    def report(self, now_ns):
+        return dict(self.proof, **{'last_'+k+'_age_s':(now_ns-v)/1e9 for k,v in self.last.items()})
+
+
 class Capture:
     def __init__(self, directory, metadata, *, max_bytes=192*1024*1024,
                  min_free_bytes=512*1024*1024, writer_factory=AsyncRecording):
@@ -65,6 +98,7 @@ class Capture:
         if shutil.disk_usage(self.directory).free < min_free_bytes:
             raise OSError('capture_disk_reserve_low')
         self.started = clock_record()
+        self.ground_observation = GroundObservation(self.started['monotonic_ns'])
         self.max_bytes, self.queued_bytes = max_bytes, 0
         self.required = list(metadata.get('required_topics', []))
         self.expected = list(metadata.get('topics', {}))
@@ -116,6 +150,7 @@ class Capture:
             return False
         self.queued_bytes += size
         stat['queued'] += 1
+        self.ground_observation.observe(topic, data, mono_ns, ros_ns, header_ns)
         if type_name == 'mavros_msgs/msg/Mavlink':
             self.message_ids[f'{topic}:{data.get("msgid")}'] += 1
         if topic == '/mavros/state':
@@ -143,6 +178,7 @@ class Capture:
             optional_topics_missing=[t for t in self.expected if t not in self.required and not self.stats.get(t, {}).get('queued')],
             topics={t:dict(s, last_receipt_age_s=(now-s['last_mono_ns'])/1e9) for t,s in self.stats.items()},
             mavlink_message_ids=dict(self.message_ids), fc_state=self.fc_state,
+            ground_observation=self.ground_observation.report(now),
             state_transitions=self.transitions, raw_optical_flow_received=bool(flow),
             px4_ulog_attached=False, independent_reference_verified=False,
             alignment_confirmed=False, timing_confirmed=False, flight_authorized=False,

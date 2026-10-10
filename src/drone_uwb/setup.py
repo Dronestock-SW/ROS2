@@ -30,6 +30,7 @@ setup(
         'uwb_replay = drone_uwb.integration.replay:main',
         'uwb_bench_probe = drone_uwb.integration.ros.bench_probe:main',
         'uwb_manual_capture = drone_uwb.integration.ros.manual_capture:main',
+        'manual_observation_streams = drone_uwb.integration.ros.manual_streams:main',
         'uwb_pipeline = drone_uwb.processing.runner:main',
         'uwb_static_a = drone_uwb.processing.experiments.static_a:main',
         'uwb_h80_b = drone_uwb.processing.experiments.h80_b:main',
