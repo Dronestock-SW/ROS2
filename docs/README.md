@@ -193,3 +193,5 @@ Windows에서는 심볼릭 링크를 지원하는 WSL 체크아웃을 쓴다.
 
 [2026-10-04 전체 변경 검토](report/feature_uwb_commit_check_20261004.md)에서
 기능별 커밋·현재 적용값·검증 결과·남은 작업을 확인한다.
+
+- [실측 기록 읽기 권한 개선](report/capture_read_access_20261010.md)

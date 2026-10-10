@@ -1,0 +1,22 @@
+{
+  "purpose": "bluewak 계정의 실측 기록 읽기 권한 수정 결과",
+  "host": "user-desktop",
+  "capture_root": "/home/arialhanho/.local/share/dronestock/manual-captures",
+  "reader": "bluewak",
+  "writer": "arialhanho",
+  "cause": "수집 서비스 UMask=0077, 기본 ACL 없음. 파일·폴더 신규 생성 및 상태 파일 원자적 교체 때 이전 파일의 ACL이 상속되지 않음.",
+  "fix": "기존 기록의 bluewak 읽기 ACL과 디렉터리의 기본 ACL을 적용. 상위 .local/share/dronestock 경로에는 통과 권한만 부여.",
+  "scope": "수집 폴더 읽기와 탐색. bluewak 쓰기 불가. 다른 계정 일반 공개 없음.",
+  "service_restarted": false,
+  "source_code_changed": false,
+  "fc_settings_changed": false,
+  "validation": {
+    "temporary_test": "umask 0077에서 신규 하위 폴더·원본 파일·두 차례 상태 파일 교체의 ACL 상속 확인",
+    "live_status_replacement": "inode 1460350에서 1461551로 교체 후에도 읽기 성공",
+    "new_live_capture": "capture-1791624073071645977-350a9a06",
+    "new_capture_created_kst": "2026-10-10T18:21:13+09:00",
+    "new_capture_files_readable": ["events.jsonl","manifest.json","summary.json"],
+    "reader_write_allowed": false
+  },
+  "evidence_export": "사용자의 원본 압축 보관 허용 후 중앙 60초 구간을 PC에 저장. 압축 해제 데이터의 SHA256을 원격 원본 구간과 대조해 일치 확인."
+}
