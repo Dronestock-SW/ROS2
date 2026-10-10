@@ -6,6 +6,12 @@
 > 최종 갱신: 2026-10-09 (시험 웹 미션 관리·중복 실행 방지)
 
 2026-10-10 사용자가 수동 Position 호버 성공을 확인했다.
+같은 날 [호버·공백 비교](report/hover_gap_analysis_20261010.md)를 추가했다.
+그림자·높이 차이는 현장 관찰로 기록했다. 인과 확정은 남았다.
+UWB 원시 수신과 B_TF 거부를 분리했다. 공중 공백은 미해결이다.
+[지상 이력 초기화](runbooks/btf_observation_session.md)를 구현·격리 검증했다.
+[상단 LiDAR C++ 입력](architecture/cpp_lidar_input.md)을 준비했다.
+LiDAR 스캔매칭·PX4 융합·운영 배포는 아직 미실시다.
 새 ULog·동시 ROS 기록을 확보했다. UWB 출력 공백과 동적 보정은 남아 있다.
 최신 수동 시험은 [Position 조사](report/position_hold_regression_20261009.md)를 따른다.
 실제 수동 비행은 기록했으나 호버 복구·보정은 미완료다.

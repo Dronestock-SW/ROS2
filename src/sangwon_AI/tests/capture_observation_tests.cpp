@@ -53,6 +53,31 @@ int main() {
     check(bound.snapshot(1)["identity"]["config_refs"][0]["sha256"] == sangwon::service::digest("{}"), "config binding");
     auto a = manifest; a["tag"] = "A"; a["tag_id"] = "5"; a["ros_domain_id"] = 1; CaptureObservations tag_a(a);
     CaptureObservations c(manifest);
+    {
+      CaptureObservations lidar(manifest);
+      Json scan{{"angle_min", -1.}, {"angle_max", 1.}, {"angle_increment", .5},
+        {"range_min", .03}, {"range_max", 12.}, {"time_increment", .001}, {"scan_time", .1},
+        {"ranges", Json::array({1., "Infinity", 0., 2., "NaN"})}, {"intensities", Json::array()}};
+      auto rscan = [&](std::int64_t mono) { return row("/scan", "sensor_msgs/msg/LaserScan", "laser_frame", scan, mono); };
+      lidar.ingest(rscan(1000000000)); auto ls = stream(lidar, "lidar_scan");
+      check(ls["sample_valid"] && ls["value"]["valid_returns"] == 2, "scan usable returns");
+      check(ls["value"]["ranges_m"][1].is_null() && ls["value"]["ranges_m"][2].is_null(), "invalid is not free space");
+      check(!ls["value"]["px4_aiding_ready"].get<bool>() && !ls["value"]["z_observed"].get<bool>(), "scan is not pose/height");
+      lidar.ingest(rscan(1000000000));
+      check(stream(lidar, "lidar_scan")["reason"] == "HEADER_NOT_NEW", "duplicate scan");
+      scan["angle_max"] = 2.; lidar.ingest(rscan(1100000000));
+      check(stream(lidar, "lidar_scan", 1100000000)["reason"] == "SCAN_ANGLE_COUNT_MISMATCH", "beam geometry");
+      scan["angle_max"] = 1.; scan["time_increment"] = .1; lidar.ingest(rscan(1200000000));
+      check(stream(lidar, "lidar_scan", 1200000000)["reason"] == "SCAN_TIMING_INVALID", "beam timing");
+      scan["time_increment"] = 0.; lidar.ingest(rscan(1300000000));
+      check(!stream(lidar, "lidar_scan", 1300000000)["value"]["beam_timing_available"].get<bool>(), "unknown beam timing retained");
+      check(stream(lidar, "lidar_scan", 1600000000)["reason"] == "EXPIRED", "scan expiry");
+      scan["time_increment"] = .01; lidar.ingest(rscan(1600000001));
+      check(stream(lidar, "lidar_scan", 1600000001)["reason"] == "SCAN_FUTURE_BEAMS", "future rays are not observations");
+      scan["time_increment"] = 0.;
+      scan["ranges"] = Json::array({0., 0., "Infinity", "NaN", 99.}); lidar.ingest(rscan(1700000000));
+      check(stream(lidar, "lidar_scan", 1700000000)["reason"] == "SCAN_NO_USABLE_RETURNS", "empty scan invalidates");
+    }
     check(stream(c, "uwb_xy").at("reason") == "MISSING", "missing");
     c.ingest(uwb()); auto s = stream(c, "uwb_xy");
     check(s.at("sample_valid") && s.at("header_ns") == wall+990000000, "ns precision");

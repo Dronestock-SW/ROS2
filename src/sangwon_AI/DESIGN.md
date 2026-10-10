@@ -9,6 +9,12 @@ ROS2 수동 수집기·B_TF 출력 계약을 파일 재생에 연결한다.
 고도 처리 충돌은 `docs/altitude_policy.md`를 우선한다.
 
 상태: 내부 설계 v1.0 / 웹 회신·UWB 전체 사양·실기체 승인 별도 / 2026-10-02.
+
+2026-10-10 관측 입력 준비를 추가했다.
+[C++ 관측 경계](../../docs/architecture/cpp_observation_input.md)와
+[상단 LiDAR 입력](../../docs/architecture/cpp_lidar_input.md)을 따른다.
+임무 권한·runtime과 PX4 EKF의 책임은 유지한다.
+실제 LiDAR 스캔매칭·PX4 aiding은 아직 미구현이다.
 작업 위치: `/home/arialhanho/Desktop/ROS2/src/sangwon_AI`.
 현재 산출물은 설계 문서다.
 2026-10-04 보완: [QR_SCAN_SPEC.md](QR_SCAN_SPEC.md)를 스캔 행동 기준으로 추가한다.
