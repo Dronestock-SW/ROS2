@@ -10,6 +10,8 @@
 
 | 찾는 내용 | 위치 |
 |---|---|
+| 현재 환경 1m 이상 호버 확인·저고도 LiDAR 전략 | [10월 10일 조명·그림자 기록](report/optical_flow_environment_20261010.md) |
+| Position/Hold 전제의 UWB 최종 통합 측정 | [수동 비행 통합 관측 절차](runbooks/manual_uwb_final_trial_20261010.md) |
 | 자동 출발점·천장 명령·RC 인계·실물 상태 | [10월 9일 현장 준비 기록](report/field_readiness_20261009.md) |
 | 현장 웹 명령·출발점·RC 점검 순서 | [웹 현장 설정 절차](runbooks/field_web_settings.md) |
 | 스캔 실패 뒤 남은 작업 계속·후속 시험 | [스캔 후속 수행 기록](report/scan_continuation_20261008.md) |
