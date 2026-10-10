@@ -195,3 +195,5 @@ Windows에서는 심볼릭 링크를 지원하는 WSL 체크아웃을 쓴다.
 기능별 커밋·현재 적용값·검증 결과·남은 작업을 확인한다.
 
 - [실측 기록 읽기 권한 개선](report/capture_read_access_20261010.md)
+
+- [ToF 높이별 정지 실험](report/tof_stationary_20261010.md)
