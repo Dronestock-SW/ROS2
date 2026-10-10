@@ -197,3 +197,5 @@ Windows에서는 심볼릭 링크를 지원하는 WSL 체크아웃을 쓴다.
 - [실측 기록 읽기 권한 개선](report/capture_read_access_20261010.md)
 
 - [ToF 높이별 정지 실험](report/tof_stationary_20261010.md)
+
+- [UWB 중앙 기준점 정지 실험](report/uwb_center_20261010.md)

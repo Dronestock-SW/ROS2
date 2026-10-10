@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "experiment": "2026-10-10 중앙 기준점 정지 시험",
+  "window_kst": ["2026-10-10T18:10:31+09:00", "2026-10-10T18:11:31+09:00"],
+  "duration_s": 60,
+  "reference": {
+    "tag_xy_m": [3.15, 2.30],
+    "source": "사용자가 중앙 기준점 표시와 태그 정렬을 확인함. 독립 측량 오차는 미평가.",
+    "anchor_xyz_m": [[0,0,0.15],[6.3,0,0.15],[0,4.6,0.15],[6.3,4.6,0.15]],
+    "measured_tag_height_available": false
+  },
+  "evidence": {
+    "remote_source": "/home/arialhanho/.local/share/dronestock/manual-captures/capture-1791623340894457998-7b9bf1f9/events.jsonl",
+    "source_file_bytes": 100069789,
+    "source_file_sha256": "1a7d0f0bcddb2b31d11c62b630f4a3e5603c91a12baecd506fe09436a4833185",
+    "selected_original_rows": 47175,
+    "selected_original_bytes": 32610607,
+    "selected_original_sha256": "fa7620cae9f414eabe83c8a47f2151d618d1e2c88b7e942be80b15f6880f3d14",
+    "archive": "center_181031_181131.events.jsonl.gz",
+    "archive_bytes": 4531146,
+    "archive_sha256": "6be8c41eb4da79a6755bf8c30ede1978d1ef2b7d609db2705ee9194dbd7f8a12",
+    "local_uncompressed_hash_matches_remote": true
+  },
+  "uwb": {
+    "raw_cycles": 2399,
+    "all_four_valid_cycles": 2330,
+    "all_four_valid_percent": 97.12380158399333,
+    "valid_mask_counts": {"15":2330,"3":66,"1":1,"2":1,"7":1},
+    "raw_cycle_rate_hz": 39.983333333333334,
+    "received_envelopes": 4810,
+    "max_envelope_receive_gap_s": 0.046940939,
+    "raw_xy_samples": 2330,
+    "raw_xy_mean_m": [3.116080566523605,2.275993819742489],
+    "raw_xy_mean_error_m": 0.04155507980879916,
+    "raw_xy_rms_error_m": 0.045484529246464865,
+    "raw_xy_p95_error_m": 0.06732184192370234,
+    "raw_xy_std_m": [0.011178463694995778,0.014732945811225945],
+    "btf_published_samples": 0,
+    "btf_status_last_reason_samples": {"observation_jump_quarantined":59,"tdma_deadline_rejected":1},
+    "btf_status_counter_delta_span_note": "약 59초의 첫/마지막 상태 표본 차이. 전체 60초 판정 건수와 구분.",
+    "btf_status_counter_delta": {"cycles":2294,"observation_jump_quarantined":2294,"tdma_deadline_rejected":65}
+  },
+  "range_geometry": {
+    "minimum_possible_center_slant_m": 3.9003204996512784,
+    "basis": "중앙 XY와 확인된 6.3 x 4.6m 직사각형 배치에서 sqrt(3.15^2+2.30^2). 높이차가 있으면 실제 사선거리는 이 값보다 커짐.",
+    "complete_cycle_samples_per_anchor": 2330,
+    "anchors": [
+      {"id":"A1","mean_m":3.757582939914163,"std_m":0.020709475780617374,"mean_minus_minimum_m":-0.14273755973711522},
+      {"id":"A2","mean_m":3.8351404291845492,"std_m":0.016195608093941355,"mean_minus_minimum_m":-0.06518007046672913},
+      {"id":"A3","mean_m":3.808126124463519,"std_m":0.014558323957085322,"mean_minus_minimum_m":-0.09219437518775919},
+      {"id":"A4","mean_m":3.82183421888412,"std_m":0.018988929492574826,"mean_minus_minimum_m":-0.07848628076715825}
+    ],
+    "interpretation": "조건부 기하 불일치. 배치·안테나 기준점·거리 편향을 추가 확인해야 하며 한 지점 값으로 보정 상수를 확정하지 않음."
+  },
+  "tof": {"samples":591,"within_reported_range":0,"mean_m":0.0098984769361122,"std_m":0.001159021550374303,"min_m":0.0,"max_m":0.019999999552965164,"max_receive_gap_s":0.110275738,"reported_min_range_m":0.1},
+  "imu": {"samples":6000,"max_receive_gap_s":0.020925846,"roll_min_mean_max_deg":[1.3385622369900196,1.3646571207414262,1.3940187234489467],"pitch_min_mean_max_deg":[-0.7202667012456777,-0.6979175250013832,-0.6769216853075359]},
+  "fc_last_state": {"connected":true,"armed":false,"mode":"AUTO.LOITER","landed_state":1},
+  "applied_calibration_changes": false,
+  "next_experiment": "중앙과 같은 높이에서 +X 1m (4.15,2.30)m, +Y 1m (3.15,3.30)m의 기준점을 각각 시험한다. 유효한 ToF를 포함한 B_TF 시험은 같은 기준점에서 렌즈-바닥 거리를 측정 범위 안으로 확보해 별도로 시행한다."
+}
