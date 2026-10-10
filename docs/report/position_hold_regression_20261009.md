@@ -348,3 +348,54 @@ FC 재부팅 ACK와 재연결·DISARM을 확인했다.
 PC 외부 증거 폴더 hover-regression의 rollback-before.json,
 rollback-diff.json, rollback-result.json,
 rollback-after-reboot.json, rollback-after-diff.json에 보관했다.
+## 2026-10-10: 복원 이후 실제 비행 ULog 분석
+
+복원 뒤에도 사용자는 전방 흐름을 보고했다.
+착륙·DISARM 확인 후 MAVROS 경유 LOG_REQUEST로 읽었다.
+설정·모드·ARM 명령은 보내지 않았다.
+
+최신 log-58.ulg는 3,372,960바이트다.
+PC와 Jetson SHA256은
+7c5c6c85605a388aafd525750c2bfdcf173a275251957f23a54e754074b80bed다.
+전체 요청 offset의 수신 길이를 검사했다.
+FC 원본 해시를 직접 계산한 것은 아니다.
+로그 시간 83.625초, 기록된 dropout은 0개다.
+FC 파일 시각은 PC 날짜와 다르므로 파일명만으로 날짜를 단정하지 않는다.
+초기 설정 FLOW_ROT=4, EV_CTRL=0, MAG_TYPE=0으로 복원 후 시행임을 대조했다.
+
+Position 구간은 2.167초, 1.485초, 1.925초다.
+세 구간 모두 선택된 EKF의 광류·거리 융합 표본은 accepted/fused였다.
+광류 innovation reject는 해당 기록 표본에서 0개다.
+EV 위치 융합은 로그 전체에서 false였다.
+Position 구간의 위치·속도·heading reset 증가는 없었다.
+두 번째 구간은 스틱 중립, 위치 목표 고정이다.
+세 번째도 수평 스틱 절댓값 최대 0.024였다.
+이는 RC 지속 입력만으로 현상을 설명하기 어렵다는 근거다.
+융합 성공 자체가 광류 방향·스케일 정확도를 증명하지는 않는다.
+
+41~71초 구간 ToF는 0.469~0.807m다.
+Position 구간 광류 quality는 42~94다.
+quality 숫자만으로 바닥 추적 정확도를 확정하지 않는다.
+사용자는 이전 성공 때와 같은 타일 바닥이라고 확인했다.
+
+회전 0 비교 시행 log-57도 확보했다.
+ROT=0, EV_CTRL=1이며 Position 2.783초다.
+비행 조건과 설정이 둘 이상 달라 통제된 A/B 시험이 아니다.
+0/4 중 어느 쪽이 맞는지 비행 로그만으로 확정하지 않는다.
+
+기존 20260927 log_23과 같은 펌웨어 SHA였다.
+SENS/EKF2/MPC/CAL/SYS/IMU/RC 계열 공통 초기값을 비교했다.
+차이는 RC1_TRIM 1501→1500, RC2_TRIM 1499→1500뿐이었다.
+센서 장착·실제 이동 방향·속도의 독립 기준은 아직 없다.
+다음은 프로펠러 없는 지상 광류 축·스케일 확인이다.
+추정 속도와 실제 속도를 같은 것으로 취급하지 않는다.
+
+ROS 기록은 저장공간 부족으로 이번 비행을 놓쳤다.
+FC ULog를 확보했으므로 해당 시행 분석은 가능했다.
+이전 종료 청크 6개의 PC 백업과 원본 SHA256을 대조했다.
+검증한 원본만 삭제해 453,628,645바이트를 회수했다.
+19:20 KST 수집기 active/collecting을 재확인했다.
+장시간 무인 기록의 용량 정책 문제는 남아 있다.
+
+PC hover-regression/log-58-analysis, log-57-analysis,
+old-23-analysis에 수치 결과를 보관했다.
