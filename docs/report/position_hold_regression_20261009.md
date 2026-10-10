@@ -535,3 +535,28 @@ Position 마지막 구간은 118.645~136.548초다.
 펌웨어 손상 또는 물리 장착 변화로 확정할 근거도 없다.
 이번 작업은 오프라인 비교만 했으며 FC 설정은 바꾸지 않았다.
 PC hover-regression/supplied-17-analysis 및 detailed17에 결과를 보관했다.
+## 2026-10-10 19:36 KST: 재복원 요청과 새 부팅 기록
+
+사용자는 log_17의 성공 여부를 다시 유보했다.
+확정한 성공 설정 기준은 perfect_holdv2.params로 유지한다.
+이전 절의 log_17 성공 확인은 이 후속 답변으로 철회한다.
+perfect_hold.params와 v2의 호버 센서/제어 설정은 같았다.
+
+재복원 전 최신 DISARM·ON_GROUND를 확인했다.
+현재 1095개 대상 설정은 이미 v2와 일치했다.
+비행 번호·누적시간만 다르며 보정값 추가 변경은 없었다.
+따라서 이번 파라미터 쓰기는 0건이다.
+설정 저장 ACK와 FC 재부팅 ACK는 성공했다.
+재연결 후 강제 pull로 1095개를 다시 대조했다.
+비행 이력 외 차이는 없다.
+FLOW_ROT=4, MAG_TYPE=0, EV_CTRL=0, MPC_THR_HOVER=0.35다.
+
+부팅 약10초의 bias 읽기를 PC에 저장했다.
+첫 logger 조회는 시작 전이어서 not running이었다.
+19:36:49 KST 재조회는 full logging running이다.
+파일은 /fs/microsd/log/2026-10-09/18_26_36.ulg다.
+0.77MiB 기록과 dropout0을 확인했다.
+Jetson 수집기도 collecting이다. 여유공간은 약5.16GB다.
+호버 성공·비행 안전 검증을 뜻하지 않는다.
+ARM·모드 전환·이륙 명령은 보내지 않았다.
+PC hover-regression/retry-* 증거를 별도로 보존했다.
