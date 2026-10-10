@@ -292,3 +292,27 @@ MAG_TYPE 복원 상태에서 먼저 기준 호버를 확인한다.
 이후 같은 설정·장착·환경에서 관측 연결을 비교한다.
 실제 비교 전 기존 출력 노드·연결 소유자를 확인한다.
 FLOW_ROT·추력·CAL 값을 동시에 바꾸지 않는다.
+
+## 2026-10-10 19:10 KST: 사용자 요청 광류 회전 비교 설정
+
+수동 Position 비행에서 전방 흐름이 재발했다.
+사용자는 시간이 갈수록 빨라졌다고 보고했다.
+원인은 아직 확정하지 않았다.
+
+착륙 상태와 DISARM을 실시간 확인했다.
+사용자 요청으로 SENS_FLOW_ROT만 4에서 0으로 바꿨다.
+MAVROS ParamSetV2 응답은 성공이었다.
+MAV_CMD_PREFLIGHT_STORAGE(245), param1=1 저장 ACK는 0이다.
+FC 셸 재조회 값은 0이며 unsaved 표시는 없었다.
+MAG_TYPE=0, EV_CTRL=1, MPC_THR_HOVER=0.35는 유지했다.
+
+이 값은 비교 시험 설정이다. 검증된 호버 기준이 아니다.
+이전 성공 설정 perfect_holdv2.params의 값은 4다.
+UWB 작업이 센서 회전을 바꿨다는 증거는 없다.
+이번 변경 뒤 FC 재부팅·지상 축 확인·비행은 미실시다.
+재부팅 뒤 재조회와 지상 광류 방향 확인이 남았다.
+ARM·모드 변경·이륙 명령은 보내지 않았다.
+
+근거는 PC 외부 증거 폴더에 보관했다.
+`Documents/Drone5-evidence/20261010/hover-regression/`의
+`flow-rotation-change.json`, `flow-change-readback.json`이다.
