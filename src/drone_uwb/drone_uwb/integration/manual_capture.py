@@ -10,6 +10,7 @@ import shutil
 import time
 
 from drone_uwb.integration.async_recording import AsyncRecording
+from drone_uwb.integration.async_checkpoint import AsyncCheckpoint, atomic_text
 
 
 def json_value(value):
@@ -117,9 +118,23 @@ class Capture:
         atomic_json(self.directory/'manifest.json', self.manifest)
         stream = (self.directory/'events.jsonl').open('x', encoding='utf-8', buffering=64*1024)
         self.writer = writer_factory({'events': stream}, min_free_bytes=min_free_bytes)
+        self.checkpoints = None
+        self.stop_requested = False
+        # Initial I/O precedes subscription setup. Subsequent checkpoints are async.
+        atomic_json(self.directory/'summary.json', self.report())
+        self.checkpoints = AsyncCheckpoint(self.directory/'summary.json', write=self._write_checkpoint)
+
+    def _write_checkpoint(self, path, text):
+        # Even metadata queries can block on storage. Poll STOP on the status worker.
+        self.stop_requested |= (self.directory/'STOP').exists()
+        atomic_text(path, text)
+
+    @property
+    def storage_error(self):
+        return self.error or self.writer.error or (self.checkpoints.error if self.checkpoints else None)
 
     def add(self, topic, type_name, data, *, mono_ns, ros_ns, header_ns=None):
-        if self.closed or self.error or self.writer.error:
+        if self.closed or self.storage_error:
             self.rejected += 1
             return False
         stat = self.stats.setdefault(topic, dict(received=0, queued=0, max_gap_s=0.,
@@ -162,7 +177,7 @@ class Capture:
         return True
 
     def report(self, reason='recording', *, completed=False):
-        error = self.error or self.writer.error
+        error = self.storage_error
         flow = any(self.message_ids.get('/uas1/mavlink_source:'+str(i), 0) for i in (100, 106))
         flow = flow or any(self.stats.get(t, {}).get('queued', 0) for t in self.expected if '/px4flow/' in t)
         now = time.monotonic_ns()
@@ -186,8 +201,13 @@ class Capture:
             limitation='Capture completeness is not flight readiness or calibration proof. Join matching PX4 ULog for internal fusion state.')
 
     def checkpoint(self):
+        if self.closed:
+            return
         self.writer.flush()
-        atomic_json(self.directory/'summary.json', self.report())
+        # Serialize here so later callback mutations cannot alter the queued snapshot.
+        text = json.dumps(json_value(self.report()), ensure_ascii=False, allow_nan=False, indent=2)+'\n'
+        if not self.checkpoints.submit(text):
+            self.error = self.storage_error or 'checkpoint_enqueue_failed'
 
     def close(self, reason):
         self.closed = True
@@ -196,7 +216,12 @@ class Capture:
         except OSError as exc:
             self.error = self.error or str(exc)
         summary = self.report(reason, completed=True)
-        atomic_json(self.directory/'summary.json', summary)
+        try:
+            self.checkpoints.close(json.dumps(json_value(summary), ensure_ascii=False,
+                                              allow_nan=False, indent=2)+'\n')
+        except OSError as exc:
+            self.error = self.error or str(exc)
+            summary = self.report(reason, completed=True)
         return summary
 
 

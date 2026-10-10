@@ -16,7 +16,7 @@ def capture(tmp_path, **kwargs):
 
 def test_status_does_not_call_an_old_boot_or_stale_checkpoint_active(tmp_path, monkeypatch):
     monkeypatch.setattr(manual_capture, 'boot_id', lambda:'first')
-    c=capture(tmp_path); c.checkpoint()
+    c=capture(tmp_path)  # Initial status is written before subscribers are created.
     assert manual_capture.inspect_capture(c.directory)['recording_active']
     monkeypatch.setattr(manual_capture, 'boot_id', lambda:'second')
     assert not manual_capture.inspect_capture(c.directory)['recording_active']

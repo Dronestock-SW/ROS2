@@ -125,9 +125,9 @@ def record(args):
             now = time.monotonic()
             if stopped:
                 reason = stopped[0]; break
-            if (args.output/'STOP').exists():
+            if capture.stop_requested:
                 reason = 'operator_stop_file'; break
-            if capture.error or capture.writer.error:
+            if capture.storage_error:
                 reason = 'recording_error'; break
             if now-started >= args.seconds:
                 break

@@ -22,6 +22,9 @@ MAVROS 비정상 종료와 FC 로그 크기 상한도 확인했다.
 호버 대기 중 [C++ 관측 입력](architecture/cpp_observation_input.md)을 준비했다.
 원본 로그 재생·관측 검사를 연결했다. FC 출력은 추가하지 않았다.
 [준비 결과](report/cpp_observation_preparation_20261010.md)에서 검증 범위를 확인한다.
+[수집 공백 수정](report/capture_transport_repairs_20261010.md)을 추가했다.
+상태 파일 쓰기를 수신 루프에서 분리했다.
+이 수정은 수동 호버·좌표 보정 완료를 뜻하지 않는다.
 아래 현장 기록은 이전 시점의 상태다.
 
 현재 현장 상태는 [10월 9일 기록](report/field_readiness_20261009.md)을 따른다.
