@@ -205,3 +205,5 @@ Windows에서는 심볼릭 링크를 지원하는 WSL 체크아웃을 쓴다.
 - [UWB +Y 1m 정지 실험](report/uwb_y1m_20261010.md)
 
 - [UWB·ToF·IMU 높인 상태 정지 실험](report/uwb_raised_20261010.md)
+
+- [B_TF 이력 격리와 오차 판정 검사](report/btf_history_audit_20261010.md)
