@@ -7,7 +7,8 @@
 B4 XY를 높이 발행과 분리해 불필요한 공백을 줄였다.
 전체 공중 공백을 해결한 것은 아니다.
 점프 보호·B3 재획득에 의한 긴 공백은 남았다.
-운영 배포·FC 설정 변경·추가 비행은 하지 않았다.
+후속 요청으로 Jetson 관측 서비스에 적용했다.
+FC 설정 변경·추가 비행은 하지 않았다.
 
 ## 수정 근거
 
@@ -110,7 +111,7 @@ C3 실제 10.742초 동안 RAW 429개가 들어왔다.
 | Jetson 격리 pytest | ROS 콜백 포함 84개 통과 |
 | 격리 colcon symlink 빌드 | drone_uwb 성공, setup 적용 후 노드 import 성공 |
 | 기존 C1/C2/C3 재생 | 위 비교 결과, 원본 입력 보존 |
-| 운영 서비스·FC 설정 변경 | 없음 |
+| 최초 수정 시 운영 서비스·FC 설정 변경 | 없음 |
 | 새 SITL·실물 지상·비행 | 미실시 |
 
 저장공간 부족으로 수집기가 대기 중인 것도 확인했다.
@@ -125,6 +126,147 @@ Jetson 여유 공간은 약 1.2GiB에서 1.5GiB가 됐다.
 원본 해시는 [이전 보고서](hover_gap_analysis_20261010.md)에 있다.
 원본·재생 결과·해시 대조 기록은 Git 밖에 둔다.
 
+## Jetson 적용: 2026-10-11
+
+관측 코드 `18d980a`를 운영 관측 서비스에 적용했다.
+별도 실측 없이 설치·실행 상태를 확인한 결과다.
+
+| 항목 | 결과 |
+|---|---|
+| 작업 checkout | `/home/arialhanho/ROS2-review-20261008-codex` |
+| 브랜치 | `codex/mission-flight-flow-20261008` |
+| 적용 전/후 | `6021881` → `18d980a`, fast-forward |
+| 복구용 브랜치 | `backup/uwb-observe-before-20261011` |
+| 빌드 | `colcon build --packages-select drone_uwb --symlink-install --executor sequential` 성공 |
+| 설치 import | 새 B4 분리 함수와 ROS BTF 노드 성공 |
+| 실행 | manual-observe·manual-capture user service 모두 active |
+| 부팅 설정 | 두 서비스 enabled, 사용자 Linger=yes 유지 |
+| BTF 상태 | `allow_b4_xy_without_tof=true`, `fc_output_enabled=false` |
+| 새 기록 | manifest에 `18d980a`, `collecting`, 토픽·바이트 증가 |
+| 현재 UWB 입력 | 설치 확인 구간에 RAW 없음. 새 XY 성능은 미검증 |
+
+전체 launch가 노드 종료에 함께 종료되는 구조다.
+그래서 관측 launch와 수집기를 순서대로 재시작했다.
+묶여 있는 MAVROS도 잠시 재연결됐다.
+재시작 직전 FC 연결·DISARM·지상 상태를 읽었다.
+FC 재부팅·ARM·모드 변경 명령은 보내지 않았다.
+기존 FC 텔레메트리 주기 요청은 유지했다.
+
+현장 BTF JSON·앵커 JSON의 SHA256을 대조했다.
+수집기 env·설치된 실행 스크립트도 동일하다.
+원래 작업 디렉터리와 main은 건드리지 않았다.
+기존 local origin URL도 보존했다.
+검증된 Git bundle로 대상 checkout만 갱신했다.
+
+FC 주요 파라미터 12개를 전후에 읽어 대조했다.
+전체 파라미터 덤프 확인으로 표현하지 않는다.
+
+| 파라미터 | 적용 전 = 적용 후 |
+|---|---:|
+| EKF2_MAG_TYPE | 0 |
+| EKF2_EV_CTRL | 0 |
+| EKF2_OF_CTRL | 1 |
+| EKF2_RNG_CTRL | 1 |
+| EKF2_HGT_REF | 0 |
+| SENS_FLOW_ROT | 4 |
+| SENS_FLOW_SCALE | 1.0 |
+| COM_RC_IN_MODE | 3 |
+| COM_RC_OVERRIDE | 1 |
+| MIS_TAKEOFF_ALT | 2.5 |
+| SDLOG_MODE / SDLOG_PROFILE | 1 / 1 |
+
+위 값은 현재 readback이며 권장 변경값이 아니다.
+과거 요청값과 다른 항목도 현재 값 그대로 보존했다.
+수동 호버 기록용 관측 배포이며 PX4 융합 활성은 아니다.
+
+## 10.742초 공백의 연쇄 원인
+
+짧은 입력 누락 뒤 재획득 실패가 이어진 구간이다.
+USB 수신이 10.7초 동안 끊긴 구간은 아니다.
+C3 실제 pose 공백은 144.798–155.539초다.
+시각은 해당 수집 조각 시작 기준이다.
+재생 결정 간격은 144.781–155.532초다.
+토픽 수신 시점 차이 때문에 두 값을 구분한다.
+
+| 단계 | 원본·재생에서 확인한 내용 |
+|---|---|
+| 마지막 출력, seq 113492 | A1 제외 B3. 물리 거리 RMS 0.0202m |
+| seq 113493 | 마지막 앵커 시각의 ToF 나이 100.780ms. 100ms를 넘어 높이 만료 |
+| seq 113494–113495 | A1 2회 시도에 5.536/6.482ms 소비. A3·A4는 `slot_deadline`으로 시도하지 않음 |
+| seq 113496 | ToF 회복. A1 제외 후보 RMS 0.0172m, 후보 차이 0.0959m. 직전 좌표 나이 100.042ms라 B3 거부 |
+| seq 113536 | B3는 계속 거부됨. 별도의 raw 점프 기준은 이 관측에서 갱신됨 |
+| seq 113594–113872 | 그 raw 기준에서 237개 점프 거부. 기준 나이 최대 8.425초 |
+| 마지막 점프 이후 | H80 표본을 다시 모아도 B3 직전 좌표가 없음. 거리 잔차도 일부 초과 |
+| seq 113921 | H80 B4 RMS가 0.0455m로 회복하며 발행 재개 |
+
+seq 113492·113493·113496은 원본 결정에도 동일하다.
+100.042ms를 넘는 조건은 재생만의 현상이 아니다.
+이때 B3 후보가 좋다는 것과 실제 XY가 맞다는 것은 다르다.
+
+공백 시작 전후 143–146초에 PX4 XY 축별 범위는
+약 3.6cm·3.0cm였다. ToF는 0.69–0.71m였다.
+IMU yaw 범위는 약 0.23도였다.
+초기 실패를 큰 높이·방향 변화만으로 설명하기 어렵다.
+단, PX4 XY를 실제 위치의 정답으로 취급하지 않는다.
+전체 공백에는 PX4가 보고한 큰 이동도 포함된다.
+따라서 10.7초 전체를 정지 시험으로 볼 수 없다.
+
+raw 점프 기준과 B3 직전 좌표는 서로 다른 상태다.
+raw는 순간 네 거리의 일관성을 본다.
+B3는 ToF·H80·직전 좌표의 연속성을 본다.
+거부된 B3와 무관하게 raw 기준이 갱신될 수 있다.
+기준 만료 뒤에는 실제 이동과 거리 편향을 구분해야 한다.
+출력 회복만을 위해 비행 중 기준을 초기화하지 않았다.
+
+### 앵커 누락 재분류
+
+A3·A4의 누락에는 앞 순서 앵커의 재시도가 포함된다.
+누락 수를 해당 앵커의 고장 횟수로 해석하면 안 된다.
+
+| 앵커 | 슬롯 시간 소진 | 응답 timeout | 보고 timeout |
+|---|---:|---:|---:|
+| A1 | 0 | 1 | 1 |
+| A2 | 0 | 1 | 0 |
+| A3 | 17 | 6 | 6 |
+| A4 | 29 | 2 | 1 |
+
+10.742초 동안 RAW 429개 중 32개가 불완전했다.
+A3·A4 동시 건너뜀은 17회였다.
+그중 11회에서 A1 재시도가 기록됐다.
+TDMA `local_overrun`은 0회였다.
+`log_drops` 카운터 증가도 없었다.
+나머지 A3/A4 응답 timeout은 별도로 남아 있다.
+A1 재시도의 RF 원인은 현재 로그로 확정하지 못한다.
+앵커/태그 펌웨어의 슬롯·재시도 정책은 바꾸지 않았다.
+
+### 101ms 진단 재생
+
+1ms 경계만 바꾸어도 긴 공백은 남는다.
+파일 재생에서만 B3 직전 좌표 제한을 바꿨다.
+ToF 만료·점프 보호·원본 시각은 그대로다.
+
+| 항목 | 운영 기준 100ms | 진단 전용 101ms |
+|---|---:|---:|
+| C3 공중 XY 발행 | 1,579 | 1,663 |
+| 최대 완결 공백 | 10.751s | 8.701s |
+| 점프 거부 | 283 | 283 |
+
+seq 113496의 후보는 직전 좌표와 9.6mm 차이였다.
+101ms 재생에서는 이 후보를 이어서 사용할 수 있었다.
+하지만 seq 113575 이후 후보 유일성이 나빠졌다.
+다음 후보는 0.448m 이동을 요구했다.
+그때 연속성 한도는 0.150m였다.
+따라서 B3가 다시 거부되고 이후 점프 거부도 유지됐다.
+100→101ms 변경을 운영 해결책으로 채택하지 않았다.
+추가 84개 좌표는 정확도나 비행 검증 결과가 아니다.
+
+분석 도구에 공백 시작·끝·최초 거부를 추가했다.
+고정 raw 기준·마지막 점프·재획득도 요약한다.
+앵커별 timeout과 슬롯 건너뜀을 따로 센다.
+이 도구는 파일 전용이며 ROS에 접속하지 않는다.
+관련 단위시험은 7개 통과했다.
+실측은 사용자 요청에 따라 추후 진행한다.
+
 ## 재현
 
 다음 명령은 파일만 읽고 ROS에 접속하지 않는다.
@@ -137,6 +279,26 @@ PYTHONPATH=src/drone_uwb OPENBLAS_NUM_THREADS=1 \
 python3 src/drone_uwb/tools/analyze_btf_gaps.py /private/C1 /private/C2 /private/C3 \
   --replay /private/C1-xy-separated.jsonl /private/C2-xy-separated.jsonl /private/C3-xy-separated.jsonl \
   --output /private/gap-followup.json
+```
+
+101ms 진단은 다음처럼 새 재생 인스턴스에만 적용한다.
+운영 config나 Jetson 파일을 수정하지 않는다.
+출력 파일명에 진단 전용임을 남긴다.
+
+```bash
+PYTHONPATH=src/drone_uwb:src/drone_uwb/tools OPENBLAS_NUM_THREADS=1 python3 - <<'PY'
+from copy import deepcopy
+from pathlib import Path
+import replay_manual_btf as replay
+Base = replay.MeasuredBtf
+class DiagnosticOnly(Base):
+    def __init__(self, config):
+        config = deepcopy(config)
+        config['tof_subset']['max_prior_age_s'] = .101
+        super().__init__(config)
+replay.MeasuredBtf = DiagnosticOnly
+print(replay.replay(Path('/private/C3'), Path('/private/diagnostic-only-prior101ms-c3.jsonl')))
+PY
 ```
 
 추가 실측은 [최소 측정 절차](../runbooks/uwb_gap_measurements.md)를 따른다.

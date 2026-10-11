@@ -42,6 +42,45 @@ def test_anchor_validity_does_not_count_invalid_flags_or_nan_as_receipt_success(
         assert not tool.usable_range(d,2)
 
 
+def test_missing_anchor_audit_separates_upstream_retry_from_anchor_timeout():
+    cycles=[dict(valid_mask=3,raw_slant_m=[1,2,None,None],
+                 failure=['ok','ok','slot_deadline','slot_deadline'],attempt_count=[2,1,0,0]),
+            dict(valid_mask=11,raw_slant_m=[1,2,None,4],
+                 failure=['ok','ok','response_timeout','ok'],attempt_count=[1,1,2,1]),
+            dict(valid_mask=15,raw_slant_m=[1,2,3,4]),
+            dict(valid_mask=0,raw_slant_m=[None]*4)]
+    result=tool.missing_anchor_failures(cycles)
+    assert result['by_anchor'][2]=={'slot_deadline':1,'response_timeout':1,'unrecorded':1}
+    assert result['by_anchor'][3]=={'slot_deadline':1,'unrecorded':1}
+    assert result['a3_a4_both_slot_deadline']==1
+    assert result['a1_retried_before_both_skips']==1
+
+
+def test_gap_timeline_preserves_trigger_and_frozen_guard_without_crossing_air_segments():
+    def row(t,reason,published=False,**extra):
+        return dict(received_monotonic_ns=round(t*1e9),seq=round(t*100),
+                    reason=reason,replay_publish=published,**extra)
+    segment=[row(1,'original_fit_consistent',True),
+             row(1.025,'measured_height_unavailable'),
+             row(1.1,'no_fresh_continuity_prior',stamp_ns=1000,
+                 models={'B':{'fit':None},'B_TF':{'tracking_prior_age_s':.100042}}),
+             row(2,'observation_jump_quarantined',replay_guard_prior={'stamp_ns':1000}),
+             row(3,'observation_jump_quarantined',replay_guard_prior={'stamp_ns':1000}),
+             row(3.025,'B_not_fresh_valid',models={'B_TF':{'reason':'B_not_fresh_valid'}}),
+             row(4,'original_fit_consistent',True)]
+    # Separate air segments and a long no-output tail cannot become a complete gap.
+    result=tool.largest_complete_gap([segment,[row(100,'original_fit_consistent',True),
+                                            row(200,'no_fresh_continuity_prior')]])
+    assert result['duration_s']==3.
+    assert result['first_failures'][1]['tracking_prior_age_s']==.100042
+    assert result['dominant_guard_hold']['quarantined_decisions']==2
+    assert result['dominant_guard_hold']['prior_update']['reason']=='no_fresh_continuity_prior'
+    assert result['first_model_after_last_jump']['reason']=='B_not_fresh_valid'
+    assert result['last_jump']['received_monotonic_ns']==3_000_000_000
+    assert tool.largest_complete_gap([[row(1,'original_fit_consistent',True)],
+                                    [row(20,'original_fit_consistent',True)]]) is None
+
+
 def test_tof_limits_are_not_ground_height_or_hover_height():
     assert tool.valid_tof(dict(range=.3,min_range=.1,max_range=35.))
     for value in (.01,0.,-1.,36.,'NaN',None):

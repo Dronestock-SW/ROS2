@@ -24,6 +24,64 @@ def distribution(values):
                 maximum=max(values)) if values else dict(samples=0)
 
 
+def decision_summary(row):
+    """Keep causal diagnostics without copying coordinates or full fit history."""
+    models=row.get('models') or {}; b=models.get('B') or {}; subset=models.get('B_TF') or {}
+    return dict(seq=row.get('seq'),received_monotonic_ns=row['received_monotonic_ns'],
+        reason=row['reason'],published=row.get('replay_publish') is True,
+        b4_rms_m=(b.get('fit') or {}).get('rms_m'),
+        best_excluded_anchor=subset.get('best_excluded_anchor'),
+        best_score_m=subset.get('best_score_m'),score_margin_m=subset.get('score_margin_m'),
+        tracking_prior_age_s=subset.get('tracking_prior_age_s'),
+        height_selection_reasons=dict(Counter(s['reason'] for s in row.get('height_selection',[]))),
+        jump_check=row.get('jump_check'))
+
+
+def largest_complete_gap(segments):
+    """Only pair publications within one airborne segment; exclude censored tails."""
+    pairs=[]
+    for segment in segments:
+        published=[i for i,d in enumerate(segment) if d.get('replay_publish') is True]
+        for a,b in zip(published,published[1:]):
+            pairs.append((segment[b]['received_monotonic_ns']-segment[a]['received_monotonic_ns'],segment,a,b))
+    if not pairs:return None
+    duration,segment,a,b=max(pairs,key=lambda pair:pair[0])
+    failed=segment[a+1:b]
+    jumps=[d for d in failed if d['reason']=='observation_jump_quarantined']
+    holds=Counter((d.get('replay_guard_prior') or {}).get('stamp_ns') for d in jumps)
+    holds.pop(None,None)
+    held=None
+    if holds:
+        stamp,count=holds.most_common(1)[0]
+        first=next(d for d in jumps if (d.get('replay_guard_prior') or {}).get('stamp_ns')==stamp)
+        updates=[d for d in segment[:b] if d.get('stamp_ns')==stamp
+                 and d['received_monotonic_ns']<first['received_monotonic_ns']]
+        held=dict(quarantined_decisions=count,
+            prior_update=decision_summary(updates[-1]) if updates else None)
+    after_jump=next((d for d in failed if jumps and d['received_monotonic_ns']>jumps[-1]['received_monotonic_ns']
+                     and (d.get('models') or {}).get('B_TF')),None)
+    return dict(duration_s=duration/1e9,start=decision_summary(segment[a]),end=decision_summary(segment[b]),
+        failure_reasons=dict(Counter(d['reason'] for d in failed)),
+        first_failures=[decision_summary(d) for d in failed[:6]],
+        first_jump=decision_summary(jumps[0]) if jumps else None,
+        last_jump=decision_summary(jumps[-1]) if jumps else None,
+        dominant_guard_hold=held,
+        first_model_after_last_jump=decision_summary(after_jump) if after_jump else None)
+
+
+def missing_anchor_failures(cycles):
+    """A skipped TDMA exchange is not an anchor response timeout."""
+    def failure(d,i):
+        values=d.get('failure')
+        return str(values[i]) if isinstance(values,list) and len(values)==4 else 'unrecorded'
+    skipped=[d for d in cycles if failure(d,2)==failure(d,3)=='slot_deadline']
+    retried=[d for d in skipped if isinstance(d.get('attempt_count'),list)
+             and len(d['attempt_count'])==4 and type(d['attempt_count'][0]) is int
+             and d['attempt_count'][0]>1]
+    return dict(by_anchor=[dict(Counter(failure(d,i) for d in cycles if not usable_range(d,i))) for i in range(4)],
+        a3_a4_both_slot_deadline=len(skipped),a1_retried_before_both_skips=len(retried))
+
+
 def replay_comparison(path):
     """Compare two publication gates on identical solver results, not truth.
 
@@ -56,6 +114,7 @@ def replay_comparison(path):
     added=[d for d in ds if d['replay_publish'] and not d['legacy_height_gate_publish']]
     quarantined=[d for d in ds if d['reason']=='observation_jump_quarantined']
     return dict(file=path.name,sha256=digest.hexdigest(),comparison=result,
+        largest_complete_gap=largest_complete_gap(segments),
         added_sources=dict(Counter(d['models']['B_TF']['source'] for d in added)),
         added_with_xyz=sum(d.get('xyz_m') is not None for d in added),
         removed_publications=sum(d['legacy_height_gate_publish'] and not d['replay_publish'] for d in ds),
@@ -128,6 +187,7 @@ def analyze(capture):
             intervals.append(dict(start_offset_s=(a-manifest['started']['monotonic_ns'])/1e9,
                 duration_s=(b-a)/1e9, boundary_censored=a==start or b==end,
                 reasons=dict(reasons), raw_cycles=len(raw),
+                missing_anchor_failures=missing_anchor_failures([d for _,d in raw]),
                 raw_cycle_max_gap_s=gap_stats([t for t,_ in raw])['max_gap_s'],
                 best_subset_rms_min_m=min(scores,default=None),
                 published_decisions=sum(d.get('published') is True for d in ds)))
