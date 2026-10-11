@@ -10,6 +10,7 @@
 
 | 찾는 내용 | 위치 |
 |---|---|
+| QR 리더기 우선·카메라 폴백 | [QR 재고 판독 파이프라인](architecture/qr_inventory_pipeline.md) |
 | A~H 단계, 패키지·설정·시험 대응표 | [저장소 구조와 작업 위치](reference/repository_layout.md) |
 | 현재 앵커 배치 | [6.3×4.6m 직사각형 좌표](reference/uwb_anchor_layout.md) |
 | 앵커 배치 변경·검증 | [2026-10-04 배치 고정 기록](report/uwb_anchor_rectangle_20261004.md) |
@@ -113,6 +114,7 @@ Windows에서는 심볼릭 링크를 지원하는 WSL 체크아웃을 쓴다.
 
 | 문서 | 확인 범위 |
 |---|---|
+| [QR 재고 판독 통합](report/qr_inventory_pipeline_20261011.md) | 세션 시작 뒤 3초×3회 폴백, 통합 launch, 로컬 확인과 Jetson 미검증 범위 |
 | [Windows UWB 재시작·첫 실시간 기록](report/uwb_windows_restart_20261002.md) | 사용자 승인 재기동, RAW 812개·B 정지 진단·ULog 스냅샷. 실제 융합·동적 이동 미검증 |
 | [UWB 새 Goal 프롬프트](runbooks/uwb_goal_prompt_20261002.txt) | 기존 실행 보존, 실제 EKF2 융합, 독립 다점·동적 7cm 및 목표 이동의 완료 기준 |
 | [Windows UWB 재개 점검](report/uwb_windows_resume_20261002_140858.md) | 실제 Windows·WSL 프로세스·메모리 고갈·누적본 54개 파일 반영. 새 센서·융합·비행 미실시 |
