@@ -4,7 +4,7 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-from drone_uwb.processing.measured_btf import MeasuredBtf, MeasuredHeight, ground_xy_without_height
+from drone_uwb.processing.measured_btf import MeasuredBtf, MeasuredHeight, ground_xy_without_height, height_independent_b4
 from drone_uwb.processing.experiments.h80_b import H80Window, BSettings
 from drone_uwb.processing.experiments.tof_subset import ToFTrackedSubsetCandidate
 from drone_uwb.acquisition.validation import Cycle
@@ -170,6 +170,47 @@ def test_missing_anchor_does_not_return_a_position():
     p=MeasuredBtf(config());p.process(event(status(),100_000))
     msg=cycle(1,122000,np.asarray(config()['anchors_xyz_m']));msg['valid_mask']=7
     assert p.process(event(msg,122000))['reason']=='four_valid_ranges_required'
+
+
+def test_ascent_b4_xy_does_not_need_tof_but_never_invents_z_or_accepts_a_jump():
+    c=config();p=MeasuredBtf(c);a=np.asarray(c['anchors_xyz_m'])
+    p.process(event(status(),100_000));accepted=[]
+    for seq in range(1,100):
+        end=100_000+seq*22000;msg=cycle(seq,end,a)
+        # The common squared height is absorbed by H80. Height varies while
+        # actual XY follows a known trajectory at each anchor's sample time.
+        msg['raw_slant_m']=[float(np.linalg.norm(np.array(
+            [2+.1*t/1e6,2.,.15+.3*t/1e6])-a[i])) for i,t in enumerate(msg['sample_time_us'])]
+        r=p.process(event(msg,end))
+        if height_independent_b4(r):
+            accepted.append(r)
+            assert r['xyz_m'] is None and not r['height_ready']
+            assert r['xy_m']==pytest.approx([2+.1*r['time_us']/1e6,2.],abs=.003)
+            assert not r['external_output_allowed'] and not r['flight_valid']
+    assert len(accepted)>60
+    for seq in range(100,120):
+        end=100_000+seq*22000;msg=cycle(seq,end,a)
+        msg['raw_slant_m']=[float(np.linalg.norm(np.array([4.,3.,1.])-x)) for x in a]
+        r=p.process(event(msg,end))
+        assert r['reason']=='observation_jump_quarantined'
+        assert not height_independent_b4(r)
+        assert 'sample_height_m' in r and 'raw_pair_residual_max_m' in r
+
+
+def test_height_independent_b4_never_qualifies_invalid_partial_or_subset_results():
+    good=dict(ok=True,xy_m=[1.,2.],time_us=100,models={
+        'B':dict(ok=True,fresh_observation_count=4,newest_sample_us=100,fit=dict(mask=15)),
+        'B_TF':dict(source='unchanged_B4')})
+    assert height_independent_b4(good)
+    assert not height_independent_b4(good,enabled=False)
+    for source in ('ToF_validated_B3','ToF_tracked_B3','ground_reference_B3','rejected'):
+        d=copy.deepcopy(good);d['models']['B_TF']['source']=source
+        assert not height_independent_b4(d)
+    for key,value in [('fresh_observation_count',3),('newest_sample_us',99),('ok',False),('fit',dict(mask=7))]:
+        d=copy.deepcopy(good);d['models']['B'][key]=value
+        assert not height_independent_b4(d)
+    for key,value in [('ok',False),('xy_m',[float('nan'),2.]),('time_us',None)]:
+        assert not height_independent_b4(dict(good,**{key:value}))
 
 
 @pytest.mark.parametrize('restart', ['disconnect', 'boot'])

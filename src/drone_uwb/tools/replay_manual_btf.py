@@ -11,7 +11,7 @@ import math
 from pathlib import Path
 
 from drone_uwb.integration.clock_readiness import ClockReadiness
-from drone_uwb.processing.measured_btf import MeasuredBtf, ground_xy_without_height
+from drone_uwb.processing.measured_btf import MeasuredBtf, ground_xy_without_height, height_independent_b4
 
 
 def replay(capture, output):
@@ -77,14 +77,20 @@ def replay(capture, output):
                 height_ok=result.get('xyz_m') is not None or ground_xy_without_height(result,
                     enabled=config.get('allow_ground_xy_without_tof',False),connected=state.get('connected'),
                     landed=landed,state_age_s=now-state_at,landed_age_s=now-landed_at)
-                publish=bool(result['ok'] and height_ok and 0<=ros-result['stamp_ns']<=config['max_output_age_s']*1e9)
+                timely=bool(result['ok'] and 0<=ros-result['stamp_ns']<=config['max_output_age_s']*1e9)
+                legacy_publish=bool(timely and height_ok)
+                publish=bool(timely and (height_ok or height_independent_b4(result,
+                    enabled=config.get('allow_b4_xy_without_tof',True))))
                 airborne=(state.get('armed') is True and state.get('connected') is True and landed==2
                     and 0<=now-state_at<=1.5 and 0<=now-landed_at<=1.5)
-                result.update(received_monotonic_ns=mono,airborne=airborne,replay_publish=publish)
+                result.update(received_monotonic_ns=mono,airborne=airborne,replay_publish=publish,
+                    legacy_height_gate_publish=legacy_publish)
                 result['replay_guard_prior']={'xy_m':processor.raw_guard.prior_xy,
                     'stamp_ns':processor.raw_guard.prior_stamp}
                 dst.write(json.dumps(result,allow_nan=False)+'\n')
-                if airborne:counts[result['reason']]+=1;counts['published']+=int(publish)
+                if airborne:
+                    counts[result['reason']]+=1;counts['published']+=int(publish)
+                    counts['legacy_height_gate_published']+=int(legacy_publish)
     return dict(capture=capture.name,counts=dict(counts),scope='collector-order replay; no physical validation')
 
 

@@ -42,6 +42,29 @@ def test_anchor_validity_does_not_count_invalid_flags_or_nan_as_receipt_success(
         assert not tool.usable_range(d,2)
 
 
+def test_tof_limits_are_not_ground_height_or_hover_height():
+    assert tool.valid_tof(dict(range=.3,min_range=.1,max_range=35.))
+    for value in (.01,0.,-1.,36.,'NaN',None):
+        assert not tool.valid_tof(dict(range=value,min_range=.1,max_range=35.))
+
+
+def test_replay_comparison_keeps_zero_output_segments_and_xy_without_z(tmp_path):
+    rows=[]
+    for t,air,old,new in [(1.,True,False,True),(1.5,True,False,True),
+                          (2.,False,False,False),(3.,True,False,False),(4.,True,False,False)]:
+        rows.append(dict(received_monotonic_ns=round(t*1e9),airborne=air,
+            legacy_height_gate_publish=old,replay_publish=new,xyz_m=None,
+            reason='original_fit_consistent',models={'B_TF':{'source':'unchanged_B4'}}))
+    path=tmp_path/'replay.jsonl';path.write_text(''.join(json.dumps(r)+'\n' for r in rows))
+    r=tool.replay_comparison(path)
+    assert r['added_sources']=={'unchanged_B4':2} and r['added_with_xyz']==0
+    assert r['removed_publications']==0
+    assert r['comparison']['replay_publish']['published']==2
+    assert r['comparison']['legacy_height_gate_publish']['published']==0
+    assert r['comparison']['replay_publish']['gaps_over_250ms'][0]['duration_s']==1.
+    assert r['comparison']['replay_publish']['gaps_over_250ms'][0]['boundary_censored']
+
+
 def test_ordered_replay_distinguishes_queue_rejection_from_explicit_session_reset():
     from drone_uwb.processing.measured_btf import MeasuredBtf
     root=Path(__file__).parents[2]

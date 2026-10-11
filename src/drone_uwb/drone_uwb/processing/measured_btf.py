@@ -20,6 +20,25 @@ from drone_uwb.processing.solvers.observations import solve_xy
 from drone_uwb.processing.observation_guard import ObservationGuard
 
 
+def height_independent_b4(result, *, enabled=True):
+    """Qualify XY only: equal-height B4 eliminates the unknown vertical term.
+
+    MeasuredBtf/H80Window already enforce coplanar anchors, source validity,
+    clock mapping and raw jump protection. This is not a new solver or a way
+    to accept B3 without height. Publication age is checked by the adapter.
+    """
+    b = result.get('models', {}).get('B', {})
+    xy = result.get('xy_m')
+    return (enabled is True and result.get('ok') is True
+        and result.get('models', {}).get('B_TF', {}).get('source') == 'unchanged_B4'
+        and b.get('ok') is True and b.get('fresh_observation_count') == 4
+        and b.get('newest_sample_us') == result.get('time_us')
+        and type(result.get('time_us')) is int
+        and (b.get('fit') or {}).get('mask') == 15
+        and isinstance(xy, (list, tuple)) and len(xy) == 2
+        and all(type(v) in (int, float) and math.isfinite(v) for v in xy))
+
+
 def ground_xy_without_height(result, *, enabled, connected, landed, state_age_s, landed_age_s):
     """Allow the already accepted four-anchor XY solution on a fresh ground state.
 
@@ -246,11 +265,26 @@ class MeasuredBtf:
             height_source = ('ground_antenna_reference' if any(s.get('estimated') for s in selections)
                              else 'measured_tof_imu') if height is not None else None
             corrected = cycle.raw-np.asarray(self.config['bias_m'])
+            # Keep the inputs even when the raw jump guard returns early.
+            # Without these, a rejected cycle cannot be audited against ToF.
+            out.update(stamp_ns=stamp_ns, time_us=stamp,
+                cal_slant_m=corrected.tolist(), sample_height_m=heights,
+                height_m=height, height_source=height_source,
+                height_selection=selections, height_ready=all(h is not None for h in heights))
             # Detect coherent four-link steps before the 0.8s window can smear
             # them into a plausible slow trajectory. NLOS-inconsistent cycles
             # still go to the existing ToF/subset integrity calculation.
             raw_xy, raw_residual = solve_xy(np.asarray(self.config['anchors_xyz_m']), corrected, list(range(4)))
             out['raw_fit_rms_m'] = float(raw_residual)
+            # Historical raw_fit_rms_m is a normalized maximum range-difference
+            # residual, NOT a physical range RMS. Preserve the key for readers.
+            out['raw_pair_residual_max_m'] = float(raw_residual)
+            out['raw_xy_m'] = raw_xy.tolist()
+            if out['height_ready']:
+                points = np.column_stack([np.tile(raw_xy, (4, 1)), heights])
+                residual = np.linalg.norm(points-np.asarray(self.config['anchors_xyz_m']), axis=1)-corrected
+                out['raw_height_residual_m'] = residual.tolist()
+                out['raw_height_rms_m'] = float(np.sqrt(np.mean(residual**2)))
             if raw_residual < .06:
                 if self.raw_guard.prior_stamp is not None:
                     age=(stamp_ns-self.raw_guard.prior_stamp)/1e9

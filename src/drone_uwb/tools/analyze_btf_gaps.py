@@ -5,6 +5,7 @@ import hashlib
 import json
 import math
 from pathlib import Path
+import statistics
 
 
 def decode(row):
@@ -17,10 +18,57 @@ def gap_stats(times):
     return dict(samples=len(times), max_gap_s=max(gaps, default=None))
 
 
+def distribution(values):
+    values=[v for v in values if type(v) in (int,float) and math.isfinite(v)]
+    return dict(samples=len(values), minimum=min(values), median=statistics.median(values),
+                maximum=max(values)) if values else dict(samples=0)
+
+
+def replay_comparison(path):
+    """Compare two publication gates on identical solver results, not truth.
+
+    Segment boundaries are replay decision times; their gaps are censored and
+    slightly shorter than the full capture's state/sensor boundaries.
+    """
+    segments=[]; active=False; digest=hashlib.sha256(); previous=0
+    with path.open('rb') as src:
+        for line in src:
+            digest.update(line);row=json.loads(line);t=row['received_monotonic_ns']
+            if t<previous:raise ValueError('replay receipt clock reversed')
+            previous=t
+            if row['airborne']:
+                if not active:segments.append([])
+                segments[-1].append(row)
+            active=row['airborne']
+    ds=[d for segment in segments for d in segment]; result={}
+    for key in ('legacy_height_gate_publish','replay_publish'):
+        intervals=[]
+        for segment in segments:
+            start,end=segment[0]['received_monotonic_ns'],segment[-1]['received_monotonic_ns']
+            times=[d['received_monotonic_ns'] for d in segment if d.get(key) is True]
+            for a,b in zip([start,*times],[*times,end]):
+                if b-a>250_000_000:
+                    intervals.append(dict(duration_s=(b-a)/1e9,
+                        boundary_censored=a==start or b==end,
+                        start_offset_s=(a-start)/1e9))
+        result[key]=dict(published=sum(d.get(key) is True for d in ds),
+            gaps_over_250ms=sorted(intervals,key=lambda d:d['duration_s'],reverse=True))
+    added=[d for d in ds if d['replay_publish'] and not d['legacy_height_gate_publish']]
+    quarantined=[d for d in ds if d['reason']=='observation_jump_quarantined']
+    return dict(file=path.name,sha256=digest.hexdigest(),comparison=result,
+        added_sources=dict(Counter(d['models']['B_TF']['source'] for d in added)),
+        added_with_xyz=sum(d.get('xyz_m') is not None for d in added),
+        removed_publications=sum(d['legacy_height_gate_publish'] and not d['replay_publish'] for d in ds),
+        quarantine_prior_age_s=distribution([d.get('jump_check',{}).get('prior_age_s') for d in quarantined]),
+        quarantine_raw_height_rms_m=distribution([d.get('raw_height_rms_m') for d in quarantined]),
+        scope='collector-order replay, decision-time boundaries; no position accuracy or flight proof')
+
+
 def analyze(capture):
     topic_times = defaultdict(list)
     decisions = []
     raw_cycles = []
+    tof_rows=[]
     state = landed = None
     state_time = landed_time = -10**30
     air_segments = []
@@ -63,6 +111,8 @@ def analyze(capture):
                 decisions.append((t,d))
             elif topic == '/uwb/received' and d.get('message',{}).get('type') == 'uwb_raw_cycle':
                 raw_cycles.append((t,d['message']))
+            elif topic == '/mavros/downward_0':
+                tof_rows.append((len(air_segments),row.get('header_ns') or 0,d))
     intervals = []
     for start,end in air_segments:
         outputs = [t for t in topic_times['/uwb/btf_pose'] if start<=t<=end]
@@ -87,8 +137,20 @@ def analyze(capture):
         topics={k:gap_stats(v) for k,v in topic_times.items()},
         reasons=dict(Counter(d.get('pose_blocked_reason') or d['reason'] for _,d in decisions)),
         raw_anchor_missing=[sum(not usable_range(d,i) for _,d in raw_cycles) for i in range(4)],
+        tof_source_interval_s=distribution([(b[1]-a[1])/1e9 for a,b in zip(tof_rows,tof_rows[1:]) if a[0]==b[0]]),
+        tof_samples=len(tof_rows),
+        tof_outside_sensor_limits=sum(not valid_tof(d) for _,_,d in tof_rows),
+        height_selection_reasons=dict(Counter(s['reason'] for _,d in decisions for s in d.get('height_selection',[]))),
         gaps_over_250ms=sorted(intervals,key=lambda x:x['duration_s'],reverse=True),
         timing_confirmed=False, fusion_verified=False)
+
+
+def valid_tof(data):
+    try:
+        r,lo,hi=(float(data[k]) for k in ('range','min_range','max_range'))
+        return all(math.isfinite(v) for v in (r,lo,hi)) and 0<lo<=r<=hi
+    except (KeyError,ValueError,TypeError):
+        return False
 
 
 def usable_range(cycle,index):
@@ -103,9 +165,11 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('captures',nargs='+',type=Path)
     p.add_argument('--output',type=Path,required=True)
+    p.add_argument('--replay',nargs='+',type=Path,help='Optional paired publication-gate replay files')
     args=p.parse_args()
     result=[analyze(c) for c in args.captures]
-    args.output.write_text(json.dumps(result,indent=2),encoding='utf-8')
+    report=result if not args.replay else dict(captures=result,replays=[replay_comparison(f) for f in args.replay])
+    args.output.write_text(json.dumps(report,indent=2),encoding='utf-8')
     for r in result:
         print(r['capture'],json.dumps({'reasons':r['reasons'],'largest_gaps':r['gaps_over_250ms'][:3]}))
 

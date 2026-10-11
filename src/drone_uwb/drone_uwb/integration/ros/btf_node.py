@@ -19,7 +19,7 @@ from sensor_msgs.msg import Imu, Range
 from std_msgs.msg import String
 from std_srvs.srv import Trigger
 
-from drone_uwb.processing.measured_btf import MeasuredBtf, ground_xy_without_height
+from drone_uwb.processing.measured_btf import MeasuredBtf, ground_xy_without_height, height_independent_b4
 from drone_uwb.integration.ros.qos import received_stream_qos
 from drone_uwb.integration.async_recording import AsyncRecording
 from drone_uwb.integration.clock_readiness import ClockReadiness
@@ -228,7 +228,10 @@ class BtfNode(Node):
                 connected=(self.fc_state or {}).get('connected'), landed=self.landed,
                 state_age_s=time.monotonic()-self.fc_state_at, landed_age_s=time.monotonic()-self.landed_at)
             result['ground_xy_without_measured_height'] = ground_xy
-            if self.require_height and result.get('xyz_m') is None and not ground_xy:
+            b4_xy = height_independent_b4(result,
+                enabled=self.config.get('allow_b4_xy_without_tof', True))
+            result['b4_xy_without_measured_height'] = b4_xy and result.get('xyz_m') is None
+            if self.require_height and result.get('xyz_m') is None and not (ground_xy or b4_xy):
                 result['pose_blocked_reason'] = 'measured_height_required'
                 self.counts['measured_height_required'] += 1
             elif 0 <= age <= self.config['max_output_age_s']:
@@ -264,6 +267,7 @@ class BtfNode(Node):
                'last_xy_m':self.last.get('xy_m') if self.last else None,
                'last_xyz_m':self.last.get('xyz_m') if self.last else None,
                'require_height_for_pose':self.require_height,
+               'allow_b4_xy_without_tof':self.config.get('allow_b4_xy_without_tof', True),
                'input_age_s':(now_ns-self.last_source_ns)/1e9 if self.last_source_ns else None,
                'fc_output_enabled':False,'timestamp_calibrated':False,'timesync_ready':self.sync_ready(),
                'recording_error':self.recorder.error if self.recorder else None,
