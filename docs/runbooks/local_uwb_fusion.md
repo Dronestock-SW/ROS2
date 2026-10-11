@@ -3,7 +3,7 @@ GPS·지리적 원점 없이 UWB를 PX4에 넣는 절차다.
 현재 관측 서비스를 재시작하거나 복구할 때 읽는다.
 
 수평 위치는 UWB를 융합한다. 고도·자세는 PX4가 맡는다.
-현재 지상 확인 결과는 [10월 11일 기록](../report/local_uwb_fusion_20261011.md)에 있다.
+지상 확인과 재부팅 복구는 [10월 11일 기록](../report/local_uwb_fusion_20261011.md)에 있다.
 이 절차는 시동·이륙·자동 경유지 실행을 하지 않는다.
 
 ## 현재 연결
@@ -41,7 +41,7 @@ FC 자세는 최초 축 정렬에서만 한 번 읽는다.
 | 실내 축 방향 | +X=A1→A2, +Y=A1→A3 |
 | 실내 XY 부호 | `map_y_axis_sign=-1`; 기존 현장 배치 기준 |
 | 최초 기수 | 사용자 확인 −Y=A3→A1 |
-| 지도→ENU 회전 | 이번 부팅 `enu_yaw_deg=-44.3699921468` |
+| 지도→ENU 회전 | 17:12 새 부팅 `enu_yaw_deg=-118.0296693294`; 동적 검증 미완료 |
 | 수평 원점 이동 | ENU offset=(0,0) m; A1 유지 |
 | FC→안테나 | FRD `(-.10,0,-.10)` m; 10월 9일 실측 기록 |
 | 관측 나이 | 원본 시각부터 최대150ms |
@@ -55,16 +55,24 @@ FC 자세는 최초 축 정렬에서만 한 번 읽는다.
 
 ## 재시작·부팅 뒤 순서
 
-1. 기존 MAVROS와 B_TF 수신을 확인한다.
+1. RC KILL·ARM 값과 실제 FC 상태를 확인한다.
+   ON=1·MIDDLE=2·OFF=3이다.
+   KILL ON은 정상적으로 시동을 막는다.
+2. 기존 MAVROS와 B_TF 수신을 확인한다.
    DISARM·ON_GROUND에서 설정한다.
-2. 드론 앞쪽을 확인한 실내 축 방향에 맞춘다.
+3. 드론 앞쪽을 확인한 실내 축 방향에 맞춘다.
    설정 중에는 기체를 움직이지 않는다.
-3. 새 파일명으로 설정 근거를 수집한다.
+4. 새 파일명으로 설정 근거를 수집한다.
    현재 장착·앵커 값이 같을 때만 아래 도구를 쓴다.
-4. 적용 ACK 뒤 FC 내부 값을 조회한다.
+   방향 기준이 바뀌면 정지 수집을 재비교한다.
+   관찰한 변화의 원인을 임의로 승인하지 않는다.
+5. 적용 ACK 뒤 FC 내부 값을 조회한다.
    저장 여부·실제 융합은 ACK와 구분한다.
-5. 관측 서비스를 시작한다.
+   값이 이미 맞으면 `--apply` 없이 수집한다.
+6. 관측 서비스를 시작한다.
    현재 FC·host 부팅 근거가 맞아야 발행한다.
+   설치만으로 실행 중 서비스가 재시작되지는 않는다.
+   설정 파일 선택을 바꾼 뒤 지상에서 재시작한다.
 
 연결 호스트의 `bluewak` 사용자에서 실행한다.
 아래 `새파일명`을 사용한 적 없는 이름으로 바꾼다.
@@ -77,9 +85,11 @@ export ROS_DOMAIN_ID=2 ROS_LOCALHOST_ONLY=0
 export PYTHONPATH=/home/arialhanho/ROS2-integration-20261007/.test-deps:$PYTHONPATH
 python3 src/drone_uwb/tools/configure_local_uwb.py \
   --output /home/bluewak/local-uwb-20261011/새파일명.json \
-  --heading=-Y --apply
+  --heading=-Y
 bash src/drone_uwb/deployment/install_local_uwb_user_service.sh \
   "$PWD" /home/bluewak/local-uwb-20261011/새파일명.json
+# 아래 재시작 직전에도 최신 DISARM·ON_GROUND를 확인한다.
+systemctl --user restart dronestock-local-uwb.service
 ```
 
 기수가 다른 축이면 `--heading` 값을 바꾼다.
@@ -88,6 +98,7 @@ bash src/drone_uwb/deployment/install_local_uwb_user_service.sh \
 정확한 축 정렬·이동 시험이 필요하다.
 
 설정 도구의 쓰기 범위는 네 파라미터다.
+필요한 값이 다를 때만 `--apply`를 추가한다.
 EV POS X/Y/Z와 EV CTRL만 쓴다.
 GPS·고도·자기계·flow·range 파라미터는 쓰지 않는다.
 EV POS Z는 장착 벡터다. 고도 관측·목표가 아니다.
@@ -99,12 +110,34 @@ EV POS Z는 장착 벡터다. 고도 관측·목표가 아니다.
 
 | 신호 | 필요한 결과 |
 |---|---|
-| `/uwb/local_odometry_status` | gate=ready, published 증가, 최근 시각 |
+| `/uwb/local_odometry_status` | gate·last_reason=ready, published 증가, 최근 전송 시각 |
 | `vehicle_visual_odometry` | NED XY·원본 시각, q/velocity=NaN |
 | `estimator_aid_src_ev_pos` | fused=true, time_last_fuse 증가 |
 | `estimator_status_flags` | cs_ev_pos=true; ev_hgt/yaw/vel=false |
 | `vehicle_local_position` | xy/z/velocity valid=true |
 | 지리적 원점 | ref_timestamp=0, ref_lat/lon=NaN 허용 |
+
+`gate=ready`는 전달 전제 조건의 상태다.
+점프 거절로 실제 전송이 멈춰도 ready일 수 있다.
+`last_send_age_s`와 전송 횟수도 확인한다.
+`max_send_gap_s`는 완료된 두 전송 사이 값이다.
+진행 중인 중단 길이는 `last_send_age_s`로 본다.
+지상 B_TF 수신만으로 FC 융합을 판정하지 않는다.
+
+시동 준비는 해당 모드의 검사 비트를 확인한다.
+POSCTL nav_state=2의 비트는4다.
+`pre_flight_checks_pass`와 함께 본다.
+전체 오류 마스크에는 다른 모드의 조건도 있다.
+
+지상 ToF 하한 미만과 광류 중단은 예상 가능하다.
+높이·센서 최소값을 같은 시각에 대조한다.
+이 상태만으로 불필요한 복구를 반복하지 않는다.
+PX4 고도·자세·로컬 위치 유효성은 별도 확인한다.
+
+ARM·공중에서는 재정렬·원복·재시작하지 않는다.
+이유: 전송 중단과 기준 변경을 만들 수 있다.
+착륙·DISARM 후 최신 상태를 다시 확인한다.
+아래 stop 명령도 같은 지상 조건에서 사용한다.
 
 ```bash
 export XDG_RUNTIME_DIR=/run/user/$(id -u)
@@ -127,7 +160,9 @@ python3 src/drone_uwb/tools/configure_local_uwb.py \
 
 FC·host 재부팅 뒤 기존 서비스는 발행을 차단한다.
 새 부팅의 정렬 근거를 수집한 뒤 다시 시작한다.
-이번 작업에서는 재부팅 시험을 하지 않았다.
+10월11일17:02 새 부팅을 실제 관찰했다.
+새 정렬로 지상 전송·융합을 다시 확인했다.
+재부팅·시동 명령은 에이전트가 보내지 않았다.
 
 ## 비행·모드 범위
 
@@ -141,3 +176,19 @@ UWB 융합 성공과 자동 경유지 비행 성공은 다르다.
 두 축 이동·회전·기울기·공백 복구를 측정한다.
 현재 기수 응답은 정적 축 정렬의 근거다.
 동적 정확도나 시간 지연의 교정 완료는 아니다.
+
+점프 거절은 의도한 관측 보호다.
+계속 들어오는 의심 좌표로 기준을 갱신하지 않는다.
+착륙·DISARM만으로 점프 기준을 초기화하지 않는다.
+잘못된 관측 차단과 정상 이동 오거절을 구분한다.
+판정에는 같은 시각의 독립 이동 근거가 필요하다.
+보호 기준을 풀어서 전송 성공으로 바꾸지 않는다.
+이유: 잘못된 위치를 PX4에 넣을 수 있다.
+
+시험 전 저장공간과 수집 파일 증가를 확인한다.
+다음 조각 시작에는 여유1,280MiB가 필요하다.
+수집은1GiB를 남기고 쓰기를 중단한다.
+3분 조각 교체를 포함한 시험 시간 여유를 확보한다.
+비행 기록은 삭제하지 말고 검증 백업한다.
+PX4 ULog 기록·회수는 별도로 확인한다.
+[왕복 시험의 결측 기록](../report/uwb_position_roundtrip_20261011.md)을 따른다.

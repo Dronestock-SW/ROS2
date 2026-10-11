@@ -1,8 +1,8 @@
 # 실내 UWB 수평 융합 확인 — 2026-10-11
-연결된 Tag B 기체의 변경과 지상 확인 기록이다.
+연결된 Tag B 기체의 변경·재부팅 복구 기록이다.
 GPS 없는 경로의 실제 적용값을 확인할 때 읽는다.
 
-## 결과
+## 최초 지상 결과 — 16:40~16:56 KST
 
 PX4에서 UWB 수평 위치의 실제 융합을 확인했다.
 GPS와 위도·경도 원점은 사용하지 않았다.
@@ -172,3 +172,93 @@ after-px4-1은 진단 구독 충돌로 실패한 기록이다.
 [ODOMETRY 수신](https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/mavlink/mavlink_receiver.cpp),
 [수평 EV 융합](https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/ekf2/EKF/aid_sources/external_vision/ev_pos_control.cpp),
 [모드 조건](https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/ModeUtil/mode_requirements.cpp).
+
+## 새 부팅 복구 — 17:02~17:29 KST
+
+재부팅 후 새 정렬로 UWB 전송을 복구했다.
+17:23에는 두 EKF의 수평 융합을 확인했다.
+17:27에는 Position 시동 사전 검사를 통과했다.
+이 결과는 비행 전 지상 확인이다.
+뒤의 비행 내내 융합됐다는 뜻은 아니다.
+
+| 시각 KST | 근거·처리 |
+|---|---|
+| 약17:02 | host·FC 새 부팅을 관찰. 에이전트의 재부팅 명령 없음 |
+| 부팅 직후 | `host_reboot_requires_new_alignment_evidence`로 기존 설정 차단 |
+| 17:12 | 사용자 확인 기수 −Y에서 IMU 485개 수집 |
+| 17:12 정렬 | body ENU −28.029669°, 범위1.737517° |
+| 현재 설정 선택 | `alignment-reboot-1712.json`, 지도→ENU −118.029669° |
+| 17:23 | EKF 0·1의 cs_ev_pos=True·fused=True |
+| 17:23 시동 실패 | kill_switch=1; Kill engaged·Flight termination 오류 |
+| 17:27 | kill_switch=3; pre_flight_checks_pass=True |
+| 17:29 | ARM·POSCTL 확인. 정렬 갱신과 내부 조회가 보호 조건으로 중단 |
+
+새 host boot ID는 다음과 같다.
+`5cfeefce-460c-4f0c-b9d9-9c31719c64e3`.
+설정 선택은 사용자 서비스의 EnvironmentFile에 있다.
+`/home/bluewak/.config/dronestock-local-uwb/environment`.
+원복 근거 `alignment-active.json`은 보존했다.
+재부팅 전 정렬은 새 부팅에 적용하지 않았다.
+
+이번 복구에서는 FC 파라미터를 쓰지 않았다.
+EKF2_GPS_CTRL=0·EKF2_EV_CTRL=1을 재확인했다.
+장착 벡터 FRD(−.10,0,−.10)m도 유지됐다.
+EV 고도·yaw·속도는 계속 꺼져 있었다.
+range·baro 융합과 PX4 고도·자세 책임을 유지했다.
+위도·경도 원점은 계속 미설정이었다.
+
+## 시동 원인과 지상 예상 상태
+
+시동 차단은 실제 KILL ON을 먼저 확인한다.
+지상 센서 하한만으로 실패를 판정하지 않는다.
+
+| 항목 | 이번 근거 | 다음 확인 |
+|---|---|---|
+| KILL | ON=1일 때 실제 차단; OFF=3 뒤 검사 통과 | RC 상태와 오류 문구 대조 |
+| ARM 스위치 | 3은 OFF | 1=ON·2=MIDDLE·3=OFF로 판독 |
+| ToF | 지상 약2~3cm, 센서 최소10cm | 지상 예상 상태. PX4 전체 유효성 별도 확인 |
+| 광류 | 지상 fused=False, 최소 바닥 거리8cm | 최소 높이 미만은 예상 상태 |
+| heading_good_for_control | 지상 False, yaw 정렬 True·mag_fault=False | 공중 방향 정상까지 추정하지 않음 |
+| USB | CBRK_USB_CHK=197848 유지 | usb_connected=True만으로 차단 판정 안 함 |
+| 글로벌 위치 | 원점 미설정·global invalid | 설치 펌웨어의 POSCTL 로컬 조건 확인 |
+
+17:27의 can_arm_mode_flags는8372167이었다.
+POSCTL은 nav_state=2다. 비트값4가 포함됐다.
+전체 arming 오류 마스크가0인지로 판정하지 않는다.
+다른 모드의 글로벌 조건도 마스크에 남는다.
+현재 모드 비트와 사전 검사 결과를 함께 본다.
+앞선 ARM=3을 ON으로 읽은 설명은 정정했다.
+
+근거:
+[RC 스위치 값](https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/msg/ManualControlSwitches.msg),
+[KILL 시동 검사](https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/HealthAndArmingChecks/checks/manualControlCheck.cpp).
+
+## 정렬·진단의 남은 확인
+
+두 지상 yaw 수집 간 차이는 약7.17°였다.
+17:21 수집은701개, 범위0.022513°였다.
+body ENU 평균은−20.863225°였다.
+센서 기준 변화와 실제 움직임의 원인은 미판정이다.
+후속 `alignment-reboot-1722.json`은 미적용이다.
+17:29 최종 갱신도 ARM 보호로 미적용이다.
+전송기는 계속17:12 설정을 사용했다.
+
+반복 읽기 도구에 새 DDS 식별자를 적용했다.
+이후 완료 조회를 확보했다.
+모든 빈 응답을 DDS 충돌로 확정하지 않는다.
+[진단 변경 기록](uwb_diagnostic_identity_20261011.md)을 따른다.
+
+임시 서비스 출력은 파일에 보존했다.
+`/home/bluewak/local-uwb-20261011/service-recovery-diagnostic.log`.
+임시 drop-in은 다음 경로였다.
+`~/.config/systemd/user/dronestock-local-uwb.service.d/diagnostic.conf`.
+시작 후 최대 전송 공백은 시점에 따라 달랐다.
+지상1.15초 확인 뒤 비행 인접 구간에서 더 커졌다.
+이를 앞선16:56의174ms 결과와 섞지 않는다.
+비행 뒤 상태는 [왕복 시험 기록](uwb_position_roundtrip_20261011.md)을 따른다.
+
+원본은 `.review/local-uwb-20261011/`에 보존했다.
+reboot-position-ready-2는17:23 완료 조회다.
+reboot-arming-causes는17:27 완료 조회다.
+reboot-position-final·alignment-final-1729는 보호 중단 기록이다.
+성공·중단·미실시 근거를 구분한다.
