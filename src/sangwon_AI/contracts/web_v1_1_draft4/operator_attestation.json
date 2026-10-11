@@ -1,0 +1,17 @@
+{
+  "contract_version": "1.1-draft.4",
+  "type": "operator_attestation",
+  "drone_id": "TEST-DRONE-01",
+  "profile": "REPLAY",
+  "attestation_id": "attestation-demo-01",
+  "snapshot_id": "snapshot-demo-01",
+  "plan_id": "plan-demo-01",
+  "launch_context_id": "launch-demo-01",
+  "confirmed_by": "test-operator",
+  "confirmed_at": "2026-10-04T06:00:02Z",
+  "valid_until": "2026-10-04T06:05:02Z",
+  "overhead_space_confirmed": true,
+  "heading_confirmed": true,
+  "observed_heading_deg": 0,
+  "approval_scope": "SYNTHETIC_ONLY"
+}

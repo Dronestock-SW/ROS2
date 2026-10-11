@@ -1,0 +1,17 @@
+[Unit]
+Description=Optional LiDAR sensor for manual flight capture
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+EnvironmentFile=%h/.config/dronestock/manual-capture.env
+ExecStart=/bin/bash %h/.local/libexec/dronestock/run_manual_capture.sh lidar
+Restart=on-failure
+RestartSec=10
+KillSignal=SIGINT
+TimeoutStopSec=15
+UMask=0077
+NoNewPrivileges=true
+
+[Install]
+WantedBy=default.target

@@ -1,4 +1,5 @@
-"""LiDAR(T-mini Pro) 기동 launch — Dronestock 1호기.
+"""
+LiDAR(T-mini Pro) 기동 launch — Dronestock 1호기.
 
 제조사 launch(ydlidar_ros2_driver/ydlidar_launch.py)를 그대로 불러 쓰고,
 파라미터 파일만 우리 것(drone_bringup/params/lidar_tmini.yaml)으로 바꿔 넘긴다.

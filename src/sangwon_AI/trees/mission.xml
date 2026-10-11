@@ -1,0 +1,12 @@
+<root BTCPP_format="4" main_tree_to_execute="Mission">
+  <BehaviorTree ID="Mission">
+    <ReactiveFallback>
+      <ReactiveSequence><ShouldYield/><Yield/></ReactiveSequence>
+      <ReactiveSequence><ShouldLand/><Land/></ReactiveSequence>
+      <ReactiveSequence><ShouldRecover/><Recover/></ReactiveSequence>
+      <ReactiveSequence><ShouldBlock/><Blocked/></ReactiveSequence>
+      <ReactiveSequence><ShouldPause/><Pause/></ReactiveSequence>
+      <Execute/>
+    </ReactiveFallback>
+  </BehaviorTree>
+</root>

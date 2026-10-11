@@ -1,0 +1,150 @@
+{
+  "contract_version": "1.1-draft.4",
+  "package_revision": "r2",
+  "fixture_only": true,
+  "physical_flight_authority": false,
+  "clock": "FIXED_SYNTHETIC_UTC_DO_NOT_POST_TO_LIVE_SERVER",
+  "primary_request": "../../WEB_REDESIGN_REQUEST_2026-10-04.md",
+  "files": [
+    {
+      "file": "body-demo.json",
+      "sha256": "8b6bbf1f82ee111397d994c34d1a2a4ed90e8e20d94168a864f5aa8f7609805c",
+      "bytes": 239
+    },
+    {
+      "file": "command_active.json",
+      "sha256": "942b86a1c574cb05a5013d405de8eafebdbe1a8d84bfb6eb3fd519319f7dd61b",
+      "bytes": 3241
+    },
+    {
+      "file": "command_start.json",
+      "sha256": "c33ef905682d32ac0daf7267a25ccdc4ef7390e420860759f905e20bb7036d96",
+      "bytes": 691
+    },
+    {
+      "file": "command_submit.json",
+      "sha256": "8afa59d7dde1647f6f3b42ce882b905baa06a78e47d61d7cca54b2ffaf334ab4",
+      "bytes": 595
+    },
+    {
+      "file": "control_session.json",
+      "sha256": "02c8f478d37519627620c15c1dbdb7b617d1fe53c8cb421286124aaa75c12508",
+      "bytes": 591
+    },
+    {
+      "file": "event_ready_revoked.json",
+      "sha256": "fc5a95a96796dfdb1526b3bf6c6536960ccffcc7479409101dfaf7451a420b33",
+      "bytes": 783
+    },
+    {
+      "file": "execution_result.json",
+      "sha256": "bd36e2040fb88f88aa205b3105fe7409a235901d2ea57af59d1759cb92cd729f",
+      "bytes": 1307
+    },
+    {
+      "file": "launch_snapshot.json",
+      "sha256": "d5eb8d16e707e90f0ccd6711093c2c05fe34de5fed317d7faf92587ce75cb93c",
+      "bytes": 984
+    },
+    {
+      "file": "mission_full.json",
+      "sha256": "2b02caecb5f6f0e47985956e458af706cde25d9a8086d358ee2eb214e28708e7",
+      "bytes": 815
+    },
+    {
+      "file": "motion-demo.json",
+      "sha256": "c7811b801777c66e7709e4b8d6e8a87bf573189c49ddd967fdd4c909170ddfdc",
+      "bytes": 589
+    },
+    {
+      "file": "operator_attestation.json",
+      "sha256": "f1763b254fa935b239cd65ff0c9af08d24ce39a1d973fd6744668c6332ba9726",
+      "bytes": 528
+    },
+    {
+      "file": "plan.json",
+      "sha256": "d3194dfdd7c3903045c8ede4ea1cdb321db625d34eb037e8b96fc4e8836a8608",
+      "bytes": 3975
+    },
+    {
+      "file": "preparation_report.json",
+      "sha256": "e1d77c2cf851829e98ee4f597911b43931bf98610a3285077519ca1782f6852b",
+      "bytes": 819
+    },
+    {
+      "file": "readiness_blocked.json",
+      "sha256": "a1849693c0d20bc70e9a827f2a7c44062f7c72000eeb43d025b367c76610426e",
+      "bytes": 13596
+    },
+    {
+      "file": "readiness_ready.json",
+      "sha256": "b816ac938ba630c37ce9b8f7b6feaa8da1451a2256dc01f1721f0521cc3ba192",
+      "bytes": 13522
+    },
+    {
+      "file": "result_accepted.json",
+      "sha256": "567b7f228536462f430fae0c13b08aa218030de7984cca7609f1d8a879618c5d",
+      "bytes": 762
+    },
+    {
+      "file": "result_rejected.json",
+      "sha256": "7db95ea422a9278b7076408f8181dd1e2b96dc3319a6a435fbb87cbb55e670be",
+      "bytes": 828
+    },
+    {
+      "file": "scan-demo.json",
+      "sha256": "49129cb0ec6782b115b974c03e9bca1108d3e67558b65119fcec8ba410689a7d",
+      "bytes": 615
+    },
+    {
+      "file": "scan_result_stored.json",
+      "sha256": "cb8ca7fa3f463871697014f0e154a4feca6119eb2ee517070f394ea1440499b4",
+      "bytes": 376
+    },
+    {
+      "file": "scan_task_completed.json",
+      "sha256": "f913d19fe83f2399bbc19dd694468351a8f629cec3fcc7fcf187dfe53fab670a",
+      "bytes": 955
+    },
+    {
+      "file": "scan_task_failed.json",
+      "sha256": "41ab900fc78cb2a31c26074c0ea1a07f99dbcc746c9826ec94c3b99af07212a8",
+      "bytes": 951
+    },
+    {
+      "file": "snapshot_content.json",
+      "sha256": "5419d8a9a9cd20e54f79d4bfc3551bf0e7894b647d94685763172ef741cf1909",
+      "bytes": 10699
+    },
+    {
+      "file": "telemetry.json",
+      "sha256": "2eac6fae5491a0f7730931a34a15801ffd5e45e3a1ea3f877ecb24bd6ac85d8a",
+      "bytes": 2194
+    }
+  ],
+  "scenarios": {
+    "accepted": [
+      "readiness_ready.json",
+      "command_start.json",
+      "result_accepted.json",
+      "launch_snapshot.json",
+      "telemetry.json",
+      "scan_task_failed.json",
+      "scan_task_completed.json",
+      "execution_result.json"
+    ],
+    "rejected_alternative": [
+      "readiness_ready.json",
+      "event_ready_revoked.json",
+      "readiness_blocked.json",
+      "command_start.json",
+      "result_rejected.json"
+    ],
+    "active_commands": "command_active.json contains alternatives, not a sequential script"
+  },
+  "profile_files": {
+    "motion-demo": "motion-demo.json",
+    "scan-demo": "scan-demo.json",
+    "body-demo": "body-demo.json"
+  }
+}

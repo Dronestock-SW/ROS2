@@ -1,0 +1,10 @@
+{
+  "mode": "observe",
+  "drone_id": "5",
+  "base_url": "http://203.247.41.82:8876",
+  "core_socket": ".runtime/service/core.sock",
+  "state_dir": ".runtime/web",
+  "poll_interval_s": 2,
+  "timeout_s": 3,
+  "auth": {"mode": "none"}
+}

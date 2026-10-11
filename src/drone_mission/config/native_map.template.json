@@ -1,0 +1,17 @@
+{
+  "survey_status": "UNVERIFIED",
+  "survey_reference": "REPLACE_WITH_MEASURED_MAP_RECORD",
+  "frame": "UWB_ANCHOR_LOCAL",
+  "unit": "meter",
+  "layout_id": "warehouse-rectangle-6p3x4p6-z0p15-20261007",
+  "altitude_policy": "px4_MIS_TAKEOFF_ALT",
+  "native_height_m": 1.3,
+  "launch_body_floor_height_m": 0.0,
+  "native_body_floor_height_m": null,
+  "clearance_xy_m": 0.7,
+  "clearance_z_m": 0.25,
+  "boundary": [],
+  "altitude_zones": [],
+  "yaw_zones": [],
+  "forbidden": []
+}

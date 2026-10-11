@@ -1,0 +1,101 @@
+{
+  "contract_version": "1.1-draft.4",
+  "type": "command_examples",
+  "drone_id": "TEST-DRONE-01",
+  "profile": "REPLAY",
+  "scenario_mode": "ALTERNATIVE_BRANCHES",
+  "commands": [
+    {
+      "contract_version": "1.1-draft.4",
+      "type": "control_request",
+      "drone_id": "TEST-DRONE-01",
+      "profile": "REPLAY",
+      "control_request_id": "request-pause-demo-01",
+      "command_seq": 2,
+      "action": "PAUSE",
+      "created_at": "2026-10-04T06:01:01Z",
+      "expires_at": "2026-10-04T06:01:11Z",
+      "context": {
+        "boot_id": "boot-demo-01",
+        "runtime_session_id": "runtime-demo-01",
+        "control_session_id": "control-demo-01",
+        "assignment_id": "assignment-demo-01",
+        "snapshot_id": "snapshot-demo-01",
+        "preparation_id": null,
+        "readiness_revision": null,
+        "execution_id": "execution-demo-01",
+        "flight_id": "flight-demo-01"
+      },
+      "payload": {}
+    },
+    {
+      "contract_version": "1.1-draft.4",
+      "type": "control_request",
+      "drone_id": "TEST-DRONE-01",
+      "profile": "REPLAY",
+      "control_request_id": "request-resume-demo-01",
+      "command_seq": 3,
+      "action": "RESUME",
+      "created_at": "2026-10-04T06:01:01Z",
+      "expires_at": "2026-10-04T06:01:11Z",
+      "context": {
+        "boot_id": "boot-demo-01",
+        "runtime_session_id": "runtime-demo-01",
+        "control_session_id": "control-demo-01",
+        "assignment_id": "assignment-demo-01",
+        "snapshot_id": "snapshot-demo-01",
+        "preparation_id": null,
+        "readiness_revision": null,
+        "execution_id": "execution-demo-01",
+        "flight_id": "flight-demo-01"
+      },
+      "payload": {}
+    },
+    {
+      "contract_version": "1.1-draft.4",
+      "type": "control_request",
+      "drone_id": "TEST-DRONE-01",
+      "profile": "REPLAY",
+      "control_request_id": "request-cancel-demo-01",
+      "command_seq": 4,
+      "action": "CANCEL",
+      "created_at": "2026-10-04T06:01:01Z",
+      "expires_at": "2026-10-04T06:01:11Z",
+      "context": {
+        "boot_id": "boot-demo-01",
+        "runtime_session_id": "runtime-demo-01",
+        "control_session_id": "control-demo-01",
+        "assignment_id": "assignment-demo-01",
+        "snapshot_id": "snapshot-demo-01",
+        "preparation_id": null,
+        "readiness_revision": null,
+        "execution_id": "execution-demo-01",
+        "flight_id": "flight-demo-01"
+      },
+      "payload": {}
+    },
+    {
+      "contract_version": "1.1-draft.4",
+      "type": "control_request",
+      "drone_id": "TEST-DRONE-01",
+      "profile": "REPLAY",
+      "control_request_id": "request-land_now-demo-01",
+      "command_seq": 5,
+      "action": "LAND_NOW",
+      "created_at": "2026-10-04T06:01:01Z",
+      "expires_at": "2026-10-04T06:01:11Z",
+      "context": {
+        "boot_id": "boot-demo-01",
+        "runtime_session_id": "runtime-demo-01",
+        "control_session_id": "control-demo-01",
+        "assignment_id": "assignment-demo-01",
+        "snapshot_id": "snapshot-demo-01",
+        "preparation_id": null,
+        "readiness_revision": null,
+        "execution_id": "execution-demo-01",
+        "flight_id": "flight-demo-01"
+      },
+      "payload": {}
+    }
+  ]
+}

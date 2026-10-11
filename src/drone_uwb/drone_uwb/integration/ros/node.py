@@ -20,7 +20,11 @@ from drone_uwb.processing.solvers.observations import Processor, Settings
 from drone_uwb.contracts.protocol import InvalidSample, decode_line
 from drone_uwb.acquisition.framing import LineFramer
 from drone_uwb.integration.recording import open_record_files
+from drone_uwb.integration.async_recording import AsyncRecording
+from drone_uwb.integration.manual_capture import monotonic_raw_ns
 from drone_uwb.acquisition.serial_io import SerialInput
+from drone_uwb.integration.ros.layout_selection import anchor_path
+from drone_uwb.integration.ros.qos import received_stream_qos
 
 
 class UwbNode(Node):
@@ -38,14 +42,13 @@ class UwbNode(Node):
         values = {name: self.get_parameter(name).value for name in asdict(Settings())}
         self.settings = Settings(**values)
         path = self.get_parameter('anchor_file').value
-        if not path:
-            path = str(Path(get_package_share_directory('drone_uwb')) / 'config/anchors/anchors_20261004.json')
+        path = anchor_path(get_package_share_directory('drone_uwb'), path)
         self.layout = json.loads(Path(path).read_text(encoding='utf-8'))
         self.processor = Processor(self.layout, self.settings)
         self.framer = LineFramer()
         self.pose_pub = self.create_publisher(PoseWithCovarianceStamped, '/uwb_pose', qos_profile_sensor_data)
         self.raw_pub = self.create_publisher(String, '/uwb/raw', qos_profile_sensor_data)
-        self.received_pub = self.create_publisher(String, '/uwb/received', qos_profile_sensor_data)
+        self.received_pub = self.create_publisher(String, '/uwb/received', received_stream_qos())
         self.status_pub = self.create_publisher(String, '/uwb/status', 10)
         self.counts = Counter()
         self.last_decision = 'starting'
@@ -65,13 +68,14 @@ class UwbNode(Node):
                 'serial_payload_bytes_written': 0,
                 'flight_state_estimator': 'PX4 EKF2 only',
             })
+        self.recorder = AsyncRecording(self.record_files) if self.record_files else None
         self.create_timer(0.005, self.poll)
         self.create_timer(1.0, self.publish_status)
         self.get_logger().info('UWB source=' + self.settings.source_mode + ', frame=' + self.layout['coordinate_frame'])
 
     def record(self, name, value):
         if name in self.record_files:
-            self.record_files[name].write(json.dumps(value, ensure_ascii=False, allow_nan=False) + '\n')
+            self.recorder.write(name, json.dumps(value, ensure_ascii=False, allow_nan=False) + '\n')
 
     def poll(self):
         now = time.monotonic()
@@ -103,12 +107,18 @@ class UwbNode(Node):
         if chunk is None:
             return
         mono_ns, ros_ns = time.monotonic_ns(), self.get_clock().now().nanoseconds
+        raw_clock_ns = monotonic_raw_ns()
         if 'raw' in self.record_files:
-            self.record_files['raw'].write(chunk)
+            self.recorder.write('raw', chunk)
+        if self.recorder and self.recorder.error:
+            self.counts['recording_failed'] += 1
+            # Diagnostic storage must not interrupt live sensor input.
+            # publish_status reports the latched recording error separately.
         for line in self.framer.feed(chunk):
             try:
                 msg = decode_line(line)
             except InvalidSample:
+                self.processor.tdma.discard_pending('parse_error')
                 self.counts['parse_error'] += 1
                 self.parse_streak += 1
                 if self.parse_streak >= 100:
@@ -122,11 +132,13 @@ class UwbNode(Node):
                 self.last_cycle_mono = mono_ns
             self.raw_pub.publish(String(data=json.dumps(msg, ensure_ascii=False)))
             received = {'host_received_monotonic_ns': mono_ns,
+                        'host_received_monotonic_raw_ns': raw_clock_ns,
                         'host_received_ros_ns': ros_ns, 'message': msg}
-            self.received_pub.publish(String(data=json.dumps(received, ensure_ascii=False)))
             self.record('received', received)
+            self.received_pub.publish(String(data=json.dumps(received, ensure_ascii=False)))
             result = self.processor.process(msg, mono_ns, ros_ns)
-            self.last_decision = result.reason
+            if not result.reason.startswith('sideband_') and result.reason != 'awaiting_tdma':
+                self.last_decision = result.reason
             self.counts[result.reason] += 1
             self.record('decisions', {'host_received_monotonic_ns': mono_ns,
                                      'reason': result.reason, 'details': result.details,
@@ -158,12 +170,15 @@ class UwbNode(Node):
                  'tag_status': self.processor.status,
                  'timestamp_method': 'approximate_mean_report_read_time',
                  'timestamp_calibrated': False,
+                 'recording_error': self.recorder.error if self.recorder else None,
                  'framing_overflows': self.framer.overflows}
+        value['tdma_required'] = self.processor.tdma.required
+        value['tdma_counts'] = dict(self.processor.tdma.counts)
         if rclpy.ok():
             self.status_pub.publish(String(data=json.dumps(value, ensure_ascii=False)))
         self.record('status', value)
-        for file in self.record_files.values():
-            file.flush()
+        if self.recorder:
+            self.recorder.flush()
 
     def close_serial(self):
         if self.serial is not None:
@@ -176,8 +191,11 @@ class UwbNode(Node):
     def destroy_node(self):
         self.publish_status()
         self.close_serial()
-        for file in self.record_files.values():
-            file.close()
+        if self.recorder:
+            try:
+                self.recorder.close()
+            except OSError as exc:
+                self.get_logger().error('Recording shutdown: ' + str(exc))
         return super().destroy_node()
 
 

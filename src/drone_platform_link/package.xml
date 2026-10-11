@@ -9,6 +9,9 @@
   <exec_depend>rclpy</exec_depend>
   <exec_depend>geometry_msgs</exec_depend>
   <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>nav_msgs</exec_depend>
+  <exec_depend>mavros_msgs</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
   <!-- Deployment supplies the pinned websockets 13.1 wheel in an isolated directory. -->
   <export><build_type>ament_python</build_type></export>
 </package>

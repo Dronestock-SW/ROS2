@@ -1,0 +1,12 @@
+{
+  "profile": "REPLAY",
+  "drone_id": "TEST-DRONE-01",
+  "physical_output_enabled": false,
+  "state_dir": ".runtime/replay-native-takeoff",
+  "replay_takeoff_policy": "PX4_AUTO_TAKEOFF",
+  "approved_replay_takeoff_reference": "WAREHOUSE_MAP_SYNTHETIC_ONLY",
+  "approved_replay_snapshot_sha256": [
+    "e1e253e6fba1de14d857ced0a177e3d2e2a5b62a6928f3aec6455a9159cdfe75"
+  ],
+  "replay_steps_per_tick": 1
+}

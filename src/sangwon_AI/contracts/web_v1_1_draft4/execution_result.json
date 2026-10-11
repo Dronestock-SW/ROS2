@@ -1,0 +1,56 @@
+{
+  "contract_version": "1.1-draft.4",
+  "type": "execution_result",
+  "drone_id": "TEST-DRONE-01",
+  "profile": "REPLAY",
+  "context": {
+    "boot_id": "boot-demo-01",
+    "runtime_session_id": "runtime-demo-01",
+    "control_session_id": "control-demo-01",
+    "assignment_id": "assignment-demo-01",
+    "snapshot_id": "snapshot-demo-01",
+    "preparation_id": null,
+    "readiness_revision": null,
+    "execution_id": "execution-demo-01",
+    "flight_id": "flight-demo-01"
+  },
+  "control_request_id": "request-start-demo-01",
+  "command_status": "COMPLETED",
+  "result_revision": 2,
+  "flight_outcome": "SUCCEEDED",
+  "work_outcome": "PARTIAL_FAILURE",
+  "ended_at": "2026-10-04T06:03:00Z",
+  "landed": true,
+  "armed": false,
+  "task_summary": {
+    "total": 3,
+    "succeeded": 2,
+    "failed": 1,
+    "not_attempted": 0
+  },
+  "scan_summary": {
+    "total": 1,
+    "succeeded": 0,
+    "failed": 1,
+    "not_attempted": 0
+  },
+  "tasks": [
+    {
+      "task_id": "W01",
+      "outcome": "SUCCEEDED"
+    },
+    {
+      "task_id": "S01",
+      "outcome": "FAILED",
+      "task_result_id": "scan-result-demo-01"
+    },
+    {
+      "task_id": "W02",
+      "outcome": "SUCCEEDED"
+    }
+  ],
+  "ulog": {
+    "collection_status": "PENDING",
+    "retention": "VERIFIED_JETSON_COPY_72H_AFTER_FLIGHT_END"
+  }
+}

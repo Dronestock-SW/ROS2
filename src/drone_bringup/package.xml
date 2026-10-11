@@ -7,6 +7,9 @@
   <maintainer email="user@todo.todo">user</maintainer>
   <license>TODO: License declaration</license>
 
+  <buildtool_depend>ament_python</buildtool_depend>
+  <exec_depend>ament_index_python</exec_depend>
+  <exec_depend>drone_uwb</exec_depend>
   <exec_depend>launch</exec_depend>
   <exec_depend>launch_ros</exec_depend>
   <exec_depend>ydlidar_ros2_driver</exec_depend>
@@ -19,9 +22,8 @@
   <exec_depend>aruco_opencv</exec_depend>
   <exec_depend>aruco_opencv_msgs</exec_depend>
   <exec_depend>geometry_msgs</exec_depend>
-  <!-- pyzbar, evdev: rosdep 키 미등록 — apt install python3-pyzbar python3-evdev 로 수동 설치(2026-08-23).
-       이 두 exec_depend 때문에 `rosdep install --from-paths src --ignore-src`가 그대로는 실패한다.
-       실행할 땐 반드시 --skip-keys "python3-pyzbar python3-evdev" 를 붙일 것. -->
+  <!-- pyzbar, evdev: rosdep 키 미등록. apt로 수동 설치한다.
+       rosdep에서는 두 키를 제외한다. README의 설치 절차를 따른다. -->
   <exec_depend>python3-pyzbar</exec_depend>
   <exec_depend>python3-evdev</exec_depend>
 

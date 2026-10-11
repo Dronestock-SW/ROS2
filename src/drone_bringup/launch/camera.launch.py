@@ -1,4 +1,5 @@
-"""CSI 카메라(ArduCAM B0191 / IMX219) 기동 launch — Dronestock 1호기.
+"""
+CSI 카메라(ArduCAM B0191 / IMX219) 기동 launch — Dronestock 1호기.
 
 gscam 노드를 띄워 카메라 영상을 ROS2 topic으로 발행한다.
 LiDAR와 달리 제조사 launch가 없어서 노드를 직접 실행한다.

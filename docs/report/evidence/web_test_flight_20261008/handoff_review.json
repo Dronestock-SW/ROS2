@@ -1,0 +1,60 @@
+{
+  "reviewed_at": "2026-10-08T11:44:34.208347+09:00",
+  "branch": "codex/web-flight-handoff-20261008",
+  "base_commit": "deb940f612d7ee5198762aa73c7d7f22140beb61",
+  "prior_integration_branch": "codex/flight-uwb-ai-integration-20261007",
+  "prior_integration_commit": "1cc7e3b7fbfe39a693968925bbec507db854380d",
+  "prior_handoff_branch": "codex/uwb-web-handoff-20261007",
+  "prior_handoff_commit": "7cfc482feee49d82ece1c3987af920587a1a920f",
+  "prior_integration_diff": "286 files changed, 25815 insertions(+), 164 deletions(-)",
+  "overlapping_tracked_paths": [
+    "README.md",
+    "docs/README.md",
+    "docs/altitude_policy.md",
+    "docs/glossary.md",
+    "docs/roadmap.md",
+    "src/drone_platform_link/README.md",
+    "src/drone_platform_link/drone_platform_link/ros_monitor.py",
+    "src/drone_platform_link/drone_platform_link/runtime.py",
+    "src/drone_platform_link/drone_platform_link/telemetry.py",
+    "src/drone_platform_link/test/test_runtime.py",
+    "src/drone_uwb/README.md",
+    "src/drone_uwb/drone_uwb/integration/ros/bridge.py",
+    "src/drone_uwb/drone_uwb/integration/ros/btf_node.py",
+    "src/drone_uwb/drone_uwb/integration/ros/frames.py",
+    "src/drone_uwb/drone_uwb/processing/measured_btf.py",
+    "src/drone_uwb/test/processing/test_observations.py"
+  ],
+  "prior_branch_merged": false,
+  "jetson_ssh_login": false,
+  "physical_flight_verified": false,
+  "critical_differences": {
+    "cloud_defaults": {
+      "tag_id": "5",
+      "ros_domain": 1,
+      "anchor_height_m": 2.2,
+      "takeoff_climb_m": 0.6
+    },
+    "prior_record_not_current_live_reading": {
+      "tag_id": "6",
+      "ros_domain": 2,
+      "anchor_height_m": 0.15,
+      "takeoff_climb_m": 1.3,
+      "COM_RC_OVERRIDE": 2,
+      "EKF2_EV_CTRL": 1,
+      "uwb_600s_min_window_hz": 0,
+      "uwb_json_errors": 43,
+      "btf_pose_messages": 0,
+      "vision_output_messages": 0
+    }
+  },
+  "cloud_tests": {
+    "total": 545,
+    "passed": 542,
+    "failed_existing_lint": 2,
+    "skipped": 1,
+    "mission_passed": 58,
+    "real_ros_http_ws_synthetic_fc_scenarios": 4
+  },
+  "implementation_status": "review_and_integration_required_before_physical_flight"
+}

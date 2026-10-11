@@ -1,0 +1,290 @@
+"""Attribute recorded B_TF gaps without replaying stale poses or approving flight."""
+import argparse
+from collections import Counter, defaultdict
+import hashlib
+import json
+import math
+from pathlib import Path
+import statistics
+
+
+def decode(row):
+    data = row['data']
+    return json.loads(data['data']) if row['type'] == 'std_msgs/msg/String' else data
+
+
+def gap_stats(times):
+    gaps = [(b-a)/1e9 for a,b in zip(times, times[1:])]
+    return dict(samples=len(times), max_gap_s=max(gaps, default=None))
+
+
+def distribution(values):
+    values=[v for v in values if type(v) in (int,float) and math.isfinite(v)]
+    return dict(samples=len(values), minimum=min(values), median=statistics.median(values),
+                maximum=max(values)) if values else dict(samples=0)
+
+
+def decision_summary(row):
+    """Keep causal diagnostics without copying coordinates or full fit history."""
+    models=row.get('models') or {}; b=models.get('B') or {}; subset=models.get('B_TF') or {}
+    return dict(seq=row.get('seq'),received_monotonic_ns=row['received_monotonic_ns'],
+        reason=row['reason'],published=row.get('replay_publish') is True,
+        b4_rms_m=(b.get('fit') or {}).get('rms_m'),
+        best_excluded_anchor=subset.get('best_excluded_anchor'),
+        best_score_m=subset.get('best_score_m'),score_margin_m=subset.get('score_margin_m'),
+        tracking_prior_age_s=subset.get('tracking_prior_age_s'),
+        height_selection_reasons=dict(Counter(s['reason'] for s in row.get('height_selection',[]))),
+        jump_check=row.get('jump_check'))
+
+
+def largest_complete_gap(segments):
+    """Only pair publications within one airborne segment; exclude censored tails."""
+    pairs=[]
+    for segment in segments:
+        published=[i for i,d in enumerate(segment) if d.get('replay_publish') is True]
+        for a,b in zip(published,published[1:]):
+            pairs.append((segment[b]['received_monotonic_ns']-segment[a]['received_monotonic_ns'],segment,a,b))
+    if not pairs:return None
+    duration,segment,a,b=max(pairs,key=lambda pair:pair[0])
+    failed=segment[a+1:b]
+    jumps=[d for d in failed if d['reason']=='observation_jump_quarantined']
+    holds=Counter((d.get('replay_guard_prior') or {}).get('stamp_ns') for d in jumps)
+    holds.pop(None,None)
+    held=None
+    if holds:
+        stamp,count=holds.most_common(1)[0]
+        first=next(d for d in jumps if (d.get('replay_guard_prior') or {}).get('stamp_ns')==stamp)
+        updates=[d for d in segment[:b] if d.get('stamp_ns')==stamp
+                 and d['received_monotonic_ns']<first['received_monotonic_ns']]
+        held=dict(quarantined_decisions=count,
+            prior_update=decision_summary(updates[-1]) if updates else None)
+    after_jump=next((d for d in failed if jumps and d['received_monotonic_ns']>jumps[-1]['received_monotonic_ns']
+                     and (d.get('models') or {}).get('B_TF')),None)
+    return dict(duration_s=duration/1e9,start=decision_summary(segment[a]),end=decision_summary(segment[b]),
+        failure_reasons=dict(Counter(d['reason'] for d in failed)),
+        first_failures=[decision_summary(d) for d in failed[:6]],
+        first_jump=decision_summary(jumps[0]) if jumps else None,
+        last_jump=decision_summary(jumps[-1]) if jumps else None,
+        dominant_guard_hold=held,
+        first_model_after_last_jump=decision_summary(after_jump) if after_jump else None)
+
+
+def missing_anchor_failures(cycles):
+    """A skipped TDMA exchange is not an anchor response timeout."""
+    def failure(d,i):
+        values=d.get('failure')
+        return str(values[i]) if isinstance(values,list) and len(values)==4 else 'unrecorded'
+    skipped=[d for d in cycles if failure(d,2)==failure(d,3)=='slot_deadline']
+    retried=[d for d in skipped if isinstance(d.get('attempt_count'),list)
+             and len(d['attempt_count'])==4 and type(d['attempt_count'][0]) is int
+             and d['attempt_count'][0]>1]
+    return dict(by_anchor=[dict(Counter(failure(d,i) for d in cycles if not usable_range(d,i))) for i in range(4)],
+        a3_a4_both_slot_deadline=len(skipped),a1_retried_before_both_skips=len(retried))
+
+
+def compare_replays(before_path, after_path):
+    """Compare aligned solver runs, separately from the two publication gates."""
+    before=[json.loads(line) for line in before_path.read_text(encoding='utf-8').splitlines()]
+    after=[json.loads(line) for line in after_path.read_text(encoding='utf-8').splitlines()]
+    if len(before)!=len(after):raise ValueError('replay decision counts differ')
+    added=[];removed=[];moved=[];upstream_changed=0;recovered=[]
+    identity=('received_monotonic_ns','seq','time_us','stamp_ns','airborne')
+    for old,new in zip(before,after):
+        if any(old.get(k)!=new.get(k) for k in identity):raise ValueError('replay decisions not aligned')
+        upstream_changed+=int(any(old.get(k)!=new.get(k) for k in
+            ('raw_slant_m','jump_check','replay_guard_prior')) or
+            (old.get('models') or {}).get('B')!=(new.get('models') or {}).get('B'))
+        if not new['airborne']:continue
+        a,b=old['replay_publish'],new['replay_publish']
+        if a and not b:removed.append(decision_summary(old))
+        if b and not a:added.append(dict(decision_summary(new),previous_reason=old['reason']))
+        if a and b:moved.append(math.dist(old['xy_m'],new['xy_m']))
+        if b and new['reason'] in ('near_prior_subset_reacquired','moving_subset_reacquired'):
+            key='motion_reacquisition' if new['reason']=='moving_subset_reacquired' else 'reacquisition'
+            recovered.append(dict(decision_summary(new),evidence=new['models']['B_TF'][key]))
+    return dict(before=before_path.name,after=after_path.name,
+        before_sha256=hashlib.sha256(before_path.read_bytes()).hexdigest(),
+        after_sha256=hashlib.sha256(after_path.read_bytes()).hexdigest(),
+        added_publications=len(added),removed_publications=len(removed),
+        removed=removed,added_previous_reasons=dict(Counter(d['previous_reason'] for d in added)),
+        shared_xy_delta_max_m=max(moved,default=None),upstream_changed_decisions=upstream_changed,
+        reacquisition_events=recovered,
+        scope='aligned file replays; no independent position truth or flight validation')
+
+
+def motion_diagnostics(path):
+    """Explain recovery denials; unchanged output counts do not prove accuracy."""
+    reasons={'raw':Counter(),'subset':Counter()}; recovered=[]
+    for line in path.read_text(encoding='utf-8').splitlines():
+        row=json.loads(line)
+        if not row.get('airborne'):continue
+        for stage,e in [('raw',row.get('raw_motion_reacquisition')),
+                        ('subset',(row.get('models') or {}).get('B_TF',{}).get('motion_reacquisition'))]:
+            if not e:continue
+            reasons[stage][e['reason']]+=1
+            if e.get('ready'):recovered.append(dict(stage=stage,seq=row.get('seq'),evidence=e))
+    return dict(reasons={k:dict(v) for k,v in reasons.items()},recovered=recovered,
+                ground_truth_available=False)
+
+
+def replay_comparison(path):
+    """Compare two publication gates on identical solver results, not truth.
+
+    Segment boundaries are replay decision times; their gaps are censored and
+    slightly shorter than the full capture's state/sensor boundaries.
+    """
+    segments=[]; active=False; digest=hashlib.sha256(); previous=0
+    with path.open('rb') as src:
+        for line in src:
+            digest.update(line);row=json.loads(line);t=row['received_monotonic_ns']
+            if t<previous:raise ValueError('replay receipt clock reversed')
+            previous=t
+            if row['airborne']:
+                if not active:segments.append([])
+                segments[-1].append(row)
+            active=row['airborne']
+    ds=[d for segment in segments for d in segment]; result={}
+    for key in ('legacy_height_gate_publish','replay_publish'):
+        intervals=[]
+        for segment in segments:
+            start,end=segment[0]['received_monotonic_ns'],segment[-1]['received_monotonic_ns']
+            times=[d['received_monotonic_ns'] for d in segment if d.get(key) is True]
+            for a,b in zip([start,*times],[*times,end]):
+                if b-a>250_000_000:
+                    intervals.append(dict(duration_s=(b-a)/1e9,
+                        boundary_censored=a==start or b==end,
+                        start_offset_s=(a-start)/1e9))
+        result[key]=dict(published=sum(d.get(key) is True for d in ds),
+            gaps_over_250ms=sorted(intervals,key=lambda d:d['duration_s'],reverse=True))
+    added=[d for d in ds if d['replay_publish'] and not d['legacy_height_gate_publish']]
+    quarantined=[d for d in ds if d['reason']=='observation_jump_quarantined']
+    return dict(file=path.name,sha256=digest.hexdigest(),comparison=result,
+        largest_complete_gap=largest_complete_gap(segments),
+        added_sources=dict(Counter(d['models']['B_TF']['source'] for d in added)),
+        added_with_xyz=sum(d.get('xyz_m') is not None for d in added),
+        removed_publications=sum(d['legacy_height_gate_publish'] and not d['replay_publish'] for d in ds),
+        quarantine_prior_age_s=distribution([d.get('jump_check',{}).get('prior_age_s') for d in quarantined]),
+        quarantine_raw_height_rms_m=distribution([d.get('raw_height_rms_m') for d in quarantined]),
+        scope='collector-order replay, decision-time boundaries; no position accuracy or flight proof')
+
+
+def analyze(capture):
+    topic_times = defaultdict(list)
+    decisions = []
+    raw_cycles = []
+    tof_rows=[]
+    state = landed = None
+    state_time = landed_time = -10**30
+    air_segments = []
+    in_air = False
+    last_t = 0
+    manifest_bytes = (capture/'manifest.json').read_bytes()
+    manifest = json.loads(manifest_bytes)
+    digest = hashlib.sha256()
+    with (capture/'events.jsonl').open('rb') as source:
+        for line in source:
+            digest.update(line)
+            row = json.loads(line)
+            t, topic = row['received_monotonic_ns'], row['topic']
+            if t < last_t:
+                raise ValueError('capture receipt clock reversed')
+            last_t = t
+            if topic not in ('/uwb/btf_decision', '/uwb/received', '/uwb/btf_pose',
+                '/mavros/state','/mavros/extended_state','/mavros/local_position/odom',
+                '/mavros/imu/data','/mavros/downward_0'):
+                continue
+            d = decode(row)
+            header_age= row['received_ros_ns']-(row.get('header_ns') or 0)
+            fresh=0<=header_age<=1_500_000_000
+            if topic == '/mavros/state':
+                state, state_time = d, t if fresh else -10**30
+            elif topic == '/mavros/extended_state':
+                landed, landed_time = d.get('landed_state'), t if fresh else -10**30
+            airborne = (state is not None and state.get('armed') is True
+                and state.get('connected') is True and landed == 2
+                and 0 <= t-state_time <= 1_500_000_000 and 0 <= t-landed_time <= 1_500_000_000)
+            if airborne and not in_air:
+                air_segments.append([t,t])
+            if airborne:
+                air_segments[-1][1] = t
+            in_air = airborne
+            if not airborne:
+                continue
+            topic_times[topic].append(t)
+            if topic == '/uwb/btf_decision':
+                decisions.append((t,d))
+            elif topic == '/uwb/received' and d.get('message',{}).get('type') == 'uwb_raw_cycle':
+                raw_cycles.append((t,d['message']))
+            elif topic == '/mavros/downward_0':
+                tof_rows.append((len(air_segments),row.get('header_ns') or 0,d))
+    intervals = []
+    for start,end in air_segments:
+        outputs = [t for t in topic_times['/uwb/btf_pose'] if start<=t<=end]
+        edges = [start,*outputs,end]
+        for a,b in zip(edges,edges[1:]):
+            if b-a <= 250_000_000:
+                continue
+            ds = [d for t,d in decisions if a<t<b]
+            raw = [(t,d) for t,d in raw_cycles if a<t<b]
+            reasons = Counter(d.get('pose_blocked_reason') or d['reason'] for d in ds if not d.get('published'))
+            scores = [d.get('models',{}).get('B_TF',{}).get('best_score_m') for d in ds]
+            scores = [x for x in scores if isinstance(x,(float,int))]
+            intervals.append(dict(start_offset_s=(a-manifest['started']['monotonic_ns'])/1e9,
+                duration_s=(b-a)/1e9, boundary_censored=a==start or b==end,
+                reasons=dict(reasons), raw_cycles=len(raw),
+                missing_anchor_failures=missing_anchor_failures([d for _,d in raw]),
+                raw_cycle_max_gap_s=gap_stats([t for t,_ in raw])['max_gap_s'],
+                best_subset_rms_min_m=min(scores,default=None),
+                published_decisions=sum(d.get('published') is True for d in ds)))
+    return dict(capture=capture.name, manifest_sha256=hashlib.sha256(manifest_bytes).hexdigest(),
+        events_sha256=digest.hexdigest(), scope='fresh ARM and IN_AIR; receipt times; not ground truth',
+        air_duration_s=sum((b-a)/1e9 for a,b in air_segments), air_segments=len(air_segments),
+        topics={k:gap_stats(v) for k,v in topic_times.items()},
+        reasons=dict(Counter(d.get('pose_blocked_reason') or d['reason'] for _,d in decisions)),
+        raw_anchor_missing=[sum(not usable_range(d,i) for _,d in raw_cycles) for i in range(4)],
+        tof_source_interval_s=distribution([(b[1]-a[1])/1e9 for a,b in zip(tof_rows,tof_rows[1:]) if a[0]==b[0]]),
+        tof_samples=len(tof_rows),
+        tof_outside_sensor_limits=sum(not valid_tof(d) for _,_,d in tof_rows),
+        height_selection_reasons=dict(Counter(s['reason'] for _,d in decisions for s in d.get('height_selection',[]))),
+        gaps_over_250ms=sorted(intervals,key=lambda x:x['duration_s'],reverse=True),
+        timing_confirmed=False, fusion_verified=False)
+
+
+def valid_tof(data):
+    try:
+        r,lo,hi=(float(data[k]) for k in ('range','min_range','max_range'))
+        return all(math.isfinite(v) for v in (r,lo,hi)) and 0<lo<=r<=hi
+    except (KeyError,ValueError,TypeError):
+        return False
+
+
+def usable_range(cycle,index):
+    ranges=cycle.get('raw_slant_m')
+    if not isinstance(ranges,list) or len(ranges)!=4:return False
+    value=ranges[index]
+    return (type(value) in (int,float) and math.isfinite(value) and value>0
+            and bool(cycle.get('valid_mask',0)&(1<<index)))
+
+
+def main():
+    p=argparse.ArgumentParser(description=__doc__)
+    p.add_argument('captures',nargs='+',type=Path)
+    p.add_argument('--output',type=Path,required=True)
+    p.add_argument('--replay',nargs='+',type=Path,help='Optional paired publication-gate replay files')
+    p.add_argument('--baseline-replay',nargs='+',type=Path,help='Aligned earlier solver runs, one per --replay')
+    args=p.parse_args()
+    if args.baseline_replay and (not args.replay or len(args.baseline_replay)!=len(args.replay)):
+        p.error('--baseline-replay requires the same number of --replay files')
+    result=[analyze(c) for c in args.captures]
+    report=result if not args.replay else dict(captures=result,replays=[replay_comparison(f) for f in args.replay])
+    if args.baseline_replay:
+        report['paired_algorithms']=[compare_replays(a,b) for a,b in zip(args.baseline_replay,args.replay)]
+    if args.replay:
+        report['motion_diagnostics']=[motion_diagnostics(f) for f in args.replay]
+    args.output.write_text(json.dumps(report,indent=2),encoding='utf-8')
+    for r in result:
+        print(r['capture'],json.dumps({'reasons':r['reasons'],'largest_gaps':r['gaps_over_250ms'][:3]}))
+
+
+if __name__=='__main__':
+    main()

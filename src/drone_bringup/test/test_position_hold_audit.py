@@ -49,7 +49,7 @@ def test_fixed_hold_score_is_tracking_error_only():
 
 
 @pytest.mark.parametrize('issue', ['old_target', 'missing_rc', 'moving_target',
-                                  'stick_input', 'reset', 'missing_reset', 'low_coverage'])
+                                   'stick_input', 'reset', 'missing_reset', 'low_coverage'])
 def test_incomplete_or_moving_intervals_are_not_hold_candidates(issue):
     samples = hold_samples()
     if issue == 'old_target':

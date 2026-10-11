@@ -13,6 +13,7 @@ import numpy as np
 
 from drone_uwb.contracts.protocol import InvalidSample, finite, integer, decode_line
 from drone_uwb.acquisition.framing import LineFramer
+from drone_uwb.acquisition.tdma import TdmaGate
 
 
 @dataclass
@@ -36,10 +37,13 @@ class Settings:
     xy_stddev_m: float = 0.30
     geometry_tolerance_m: float = 0.03
     report_delay_s: float = 0.0
+    tdma_mode: str = 'auto'
 
     def __post_init__(self):
         if self.source_mode not in ('raw_ranges', 'tag_xy'):
             raise ValueError('invalid source_mode')
+        if self.tdma_mode not in ('auto', 'required', 'disabled'):
+            raise ValueError('invalid tdma_mode')
         if self.min_anchors not in (3, 4):
             raise ValueError('min_anchors must be 3 or 4')
         if (not integer(self.active_anchor_mask) or not 0 < self.active_anchor_mask <= 15
@@ -51,7 +55,7 @@ class Settings:
                 or self.recovery_samples < 1 or self.clock_warmup_samples < 2):
             raise ValueError('invalid warmup count')
         for name, value in vars(self).items():
-            if name not in ('tag_id', 'source_mode') and (not finite(value) or value < 0):
+            if name not in ('tag_id', 'source_mode', 'tdma_mode') and (not finite(value) or value < 0):
                 raise ValueError('invalid setting: ' + name)
         if min(self.xy_stddev_m, self.clock_window_s, self.status_timeout_s, self.max_range_m) <= 0:
             raise ValueError('uncertainty and time windows must be positive')
@@ -98,6 +102,7 @@ class Processor:
 
     def __init__(self, layout, settings=None):
         self.settings = settings or Settings()
+        self.tdma = TdmaGate(self.settings.tag_id, self.settings.tdma_mode)
         self.layout = layout
         self.anchors = np.asarray(layout['anchors_xyz_m'], dtype=float)
         if layout['anchor_order'] != ['A1', 'A2', 'A3', 'A4']:
@@ -121,6 +126,7 @@ class Processor:
         self.last_stamp_ns = None
 
     def disconnect(self):
+        self.tdma.disconnect()
         self.status = None
         self.status_ns = None
         self.last_seq = None
@@ -129,8 +135,24 @@ class Processor:
 
     def process(self, msg, mono_ns, ros_ns):
         try:
-            return self._process(msg, mono_ns, ros_ns)
+            dispatch = self.tdma.ingest(msg, mono_ns, ros_ns)
+            if dispatch.reset_history:
+                self.reset_temporal()
+                self.last_seq = self.last_end_us = self.last_ros_offset = None
+            if dispatch.clear_status:
+                self.status = self.status_ns = None
+            if dispatch.message is None:
+                return Decision(dispatch.reason)
+            if dispatch.message.get('type') == 'uwb_raw_status' and dispatch.message.get('event') == 'boot':
+                self.reset_temporal()
+                self.last_seq = self.last_end_us = self.last_ros_offset = None
+            result = self._process(dispatch.message, dispatch.mono_ns, dispatch.ros_ns)
+            if dispatch.tdma is not None:
+                result.details['tdma'] = dispatch.tdma
+            result.details['tdma_verified'] = dispatch.tdma is not None
+            return result
         except (InvalidSample, KeyError, TypeError, ValueError, OverflowError, np.linalg.LinAlgError) as exc:
+            self.tdma.discard_pending('invalid_message')
             self.stable = 0
             return Decision(str(exc) if isinstance(exc, InvalidSample) else 'invalid_schema')
 

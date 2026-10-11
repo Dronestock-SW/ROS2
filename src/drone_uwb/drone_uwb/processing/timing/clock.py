@@ -21,6 +21,7 @@ class ClockMap:
         self.beta = 0.0
         self.residual_p95_s = None
         self.state = 'clock_unsynced'
+        self.reason = 'insufficient_samples'
 
     @property
     def alpha(self):
@@ -37,6 +38,7 @@ class ClockMap:
         span_s = (host_ns - self.points[0][1]) / 1e9
         if len(x) < s.clock_min_samples:
             self.state = 'clock_unsynced'
+            self.reason = 'insufficient_samples'
             return
         if span_s >= s.clock_alpha_min_span_s:
             design = np.column_stack([x, np.ones_like(x)])
@@ -51,6 +53,17 @@ class ClockMap:
         self.residual_p95_s = float(np.percentile(delay, 95)) / 1e9
         scale_ok = abs(self.alpha - 1.0) <= s.clock_scale_tolerance
         self.state = 'ok' if scale_ok and self.residual_p95_s <= s.clock_residual_p95_max_s else 'clock_unsynced'
+        self.reason = ('scale_out_of_bounds' if not scale_ok else
+                       'residual_out_of_bounds' if self.state != 'ok' else 'ok')
+
+    def diagnostics(self):
+        """Explain a rejection without changing limits or implying delay calibration."""
+        return dict(state=self.state, reason=self.reason, alpha=self.alpha,
+                    residual_p95_s=self.residual_p95_s, samples=len(self.points),
+                    span_s=(self.points[-1][1]-self.points[0][1])/1e9 if self.points else 0.,
+                    scale_tolerance=self.settings.clock_scale_tolerance,
+                    residual_p95_max_s=self.settings.clock_residual_p95_max_s,
+                    fixed_delay_calibrated=False)
 
     @property
     def ready(self):

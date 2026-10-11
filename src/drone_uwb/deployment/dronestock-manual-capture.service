@@ -1,0 +1,17 @@
+[Unit]
+Description=Persistent manual flight sensor recorder
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+EnvironmentFile=%h/.config/dronestock/manual-capture.env
+ExecStart=/bin/bash %h/.local/libexec/dronestock/run_manual_capture.sh capture
+Restart=always
+RestartSec=10
+KillMode=mixed
+TimeoutStopSec=20
+UMask=0077
+NoNewPrivileges=true
+
+[Install]
+WantedBy=default.target

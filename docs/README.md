@@ -11,8 +11,40 @@
 | 찾는 내용 | 위치 |
 |---|---|
 | QR 리더기 우선·카메라 폴백 | [QR 재고 판독 파이프라인](architecture/qr_inventory_pipeline.md) |
+| UWB 기능의 feature_uwb·main 병합 확인 | [10월 11일 병합 검증](report/uwb_main_merge_20261011.md) |
+| GPS·지리적 원점 없는 실제 UWB 수평 융합 | [10월 11일 적용·FC 확인](report/local_uwb_fusion_20261011.md) |
+| 실내 UWB의 부팅 정렬·실행·원복 | [로컬 수평 융합 절차](runbooks/local_uwb_fusion.md) |
+| 현재 환경 1m 이상 호버 확인·저고도 LiDAR 전략 | [10월 10일 조명·그림자 기록](report/optical_flow_environment_20261010.md) |
+| Position/Hold 전제의 UWB 최종 통합 측정 | [수동 비행 통합 관측 절차](runbooks/manual_uwb_final_trial_20261010.md) |
+| 자동 출발점·천장 명령·RC 인계·실물 상태 | [10월 9일 현장 준비 기록](report/field_readiness_20261009.md) |
+| 현장 웹 명령·출발점·RC 점검 순서 | [웹 현장 설정 절차](runbooks/field_web_settings.md) |
+| 스캔 실패 뒤 남은 작업 계속·후속 시험 | [스캔 후속 수행 기록](report/scan_continuation_20261008.md) |
+| 최종 AI 연결·시험 결과·현장 미확인 | [전체 흐름 확인 기록](report/mission_flight_flow_20261008.md) |
+| 내일 전체 미션 현장 설정·지도·실행 | [현장 미션 절차](runbooks/mission_chain_field.md) |
+| RAW UWB 고장·웹 명령·복귀·END 시험 | [가상 전체 미션 절차](runbooks/mission_chain_virtual.md) |
+| 관측 격리·ArUco 창·스캔 결과·복귀 책임 | [미션 연결 범위](architecture/mission_chain.md) |
+| 시동·이륙·2초 호버·착륙 시험 | [실행·결과 확인 절차](runbooks/native_hover_test.md) |
+| 기본 순서·실제 PX4 가상 시험·센서 공백 | [2026-10-08 확인 기록](report/native_hover_test_20261008.md) |
+| UWB·flow·ToF·IMU 수신·융합·방향 | [실물 점검 절차](runbooks/position_sensor_check.md) |
+| 다음 로컬·Jetson 세션 시작 | [브랜치·명령 흐름·비행 전 확인](runbooks/local_jetson_handoff_20261008.md) |
+| 웹·Tag B·TDMA 통합과 분리 시험 | [2026-10-08 로컬 통합 기록](report/local_jetson_integration_20261008.md) |
+| 현장 미커밋 hover 실행기 | [Native hover 명령 경계](architecture/native_hover_bench.md) |
+| 로컬 SSH·현재 FC·미커밋 현장 작업 | [2026-10-08 직접 조회·대조 기록](report/local_jetson_readback_20261008.md) |
+
+| Tag B 임시 0.15m·FC 설정·웹 시험 결과 | [낮은 앵커 시험 기록](report/anchor_low015_bench_20261007.md) |
+| 임시 배치 실행·2.2m 복원·웹 계획 | [낮은 앵커 시험 절차](runbooks/anchor_low015_bench.md) |
+| 비행·UWB·AI 연결과 미완료 범위 | [통합 기준](architecture/flight_uwb_ai_integration.md) |
+| 기체별 통합 지상 실행 | [통합 지상 절차](runbooks/flight_uwb_ai_ground.md) |
+| 기존 AI 보존·코드 통합·실물 수신 결과 | [2026-10-07 통합 기록](report/flight_uwb_ai_integration_20261007.md) |
+| 웹·companion·태그 후속 작업 | [멀티태그 연결 인수인계](runbooks/multitag_jetson_web_handoff.md) |
+| Wi-Fi/LoRa 역할·좌표 출처·ID·주기 | [멀티태그 연결 기준](reference/multitag_jetson_web_contract.md) |
+| TDMA·A/B·웹 패치 시험과 미검증 범위 | [2026-10-07 패치 검증](report/multitag_patch_validation_20261007.md) |
+| TDMA 호환·웹 좌표 소스 확인 근거 | [2026-10-07 검토 기록](report/multitag_web_compatibility_20261007.md) |
 | A~H 단계, 패키지·설정·시험 대응표 | [저장소 구조와 작업 위치](reference/repository_layout.md) |
 | 현재 앵커 배치 | [6.3×4.6m 직사각형 좌표](reference/uwb_anchor_layout.md) |
+| 로컬 웹 이륙·이동·착륙 | [실물 연결·현장 절차](runbooks/web_test_flight.md) |
+| XYZ와 PX4 미션 책임 | [웹 비행 시험 구조](architecture/web_test_flight.md) |
+| 클라우드 비행 순서 검증 | [2026-10-08 확인 기록](report/web_test_flight_20261008.md) |
 | 앵커 배치 변경·검증 | [2026-10-04 배치 고정 기록](report/uwb_anchor_rectangle_20261004.md) |
 | 관련 문서의 현재 기준 동기화 | [관련 문서 동기화](report/uwb_related_reference_sync_20261004.md) |
 | 가상 고도 제거·실측 ToF 표시 | [2026-10-04 수정 기록](report/demo_measured_tof_20261004.md) |
@@ -48,6 +80,8 @@ Windows에서는 심볼릭 링크를 지원하는 WSL 체크아웃을 쓴다.
 ## 기준과 절차
 
 설계 판단은 로드맵을 먼저 따른다.
+반복 진단 변경은 [DDS 식별자 기록](report/uwb_diagnostic_identity_20261011.md)을 읽는다.
+10월11일 비행은 [Position 두 축 왕복 기록](report/uwb_position_roundtrip_20261011.md)을 읽는다.
 
 | 문서 | 읽는 때 |
 |---|---|
@@ -168,3 +202,17 @@ Windows에서는 심볼릭 링크를 지원하는 WSL 체크아웃을 쓴다.
 
 [2026-10-04 전체 변경 검토](report/feature_uwb_commit_check_20261004.md)에서
 기능별 커밋·현재 적용값·검증 결과·남은 작업을 확인한다.
+
+- [실측 기록 읽기 권한 개선](report/capture_read_access_20261010.md)
+
+- [ToF 높이별 정지 실험](report/tof_stationary_20261010.md)
+
+- [UWB 중앙 기준점 정지 실험](report/uwb_center_20261010.md)
+
+- [UWB +X 1m 정지 실험](report/uwb_x1m_20261010.md)
+
+- [UWB +Y 1m 정지 실험](report/uwb_y1m_20261010.md)
+
+- [UWB·ToF·IMU 높인 상태 정지 실험](report/uwb_raised_20261010.md)
+
+- [B_TF 이력 격리와 오차 판정 검사](report/btf_history_audit_20261010.md)

@@ -1,0 +1,198 @@
+{
+  "repository": "Dronestock-SW/ROS2",
+  "handoff_commit": "8c2aec3cf266a4fa00585c0fc6e191683b5594af",
+  "prior_integration_commit": "1cc7e3b7fbfe39a693968925bbec507db854380d",
+  "working_branch": "codex/local-jetson-integration-20261008",
+  "current_readback": {
+    "checked_at": "2026-10-08T13:18:49.167717+09:00",
+    "standard_parameter_count": 1095,
+    "special_parameter_count": 1,
+    "all_indices_verified": true,
+    "firmware": "PX4 1.17.0",
+    "armed": false,
+    "parameters": {
+      "MIS_TAKEOFF_ALT": 1.2999999523162842,
+      "COM_RC_OVERRIDE": 2,
+      "EKF2_EV_CTRL": 1,
+      "COM_FLTMODE4": 7,
+      "NAV_DLL_ACT": 0,
+      "NAV_RCL_ACT": 3,
+      "COM_LOW_BAT_ACT": 0
+    },
+    "user_confirmed_power_off": [
+      "RC transmitter",
+      "UWB anchors"
+    ],
+    "uncommitted_source_files_preserved": 9,
+    "remote_integration_head": "1cc7e3b7fbfe39a693968925bbec507db854380d",
+    "physical_anchor_height_verified": false,
+    "historical_reconstructed_after_delta_count": 11
+  },
+  "validation": {
+    "source_archive_hash_verified": true,
+    "source_file_hashes_verified": 9,
+    "source_total_bytes": 43540,
+    "wire_frames_decoded_and_verified": 1096,
+    "standard_parameter_indices_complete": true,
+    "standard_parameter_count": 1095,
+    "special_parameters": [
+      "_HASH_CHECK"
+    ],
+    "historical_before_count": 1096,
+    "historical_final_three": {
+      "utc": "2026-10-07T10:58:31.536329+00:00",
+      "source": "fresh USB MAVLink PARAM_REQUEST_READ after FC reboot",
+      "parameters": {
+        "COM_RC_OVERRIDE": 2,
+        "EKF2_EV_CTRL": 1,
+        "MIS_TAKEOFF_ALT": 1.2999999523162842
+      },
+      "armed": false,
+      "persistent_readback_verified": true
+    },
+    "changes_from_historical_before_requested_updates": [
+      {
+        "parameter": "CAL_ACC0_XOFF",
+        "historical": -0.06543514877557755,
+        "current": -0.02535872533917427
+      },
+      {
+        "parameter": "CAL_ACC0_YOFF",
+        "historical": -0.08758685737848282,
+        "current": -0.05475188046693802
+      },
+      {
+        "parameter": "CAL_ACC0_ZOFF",
+        "historical": 0.17881451547145844,
+        "current": 0.17035476863384247
+      },
+      {
+        "parameter": "CAL_ACC1_XOFF",
+        "historical": -0.024939248338341713,
+        "current": 0.018865937367081642
+      },
+      {
+        "parameter": "CAL_ACC1_YOFF",
+        "historical": -0.08097685128450394,
+        "current": -0.002359822392463684
+      },
+      {
+        "parameter": "CAL_ACC1_ZOFF",
+        "historical": 0.022039638832211494,
+        "current": 0.030153948813676834
+      },
+      {
+        "parameter": "CAL_MAG0_XOFF",
+        "historical": 0.008973279967904091,
+        "current": 0.0015661215875297785
+      },
+      {
+        "parameter": "CAL_MAG0_YOFF",
+        "historical": 0.018025599420070648,
+        "current": 0.01003279723227024
+      },
+      {
+        "parameter": "CAL_MAG0_ZOFF",
+        "historical": 0.08278274536132812,
+        "current": 0.07610767334699631
+      },
+      {
+        "parameter": "COM_FLIGHT_UUID",
+        "historical": 39,
+        "current": 47
+      },
+      {
+        "parameter": "COM_FLTMODE4",
+        "historical": 2,
+        "current": 7
+      },
+      {
+        "parameter": "COM_RC_OVERRIDE",
+        "historical": 1,
+        "current": 2
+      },
+      {
+        "parameter": "EKF2_EV_CTRL",
+        "historical": 0,
+        "current": 1
+      },
+      {
+        "parameter": "MIS_TAKEOFF_ALT",
+        "historical": 2.5,
+        "current": 1.2999999523162842
+      }
+    ],
+    "changes_from_reconstructed_historical_after": [
+      {
+        "parameter": "CAL_ACC0_XOFF",
+        "historical": -0.06543514877557755,
+        "current": -0.02535872533917427
+      },
+      {
+        "parameter": "CAL_ACC0_YOFF",
+        "historical": -0.08758685737848282,
+        "current": -0.05475188046693802
+      },
+      {
+        "parameter": "CAL_ACC0_ZOFF",
+        "historical": 0.17881451547145844,
+        "current": 0.17035476863384247
+      },
+      {
+        "parameter": "CAL_ACC1_XOFF",
+        "historical": -0.024939248338341713,
+        "current": 0.018865937367081642
+      },
+      {
+        "parameter": "CAL_ACC1_YOFF",
+        "historical": -0.08097685128450394,
+        "current": -0.002359822392463684
+      },
+      {
+        "parameter": "CAL_ACC1_ZOFF",
+        "historical": 0.022039638832211494,
+        "current": 0.030153948813676834
+      },
+      {
+        "parameter": "CAL_MAG0_XOFF",
+        "historical": 0.008973279967904091,
+        "current": 0.0015661215875297785
+      },
+      {
+        "parameter": "CAL_MAG0_YOFF",
+        "historical": 0.018025599420070648,
+        "current": 0.01003279723227024
+      },
+      {
+        "parameter": "CAL_MAG0_ZOFF",
+        "historical": 0.08278274536132812,
+        "current": 0.07610767334699631
+      },
+      {
+        "parameter": "COM_FLIGHT_UUID",
+        "historical": 39,
+        "current": 47
+      },
+      {
+        "parameter": "COM_FLTMODE4",
+        "historical": 2,
+        "current": 7
+      }
+    ],
+    "reconstructed_historical_after_note": "Historical full pre-change dump plus three verified post-reboot values; not a complete post-reboot snapshot.",
+    "new_parameter_names": [],
+    "historical_names_not_in_current_standard_list": [
+      "_HASH_CHECK"
+    ],
+    "user_confirmed": {
+      "rc_transmitter_power": "off",
+      "uwb_anchor_power": "off"
+    },
+    "hardware_flight_test_performed": false,
+    "parameter_writes_performed": false
+  },
+  "source_archive_sha256": "c31f92c510fa34898770caf474118188b1b7fbb43bc08a23b51e864b1461e6bb",
+  "remote_code_service_parameter_changes": false,
+  "flight_commands_sent": false,
+  "scope": "Readback and comparison only; separate integration validation required."
+}

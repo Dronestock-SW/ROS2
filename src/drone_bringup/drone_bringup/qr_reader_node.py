@@ -1,4 +1,5 @@
-"""QR 리더기(DYSCAN DE2110) 입력 노드 — Dronestock 1호기.
+"""
+QR 리더기(DYSCAN DE2110) 입력 노드 — Dronestock 1호기.
 
 DE2110은 Sense Mode(2026-08-23 설정 완료)로 동작한다 — 버튼 없이 QR이
 렌즈 앞에 나타나면 자동으로 디코딩해 USB HID 키보드 입력처럼 문자를 쏜다.

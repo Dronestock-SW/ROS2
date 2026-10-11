@@ -1,0 +1,126 @@
+{
+  "checked_at_utc": "2026-10-08T04:53:46.899238+00:00",
+  "review_workspace": "/home/arialhanho/ROS2-review-20261008-codex",
+  "source_index_sha256": "523d4d1a51866daebebe87676b4d4d03d30f471e071ded7df033a77d55913483",
+  "build": {
+    "exit_code": 0
+  },
+  "final_python_build_and_tests": {
+    "exit_code": 0
+  },
+  "package_results": {
+    "drone_uwb": {
+      "tests": 347,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0
+    },
+    "drone_demo": {
+      "tests": 116,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0
+    },
+    "drone_platform_link": {
+      "tests": 18,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0
+    },
+    "drone_mission": {
+      "tests": 64,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0
+    },
+    "drone_bringup": {
+      "tests": 58,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 1
+    }
+  },
+  "totals": {
+    "tests": 603,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 1
+  },
+  "cpp_selected_tests": {
+    "name": "(empty)",
+    "tests": "10",
+    "failures": "0",
+    "disabled": "0",
+    "skipped": "0",
+    "hostname": "user-desktop",
+    "time": "0",
+    "timestamp": "2026-10-08T13:42:34"
+  },
+  "synthetic_scenarios": [
+    {
+      "scenario": "nominal",
+      "fc_calls": [
+        "arm",
+        "takeoff",
+        "reposition",
+        "land"
+      ],
+      "vision_messages": 275,
+      "flight_state": "LANDED",
+      "landing_verified": true,
+      "real_ekf": false,
+      "physical_flight": false
+    },
+    {
+      "scenario": "uwb_gap",
+      "fc_calls": [
+        "arm",
+        "takeoff",
+        "reposition",
+        "land"
+      ],
+      "vision_messages": 126,
+      "flight_state": "FAILED",
+      "landing_verified": true,
+      "real_ekf": false,
+      "physical_flight": false
+    },
+    {
+      "scenario": "web_gap",
+      "fc_calls": [
+        "arm",
+        "takeoff",
+        "reposition",
+        "land"
+      ],
+      "vision_messages": 344,
+      "flight_state": "FAILED",
+      "landing_verified": true,
+      "real_ekf": false,
+      "physical_flight": false
+    },
+    {
+      "scenario": "restart",
+      "fc_calls": [
+        "arm",
+        "takeoff",
+        "reposition",
+        "land"
+      ],
+      "vision_messages": 379,
+      "flight_state": "FAILED",
+      "landing_verified": true,
+      "real_ekf": false,
+      "physical_flight": false
+    }
+  ],
+  "synthetic_shutdown_log_errors": [],
+  "physical_flight_performed": false,
+  "real_px4_sitl_performed": false,
+  "fc_parameter_writes_performed": false,
+  "production_service_deployment_performed": false,
+  "original_source_files_preserved_and_unchanged": 9,
+  "existing_services_active": 5,
+  "serial_owners_nonprivileged": "No owner reported; privileged inspection not performed.",
+  "validation_archive_sha256": "146289244112998db38215a41ef4e7809891aa992d99cd414ee78f5af8277824"
+}

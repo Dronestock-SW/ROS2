@@ -1,0 +1,76 @@
+{
+  "checks": [
+    {
+      "name": "build",
+      "exit_code": 0,
+      "log": "build.log"
+    },
+    {
+      "name": "mission_tests",
+      "exit_code": 0,
+      "seconds": 35.47
+    },
+    {
+      "name": "launch_arguments",
+      "exit_code": 0,
+      "log": "launch_arguments.log"
+    },
+    {
+      "name": "legacy_ros_mission",
+      "exit_code": 0,
+      "log": "legacy_ros_mission.log"
+    },
+    {
+      "name": "all_test_results",
+      "exit_code": 1,
+      "log": "all_test_results.log"
+    }
+  ],
+  "packages": {
+    "drone_uwb": {
+      "total": 302,
+      "passed": 302,
+      "failures": [],
+      "errors": [],
+      "skipped": []
+    },
+    "drone_demo": {
+      "total": 116,
+      "passed": 116,
+      "failures": [],
+      "errors": [],
+      "skipped": []
+    },
+    "drone_bringup": {
+      "total": 58,
+      "passed": 55,
+      "failures": [
+        "test_flake8",
+        "test_pep257"
+      ],
+      "errors": [],
+      "skipped": [
+        "test_copyright"
+      ]
+    },
+    "drone_platform_link": {
+      "total": 11,
+      "passed": 11,
+      "failures": [],
+      "errors": [],
+      "skipped": []
+    },
+    "drone_mission": {
+      "total": 58,
+      "passed": 58,
+      "failures": [],
+      "errors": [],
+      "skipped": []
+    }
+  },
+  "real_ekf": false,
+  "physical_flight": false,
+  "unexpected_failures": [],
+  "source_base_commit": "deb940f612d7ee5198762aa73c7d7f22140beb61",
+  "validation_scope": "cloud protocol and logic checks; physical flight not performed"
+}

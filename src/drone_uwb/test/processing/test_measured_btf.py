@@ -4,7 +4,7 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-from drone_uwb.processing.measured_btf import MeasuredBtf, MeasuredHeight
+from drone_uwb.processing.measured_btf import MeasuredBtf, MeasuredHeight, ground_xy_without_height, height_independent_b4
 from drone_uwb.processing.experiments.h80_b import H80Window, BSettings
 from drone_uwb.processing.experiments.tof_subset import ToFTrackedSubsetCandidate
 from drone_uwb.acquisition.validation import Cycle
@@ -12,8 +12,64 @@ from drone_uwb.acquisition.validation import Cycle
 CONFIG = Path(__file__).parents[2]/'config/runtime/uwb_btf_real.json'
 
 
+def test_explicit_ground_session_resets_geometry_not_clock_or_source_identity():
+    p = MeasuredBtf(config())
+    p.raw_guard.check((1.,1.),1_000_000_000)
+    assert p.raw_guard.check((3.,3.),2_000_000_000)=='observation_jump_quarantined'
+    clock, tdma, validator = p.clock, p.tdma, p.validator
+    valid = dict(connected=True,armed=False,landed=1,state_age_s=.1,
+                 landed_age_s=.1,stationary=True,velocity_age_s=.05)
+    for key,value in [('armed',True),('armed',None),('connected',False),('landed',2),
+                      ('landed',True),('stationary',False),('state_age_s',1.6),
+                      ('state_age_s',-.1),('landed_age_s',2.),('velocity_age_s',.21)]:
+        assert not p.start_ground_session(**dict(valid,**{key:value}))[0]
+        assert p.raw_guard.prior_xy == (1.,1.) and p.observation_session == 0
+    assert p.start_ground_session(**valid)[0]
+    assert p.raw_guard.prior_xy is None and p.observation_session==1
+    assert p.clock is clock and p.tdma is tdma and p.validator is validator
+    assert p.raw_guard.check((3.,3.),3_000_000_000)=='observation_acquiring'
+    assert p.raw_guard.check((3.,3.),3_300_000_000)=='observation_acquiring'  # gap restarts acquisition
+    assert p.raw_guard.check((5.,3.),3_320_000_000)=='observation_jump_quarantined'
+
+
+def test_ground_xy_never_inserts_a_height_or_accepts_a_tof_subset():
+    result = dict(ok=True, xyz_m=None, models={'B_TF': {'source': 'unchanged_B4'}})
+    state = dict(enabled=True, connected=True, landed=1, state_age_s=.1, landed_age_s=.1)
+    assert ground_xy_without_height(result, **state)
+    assert result['xyz_m'] is None
+    for key, value in [('enabled', False), ('connected', False), ('landed', 2), ('landed', True),
+                       ('landed_age_s', 2.), ('state_age_s', 2.)]:
+        assert not ground_xy_without_height(result, **dict(state, **{key: value}))
+    for source in ('ToF_validated_B3', 'ToF_tracked_B3', 'rejected'):
+        assert not ground_xy_without_height(dict(result, models={'B_TF': {'source': source}}), **state)
+
+
 def config():
     return json.loads(CONFIG.read_text(encoding='utf-8'))
+
+
+def test_ground_height_is_an_expiring_model_not_a_tof_sample():
+    h=MeasuredHeight(config()['height'])
+    h.add('imu',dict(stamp_ns=1_000_000_000,valid=True,quaternion_wxyz=[1,0,0,0]))
+    assert h.at(1_000_000_000)[0] is None
+    h.ground_reference=dict(height_m=.15, selection_stamp_ns=1_010_000_000, ground_state_stamp_ns=990_000_000)
+    height,meta=h.at(1_000_000_000)
+    assert height==.15 and meta['estimated'] and meta['ground_state_stamp_ns']==990_000_000
+    assert not h.samples['tof']
+    assert h.at(700_000_000)[0] is None
+    h.add('tof',dict(stamp_ns=1_000_000_000,valid=True,range_m=.5))
+    assert h.at(1_000_000_000)[0]==pytest.approx(.62)
+    h.samples['tof'].clear();h.ground_reference=None
+    assert h.at(1_000_000_000)[0] is None
+
+
+def test_ground_model_requires_level_attitude_and_known_mount():
+    for tilted, confirmed in [(True,True),(False,False)]:
+        c=config()['height'];c['mount_confirmed']=confirmed;h=MeasuredHeight(c)
+        h.ground_reference=dict(height_m=.15,selection_stamp_ns=1_010_000_000,ground_state_stamp_ns=990_000_000)
+        q=[.9238795325,.3826834324,0,0] if tilted else [1,0,0,0]
+        h.add('imu',dict(stamp_ns=1_000_000_000,valid=True,quaternion_wxyz=q))
+        assert h.at(1_000_000_000)[0] is None
 
 
 def test_mount_projects_to_antenna_height_and_never_uses_future_or_old_sensor():
@@ -34,6 +90,18 @@ def test_mount_and_floor_must_be_confirmed():
         h.add('imu',dict(stamp_ns=100,valid=True,quaternion_wxyz=[1,0,0,0]))
         h.add('tof',dict(stamp_ns=100,valid=True,range_m=.5))
         assert h.at(100)[0] is None
+
+
+@pytest.mark.parametrize('kind', ['tof', 'imu'])
+def test_duplicate_sensor_preserves_history_but_backward_stamp_invalidates(kind):
+    h = MeasuredHeight(config()['height'])
+    assert h.add(kind, dict(stamp_ns=100, valid=True))
+    assert h.add(kind, dict(stamp_ns=200, valid=True))
+    assert not h.add(kind, dict(stamp_ns=200, valid=False))
+    assert [r['stamp_ns'] for r in h.samples[kind]] == [100, 200]
+    assert h.samples[kind][-1]['valid']
+    assert not h.add(kind, dict(stamp_ns=150, valid=True))
+    assert not h.samples[kind]
 
 
 def event(msg, source_us):
@@ -77,6 +145,8 @@ def test_sequential_real_ranges_keep_sample_times_and_compute_moving_position():
     assert r['report_span_s']==pytest.approx(.012)
     assert r['time_us']==max(msg['sample_time_us'])
     assert r['xy_m']==pytest.approx([2+.1*r['time_us']/1e6,2],abs=.001)
+    assert r['xyz_m']==pytest.approx([2+.1*r['time_us']/1e6,2,1.12],abs=.001)
+    assert r['height_source']=='measured_tof_imu'
     assert r['external_output_allowed'] is False
     assert r['flight_valid'] is False
     assert r['timestamp_calibrated'] is False
@@ -88,6 +158,7 @@ def test_repeated_cycle_and_clock_restart_cannot_repeat_last_good_position():
     for seq in range(1,80):
         end=100_000+seq*22000;msg=cycle(seq,end,a);r=p.process(event(msg,end))
     assert r['ok']
+    assert r['xyz_m'] is None  # Missing ToF cannot manufacture altitude.
     duplicate=p.process(event(msg,end+1000))
     assert not duplicate['ok'] and duplicate['reason']=='duplicate_or_out_of_order'
     restart=p.process(event(cycle(0,20000,a),end+2000))
@@ -101,7 +172,88 @@ def test_missing_anchor_does_not_return_a_position():
     assert p.process(event(msg,122000))['reason']=='four_valid_ranges_required'
 
 
-def test_async_subset_uses_per_anchor_heights_and_rejects_unavailable_height():
+def test_ascent_b4_xy_does_not_need_tof_but_never_invents_z_or_accepts_a_jump():
+    c=config();p=MeasuredBtf(c);a=np.asarray(c['anchors_xyz_m'])
+    p.process(event(status(),100_000));accepted=[]
+    for seq in range(1,100):
+        end=100_000+seq*22000;msg=cycle(seq,end,a)
+        # The common squared height is absorbed by H80. Height varies while
+        # actual XY follows a known trajectory at each anchor's sample time.
+        msg['raw_slant_m']=[float(np.linalg.norm(np.array(
+            [2+.1*t/1e6,2.,.15+.3*t/1e6])-a[i])) for i,t in enumerate(msg['sample_time_us'])]
+        r=p.process(event(msg,end))
+        if height_independent_b4(r):
+            accepted.append(r)
+            assert r['xyz_m'] is None and not r['height_ready']
+            assert r['xy_m']==pytest.approx([2+.1*r['time_us']/1e6,2.],abs=.003)
+            assert not r['external_output_allowed'] and not r['flight_valid']
+    assert len(accepted)>60
+    before=p.raw_guard.prior_xy
+    for seq in range(100,200):
+        end=100_000+seq*22000;msg=cycle(seq,end,a)
+        msg['raw_slant_m']=[float(np.linalg.norm(np.array([4.,3.,1.])-x)) for x in a]
+        r=p.process(event(msg,end))
+        assert r['reason']=='observation_jump_quarantined'
+        assert not height_independent_b4(r)
+        assert 'sample_height_m' in r and 'raw_pair_residual_max_m' in r
+        assert p.raw_guard.prior_xy==before
+    # A prolonged coherent step stays quarantined, but real observations back
+    # at the original position can refill H80 without an airborne reset.
+    for seq in range(200,240):
+        end=100_000+seq*22000;msg=cycle(seq,end,a)
+        msg['raw_slant_m']=[float(np.linalg.norm(np.array([*before,1.])-x)) for x in a]
+        r=p.process(event(msg,end))
+    assert height_independent_b4(r)
+    assert r['xy_m']==pytest.approx(before,abs=.001)
+    assert r['xyz_m'] is None and r['observation_session']==0
+
+
+def test_height_independent_b4_never_qualifies_invalid_partial_or_subset_results():
+    good=dict(ok=True,xy_m=[1.,2.],time_us=100,models={
+        'B':dict(ok=True,fresh_observation_count=4,newest_sample_us=100,fit=dict(mask=15)),
+        'B_TF':dict(source='unchanged_B4')})
+    assert height_independent_b4(good)
+    assert not height_independent_b4(good,enabled=False)
+    for source in ('ToF_validated_B3','ToF_tracked_B3','ground_reference_B3','rejected'):
+        d=copy.deepcopy(good);d['models']['B_TF']['source']=source
+        assert not height_independent_b4(d)
+    for key,value in [('fresh_observation_count',3),('newest_sample_us',99),('ok',False),('fit',dict(mask=7))]:
+        d=copy.deepcopy(good);d['models']['B'][key]=value
+        assert not height_independent_b4(d)
+    for key,value in [('ok',False),('xy_m',[float('nan'),2.]),('time_us',None)]:
+        assert not height_independent_b4(dict(good,**{key:value}))
+
+
+@pytest.mark.parametrize('restart', ['disconnect', 'boot'])
+def test_real_source_restart_forgets_old_jump_prior_but_warms_up_again(restart):
+    c=config(); p=MeasuredBtf(c); anchors=np.asarray(c['anchors_xyz_m'])
+    p.process(event(status(),100_000))
+    for seq in range(1,80):
+        end=100_000+seq*22000; r=p.process(event(cycle(seq,end,anchors),end))
+    assert r['ok'] and p.raw_guard.prior_xy is not None
+    if restart=='disconnect': p.reset()
+    p.process(event(dict(status(),event='boot'),end+1000))
+    assert p.raw_guard.prior_xy is None
+    outcomes=[]
+    for seq in range(1,90):
+        t=end+2000+seq*22000; msg=cycle(seq,t,anchors)
+        msg['raw_slant_m']=[float(np.linalg.norm(np.array([4,3,1.12])-a)) for a in anchors]
+        outcomes.append(p.process(event(msg,t)))
+    assert not outcomes[0]['ok'] and outcomes[0]['clock']['reason']=='insufficient_samples'
+    assert outcomes[-1]['ok'] and outcomes[-1]['xy_m']==pytest.approx([4,3],abs=.001)
+
+
+def test_queue_rejection_does_not_erase_quarantined_jump():
+    p=MeasuredBtf(config())
+    p.raw_guard.check((1.,1.),1_000_000_000)
+    assert p.raw_guard.check((3.,3.),1_100_000_000)=='observation_jump_quarantined'
+    p.reject_queued_input()
+    assert p.raw_guard.check((3.,3.),2_000_000_000)=='observation_jump_quarantined'
+
+
+@pytest.mark.parametrize('height_source,prefix', [
+    ('measured_tof_imu', 'ToF_'), ('ground_antenna_reference', 'ground_reference_')])
+def test_async_subset_uses_per_anchor_heights_and_rejects_unavailable_height(height_source, prefix):
     c=config(); b=H80Window(c['anchors_xyz_m'],c['bias_m'],BSettings(**c['B']))
     candidate=ToFTrackedSubsetCandidate(c,**c['tof_subset'])
     a=np.asarray(c['anchors_xyz_m']); decisions=[]
@@ -112,10 +264,11 @@ def test_async_subset_uses_per_anchor_heights_and_rejects_unavailable_height():
         cy=Cycle(seq,ts[0],end,15,raw,ts,['ok']*4,list(range(4)))
         base=b.process(cy,seq)
         row=dict(time_us=end,sample_time_us=ts,cal_slant_m=raw.tolist(),height_m=1.12,
-                 sample_height_m=[1.12]*4,height_source='measured_tof_imu',models={'B':base})
+                 sample_height_m=[1.12]*4,height_source=height_source,models={'B':base})
         decisions.append(candidate.process(row))
     used=[d for d in decisions[100:] if d['ok'] and d['source']!='unchanged_B4']
     assert used
+    assert all(d['source'].startswith(prefix) for d in used)
     assert all(d['best_excluded_anchor']==2 for d in used)
     assert used[-1]['xy_m']==pytest.approx([2+.12*end/1e6,2.],abs=.005)
     row['time_us']+=22000; row['sample_time_us']=[t+22000 for t in ts]

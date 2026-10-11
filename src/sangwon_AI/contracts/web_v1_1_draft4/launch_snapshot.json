@@ -1,0 +1,41 @@
+{
+  "contract_version": "1.1-draft.4",
+  "type": "launch_snapshot",
+  "drone_id": "TEST-DRONE-01",
+  "profile": "REPLAY",
+  "context": {
+    "boot_id": "boot-demo-01",
+    "runtime_session_id": "runtime-demo-01",
+    "control_session_id": "control-demo-01",
+    "assignment_id": "assignment-demo-01",
+    "snapshot_id": "snapshot-demo-01",
+    "preparation_id": null,
+    "readiness_revision": null,
+    "execution_id": "execution-demo-01",
+    "flight_id": "flight-demo-01"
+  },
+  "launch_context_id": "launch-demo-01",
+  "actual_takeoff_at": "2026-10-04T06:00:06Z",
+  "position_reference": "PX4_BODY_ORIGIN",
+  "launch_floor_position_m": {
+    "x": 1,
+    "y": 1,
+    "z": 0
+  },
+  "prelaunch_body_position_m": {
+    "x": 1,
+    "y": 1,
+    "z": 0.1
+  },
+  "prelaunch_yaw_deg": 0,
+  "map_ref": {
+    "id": "map-demo",
+    "revision": "r1"
+  },
+  "transform_ref": {
+    "id": "map-px4-demo",
+    "revision": "r1"
+  },
+  "source": "FAKE_PX4_FUSED",
+  "validation": "SYNTHETIC_ONLY"
+}

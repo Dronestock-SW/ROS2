@@ -5,6 +5,7 @@ from types import SimpleNamespace
 import numpy as np
 from drone_uwb.processing.h80 import fit_h80
 from drone_uwb.processing.experiments.h80_b import BSettings
+from drone_uwb.processing.motion_reacquisition import MotionReacquisition
 
 class ToFSubsetCandidate:
     def __init__(self,config,*,rms_limit_m=.06,score_margin_m=.015):
@@ -37,7 +38,7 @@ class ToFSubsetCandidate:
         rms=(b.get('fit') or {}).get('rms_m')
         if type(rms) not in [int,float] or not np.isfinite(rms):return dict(output,reason='missing_fit_integrity')
         if 0<=rms<self.limit:return dict(output,ok=True,xy_m=list(b['xy_m']),source='unchanged_B4',reason='original_fit_consistent')
-        if type(height) not in [int,float] or not np.isfinite(height) or result.get('height_source') not in ('gazebo_tof_imu','measured_tof_imu'):return dict(output,reason='measured_height_unavailable')
+        if type(height) not in [int,float] or not np.isfinite(height) or result.get('height_source') not in ('gazebo_tof_imu','measured_tof_imu','ground_antenna_reference'):return dict(output,reason='measured_height_unavailable')
         hist=list(self.history);t=np.array([(row['time_us']-stamp)/1e6 for row in hist]);ranges=np.array([row['ranges'] for row in hist]);z=np.array([np.nan if row['height'] is None else row['height'] for row in hist]);valid_height=np.isfinite(z)
         idx=np.tile(np.arange(4),len(hist));times=np.repeat(t,4);all_ranges=ranges.reshape(-1)
         asynchronous=any(row['asynchronous'] for row in hist)
@@ -75,7 +76,8 @@ class ToFSubsetCandidate:
         best,second=eligible[:2];margin=second['physical_range_rms_m']-best['physical_range_rms_m'];output.update(best_excluded_anchor=best['excluded_anchor'],best_score_m=best['physical_range_rms_m'],score_margin_m=margin)
         if best['physical_range_rms_m']>=self.limit:return dict(output,reason='no_height_consistent_subset')
         if margin<self.margin:return dict(output,reason='ambiguous_subset')
-        return dict(output,ok=True,xy_m=best['xy_m'],source='ToF_validated_B3',reason='unique_height_consistent_subset')
+        source = 'ground_reference_B3' if result.get('height_source') == 'ground_antenna_reference' else 'ToF_validated_B3'
+        return dict(output,ok=True,xy_m=best['xy_m'],source=source,reason='unique_height_consistent_subset')
 
 
 class ToFTrackedSubsetCandidate(ToFSubsetCandidate):
@@ -85,32 +87,159 @@ class ToFTrackedSubsetCandidate(ToFSubsetCandidate):
         super().__init__(config,rms_limit_m=rms_limit_m,score_margin_m=score_margin_m)
         self.max_speed=max_speed_m_s;self.continuity_margin=continuity_margin_m;self.max_prior_age=max_prior_age_s
         self.selected_anchor=None;self.prior_xy=None;self.prior_stamp=None
+        self.recovery_reference = None
+        self.reacquisition = NearPriorReacquisition(continuity_margin_m, max_prior_age_s, max_speed_m_s)
+        self.motion = MotionReacquisition()
+        self.ground_initializer = GroundSubsetInitialization() if config.get('ground_subset_initialization') is True else None
 
     def process(self,result):
         stamp=result['time_us']
         if self.last_stamp is not None and (stamp<=self.last_stamp or stamp-self.last_stamp>round(self.settings.reset_gap_s*1e6)):
             self.selected_anchor=None;self.prior_xy=None;self.prior_stamp=None
+            self.reacquisition.clear()
+            if stamp<=self.last_stamp:
+                self.recovery_reference=None
+                self.motion.clear()
         decision=super().process(result)
         prior_age=None if self.prior_stamp is None else (stamp-self.prior_stamp)/1e6
         prior_fresh=prior_age is not None and 0<prior_age<=self.max_prior_age
+        initial = False
+        if self.ground_initializer is not None:
+            near_prior = (self.prior_xy is None or decision.get('xy_m') is not None
+                and np.linalg.norm(np.asarray(decision['xy_m'])-self.prior_xy)<=.1)
+            initial, evidence = self.ground_initializer.check(stamp, decision,
+                ground=result.get('height_source')=='ground_antenna_reference' and near_prior,
+                already_initialized=prior_fresh)
+            decision['ground_initialization'] = evidence
         decision['tracking_prior_age_s']=prior_age
+        # Recovery is bounded around the last ACCEPTED measurement. Rejected
+        # candidates never move this reference or become a new airborne origin.
+        heights=result.get('sample_height_m',[result.get('height_m')]*4)
+        measured=(result.get('height_source') in ('measured_tof_imu','gazebo_tof_imu')
+            and len(heights)==4 and all(type(h) in (int,float) and np.isfinite(h) for h in heights))
+        reacquired,evidence=self.reacquisition.check(stamp,decision,
+            reference=self.recovery_reference,
+            eligible=not prior_fresh and measured)
+        decision['reacquisition']=evidence
+        motion_recovered = False
+        if not prior_fresh:
+            motion_recovered, motion_evidence = self.motion.check(stamp*1000,
+                decision.get('xy_m') or [0.,0.],
+                eligible=(measured and decision.get('ok') is True
+                    and decision.get('source')=='ToF_validated_B3'
+                    and decision.get('reason')=='unique_height_consistent_subset'),
+                key=decision.get('best_excluded_anchor'))
+            decision['motion_reacquisition']=motion_evidence
         if self.selected_anchor is not None and decision['reason']=='ambiguous_subset':
             hypotheses=[h for h in decision['hypotheses'] if h.get('excluded_anchor')==self.selected_anchor and 'physical_range_rms_m' in h]
             if hypotheses and prior_fresh:
                 h=hypotheses[0];step=float(np.linalg.norm(np.asarray(h['xy_m'])-self.prior_xy));limit=self.continuity_margin+self.max_speed*prior_age
                 decision.update(tracked_excluded_anchor=self.selected_anchor,tracking_step_m=step,tracking_limit_m=limit)
                 if h['physical_range_rms_m']<self.limit and step<=limit:
-                    decision.update(ok=True,xy_m=h['xy_m'],source='ToF_tracked_B3',reason='previously_unique_subset_still_consistent',best_excluded_anchor=self.selected_anchor)
+                    source = 'ground_reference_tracked_B3' if result.get('height_source') == 'ground_antenna_reference' else 'ToF_tracked_B3'
+                    decision.update(ok=True,xy_m=h['xy_m'],source=source,reason='previously_unique_subset_still_consistent',best_excluded_anchor=self.selected_anchor)
         if decision['ok']:
-            if decision['source'] in ['ToF_validated_B3','ToF_tracked_B3']:
-                if not prior_fresh:
+            if decision['source'] in ['ToF_validated_B3','ToF_tracked_B3','ground_reference_B3','ground_reference_tracked_B3']:
+                if not prior_fresh and not initial and not reacquired and not motion_recovered:
                     decision.update(ok=False,xy_m=None,source='rejected',reason='no_fresh_continuity_prior')
-                else:
+                elif reacquired:
+                    decision['reason']='near_prior_subset_reacquired'
+                elif motion_recovered:
+                    decision['reason']='moving_subset_reacquired'
+                elif prior_fresh:
                     step=float(np.linalg.norm(np.asarray(decision['xy_m'])-self.prior_xy));limit=self.continuity_margin+self.max_speed*prior_age
                     decision.update(tracking_step_m=step,tracking_limit_m=limit)
-                    if step>limit:decision.update(ok=False,xy_m=None,source='rejected',reason='subset_position_discontinuous')
+                    if step>limit:
+                        self.motion.freeze('continuous_step_freeze')
+                        decision.update(ok=False,xy_m=None,source='rejected',reason='subset_position_discontinuous')
             if decision['ok']:
                 self.selected_anchor=None if decision['source']=='unchanged_B4' else decision['best_excluded_anchor']
                 self.prior_xy=np.asarray(decision['xy_m'],float);self.prior_stamp=stamp
+                self.recovery_reference=self.prior_xy.copy()
+                self.reacquisition.clear()
+                if measured:self.motion.observe(stamp*1000,decision['xy_m'])
+                else:self.motion.clear()
         if self.prior_stamp is not None and (stamp-self.prior_stamp)/1e6>self.max_prior_age:self.selected_anchor=None
         return decision
+
+
+class NearPriorReacquisition:
+    """Confirm fresh, uniquely qualified B3 measurements near a fixed reference.
+
+    Never grows a reachable disk with outage time, advances a rejected reference,
+    or uses PX4/IMU dead reckoning. The raw coherent-step guard stays upstream.
+    """
+    def __init__(self, radius_m, max_gap_s, max_speed_m_s=1.):
+        self.radius_m=radius_m;self.max_gap_us=round(max_gap_s*1e6)
+        self.max_speed=max_speed_m_s
+        self.clear()
+
+    def clear(self):
+        self.started=self.last=self.anchor=self.last_xy=None
+        self.count=0
+
+    def check(self, stamp, decision, *, reference, eligible):
+        valid=(eligible and reference is not None and decision.get('ok') is True
+            and decision.get('source')=='ToF_validated_B3'
+            and decision.get('reason')=='unique_height_consistent_subset')
+        if not valid:
+            self.clear()
+            return False,dict(ready=False,reason='measured_unique_subset_and_prior_required')
+        xy=np.asarray(decision['xy_m'],float)
+        if (xy.shape!=(2,) or not np.isfinite(xy).all() or type(stamp) is not int or stamp<=0):
+            self.clear()
+            return False,dict(ready=False,reason='invalid_recovery_candidate')
+        distance=float(np.linalg.norm(xy-reference))
+        if not np.isfinite(distance) or distance>self.radius_m:
+            self.clear()
+            return False,dict(ready=False,reason='outside_prior_radius',distance_m=distance,radius_m=self.radius_m)
+        anchor=decision['best_excluded_anchor']
+        if self.last is not None:
+            dt=(stamp-self.last)/1e6
+            if (not 0<stamp-self.last<=self.max_gap_us or anchor!=self.anchor
+                    or np.linalg.norm(xy-self.last_xy)>self.radius_m+self.max_speed*dt):
+                self.clear()
+        if self.started is None:self.started=stamp;self.anchor=anchor
+        self.last=stamp;self.last_xy=xy.copy();self.count+=1
+        elapsed=(stamp-self.started)/1e6
+        ready=elapsed>=.15 and self.count>=4
+        return ready,dict(ready=bool(ready),reason='near_prior_subset_confirmed' if ready else 'confirming_near_prior_subset',
+            elapsed_s=elapsed,samples=self.count,excluded_anchor=anchor,distance_m=distance,radius_m=self.radius_m)
+
+
+class GroundSubsetInitialization:
+    """Acquire a first measurement from a unique, stationary ground subset.
+
+    This does not predict a pose or borrow FC XY. Ground eligibility is supplied
+    by the height adapter. Every sample must pass the existing range integrity
+    and subset uniqueness checks before entering the two-second acquisition.
+    """
+    def __init__(self):
+        self.started = self.last = self.anchor = self.origin = None
+        self.count = 0
+
+    def clear(self):
+        self.started = self.last = self.anchor = self.origin = None
+        self.count = 0
+
+    def check(self, stamp, decision, *, ground, already_initialized):
+        eligible = (ground and not already_initialized and decision.get('ok') is True
+            and decision.get('source') == 'ground_reference_B3'
+            and decision.get('reason') == 'unique_height_consistent_subset')
+        if not eligible:
+            self.clear()
+            return False, {'ready': False, 'reason': 'ground_unique_subset_required'}
+        xy=np.asarray(decision['xy_m'],float);anchor=decision['best_excluded_anchor']
+        if (xy.shape!=(2,) or not np.isfinite(xy).all() or type(stamp) is not int or stamp<=0):
+            self.clear()
+            return False, {'ready': False, 'reason': 'invalid_ground_candidate'}
+        if (self.last is not None and (not 0<stamp-self.last<=100_000
+                or anchor!=self.anchor or np.linalg.norm(xy-self.origin)>.05)):
+            self.clear()
+        if self.started is None:
+            self.started=stamp;self.anchor=anchor;self.origin=xy.copy()
+        self.last=stamp;self.count+=1
+        elapsed=(stamp-self.started)/1e6
+        ready=elapsed>=2. and self.count>=30
+        return ready, {'ready':bool(ready),'elapsed_s':elapsed,'samples':self.count,
+            'excluded_anchor':anchor,'reason':'stable_ground_subset' if ready else 'acquiring_ground_subset'}

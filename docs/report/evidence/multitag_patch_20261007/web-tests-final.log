@@ -1,0 +1,22 @@
+Creating test database for alias 'default'...
+
+.........Legacy unsigned device request allowed in audit mode: /api/drones/5/companion-mission/
+....Legacy unsigned device request allowed in audit mode: /api/drones/5/scan/
+......Legacy unsigned device request allowed in audit mode: /api/drones/5/scan/
+......Legacy unsigned device request allowed in audit mode: /api/drones/5/scan/
+............................Legacy unsigned device request allowed in audit mode: /api/anchors/heartbeat/
+..Legacy unsigned device request allowed in audit mode: /api/system/ground-station/control-queue/
+.Legacy unsigned device request allowed in audit mode: /api/system/ground-station/event/
+..Legacy unsigned device request allowed in audit mode: /api/system/ground-station/event/
+....Legacy unsigned device request allowed in audit mode: /api/system/ground-station/event/
+Legacy unsigned device request allowed in audit mode: /api/system/ground-station/event/
+.....
+----------------------------------------------------------------------
+Ran 67 tests in 42.000s
+
+OK
+Destroying test database for alias 'default'...
+
+Found 67 test(s).
+System check identified no issues (0 silenced).
+Drone list queries (8 drones, same payload): 33 -> 2

@@ -14,6 +14,7 @@ ROS2/
 |   |-- drone_demo/         데모·임무·독립 평가
 |   |-- drone_bringup/      센서 실행·인쇄 마커
 |   |-- drone_platform_link/ 플랫폼 수신·상태 전달
+|   |-- drone_mission/      로컬 웹·PX4 전체 비행 순서
 |   `-- ydlidar_ros2_driver/ 제조사 서브모듈
 |-- config/udev/            장치 이름 규칙
 |-- docs/
@@ -41,6 +42,13 @@ ROS2/
 
 A~H는 책임 위치를 가리킨다.
 모든 단계가 한 실행기에 연결됐다는 뜻은 아니다.
+
+2026-10-08 실물 웹 시험은 `drone_mission`에서 실행한다.
+`/uwb/btf_pose`·FC 브리지·HTTP 미션을 함께 연결한다.
+[비행 절차](../runbooks/web_test_flight.md)를 따른다.
+다음 세션은 [로컬·Jetson 인계](../runbooks/local_jetson_handoff_20261008.md)부터 읽는다.
+읽기 전용 수집기는 `src/drone_mission/tools/observe_ground.py`다.
+어제의 C++ AI·Tag B 통합 코드는 별도 원격 브랜치에 있다.
 
 ```text
 HW 앵커 A1~A4 <-> ESP32 RAW JSONL

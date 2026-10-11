@@ -25,11 +25,11 @@
 #   │ USB 포트경로 │ 심볼릭링크 │ 장치                        │
 #   ├──────────────┼────────────┼─────────────────────────────┤
 #   │ 1-2.4        │ /dev/lidar │ YDLIDAR T-mini Pro          │
-#   │ 1-2.1        │ /dev/uwb   │ Qorvo DWM3000EVB (UWB 태그) │
+#   │ 1-2.3        │ /dev/uwb   │ Qorvo DWM3000EVB (UWB 태그) │
 #   │ 무관         │ /dev/pixhawk│ Pixhawk 6C Mini (VID/PID)  │
 #   └──────────────┴────────────┴─────────────────────────────┘
 #   Pixhawk만 포트 무관이다 — VID:PID가 유일해서 위치로 구분할 필요가 없다.
-#   (참고로 현재 1-2.3 에 꽂혀 있으나 규칙은 이 값을 쓰지 않는다)
+#   (참고로 2026-10-05 현재 1-2.1 에 꽂혀 있으나 규칙은 이 값을 쓰지 않는다)
 #
 # 포트경로 확인 방법 (장치를 연결한 뒤):
 #   udevadm info -a -n /dev/ttyUSB0 | grep -m3 -E 'KERNELS=="1-'
@@ -40,6 +40,7 @@
 # CP2102 USB-UART, 230400 8N1. Tmini.yaml 의 port 파라미터를 /dev/lidar 로 바꿀 것.
 SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", KERNELS=="1-2.4", SYMLINK+="lidar", MODE="0660", GROUP="dialout"
 
+# 2026-10-05: 태그 5의 원시 수신으로 USB 1-2.3, 921600 확인.
 # --- UWB 태그: Qorvo DWM3000EVB (v1.8 확인 2026-09-06) ---
 # CP2102 USB-UART, 921600 8N1. uwb_raw_cycle + uwb_raw_status JSON.
 # 약 42Hz RAW 거리. 현재 계약은 docs/uwb_node_design.md를 따른다.
@@ -47,7 +48,7 @@ SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", KERNELS=="1
 # 이유: 포트 위치 매칭이므로 잭을 바꾸면 LiDAR와 뒤바뀔 수 있다.
 # 앵커의 새 좌표는 src/drone_uwb/config/anchors_20260906.json에 있다.
 # 이 udev 규칙은 태그 펌웨어의 좌표 설정을 바꾸지 않는다.
-SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", KERNELS=="1-2.1", SYMLINK+="uwb", MODE="0660", GROUP="dialout"
+SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", KERNELS=="1-2.3", SYMLINK+="uwb", MODE="0660", GROUP="dialout"
 
 # --- Pixhawk: Holybro Pixhawk 6C Mini / PX4 (식별값 확인 완료 2026-07-30) ---
 # ttyACM으로 잡히고 VID:PID(3185:0038, Auterion PX4 FMU v6C.x)가 CP2102와 겹치지 않는다.

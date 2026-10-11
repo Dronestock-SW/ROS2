@@ -1,0 +1,25 @@
+{
+  "id": "motion-demo",
+  "revision": "r1",
+  "valid_for_profiles": [
+    "REPLAY"
+  ],
+  "approval_status": "SYNTHETIC_ONLY",
+  "max_speed_xy_mps": 0.3,
+  "max_speed_z_mps": 0.2,
+  "max_acceleration_mps2": 0.2,
+  "arrival_xy_m": 0.1,
+  "arrival_z_m": 0.1,
+  "arrival_yaw_deg": 10,
+  "arrival_stable_s": 1,
+  "intent_lease_ms": 500,
+  "required_free_storage_bytes": 100000000,
+  "clock_uncertainty_max_ms": 100,
+  "readiness_max_age_ms": 2000,
+  "sensor_max_age_ms": 200,
+  "operator_attestation_max_age_s": 300,
+  "target_timeout_policy": {
+    "base_s": 10,
+    "per_meter_s": 10
+  }
+}

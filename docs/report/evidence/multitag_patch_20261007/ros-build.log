@@ -1,0 +1,7 @@
+[0.747s] WARNING:colcon.colcon_core.package_selection:ignoring unknown package 'drone_interfaces' in --packages-select
+Starting >>> drone_platform_link
+Starting >>> drone_uwb
+Finished <<< drone_platform_link [3.94s]
+Finished <<< drone_uwb [3.97s]
+
+Summary: 2 packages finished [4.73s]

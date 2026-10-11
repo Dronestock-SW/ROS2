@@ -1,0 +1,20 @@
+[Unit]
+Description=Sangwon C++ companion service (HOST_OBSERVE, no aircraft output)
+PartOf=sangwon-autonomy.target
+StartLimitIntervalSec=60
+StartLimitBurst=5
+
+[Service]
+Type=simple
+WorkingDirectory=%h/Desktop/ROS2/src/sangwon_AI
+ExecStart=/bin/bash %h/Desktop/ROS2/src/sangwon_AI/deployment/run_core.sh
+Restart=on-failure
+RestartSec=3
+TimeoutStopSec=10
+NoNewPrivileges=true
+UMask=0077
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=sangwon-autonomy.target

@@ -1,4 +1,5 @@
-"""ArUco 비주얼 서보잉 속도 제안 노드 — Dronestock 1호기 (Phase 3, 2단계).
+"""
+ArUco 비주얼 서보잉 속도 제안 노드 — Dronestock 1호기 (Phase 3, 2단계).
 
 /aruco_alignment/error(좌우오차·거리오차)를 받아 "이 정도 속도로 움직이면
 정렬된다"는 속도 제안값을 계산해서 /aruco_alignment/velocity_suggestion 으로

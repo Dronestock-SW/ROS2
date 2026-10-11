@@ -11,6 +11,7 @@ setup(
         ]),
     ],
     install_requires=['setuptools', 'websockets==13.1'],
+    tests_require=['pytest'],
     maintainer='Dronestock', maintainer_email='user@todo.todo',
     description='Platform mission reception and read-only ROS telemetry.',
     license='Proprietary',

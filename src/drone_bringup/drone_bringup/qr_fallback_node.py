@@ -1,4 +1,5 @@
-"""QR 폴백 코디네이터 노드 — Dronestock 1호기.
+"""
+QR 폴백 코디네이터 노드 — Dronestock 1호기.
 
 ~/set_enabled(True)로 스캔 세션을 시작한다. 세션 중에는 DYSCAN DE2110
 리더기(/qr_reader/data)를 1순위로 쓴다. 일정 시간 연속으로 스캔이

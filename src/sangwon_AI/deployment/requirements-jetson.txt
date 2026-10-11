@@ -1,0 +1,7 @@
+# ROS/OpenCV/NumPy/requests come from Ubuntu + ROS Humble.
+# Only add helper packages here; do not replace those system packages.
+websockets==15.0.1 --hash=sha256:f7a866fbc1e97b5c617ee4116daaa09b722101d4a3c170c787450ba409f9736f
+# Installed system PyNaCl declares cffi, which is missing on this host.
+# Satisfy it inside this environment; preserve apt packages.
+cffi==1.17.1 --hash=sha256:45398b671ac6d70e67da8e4224a065cec6a93541bb7aebe1b198a61b58c7b702
+pycparser==2.22 --hash=sha256:c3702b6d3dd8c7abc1afa565d7e63d53a1d0bd86cdc24edd75470f4de499cfcc

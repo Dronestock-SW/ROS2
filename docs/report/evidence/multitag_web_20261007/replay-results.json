@@ -1,0 +1,222 @@
+{
+  "ros2_commit": "1cc9ba484d19cd3b41c4b0330394d8c30c029b20",
+  "kind": "synthetic 40 Hz message and valid ToF/attitude replay of actual unmodified Python processors",
+  "ros_runtime": false,
+  "rf_measured": false,
+  "field_accuracy_measured": false,
+  "raw_cycle_contract": "unchanged radiofix3 / v0.4 LoRa SYNC",
+  "runs": [
+    {
+      "tag": "5",
+      "configured_tag": "5",
+      "raw_cycles": 160,
+      "interleaved_tdma": false,
+      "new_lora_status": false,
+      "normal_observations": 131,
+      "btf_observations": 129,
+      "normal_reasons": {
+        "status": 1,
+        "warming_up": 29,
+        "accepted": 131
+      },
+      "btf_reasons": {
+        "status": 1,
+        "clock_unsynced": 29,
+        "B_not_fresh_valid": 2,
+        "original_fit_consistent": 129
+      },
+      "last_btf_xy": [
+        2.000000000000001,
+        1.4999999999999998
+      ]
+    },
+    {
+      "tag": "5",
+      "configured_tag": "5",
+      "raw_cycles": 160,
+      "interleaved_tdma": false,
+      "new_lora_status": true,
+      "normal_observations": 131,
+      "btf_observations": 129,
+      "normal_reasons": {
+        "status": 1,
+        "warming_up": 29,
+        "accepted": 131
+      },
+      "btf_reasons": {
+        "status": 1,
+        "clock_unsynced": 29,
+        "B_not_fresh_valid": 2,
+        "original_fit_consistent": 129
+      },
+      "last_btf_xy": [
+        2.000000000000001,
+        1.4999999999999998
+      ]
+    },
+    {
+      "tag": "5",
+      "configured_tag": "5",
+      "raw_cycles": 160,
+      "interleaved_tdma": true,
+      "new_lora_status": false,
+      "normal_observations": 0,
+      "btf_observations": 129,
+      "normal_reasons": {
+        "status": 1,
+        "warming_up": 160,
+        "unsupported_type": 160
+      },
+      "btf_reasons": {
+        "status": 1,
+        "clock_unsynced": 29,
+        "unsupported_type": 160,
+        "B_not_fresh_valid": 2,
+        "original_fit_consistent": 129
+      },
+      "last_btf_xy": [
+        2.000000000000001,
+        1.4999999999999998
+      ]
+    },
+    {
+      "tag": "5",
+      "configured_tag": "5",
+      "raw_cycles": 160,
+      "interleaved_tdma": true,
+      "new_lora_status": true,
+      "normal_observations": 0,
+      "btf_observations": 129,
+      "normal_reasons": {
+        "status": 1,
+        "warming_up": 160,
+        "unsupported_type": 160
+      },
+      "btf_reasons": {
+        "status": 1,
+        "clock_unsynced": 29,
+        "unsupported_type": 160,
+        "B_not_fresh_valid": 2,
+        "original_fit_consistent": 129
+      },
+      "last_btf_xy": [
+        2.000000000000001,
+        1.4999999999999998
+      ]
+    },
+    {
+      "tag": "6",
+      "configured_tag": "6",
+      "raw_cycles": 160,
+      "interleaved_tdma": false,
+      "new_lora_status": false,
+      "normal_observations": 131,
+      "btf_observations": 129,
+      "normal_reasons": {
+        "status": 1,
+        "warming_up": 29,
+        "accepted": 131
+      },
+      "btf_reasons": {
+        "status": 1,
+        "clock_unsynced": 29,
+        "B_not_fresh_valid": 2,
+        "original_fit_consistent": 129
+      },
+      "last_btf_xy": [
+        2.000000000000001,
+        1.4999999999999998
+      ]
+    },
+    {
+      "tag": "6",
+      "configured_tag": "6",
+      "raw_cycles": 160,
+      "interleaved_tdma": false,
+      "new_lora_status": true,
+      "normal_observations": 131,
+      "btf_observations": 129,
+      "normal_reasons": {
+        "status": 1,
+        "warming_up": 29,
+        "accepted": 131
+      },
+      "btf_reasons": {
+        "status": 1,
+        "clock_unsynced": 29,
+        "B_not_fresh_valid": 2,
+        "original_fit_consistent": 129
+      },
+      "last_btf_xy": [
+        2.000000000000001,
+        1.4999999999999998
+      ]
+    },
+    {
+      "tag": "6",
+      "configured_tag": "6",
+      "raw_cycles": 160,
+      "interleaved_tdma": true,
+      "new_lora_status": false,
+      "normal_observations": 0,
+      "btf_observations": 129,
+      "normal_reasons": {
+        "status": 1,
+        "warming_up": 160,
+        "unsupported_type": 160
+      },
+      "btf_reasons": {
+        "status": 1,
+        "clock_unsynced": 29,
+        "unsupported_type": 160,
+        "B_not_fresh_valid": 2,
+        "original_fit_consistent": 129
+      },
+      "last_btf_xy": [
+        2.000000000000001,
+        1.4999999999999998
+      ]
+    },
+    {
+      "tag": "6",
+      "configured_tag": "6",
+      "raw_cycles": 160,
+      "interleaved_tdma": true,
+      "new_lora_status": true,
+      "normal_observations": 0,
+      "btf_observations": 129,
+      "normal_reasons": {
+        "status": 1,
+        "warming_up": 160,
+        "unsupported_type": 160
+      },
+      "btf_reasons": {
+        "status": 1,
+        "clock_unsynced": 29,
+        "unsupported_type": 160,
+        "B_not_fresh_valid": 2,
+        "original_fit_consistent": 129
+      },
+      "last_btf_xy": [
+        2.000000000000001,
+        1.4999999999999998
+      ]
+    },
+    {
+      "tag": "6",
+      "configured_tag": "5",
+      "raw_cycles": 160,
+      "interleaved_tdma": true,
+      "new_lora_status": true,
+      "normal_observations": 0,
+      "btf_observations": 0,
+      "normal_reasons": {
+        "schema_or_tag_mismatch": 321
+      },
+      "btf_reasons": {
+        "schema_or_tag_mismatch": 321
+      },
+      "last_btf_xy": null
+    }
+  ]
+}

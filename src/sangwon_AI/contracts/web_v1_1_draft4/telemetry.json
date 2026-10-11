@@ -1,0 +1,96 @@
+{
+  "contract_version": "1.1-draft.4",
+  "type": "telemetry",
+  "drone_id": "TEST-DRONE-01",
+  "profile": "REPLAY",
+  "telemetry_seq": 60,
+  "generated_at": "2026-10-04T06:01:00Z",
+  "context": {
+    "boot_id": "boot-demo-01",
+    "runtime_session_id": "runtime-demo-01",
+    "control_session_id": "control-demo-01",
+    "assignment_id": "assignment-demo-01",
+    "snapshot_id": "snapshot-demo-01",
+    "preparation_id": null,
+    "readiness_revision": null,
+    "execution_id": "execution-demo-01",
+    "flight_id": "flight-demo-01"
+  },
+  "phase": "HOVERING",
+  "control_owner": "JETSON",
+  "manual_lock": false,
+  "flight_authority": false,
+  "px4": {
+    "source": "FAKE_PX4",
+    "mode": "OFFBOARD",
+    "armed": true,
+    "landed": false
+  },
+  "battery": {
+    "remaining_pct": 77,
+    "valid": true,
+    "source": "FAKE_PX4",
+    "observed_at": "2026-10-04T06:00:59.950Z",
+    "source_age_ms": 50
+  },
+  "pose_fused": {
+    "frame": "WAREHOUSE_MAP",
+    "position_m": {
+      "x": 3.88,
+      "y": 1.5,
+      "z": 1.2
+    },
+    "yaw_deg": 0,
+    "velocity_mps": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "valid": true,
+    "source": "FAKE_PX4_FUSED",
+    "observed_at": "2026-10-04T06:00:59.950Z",
+    "source_age_ms": 50
+  },
+  "uwb_observation": {
+    "source": "MOCK_UWB_ADAPTER",
+    "valid": false,
+    "is_new_observation": false,
+    "position_m": null,
+    "observed_at": null,
+    "source_age_ms": null,
+    "reason_code": "NO_OBSERVATION"
+  },
+  "active_target": {
+    "kind": "SCAN_POSE",
+    "task_id": "S01",
+    "frame": "WAREHOUSE_MAP",
+    "position_m": {
+      "x": 3.88,
+      "y": 1.5,
+      "z": 1.2
+    },
+    "yaw_deg": 0,
+    "plan_id": "plan-demo-01"
+  },
+  "scan_progress": {
+    "task_id": "S01",
+    "label_point_id": "L01",
+    "scan_stage": "READER_SCAN",
+    "scanner_attempts_started": 2,
+    "scanner_attempts_max": 3,
+    "camera_qr_used": false,
+    "alignment_state": "STABLE",
+    "marker_age_ms": 40,
+    "task_result_id": "scan-result-demo-01",
+    "egress_status": "NOT_STARTED"
+  },
+  "allowed_commands": [
+    "PAUSE",
+    "CANCEL",
+    "LAND_NOW"
+  ],
+  "command_blocks": {
+    "START": "BUSY",
+    "RESUME": "INVALID_PHASE"
+  }
+}

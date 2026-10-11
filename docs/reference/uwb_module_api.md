@@ -321,6 +321,9 @@ JSON/YAML 적용값은 실행 manifest에 따로 기록한다.
 | `enu_offset_y_m` | `0.0` |
 | `expected_ev_delay_ms` | `0.0` |
 | `source_frame` | `'uwb_map'` |
+| `pose_topic` | `'/uwb_pose'`. 실물 시험은 `'/uwb/btf_pose'` |
+| `verify_ev_sensor_position` | `False`. 실물 시험은 `True` |
+| `expected_ev_pos_x_m/y_m/z_m` | 각 `0.0`. PX4 FRD 실측값 필요 |
 | `max_age_s` | `0.2` |
 | `state_timeout_s` | `2.5` |
 
@@ -332,3 +335,22 @@ JSON/YAML 적용값은 실행 manifest에 따로 기록한다.
 `PipelineConfig`는 `preimu`, `range_bias_source="unconfigured"`,
 `calculation_enabled=false`, `external_output_enabled=false`를 받는다.
 두 게이트를 true로 설정하면 생성 시 거부한다.
+
+## 실물 웹 시험의 ROS 출력
+
+2026-10-08 추가한 실행 경로다.
+기존 파일 파이프라인의 게이트와 구분한다.
+
+| 항목 | 계약 |
+|---|---|
+| `/uwb/btf_pose` | PoseWithCovarianceStamped. 안테나 XY, z 자리값 0 |
+| `/uwb/btf_xyz` | PoseStamped. 같은 시각의 XY·바닥 기준 안테나 높이 |
+| `require_height_for_pose` | 기본 false. 비행 launch는 true; 높이 누락 때 XY 중지 |
+| `/uwb/bridge_status` | gate·settings·FC mirror·published·최신 관측 stamp |
+| 브리지 상태 발행 | 10Hz. FC mirror 조회는 1Hz |
+| 장착값 검증 | EV_POS 기대값과 FC mirror 차이 ≤0.01m |
+
+XYZ는 고도 제어 입력이 아니다.
+같은 창의 네 높이 입력이 없으면 `xyz_m=null`이다.
+실제 FC 전달은 브리지 enabled와 정렬·시각·장착 확인에 따른다.
+설정·출력 규격은 [연결 구조](../architecture/web_test_flight.md)를 따른다.

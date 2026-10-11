@@ -1,0 +1,23 @@
+[Unit]
+Description=Sangwon C++ read-only MAVROS PX4 transport observer
+PartOf=sangwon-autonomy.target
+StartLimitIntervalSec=60
+StartLimitBurst=5
+
+[Service]
+Type=notify
+NotifyAccess=main
+WorkingDirectory=%h/Desktop/ROS2/src/sangwon_AI
+ExecStart=/bin/bash %h/Desktop/ROS2/src/sangwon_AI/deployment/run_px4_observer.sh
+Restart=on-failure
+RestartSec=3
+WatchdogSec=10
+TimeoutStartSec=15
+TimeoutStopSec=10
+NoNewPrivileges=true
+UMask=0077
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=sangwon-autonomy.target

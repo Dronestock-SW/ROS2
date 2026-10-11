@@ -161,10 +161,11 @@ def test_rotation_changes_xy_and_covariance_only():
 
 
 def test_bridge_requires_every_precondition_and_xy_only_fusion():
-    params={'EKF2_EV_CTRL':1,'EKF2_EV_DELAY':0.,'EKF2_EV_NOISE_MD':0}
+    params={'EKF2_EV_CTRL':1,'EKF2_EV_DELAY':0.,'EKF2_EV_NOISE_MD':0,
+            'EKF2_EV_POS_X':0.,'EKF2_EV_POS_Y':0.,'EKF2_EV_POS_Z':0.}
     defaults=BridgeSettings()
     assert gate(defaults,True,0,params,0) == 'disabled'
-    ready=replace(defaults,enabled=True,alignment_confirmed=True,timing_confirmed=True,sensor_mount_confirmed=True)
+    ready=replace(defaults,enabled=True,layout_confirmed=True,alignment_confirmed=True,timing_confirmed=True,sensor_mount_confirmed=True)
     assert gate(ready,True,0,params,0) == 'ready'
     for field in ('alignment_confirmed','timing_confirmed','sensor_mount_confirmed'):
         assert gate(replace(ready,**{field:False}),True,0,params,0).endswith('_required')
@@ -173,3 +174,18 @@ def test_bridge_requires_every_precondition_and_xy_only_fusion():
     assert gate(ready,True,3,params,0) != 'ready'
     assert gate(ready,True,0,params,6) != 'ready'
     assert gate(ready,True,0,{**params,'EKF2_EV_DELAY':20.},0) != 'ready'
+
+
+@pytest.mark.parametrize('axis', ['x', 'y', 'z'])
+def test_flight_bridge_requires_measured_fc_to_tag_position(axis):
+    settings = BridgeSettings(enabled=True, layout_confirmed=True, alignment_confirmed=True,
+        timing_confirmed=True, sensor_mount_confirmed=True,
+        antenna_body_frd_x_m=-.14, antenna_body_frd_y_m=0., antenna_body_frd_z_m=-.12,
+        input_source='btf_xy')
+    params = {'EKF2_EV_CTRL':1, 'EKF2_EV_DELAY':0., 'EKF2_EV_NOISE_MD':0,
+              'EKF2_EV_POS_X':-.14, 'EKF2_EV_POS_Y':0., 'EKF2_EV_POS_Z':-.12}
+    assert gate(settings, True, 0., params, 0.) == 'ready'
+    key = 'EKF2_EV_POS_' + axis.upper()
+    for invalid in (None, True, float('nan'), params[key]+.1):
+        assert gate(settings, True, 0., dict(params, **{key:invalid}), 0.) == (
+            'antenna_lever_arm_parameter_mismatch')

@@ -1,0 +1,22 @@
+{
+  "status": "검사 종료; 자율주행 적용 보류",
+  "regression_passed": 120,
+  "live_configuration_changed": false,
+  "ros_initialized": false,
+  "fc_commands_sent": 0,
+  "old_prior_exact_live_memory_recovered": false,
+  "same_measured_input_history_effect_reproduced": true,
+  "config_sha256": "668ffd2e105617b8ae1f1cb6c70614a1c75e52e2ae330a90ffe55546b9302da2",
+  "source_head": "60218814ff7161634977792fb823a277c5b78452",
+  "fresh_b4_accepted": 1856,
+  "fresh_measured_height_approved": 1740,
+  "fresh_ground_reference_approved": 116,
+  "measured_height_physical_rms_mean_m": 0.08362490646411821,
+  "measured_height_physical_rms_ge_6cm": 1733,
+  "fresh_published_max_gap_s": 0.325078202,
+  "recorded_live_quarantined": 1872,
+  "prior_intervention_quarantined": 1872,
+  "models_reset_quarantined": 1872,
+  "test_window_kst": "2026-10-10 18:34:45.599759--18:35:45.599759",
+  "procedure": "B_TF_검사결과_20261010.txt"
+}

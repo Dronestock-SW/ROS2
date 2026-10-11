@@ -1,0 +1,7 @@
+[Unit]
+Description=Sangwon automatic host diagnostics and web observation
+Wants=sangwon-core.service sangwon-web-adapter.service sangwon-health-monitor.service sangwon-perception-monitor.service sangwon-px4-observer.service
+After=sangwon-core.service sangwon-web-adapter.service sangwon-health-monitor.service sangwon-perception-monitor.service sangwon-px4-observer.service
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,23 @@
+{
+  "id": "scan-demo",
+  "revision": "r1",
+  "valid_for_profiles": [
+    "REPLAY"
+  ],
+  "approval_status": "SYNTHETIC_ONLY",
+  "distance_reference": "SCANNER_OPTICAL_ORIGIN_TO_LABEL_PLANE",
+  "distance_min_m": 0.4,
+  "distance_target_m": 0.5,
+  "distance_max_m": 0.6,
+  "scanner_attempts_max": 3,
+  "scanner_attempt_timeout_s": 2,
+  "camera_qr_timeout_s": 3,
+  "marker_acquire_timeout_s": 5,
+  "align_timeout_s": 10,
+  "settle_s": 1,
+  "max_adjustment_speed_mps": 0.05,
+  "marker_max_age_ms": 100,
+  "marker_reprojection_max_px": 1,
+  "alignment_position_tolerance_m": 0.02,
+  "alignment_angle_tolerance_deg": 3
+}

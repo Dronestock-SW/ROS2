@@ -1,0 +1,319 @@
+# FC 관측 공백 조사 — 2026-10-09
+
+실물 수신 공백과 시계 복구 수정을 기록한다.
+실제 발행·START 적용 전에 이 결과를 확인한다.
+현재 결과만으로 하드웨어 고장을 단정하지 않는다.
+
+다음 적용은 [현장 이륙 연결 절차](../runbooks/field_hover_completion_20261009.md)를 따른다.
+
+## 실물 수신 기록
+
+90초 관측에서는 긴 공백이 재현되지 않았다.
+FC 원시 메시지41,584개를 수신했다.
+원시 수신 최대 간격은59.7ms였다.
+IMU는61.7ms, B_TF XY는86.2ms였다.
+첫 기록은ToF 토픽 경로가 틀렸다.
+이 기록을ToF 수신 증거로 사용하지 않는다.
+
+경로를 수정한180초 기록은모든 토픽을 받았다.
+원시 메시지80,995개·IMU17,961개를 받았다.
+ToF1,772개·XY7,028개를 받았다.
+원시 수신 최대 간격은331.8ms였다.
+같은 구간의IMU·ToF·XY도지연됐다.
+진단 타이머 최대 간격은66.6ms였다.
+UWB 원시 수신의최대 간격은89.1ms였다.
+FC 응답 RTT는그 구간에도약1~4ms였다.
+FC 응답 계산 후ROS 토픽 전달 지연이 관측됐다.
+이 구간을FC USB 고장으로 단정하지 않는다.
+이전1.8초 RTT 증가와동일 원인인지는 미확정이다.
+
+기록은받는 동안 메모리에 한정해 보관했다.
+진단 도구는종료 후 파일로 저장했다.
+추가 기록IO가센서 콜백을 막지 않게 했다.
+진단 도구의FC 명령·발행자는0개다.
+
+## 시계 복구 수정
+
+유효한 시계의복구 대기만 줄였다.
+처음에는좋은 응답30개로 시계를 획득한다.
+RTT20ms 초과·중복·역순 응답은수락하지 않는다.
+지연 응답으로마지막 유효 시각을 갱신하지 않는다.
+유효 응답이0.5초 이상 없으면발행 조건을 닫는다.
+같은 시계의새 저지연 응답을 받으면재개한다.
+오프셋5ms 초과 변경·FC 연결 해제는재획득한다.
+이때는다시30개가 필요하다.
+시계 변경 시B_TF 센서 버퍼도 초기화한다.
+
+측정 지연보정 완료 플래그는바꾸지 않았다.
+오래된 관측·공분산·출력 나이 검사를유지했다.
+원래 표본 시각을갱신해 반복 발행하지 않는다.
+
+이전 공백의시간 응답21개는RTT20ms를 넘었다.
+최대 RTT는1,794.18ms였다.
+기록 재생에서시계 조건 복구가2.907초 빨라졌다.
+이는시계 처리 재생 결과다.
+실제 통신 공백 자체가해결됐다는 뜻은 아니다.
+
+## 통신 경로 비교
+
+실행 중MAVROS와 FC 연결을유지했다.
+별도 수신기에서기본 DDS와로컬 UDP를 비교했다.
+UDP 프로필은진단 프로세스에만 적용한다.
+시스템 기본값·핫스팟·FC 파라미터는바꾸지 않는다.
+XML은[Fast DDS 2.6.11 공식 UDP 설정](https://fast-dds.docs.eprosima.com/en/v2.6.11/fastdds/transport/udp/udp.html)을 따른다.
+
+```bash
+python3 src/drone_uwb/tools/observe_fc_transport.py \
+  --seconds 90 --mavros-pid CURRENT_PID --output NEW_DIRECTORY
+# 다른 터미널의 별도 수신 프로세스에만 적용한다.
+FASTRTPS_DEFAULT_PROFILES_FILE=src/drone_uwb/config/runtime/fastdds_loopback_udp.xml \
+  python3 src/drone_uwb/tools/observe_fc_transport.py \
+  --seconds 90 --mavros-pid CURRENT_PID --output OTHER_NEW_DIRECTORY
+```
+
+MAVROS 발견 통신 소켓에누적 drop11,745개가 있었다.
+데이터 UDP 소켓은0개였다.
+누적값만으로이번 공백의 원인을 확정하지 않는다.
+CPU cgroup의throttled 시간은0이었다.
+
+동시90초 비교는두 수신기 모두 긴 공백이 없었다.
+기본 경로의원시 최대 간격은73.7ms였다.
+UDP 경로는63.4ms였다.
+ToF는각각167.3ms와114.9ms였다.
+긴 실패가재현되지 않아UDP 수정 효과는미확정이다.
+운영 통신 설정은바꾸지 않았다.
+
+## 저장 실패와 관측 분리
+
+저장 실패가관측 발행을 멈추는 결합을 제거했다.
+기존UWB 노드는기록 오류 후파싱도 중단했다.
+B_TF 노드도기록 오류 시즉시 반환했다.
+실물 디스크 여유는281MiB까지 줄었다.
+기록기의256MiB 예약 한계에 가까웠다.
+이 조건은통신과 무관하게관측을 중단시킬 수 있다.
+앞선 모든 공백의원인으로 확정한 것은 아니다.
+
+수정 후기록 오류는상태에 별도로 남는다.
+기록기는기존 용량 제한을 계속 적용한다.
+새 관측은기존 유효성·시각 검사를 통과해야 한다.
+오래된 표본을반복하거나새 시각을 붙이지 않는다.
+기록 종료 오류도보고하고노드 종료를 계속한다.
+미션의기록 준비 조건이나명령 권한은바꾸지 않는다.
+
+`test_recording_independence.py`는저장 실패를 주입한다.
+정상 입력·거부 입력·만료 입력을 구분한다.
+미관측 고도를채우지 않는지도 확인한다.
+Jetson에서저장·시계 관련23개 시험을 통과했다.
+이 중7개는관측 노드의저장 오류 주입 시험이다.
+`drone_uwb`의colcon 빌드도 통과했다.
+
+090427 관측 세션을정상 종료했다.
+닫힌 로그1,821,200,354bytes를백업 대상으로 묶었다.
+압축본은247,756,074bytes다.
+SHA256은`2fb66f9e63a450c2ed37b1798cec7622cca292e1b0ea662aca55031c75c28c1f`다.
+PC 복사본 해시가일치했다.
+열린 파일이없고원본 해시가그대로임을 확인했다.
+그 후닫힌 원본만 정리했다.
+직후 디스크 여유는1,995MiB였다.
+FC 재부팅·파라미터 쓰기는하지 않았다.
+
+```bash
+python3 -m pytest -q \
+  src/drone_uwb/test/integration/test_recording_independence.py \
+  src/drone_uwb/test/integration/test_async_recording.py \
+  src/drone_uwb/test/integration/test_btf_clock_adapter.py \
+  src/drone_uwb/test/integration/test_clock_readiness.py
+colcon build --symlink-install --packages-select drone_uwb
+```
+
+## 수정 후 지상 수신 — 19:15 KST
+
+웹·MAVROS·UWB 관측을 복구했다.
+8350·8351 HTTP 연결을 확인했다.
+FC는 DISARM·지상·POSCTL 상태였다.
+웹에는 최신 FC 상태가 도착했다.
+새 세션은 `field-ground-101412-281553c0`이다.
+적용 코드는 `9f6ecf9`다.
+다른 현장 체크아웃·서비스는 보존했다.
+
+30초 읽기 전용 기록은 모든 토픽을 수신했다.
+FC 원시 메시지 13,756개를 받았다.
+IMU 2,916개·ToF 290개를 받았다.
+B_TF XY 1,102개를 받았다.
+새 기록 오류는 없었다.
+XY는 약 (5.266, 2.108)m였다.
+ToF의 유효 측정 수는 0이었다.
+표시 높이 0.15m는 지상 안테나 기준이다.
+실측 ToF 고도로 분류하지 않는다.
+
+약 0.34초 수신 공백은 다시 나타났다.
+FC 원시 최대 간격은 337.2ms였다.
+XY는 339.8ms, ToF는 390.5ms였다.
+동시에 UWB ROS 수신도 358.3ms 벌어졌다.
+관측 도구 타이머 최대 간격은 76.1ms였다.
+저장 결합 수정만으로 통신 문제는 해결되지 않았다.
+근거는 `transport-after-recording-fix-1014`다.
+
+정상 bridge는 비활성 상태로 복구했다.
+실제 설정의 좌표·시간 보정은 미확정이다.
+FC 위치 추정 유효 상태도 false였다.
+지상 임시 발행기를 비행용으로 재시작하지 않았다.
+START와 명령 출력은 계속 잠겨 있다.
+RC 존재를 이유로 미확정 값을 true로 쓰지 않았다.
+SITL·실비행 검증은 이번 수정에서 미실시다.
+
+## 발행 비활성의 원인 구분
+
+0.34초 공백 하나를 이륙 금지 기준으로 삼지 않았다.
+정상 bridge가 꺼져 있어 FC 입력도 없는 상태다.
+현재 위치 추정 실패를 독립된 통신 고장으로 오해하지 않는다.
+
+운영 설정은 회전 0도·XY 원점 (0, 0)이다.
+지상 시험은 별도의 고정 변환을 사용했다.
+그 후보의 회전은 -219.785도였다.
+XY 이동량은 (2.656, -5.068)m였다.
+현재 부팅의 정지 표본 157개로 맞춘 값이다.
+기체가 -X를 향한다는 현장 설명을 사용했다.
+후보의 좌표·시간 확인 플래그는 둘 다 false다.
+운영 발행 활성만 바꾸면 다른 좌표가 FC에 들어간다.
+지상 융합 성공을 운영 설정 승인으로 옮기지 않는다.
+
+기존 이동 기록의 시간 적합도는 유일하지 않았다.
+X 기록은 -0.5~+0.5초가 비슷한 오차였다.
+Y 기록도 넓은 지연 범위가 같은 수준이었다.
+정지 중 작은 오차만으로 동적 지연을 확정하지 않는다.
+
+현재 웹의 단발 hover 코드도 통신 상실을 구분한다.
+위치 추정 상실 시 LAND를 시도한다.
+FC 통신 자체가 오래되면 PX4 failsafe에 제어를 맡긴다.
+이 경로는 항상 LAND 전달을 보장한다는 뜻이 아니다.
+근거는 `src/sangwon_AI/include/sangwon_ai/native_hover.hpp`다.
+
+## 검증 범위
+
+Windows 관련 시험74개를통과했다.
+시계 관련 시험은Jetson에서79개 통과했다.
+실제 FC 상시 발행과START 활성은아직 미완료다.
+지상 후보의좌표·고정 지연 보정도미확정이다.
+ARM·이륙 명령은보내지 않았다.
+
+## 지상 FC 입력 재개 — 19:21 KST
+
+사용자가 비상정지를 ON으로 바꾼 뒤 발행을 재개했다.
+FC에서 DISARM·지상·POSCTL·킬 ON을 읽었다.
+현재 부팅의 정지 표본 155개로 후보를 새로 만들었다.
+실행 중 MAVROS와 현장 관측 세션은 유지했다.
+FC 파라미터 쓰기와 전체 파라미터 재요청은 없었다.
+
+세션은 `ev-continuous-ground-102101`이다.
+314초 시점의 실제 발행 수는 11,322개였다.
+거부 관측은 298개였고 최신 gate는 ready였다.
+임시 지상 발행은 계속 실행 중이다.
+비상정지 해제나 ARM 시 이 발행기는 종료된다.
+비행용 상시 bridge로 전환됐다는 뜻은 아니다.
+
+FC 내부 읽기 전용 확인 결과는 다음과 같다.
+
+| 항목 | 실제 수신값 |
+|---|---|
+| 두 EKF의 EV XY 사용 | `cs_ev_pos=true` |
+| 두 EKF의 융합 결과 | `fused=true`, `innovation_rejected=false` |
+| 실제 수평 위치·속도 | `xy_valid=true`, `v_xy_valid=true` |
+| 가짜 위치 상태 | `cs_fake_pos=false` |
+| EV 고도·yaw 융합 | 둘 다 false |
+| 상태 | DISARM, kill ON |
+
+이는 지상 융합 확인이다.
+비행 ULog 검증 완료로 기록하지 않는다.
+8350 웹도 새 지상 발행 요약에 연결했다.
+웹 명령 출력은 false로 유지했다.
+근거 파일은 `continuous-ground-fusion-resume-1021.json`이다.
+명령은 고정된 `listener`·`param show` 6개뿐이었다.
+
+기체는 대략 -X 방향이라는 현장 설명을 유지했다.
+사용자는 거치대에서 내릴 때 약간 돌았을 수 있다고 했다.
+따라서 이전과 약 11도 차이를 yaw drift로 단정하지 않는다.
+
+## 비행 후보 준비와 기존 기록 재분석
+
+현재 후보 변환을 담은 설정을 별도로 만들었다.
+운영 설정과 확인 플래그는 그대로 보존했다.
+파일은 새 세션의 `field-mission-flight-CANDIDATE.json`이다.
+Tag B·domain 2·배치 일치와 설정 형식을 확인했다.
+관측 scope는 continuous로 구성할 수 있다.
+후보의 enabled·execute·alignment·timing은 모두 false다.
+이 파일을 실기 프로세스에 적용하지 않았다.
+SHA256은 `d53a8004c23445463488368006e130b7831e098807983bcfe09d31982f953ad1`이다.
+
+추가 현장 이동 없이 보정 가능한지도 다시 조사했다.
+기존 정지 구간이 적합도를 지배하지 않게 분리했다.
+FC 이동 속도 0.04m/s 초과 구간을 골랐다.
+0.4초 차분과 전후 0.6초 범위를 사용했다.
+모든 지연 후보에 같은 표본 집합을 사용했다.
+0.12초를 넘는 FC 보간 공백은 제외했다.
+합성 0.12초 지연의 복원값은 0.12초였다.
+
+| 기존 기록 | 이동 표본 | 최적 지연 | 최적보다 RMSE 5mm 이내 범위 |
+|---|---:|---:|---:|
+| after-qos X | 122 | -0.500s | -0.500~-0.210s |
+| after-qos Y | 128 | +0.025s | -0.230~+0.305s |
+| roundtrip 2 | 181 | +0.140s | -0.045~+0.335s |
+
+X 최적값은 탐색 범위 끝에 있었다.
+기록 간 시간 보정값도 일관되지 않았다.
+고정 EV_DELAY를 확정할 근거로 사용하지 않았다.
+이 범위는 통계적 신뢰구간이 아닌 적합도 비교다.
+근거 파일은 `motion-only-reanalysis-1025.json`이다.
+비행용 발행·START 활성·실물 비행은 여전히 미완료다.
+
+## 좌표 계산 부하 개선
+
+H80의 반복 계산을 줄여 같은 수치 결과를 유지했다.
+4개 앵커 소속 검사를 고정 크기 표로 바꿨다.
+역분산은 반복 밖에서 계산한다.
+유한 가중치의 수렴 비교는 같은 허용값을 유지한다.
+SVD·IRLS 횟수·잔차·조건수 기준은 바꾸지 않았다.
+
+Jetson에서 최근 실측 160개로 비교했다.
+구현을 교대로 5회 실행해 부하 순서 영향을 줄였다.
+B와 B_TF의 모든 출력 필드가 정확히 같았다.
+기존 저장 결과와도 일치했다.
+
+| 항목 | 기존 | 변경 |
+|---|---:|---:|
+| 회당 평균의 중앙값 | 10.147ms | 9.066ms |
+| 계산 시간 감소 | — | 10.7% |
+
+비교는 ROS 발행 없는 수치 재생이다.
+라이브 수신 공백 해소로 해석하지 않는다.
+근거는 `btf-kernel-profile-1940/comparison.json`이다.
+`compare.py`와 입력·시험 출력도 같은 곳에 남겼다.
+원본 실측은 Git에 넣지 않았다.
+
+Jetson에서 변경 solver를 별도 로딩해 시험했다.
+실행 중 관측 프로세스는 교체하지 않았다.
+H80·subset·지상 초기화·measured B_TF 64개 통과다.
+Windows에서는 3개 모듈의 수집이 실패했다.
+원인은 기존 앵커 JSON 심볼릭 링크의 텍스트 checkout이다.
+동일 시험을 Linux에서 실행해 통과했다.
+
+```bash
+python3 -m pytest -q \
+  src/drone_uwb/test/experiments/test_h80_b.py \
+  src/drone_uwb/test/experiments/test_subset_models.py \
+  src/drone_uwb/test/experiments/test_subset_comparison.py \
+  src/drone_uwb/test/processing/test_ground_initialization.py \
+  src/drone_uwb/test/processing/test_measured_btf.py
+```
+
+현재 ground-only 발행은 계속 유지했다.
+이 패치는 라이브 프로세스의 hot reload가 아니다.
+실행 적용 뒤 지연 재측정은 남아 있다.
+실제 비행 명령·SITL 시험은 이번 수정에서 미실시다.
+
+수정 커밋 `d06926f`를 같은 브랜치에 push했다.
+Jetson의 같은 브랜치도 fast-forward했다.
+`colcon build --symlink-install --packages-select drone_uwb`는 통과했다.
+MAVROS·UWB·B_TF·mission·platform PID를 유지했다.
+실행 중 Python은 기존 solver를 이미 읽은 상태다.
+새 solver는 다음 관측 프로세스 시작부터 적용된다.

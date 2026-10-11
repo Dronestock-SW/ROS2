@@ -1,0 +1,994 @@
+{
+  "schema": 1,
+  "scope": "OFFLINE_PRODUCTION_CALLBACK_REPLAY_NO_ROS_INIT_NO_FC_IO",
+  "source": {
+    "source": "/home/arialhanho/.local/share/dronestock/manual-captures/capture-1791624807065517006-d9de0de2",
+    "source_sha256": "491b9690c9410b6b9f1bb9b467c32e83f7d89847dc6535e5bad8af7ffba3af21",
+    "source_bytes": 95819831,
+    "snapshot_dir": "/tmp/btf-history-audit-miyvc2w4"
+  },
+  "config_sha256": "668ffd2e105617b8ae1f1cb6c70614a1c75e52e2ae330a90ffe55546b9302da2",
+  "window_ns": [
+    "1791624885599758861",
+    "1791624945599758861"
+  ],
+  "warmup_s": 10,
+  "reference_xy_known": false,
+  "live_reasons": {
+    "observation_jump_quarantined": 1872,
+    "tdma_deadline_rejected": 525
+  },
+  "scenarios": [
+    {
+      "scenario": "fresh_session",
+      "decisions": 2397,
+      "reasons": {
+        "original_fit_consistent": 1856,
+        "tdma_deadline_rejected": 525,
+        "B_not_fresh_valid": 16
+      },
+      "published": {
+        "xy": 1856,
+        "xyz": 1740,
+        "decision": 2397
+      },
+      "input_counts": {
+        "/mavros/imu/data": 7000,
+        "/uwb/received": 5603,
+        "/mavros/local_position/odom": 2100,
+        "/mavros/timesync_status": 700,
+        "/mavros/downward_0": 689,
+        "/mavros/extended_state": 350,
+        "/mavros/state": 70
+      },
+      "height_m": {
+        "n": 1872,
+        "mean": 0.8173681198826306,
+        "min": 0.15,
+        "max": 0.8392427214459695
+      },
+      "B4_fit_rms_m": {
+        "n": 1856,
+        "mean": 0.01839975598479971,
+        "min": 0.006398600021488974,
+        "max": 0.024758566287904564
+      },
+      "best_B3_physical_rms_m": null,
+      "approved_pose_physical_rms_m": {
+        "n": 1856,
+        "mean": 0.08224625121098533,
+        "min": 0.010682012715014648,
+        "max": 0.12113340188210306
+      },
+      "approved_measured_height_physical_rms_m": {
+        "n": 1740,
+        "mean": 0.08362490646411821,
+        "min": 0.0566210497522899,
+        "max": 0.12113340188210306
+      },
+      "approved_measured_height_physical_rms_ge_6cm": 1733,
+      "approved_pose_range_residual_by_anchor_m": [
+        {
+          "n": 1856,
+          "mean": -0.08965201364269551,
+          "min": -0.15873020976678553,
+          "max": -0.0011677739119635433
+        },
+        {
+          "n": 1856,
+          "mean": -0.06768610254446955,
+          "min": -0.11078658709427458,
+          "max": 0.02713815552112564
+        },
+        {
+          "n": 1856,
+          "mean": -0.0775059949350898,
+          "min": -0.12181747899167927,
+          "max": 0.031745161111750964
+        },
+        {
+          "n": 1856,
+          "mean": -0.08706971210940084,
+          "min": -0.18336658659272675,
+          "max": 0.007099280287939269
+        }
+      ],
+      "height_sources": {
+        "measured_tof_imu": 1755,
+        "not_reached": 525,
+        "ground_antenna_reference": 117
+      },
+      "approved_height_sources": {
+        "measured_tof_imu": 1740,
+        "ground_antenna_reference": 116
+      },
+      "selected_tof_age_s": {
+        "n": 7424,
+        "mean": 0.050948699988954745,
+        "min": 3.6671e-05,
+        "max": 0.105141379
+      },
+      "height_ready": 1872,
+      "height_selection_reasons": {
+        "ok": 7362,
+        "ground_antenna_reference": 126
+      },
+      "sources": {
+        "unchanged_B4": 1856,
+        "not_reached": 525,
+        "rejected": 16
+      },
+      "initial_raw_guard": {
+        "config": {
+          "max_speed_m_s": 1.0,
+          "jump_margin_m": 0.1,
+          "acquire_s": 0.25,
+          "recover_s": 0.15,
+          "max_gap_s": 0.25
+        },
+        "last_seen": 1791624885588724343,
+        "prior_stamp": 1791624885588724343,
+        "prior_xy": [
+          2.9680929220290984,
+          2.4224157462028977
+        ],
+        "stable_since": 1791624881588934798,
+        "ever_accepted": true
+      },
+      "final_raw_guard": {
+        "config": {
+          "max_speed_m_s": 1.0,
+          "jump_margin_m": 0.1,
+          "acquire_s": 0.25,
+          "recover_s": 0.15,
+          "max_gap_s": 0.25
+        },
+        "last_seen": 1791624945588685340,
+        "prior_stamp": 1791624945588685340,
+        "prior_xy": [
+          2.9520125086904754,
+          2.405048962423913
+        ],
+        "stable_since": 1791624881588934798,
+        "ever_accepted": true
+      },
+      "decision_digest": "6fd052249e69e3c15e2f7257e97fee7788b8432df7bc6956cb37cc8f3d1123d7",
+      "examples": {
+        "original_fit_consistent": {
+          "schema": 1,
+          "source": "measured_uwb_btf",
+          "truth_used": false,
+          "external_output_allowed": false,
+          "flight_valid": false,
+          "timestamp_calibrated": false,
+          "ok": true,
+          "tdma_verified": true,
+          "tdma": {
+            "type": "uwb_tdma_epoch",
+            "schema": 1,
+            "tag_id": "6",
+            "boot_id": 2434882331,
+            "session": 1809355187,
+            "sf_seq": 195415,
+            "seq": 195201,
+            "schedule_id": 16385,
+            "start_offset_us": 12553,
+            "end_offset_us": 22142,
+            "deadline_valid": true,
+            "local_overrun": false,
+            "epoch_span_us": 7070,
+            "exchange_us": [
+              2376,
+              2295,
+              2270,
+              2255
+            ],
+            "deadline_skips": 0,
+            "response_timeouts": 8369,
+            "report_timeouts": 6166,
+            "rejected_sync": 0,
+            "log_drops": 0,
+            "poll_prepare_us": 144,
+            "xy_quality_valid": true,
+            "xy_quality_reason": "consistent",
+            "xy_pair_residual_m": 0.048867
+          },
+          "seq": 195201,
+          "seq_gap": 0,
+          "source_cycle_end_us": 5644574720,
+          "sample_time_us": [
+            5644567430,
+            5644569830,
+            5644572165,
+            5644574500
+          ],
+          "raw_slant_m": [
+            3.77183,
+            4.12563,
+            3.67507,
+            3.95297
+          ],
+          "clock": {
+            "state": "ok",
+            "reason": "ok",
+            "alpha": 1.0,
+            "residual_p95_s": 0.000660156,
+            "samples": 147,
+            "span_s": 4.99998099,
+            "scale_tolerance": 0.001,
+            "residual_p95_max_s": 0.05,
+            "fixed_delay_calibrated": false
+          },
+          "queue_age_s": 0.00022206399989954662,
+          "reason": "original_fit_consistent",
+          "xy_m": [
+            2.967465881042995,
+            2.416410035608155
+          ],
+          "xyz_m": [
+            2.967465881042995,
+            2.416410035608155,
+            0.8392344539007369
+          ],
+          "height_source": "measured_tof_imu",
+          "stamp_ns": 1791624885613773479,
+          "time_us": 5644574500,
+          "cal_slant_m": [
+            3.77183,
+            4.12563,
+            3.67507,
+            3.95297
+          ],
+          "height_m": 0.8392344539007369,
+          "height_selection": [
+            {
+              "tof_stamp_ns": 1791624885532040448,
+              "range_m": 0.6899999976158142,
+              "tof_age_s": 0.074663031,
+              "imu_stamp_ns": 1791624885526034560,
+              "attitude_skew_s": 0.006005888,
+              "reason": "ok"
+            },
+            {
+              "tof_stamp_ns": 1791624885532040448,
+              "range_m": 0.6899999976158142,
+              "tof_age_s": 0.077063031,
+              "imu_stamp_ns": 1791624885526034560,
+              "attitude_skew_s": 0.006005888,
+              "reason": "ok"
+            },
+            {
+              "tof_stamp_ns": 1791624885532040448,
+              "range_m": 0.6899999976158142,
+              "tof_age_s": 0.079398031,
+              "imu_stamp_ns": 1791624885526034560,
+              "attitude_skew_s": 0.006005888,
+              "reason": "ok"
+            },
+            {
+              "tof_stamp_ns": 1791624885532040448,
+              "range_m": 0.6899999976158142,
+              "tof_age_s": 0.081733031,
+              "imu_stamp_ns": 1791624885526034560,
+              "attitude_skew_s": 0.006005888,
+              "reason": "ok"
+            }
+          ],
+          "height_ready": true,
+          "models": {
+            "B": {
+              "ok": true,
+              "reason": "ok",
+              "xy_m": [
+                2.967465881042995,
+                2.416410035608155
+              ],
+              "velocity_m_s": [
+                -0.020870663791008524,
+                -0.01179439525386765
+              ],
+              "window_count": 100,
+              "counts": [
+                25,
+                25,
+                25,
+                25
+              ],
+              "fit": {
+                "ok": true,
+                "reason": "ok",
+                "t_ref_s": 0.0,
+                "x0": 2.967465881042995,
+                "y0": 2.416410035608155,
+                "x1": -0.01669653103280682,
+                "y1": -0.009435516203094121,
+                "rms_m": 0.020050004200603933,
+                "max_m": 0.05480993842486104,
+                "condition": 26.23254561000867,
+                "n": 100,
+                "mask": 15,
+                "counts": [
+                  25,
+                  25,
+                  25,
+                  25
+                ],
+                "iterations": 1,
+                "rank": 7,
+                "coefficients": [
+                  2.967465881042995,
+                  2.416410035608155,
+                  -0.01669653103280682,
+                  -0.009435516203094121,
+                  14.506496906720052,
+                  -0.05770371899296395,
+                  0.07967814809124076
+                ],
+                "converged": true
+              },
+              "reset_reason": null,
+              "fresh_observation_count": 4,
+              "excluded": {},
+              "obs_ids": [
+                "195170:A1",
+                "195170:A2",
+                "195170:A3",
+                "195170:A4",
+                "195172:A1",
+                "195172:A2",
+                "195172:A3",
+                "195172:A4",
+                "195177:A1",
+                "195177:A2",
+                "195177:A3",
+                "195177:A4",
+                "195178:A1",
+                "195178:A2",
+                "195178:A3",
+                "195178:A4",
+                "195179:A1",
+                "195179:A2",
+                "195179:A3",
+                "195179:A4",
+                "195180:A1",
+                "195180:A2",
+                "195180:A3",
+                "195180:A4",
+                "195181:A1",
+                "195181:A2",
+                "195181:A3",
+                "195181:A4",
+                "195182:A1",
+                "195182:A2",
+                "195182:A3",
+                "195182:A4",
+                "195183:A1",
+                "195183:A2",
+                "195183:A3",
+                "195183:A4",
+                "195184:A1",
+                "195184:A2",
+                "195184:A3",
+                "195184:A4",
+                "195186:A1",
+                "195186:A2",
+                "195186:A3",
+                "195186:A4",
+                "195187:A1",
+                "195187:A2",
+                "195187:A3",
+                "195187:A4",
+                "195188:A1",
+                "195188:A2",
+                "195188:A3",
+                "195188:A4",
+                "195190:A1",
+                "195190:A2",
+                "195190:A3",
+                "195190:A4",
+                "195191:A1",
+                "195191:A2",
+                "195191:A3",
+                "195191:A4",
+                "195192:A1",
+                "195192:A2",
+                "195192:A3",
+                "195192:A4",
+                "195193:A1",
+                "195193:A2",
+                "195193:A3",
+                "195193:A4",
+                "195194:A1",
+                "195194:A2",
+                "195194:A3",
+                "195194:A4",
+                "195195:A1",
+                "195195:A2",
+                "195195:A3",
+                "195195:A4",
+                "195196:A1",
+                "195196:A2",
+                "195196:A3",
+                "195196:A4",
+                "195197:A1",
+                "195197:A2",
+                "195197:A3",
+                "195197:A4",
+                "195198:A1",
+                "195198:A2",
+                "195198:A3",
+                "195198:A4",
+                "195199:A1",
+                "195199:A2",
+                "195199:A3",
+                "195199:A4",
+                "195200:A1",
+                "195200:A2",
+                "195200:A3",
+                "195200:A4",
+                "195201:A1",
+                "195201:A2",
+                "195201:A3",
+                "195201:A4"
+              ],
+              "anchor_age_s": [
+                0.00707,
+                0.00467,
+                0.002335,
+                0.0
+              ],
+              "segment_age_s": 2.600008,
+              "full_window_elapsed": true,
+              "oldest_sample_us": 5643792300,
+              "newest_sample_us": 5644574500
+            },
+            "B_TF": {
+              "ok": true,
+              "xy_m": [
+                2.967465881042995,
+                2.416410035608155
+              ],
+              "source": "unchanged_B4",
+              "reason": "original_fit_consistent",
+              "hypotheses": [],
+              "truth_used": false,
+              "ground_initialization": {
+                "ready": false,
+                "reason": "ground_unique_subset_required"
+              },
+              "tracking_prior_age_s": 0.02505
+            }
+          },
+          "clock_alpha": 1.0,
+          "receive_age_s": 0.000442064,
+          "report_span_s": 0.00707,
+          "layout_id": "warehouse-rectangle-6p3x4p6-z0p15-20261007",
+          "position_reference": "uwb_antenna",
+          "processing_ms": 3.486655999950017,
+          "published": true,
+          "publish_age_s": 0.006686107,
+          "ground_xy_without_measured_height": false
+        },
+        "tdma_deadline_rejected": {
+          "schema": 1,
+          "source": "measured_uwb_btf",
+          "truth_used": false,
+          "external_output_allowed": false,
+          "flight_valid": false,
+          "timestamp_calibrated": false,
+          "ok": false,
+          "reason": "tdma_deadline_rejected",
+          "processing_ms": 0.08169800003088312,
+          "published": false
+        },
+        "B_not_fresh_valid": {
+          "schema": 1,
+          "source": "measured_uwb_btf",
+          "truth_used": false,
+          "external_output_allowed": false,
+          "flight_valid": false,
+          "timestamp_calibrated": false,
+          "ok": false,
+          "tdma_verified": true,
+          "tdma": {
+            "type": "uwb_tdma_epoch",
+            "schema": 1,
+            "tag_id": "6",
+            "boot_id": 2434882331,
+            "session": 1809355187,
+            "sf_seq": 195507,
+            "seq": 195293,
+            "schedule_id": 16385,
+            "start_offset_us": 12576,
+            "end_offset_us": 21998,
+            "deadline_valid": true,
+            "local_overrun": false,
+            "epoch_span_us": 6941,
+            "exchange_us": [
+              2325,
+              2259,
+              2251,
+              2183
+            ],
+            "deadline_skips": 0,
+            "response_timeouts": 8382,
+            "report_timeouts": 6186,
+            "rejected_sync": 0,
+            "log_drops": 0,
+            "poll_prepare_us": 144,
+            "xy_quality_valid": true,
+            "xy_quality_reason": "consistent",
+            "xy_pair_residual_m": 0.016588
+          },
+          "seq": 195293,
+          "seq_gap": 7,
+          "source_cycle_end_us": 5646874579,
+          "sample_time_us": [
+            5646867419,
+            5646869775,
+            5646872098,
+            5646874360
+          ],
+          "raw_slant_m": [
+            3.79202,
+            4.09809,
+            3.67001,
+            3.95664
+          ],
+          "clock": {
+            "state": "ok",
+            "reason": "ok",
+            "alpha": 1.0000013294709562,
+            "residual_p95_s": 0.0006782617720159051,
+            "samples": 217,
+            "span_s": 7.299980107,
+            "scale_tolerance": 0.001,
+            "residual_p95_max_s": 0.05,
+            "fixed_delay_calibrated": false
+          },
+          "queue_age_s": 0.0003560656905392534,
+          "reason": "B_not_fresh_valid",
+          "xy_m": null,
+          "xyz_m": null,
+          "height_source": "measured_tof_imu",
+          "stamp_ns": 1791624887913639050,
+          "time_us": 5646874360,
+          "cal_slant_m": [
+            3.79202,
+            4.09809,
+            3.67001,
+            3.95664
+          ],
+          "height_m": 0.8392344965586426,
+          "height_selection": [
+            {
+              "tof_stamp_ns": 1791624887866154368,
+              "range_m": 0.6899999976158142,
+              "tof_age_s": 0.040543673,
+              "imu_stamp_ns": 1791624887857154368,
+              "attitude_skew_s": 0.009,
+              "reason": "ok"
+            },
+            {
+              "tof_stamp_ns": 1791624887866154368,
+              "range_m": 0.6899999976158142,
+              "tof_age_s": 0.042899676,
+              "imu_stamp_ns": 1791624887857154368,
+              "attitude_skew_s": 0.009,
+              "reason": "ok"
+            },
+            {
+              "tof_stamp_ns": 1791624887866154368,
+              "range_m": 0.6899999976158142,
+              "tof_age_s": 0.045222679,
+              "imu_stamp_ns": 1791624887857154368,
+              "attitude_skew_s": 0.009,
+              "reason": "ok"
+            },
+            {
+              "tof_stamp_ns": 1791624887866154368,
+              "range_m": 0.6899999976158142,
+              "tof_age_s": 0.047484682,
+              "imu_stamp_ns": 1791624887857154368,
+              "attitude_skew_s": 0.009,
+              "reason": "ok"
+            }
+          ],
+          "height_ready": true,
+          "models": {
+            "B": {
+              "ok": false,
+              "reason": "insufficient_anchors",
+              "xy_m": null,
+              "velocity_m_s": null,
+              "window_count": 4,
+              "counts": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "fit": null,
+              "reset_reason": "gap",
+              "fresh_observation_count": 4,
+              "excluded": {},
+              "obs_ids": [
+                "195293:A1",
+                "195293:A2",
+                "195293:A3",
+                "195293:A4"
+              ],
+              "anchor_age_s": [
+                0.006941,
+                0.004585,
+                0.002262,
+                0.0
+              ],
+              "segment_age_s": 0.0,
+              "full_window_elapsed": false,
+              "oldest_sample_us": 5646867419,
+              "newest_sample_us": 5646874360
+            },
+            "B_TF": {
+              "ok": false,
+              "xy_m": null,
+              "source": "rejected",
+              "reason": "B_not_fresh_valid",
+              "hypotheses": [],
+              "truth_used": false,
+              "ground_initialization": {
+                "ready": false,
+                "reason": "ground_unique_subset_required"
+              },
+              "tracking_prior_age_s": null
+            }
+          },
+          "clock_alpha": 1.0000013294709562,
+          "receive_age_s": 0.000575066,
+          "report_span_s": 0.006941,
+          "layout_id": "warehouse-rectangle-6p3x4p6-z0p15-20261007",
+          "position_reference": "uwb_antenna",
+          "processing_ms": 2.942224999969767,
+          "published": false
+        }
+      }
+    },
+    {
+      "scenario": "previous_x1m_prior",
+      "decisions": 2397,
+      "reasons": {
+        "observation_jump_quarantined": 1872,
+        "tdma_deadline_rejected": 525
+      },
+      "published": {
+        "decision": 2397
+      },
+      "input_counts": {
+        "/mavros/imu/data": 7000,
+        "/uwb/received": 5603,
+        "/mavros/local_position/odom": 2100,
+        "/mavros/timesync_status": 700,
+        "/mavros/downward_0": 689,
+        "/mavros/extended_state": 350,
+        "/mavros/state": 70
+      },
+      "height_m": null,
+      "B4_fit_rms_m": null,
+      "best_B3_physical_rms_m": null,
+      "approved_pose_physical_rms_m": null,
+      "approved_measured_height_physical_rms_m": null,
+      "approved_measured_height_physical_rms_ge_6cm": 0,
+      "approved_pose_range_residual_by_anchor_m": [
+        null,
+        null,
+        null,
+        null
+      ],
+      "height_sources": {
+        "not_reached": 2397
+      },
+      "approved_height_sources": {},
+      "selected_tof_age_s": null,
+      "height_ready": 0,
+      "height_selection_reasons": {},
+      "sources": {
+        "not_reached": 2397
+      },
+      "initial_raw_guard": {
+        "config": {
+          "max_speed_m_s": 1.0,
+          "jump_margin_m": 0.1,
+          "acquire_s": 0.25,
+          "recover_s": 0.15,
+          "max_gap_s": 0.25
+        },
+        "last_seen": 1791624884599758861,
+        "prior_stamp": 1791624884599758861,
+        "prior_xy": [
+          4.117692640136927,
+          2.330914612751391
+        ],
+        "stable_since": null,
+        "ever_accepted": true
+      },
+      "final_raw_guard": {
+        "config": {
+          "max_speed_m_s": 1.0,
+          "jump_margin_m": 0.1,
+          "acquire_s": 0.25,
+          "recover_s": 0.15,
+          "max_gap_s": 0.25
+        },
+        "last_seen": 1791624945588685340,
+        "prior_stamp": 1791624884599758861,
+        "prior_xy": [
+          4.117692640136927,
+          2.330914612751391
+        ],
+        "stable_since": null,
+        "ever_accepted": true
+      },
+      "decision_digest": "ecd24d6895be8c81c104a635d550b5cd2145b304f69b7f8feb89dd65fe65ebdc",
+      "examples": {
+        "observation_jump_quarantined": {
+          "schema": 1,
+          "source": "measured_uwb_btf",
+          "truth_used": false,
+          "external_output_allowed": false,
+          "flight_valid": false,
+          "timestamp_calibrated": false,
+          "ok": false,
+          "tdma_verified": true,
+          "tdma": {
+            "type": "uwb_tdma_epoch",
+            "schema": 1,
+            "tag_id": "6",
+            "boot_id": 2434882331,
+            "session": 1809355187,
+            "sf_seq": 195415,
+            "seq": 195201,
+            "schedule_id": 16385,
+            "start_offset_us": 12553,
+            "end_offset_us": 22142,
+            "deadline_valid": true,
+            "local_overrun": false,
+            "epoch_span_us": 7070,
+            "exchange_us": [
+              2376,
+              2295,
+              2270,
+              2255
+            ],
+            "deadline_skips": 0,
+            "response_timeouts": 8369,
+            "report_timeouts": 6166,
+            "rejected_sync": 0,
+            "log_drops": 0,
+            "poll_prepare_us": 144,
+            "xy_quality_valid": true,
+            "xy_quality_reason": "consistent",
+            "xy_pair_residual_m": 0.048867
+          },
+          "seq": 195201,
+          "seq_gap": 0,
+          "source_cycle_end_us": 5644574720,
+          "sample_time_us": [
+            5644567430,
+            5644569830,
+            5644572165,
+            5644574500
+          ],
+          "raw_slant_m": [
+            3.77183,
+            4.12563,
+            3.67507,
+            3.95297
+          ],
+          "clock": {
+            "state": "ok",
+            "reason": "ok",
+            "alpha": 1.0,
+            "residual_p95_s": 0.000660156,
+            "samples": 147,
+            "span_s": 4.99998099,
+            "scale_tolerance": 0.001,
+            "residual_p95_max_s": 0.05,
+            "fixed_delay_calibrated": false
+          },
+          "queue_age_s": 0.00022206399989954662,
+          "reason": "observation_jump_quarantined",
+          "stamp_ns": 1791624885613773479,
+          "raw_xy_m": [
+            2.9460826716402106,
+            2.402752723333333
+          ],
+          "processing_ms": 1.7818090000218945,
+          "published": false
+        },
+        "tdma_deadline_rejected": {
+          "schema": 1,
+          "source": "measured_uwb_btf",
+          "truth_used": false,
+          "external_output_allowed": false,
+          "flight_valid": false,
+          "timestamp_calibrated": false,
+          "ok": false,
+          "reason": "tdma_deadline_rejected",
+          "processing_ms": 0.07619400003022747,
+          "published": false
+        }
+      }
+    },
+    {
+      "scenario": "previous_x1m_then_models_reset",
+      "decisions": 2397,
+      "reasons": {
+        "observation_jump_quarantined": 1872,
+        "tdma_deadline_rejected": 525
+      },
+      "published": {
+        "decision": 2397
+      },
+      "input_counts": {
+        "/mavros/imu/data": 7000,
+        "/uwb/received": 5603,
+        "/mavros/local_position/odom": 2100,
+        "/mavros/timesync_status": 700,
+        "/mavros/downward_0": 689,
+        "/mavros/extended_state": 350,
+        "/mavros/state": 70
+      },
+      "height_m": null,
+      "B4_fit_rms_m": null,
+      "best_B3_physical_rms_m": null,
+      "approved_pose_physical_rms_m": null,
+      "approved_measured_height_physical_rms_m": null,
+      "approved_measured_height_physical_rms_ge_6cm": 0,
+      "approved_pose_range_residual_by_anchor_m": [
+        null,
+        null,
+        null,
+        null
+      ],
+      "height_sources": {
+        "not_reached": 2397
+      },
+      "approved_height_sources": {},
+      "selected_tof_age_s": null,
+      "height_ready": 0,
+      "height_selection_reasons": {},
+      "sources": {
+        "not_reached": 2397
+      },
+      "initial_raw_guard": {
+        "config": {
+          "max_speed_m_s": 1.0,
+          "jump_margin_m": 0.1,
+          "acquire_s": 0.25,
+          "recover_s": 0.15,
+          "max_gap_s": 0.25
+        },
+        "last_seen": 1791624884599758861,
+        "prior_stamp": 1791624884599758861,
+        "prior_xy": [
+          4.117692640136927,
+          2.330914612751391
+        ],
+        "stable_since": null,
+        "ever_accepted": true
+      },
+      "final_raw_guard": {
+        "config": {
+          "max_speed_m_s": 1.0,
+          "jump_margin_m": 0.1,
+          "acquire_s": 0.25,
+          "recover_s": 0.15,
+          "max_gap_s": 0.25
+        },
+        "last_seen": 1791624945588685340,
+        "prior_stamp": 1791624884599758861,
+        "prior_xy": [
+          4.117692640136927,
+          2.330914612751391
+        ],
+        "stable_since": null,
+        "ever_accepted": true
+      },
+      "decision_digest": "ecd24d6895be8c81c104a635d550b5cd2145b304f69b7f8feb89dd65fe65ebdc",
+      "examples": {
+        "observation_jump_quarantined": {
+          "schema": 1,
+          "source": "measured_uwb_btf",
+          "truth_used": false,
+          "external_output_allowed": false,
+          "flight_valid": false,
+          "timestamp_calibrated": false,
+          "ok": false,
+          "tdma_verified": true,
+          "tdma": {
+            "type": "uwb_tdma_epoch",
+            "schema": 1,
+            "tag_id": "6",
+            "boot_id": 2434882331,
+            "session": 1809355187,
+            "sf_seq": 195415,
+            "seq": 195201,
+            "schedule_id": 16385,
+            "start_offset_us": 12553,
+            "end_offset_us": 22142,
+            "deadline_valid": true,
+            "local_overrun": false,
+            "epoch_span_us": 7070,
+            "exchange_us": [
+              2376,
+              2295,
+              2270,
+              2255
+            ],
+            "deadline_skips": 0,
+            "response_timeouts": 8369,
+            "report_timeouts": 6166,
+            "rejected_sync": 0,
+            "log_drops": 0,
+            "poll_prepare_us": 144,
+            "xy_quality_valid": true,
+            "xy_quality_reason": "consistent",
+            "xy_pair_residual_m": 0.048867
+          },
+          "seq": 195201,
+          "seq_gap": 0,
+          "source_cycle_end_us": 5644574720,
+          "sample_time_us": [
+            5644567430,
+            5644569830,
+            5644572165,
+            5644574500
+          ],
+          "raw_slant_m": [
+            3.77183,
+            4.12563,
+            3.67507,
+            3.95297
+          ],
+          "clock": {
+            "state": "ok",
+            "reason": "ok",
+            "alpha": 1.0,
+            "residual_p95_s": 0.000660156,
+            "samples": 147,
+            "span_s": 4.99998099,
+            "scale_tolerance": 0.001,
+            "residual_p95_max_s": 0.05,
+            "fixed_delay_calibrated": false
+          },
+          "queue_age_s": 0.00022206399989954662,
+          "reason": "observation_jump_quarantined",
+          "stamp_ns": 1791624885613773479,
+          "raw_xy_m": [
+            2.9460826716402106,
+            2.402752723333333
+          ],
+          "processing_ms": 1.5417380000144476,
+          "published": false
+        },
+        "tdma_deadline_rejected": {
+          "schema": 1,
+          "source": "measured_uwb_btf",
+          "truth_used": false,
+          "external_output_allowed": false,
+          "flight_valid": false,
+          "timestamp_calibrated": false,
+          "ok": false,
+          "reason": "tdma_deadline_rejected",
+          "processing_ms": 0.0780180007495801,
+          "published": false
+        }
+      }
+    }
+  ],
+  "limitations": [
+    "Recorder callback order/timestamps approximate BtfNode delivery; exact live callback schedule was not recorded.",
+    "Previous-X prior is a controlled history intervention using measured previous station mean; it is not recovered live process memory.",
+    "Pose publishing is simulated into counters; no ROS node, socket, serial or flight command is created."
+  ]
+}
