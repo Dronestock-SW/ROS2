@@ -79,6 +79,7 @@ Windows에서는 심볼릭 링크를 지원하는 WSL 체크아웃을 쓴다.
 
 설계 판단은 로드맵을 먼저 따른다.
 반복 진단 변경은 [DDS 식별자 기록](report/uwb_diagnostic_identity_20261011.md)을 읽는다.
+10월11일 비행은 [Position 두 축 왕복 기록](report/uwb_position_roundtrip_20261011.md)을 읽는다.
 
 | 문서 | 읽는 때 |
 |---|---|

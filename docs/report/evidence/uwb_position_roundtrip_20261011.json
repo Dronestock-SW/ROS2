@@ -1,0 +1,1281 @@
+{
+  "schema": 1,
+  "date": "2026-10-11",
+  "timezone": "Asia/Seoul",
+  "scope": "operator_report_and_readonly_checks",
+  "operator_report": {
+    "sequence": [
+      "initial_stationary",
+      "+Y_1m",
+      "return_to_initial",
+      "stationary_20s",
+      "+X_1m",
+      "return_to_initial",
+      "land_disarm"
+    ],
+    "initial_report_final_stationary_s": 20,
+    "final_stationary_reconfirmed_after_return": false,
+    "movement_duration_s": null,
+    "flight_height_m": null,
+    "exact_start_time": null,
+    "independent_reference_verified": false
+  },
+  "interpretation": "jump_protection_triggered_transmission_stopped_appropriateness_undetermined",
+  "flight_continuous_ev_fusion_verified": false,
+  "fc_parameter_writes_this_recovery": false,
+  "agent_arm_takeoff_mode_commands": false,
+  "preflight": {
+    "checked_at_utc": "2026-10-11T08:23:24.803369+00:00",
+    "host": "user-desktop",
+    "fc_parameter_writes": false,
+    "flight_commands": false,
+    "profile": "position-ready",
+    "initial_state": {
+      "connected": true,
+      "armed": false,
+      "mode": "POSCTL"
+    },
+    "finished_at_utc": "2026-10-11T08:23:29.820799+00:00",
+    "queries": [
+      {
+        "command": "listener vehicle_status -n 1",
+        "complete": true,
+        "read_at_utc": "2026-10-11T08:23:28.828860+00:00",
+        "response": "listener vehicle_status -n 1\n\nTOPIC: vehicle_status\n vehicle_status\n    timestamp: 1302810921 (0.244767 seconds ago)\n    armed_time: 0\n    takeoff_time: 0\n    nav_state_timestamp: 3831853\n    valid_nav_states_mask: 2147411327\n    can_set_nav_states_mask: 8308095\n    failure_detector_status: 0\n    arming_state: 1\n    latest_arming_reason: 0\n    latest_disarming_reason: 0\n    nav_state_user_intention: 2\n    nav_state: 2\n    executor_in_charge: 0\n    hil_state: 0\n    vehicle_type: 1\n    failsafe: False\n    failsafe_and_user_took_over: False\n    failsafe_defer_state: 0\n    gcs_connection_lost: True\n    gcs_connection_lost_counter: 0\n    high_latency_data_link_lost: False\n    is_vtol: False\n    is_vtol_tailsitter: False\n    in_transition_mode: False\n    in_transition_to_fw: False\n    system_type: 2\n    system_id: 1\n    component_id: 1\n    safety_button_available: True\n    safety_off: True\n    power_input_valid: True\n    usb_connected: True\n    open_drone_id_system_present: False\n    open_drone_id_system_healthy: False\n    parachute_system_present: False\n    parachute_system_healthy: False\n    rc_calibration_in_progress: False\n    calibration_enabled: False\n    pre_flight_checks_pass: False\n\nnsh> "
+      },
+      {
+        "command": "listener health_report -n 1",
+        "complete": true,
+        "read_at_utc": "2026-10-11T08:23:28.860856+00:00",
+        "response": "listener health_report -n 1\n\nTOPIC: health_report\n health_report\n    timestamp: 1202735716 (100.379494 seconds ago)\n    can_arm_mode_flags: 0\n    can_run_mode_flags: 8372167 (0b111'1111'1011'1111'1100'0111)\n    health_is_present_flags: 939658370 (0b11'1000'0000'0010'0000'1100'1000'0010)\n    health_warning_flags: 0\n    health_error_flags: 0\n    arming_check_warning_flags: 0\n    arming_check_error_flags: 17825920 (0b1'0001'0000'0000'0000'1000'0000)\nnsh> "
+      },
+      {
+        "command": "listener manual_control_switches -n 1",
+        "complete": true,
+        "read_at_utc": "2026-10-11T08:23:28.978526+00:00",
+        "response": "listener manual_control_switches -n 1\n\nTOPIC: manual_control_switches\n manual_control_switches\n    timestamp: 1302346540 (0.887298 seconds ago)\n    timestamp_sample: 1302326358 (20182 us before timestamp)\n    switch_changes: 1\n    mode_slot: 4\n    arm_switch: 3\n    return_switch: 0\n    loiter_switch: 0\n    offboard_switch: 0\n    kill_switch: 1\n    termination_switch: 0\n    gear_switch: 0\n    transition_switch: 0\n    photo_switch: 0\n    video_switch: 0\n    engage_main_motor_switch: 0\n    payload_power_switch: 0\n\nnsh> "
+      },
+      {
+        "command": "listener estimator_aid_src_ev_pos -n 1",
+        "complete": true,
+        "read_at_utc": "2026-10-11T08:23:29.423294+00:00",
+        "response": "listener estimator_aid_src_ev_pos -n 1\n\nTOPIC: estimator_aid_src_ev_pos 2 instances\n\nInstance 0:\n estimator_aid_src_ev_pos\n    timestamp: 1303609530 (0.020370 seconds ago)\n    timestamp_sample: 1303416154 (193376 us before timestamp)\n    time_last_fuse: 1303416607\n    observation: [-1.976644, -3.362740]\n    device_id: 0 (Type: 0x00, UNKNOWN:0 (0x00))\n    observation_variance: [0.09000, 0.09000]\n    innovation: [-0.00330, -0.00693]\n    innovation_filtered: [-0.00364, -0.00058]\n    innovation_variance: [0.09292, 0.09292]\n    test_ratio: [0.00000, 0.00002]\n    test_ratio_filtered: [-0.00001, -0.00000]\n    estimator_instance: 0\n    innovation_rejected: False\n    fused: True\n\n\nInstance 1:\n estimator_aid_src_ev_pos\n    timestamp: 1303655749 (0.009118 seconds ago)\n    timestamp_sample: 1303466191 (189558 us before timestamp)\n    time_last_fuse: 1303466436\n    observation: [-1.980158, -3.360634]\n    device_id: 0 (Type: 0x00, UNKNOWN:0 (0x00))\n    observation_variance: [0.09000, 0.09000]\n    innovation: [0.00127, -0.00690]\n    innovation_filtered: [-0.00232, 0.00053]\n    innovation_variance: [0.09297, 0.09297]\n    test_ratio: [0.00000, 0.00002]\n    test_ratio_filtered: [-0.00000, 0.00000]\n    estimator_instance: 1\n    innovation_rejected: False\n    fused: True\n\nnsh> "
+      },
+      {
+        "command": "listener vehicle_local_position -n 1",
+        "complete": true,
+        "read_at_utc": "2026-10-11T08:23:29.733800+00:00",
+        "response": "listener vehicle_local_position -n 1\n\nTOPIC: vehicle_local_position\n vehicle_local_position\n    timestamp: 1303950488 (0.008346 seconds ago)\n    timestamp_sample: 1303950033 (455 us before timestamp)\n    ref_timestamp: 0\n    ref_lat: nan\n    ref_lon: nan\n    x: -1.97861\n    y: -3.37229\n    z: 0.11624\n    delta_xy: [0.00363, -0.00388]\n    delta_z: 0.09185\n    vx: 0.00372\n    vy: -0.00676\n    vz: 0.00201\n    z_deriv: 0.00271\n    delta_vxy: [0.00323, 0.00342]\n    delta_vz: -0.02058\n    ax: 0.03806\n    ay: 0.08326\n    az: -0.06476\n    heading: 1.93385\n    heading_var: 0.00039\n    unaided_heading: -0.09431\n    delta_heading: 0.14626\n    tilt_var: 0.00003\n    ref_alt: nan\n    dist_bottom: 0.02012\n    dist_bottom_var: 0.00053\n    delta_dist_bottom: -18.35025\n    eph: 0.07715\n    epv: 0.04634\n    evh: 0.08055\n    evv: 0.04033\n    vxy_max: inf\n    vz_max: inf\n    hagl_min: inf\n    hagl_max_z: inf\n    hagl_max_xy: inf\n    xy_valid: True\n    z_valid: True\n    v_xy_valid: True\n    v_z_valid: True\n    xy_reset_counter: 13\n    z_reset_counter: 4\n    vxy_reset_counter: 11\n    vz_reset_counter: 3\n    heading_reset_counter: 3\n    heading_good_for_control: False\n    xy_global: False\n    z_global: False\n    dist_bottom_valid: True\n    dist_bottom_reset_counter: 4\n    dist_bottom_sensor_bitfield: 1\n    dead_reckoning: False\nnsh>"
+      },
+      {
+        "command": "logger status",
+        "complete": true,
+        "read_at_utc": "2026-10-11T08:23:29.758175+00:00",
+        "response": " logger status\nINFO  [logger] Running in mode: all\nINFO  [logger] Number of subscriptions: 179 (5728 bytes)\nINFO  [logger] Full File Logging Running:\nINFO  [logger] Log file: /fs/microsd/log/2026-10-10/15_40_18.ulg\nINFO  [logger] Wrote 47.60 MiB (avg 38.00 KiB/s)\nINFO  [logger] Since last status: dropouts: 0 (max len: 0.000 s), max used buffer: 6420 / 65536 B\nnsh> "
+      },
+      {
+        "command": "listener health_report -n 1",
+        "complete": true,
+        "read_at_utc": "2026-10-11T08:23:29.789076+00:00",
+        "response": "listener health_report -n 1\n\nTOPIC: health_report\n health_report\n    timestamp: 1202735716 (101.309532 seconds ago)\n    can_arm_mode_flags: 0\n    can_run_mode_flags: 8372167 (0b111'1111'1011'1111'1100'0111)\n    health_is_present_flags: 939658370 (0b11'1000'0000'0010'0000'1100'1000'0010)\n    health_warning_flags: 0\n    health_error_flags: 0\n    arming_check_warning_flags: 0\n    arming_check_error_flags: 17825920 (0b1'0001'0000'0000'0000'1000'0000)\nnsh> "
+      }
+    ]
+  },
+  "kill_off": {
+    "checked_at_utc": "2026-10-11T08:26:58.789374+00:00",
+    "host": "user-desktop",
+    "fc_parameter_writes": false,
+    "flight_commands": false,
+    "profile": "arming-causes",
+    "initial_state": {
+      "connected": true,
+      "armed": false,
+      "mode": "POSCTL"
+    },
+    "finished_at_utc": "2026-10-11T08:27:02.151804+00:00",
+    "queries": [
+      {
+        "command": "listener actuator_armed -n 1",
+        "complete": true,
+        "read_at_utc": "2026-10-11T08:27:01.678816+00:00",
+        "response": "listener actuator_armed -n 1\n\nTOPIC: actuator_armed\n actuator_armed\n    timestamp: 1515609650 (0.320563 seconds ago)\n    armed: False\n    prearmed: False\n    ready_to_arm: True\n    lockdown: False\n    kill: False\n    termination: False\n    in_esc_calibration_mode: False\n\nnsh> "
+      },
+      {
+        "command": "listener manual_control_switches -n 1",
+        "complete": true,
+        "read_at_utc": "2026-10-11T08:27:01.713136+00:00",
+        "response": "listener manual_control_switches -n 1\n\nTOPIC: manual_control_switches\n manual_control_switches\n    timestamp: 1515581888 (0.377985 seconds ago)\n    timestamp_sample: 1515561585 (20303 us before timestamp)\n    switch_changes: 2\n    mode_slot: 4\n    arm_switch: 3\n    return_switch: 0\n    loiter_switch: 0\n    offboard_switch: 0\n    kill_switch: 3\n    termination_switch: 0\n    gear_switch: 0\n    transition_switch: 0\n    photo_switch: 0\n    video_switch: 0\n    engage_main_motor_switch: 0\n    payload_power_switch: 0\n\nnsh> "
+      },
+      {
+        "command": "listener health_report -n 1",
+        "complete": true,
+        "read_at_utc": "2026-10-11T08:27:01.781019+00:00",
+        "response": "listener health_report -n 1\n\nTOPIC: health_report\n health_report\n    timestamp: 1512572920 (3.454354 seconds ago)\n    can_arm_mode_flags: 8372167 (0b111'1111'1011'1111'1100'0111)\n    can_run_mode_flags: 8372167 (0b111'1111'1011'1111'1100'0111)\n    health_is_present_flags: 939658370 (0b11'1000'0000'0010'0000'1100'1000'0010)\n    health_warning_flags: 0\n    health_error_flags: 0\n    arming_check_warning_flags: 0\n    arming_check_error_flags: 17825792 (0b1'0001'0000'0000'0000'0000'0000)\nnsh> "
+      },
+      {
+        "command": "listener vehicle_status -n 1",
+        "complete": true,
+        "read_at_utc": "2026-10-11T08:27:01.840700+00:00",
+        "response": "listener vehicle_status -n 1\n\nTOPIC: vehicle_status\n vehicle_status\n    timestamp: 1515609653 (0.451149 seconds ago)\n    armed_time: 0\n    takeoff_time: 0\n    nav_state_timestamp: 3831853\n    valid_nav_states_mask: 2147411327\n    can_set_nav_states_mask: 8308095\n    failure_detector_status: 0\n    arming_state: 1\n    latest_arming_reason: 0\n    latest_disarming_reason: 0\n    nav_state_user_intention: 2\n    nav_state: 2\n    executor_in_charge: 0\n    hil_state: 0\n    vehicle_type: 1\n    failsafe: False\n    failsafe_and_user_took_over: False\n    failsafe_defer_state: 0\n    gcs_connection_lost: True\n    gcs_connection_lost_counter: 0\n    high_latency_data_link_lost: False\n    is_vtol: False\n    is_vtol_tailsitter: False\n    in_transition_mode: False\n    in_transition_to_fw: False\n    system_type: 2\n    system_id: 1\n    component_id: 1\n    safety_button_available: True\n    safety_off: True\n    power_input_valid: True\n    usb_connected: True\n    open_drone_id_system_present: False\n    open_drone_id_system_healthy: False\n    parachute_system_present: False\n    parachute_system_healthy: False\n    rc_calibration_in_progress: False\n    calibration_enabled: False\n    pre_flight_checks_pass: True\n\nnsh> "
+      },
+      {
+        "command": "dmesg",
+        "complete": true,
+        "read_at_utc": "2026-10-11T08:27:02.041390+00:00",
+        "response": "dmesg\neflight Fail: Kill switch engaged\nWARN  [health_and_arming_checks] Preflight Fail: Flight termination active\nWARN  [health_and_arming_checks] Preflight Fail: Kill switch engaged\nWARN  [health_and_arming_checks] Preflight Fail: Flight termination active\nWARN  [health_and_arming_checks] Preflight Fail: horizontal position unstable\nWARN  [health_and_arming_checks] Preflight Fail: Kill switch engaged\nWARN  [health_and_arming_checks] Preflight Fail: Flight termination active\nWARN  [health_and_arming_checks] Preflight Fail: Kill switch engaged\nWARN  [health_and_arming_checks] Preflight Fail: Flight termination active\nWARN  [health_and_arming_checks] Preflight Fail: Kill switch engaged\nWARN  [health_and_arming_checks] Preflight Fail: Flight termination active\nWARN  [health_and_arming_checks] Preflight Fail: Kill switch engaged\nWARN  [health_and_arming_checks] Preflight Fail: Flight termination active\nWARN  [health_and_arming_checks] Preflight Fail: Kill switch engaged\nWARN  [health_and_arming_checks] Preflight Fail: Flight termination active\nWARN  [health_and_arming_checks] Preflight Fail: Kill switch engaged\nWARN  [health_and_arming_checks] Preflight Fail: Flight termination active\nWARN  [health_and_arming_checks] Preflight Fail: Kill switch engaged\nWARN  [health_and_arming_checks] Preflight Fail: Flight termination active\nINFO  [mavlink] Starting mavlink shell\nINFO  [mavlink] Stopping mavlink shell\nINFO  [mavlink] Starting mavlink shell\nINFO  [mavlink] Stopping mavlink shell\nWARN  [health_and_arming_checks] Preflight Fail: Kill switch engaged\nWARN  [health_and_arming_checks] Preflight Fail: Flight termination active\nWARN  [health_and_arming_checks] Preflight Fail: Kill switch engaged\nWARN  [health_and_arming_checks] Preflight Fail: Flight termination active\nINFO  [mavlink] Starting mavlink shell\nINFO  [mavlink] Stopping mavlink shell\nWARN  [health_and_arming_checks] Preflight Fail: Kill switch engaged\nWARN  [health_and_arming_checks] Preflight Fail: Flight termination active\nWARN  [health_and_arming_checks] Preflight Fail: Kill switch engaged\nWARN  [health_and_arming_checks] Preflight Fail: Flight termination active\nWARN  [health_and_arming_checks] Preflight Fail: Kill switch engaged\nWARN  [health_and_arming_checks] Preflight Fail: Flight termination active\nWARN  [health_and_arming_checks] Preflight Fail: Kill switch engaged\nWARN  [health_and_arming_checks] Preflight Fail: Flight termination active\nWARN  [health_and_arming_checks] Preflight Fail: Kill switch engaged\nWARN  [health_and_arming_checks] Preflight Fail: Flight termination active\nWARN  [health_and_arming_checks] Preflight Fail: Kill switch engaged\nWARN  [health_and_arming_checks] Preflight Fail: Flight termination active\nWARN  [health_and_arming_checks] Preflight Fail: Kill switch engaged\nWARN  [health_and_arming_checks] Preflight Fail: Flight termination active\nWARN  [health_and_arming_checks] Preflight Fail: Kill switch engaged\nWARN  [health_and_arming_checks] Preflight Fail: Flight termination active\nWARN  [health_and_arming_checks] Preflight Fail: Kill switch engaged\nWARN  [health_and_arming_checks] Preflight Fail: Flight termination active\nWARN  [health_and_arming_checks] Preflight Fail: Kill switch engaged\nWARN  [health_and_arming_checks] Preflight Fail: Flight termination active\nWARN  [health_and_arming_checks] Preflight Fail: Kill switch engaged\nWARN  [health_and_arming_checks] Preflight Fail: Flight termination active\nWARN  [health_and_arming_checks] Preflight Fail: Kill switch engaged\nWARN  [health_and_arming_checks] Preflight Fail: Flight termination active\nWARN  [health_and_arming_checks] Preflight Fail: Kill switch engaged\nWARN  [health_and_arming_checks] Preflight Fail: Flight termination active\nWARN  [health_and_arming_checks] Preflight Fail: Kill switch engaged\nWARN  [health_and_arming_checks] Preflight Fail: Flight termination active\nWARN  [health_and_arming_checks] Preflight Fail: Kill switch engaged\nWARN  [health_and_arming_checks] Preflight Fail: Flight termination active\nINFO  [commander] Kill disengaged\t\nINFO  [mavlink] Starting mavlink shell\nnsh> "
+      }
+    ]
+  },
+  "armed_guard": {
+    "checked_at_utc": "2026-10-11T08:29:37.156754+00:00",
+    "host": "user-desktop",
+    "queries": [],
+    "fc_parameter_writes": false,
+    "flight_commands": false,
+    "profile": "position-ready",
+    "initial_state": {
+      "connected": true,
+      "armed": true,
+      "mode": "POSCTL"
+    },
+    "error": "Disarmed FC required",
+    "finished_at_utc": "2026-10-11T08:29:39.616905+00:00"
+  },
+  "postflight_live": {
+    "utc": "2026-10-11T08:34:29.829107+00:00",
+    "duration_s": 25.003734769999937,
+    "counts": {
+      "/uwb/received": 2010,
+      "/mavros/extended_state": 126,
+      "/mavros/imu/data": 2490,
+      "/mavros/downward_0": 247,
+      "/mavros/local_position/odom": 750,
+      "/mavros/rc/in": 250,
+      "/uwb/btf_decision": 999,
+      "/mavros/timesync_status": 250,
+      "/uwb/btf_pose": 997,
+      "/uwb/btf_status": 25,
+      "/uwb/local_odometry_status": 68,
+      "/mavros/state": 25,
+      "/uwb/status": 25
+    },
+    "decision_reasons": {
+      "original_fit_consistent": 998,
+      "tdma_deadline_rejected": 1
+    },
+    "timing": {
+      "/uwb/received": {
+        "last_age_s": 0.015172175999850879,
+        "max_gap_s": 0.03864522100002432
+      },
+      "/mavros/extended_state": {
+        "last_age_s": 0.014443492000054903,
+        "max_gap_s": 0.3409233139998378
+      },
+      "/mavros/imu/data": {
+        "last_age_s": 0.005443766000098549,
+        "max_gap_s": 0.21596632899991164
+      },
+      "/mavros/downward_0": {
+        "last_age_s": 0.03847142399990844,
+        "max_gap_s": 0.26407089799999994
+      },
+      "/mavros/local_position/odom": {
+        "last_age_s": 0.03638278299990816,
+        "max_gap_s": 0.2257551870000043
+      },
+      "/mavros/rc/in": {
+        "last_age_s": 0.05883504100006576,
+        "max_gap_s": 0.27284015699979136
+      },
+      "/uwb/btf_decision": {
+        "last_age_s": 0.010727498000051128,
+        "max_gap_s": 0.06974359800005914
+      },
+      "/mavros/timesync_status": {
+        "last_age_s": 0.04027036399997996,
+        "max_gap_s": 0.26413301100001263
+      },
+      "/uwb/btf_pose": {
+        "last_age_s": 0.012213408999969033,
+        "max_gap_s": 0.07381799900008446
+      },
+      "/uwb/btf_status": {
+        "last_age_s": 0.9052637409999988,
+        "max_gap_s": 1.0069792909998796
+      },
+      "/uwb/local_odometry_status": {
+        "last_age_s": 0.09536185799993291,
+        "max_gap_s": 11.413280646999965
+      },
+      "/mavros/state": {
+        "last_age_s": 0.33761243800017837,
+        "max_gap_s": 1.010777988999962
+      },
+      "/uwb/status": {
+        "last_age_s": 0.3329388919999019,
+        "max_gap_s": 1.0152611080000042
+      }
+    }
+  },
+  "postflight_latest": {
+    "/mavros/state": {
+      "header": {
+        "stamp": {
+          "sec": 1791707669,
+          "nanosec": 496615397
+        },
+        "frame_id": ""
+      },
+      "connected": true,
+      "armed": false,
+      "guided": false,
+      "manual_input": true,
+      "mode": "POSCTL",
+      "system_status": 8
+    },
+    "/mavros/extended_state": {
+      "header": {
+        "stamp": {
+          "sec": 1791707669,
+          "nanosec": 816603844
+        },
+        "frame_id": ""
+      },
+      "vtol_state": 0,
+      "landed_state": 1
+    },
+    "/uwb/local_odometry_status": {
+      "gate": "ready",
+      "last_reason": "observation_jump_quarantined",
+      "counts": {
+        "fcu_disconnected_or_stale": 154,
+        "fcu_parameters_unavailable": 97,
+        "timesync_unavailable_or_unstable": 431,
+        "observation_acquiring": 10,
+        "published": 17269,
+        "observation_recovering": 184,
+        "observation_jump_quarantined": 6407
+      },
+      "last_sample_stamp_ns": 1791707544301115248,
+      "last_send_age_s": 125.40462865900008,
+      "max_send_gap_s": 74.41619668899989,
+      "parameters": {
+        "EKF2_GPS_CTRL": 0,
+        "EKF2_EV_CTRL": 1,
+        "EKF2_EV_DELAY": 0.0,
+        "EKF2_EV_NOISE_MD": 0,
+        "EKF2_EV_POS_X": -0.10000000149011612,
+        "EKF2_EV_POS_Y": 0.0,
+        "EKF2_EV_POS_Z": -0.10000000149011612,
+        "EKF2_EV_QMIN": 0
+      },
+      "settings": {
+        "enabled": true,
+        "tag_id": "6",
+        "source_frame": "uwb_map",
+        "enu_yaw_deg": -118.02966932936414,
+        "map_y_axis_sign": -1,
+        "enu_offset_x_m": 0.0,
+        "enu_offset_y_m": 0.0,
+        "max_age_s": 0.15,
+        "host_boot_id": "5cfeefce-460c-4f0c-b9d9-9c31719c64e3",
+        "fc_remote_ns_at_alignment": 643770125000,
+        "alignment_method": "operator_cardinal_and_stationary_px4_yaw",
+        "layout_confirmed": true,
+        "sensor_mount_confirmed": true,
+        "expected_ev_delay_ms": 0.0,
+        "antenna_body_frd_x_m": -0.1,
+        "antenna_body_frd_y_m": 0.0,
+        "antenna_body_frd_z_m": -0.1
+      },
+      "observation_session": 0,
+      "reset_counter": 0,
+      "last_position_ned_xy_m": [
+        -1.2590523194278642,
+        -3.18278886814829
+      ],
+      "timesync_ready": true,
+      "frozen": null,
+      "position_reference": "uwb_antenna",
+      "lever_arm_owner": "PX4_EKF2",
+      "z_observed": false,
+      "attitude_observed": false,
+      "velocity_observed": false,
+      "geographic_origin_required": false,
+      "flight_commands_enabled": false,
+      "timing_calibrated": false,
+      "dynamic_alignment_verified": false,
+      "flight_verified": false
+    }
+  },
+  "postflight_fc": {
+    "checked_at_utc": "2026-10-11T08:36:08.820434+00:00",
+    "host": "user-desktop",
+    "fc_parameter_writes": false,
+    "flight_commands": false,
+    "profile": "position-ready",
+    "initial_state": {
+      "connected": true,
+      "armed": false,
+      "mode": "POSCTL"
+    },
+    "finished_at_utc": "2026-10-11T08:36:48.844163+00:00",
+    "queries": [
+      {
+        "command": "commander status",
+        "complete": true,
+        "read_at_utc": "2026-10-11T08:36:47.630549+00:00",
+        "response": "\nNuttShell (NSH) NuttX-12.12.0\nnsh> commander status\nINFO  [commander] Disarmed\nINFO  [commander] navigation mode: Position\nINFO  [commander] user intended navigation mode: Position\nINFO  [commander] in failsafe: no\ncommander: cycle: 30067 events, 2171645us elapsed, 72.23us avg, min 33us max 2292us 99.530us rms\ncommander: preflight check: 3016 events, 529441us elapsed, 175.54us avg, min 113us max 1772us 142.526us rms\nnsh> "
+      },
+      {
+        "command": "listener vehicle_status -n 1",
+        "complete": true,
+        "read_at_utc": "2026-10-11T08:36:47.859369+00:00",
+        "response": "listener vehicle_status -n 1\n\nTOPIC: vehicle_status\n vehicle_status\n    timestamp: 2101849654 (0.212731 seconds ago)\n    armed_time: 0\n    takeoff_time: 0\n    nav_state_timestamp: 1569682649\n    valid_nav_states_mask: 2147411327\n    can_set_nav_states_mask: 8308095\n    failure_detector_status: 0\n    arming_state: 1\n    latest_arming_reason: 2\n    latest_disarming_reason: 2\n    nav_state_user_intention: 2\n    nav_state: 2\n    executor_in_charge: 0\n    hil_state: 0\n    vehicle_type: 1\n    failsafe: False\n    failsafe_and_user_took_over: False\n    failsafe_defer_state: 0\n    gcs_connection_lost: True\n    gcs_connection_lost_counter: 0\n    high_latency_data_link_lost: False\n    is_vtol: False\n    is_vtol_tailsitter: False\n    in_transition_mode: False\n    in_transition_to_fw: False\n    system_type: 2\n    system_id: 1\n    component_id: 1\n    safety_button_available: True\n    safety_off: True\n    power_input_valid: True\n    usb_connected: True\n    open_drone_id_system_present: False\n    open_drone_id_system_healthy: False\n    parachute_system_present: False\n    parachute_system_healthy: False\n    rc_calibration_in_progress: False\n    calibration_enabled: False\n    pre_flight_checks_pass: False\n\nnsh> "
+      },
+      {
+        "command": "listener health_report -n 1",
+        "complete": true,
+        "read_at_utc": "2026-10-11T08:36:47.889063+00:00",
+        "response": "listener health_report -n 1\n\nTOPIC: health_report\n health_report\n    timestamp: 2101483535 (0.636227 seconds ago)\n    can_arm_mode_flags: 0\n    can_run_mode_flags: 8372167 (0b111'1111'1011'1111'1100'0111)\n    health_is_present_flags: 939657346 (0b11'1000'0000'0010'0000'1000'1000'0010)\n    health_warning_flags: 0\n    health_error_flags: 0\n    arming_check_warning_flags: 0\n    arming_check_error_flags: 17827968 (0b1'0001'0000'0000'1000'1000'0000)\nnsh> "
+      },
+      {
+        "command": "listener manual_control_switches -n 1",
+        "complete": true,
+        "read_at_utc": "2026-10-11T08:36:47.999104+00:00",
+        "response": "listener manual_control_switches -n 1\n\nTOPIC: manual_control_switches\n manual_control_switches\n    timestamp: 2101610105 (0.616690 seconds ago)\n    timestamp_sample: 2101589677 (20428 us before timestamp)\n    switch_changes: 1\n    mode_slot: 4\n    arm_switch: 3\n    return_switch: 0\n    loiter_switch: 0\n    offboard_switch: 0\n    kill_switch: 1\n    termination_switch: 0\n    gear_switch: 0\n    transition_switch: 0\n    photo_switch: 0\n    video_switch: 0\n    engage_main_motor_switch: 0\n    payload_power_switch: 0\n\nnsh> "
+      },
+      {
+        "command": "listener battery_status -n 1",
+        "complete": true,
+        "read_at_utc": "2026-10-11T08:36:48.059626+00:00",
+        "response": "listener battery_status -n 1\n\nTOPIC: battery_status\n battery_status\n    timestamp: 2102254171 (0.004723 seconds ago)\n    voltage_v: 22.13190\n    current_a: 0.00000\n    current_average_a: 16.84654\n    discharged_mah: 990.64331\n    remaining: 0.14842\n    scale: 1.13855\n    time_remaining_s: 82.46507\n    temperature: nan\n    voltage_cell_v: [0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000]\n    max_cell_voltage_delta: 0.00000\n    full_charge_capacity_wh: 0.00000\n    remaining_capacity_wh: 0.00000\n    nominal_voltage: 0.00000\n    internal_resistance_estimate: 0.00764\n    ocv_estimate: 22.13190\n    ocv_estimate_filtered: 21.82281\n    volt_based_soc_estimate: 0.06189\n    voltage_prediction: 22.12526\n    prediction_error: -0.00490\n    estimation_covariance_norm: 0.05589\n    capacity: 2600\n    cycle_count: 0\n    average_time_to_empty: 0\n    manufacture_date: 0\n    state_of_health: 0\n    max_error: 0\n    interface_error: 0\n    faults: 0\n    over_discharge_count: 0\n    connected: True\n    cell_count: 6\n    source: 0\n    priority: 0\n    id: 1\n    is_powering_off: False\n    is_required: False\n    warning: 1\n\nnsh> "
+      },
+      {
+        "command": "listener estimator_aid_src_ev_pos -n 1",
+        "complete": true,
+        "read_at_utc": "2026-10-11T08:36:48.437594+00:00",
+        "response": "listener estimator_aid_src_ev_pos -n 1\n\nTOPIC: estimator_aid_src_ev_pos 2 instances\n\nInstance 0:\n estimator_aid_src_ev_pos\n    timestamp: 1838763569 (263.858276 seconds ago)\n    timestamp_sample: 1838561335 (202234 us before timestamp)\n    time_last_fuse: 1831991987\n    observation: [-1.236962, -3.043104]\n    device_id: 0 (Type: 0x00, UNKNOWN:0 (0x00))\n    observation_variance: [0.09000, 0.09000]\n    innovation: [-0.98153, -1.23709]\n    innovation_filtered: [-0.66510, -0.76533]\n    innovation_variance: [6.58563, 6.81136]\n    test_ratio: [0.00585, 0.00898]\n    test_ratio_filtered: [-0.00384, -0.00198]\n    estimator_instance: 0\n    innovation_rejected: False\n    fused: False\n\n\nInstance 1:\n estimator_aid_src_ev_pos\n    timestamp: 1838758458 (263.895752 seconds ago)\n    timestamp_sample: 1838561426 (197032 us before timestamp)\n    time_last_fuse: 1832000669\n    observation: [-1.246639, -3.042027]\n    device_id: 0 (Type: 0x00, UNKNOWN:0 (0x00))\n    observation_variance: [0.09000, 0.09000]\n    innovation: [1.05908, 1.04813]\n    innovation_filtered: [0.73422, 0.74687]\n    innovation_variance: [6.54178, 6.72384]\n    test_ratio: [0.00685, 0.00653]\n    test_ratio_filtered: [0.00552, 0.00641]\n    estimator_instance: 1\n    innovation_rejected: False\n    fused: False\n\nnsh> "
+      },
+      {
+        "command": "listener vehicle_local_position -n 1",
+        "complete": true,
+        "read_at_utc": "2026-10-11T08:36:48.765806+00:00",
+        "response": "listener vehicle_local_position -n 1\n\nTOPIC: vehicle_local_position\n vehicle_local_position\n    timestamp: 2102945937 (0.008092 seconds ago)\n    timestamp_sample: 2102944925 (1012 us before timestamp)\n    ref_timestamp: 0\n    ref_lat: nan\n    ref_lon: nan\n    x: 16.74222\n    y: 0.07340\n    z: -0.04553\n    delta_xy: [0.00000, 0.00000]\n    delta_z: -0.25118\n    vx: -0.00046\n    vy: -0.00151\n    vz: -0.00032\n    z_deriv: 0.00056\n    delta_vxy: [-2.31603, -0.46373]\n    delta_vz: -0.28415\n    ax: 0.00592\n    ay: 0.00075\n    az: -0.00396\n    heading: 2.18114\n    heading_var: 0.00028\n    unaided_heading: -0.07864\n    delta_heading: 0.03651\n    tilt_var: 0.00002\n    ref_alt: nan\n    dist_bottom: 0.02047\n    dist_bottom_var: 0.00030\n    delta_dist_bottom: -18.16603\n    eph: 0.01234\n    epv: 0.04287\n    evh: 0.03814\n    evv: 0.03938\n    vxy_max: inf\n    vz_max: inf\n    hagl_min: inf\n    hagl_max_z: inf\n    hagl_max_xy: inf\n    xy_valid: True\n    z_valid: True\n    v_xy_valid: True\n    v_z_valid: True\n    xy_reset_counter: 51\n    z_reset_counter: 5\n    vxy_reset_counter: 25\n    vz_reset_counter: 4\n    heading_reset_counter: 5\n    heading_good_for_control: False\n    xy_global: False\n    z_global: False\n    dist_bottom_valid: True\n    dist_bottom_reset_counter: 5\n    dist_bottom_sensor_bitfield: 1\n    dead_reckoning: False\nnsh> "
+      },
+      {
+        "command": "logger status",
+        "complete": true,
+        "read_at_utc": "2026-10-11T08:36:48.783939+00:00",
+        "response": "logger status\nINFO  [logger] Running in mode: all\nINFO  [logger] Number of subscriptions: 179 (5728 bytes)\nINFO  [logger] Not logging\nnsh> "
+      },
+      {
+        "command": "listener health_report -n 1",
+        "complete": true,
+        "read_at_utc": "2026-10-11T08:36:48.815886+00:00",
+        "response": "listener health_report -n 1\n\nTOPIC: health_report\n health_report\n    timestamp: 2101483535 (1.560352 seconds ago)\n    can_arm_mode_flags: 0\n    can_run_mode_flags: 8372167 (0b111'1111'1011'1111'1100'0111)\n    health_is_present_flags: 939657346 (0b11'1000'0000'0010'0000'1000'1000'0010)\n    health_warning_flags: 0\n    health_error_flags: 0\n    arming_check_warning_flags: 0\n    arming_check_error_flags: 17827968 (0b1'0001'0000'0000'1000'1000'0000)\nnsh> "
+      }
+    ]
+  },
+  "capture_status": {
+    "scope": "manual_capture_boot",
+    "boot_id": "5cfeefce-460c-4f0c-b9d9-9c31719c64e3",
+    "flight_authorized": false,
+    "fc_parameter_writes": false,
+    "fc_flight_commands": false,
+    "updated": {
+      "monotonic_ns": 1908438220299,
+      "wall_ns": 1791707646313655783,
+      "monotonic_raw_ns": 1908401050400,
+      "utc": "2026-10-11T08:34:06.313670+00:00"
+    },
+    "removed_idle": [],
+    "free_bytes": 970031104,
+    "active": false,
+    "capture": null,
+    "reason": "storage_reserve_waiting_no_flight_deletion",
+    "pid": 8197,
+    "returncode": 0
+  },
+  "last_capture_fragments": [
+    {
+      "directory": "/home/arialhanho/.local/share/dronestock/manual-captures/capture-1791706681087559314-76d8ecf2",
+      "boot_id": "5cfeefce-460c-4f0c-b9d9-9c31719c64e3",
+      "started": {
+        "monotonic_ns": 943983973586,
+        "wall_ns": 1791706681859408750,
+        "monotonic_raw_ns": 943967997120,
+        "utc": "2026-10-11T08:18:01.859472+00:00"
+      },
+      "updated": {
+        "monotonic_ns": 1124624043778,
+        "wall_ns": 1791706862499480447,
+        "monotonic_raw_ns": 1124603330464,
+        "utc": "2026-10-11T08:21:02.499501+00:00"
+      },
+      "stopped": true,
+      "reason": "duration_limit",
+      "ground": {
+        "all_ground": true,
+        "all_disarmed": true,
+        "all_connected": true,
+        "all_fresh": true,
+        "state_count": 179,
+        "landed_count": 894,
+        "max_state_gap_s": 1.011494291,
+        "max_landed_gap_s": 0.411316433,
+        "first_landed_delay_s": 1.920932903,
+        "first_state_delay_s": 2.933571849,
+        "last_landed_age_s": 0.109693719,
+        "last_state_age_s": 0.018354359
+      },
+      "state_transitions": [
+        {
+          "monotonic_ns": 946917545435,
+          "connected": true,
+          "armed": false,
+          "mode": "POSCTL"
+        }
+      ]
+    },
+    {
+      "directory": "/home/arialhanho/.local/share/dronestock/manual-captures/capture-1791706863266139007-2ad6409e",
+      "boot_id": "5cfeefce-460c-4f0c-b9d9-9c31719c64e3",
+      "started": {
+        "monotonic_ns": 1126148213155,
+        "wall_ns": 1791706864023648031,
+        "monotonic_raw_ns": 1126127471104,
+        "utc": "2026-10-11T08:21:04.023697+00:00"
+      },
+      "updated": {
+        "monotonic_ns": 1306810166004,
+        "wall_ns": 1791707044685601744,
+        "monotonic_raw_ns": 1306784201664,
+        "utc": "2026-10-11T08:24:04.685618+00:00"
+      },
+      "stopped": true,
+      "reason": "duration_limit",
+      "ground": {
+        "all_ground": true,
+        "all_disarmed": true,
+        "all_connected": true,
+        "all_fresh": true,
+        "state_count": 180,
+        "landed_count": 901,
+        "max_state_gap_s": 1.008294348,
+        "max_landed_gap_s": 0.218266085,
+        "first_landed_delay_s": 0.664659009,
+        "first_state_delay_s": 1.448171583,
+        "last_landed_age_s": 0.09145475,
+        "last_state_age_s": 0.207089356
+      },
+      "state_transitions": [
+        {
+          "monotonic_ns": 1127596384738,
+          "connected": true,
+          "armed": false,
+          "mode": "POSCTL"
+        }
+      ]
+    },
+    {
+      "directory": "/home/arialhanho/.local/share/dronestock/manual-captures/capture-1791707045685365225-ce46f3b5",
+      "boot_id": "5cfeefce-460c-4f0c-b9d9-9c31719c64e3",
+      "started": {
+        "monotonic_ns": 1308892935024,
+        "wall_ns": 1791707046768369932,
+        "monotonic_raw_ns": 1308866938368,
+        "utc": "2026-10-11T08:24:06.768411+00:00"
+      },
+      "updated": {
+        "monotonic_ns": 1489510184502,
+        "wall_ns": 1791707227385620274,
+        "monotonic_raw_ns": 1489480244928,
+        "utc": "2026-10-11T08:27:07.385640+00:00"
+      },
+      "stopped": true,
+      "reason": "duration_limit",
+      "ground": {
+        "all_ground": true,
+        "all_disarmed": true,
+        "all_connected": true,
+        "all_fresh": true,
+        "state_count": 178,
+        "landed_count": 893,
+        "max_state_gap_s": 4.500567928,
+        "max_landed_gap_s": 3.540417145,
+        "first_landed_delay_s": 0.636811202,
+        "first_state_delay_s": 1.029471104,
+        "last_landed_age_s": 0.185019437,
+        "last_state_age_s": 0.900420999
+      },
+      "state_transitions": [
+        {
+          "monotonic_ns": 1309922406128,
+          "connected": true,
+          "armed": false,
+          "mode": "POSCTL"
+        }
+      ]
+    }
+  ],
+  "service_log_excerpt": [
+    {
+      "row": 0,
+      "gate": "fcu_disconnected_or_stale",
+      "reason": "starting",
+      "counts": {},
+      "last_sample_stamp_ns": null,
+      "last_sample_utc": null,
+      "last_send_age_s": null,
+      "max_send_gap_s": 0.0,
+      "last_position_ned_xy_m": null
+    },
+    {
+      "row": 1,
+      "gate": "timesync_unavailable_or_unstable",
+      "reason": "timesync_unavailable_or_unstable",
+      "counts": {
+        "fcu_disconnected_or_stale": 105,
+        "fcu_parameters_unavailable": 3,
+        "timesync_unavailable_or_unstable": 96
+      },
+      "last_sample_stamp_ns": null,
+      "last_sample_utc": null,
+      "last_send_age_s": null,
+      "max_send_gap_s": 0.0,
+      "last_position_ned_xy_m": null
+    },
+    {
+      "row": 2,
+      "gate": "ready",
+      "reason": "ready",
+      "counts": {
+        "fcu_disconnected_or_stale": 105,
+        "fcu_parameters_unavailable": 3,
+        "timesync_unavailable_or_unstable": 113,
+        "observation_acquiring": 10,
+        "published": 172
+      },
+      "last_sample_stamp_ns": 1791706919883222519,
+      "last_sample_utc": "2026-10-11T08:21:59.883223+00:00",
+      "last_send_age_s": 0.016888225999991846,
+      "max_send_gap_s": 0.03633246699996562,
+      "last_position_ned_xy_m": [
+        -1.9500700554286445,
+        -3.4595967879740184
+      ]
+    },
+    {
+      "row": 54,
+      "gate": "fcu_disconnected_or_stale",
+      "reason": "fcu_disconnected_or_stale",
+      "counts": {
+        "fcu_disconnected_or_stale": 135,
+        "fcu_parameters_unavailable": 3,
+        "timesync_unavailable_or_unstable": 178,
+        "observation_acquiring": 10,
+        "published": 10484,
+        "observation_recovering": 46
+      },
+      "last_sample_stamp_ns": 1791707183861530656,
+      "last_sample_utc": "2026-10-11T08:26:23.861531+00:00",
+      "last_send_age_s": 1.856837861000031,
+      "max_send_gap_s": 1.1492825969999103,
+      "last_position_ned_xy_m": [
+        -1.9493032655918119,
+        -3.4497971399838496
+      ]
+    },
+    {
+      "row": 55,
+      "gate": "ready",
+      "reason": "ready",
+      "counts": {
+        "fcu_disconnected_or_stale": 143,
+        "fcu_parameters_unavailable": 3,
+        "timesync_unavailable_or_unstable": 186,
+        "observation_acquiring": 10,
+        "published": 10627,
+        "observation_recovering": 53
+      },
+      "last_sample_stamp_ns": 1791707190910846568,
+      "last_sample_utc": "2026-10-11T08:26:30.910846+00:00",
+      "last_send_age_s": 0.009227644000020518,
+      "max_send_gap_s": 3.5000162809999438,
+      "last_position_ned_xy_m": [
+        -1.9483199090277716,
+        -3.45799522722122
+      ]
+    },
+    {
+      "row": 79,
+      "gate": "ready",
+      "reason": "observation_recovering",
+      "counts": {
+        "fcu_disconnected_or_stale": 143,
+        "fcu_parameters_unavailable": 3,
+        "timesync_unavailable_or_unstable": 186,
+        "observation_acquiring": 10,
+        "published": 14687,
+        "observation_recovering": 67
+      },
+      "last_sample_stamp_ns": 1791707295309114696,
+      "last_sample_utc": "2026-10-11T08:28:15.309115+00:00",
+      "last_send_age_s": 17.600862272000086,
+      "max_send_gap_s": 3.5000162809999438,
+      "last_position_ned_xy_m": [
+        -1.9649139688333945,
+        -3.3656064304965807
+      ]
+    },
+    {
+      "row": 80,
+      "gate": "ready",
+      "reason": "observation_recovering",
+      "counts": {
+        "fcu_disconnected_or_stale": 143,
+        "fcu_parameters_unavailable": 3,
+        "timesync_unavailable_or_unstable": 186,
+        "observation_acquiring": 10,
+        "published": 14687,
+        "observation_recovering": 67
+      },
+      "last_sample_stamp_ns": 1791707295309114696,
+      "last_sample_utc": "2026-10-11T08:28:15.309115+00:00",
+      "last_send_age_s": 22.800442799999928,
+      "max_send_gap_s": 3.5000162809999438,
+      "last_position_ned_xy_m": [
+        -1.9649139688333945,
+        -3.3656064304965807
+      ]
+    },
+    {
+      "row": 81,
+      "gate": "ready",
+      "reason": "observation_jump_quarantined",
+      "counts": {
+        "fcu_disconnected_or_stale": 143,
+        "fcu_parameters_unavailable": 3,
+        "timesync_unavailable_or_unstable": 186,
+        "observation_acquiring": 10,
+        "published": 14687,
+        "observation_recovering": 67,
+        "observation_jump_quarantined": 41
+      },
+      "last_sample_stamp_ns": 1791707295309114696,
+      "last_sample_utc": "2026-10-11T08:28:15.309115+00:00",
+      "last_send_age_s": 27.800650528999995,
+      "max_send_gap_s": 3.5000162809999438,
+      "last_position_ned_xy_m": [
+        -1.9649139688333945,
+        -3.3656064304965807
+      ]
+    },
+    {
+      "row": 84,
+      "gate": "ready",
+      "reason": "observation_jump_quarantined",
+      "counts": {
+        "fcu_disconnected_or_stale": 143,
+        "fcu_parameters_unavailable": 3,
+        "timesync_unavailable_or_unstable": 186,
+        "observation_acquiring": 10,
+        "published": 14687,
+        "observation_recovering": 67,
+        "observation_jump_quarantined": 567
+      },
+      "last_sample_stamp_ns": 1791707295309114696,
+      "last_sample_utc": "2026-10-11T08:28:15.309115+00:00",
+      "last_send_age_s": 43.20065072900002,
+      "max_send_gap_s": 3.5000162809999438,
+      "last_position_ned_xy_m": [
+        -1.9649139688333945,
+        -3.3656064304965807
+      ]
+    },
+    {
+      "row": 88,
+      "gate": "ready",
+      "reason": "observation_jump_quarantined",
+      "counts": {
+        "fcu_disconnected_or_stale": 143,
+        "fcu_parameters_unavailable": 3,
+        "timesync_unavailable_or_unstable": 186,
+        "observation_acquiring": 10,
+        "published": 14687,
+        "observation_recovering": 67,
+        "observation_jump_quarantined": 1367
+      },
+      "last_sample_stamp_ns": 1791707295309114696,
+      "last_sample_utc": "2026-10-11T08:28:15.309115+00:00",
+      "last_send_age_s": 63.801354057000026,
+      "max_send_gap_s": 3.5000162809999438,
+      "last_position_ned_xy_m": [
+        -1.9649139688333945,
+        -3.3656064304965807
+      ]
+    },
+    {
+      "row": 96,
+      "gate": "ready",
+      "reason": "observation_jump_quarantined",
+      "counts": {
+        "fcu_disconnected_or_stale": 143,
+        "fcu_parameters_unavailable": 3,
+        "timesync_unavailable_or_unstable": 186,
+        "observation_acquiring": 10,
+        "published": 14726,
+        "observation_recovering": 80,
+        "observation_jump_quarantined": 1438
+      },
+      "last_sample_stamp_ns": 1791707364209575413,
+      "last_sample_utc": "2026-10-11T08:29:24.209575+00:00",
+      "last_send_age_s": 35.897717435000004,
+      "max_send_gap_s": 67.1504982649999,
+      "last_position_ned_xy_m": [
+        -1.846715519478281,
+        -3.5681979347778725
+      ]
+    },
+    {
+      "row": 100,
+      "gate": "ready",
+      "reason": "observation_jump_quarantined",
+      "counts": {
+        "fcu_disconnected_or_stale": 143,
+        "fcu_parameters_unavailable": 3,
+        "timesync_unavailable_or_unstable": 186,
+        "observation_acquiring": 10,
+        "published": 14726,
+        "observation_recovering": 80,
+        "observation_jump_quarantined": 2216
+      },
+      "last_sample_stamp_ns": 1791707364209575413,
+      "last_sample_utc": "2026-10-11T08:29:24.209575+00:00",
+      "last_send_age_s": 56.29745839799989,
+      "max_send_gap_s": 67.1504982649999,
+      "last_position_ned_xy_m": [
+        -1.846715519478281,
+        -3.5681979347778725
+      ]
+    },
+    {
+      "row": 104,
+      "gate": "ready",
+      "reason": "ready",
+      "counts": {
+        "fcu_disconnected_or_stale": 143,
+        "fcu_parameters_unavailable": 3,
+        "timesync_unavailable_or_unstable": 186,
+        "observation_acquiring": 10,
+        "published": 14809,
+        "observation_recovering": 87,
+        "observation_jump_quarantined": 2723
+      },
+      "last_sample_stamp_ns": 1791707440908489316,
+      "last_sample_utc": "2026-10-11T08:30:40.908489+00:00",
+      "last_send_age_s": 0.010607859999936409,
+      "max_send_gap_s": 74.41619668899989,
+      "last_position_ned_xy_m": [
+        -1.9147031480469447,
+        -3.4151327396977216
+      ]
+    },
+    {
+      "row": 108,
+      "gate": "ready",
+      "reason": "observation_recovering",
+      "counts": {
+        "fcu_disconnected_or_stale": 143,
+        "fcu_parameters_unavailable": 3,
+        "timesync_unavailable_or_unstable": 186,
+        "observation_acquiring": 10,
+        "published": 14958,
+        "observation_recovering": 104,
+        "observation_jump_quarantined": 2725
+      },
+      "last_sample_stamp_ns": 1791707446584888540,
+      "last_sample_utc": "2026-10-11T08:30:46.584888+00:00",
+      "last_send_age_s": 14.725403720000031,
+      "max_send_gap_s": 74.41619668899989,
+      "last_position_ned_xy_m": [
+        -1.9085628288345875,
+        -3.317250560412116
+      ]
+    },
+    {
+      "row": 110,
+      "gate": "ready",
+      "reason": "ready",
+      "counts": {
+        "fcu_disconnected_or_stale": 143,
+        "fcu_parameters_unavailable": 3,
+        "timesync_unavailable_or_unstable": 186,
+        "observation_acquiring": 10,
+        "published": 15069,
+        "observation_recovering": 109,
+        "observation_jump_quarantined": 2725
+      },
+      "last_sample_stamp_ns": 1791707471507266022,
+      "last_sample_utc": "2026-10-11T08:31:11.507266+00:00",
+      "last_send_age_s": 0.006888820000085616,
+      "max_send_gap_s": 74.41619668899989,
+      "last_position_ned_xy_m": [
+        -1.7244097101660782,
+        -3.524110982449039
+      ]
+    },
+    {
+      "row": 122,
+      "gate": "ready",
+      "reason": "observation_recovering",
+      "counts": {
+        "fcu_disconnected_or_stale": 143,
+        "fcu_parameters_unavailable": 3,
+        "timesync_unavailable_or_unstable": 186,
+        "observation_acquiring": 10,
+        "published": 17225,
+        "observation_recovering": 157,
+        "observation_jump_quarantined": 2725
+      },
+      "last_sample_stamp_ns": 1791707531907389452,
+      "last_sample_utc": "2026-10-11T08:32:11.907389+00:00",
+      "last_send_age_s": 1.0031974260000425,
+      "max_send_gap_s": 74.41619668899989,
+      "last_position_ned_xy_m": [
+        -1.5159277429739975,
+        -3.260627772777776
+      ]
+    },
+    {
+      "row": 123,
+      "gate": "ready",
+      "reason": "ready",
+      "counts": {
+        "fcu_disconnected_or_stale": 143,
+        "fcu_parameters_unavailable": 3,
+        "timesync_unavailable_or_unstable": 186,
+        "observation_acquiring": 10,
+        "published": 17268,
+        "observation_recovering": 174,
+        "observation_jump_quarantined": 2725
+      },
+      "last_sample_stamp_ns": 1791707537731116543,
+      "last_sample_utc": "2026-10-11T08:32:17.731117+00:00",
+      "last_send_age_s": 0.1782966440000564,
+      "max_send_gap_s": 74.41619668899989,
+      "last_position_ned_xy_m": [
+        -1.2494146305002185,
+        -3.2908359142707315
+      ]
+    },
+    {
+      "row": 125,
+      "gate": "ready",
+      "reason": "observation_jump_quarantined",
+      "counts": {
+        "fcu_disconnected_or_stale": 143,
+        "fcu_parameters_unavailable": 3,
+        "timesync_unavailable_or_unstable": 186,
+        "observation_acquiring": 10,
+        "published": 17269,
+        "observation_recovering": 184,
+        "observation_jump_quarantined": 2770
+      },
+      "last_sample_stamp_ns": 1791707544301115248,
+      "last_sample_utc": "2026-10-11T08:32:24.301115+00:00",
+      "last_send_age_s": 3.8045828460001303,
+      "max_send_gap_s": 74.41619668899989,
+      "last_position_ned_xy_m": [
+        -1.2590523194278642,
+        -3.18278886814829
+      ]
+    },
+    {
+      "row": 132,
+      "gate": "ready",
+      "reason": "observation_jump_quarantined",
+      "counts": {
+        "fcu_disconnected_or_stale": 143,
+        "fcu_parameters_unavailable": 3,
+        "timesync_unavailable_or_unstable": 186,
+        "observation_acquiring": 10,
+        "published": 17269,
+        "observation_recovering": 184,
+        "observation_jump_quarantined": 4170
+      },
+      "last_sample_stamp_ns": 1791707544301115248,
+      "last_sample_utc": "2026-10-11T08:32:24.301115+00:00",
+      "last_send_age_s": 39.60432532100003,
+      "max_send_gap_s": 74.41619668899989,
+      "last_position_ned_xy_m": [
+        -1.2590523194278642,
+        -3.18278886814829
+      ]
+    },
+    {
+      "row": 136,
+      "gate": "timesync_unavailable_or_unstable",
+      "reason": "timesync_unavailable_or_unstable",
+      "counts": {
+        "fcu_disconnected_or_stale": 145,
+        "fcu_parameters_unavailable": 3,
+        "timesync_unavailable_or_unstable": 244,
+        "observation_acquiring": 10,
+        "published": 17269,
+        "observation_recovering": 184,
+        "observation_jump_quarantined": 4778
+      },
+      "last_sample_stamp_ns": 1791707544301115248,
+      "last_sample_utc": "2026-10-11T08:32:24.301115+00:00",
+      "last_send_age_s": 59.80471953599999,
+      "max_send_gap_s": 74.41619668899989,
+      "last_position_ned_xy_m": [
+        -1.2590523194278642,
+        -3.18278886814829
+      ]
+    },
+    {
+      "row": 137,
+      "gate": "ready",
+      "reason": "observation_jump_quarantined",
+      "counts": {
+        "fcu_disconnected_or_stale": 145,
+        "fcu_parameters_unavailable": 3,
+        "timesync_unavailable_or_unstable": 290,
+        "observation_acquiring": 10,
+        "published": 17269,
+        "observation_recovering": 184,
+        "observation_jump_quarantined": 4940
+      },
+      "last_sample_stamp_ns": 1791707544301115248,
+      "last_sample_utc": "2026-10-11T08:32:24.301115+00:00",
+      "last_send_age_s": 65.00432437400013,
+      "max_send_gap_s": 74.41619668899989,
+      "last_position_ned_xy_m": [
+        -1.2590523194278642,
+        -3.18278886814829
+      ]
+    },
+    {
+      "row": 140,
+      "gate": "ready",
+      "reason": "observation_jump_quarantined",
+      "counts": {
+        "fcu_disconnected_or_stale": 145,
+        "fcu_parameters_unavailable": 3,
+        "timesync_unavailable_or_unstable": 290,
+        "observation_acquiring": 10,
+        "published": 17269,
+        "observation_recovering": 184,
+        "observation_jump_quarantined": 5548
+      },
+      "last_sample_stamp_ns": 1791707544301115248,
+      "last_sample_utc": "2026-10-11T08:32:24.301115+00:00",
+      "last_send_age_s": 80.20436918500013,
+      "max_send_gap_s": 74.41619668899989,
+      "last_position_ned_xy_m": [
+        -1.2590523194278642,
+        -3.18278886814829
+      ]
+    },
+    {
+      "row": 144,
+      "gate": "ready",
+      "reason": "observation_jump_quarantined",
+      "counts": {
+        "fcu_disconnected_or_stale": 151,
+        "fcu_parameters_unavailable": 47,
+        "timesync_unavailable_or_unstable": 369,
+        "observation_acquiring": 10,
+        "published": 17269,
+        "observation_recovering": 184,
+        "observation_jump_quarantined": 6037
+      },
+      "last_sample_stamp_ns": 1791707544301115248,
+      "last_sample_utc": "2026-10-11T08:32:24.301115+00:00",
+      "last_send_age_s": 102.00431268600005,
+      "max_send_gap_s": 74.41619668899989,
+      "last_position_ned_xy_m": [
+        -1.2590523194278642,
+        -3.18278886814829
+      ]
+    },
+    {
+      "row": 148,
+      "gate": "ready",
+      "reason": "observation_jump_quarantined",
+      "counts": {
+        "fcu_disconnected_or_stale": 154,
+        "fcu_parameters_unavailable": 97,
+        "timesync_unavailable_or_unstable": 431,
+        "observation_acquiring": 10,
+        "published": 17269,
+        "observation_recovering": 184,
+        "observation_jump_quarantined": 6535
+      },
+      "last_sample_stamp_ns": 1791707544301115248,
+      "last_sample_utc": "2026-10-11T08:32:24.301115+00:00",
+      "last_send_age_s": 128.604570169,
+      "max_send_gap_s": 74.41619668899989,
+      "last_position_ned_xy_m": [
+        -1.2590523194278642,
+        -3.18278886814829
+      ]
+    },
+    {
+      "row": 152,
+      "gate": "ready",
+      "reason": "observation_jump_quarantined",
+      "counts": {
+        "fcu_disconnected_or_stale": 154,
+        "fcu_parameters_unavailable": 97,
+        "timesync_unavailable_or_unstable": 432,
+        "observation_acquiring": 10,
+        "published": 17269,
+        "observation_recovering": 184,
+        "observation_jump_quarantined": 7281,
+        "invalid_frame_or_timestamp": 3
+      },
+      "last_sample_stamp_ns": 1791707544301115248,
+      "last_sample_utc": "2026-10-11T08:32:24.301115+00:00",
+      "last_send_age_s": 149.20421743700012,
+      "max_send_gap_s": 74.41619668899989,
+      "last_position_ned_xy_m": [
+        -1.2590523194278642,
+        -3.18278886814829
+      ]
+    },
+    {
+      "row": 156,
+      "gate": "ready",
+      "reason": "observation_jump_quarantined",
+      "counts": {
+        "fcu_disconnected_or_stale": 158,
+        "fcu_parameters_unavailable": 140,
+        "timesync_unavailable_or_unstable": 498,
+        "observation_acquiring": 10,
+        "published": 17269,
+        "observation_recovering": 184,
+        "observation_jump_quarantined": 7782,
+        "invalid_frame_or_timestamp": 3
+      },
+      "last_sample_stamp_ns": 1791707544301115248,
+      "last_sample_utc": "2026-10-11T08:32:24.301115+00:00",
+      "last_send_age_s": 171.00457599700007,
+      "max_send_gap_s": 74.41619668899989,
+      "last_position_ned_xy_m": [
+        -1.2590523194278642,
+        -3.18278886814829
+      ]
+    },
+    {
+      "row": 160,
+      "gate": "ready",
+      "reason": "observation_jump_quarantined",
+      "counts": {
+        "fcu_disconnected_or_stale": 162,
+        "fcu_parameters_unavailable": 189,
+        "timesync_unavailable_or_unstable": 561,
+        "observation_acquiring": 10,
+        "published": 17269,
+        "observation_recovering": 184,
+        "observation_jump_quarantined": 8287,
+        "invalid_frame_or_timestamp": 3
+      },
+      "last_sample_stamp_ns": 1791707544301115248,
+      "last_sample_utc": "2026-10-11T08:32:24.301115+00:00",
+      "last_send_age_s": 194.00563495799997,
+      "max_send_gap_s": 74.41619668899989,
+      "last_position_ned_xy_m": [
+        -1.2590523194278642,
+        -3.18278886814829
+      ]
+    },
+    {
+      "row": 163,
+      "gate": "timesync_unavailable_or_unstable",
+      "reason": "timesync_unavailable_or_unstable",
+      "counts": {
+        "fcu_disconnected_or_stale": 164,
+        "fcu_parameters_unavailable": 189,
+        "timesync_unavailable_or_unstable": 632,
+        "observation_acquiring": 10,
+        "published": 17269,
+        "observation_recovering": 184,
+        "observation_jump_quarantined": 8695,
+        "invalid_frame_or_timestamp": 3
+      },
+      "last_sample_stamp_ns": 1791707544301115248,
+      "last_sample_utc": "2026-10-11T08:32:24.301115+00:00",
+      "last_send_age_s": 209.40469869699996,
+      "max_send_gap_s": 74.41619668899989,
+      "last_position_ned_xy_m": [
+        -1.2590523194278642,
+        -3.18278886814829
+      ]
+    },
+    {
+      "row": 164,
+      "gate": "timesync_unavailable_or_unstable",
+      "reason": "timesync_unavailable_or_unstable",
+      "counts": {
+        "fcu_disconnected_or_stale": 164,
+        "fcu_parameters_unavailable": 189,
+        "timesync_unavailable_or_unstable": 677,
+        "observation_acquiring": 10,
+        "published": 17269,
+        "observation_recovering": 184,
+        "observation_jump_quarantined": 8854,
+        "invalid_frame_or_timestamp": 3
+      },
+      "last_sample_stamp_ns": 1791707544301115248,
+      "last_sample_utc": "2026-10-11T08:32:24.301115+00:00",
+      "last_send_age_s": 214.60502425899995,
+      "max_send_gap_s": 74.41619668899989,
+      "last_position_ned_xy_m": [
+        -1.2590523194278642,
+        -3.18278886814829
+      ]
+    },
+    {
+      "row": 166,
+      "gate": "fcu_disconnected_or_stale",
+      "reason": "fcu_disconnected_or_stale",
+      "counts": {
+        "fcu_disconnected_or_stale": 203,
+        "fcu_parameters_unavailable": 189,
+        "timesync_unavailable_or_unstable": 677,
+        "observation_acquiring": 10,
+        "published": 17269,
+        "observation_recovering": 184,
+        "observation_jump_quarantined": 8854,
+        "invalid_frame_or_timestamp": 3,
+        "parameter_mismatch:EKF2_GPS_CTRL": 171
+      },
+      "last_sample_stamp_ns": 1791707544301115248,
+      "last_sample_utc": "2026-10-11T08:32:24.301115+00:00",
+      "last_send_age_s": 226.60457286199994,
+      "max_send_gap_s": 74.41619668899989,
+      "last_position_ned_xy_m": [
+        -1.2590523194278642,
+        -3.18278886814829
+      ]
+    },
+    {
+      "row": 167,
+      "gate": "parameter_mismatch:EKF2_GPS_CTRL",
+      "reason": "parameter_mismatch:EKF2_GPS_CTRL",
+      "counts": {
+        "fcu_disconnected_or_stale": 211,
+        "fcu_parameters_unavailable": 227,
+        "timesync_unavailable_or_unstable": 677,
+        "observation_acquiring": 10,
+        "published": 17269,
+        "observation_recovering": 184,
+        "observation_jump_quarantined": 8854,
+        "invalid_frame_or_timestamp": 3,
+        "parameter_mismatch:EKF2_GPS_CTRL": 227
+      },
+      "last_sample_stamp_ns": 1791707544301115248,
+      "last_sample_utc": "2026-10-11T08:32:24.301115+00:00",
+      "last_send_age_s": 231.804918865,
+      "max_send_gap_s": 74.41619668899989,
+      "last_position_ned_xy_m": [
+        -1.2590523194278642,
+        -3.18278886814829
+      ]
+    },
+    {
+      "row": 168,
+      "gate": "fcu_disconnected_or_stale",
+      "reason": "parameter_mismatch:EKF2_GPS_CTRL",
+      "counts": {
+        "fcu_disconnected_or_stale": 211,
+        "fcu_parameters_unavailable": 227,
+        "timesync_unavailable_or_unstable": 677,
+        "observation_acquiring": 10,
+        "published": 17269,
+        "observation_recovering": 184,
+        "observation_jump_quarantined": 8854,
+        "invalid_frame_or_timestamp": 3,
+        "parameter_mismatch:EKF2_GPS_CTRL": 227
+      },
+      "last_sample_stamp_ns": 1791707544301115248,
+      "last_sample_utc": "2026-10-11T08:32:24.301115+00:00",
+      "last_send_age_s": 238.08706078499995,
+      "max_send_gap_s": 74.41619668899989,
+      "last_position_ned_xy_m": [
+        -1.2590523194278642,
+        -3.18278886814829
+      ]
+    }
+  ],
+  "raw_evidence": [
+    {
+      "name": "alignment-reboot-1712.json",
+      "bytes": 1215,
+      "sha256": "1460754ea560a988da947c19ae9691594ef41cb1692763b1301b8ad70f5dc294"
+    },
+    {
+      "name": "alignment-reboot-1722.json",
+      "bytes": 1217,
+      "sha256": "c61287a7736cab203345b2eb2ee6378eac8c8bd1819db0fd4e3e27c7c0ef3d91"
+    },
+    {
+      "name": "alignment-final-1729.json",
+      "bytes": 179,
+      "sha256": "142b5b724a11fbc31eaf076e678fd5445b19c49f77b87a7ae4e9a3ab2cbc4b8f"
+    },
+    {
+      "name": "reboot-position-ready-2.json",
+      "bytes": 27389,
+      "sha256": "1c009e35ee2c4033ab4df8fed8de49bb287d032dd9f384e75b4dbd2b2687f9cd"
+    },
+    {
+      "name": "reboot-arming-causes.json",
+      "bytes": 12436,
+      "sha256": "38bb58ddcb1797a514e14e60a7b91fe1368e763ef0aa3f50aa08530687780312"
+    },
+    {
+      "name": "reboot-position-final.json",
+      "bytes": 389,
+      "sha256": "02287146121335772e6f89be1ffff4f2095a3ca8b813d6f1b26f16462dc9babc"
+    },
+    {
+      "name": "flight-post-live-1734.json",
+      "bytes": 847690,
+      "sha256": "ac0881bfab5cd8e4a823408ceb40468242f015405040d6d0470e8ecaba1daae3"
+    },
+    {
+      "name": "flight-post-px4.json",
+      "bytes": 27170,
+      "sha256": "64fb4d439b5d60524334496e819ccc7ac0388c05b399b314fa706c8e1f330164"
+    },
+    {
+      "name": "flight-capture-status-1734.json",
+      "bytes": 558,
+      "sha256": "83b7cf908c36c6d06d1dd09b0d1e28b5277483e5070b63f17b7cdfda817c940e"
+    },
+    {
+      "name": "flight-last-capture-metadata.json",
+      "bytes": 42234,
+      "sha256": "66a0e4fb07f0278ee52eb3ba6d3eff75086f7994784e65cf66206f2808b4fbbc"
+    },
+    {
+      "name": "service-recovery-diagnostic.log",
+      "bytes": 271595,
+      "sha256": "f7bbf586dc9da54535439bb5652c97d8929692e4461bf905b97470b51ac92222"
+    }
+  ],
+  "limitations": [
+    "997 B_TF poses are postflight ground samples, not flight continuity evidence",
+    "ROS simultaneous recording ended before confirmed armed observation",
+    "PX4 ULog recovery and same-flight pairing not performed",
+    "No simulated position jumps added by production sender",
+    "Protection thresholds were not relaxed",
+    "No ground-only automatic guard reset on landing"
+  ]
+}
