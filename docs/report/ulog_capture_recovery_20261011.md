@@ -16,9 +16,18 @@ FC 파라미터·ARM·모드·재부팅 명령은 보내지 않았다.
 | 다음 조각 | active, 필수 토픽 누락 없음, error=null |
 | FC 파라미터 | 고정 조회 12개 전후 동일. 쓰기 명령 없음 |
 | LiDAR 서비스 | 활성·부팅 enable. 이번 변경 후 전원 재인가 미시험 |
-| 단위시험 | Windows 56개 통과 |
+| 단위시험 | Windows 56개·Jetson 격리 domain 172에서 56개 통과 |
 | shell·systemd | bash -n·systemd-analyze verify 통과 |
 | 실물 비행·SITL·LiDAR 스캔매칭 | 이번 작업에서 미실시 |
+
+`ea046ac`를 GitHub에 push하고 Jetson에 fast-forward했다.
+기존 현장 설정과 origin URL을 유지했다.
+설치 wrapper·서비스 파일은 커밋 원본과 일치했다.
+배포 후에도 3개 관측·기록 서비스가 active였다.
+필수 토픽 누락·수집 오류는 없었다.
+마지막 조회의 companion 여유는 약 1.62GiB였다.
+현재 지상 입력에서는 ToF 유효 높이가 아직 없었다.
+부팅 enable과 전원 재인가 실증은 구분한다.
 
 ## ULog가 없던 이유
 
