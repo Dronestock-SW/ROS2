@@ -24,9 +24,24 @@ case "${1:-}" in
       "btf_config:=$MANUAL_BTF_CONFIG" "anchor_file:=$MANUAL_ANCHORS"
     ;;
   capture)
+    extra=()
+    if [[ "${MANUAL_CAPTURE_LIDAR:-0}" == 1 ]]; then
+      extra+=(--with-lidar --config "${MANUAL_LIDAR_PARAMS:-$ROS2_WORKSPACE/src/drone_bringup/params/lidar_tmini.yaml}")
+    fi
     exec python3 -m drone_uwb.integration.boot_capture --root "$MANUAL_CAPTURE_ROOT" \
       --tag "$MANUAL_TAG" --config "$MANUAL_BTF_CONFIG" --config "$MANUAL_ANCHORS" \
-      --source-revision "$(git rev-parse HEAD)"
+      --source-revision "$(git rev-parse HEAD)" "${extra[@]}"
     ;;
-  *) echo 'Expected observe or capture'; exit 64;;
+  lidar)
+    : "${MANUAL_LIDAR_PREFIX:?Set the existing ydlidar_ros2_driver install prefix}"
+    [[ "${MANUAL_CAPTURE_LIDAR:-0}" == 1 ]] || exit 64
+    test -e /dev/lidar || { echo 'Waiting for /dev/lidar'; exit 75; }
+    if fuser /dev/lidar >/dev/null 2>&1; then echo 'LiDAR port already owned'; exit 75; fi
+    # Run only the manufacturer sensor node. Its stock launch invents a 2cm
+    # base_link->laser_frame transform; no unmeasured mounting TF is published.
+    exec "$MANUAL_LIDAR_PREFIX/lib/ydlidar_ros2_driver/ydlidar_ros2_driver_node" \
+      --ros-args --params-file "${MANUAL_LIDAR_PARAMS:-$ROS2_WORKSPACE/src/drone_bringup/params/lidar_tmini.yaml}" \
+      -p port:=/dev/lidar
+    ;;
+  *) echo 'Expected observe, capture or lidar'; exit 64;;
 esac

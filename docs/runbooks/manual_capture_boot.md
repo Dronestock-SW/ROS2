@@ -97,14 +97,82 @@ FC가 DISARM일 때 고정 읽기만 한다.
 MPC_THR_HOVER=0.35, EV_CTRL=1을 유지한다.
 MAG_TYPE은 9일 저장·FC 재부팅·재조회까지 마쳤다.
 사용자가 확인한 흐름은 그 복원 전 비행에서 발생했다.
-복원 후 호버 성공은 아직 미확인이다.
+당시에는 복원 후 호버 성공이 미확인이었다.
+이후 사용자는 높은 고도에서 호버 성공을 확인했다.
+위 값은 초기 기록이다. 현재값으로 재적용하지 않는다.
+10월 11일에는 EV_CTRL=0, RC_OVERRIDE=1이었다.
+TAKEOFF_ALT=2.5도 그대로 조회됐다.
+이번 기록 복구는 현재 FC 값을 유지했다.
 
 FC ULog는 ROS 수집기와 별개다.
 기존 SDLOG_MODE=1을 이번 자동 수집이 바꾸지 않는다.
+이 값은 부팅부터 첫 DISARM까지 기록한다.
+이후 ARM하면 다시 기록한다.
+따라서 지상 `Not logging`만으로 고장을 판정하지 않는다.
 장시간 지상 기록은 2GB 상한에 도달한 사례가 있다.
 전원 재인가 뒤 logger 상태와 파일 증가를 확인한다.
 같은 시행의 ULog를 별도로 확보해야 한다.
 로그가 멈췄다고 센서 융합 중단으로 단정하지 않는다.
+
+### 지상에서 ULog 기록을 명시적으로 시작하기
+
+`px4_logger_session.py`로 기록 상태를 확인한다.
+`--start`는 logger 내부 기록 override를 켠다.
+FC ARM·모드·파라미터는 바꾸지 않는다.
+최신 연결·DISARM·ON_GROUND일 때만 명령한다.
+기존 MAVROS를 사용한다. FC 직렬 포트를 열지 않는다.
+
+```bash
+source /opt/ros/humble/setup.bash
+source install/setup.bash
+source ~/.config/dronestock/manual-capture.env
+export ROS_DOMAIN_ID=2 ROS_LOCALHOST_ONLY=1
+export PYTHONPATH="${MANUAL_PYTHON_DEPS:+$MANUAL_PYTHON_DEPS:}${PYTHONPATH:-}"
+python3 src/sangwon_AI/ops/px4_logger_session.py --ros-domain 2 \
+  --start --output /private/ulog-start.json
+```
+
+출력의 `growth_verified=true`를 확인한다.
+SD 여유 512MiB 미만이면 새 기록을 시작하지 않는다.
+기록은 도구 종료 뒤에도 계속된다.
+비행 종료·지상·DISARM 뒤 `--stop`으로 닫는다.
+장시간 켜 두면 SD 용량과 파일 상한에 도달한다.
+전원 재인가 뒤 override가 유지된다고 가정하지 않는다.
+기존 SDLOG_MODE에 따른 자동 기록과 별개다.
+
+FC 파일명 날짜와 companion 날짜가 다를 수 있다.
+boot_id·원본 시각·timesync·ARM 구간으로 대응한다.
+파일명이 같다는 이유만으로 같은 비행으로 합치지 않는다.
+[10월 11일 복구 결과](../report/ulog_capture_recovery_20261011.md)를 따른다.
+
+### USB LiDAR 동시 기록
+
+검증한 `/dev/lidar`와 설치된 제조사 드라이버를 쓴다.
+`MANUAL_CAPTURE_LIDAR=1`과 다음 값을 현장 환경에 넣는다.
+
+```bash
+MANUAL_LIDAR_PREFIX=/absolute/install/ydlidar_ros2_driver
+MANUAL_LIDAR_PARAMS=/absolute/ROS2/src/drone_bringup/params/lidar_tmini.yaml
+```
+
+새 deployment wrapper와 선택 서비스를 설치한다.
+기존 observe·MAVROS는 재시작하지 않는다.
+수집기 재시작은 지상에서 수행한다.
+
+```bash
+cp src/drone_uwb/deployment/run_manual_capture.sh ~/.local/libexec/dronestock/
+cp src/drone_uwb/deployment/dronestock-manual-lidar.service ~/.config/systemd/user/
+systemctl --user daemon-reload
+systemctl --user enable --now dronestock-manual-lidar.service
+systemctl --user restart dronestock-manual-capture.service
+```
+
+제조사 노드만 실행한다. 임의 장착 TF는 발행하지 않는다.
+`/scan`·`/tf`·`/tf_static`을 원본 그대로 기록한다.
+TF 미수신은 미측정 상태로 남긴다.
+원본 LiDAR 설정의 SHA256도 manifest에 보존한다.
+서비스 시작은 이동량 계산·PX4 융합 완료가 아니다.
+[C++ 관측 경계](../architecture/cpp_lidar_input.md)를 따른다.
 
 ## 중지와 회수
 

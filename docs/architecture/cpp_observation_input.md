@@ -57,6 +57,10 @@ C++ `CaptureObservations`는 ROS·소켓·FC 포트를 사용하지 않는다.
 현재 `State`와 BT에 실물 입력을 자동 주입하지 않는다.
 이유: 창고↔PX4 변환과 명령 정책이 아직 미확정이다.
 
+2026-10-10 `/scan` 관측 검사를 추가했다.
+[C++ LiDAR 준비](cpp_lidar_input.md)의 경계를 따른다.
+원본 TF는 선택 기록한다. 장착 적용·스캔매칭은 후속이다.
+
 `can_start`, `flight_authority`, `physical_output_enabled`는 false다.
 정렬·장착·시간·융합 검증 flag를 보고서가 승격하지 않는다.
 UWB를 PX4 상태로 바꾸거나 별도 EKF를 만들지 않는다.

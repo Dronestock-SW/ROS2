@@ -150,3 +150,13 @@ def test_capture_does_not_change_command_sink_subscriber_guard():
     assert '/uas1/mavlink_source' in TOPICS
     assert '/uas1/mavlink_sink' not in TOPICS
     assert '/mavros/vision_pose/pose_cov' in TOPICS
+
+
+def test_lidar_capture_is_optional_and_retains_raw_transform_topics():
+    from drone_uwb.integration.ros.manual_capture import selected_topics
+    assert '/scan' not in selected_topics()
+    topics=selected_topics(True)
+    assert topics['/scan']=='sensor_msgs/msg/LaserScan'
+    assert topics['/tf_static']==topics['/tf']=='tf2_msgs/msg/TFMessage'
+    assert set(TOPICS).issubset(topics)
+    assert '/uas1/mavlink_sink' not in topics

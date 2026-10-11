@@ -10,6 +10,7 @@ using service::Json;
 using service::require;
 struct Spec { const char* channel; const char* type; std::int64_t age_ns; };
 const std::map<std::string, Spec> specs{
+  {"/scan", {"lidar_scan", "sensor_msgs/msg/LaserScan", 250000000}},
   {"/uwb/btf_pose", {"uwb_xy", "geometry_msgs/msg/PoseWithCovarianceStamped", 250000000}},
   {"/mavros/local_position/odom", {"px4_odom", "nav_msgs/msg/Odometry", 250000000}},
   {"/mavros/imu/data", {"imu", "sensor_msgs/msg/Imu", 250000000}},
@@ -72,6 +73,35 @@ bool covariance(const Json& j, std::size_t n) {
 }
 Json fields(const std::string& channel, const Json& d) {
   const auto frame = d.at("header").at("frame_id");
+  if (channel == "lidar_scan") {
+    text(frame); // Sensor frame is retained; it is not assumed to be base_link/map.
+    const auto lo = number(d.at("range_min")), hi = number(d.at("range_max"));
+    const auto begin = number(d.at("angle_min")), end = number(d.at("angle_max"));
+    const auto step = number(d.at("angle_increment"));
+    const auto dt = number(d.at("time_increment")), period = number(d.at("scan_time"));
+    const auto& ranges = d.at("ranges"); const auto& intensity = d.at("intensities");
+    require(lo >= 0 && hi > lo && step > 0 && end > begin, "SCAN_GEOMETRY_INVALID");
+    require(ranges.is_array() && ranges.size() >= 2 && ranges.size() <= 65536, "SCAN_SIZE_INVALID");
+    require(intensity.is_array() && (intensity.empty() || intensity.size() == ranges.size()), "SCAN_INTENSITY_SIZE");
+    require(std::abs(begin + step * (ranges.size()-1) - end) <= step * .51, "SCAN_ANGLE_COUNT_MISMATCH");
+    require(dt >= 0 && period > 0 && dt * (ranges.size()-1) <= period * 1.01, "SCAN_TIMING_INVALID");
+    auto clean = Json::array(); std::size_t valid = 0;
+    for (const auto& r : ranges) {
+      // Capture encodes NaN/Inf as strings. Missing returns are not free space.
+      require(r.is_number() || (r.is_string() && (r == "NaN" || r == "Infinity" || r == "-Infinity")), "SCAN_RANGE_ENCODING");
+      const auto x = r.is_number() ? r.get<double>() : std::numeric_limits<double>::quiet_NaN();
+      if (std::isfinite(x) && lo <= x && x <= hi) { clean.push_back(x); ++valid; }
+      else clean.push_back(nullptr);
+    }
+    require(valid >= 2, "SCAN_NO_USABLE_RETURNS");
+    return {{"frame_id", frame}, {"ranges_m", clean}, {"valid_returns", valid},
+      {"range_min_m", lo}, {"range_max_m", hi}, {"angle_min_rad", begin},
+      {"angle_max_rad", end}, {"angle_increment_rad", step}, {"time_increment_s", dt},
+      {"scan_time_s", period}, {"beam_timing_available", dt > 0},
+      {"invalid_returns_are_free_space", false}, {"deskew_applied", false},
+      {"mounting_confirmed", false}, {"scan_matching_available", false},
+      {"px4_aiding_ready", false}, {"z_observed", false}};
+  }
   if (channel == "uwb_xy") {
     require(frame == "uwb_map", "FRAME_MISMATCH");
     const auto& p = d.at("pose").at("pose").at("position");
@@ -180,10 +210,16 @@ void CaptureObservations::ingest(const Json& row) {
     require(s.header_ns > s.high_header_ns, "HEADER_NOT_NEW");
     s.high_header_ns = s.header_ns;
     s.value = fields(spec.channel, d);
+    if (std::string(spec.channel) == "lidar_scan") {
+      // LaserScan header is the first ray. A completed scan cannot contain
+      // beams later than receipt. Unknown (zero) beam timing stays unverified.
+      const auto span = number(d.at("time_increment")) * (d.at("ranges").size()-1);
+      require(span <= (s.ros_ns-s.header_ns)/1e9 + 1e-9, "SCAN_FUTURE_BEAMS");
+    }
     if (s.accepted) s.max_accepted_gap_ns = std::max(s.max_accepted_gap_ns, mono - s.accepted_ns);
     ++s.accepted; s.accepted_ns = mono; s.valid = true; s.reason = "SAMPLE_VALID";
   } catch (const std::invalid_argument& e) {
-    s.reason = e.what(); ++s.rejections[s.reason];
+    s.value = nullptr; s.reason = e.what(); ++s.rejections[s.reason];
   } catch (const Json::exception&) {
     s.reason = "MESSAGE_SHAPE_INVALID"; ++s.rejections[s.reason];
   }

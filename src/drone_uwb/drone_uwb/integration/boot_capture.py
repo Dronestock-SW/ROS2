@@ -73,6 +73,7 @@ def main(argv=None):
     p.add_argument('--reserve-mib', type=int, default=1024)
     p.add_argument('--keep-idle', type=int, default=3)
     p.add_argument('--source-revision', default='unspecified')
+    p.add_argument('--with-lidar', action='store_true')
     args = p.parse_args(argv)
     if not (10 <= args.seconds <= 3600 and 1 <= args.max_mib <= 1024
             and args.reserve_mib >= 512 and args.keep_idle >= 3):
@@ -111,6 +112,8 @@ def main(argv=None):
                 '--source-revision', args.source_revision, '--note', 'Boot sensor-only capture; no mission or EV bridge.']
             for config in args.config:
                 command.extend(['--config', str(config)])
+            if args.with_lidar:
+                command.append('--with-lidar')
             child = subprocess.Popen(command)
             status.update(active=True, reason='collecting', capture=str(directory), pid=child.pid)
             atomic_json(root/'status.json', status)
