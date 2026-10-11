@@ -23,5 +23,5 @@ def field_route(case, start_xy, settings):
         if not settings.inside(xy):
             raise ValueError('test_route_outside_configured_bounds')
         route.append(dict(id=f'{case.upper()}{i+1}', type='hover' if i == 0 else 'waypoint',
-                          x=xy[0], y=xy[1], dwell_s=2.0 if i == 0 else 0.0))
+                          x=xy[0], y=xy[1], dwell_s=(10.0 if case == 'hover' else 2.0) if i == 0 else 0.0))
     return route

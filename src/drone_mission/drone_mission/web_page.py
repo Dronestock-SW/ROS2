@@ -14,20 +14,20 @@ pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px}.hint{color:#5261
 @media(max-width:550px){body{padding-bottom:245px}.flightbar button{font-size:12px;padding:10px 8px}}
 </style><h1>Dronestock 비행 시험</h1>
 <p>미션을 저장하고 선택한 뒤 START로 실행합니다. 저장·불러오기·삭제는 기체를 움직이지 않습니다.</p>
-<p><a href="http://127.0.0.1:8350/">제자리 이륙·2초 호버·착륙 전용 시험</a> · 전체 창고 미션 준비와 별도입니다.</p><section><h2>현장 설정</h2><label for="ceiling">천장 높이 · 바닥 기준 m</label>
+<section><h2>현장 설정</h2><label for="ceiling">천장 높이 · 바닥 기준 m</label>
 <input id="ceiling" type="number" min="0.5" max="100" step="0.1" placeholder="예: 3.0">
 <button id="setceiling">천장 설정 저장</button><span id="site"></span>
-<p class="hint">천장은 실측 지도의 상한을 제한합니다. 이륙 높이는 PX4 설정을 사용합니다. 출발점은 START 시 검증된 PX4 기체 위치에서 자동 확인합니다.</p></section>
+<p class="hint">이륙 높이는 PX4 설정을 사용합니다. 출발점은 START 시 PX4 기체 위치를 앵커 좌표로 변환해 확인합니다.</p><p id="profile" class="hint"></p></section>
 <section><h2>저장 미션</h2><label for="saved">미션 목록 </label><select id="saved"><option value="">저장 미션 없음</option></select>
 <button id="load">불러오기</button><button id="new" class="quiet">새 미션</button><button id="delete" class="quiet">선택 미션 삭제</button>
 <p id="selection" class="hint">새 미션 · 아직 저장하지 않았습니다.</p>
 <label for="name">미션 이름 </label><input id="name" maxlength="80" placeholder="예: 1층 호버 시험">
-<label for="preset">시험 종류 </label><select id="preset"><option value="hover">이륙·2초 호버·착륙</option><option value="x">X 1m 왕복</option><option value="y">Y 1m 왕복</option><option value="xy">X/Y 각 1m·역순 복귀</option><option value="custom">직접 경유지 입력</option></select>
+<label for="preset">시험 종류 </label><select id="preset"><option value="hover">이륙·10초 호버·착륙</option><option value="x">+X 1m·복귀·착륙</option><option value="y">+Y 1m·복귀·착륙</option><option value="xy">+X→+Y 각 1m·역순 복귀·착륙</option><option value="custom">직접 경유지 입력</option></select>
 <button id="save">미션 저장</button><button id="make" class="quiet">시험 경로 미리보기</button>
 <details><summary>고급 · A1 기준 수평 경유지 JSON</summary><label for="route">x/y 단위 m · z 목표는 입력하지 않습니다.</label><textarea id="route">[]</textarea></details>
 <p class="hint">시험 종류는 앵커 연결 전에도 저장할 수 있습니다. 실제 경로는 START 때 출발점에서 다시 계산합니다. 같은 내용의 중복 저장은 기존 미션을 선택합니다.</p></section>
 <section><h2>비행 준비 확인</h2><p>저장 미션 불러오기 → 준비 확인 → 하단 START → ARM·이륙 → 미션 → 착륙. 별도로 먼저 시동을 걸지 않습니다.</p>
-<p id="notice" role="status">저장 미션을 선택하거나 새로 작성하세요.</p><div id="checks"></div></section>
+<p id="notice" role="status">저장 미션을 선택하거나 새로 작성하세요.</p><div id="checks"></div><details><summary>참고 관측 · START 조건에서 제외</summary><div id="observations"></div></details></section>
 <section><h2>실행 이력</h2><p class="hint">삭제한 저장 미션의 실행 이력도 보존됩니다. 기록 닫기는 비행 취소나 RC 인계 해제가 아닙니다. 다음 비행은 실행기가 IDLE인 새 지상 세션에서 시작합니다.</p>
 <table><thead><tr><th>실행</th><th>미션</th><th>상태·결과</th><th>관리</th></tr></thead><tbody id="history"></tbody></table></section>
 <details><summary>실시간 관측 상세</summary><pre id="state">상태 대기</pre></details>
@@ -70,9 +70,10 @@ const ar=t.operator_arm_result;by('armstate').textContent=(t.fc_armed===true?'�
 const control=s.telemetry_fresh&&t.fc_connected&&s.active_run_id!=null&&['mission_db_id','mission_code','route_revision'].every(k=>t[k]===s.assignment[k])&&!['IDLE','END','LANDED','PILOT_OVERRIDE','FAILED','UNCONFIRMED'].includes(t.flight_state);
 by('land').disabled=busy||(!control&&pending?.action!=='land');by('home').disabled=busy||(!control&&pending?.action!=='return_to_home');
 by('setceiling').disabled=!s.site_editable;by('site').textContent=(s.site.ceiling_height_m??'미설정')+' m · 이륙 '+s.expected_takeoff_height_m+' m';
+by('profile').textContent=(s.command_frame==='local_xy'?'A1 기준 로컬 XY · 위도·경도 사용 안 함 · ':'')+(s.execution_profile==='anchor_trial'?'앵커 좌표 이동 시험 · 장애물 지도 검사 없음':'실측 지도 미션')+' · 수평 이동 요청 속도 '+s.speed_m_s+' m/s · 방위는 PX4가 유지합니다.';
 by('runstate').textContent=(s.active_run_id==null?'진행 미션 없음':'실행 '+s.active_run_id+' · 중복 START 잠금')+' / '+(t.flight_state??'연결 대기')+' / '+(t.fc_mode??'모드 미확인');
-const checks=(t.preflight?.checks??[]).map(c=>({...c,title:c.code==='estimator'?'PX4 수평 위치 추정 유효':c.title})),remaining=checks.filter(c=>!c.passed);by('readiness').textContent=!s.telemetry_fresh?'기체 연결 확인 대기':s.active_run_id!=null?'진행 미션 확인 중 · 새 START 잠금':s.can_start?'시작 조건 충족 · 선택 미션과 주변을 확인 후 START':remaining.length?'준비 대기 '+remaining.length+'개 · '+remaining.slice(0,3).map(c=>c.title).join(' / '):'START 대기 · 실행기·지상 상태 확인';
-by('checks').replaceChildren();for(const c of checks){const row=document.createElement('div');row.textContent=(c.passed?'✓ ':'대기 · ')+c.title;by('checks').appendChild(row);}
+const checks=(t.preflight?.checks??[]).map(c=>({...c,title:c.code==='estimator'?'PX4 수평 위치 추정 유효':c.title})),remaining=checks.filter(c=>c.required!==false&&!c.passed);by('readiness').textContent=!s.telemetry_fresh?'기체 연결 확인 대기':s.active_run_id!=null?'진행 미션 확인 중 · 새 START 잠금':s.can_start?'시작 조건 충족 · 선택 미션과 주변을 확인 후 START':remaining.length?'준비 대기 '+remaining.length+'개 · '+remaining.slice(0,3).map(c=>c.title).join(' / '):'START 대기 · 실행기·지상 상태 확인';
+by('checks').replaceChildren();by('observations').replaceChildren();for(const c of checks){const row=document.createElement('div');row.textContent=(c.passed?'✓ ':c.required===false?'미확인 · ':'대기 · ')+c.title+(c.code==='local_start'&&s.automatic_start_xy_m?' · X '+s.automatic_start_xy_m[0].toFixed(3)+'m / Y '+s.automatic_start_xy_m[1].toFixed(3)+'m':'');by(c.required===false?'observations':'checks').appendChild(row);}
 by('state').textContent=JSON.stringify({기체:s.assignment.drone_id,배치:s.assignment.anchor_layout_id,텔레메트리수신:s.telemetry_fresh,상태:t.flight_state,사유:t.flight_reason,시동:t.fc_armed,PX4모드:t.fc_mode,UWB_XYZ:[t.x,t.y,t.current_z_m],Z출처:t.current_z_source,Z지상기준추정:t.current_z_estimated,Z실측유효:t.current_z_trusted,XYZ실측유효:t.xyz_valid,PX4_ENU:t.px4_position_enu_m,자동출발점_창고XY:s.automatic_start_xy_m,고정복귀점_창고XY:t.home_xy_m,착륙확인:t.landing_verified,출발점복귀확인:t.home_verified,비행결과:t.flight_outcome,작업결과:t.work_outcome,스캔결과:t.scan_results,요청검사:t.target_validation},null,2);
 if(++polls%6===0)await refreshCatalog();
 }catch(e){by('start').disabled=true;by('arm').disabled=true;by('land').disabled=true;by('home').disabled=true;by('runstate').textContent='연결 대기 · 이전 미션을 자동 실행하지 않습니다.';by('readiness').textContent='웹 연결 끊김 · START 대기';}setTimeout(update,500);}

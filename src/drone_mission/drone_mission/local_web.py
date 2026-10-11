@@ -143,10 +143,13 @@ class LocalPlatform:
         t = self.telemetry
         checks = {c['code']:c['passed'] for c in t.get('preflight',{}).get('checks',[])}
         xy = t.get('px4_map_xy_m')
+        required = ('layout_confirmed', 'transform', 'pose', 'estimator')
+        if not self.settings.anchor_trial:
+            required += ('alignment_confirmed',)
         if (self.telemetry_received_s is None or not 0 <= time.monotonic()-self.telemetry_received_s <= .5
                 or t.get('fc_armed') is not False or t.get('fc_landed') != 1
                 or t.get('flight_state') not in ('IDLE','READY')
-                or not all(checks.get(k) is True for k in ('layout_confirmed','alignment_confirmed','transform','pose','estimator'))
+                or not all(checks.get(k) is True for k in required)
                 or not isinstance(xy,(list,tuple)) or len(xy)!=2 or not finite(*xy)):
             raise ValueError('출발점 확인 대기: 최신 PX4 위치·지상 상태·좌표 변환 검증이 필요합니다.')
         return tuple(xy)
@@ -176,7 +179,8 @@ class LocalPlatform:
                 return previous  # A lost HTTP response must not create/reissue a command.
             if action == 'start':
                 if not self.can_start():
-                    missing = [c['title'] for c in self.telemetry.get('preflight', {}).get('checks', []) if not c['passed']]
+                    missing = [c.get('title', c['code']) for c in self.telemetry.get('preflight', {}).get('checks', [])
+                               if c.get('required', True) and not c['passed']]
                     raise ValueError('START 차단: '+(' / '.join(missing[:5]) or '진행 미션·최신 지상 상태 확인'))
                 name = '직접 입력 미션'
                 if draft_id is not None:
@@ -196,6 +200,13 @@ class LocalPlatform:
                 if self.settings.full_mission and self.site['ceiling_height_m'] is None:
                     raise ValueError('현장 천장 높이를 먼저 저장하세요.')
                 self.validate_route(route)
+                if self.settings.anchor_trial:
+                    from .anchor_trial import validate_anchor_trial
+                    probe = dict(self.assignment, control_action='start', control_request_id='validate-anchor-trial',
+                        control_requested_at=datetime.now(timezone.utc).isoformat(), mission_db_id=1,
+                        mission_code='TRIAL', route_revision='trial', status='ACTIVE', route_tasks=route,
+                        ceiling_height_m=self.site['ceiling_height_m'])
+                    validate_anchor_trial(probe, self.automatic_start(), self.settings, time.time())
                 revision = hashlib.sha256(json.dumps(route, sort_keys=True, allow_nan=False).encode()).hexdigest()[:16]
                 assignment = dict(self.assignment, route_revision=revision, route_tasks=route, status='ACTIVE')
                 if self.site['ceiling_height_m'] is not None:
@@ -269,6 +280,9 @@ class LocalPlatform:
                             can_start=platform.can_start(), can_arm=platform.can_arm(), active_run_id=(platform.store.active() or {}).get('id'),
                             ceiling_required=platform.settings.full_mission,
                             expected_takeoff_height_m=platform.settings.expected_mis_takeoff_alt_m,
+                            execution_profile=platform.settings.execution_profile,
+                            command_frame=platform.settings.command_frame,
+                            speed_m_s=platform.settings.speed_m_s,
                             automatic_start_xy_m=automatic_xy,
                             assignment=platform.assignment, phase_reports=platform.reports, acks=platform.acks))
                 self.send_json({'error':'unknown_endpoint'},404)

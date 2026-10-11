@@ -37,7 +37,7 @@ def test_execution_logging_and_idle_are_required():
 
 
 def test_request_is_bound_to_current_executor_device_and_short_expiry():
-    now=time.time();s=Settings()
+    now=1_791_417_600.;s=Settings()
     p=dict(ok=True,contract_version='1.0',drone_id=s.drone_id,anchor_layout_id=s.layout_id,
         operator_session_id='current',control_action='arm',control_request_id='one-click',
         control_requested_at=datetime.fromtimestamp(now,timezone.utc).isoformat())

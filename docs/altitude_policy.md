@@ -102,6 +102,15 @@ FC에 전달하는 `/uwb/btf_pose`는 XY 전용이다.
 명령의 altitude는 NaN이다. 웹 경유지 z는 사용하지 않는다.
 [비행 시험 구조](architecture/web_test_flight.md)를 따른다.
 
+2026-10-11 사용자 요청의 앵커 로컬 XY 시험은 별도 계약이다.
+`anchor_trial`의 `command_frame=local_xy`에서만 적용한다.
+PX4 Offboard 위치 명령에는 유효한 로컬 XYZ가 필요하다.
+START 때 받은 PX4 높이 + FC `MIS_TAKEOFF_ALT=1.7m`를
+고정 높이 목표로 전달한다. 측정값을 생성하거나 덮어쓰지 않는다.
+UWB는 XY만 제공하며 ToF·EKF와 PX4 고도 제어를 유지한다.
+companion에 고도 PID·추력·자세 제어는 추가하지 않는다.
+지리 기준점이나 위도·경도 변환은 사용하지 않는다.
+
 ## 공용 데모와 실측 입력
 
 `drone_demo`는 XY 경로·목표·공백 시험만 제공한다.

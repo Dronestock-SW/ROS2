@@ -1,5 +1,6 @@
-"""Manual-flight sensors only: no mission, EV bridge, vision or setpoint plugin."""
+"""Sensors only at boot; explicit opt-in adds passive local setpoint transport."""
 import json
+import os
 from pathlib import Path
 
 from ament_index_python.packages import get_package_share_directory
@@ -22,11 +23,16 @@ def components(context):
     if measured['tag_id'] != tag or measured.get('tdma_mode') != 'required':
         raise ValueError('manual_capture_tag_config_mismatch')
     anchors = matched_anchor_path(share, measured, value('anchor_file'))
+    mavros_options = {'fcu_url':value('fcu_url'), 'tgt_system':1, 'tgt_component':1,
+                      'fcu_protocol':'v2.0'}
+    if value('local_setpoints') == 'true':
+        # The plugin only transports explicit setpoints. No boot mission is added.
+        mavros_options['plugin_allowlist'] = ['sys_status','sys_time','command','imu',
+            'distance_sensor','local_position','param','rc_io','setpoint_raw']
     children = [
         Node(package='mavros', executable='mavros_node', namespace='mavros', output='screen',
              parameters=[str(share/'config/runtime/mavros_btf_bench.yaml'),
-                         {'fcu_url':value('fcu_url'), 'tgt_system':1, 'tgt_component':1,
-                          'fcu_protocol':'v2.0'}]),
+                         mavros_options]),
         Node(package='drone_uwb', executable='uwb_node', output='screen',
              parameters=[str(share/f'config/runtime/uwb_tag_{role}.yaml'),
                          {'port':value('uwb_port'), 'anchor_file':str(anchors),
@@ -48,5 +54,7 @@ def generate_launch_description():
         DeclareLaunchArgument('btf_config'), DeclareLaunchArgument('anchor_file', default_value=''),
         DeclareLaunchArgument('uwb_port', default_value='/dev/uwb'),
         DeclareLaunchArgument('fcu_url', default_value='/dev/pixhawk:921600'),
+        DeclareLaunchArgument('local_setpoints', choices=['true','false'],
+            default_value='true' if os.environ.get('DRONESTOCK_LOCAL_SETPOINTS') == '1' else 'false'),
         OpaqueFunction(function=components),
     ])

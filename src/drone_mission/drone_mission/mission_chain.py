@@ -50,7 +50,7 @@ class MissionChain(FlightSession):
         reason = super().ready(s, now, ground=ground)
         if reason != 'ready':
             return reason
-        if not self.settings.heading_control_confirmed:
+        if not self.settings.anchor_trial and not self.settings.heading_control_confirmed:
             return 'native_heading_control_not_confirmed'
         if s.mag_type != self.settings.expected_ekf2_mag_type:
             return 'px4_heading_policy_mismatch_or_unavailable'
@@ -60,7 +60,7 @@ class MissionChain(FlightSession):
             return 'px4_auto_rc_override_required'
         if ground and s.rc_required and (not s.rc_valid or not 0 <= s.rc_age_s <= 1.):
             return 'live_rc_input_required'
-        if ground and s.rc_required and s.rc_mode != 0:
+        if ground and s.rc_required and not self.settings.anchor_trial and s.rc_mode != 0:
             return 'physical_rc_receiver_mode_required'
         if ground and s.rc_required and not s.rc_mapping_valid:
             return 'physical_rc_switch_mapping_required'

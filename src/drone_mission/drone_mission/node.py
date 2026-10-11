@@ -13,7 +13,7 @@ import uuid
 from ament_index_python.packages import get_package_share_directory
 from geographic_msgs.msg import GeoPointStamped
 from geometry_msgs.msg import PoseStamped, PoseWithCovarianceStamped
-from mavros_msgs.msg import EstimatorStatus, ExtendedState, GlobalPositionTarget, State, RCIn
+from mavros_msgs.msg import EstimatorStatus, ExtendedState, GlobalPositionTarget, PositionTarget, State, RCIn, Mavlink, TimesyncStatus
 from mavros_msgs.srv import CommandBool, CommandInt, CommandLong, CommandTOL, SetMode
 from nav_msgs.msg import Odometry
 import rclpy
@@ -27,19 +27,37 @@ from sensor_msgs.msg import BatteryState
 
 from drone_uwb.processing.gazebo_geometry import rotation_world_body
 from drone_uwb.integration.sitl.sitl_target_contract import PX4GlobalReference
-from drone_uwb.integration.planar import enu_xy_to_map, enu_vector_to_map, enu_yaw_to_map
+from drone_uwb.integration.planar import enu_xy_to_map, enu_vector_to_map, enu_yaw_to_map, map_xy_to_enu, map_yaw_to_enu
 from .contracts import Settings, finite
 from .session import FlightSession, Snapshot, native_estimator_valid
 from .mission_chain import MissionChain
+from .local_xy import LocalXYMission
 from .writer_lock import WriterLock
 from .native_ai import NativePlanner
 from .preflight import field_preflight
 from .operator_arm import arm_blocker, arm_request
 from .bridge_status import normalize_bridge
+from .anchor_trial import validate_anchor_trial
+from .raw_feedback import feedback
+from drone_uwb.integration.clock_readiness import ClockReadiness
 
 
 def stamp_ns(msg):
     return msg.header.stamp.sec*1_000_000_000 + msg.header.stamp.nanosec
+
+
+def local_target_message(goal, settings, stamp):
+    # MAVROS accepts ENU values despite the MAVLink FRAME_LOCAL_NED enum.
+    # Its setpoint_raw plugin performs the ENU -> NED conversion exactly once.
+    msg = PositionTarget()
+    msg.header.stamp = stamp
+    msg.header.frame_id = 'map'
+    msg.coordinate_frame = PositionTarget.FRAME_LOCAL_NED
+    msg.type_mask = 8 | 16 | 32 | 64 | 128 | 256 | 2048
+    msg.position.x, msg.position.y = map_xy_to_enu(goal['xy'], settings)
+    msg.position.z = goal['altitude_enu_m']
+    msg.yaw = math.radians(map_yaw_to_enu(goal['yaw_deg'], settings))
+    return msg
 
 
 class FlightNode(Node):
@@ -77,7 +95,7 @@ class FlightNode(Node):
             consumed = json.loads(self.ledger.read_text(encoding='utf-8'))['consumed']
             if not isinstance(consumed, list) or any(not isinstance(v, str) for v in consumed):
                 raise ValueError('invalid_request_ledger')
-        cls = MissionChain if self.settings.full_mission else FlightSession
+        cls = LocalXYMission if self.settings.local_xy else MissionChain if self.settings.full_mission else FlightSession
         self.session = cls(self.settings, consumed, self.remember)
         self.operator_session_id = uuid.uuid4().hex
         self.operator_arm_result = None
@@ -90,6 +108,8 @@ class FlightNode(Node):
         self.streams_requested = False
         self.origin_requested = float('-inf')
         self.origin = None
+        self.feedback_clock = ClockReadiness()
+        self.feedback_stream_requested = False
         self.log = None
         self.record_fault = False
         directory = self.get_parameter('record_directory').value
@@ -128,12 +148,26 @@ class FlightNode(Node):
             QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL))
         self.create_subscription(GlobalPositionTarget, '/mavros/setpoint_raw/target_global',
                                  self.target_received, qos_profile_sensor_data)
+        if self.settings.local_xy:
+            self.local_pub = self.create_publisher(PositionTarget, '/mavros/setpoint_raw/local', qos_profile_sensor_data)
+            self.create_subscription(PositionTarget, '/mavros/setpoint_raw/target_local',
+                                     self.local_target_received, qos_profile_sensor_data)
+        if self.settings.anchor_trial:
+            from pymavlink.dialects.v20.common import MAVLink
+            self.feedback_decoder = MAVLink(None)
+            self.create_subscription(Mavlink, '/uas1/mavlink_source', self.raw_feedback,
+                                     qos_profile_sensor_data)
+            self.create_subscription(TimesyncStatus, '/mavros/timesync_status', self.feedback_timesync,
+                                     qos_profile_sensor_data)
         self.command_clients = {name: self.create_client(cls, topic) for name, cls, topic in (
             ('arm', CommandBool, '/mavros/cmd/arming'),
             ('takeoff', CommandTOL, '/mavros/cmd/takeoff'),
             ('land', CommandTOL, '/mavros/cmd/land'),
             ('reposition', CommandInt, '/mavros/cmd/command_int'))}
         self.command_clients['takeoff_mode'] = self.create_client(SetMode, '/mavros/set_mode')
+        if self.settings.local_xy:
+            self.command_clients['offboard_mode'] = self.command_clients['takeoff_mode']
+            self.command_clients['position_mode'] = self.command_clients['takeoff_mode']
         self.param_client = self.create_client(GetParameters, '/mavros/param/get_parameters')
         self.stream_client = self.create_client(CommandLong, '/mavros/cmd/command')
         self.previous_state = None
@@ -220,7 +254,20 @@ class FlightNode(Node):
                 self.operator_arm(payload)
                 return
             if self.settings.full_mission and payload.get('route_tasks'):
-                if self.native_planner is None:
+                if self.settings.anchor_trial:
+                    if (not self.session.assignment and not self.session.intent
+                            and payload.get('control_action') == 'start'):
+                        sample = self.snapshot()
+                        if (sample.armed or sample.landed != 1
+                                or not 0 <= sample.state_age_s <= self.settings.state_timeout_s
+                                or not 0 <= sample.landed_age_s <= self.settings.state_timeout_s
+                                or not 0 <= sample.pose_age_s <= self.settings.pose_timeout_s):
+                            raise ValueError('anchor_trial_requires_fresh_ground_pose')
+                        proof = validate_anchor_trial(payload, sample.xy, self.settings, time.time())
+                        self.record(dict(type='anchor_trial_route_validated', **proof))
+                        if self.log:
+                            os.fsync(self.log.fileno())
+                elif self.native_planner is None:
                     if payload.get('control_action') == 'start':
                         raise ValueError('native_validated_map_required')
                 elif not self.session.assignment and not self.session.intent and payload.get('control_action') == 'start':
@@ -262,7 +309,46 @@ class FlightNode(Node):
         except (TypeError, ValueError):
             self.origin = None
 
+    def feedback_timesync(self, msg):
+        if msg.remote_timestamp_ns < self.feedback_clock.remote_ns:
+            self.feedback_clock.reset()
+            self.origin = None
+        self.feedback_clock.observe(now=time.monotonic(), remote_ns=msg.remote_timestamp_ns,
+            offset_ns=msg.estimated_offset_ns, rtt_ms=msg.round_trip_time_ms)
+
+    def raw_feedback(self, msg):
+        if self.settings.local_xy:
+            return
+        if msg.sysid != 1 or msg.compid != 1 or msg.msgid not in (49, 87):
+            return
+        from mavros.mavlink import convert_to_bytes
+        try:
+            packet = self.feedback_decoder.decode(convert_to_bytes(msg))
+            result = feedback(packet, self.feedback_clock, time.monotonic(), self.get_clock().now().nanoseconds)
+        except Exception:
+            return  # Malformed or CRC-invalid frames never establish readiness.
+        if result is None:
+            return
+        kind, value = result
+        if kind == 'origin':
+            if self.origin is None or (self.origin.latitude_deg, self.origin.longitude_deg) != (value.latitude_deg, value.longitude_deg):
+                self.origin = value
+        else:
+            self.target_feedback = value
+            self.session.applied_target(value['latitude'], value['longitude'], value['stamp_ns'])
+
+    def local_target_received(self, msg):
+        age = (self.get_clock().now().nanoseconds-stamp_ns(msg))/1e9
+        if (msg.coordinate_frame != 1 or msg.type_mask & 7 or not 0 <= age <= .5
+                or not finite(msg.position.x, msg.position.y, msg.position.z)):
+            return
+        xy = tuple(enu_xy_to_map((msg.position.x, msg.position.y), self.settings))
+        self.session.applied_local_target(xy, msg.position.z, stamp_ns(msg))
+        self.target_feedback = dict(frame='uwb_map', xy_m=xy, stamp_ns=stamp_ns(msg))
+
     def target_received(self, msg):
+        if self.settings.local_xy:
+            return
         age = (self.get_clock().now().nanoseconds-stamp_ns(msg))/1e9
         if finite(msg.latitude, msg.longitude):
             self.target_feedback = dict(coordinate_frame=msg.coordinate_frame,type_mask=msg.type_mask,
@@ -275,6 +361,8 @@ class FlightNode(Node):
             client.service_is_ready() for key, client in self.command_clients.items()
             if self.settings.full_mission or key != 'takeoff_mode'),
             land_service_ready=self.command_clients['land'].service_is_ready())
+        if self.settings.local_xy:
+            s.local_setpoint_ready = self.local_pub.get_subscription_count() == 1
         if 'state' in self.samples:
             msg = self.samples['state'][0]
             s.connected, s.armed, s.mode = msg.connected, msg.armed, msg.mode
@@ -285,6 +373,7 @@ class FlightNode(Node):
         if 'estimator' in self.samples:
             msg = self.samples['estimator'][0]
             s.estimator_valid = native_estimator_valid(msg)
+            s.vertical_estimator_valid = bool(msg.velocity_vert_status_flag and msg.pos_vert_abs_status_flag)
             s.estimator_age_s = self.age('estimator')
         if 'pose' in self.samples:
             msg = self.samples['pose'][0]
@@ -301,6 +390,7 @@ class FlightNode(Node):
                 s.xy = tuple(enu_xy_to_map((p.x, p.y), self.settings))
                 s.velocity_xy = tuple(enu_vector_to_map(velocity[:2], self.settings))
                 s.vertical_speed_m_s = float(velocity[2])
+                s.altitude_enu_m = float(p.z)
                 s.pose_stamp_ns, s.pose_age_s = stamp_ns(msg), self.age('pose')
                 s.yaw_deg = enu_yaw_to_map(math.degrees(math.atan2(2*(q.w*q.z+q.x*q.y),
                                         1-2*(q.y*q.y+q.z*q.z))), self.settings)
@@ -380,6 +470,10 @@ class FlightNode(Node):
             self.param_future = self.param_client.call_async(GetParameters.Request(names=names))
             self.param_future.add_done_callback(self.parameters_received)
         if self.stream_client.service_is_ready():
+            if self.settings.anchor_trial and not self.feedback_stream_requested:
+                self.stream_client.call_async(CommandLong.Request(command=511,
+                    param1=85. if self.settings.local_xy else 87., param2=100000.))
+                self.feedback_stream_requested = True
             if not self.streams_requested:
                 # Measured ToF projection requires attitude within 20 ms. The
                 # default 50 Hz attitude / 10 Hz range streams sit on that
@@ -391,7 +485,7 @@ class FlightNode(Node):
                     request = CommandLong.Request(command=511, param1=float(message), param2=1e6/rate)
                     self.stream_client.call_async(request)
                 self.streams_requested = True
-            if self.origin is None and now-self.origin_requested > 5.:
+            if not self.settings.local_xy and self.origin is None and now-self.origin_requested > 5.:
                 self.stream_client.call_async(CommandLong.Request(command=512, param1=49.))
                 self.origin_requested = now
 
@@ -422,8 +516,9 @@ class FlightNode(Node):
         if not client.service_is_ready():
             self.session.command_result(token, False, time.monotonic())
             return
-        if kind == 'takeoff_mode':
-            request = SetMode.Request(base_mode=0, custom_mode='AUTO.TAKEOFF')
+        if kind in ('takeoff_mode','offboard_mode','position_mode'):
+            request = SetMode.Request(base_mode=0, custom_mode={
+                'takeoff_mode':'AUTO.TAKEOFF','offboard_mode':'OFFBOARD','position_mode':'POSCTL'}[kind])
         elif kind in ('arm', 'disarm'):
             request = CommandBool.Request(value=kind == 'arm')
         elif kind in ('takeoff', 'land'):
@@ -450,7 +545,7 @@ class FlightNode(Node):
         def completed(result):
             try:
                 response = result.result()
-                accepted = (response.mode_sent if kind == 'takeoff_mode' else
+                accepted = (response.mode_sent if kind in ('takeoff_mode','offboard_mode','position_mode') else
                             response.success and getattr(response, 'result', 0) == 0)
             except Exception:
                 accepted = False
@@ -514,6 +609,10 @@ class FlightNode(Node):
                 actions = []
         for action in actions:
             self.dispatch(action)
+        if self.settings.local_xy and self.settings.execute:
+            goal = self.session.local_setpoint()
+            if goal is not None and not self.record_fault:
+                self.local_pub.publish(local_target_message(goal, self.settings, self.get_clock().now().to_msg()))
         requests = getattr(self.session, 'scan_requests', [])
         if (self.settings.full_mission and not requests
                 and self.session.phase in ('ALIGNING','SCANNING')
@@ -546,6 +645,7 @@ class FlightNode(Node):
             status['target_feedback'] = self.target_feedback
             status['target_requested_global'] = self.session.target_global
             status['input_checks'] = dict(estimator_valid=s.estimator_valid,
+                vertical_estimator_valid=s.vertical_estimator_valid,
                 pose_age_s=s.pose_age_s if math.isfinite(s.pose_age_s) else None,
                 velocity_xy=s.velocity_xy, yaw_deg=s.yaw_deg,
                 vertical_speed_m_s=s.vertical_speed_m_s,

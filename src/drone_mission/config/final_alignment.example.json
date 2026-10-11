@@ -1,0 +1,25 @@
+{
+  "settings": {
+    "enabled": true,
+    "tag_id": "6",
+    "source_frame": "uwb_map",
+    "enu_yaw_deg": 0,
+    "map_y_axis_sign": -1,
+    "enu_offset_x_m": 0.0,
+    "enu_offset_y_m": 0.0,
+    "max_age_s": 0.15,
+    "jump_guard_enabled": false,
+    "host_boot_id": "REQUIRES_NEW_GROUND_ALIGNMENT",
+    "fc_remote_ns_at_alignment": 0,
+    "alignment_method": "operator_cardinal_and_stationary_px4_yaw",
+    "layout_confirmed": true,
+    "sensor_mount_confirmed": true,
+    "expected_ev_delay_ms": 0.0,
+    "antenna_body_frd_x_m": -0.1,
+    "antenna_body_frd_y_m": 0.0,
+    "antenna_body_frd_z_m": -0.1
+  },
+  "flight_verified": false,
+  "dynamic_alignment_verified": false,
+  "timing_calibrated": false
+}

@@ -15,6 +15,8 @@ def finite(*values):
 
 @dataclass(frozen=True)
 class Settings:
+    command_frame: str = 'global'
+    execution_profile: str = 'surveyed_mission'
     bridge_topic: str = '/uwb/bridge_status'
     bridge_host_boot_id: str = ''
     execute: bool = False
@@ -56,6 +58,14 @@ class Settings:
     layout_id: str = LAYOUT
 
     def __post_init__(self):
+        if self.command_frame not in ('global', 'local_xy'):
+            raise ValueError('unsupported_command_frame')
+        if self.command_frame == 'local_xy' and not self.anchor_trial:
+            raise ValueError('local_xy_requires_anchor_trial')
+        if self.execution_profile not in ('surveyed_mission', 'anchor_trial'):
+            raise ValueError('unsupported_execution_profile')
+        if self.execution_profile == 'anchor_trial' and not self.full_mission:
+            raise ValueError('anchor_trial_requires_full_mission')
         if self.bridge_topic not in ('/uwb/bridge_status', '/uwb/local_odometry_status'):
             raise ValueError('unsupported_bridge_topic')
         if not isinstance(self.bridge_host_boot_id, str):
@@ -91,6 +101,14 @@ class Settings:
         return (len(xy) == 2 and finite(*xy)
                 and self.bounds_xy_m[0] <= xy[0] <= self.bounds_xy_m[1]
                 and self.bounds_xy_m[2] <= xy[1] <= self.bounds_xy_m[3])
+
+    @property
+    def anchor_trial(self):
+        return self.execution_profile == 'anchor_trial'
+
+    @property
+    def local_xy(self):
+        return self.command_frame == 'local_xy'
 
 
 def parse_request(payload, settings, wall_s):
@@ -145,6 +163,8 @@ def parse_request(payload, settings, wall_s):
         if not isinstance(point_id, str) or not point_id or point_id in ids:
             raise ValueError('unique_waypoint_ids_required')
         kind = item.get('type', 'waypoint')
+        if settings.anchor_trial and (kind not in ('waypoint', 'hover') or item.get('yaw_deg') is not None):
+            raise ValueError('anchor_trial_supports_xy_and_hover_only')
         if kind not in (('waypoint', 'hover', 'scan') if settings.full_mission else ('waypoint', 'hover')):
             raise ValueError('flight_trial_supports_waypoint_and_hover')
         xy = (item.get('x'), item.get('y'))

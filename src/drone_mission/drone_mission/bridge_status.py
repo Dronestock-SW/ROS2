@@ -1,6 +1,9 @@
 """Adapt the selected UWB sender status without inventing fusion evidence."""
 import math
 
+# Status snapshots arrive at ~5 Hz; include one report interval and transport margin.
+BRIDGE_OBSERVATION_MAX_AGE_S = .35
+
 
 def normalize_bridge(value, settings):
     if settings.bridge_topic == '/uwb/bridge_status':
@@ -16,7 +19,7 @@ def normalize_bridge(value, settings):
             or cfg.get('host_boot_id') != settings.bridge_host_boot_id
             or type(count) is not int or count < 0
             or type(stamp) is not int or stamp <= 0
-            or type(age) not in (int, float) or not math.isfinite(age) or not 0 <= age <= .2
+            or type(age) not in (int, float) or not math.isfinite(age) or not 0 <= age <= BRIDGE_OBSERVATION_MAX_AGE_S
             or value.get('timesync_ready') is not True):
         return dict(gate='local_odometry_status_unavailable', settings={})
     return dict(value, published=count, last_observation_stamp_ns=stamp,

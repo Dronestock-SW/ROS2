@@ -8,6 +8,7 @@ import math
 from drone_demo.mission import MissionConfig, MissionMonitor
 from drone_uwb.integration.sitl.sitl_target_contract import ned_to_global
 from drone_uwb.integration.planar import map_xy_to_enu
+from .bridge_status import BRIDGE_OBSERVATION_MAX_AGE_S
 from .contracts import finite, parse_request
 
 
@@ -45,6 +46,9 @@ class Snapshot:
     landed_age_s: float = math.inf
     estimator_age_s: float = math.inf
     estimator_valid: bool = False
+    vertical_estimator_valid: bool = False
+    altitude_enu_m: object = None
+    local_setpoint_ready: bool = False
     pose_stamp_ns: int = 0
     pose_age_s: float = math.inf
     xy: tuple = ()
@@ -166,6 +170,8 @@ class FlightSession:
             return 'mavros_command_services_unavailable'
         for name in ('layout_confirmed', 'alignment_confirmed', 'fusion_confirmed', 'takeoff_settings_confirmed',
                      'timing_confirmed', 'sensor_mount_confirmed'):
+            if self.settings.anchor_trial and name in ('alignment_confirmed', 'fusion_confirmed', 'timing_confirmed'):
+                continue
             if not getattr(self.settings, name):
                 return name + '_required'
         if not s.connected or not 0 <= s.state_age_s <= self.settings.state_timeout_s:
@@ -178,16 +184,18 @@ class FlightSession:
             return 'px4_pose_unavailable_or_outside_bounds'
         if not 0 <= s.uwb_age_s <= .25:
             return 'uwb_unavailable'
-        if not 0 <= s.height_age_s <= .2:
+        if self.settings.anchor_trial and not s.vertical_estimator_valid:
+            return 'px4_vertical_estimator_unavailable'
+        if not self.settings.anchor_trial and not 0 <= s.height_age_s <= .2:
             return 'measured_height_unavailable'
         if (not s.bridge_ready or s.bridge_published <= 0 or not 0 <= s.bridge_age_s <= 2.5
-                or not 0 <= s.bridge_observation_age_s <= .2):
+                or not 0 <= s.bridge_observation_age_s <= BRIDGE_OBSERVATION_MAX_AGE_S):
             return 'uwb_px4_bridge_unavailable'
         if not s.alignment_matches:
             return 'observation_and_command_alignment_mismatch'
-        if s.origin is None:
+        if not self.settings.local_xy and s.origin is None:
             return 'px4_global_origin_required'
-        if self.origin is not None and s.origin != self.origin:
+        if not self.settings.local_xy and self.origin is not None and s.origin != self.origin:
             return 'px4_global_origin_changed'
         if self.last_web_s is None or not 0 <= now-self.last_web_s <= self.settings.web_timeout_s:
             return 'web_assignment_stale'
