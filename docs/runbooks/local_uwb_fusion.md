@@ -3,6 +3,8 @@ GPS·지리적 원점 없이 UWB를 PX4에 넣는 절차다.
 현재 관측 서비스를 재시작하거나 복구할 때 읽는다.
 
 수평 위치는 UWB를 융합한다. 고도·자세는 PX4가 맡는다.
+현재 기체는 전달기 35cm 거절을 OFF로 운용한다.
+[18:18 복구·최신 융합 확인](../report/uwb_sender_dependency_recovery_20261011.md)을 먼저 읽는다.
 지상 확인과 재부팅 복구는 [10월 11일 기록](../report/local_uwb_fusion_20261011.md)에 있다.
 이 절차는 시동·이륙·자동 경유지 실행을 하지 않는다.
 
@@ -16,7 +18,8 @@ GPS·지리적 원점 없이 UWB를 PX4에 넣는 절차다.
                           v
               고정 실내 축 -> ENU -> NED
                           |
-           신선도·시계·점프·입력 독점 검사
+           신선도·시계·입력 독점 검사
+           전달기 변위 점프 거절 OFF
                           |
                  MAVLink ODOMETRY
                           |
@@ -41,7 +44,9 @@ FC 자세는 최초 축 정렬에서만 한 번 읽는다.
 | 실내 축 방향 | +X=A1→A2, +Y=A1→A3 |
 | 실내 XY 부호 | `map_y_axis_sign=-1`; 기존 현장 배치 기준 |
 | 최초 기수 | 사용자 확인 −Y=A3→A1 |
-| 지도→ENU 회전 | 17:12 새 부팅 `enu_yaw_deg=-118.0296693294`; 동적 검증 미완료 |
+| 지도→ENU 회전 | 현재 부팅 18:03 `enu_yaw_deg=-98.4056450711`; 동적 검증 미완료 |
+| 전달기 변위 거절 | `jump_guard_enabled=false`; 새 부팅에도 명시해서 수집 |
+| 활성 설정 | `/home/bluewak/local-uwb-20261011/alignment-nojump-boot085cec07.json` |
 | 수평 원점 이동 | ENU offset=(0,0) m; A1 유지 |
 | FC→안테나 | FRD `(-.10,0,-.10)` m; 10월 9일 실측 기록 |
 | 관측 나이 | 원본 시각부터 최대150ms |
@@ -85,12 +90,22 @@ export ROS_DOMAIN_ID=2 ROS_LOCALHOST_ONLY=0
 export PYTHONPATH=/home/arialhanho/ROS2-integration-20261007/.test-deps:$PYTHONPATH
 python3 src/drone_uwb/tools/configure_local_uwb.py \
   --output /home/bluewak/local-uwb-20261011/새파일명.json \
-  --heading=-Y
+  --heading=-Y --disable-sender-jump-guard
 bash src/drone_uwb/deployment/install_local_uwb_user_service.sh \
   "$PWD" /home/bluewak/local-uwb-20261011/새파일명.json
 # 아래 재시작 직전에도 최신 DISARM·ON_GROUND를 확인한다.
 systemctl --user restart dronestock-local-uwb.service
 ```
+
+설치기는 라이브러리 import를 먼저 검사한다.
+`pymavlink` 경로가 빠지면 설치를 중단한다.
+기존 환경 파일을 덮어쓰지 않는다.
+설치 셸의 `PYTHONPATH`를 서비스에 저장한다.
+위 export를 생략하면18:06 중단이 재현된다.
+`--disable-sender-jump-guard`를 매번 명시한다.
+옵션을 빼면 호환 기본값 True로 수집한다.
+현재 사용자 선택은 False이므로 빼지 않는다.
+이유: 새 부팅에서35cm 거절이 다시 켜질 수 있다.
 
 기수가 다른 축이면 `--heading` 값을 바꾼다.
 선택값은 `+X`, `-X`, `+Y`, `-Y`다.
@@ -182,11 +197,11 @@ UWB 융합 성공과 자동 경유지 비행 성공은 다르다.
 착륙·DISARM만으로 점프 기준을 초기화하지 않는다.
 잘못된 관측 차단과 정상 이동 오거절을 구분한다.
 판정에는 같은 시각의 독립 이동 근거가 필요하다.
-일반 운용에서는 보호 기준을 유지한다.
-이유: 잘못된 위치를 PX4에 넣을 수 있다.
-10월11일 사용자 요청의 전달기 OFF 시험은 예외다.
+현재 사용자 요청에 따라 전달기 변위 거절은 OFF다.
+기존 설정의 기본값 True는 호환 목적이다.
 [시험 범위·원복 기록](../report/uwb_sender_jump_off_20261011.md)을 따른다.
-새 설정 수집에 `--disable-px4-jump-guard`를 추가한다.
+새 설정 수집에 `--disable-sender-jump-guard`를 추가한다.
+옛 이름 `--disable-px4-jump-guard`도 별칭으로 받는다.
 FC 파라미터를 바꾸는 `--apply`는 필요하지 않다.
 설정 변경·재시작은 최신 지상 DISARM에서만 한다.
 PX4 자체 검사와 B_TF 보호는 유지한다.

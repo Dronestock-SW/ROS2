@@ -10,6 +10,7 @@
 
 | 찾는 내용 | 위치 |
 |---|---|
+| 점프 OFF 이후 라이브러리 누락 복구·최신 FC 융합 | [18:18 재검증 기록](report/uwb_sender_dependency_recovery_20261011.md) |
 | 사용자 요청의 전달기 점프 차단 OFF 시험 | [10월11일 적용·융합 확인](report/uwb_sender_jump_off_20261011.md) |
 | GPS·지리적 원점 없는 실제 UWB 수평 융합 | [10월 11일 적용·FC 확인](report/local_uwb_fusion_20261011.md) |
 | 실내 UWB의 부팅 정렬·실행·원복 | [로컬 수평 융합 절차](runbooks/local_uwb_fusion.md) |
