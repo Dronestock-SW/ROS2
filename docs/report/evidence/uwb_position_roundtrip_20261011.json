@@ -1277,5 +1277,25 @@
     "No simulated position jumps added by production sender",
     "Protection thresholds were not relaxed",
     "No ground-only automatic guard reset on landing"
-  ]
+  ],
+  "guard_explanation": {
+    "default_max_speed_m_s": 1.0,
+    "jump_margin_m": 0.1,
+    "max_gap_s": 0.25,
+    "default_max_displacement_m": 0.35,
+    "accepted_prior_updates": true,
+    "rejected_prior_updates": false,
+    "land_disarm_automatically_resets": false,
+    "last_sent_antenna_ned_xy_m": [
+      -1.2590523194278642,
+      -3.18278886814829
+    ],
+    "postflight_candidate_antenna_ned_xy_m": [
+      -1.9339342300920153,
+      -3.477807502235481
+    ],
+    "separation_m": 0.7365470710011459,
+    "same_sample_appropriateness_verified": false,
+    "motion_reacquisition_separate_conditions": true
+  }
 }
