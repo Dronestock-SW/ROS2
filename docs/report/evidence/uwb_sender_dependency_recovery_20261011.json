@@ -1116,7 +1116,11 @@
     "jump-disable-steady-service.json": "c72de5169c3660979f0acdd58dd3f1b51bc21a06b0bbc76118ad383b5717c09c",
     "jump-disable-dependency-repair.log": "a98e6d338d969da7ba5e716696b8ffe7c29f54876b4abf096050d559e719ac37",
     "jump-disable-installer-missing-dependency.json": "836305eb68c1071ddb04ae4cc6d777b0489f23e50a2818f898ad18b9ce704262",
-    "installed-reference-backup-check.json": "ad75473da60cba5e7cfa4f323deaa62267c0214825c007405067cdff8705928e"
+    "installed-reference-backup-check.json": "ad75473da60cba5e7cfa4f323deaa62267c0214825c007405067cdff8705928e",
+    "jump-disable-final-service.json": "6f39748a7dbfb859551b7672494de7a95ea21506691c1bcacd75a0f0fff850dd",
+    "jump-disable-final-gap-trace.json": "48c97f02af609a0079e1c9da62a854923e57806c5f8c5470e3a33a547bba08c7",
+    "jump-disable-final-px4.json": "876719258d5cf2c42cdc4f466628380aa31607c2ecd8a693ec842fe895188cde",
+    "sender-trial-ground-prefix-1815.corrected.analysis.json": "975141ecf72aff6f43eec94a26a6e530257985bd2747084a62522dc07982a9a1"
   },
   "tests": {
     "windows_related": "51 passed, 1 skipped (pymavlink unavailable)",
@@ -1150,5 +1154,606 @@
       "src/drone_uwb/deployment/install_local_uwb_user_service.sh": "172477fd0265b84644316c394730ea0273a4052d32a2ca15af3a2f9a69a1eb40"
     },
     "normalized_lf_match": true
+  },
+  "final_service": {
+    "service": "active",
+    "current_log_age_s": 5.05326509475708,
+    "sample_wall_age_s": 5.0986244678497314,
+    "jump_guard_enabled": false,
+    "gate": "ready",
+    "last_reason": "ready",
+    "published": 27780,
+    "last_send_age_s": 0.022514119000106803,
+    "max_send_gap_s": 3.40155287399989,
+    "frozen": null,
+    "z_observed": false,
+    "attitude_observed": false,
+    "parameters": {
+      "EKF2_GPS_CTRL": 0,
+      "EKF2_EV_CTRL": 1,
+      "EKF2_EV_DELAY": 0.0,
+      "EKF2_EV_NOISE_MD": 0,
+      "EKF2_EV_POS_X": -0.10000000149011612,
+      "EKF2_EV_POS_Y": 0.0,
+      "EKF2_EV_POS_Z": -0.10000000149011612,
+      "EKF2_EV_QMIN": 0
+    }
+  },
+  "final_gap_trace": {
+    "current_start": {
+      "gate": "sender_trial_requires_disarmed_ground_start",
+      "last_reason": "starting",
+      "counts": {},
+      "last_sample_stamp_ns": null,
+      "last_send_age_s": null,
+      "max_send_gap_s": 0.0,
+      "parameters": {},
+      "settings": {
+        "enabled": true,
+        "tag_id": "6",
+        "source_frame": "uwb_map",
+        "enu_yaw_deg": -98.40564507110611,
+        "map_y_axis_sign": -1,
+        "enu_offset_x_m": 0.0,
+        "enu_offset_y_m": 0.0,
+        "max_age_s": 0.15,
+        "jump_guard_enabled": false,
+        "host_boot_id": "085cec07-db6b-4875-b41b-aa9878a7479f",
+        "fc_remote_ns_at_alignment": 640450875000,
+        "alignment_method": "operator_cardinal_and_stationary_px4_yaw",
+        "layout_confirmed": true,
+        "sensor_mount_confirmed": true,
+        "expected_ev_delay_ms": 0.0,
+        "antenna_body_frd_x_m": -0.1,
+        "antenna_body_frd_y_m": 0.0,
+        "antenna_body_frd_z_m": -0.1
+      },
+      "observation_session": null,
+      "reset_counter": 0,
+      "last_position_ned_xy_m": null,
+      "timesync_ready": false,
+      "frozen": null,
+      "position_reference": "uwb_antenna",
+      "lever_arm_owner": "PX4_EKF2",
+      "z_observed": false,
+      "attitude_observed": false,
+      "velocity_observed": false,
+      "geographic_origin_required": false,
+      "flight_commands_enabled": false,
+      "timing_calibrated": false,
+      "dynamic_alignment_verified": false,
+      "flight_verified": false
+    },
+    "latest": {
+      "gate": "ready",
+      "last_reason": "ready",
+      "counts": {
+        "timesync_unavailable_or_unstable": 93,
+        "observation_acquiring": 10,
+        "published": 30845,
+        "observation_recovering": 80,
+        "invalid_frame_or_timestamp": 10,
+        "fcu_disconnected_or_stale": 2
+      },
+      "last_sample_stamp_ns": 1791710849870735511,
+      "last_send_age_s": 0.00983251399998153,
+      "max_send_gap_s": 3.40155287399989,
+      "parameters": {
+        "EKF2_GPS_CTRL": 0,
+        "EKF2_EV_CTRL": 1,
+        "EKF2_EV_DELAY": 0.0,
+        "EKF2_EV_NOISE_MD": 0,
+        "EKF2_EV_POS_X": -0.10000000149011612,
+        "EKF2_EV_POS_Y": 0.0,
+        "EKF2_EV_POS_Z": -0.10000000149011612,
+        "EKF2_EV_QMIN": 0
+      },
+      "settings": {
+        "enabled": true,
+        "tag_id": "6",
+        "source_frame": "uwb_map",
+        "enu_yaw_deg": -98.40564507110611,
+        "map_y_axis_sign": -1,
+        "enu_offset_x_m": 0.0,
+        "enu_offset_y_m": 0.0,
+        "max_age_s": 0.15,
+        "jump_guard_enabled": false,
+        "host_boot_id": "085cec07-db6b-4875-b41b-aa9878a7479f",
+        "fc_remote_ns_at_alignment": 640450875000,
+        "alignment_method": "operator_cardinal_and_stationary_px4_yaw",
+        "layout_confirmed": true,
+        "sensor_mount_confirmed": true,
+        "expected_ev_delay_ms": 0.0,
+        "antenna_body_frd_x_m": -0.1,
+        "antenna_body_frd_y_m": 0.0,
+        "antenna_body_frd_z_m": -0.1
+      },
+      "observation_session": 0,
+      "reset_counter": 0,
+      "last_position_ned_xy_m": [
+        -2.9785522609424264,
+        -2.6342217661088676
+      ],
+      "timesync_ready": true,
+      "frozen": null,
+      "position_reference": "uwb_antenna",
+      "lever_arm_owner": "PX4_EKF2",
+      "z_observed": false,
+      "attitude_observed": false,
+      "velocity_observed": false,
+      "geographic_origin_required": false,
+      "flight_commands_enabled": false,
+      "timing_calibrated": false,
+      "dynamic_alignment_verified": false,
+      "flight_verified": false
+    },
+    "gap_increases": [
+      {
+        "last_sample_stamp_ns": 1791710077872276394,
+        "max_send_gap_s": 0.17934367699990617,
+        "last_send_age_s": 0.014502794999998514,
+        "last_reason": "ready",
+        "gate": "ready",
+        "counts": {
+          "timesync_unavailable_or_unstable": 86,
+          "observation_acquiring": 10,
+          "published": 848
+        },
+        "frozen": null
+      },
+      {
+        "last_sample_stamp_ns": 1791710293076005950,
+        "max_send_gap_s": 0.9375866530001531,
+        "last_send_age_s": 0.009783660000039163,
+        "last_reason": "ready",
+        "gate": "ready",
+        "counts": {
+          "timesync_unavailable_or_unstable": 86,
+          "observation_acquiring": 10,
+          "published": 9405,
+          "observation_recovering": 6
+        },
+        "frozen": null
+      },
+      {
+        "last_sample_stamp_ns": 1791710298050860114,
+        "max_send_gap_s": 1.223952473999816,
+        "last_send_age_s": 0.01234427899998991,
+        "last_reason": "ready",
+        "gate": "ready",
+        "counts": {
+          "timesync_unavailable_or_unstable": 86,
+          "observation_acquiring": 10,
+          "published": 9515,
+          "observation_recovering": 20
+        },
+        "frozen": null
+      },
+      {
+        "last_sample_stamp_ns": 1791710405475848501,
+        "max_send_gap_s": 1.8467096909998872,
+        "last_send_age_s": 0.014797733000023072,
+        "last_reason": "ready",
+        "gate": "ready",
+        "counts": {
+          "timesync_unavailable_or_unstable": 87,
+          "observation_acquiring": 10,
+          "published": 13733,
+          "observation_recovering": 26
+        },
+        "frozen": null
+      },
+      {
+        "last_sample_stamp_ns": 1791710747872015049,
+        "max_send_gap_s": 3.40155287399989,
+        "last_send_age_s": 0.009899913000026572,
+        "last_reason": "ready",
+        "gate": "ready",
+        "counts": {
+          "timesync_unavailable_or_unstable": 93,
+          "observation_acquiring": 10,
+          "published": 26775,
+          "observation_recovering": 80,
+          "invalid_frame_or_timestamp": 7,
+          "fcu_disconnected_or_stale": 2
+        },
+        "frozen": null
+      }
+    ]
+  },
+  "final_fc_readback": {
+    "checked_at_utc": "2026-10-11T09:27:21.655522+00:00",
+    "host": "user-desktop",
+    "queries": [
+      {
+        "command": "listener estimator_status_flags -i 0 -n 1",
+        "complete": true,
+        "read_at_utc": "2026-10-11T09:27:25.664506+00:00",
+        "response": "\nNuttShell (NSH) NuttX-12.12.0\nnsh> listener estimator_status_flags -i 0 -n 1\n\nTOPIC: estimator_status_flags instance 0 #1\n estimator_status_flags\n    timestamp: 2057970103 (0.610663 seconds ago)\n    timestamp_sample: 2057783411 (186692 us before timestamp)\n    control_status_changes: 83\n    fault_status_changes: 0\n    innovation_fault_status_changes: 2\n    cs_tilt_align: True\n    cs_yaw_align: True\n    cs_gnss_pos: False\n    cs_opt_flow: False\n    cs_mag_hdg: True\n    cs_mag_3d: False\n    cs_mag_dec: True\n    cs_in_air: False\n    cs_wind: False\n    cs_baro_hgt: True\n    cs_rng_hgt: True\n    cs_gps_hgt: False\n    cs_ev_pos: True\n    cs_ev_yaw: False\n    cs_ev_hgt: False\n    cs_fuse_beta: False\n    cs_mag_field_disturbed: False\n    cs_fixed_wing: False\n    cs_mag_fault: False\n    cs_fuse_aspd: False\n    cs_gnd_effect: False\n    cs_rng_stuck: False\n    cs_gnss_yaw: False\n    cs_mag_aligned_in_flight: False\n    cs_ev_vel: False\n    cs_synthetic_mag_z: False\n    cs_vehicle_at_rest: True\n    cs_gnss_yaw_fault: False\n    cs_rng_fault: False\n    cs_inertial_dead_reckoning: False\n    cs_wind_dead_reckoning: False\n    cs_rng_kin_consistent: True\n    cs_fake_pos: False\n    cs_fake_hgt: False\n    cs_gravity_vector: False\n    cs_mag: True\n    cs_ev_yaw_fault: False\n    cs_mag_heading_consistent: True\n    cs_aux_gpos: False\n    cs_rng_terrain: True\n    cs_opt_flow_terrain: False\n    cs_valid_fake_pos: False\n    cs_constant_pos: False\n    cs_baro_fault: False\n    cs_gnss_vel: False\n    cs_gnss_fault: False\n    cs_yaw_manual: False\n    cs_gnss_hgt_fault: False\n    fs_bad_mag_x: False\n    fs_bad_mag_y: False\n    fs_bad_mag_z: False\n    fs_bad_hdg: False\n    fs_bad_mag_decl: False\n    fs_bad_airspeed: False\n    fs_bad_sideslip: False\n    fs_bad_optflow_x: False\n    fs_bad_optflow_y: False\n    fs_bad_acc_vertical: False\n    fs_bad_acc_clipping: False\n    reject_hor_vel: False\n    reject_ver_vel: False\n    reject_hor_pos: False\n    reject_ver_pos: False\n    reject_yaw: False\n    reject_airspeed: False\n    reject_sideslip: False\n    reject_hagl: False\n    reject_optflow_x: False\n    reject_optflow_y: False\n\nnsh> "
+      },
+      {
+        "command": "listener estimator_status_flags -i 1 -n 1",
+        "complete": true,
+        "read_at_utc": "2026-10-11T09:27:25.843926+00:00",
+        "response": "listener estimator_status_flags -i 1 -n 1\n\nTOPIC: estimator_status_flags instance 1 #1\n estimator_status_flags\n    timestamp: 2057729255 (0.989855 seconds ago)\n    timestamp_sample: 2057539895 (189360 us before timestamp)\n    control_status_changes: 83\n    fault_status_changes: 0\n    innovation_fault_status_changes: 2\n    cs_tilt_align: True\n    cs_yaw_align: True\n    cs_gnss_pos: False\n    cs_opt_flow: False\n    cs_mag_hdg: True\n    cs_mag_3d: False\n    cs_mag_dec: True\n    cs_in_air: False\n    cs_wind: False\n    cs_baro_hgt: True\n    cs_rng_hgt: True\n    cs_gps_hgt: False\n    cs_ev_pos: True\n    cs_ev_yaw: False\n    cs_ev_hgt: False\n    cs_fuse_beta: False\n    cs_mag_field_disturbed: False\n    cs_fixed_wing: False\n    cs_mag_fault: False\n    cs_fuse_aspd: False\n    cs_gnd_effect: False\n    cs_rng_stuck: False\n    cs_gnss_yaw: False\n    cs_mag_aligned_in_flight: False\n    cs_ev_vel: False\n    cs_synthetic_mag_z: False\n    cs_vehicle_at_rest: True\n    cs_gnss_yaw_fault: False\n    cs_rng_fault: False\n    cs_inertial_dead_reckoning: False\n    cs_wind_dead_reckoning: False\n    cs_rng_kin_consistent: True\n    cs_fake_pos: False\n    cs_fake_hgt: False\n    cs_gravity_vector: False\n    cs_mag: True\n    cs_ev_yaw_fault: False\n    cs_mag_heading_consistent: True\n    cs_aux_gpos: False\n    cs_rng_terrain: True\n    cs_opt_flow_terrain: False\n    cs_valid_fake_pos: False\n    cs_constant_pos: False\n    cs_baro_fault: False\n    cs_gnss_vel: False\n    cs_gnss_fault: False\n    cs_yaw_manual: False\n    cs_gnss_hgt_fault: False\n    fs_bad_mag_x: False\n    fs_bad_mag_y: False\n    fs_bad_mag_z: False\n    fs_bad_hdg: False\n    fs_bad_mag_decl: False\n    fs_bad_airspeed: False\n    fs_bad_sideslip: False\n    fs_bad_optflow_x: False\n    fs_bad_optflow_y: False\n    fs_bad_acc_vertical: False\n    fs_bad_acc_clipping: False\n    reject_hor_vel: False\n    reject_ver_vel: False\n    reject_hor_pos: False\n    reject_ver_pos: False\n    reject_yaw: False\n    reject_airspeed: False\n    reject_sideslip: False\n    reject_hagl: False\n    reject_optflow_x: False\n    reject_optflow_y: False\n\nnsh> "
+      },
+      {
+        "command": "listener estimator_aid_src_ev_pos -n 1",
+        "complete": true,
+        "read_at_utc": "2026-10-11T09:27:25.937682+00:00",
+        "response": "listener estimator_aid_src_ev_pos -n 1\n\nTOPIC: estimator_aid_src_ev_pos 2 instances\n\nInstance 0:\n estimator_aid_src_ev_pos\n    timestamp: 2058880736 (0.022288 seconds ago)\n    timestamp_sample: 2058692983 (187753 us before timestamp)\n    time_last_fuse: 2058693993\n    observation: [-2.994939, -2.539692]\n    device_id: 0 (Type: 0x00, UNKNOWN:0 (0x00))\n    observation_variance: [0.09000, 0.09000]\n    innovation: [0.00438, 0.00320]\n    innovation_filtered: [0.00015, 0.00254]\n    innovation_variance: [0.09299, 0.09300]\n    test_ratio: [0.00001, 0.00000]\n    test_ratio_filtered: [0.00000, 0.00001]\n    estimator_instance: 0\n    innovation_rejected: False\n    fused: True\n\n\nInstance 1:\n estimator_aid_src_ev_pos\n    timestamp: 2058912460 (0.026305 seconds ago)\n    timestamp_sample: 2058718006 (194454 us before timestamp)\n    time_last_fuse: 2058722629\n    observation: [-2.995030, -2.538934]\n    device_id: 0 (Type: 0x00, UNKNOWN:0 (0x00))\n    observation_variance: [0.09000, 0.09000]\n    innovation: [0.00559, 0.00127]\n    innovation_filtered: [0.00082, 0.00102]\n    innovation_variance: [0.09305, 0.09305]\n    test_ratio: [0.00001, 0.00000]\n    test_ratio_filtered: [0.00000, 0.00000]\n    estimator_instance: 1\n    innovation_rejected: False\n    fused: True\n\nnsh> "
+      },
+      {
+        "command": "listener vehicle_visual_odometry -n 1",
+        "complete": true,
+        "read_at_utc": "2026-10-11T09:27:25.982052+00:00",
+        "response": "listener vehicle_visual_odometry -n 1\n\nTOPIC: vehicle_visual_odometry\n vehicle_visual_odometry\n    timestamp: 2058986767 (0.008111 seconds ago)\n    timestamp_sample: 2058947836 (38931 us before timestamp)\n    position: [-2.97499, -2.63989, 0.00000]\n    q: [nan, nan, nan, nan] (Roll: nan deg, Pitch: nan deg, Yaw: nan deg)\n    velocity: [nan, nan, nan]\n    angular_velocity: [nan, nan, nan]\n    position_variance: [0.09000, 0.09000, 1000000.00000]\n    orientation_variance: [nan, nan, nan]\n    velocity_variance: [nan, nan, nan]\n    pose_frame: 1\n    velocity_frame: 0\n    reset_counter: 0\n    quality: 0\n\nnsh> "
+      },
+      {
+        "command": "listener vehicle_local_position -n 1",
+        "complete": true,
+        "read_at_utc": "2026-10-11T09:27:26.061906+00:00",
+        "response": "listener vehicle_local_position -n 1\n\nTOPIC: vehicle_local_position\n vehicle_local_position\n    timestamp: 2059031195 (0.005630 seconds ago)\n    timestamp_sample: 2059030736 (459 us before timestamp)\n    ref_timestamp: 0\n    ref_lat: nan\n    ref_lon: nan\n    x: -2.98930\n    y: -2.53854\n    z: -0.00379\n    delta_xy: [0.02517, 0.02537]\n    delta_z: -17.84879\n    vx: 0.00092\n    vy: -0.00170\n    vz: -0.00147\n    z_deriv: -0.00113\n    delta_vxy: [0.00121, 0.00072]\n    delta_vz: -0.00391\n    ax: 0.00180\n    ay: -0.00947\n    az: -0.00501\n    heading: 1.71379\n    heading_var: 0.01534\n    unaided_heading: -0.03201\n    delta_heading: 1.69972\n    tilt_var: 0.00003\n    ref_alt: nan\n    dist_bottom: 0.02058\n    dist_bottom_var: 0.00034\n    delta_dist_bottom: -17.84879\n    eph: 0.07710\n    epv: 0.04368\n    evh: 0.07973\n    evv: 0.03974\n    vxy_max: inf\n    vz_max: inf\n    hagl_min: inf\n    hagl_max_z: inf\n    hagl_max_xy: inf\n    xy_valid: True\n    z_valid: True\n    v_xy_valid: True\n    v_z_valid: True\n    xy_reset_counter: 37\n    z_reset_counter: 3\n    vxy_reset_counter: 19\n    vz_reset_counter: 2\n    heading_reset_counter: 2\n    heading_good_for_control: False\n    xy_global: False\n    z_global: False\n    dist_bottom_valid: True\n    dist_bottom_reset_counter: 3\n    dist_bottom_sensor_bitfield: 1\n    dead_reckoning: False\nnsh> "
+      },
+      {
+        "command": "listener vehicle_status -n 1",
+        "complete": true,
+        "read_at_utc": "2026-10-11T09:27:26.143377+00:00",
+        "response": "listener vehicle_status -n 1\n\nTOPIC: vehicle_status\n vehicle_status\n    timestamp: 2059083685 (0.033689 seconds ago)\n    armed_time: 0\n    takeoff_time: 0\n    nav_state_timestamp: 39524691\n    valid_nav_states_mask: 2147411327\n    can_set_nav_states_mask: 8308095\n    failure_detector_status: 0\n    arming_state: 1\n    latest_arming_reason: 0\n    latest_disarming_reason: 0\n    nav_state_user_intention: 1\n    nav_state: 1\n    executor_in_charge: 0\n    hil_state: 0\n    vehicle_type: 1\n    failsafe: False\n    failsafe_and_user_took_over: False\n    failsafe_defer_state: 0\n    gcs_connection_lost: True\n    gcs_connection_lost_counter: 0\n    high_latency_data_link_lost: False\n    is_vtol: False\n    is_vtol_tailsitter: False\n    in_transition_mode: False\n    in_transition_to_fw: False\n    system_type: 2\n    system_id: 1\n    component_id: 1\n    safety_button_available: True\n    safety_off: True\n    power_input_valid: True\n    usb_connected: True\n    open_drone_id_system_present: False\n    open_drone_id_system_healthy: False\n    parachute_system_present: False\n    parachute_system_healthy: False\n    rc_calibration_in_progress: False\n    calibration_enabled: False\n    pre_flight_checks_pass: True\n\nnsh> "
+      }
+    ],
+    "fc_parameter_writes": false,
+    "flight_commands": false,
+    "profile": "estimator",
+    "initial_state": {
+      "connected": true,
+      "armed": false,
+      "mode": "ALTCTL"
+    },
+    "finished_at_utc": "2026-10-11T09:27:26.237334+00:00"
+  },
+  "corrected_ground_start_analysis": {
+    "analysis_kind": "ground_received_prefix_corrected_start_comparison",
+    "reference_xy_m": [
+      3.32,
+      2.17
+    ],
+    "reference": "Operator corrected actual start at anchor-map (3.32,2.17) m",
+    "initial_reference_xy_m": [
+      3.15,
+      2.3
+    ],
+    "reference_corrected_at_utc": "2026-10-11T09:26:59.256764+00:00",
+    "correction": "Initial 22.2cm compared with old midpoint, not actual start error. Preserve original report as superseded reference.",
+    "relative_trial_waypoints": {
+      "start_and_returns": [
+        0,
+        0
+      ],
+      "Y_out": [
+        0,
+        1
+      ],
+      "X_out": [
+        1,
+        0
+      ]
+    },
+    "anchor_map_trial_waypoints": {
+      "start_and_returns": [
+        3.32,
+        2.17
+      ],
+      "Y_out": [
+        3.32,
+        3.17
+      ],
+      "X_out": [
+        4.32,
+        2.17
+      ]
+    },
+    "px4_settings_changed": false,
+    "reference_point_on_aircraft_verified": false,
+    "lever_arm_correction_applied": false,
+    "limitation": "Offsets relative to operator-corrected actual start, not proven antenna/body-corrected absolute accuracy. Raw fits are available decisions, not all raw cycles. Flight fusion continuity not assessed.",
+    "source_bytes_snapshot": 348127232,
+    "complete_capture_sha256_verified": false,
+    "start_utc": "2026-10-11T09:19:23.362710+00:00",
+    "end_utc": "2026-10-11T09:20:23.362710+00:00",
+    "btf_selected_xy": {
+      "count": 2398,
+      "mean_xy_m": [
+        3.3310642226712996,
+        2.172101091160408
+      ],
+      "mean_offset_xy_m": [
+        0.011064222671299806,
+        0.0021010911604082416
+      ],
+      "mean_offset_norm_m": 0.011261953977194645,
+      "rmse_to_start_m": 0.01355385928139743,
+      "p95_offset_to_start_m": 0.019328596911075194,
+      "std_xy_m": [
+        0.004419857037808021,
+        0.00611067572374872
+      ],
+      "max_receipt_gap_s": 0.08381305
+    },
+    "raw_fit_xy_from_decision": {
+      "count": 2398,
+      "mean_xy_m": [
+        3.321994332468562,
+        2.155207626863782
+      ],
+      "mean_offset_xy_m": [
+        0.0019943324685622876,
+        -0.01479237313621784
+      ],
+      "mean_offset_norm_m": 0.01492620732122735,
+      "rmse_to_start_m": 0.022557722975759417,
+      "p95_offset_to_start_m": 0.03876116876666516,
+      "std_xy_m": [
+        0.009197411941255068,
+        0.014193900606869755
+      ],
+      "max_receipt_gap_s": 0.083711671
+    },
+    "fc_state_samples": [
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      }
+    ],
+    "landed_states": {
+      "1": 300
+    },
+    "decision_reasons": {
+      "original_fit_consistent": 2398,
+      "tdma_deadline_rejected": 2
+    },
+    "flight_commands_sent": 0
+  },
+  "operating_limits": {
+    "max_completed_send_gap_s_observed": 3.40155287399989,
+    "gap_root_cause": "not determined; recovery/time synchronization/stale-input counts exist",
+    "heading_good_for_control": false,
+    "flight_continuity_verified": false
   }
 }
