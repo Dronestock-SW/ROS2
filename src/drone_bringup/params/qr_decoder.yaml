@@ -14,3 +14,6 @@
 
     # 처리 Hz를 로그로 찍는 주기(초). 매 프레임 찍으면 로그가 넘쳐서 묶어 찍는다.
     hz_log_interval_sec: 1.0
+
+    # 단독 실행 호환 기본값. 통합 launch는 false로 덮어쓰고 폴백 때만 켠다.
+    enabled_on_start: true

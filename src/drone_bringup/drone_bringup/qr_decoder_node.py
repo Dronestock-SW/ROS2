@@ -75,6 +75,7 @@ class QrDecoderNode(Node):
         self.declare_parameter('roi_margin_px', 60)
         self.declare_parameter('miss_warn_threshold', 15)
         self.declare_parameter('hz_log_interval_sec', 1.0)
+        self.declare_parameter('enabled_on_start', True)
 
         self._roi_margin = self.get_parameter('roi_margin_px').value
         self._miss_warn_threshold = self.get_parameter('miss_warn_threshold').value
@@ -97,11 +98,12 @@ class QrDecoderNode(Node):
         self._sub = None
         self._pub = self.create_publisher(String, '/qr_code/data', 10)
         self._srv = self.create_service(SetBool, '~/set_enabled', self._on_set_enabled)
-        self._set_enabled(True)
+        self._set_enabled(self.get_parameter('enabled_on_start').value)
 
         self.get_logger().info(
             f'qr_decoder_node 시작 — roi_margin={self._roi_margin}px, '
-            f'miss_warn_threshold={self._miss_warn_threshold}프레임')
+            f'miss_warn_threshold={self._miss_warn_threshold}프레임, '
+            f'enabled={self._enabled}')
 
     def _set_enabled(self, enabled):
         """
