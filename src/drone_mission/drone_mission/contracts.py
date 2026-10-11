@@ -15,6 +15,8 @@ def finite(*values):
 
 @dataclass(frozen=True)
 class Settings:
+    bridge_topic: str = '/uwb/bridge_status'
+    bridge_host_boot_id: str = ''
     execute: bool = False
     full_mission: bool = False
     takeoff_settle_s: float = 2.0
@@ -54,6 +56,10 @@ class Settings:
     layout_id: str = LAYOUT
 
     def __post_init__(self):
+        if self.bridge_topic not in ('/uwb/bridge_status', '/uwb/local_odometry_status'):
+            raise ValueError('unsupported_bridge_topic')
+        if not isinstance(self.bridge_host_boot_id, str):
+            raise ValueError('invalid_bridge_host_boot_id')
         y_axis_sign(self)
         if type(self.expected_ekf2_mag_type) is not int or self.expected_ekf2_mag_type not in (0, 1, 6):
             raise ValueError('supported_native_heading_policy_required')

@@ -10,6 +10,7 @@
 
 | 찾는 내용 | 위치 |
 |---|---|
+| 새 UWB 송신기·수동 ARM·START 연결 | [웹 명령 연결 기록](report/web_operator_commands_20261011.md) |
 | 자동 출발점·천장 명령·RC 인계·실물 상태 | [10월 9일 현장 준비 기록](report/field_readiness_20261009.md) |
 | 현장 웹 명령·출발점·RC 점검 순서 | [웹 현장 설정 절차](runbooks/field_web_settings.md) |
 | 스캔 실패 뒤 남은 작업 계속·후속 시험 | [스캔 후속 수행 기록](report/scan_continuation_20261008.md) |

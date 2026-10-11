@@ -133,6 +133,10 @@ class MissionStore:
                             (encoded(assignment), assignment['mission_db_id']))
             self.db.execute('INSERT INTO receipts VALUES(?,?,?)', (key, digest(body), encoded(assignment)))
 
+    def operator_receipt(self, key, body, assignment):
+        with self.db:
+            self.db.execute('INSERT INTO receipts VALUES(?,?,?)', (key, digest(body), encoded(assignment)))
+
     def acknowledge(self, assignment):
         with self.db:
             self.db.execute('UPDATE runs SET assignment=? WHERE id=?',

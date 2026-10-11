@@ -8,6 +8,7 @@ from pathlib import Path
 import sys
 import subprocess
 import time
+import uuid
 
 from ament_index_python.packages import get_package_share_directory
 from geographic_msgs.msg import GeoPointStamped
@@ -33,6 +34,8 @@ from .mission_chain import MissionChain
 from .writer_lock import WriterLock
 from .native_ai import NativePlanner
 from .preflight import field_preflight
+from .operator_arm import arm_blocker, arm_request
+from .bridge_status import normalize_bridge
 
 
 def stamp_ns(msg):
@@ -76,6 +79,9 @@ class FlightNode(Node):
                 raise ValueError('invalid_request_ledger')
         cls = MissionChain if self.settings.full_mission else FlightSession
         self.session = cls(self.settings, consumed, self.remember)
+        self.operator_session_id = uuid.uuid4().hex
+        self.operator_arm_result = None
+        self.operator_arm_pending = False
         self.samples = {}
         self.param_value = None
         self.param_received = float('-inf')
@@ -117,7 +123,7 @@ class FlightNode(Node):
                 ('height', PoseStamped, '/uwb/btf_xyz')):
             self.create_subscription(cls, topic, lambda msg, key=name: self.receive(key, msg),
                                      qos_profile_sensor_data)
-        self.create_subscription(String, '/uwb/bridge_status', self.bridge, 10)
+        self.create_subscription(String, self.settings.bridge_topic, self.bridge, 10)
         self.create_subscription(GeoPointStamped, '/mavros/global_position/gp_origin', self.receive_origin,
             QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL))
         self.create_subscription(GlobalPositionTarget, '/mavros/setpoint_raw/target_global',
@@ -210,6 +216,9 @@ class FlightNode(Node):
             if len(msg.data) > 65536:
                 raise ValueError('assignment_too_large')
             payload = json.loads(msg.data)
+            if payload.get('control_action') == 'arm':
+                self.operator_arm(payload)
+                return
             if self.settings.full_mission and payload.get('route_tasks'):
                 if self.native_planner is None:
                     if payload.get('control_action') == 'start':
@@ -238,7 +247,7 @@ class FlightNode(Node):
             value = json.loads(msg.data)
             if not isinstance(value, dict) or not isinstance(value.get('settings'), dict):
                 raise ValueError('invalid_bridge_status')
-            self.samples['bridge'] = (value, time.monotonic())
+            self.samples['bridge'] = (normalize_bridge(value, self.settings), time.monotonic())
         except (ValueError, TypeError):
             self.samples.pop('bridge', None)
 
@@ -319,10 +328,11 @@ class FlightNode(Node):
             stamp = value.get('last_observation_stamp_ns')
             if type(stamp) is int and stamp > 0:
                 s.bridge_observation_age_s = (self.get_clock().now().nanoseconds-stamp)/1e9
-            s.alignment_matches = (cfg.get('input_source') == 'btf_xy'
+            source = 'local_odometry' if self.settings.bridge_topic == '/uwb/local_odometry_status' else 'btf_xy'
+            s.alignment_matches = (cfg.get('input_source') == source
                 and cfg.get('tag_id') == self.settings.drone_id
                 and cfg.get('layout_confirmed') is True
-                and (not self.settings.execute or cfg.get('ground_only') is False)
+                and (source == 'local_odometry' or not self.settings.execute or cfg.get('ground_only') is False)
                 and cfg.get('source_frame') == 'uwb_map'
                 and type(cfg.get('map_y_axis_sign', 1)) is int
                 and cfg.get('map_y_axis_sign', 1) == self.settings.map_y_axis_sign
@@ -450,6 +460,45 @@ class FlightNode(Node):
 
         future.add_done_callback(completed)
 
+    def operator_arm_gate(self, sample):
+        return arm_blocker(self.settings, sample,
+            idle=self.session.phase == 'IDLE' and self.session.intent is None
+                 and self.session.pending is None and not self.operator_arm_pending,
+            recording_ok=self.log is not None and not self.record_fault)
+
+    def operator_arm(self, payload):
+        key = arm_request(payload, self.settings, self.operator_session_id, time.time())
+        if key in self.session.consumed:
+            return
+        reason = self.operator_arm_gate(self.snapshot())
+        self.remember(key)  # Commit consumption before any command can leave.
+        self.session.consumed.add(key)
+        self.operator_arm_result = dict(request_id=key, requested_at=payload['control_requested_at'],
+                                        accepted=False, reason=reason or 'awaiting_px4')
+        self.record(dict(type='operator_arm_requested', request_id=key, blocker=reason))
+        if reason or self.record_fault:
+            self.operator_arm_result['reason'] = reason or 'command_recording_unavailable'
+            return
+        os.fsync(self.log.fileno())
+        self.operator_arm_pending = True
+        # CommandBool maps to normal ARM. No force magic, mode change or takeoff.
+        future = self.command_clients['arm'].call_async(CommandBool.Request(value=True))
+
+        def completed(result):
+            try:
+                response = result.result()
+                accepted = response.success and response.result == 0
+                reason = 'px4_accepted_wait_actual_armed' if accepted else 'px4_rejected_arm'
+                code = response.result
+            except Exception:
+                accepted, reason, code = False, 'arm_transport_result_unknown', None
+            self.operator_arm_result.update(accepted=bool(accepted), reason=reason, mav_result=code)
+            # Unknown command outcome stays locked until this process is replaced.
+            self.operator_arm_pending = bool(accepted) or code is None
+            self.record(dict(type='operator_arm_response', **self.operator_arm_result))
+
+        future.add_done_callback(completed)
+
     def tick(self):
         s = self.snapshot()
         try:
@@ -475,6 +524,15 @@ class FlightNode(Node):
             self.record(dict(type='scan_request', value=request))
             self.scan_renewed_s = time.monotonic()
         status = self.session.status()
+        if s.armed and 0 <= s.state_age_s <= 1.:
+            self.operator_arm_pending = False
+        status.update(operator_session_id=self.operator_session_id,
+                      arm_request_available=not self.operator_arm_gate(s),
+                      arm_request_blocker=self.operator_arm_gate(s),
+                      operator_arm_result=self.operator_arm_result)
+        if self.operator_arm_result is not None and not status.get('control_ack'):
+            status['control_ack'] = dict(action='arm', request_id=self.operator_arm_result['request_id'],
+                                        requested_at=self.operator_arm_result['requested_at'])
         fresh_state = 0 <= s.state_age_s <= self.settings.state_timeout_s
         status.update(fc_connected=s.connected if fresh_state else None,
                       fc_landed=s.landed if 0 <= s.landed_age_s <= self.settings.state_timeout_s else None,

@@ -58,11 +58,34 @@ class LocalPlatform:
                 and t.get('fc_landed') == 1)
 
     def can_start(self):
-        return (not self.store.active() and self.ground()
+        return (self.assignment.get('control_action') != 'arm' and not self.store.active() and self.ground()
                 and self.telemetry.get('flight_state') == 'IDLE'
                 and (not self.settings.full_mission or (
                     self.site['ceiling_height_m'] is not None
                     and self.telemetry.get('preflight', {}).get('checked_inputs_passed') is True)))
+
+    def can_arm(self):
+        return (not self.store.active() and self.ground()
+                and self.assignment.get('control_action') is None
+                and self.telemetry.get('flight_state') == 'IDLE'
+                and self.telemetry.get('arm_request_available') is True)
+
+    def arm(self, value):
+        with self.lock:
+            key = value.get('client_request_id')
+            body = dict(action='arm', operator_session_id=value.get('operator_session_id'))
+            previous = self.store.receipt(key, body)
+            if previous is not None:
+                return previous
+            if (not self.can_arm() or not body['operator_session_id']
+                    or body['operator_session_id'] != self.telemetry.get('operator_session_id')):
+                raise ValueError('ARM 차단: 현재 실행기·DISARM·지상·RC·수동 모드를 확인하세요.')
+            now = datetime.now(timezone.utc).isoformat()
+            assignment = dict(self.assignment, control_action='arm', control_request_id=key,
+                              control_requested_at=now, generated_at=now, **{'operator_session_id':body['operator_session_id']})
+            self.store.operator_receipt(key, body, assignment)
+            self.assignment = assignment
+            return dict(assignment)
 
     def catalog_command(self, value):
         with self.lock:
@@ -153,7 +176,8 @@ class LocalPlatform:
                 return previous  # A lost HTTP response must not create/reissue a command.
             if action == 'start':
                 if not self.can_start():
-                    raise ValueError('START 차단: 진행 미션·최신 지상 상태·비행 준비 조건을 확인하세요.')
+                    missing = [c['title'] for c in self.telemetry.get('preflight', {}).get('checks', []) if not c['passed']]
+                    raise ValueError('START 차단: '+(' / '.join(missing[:5]) or '진행 미션·최신 지상 상태 확인'))
                 name = '직접 입력 미션'
                 if draft_id is not None:
                     draft = self.store.draft(draft_id)
@@ -242,7 +266,7 @@ class LocalPlatform:
                         return self.send_json(dict(telemetry=platform.telemetry if fresh else {},
                             telemetry_fresh=fresh, telemetry_age_ms=round(age*1000) if age is not None else None,
                             site=platform.site, site_editable=platform.site_editable(),
-                            can_start=platform.can_start(), active_run_id=(platform.store.active() or {}).get('id'),
+                            can_start=platform.can_start(), can_arm=platform.can_arm(), active_run_id=(platform.store.active() or {}).get('id'),
                             ceiling_required=platform.settings.full_mission,
                             expected_takeoff_height_m=platform.settings.expected_mis_takeoff_alt_m,
                             automatic_start_xy_m=automatic_xy,
@@ -269,6 +293,8 @@ class LocalPlatform:
                         for key, expected in (('expected_drone_id',platform.drone_id), ('expected_layout_id',platform.settings.layout_id)):
                             if key in value and value[key] != expected:
                                 raise ValueError('요청의 기체·배치가 현재 페이지와 다릅니다. 새로 불러오세요.')
+                        if value.get('action') == 'arm':
+                            return self.send_json(platform.arm(value))
                         return self.send_json(platform.command(value.get('action'),value.get('route_tasks'),value.get('ceiling_height_m'),value.get('trial_case'),value.get('client_request_id'),value.get('draft_id'),value.get('revision')))
                     if self.path == '/local/missions':
                         return self.send_json(platform.catalog_command(value))
