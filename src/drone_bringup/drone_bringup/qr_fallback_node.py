@@ -1,9 +1,9 @@
 """QR 폴백 코디네이터 노드 — Dronestock 1호기.
 
-DYSCAN DE2110 리더기(/qr_reader/data)를 1순위로 쓰다가, 일정 시간
-연속으로 스캔이 안 들어오면 카메라+pyzbar(/qr_code/data, qr_decoder_node)
-로 전환한다. 둘 중 어느 쪽에서 오든 결과를 /qr/data 로 통일해 발행한다
-— 하위 소비자는 어느 경로로 읽혔는지 신경 쓸 필요가 없다.
+~/set_enabled(True)로 스캔 세션을 시작한다. 세션 중에는 DYSCAN DE2110
+리더기(/qr_reader/data)를 1순위로 쓴다. 일정 시간 연속으로 스캔이
+안 들어오면 카메라+pyzbar(/qr_code/data, qr_decoder_node)로 전환한다.
+둘 중 어느 쪽에서 오든 첫 결과 한 건을 /qr/data로 발행하고 세션을 끝낸다.
 
 실패 판정 기준 (시간 창 방식):
     attempt_timeout_sec(기본 3.0초)마다 한 번씩, 그 창 안에 리더기
@@ -17,6 +17,12 @@ fallback_threshold(기본 3)회 연속 실패하면 qr_decoder_node를
 꺼서(False) CPU를 아낀다 — qr_decoder_node는 프레임당 100ms대라 상시
 켜두는 비용이 크다(docs/glossary.md 폴백 항목 참조).
 
+세션 경계:
+    노드가 실행됐다는 이유만으로 실패 시간을 세지 않는다. FSM/BT가 선반
+    정렬을 끝낸 뒤 /qr_fallback_node/set_enabled를 True로 호출해야 한다.
+    결과 한 건을 발행하면 세션은 자동 종료된다. 다음 선반에서는 다시
+    True를 호출한다.
+
 실행:
     ros2 run drone_bringup qr_fallback_node
 """
@@ -25,6 +31,8 @@ import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String
 from std_srvs.srv import SetBool
+
+from drone_bringup.qr_fallback import QrFallbackState
 
 _DECODER_ENABLE_SERVICE = '/qr_decoder_node/set_enabled'
 
@@ -36,14 +44,16 @@ class QrFallbackNode(Node):
 
         self.declare_parameter('attempt_timeout_sec', 3.0)
         self.declare_parameter('fallback_threshold', 3)
+        self.declare_parameter('scan_active_on_start', False)
 
         self._attempt_timeout = self.get_parameter('attempt_timeout_sec').value
         self._fallback_threshold = self.get_parameter('fallback_threshold').value
-
-        self._fail_streak = 0
-        self._reader_hit_since_tick = False
-        self._camera_fallback_active = False
+        self._state = QrFallbackState(
+            self._fallback_threshold,
+            active=self.get_parameter('scan_active_on_start').value,
+        )
         self._decoder_synced_target = None  # 마지막으로 실제 전송 성공한 목표값
+        self._decoder_pending_target = None
 
         self._pub = self.create_publisher(String, '/qr/data', 10)
         self._reader_sub = self.create_subscription(
@@ -52,46 +62,60 @@ class QrFallbackNode(Node):
             String, '/qr_code/data', self._on_camera_data, 10)
 
         self._decoder_client = self.create_client(SetBool, _DECODER_ENABLE_SERVICE)
-        self._set_decoder_enabled(False)  # 기본은 리더기 우선 — 카메라는 꺼서 시작
+        # 기본은 리더기 우선이다. 카메라는 폴백 전까지 끈다.
+        self._set_decoder_enabled(False)
+        self._srv = self.create_service(SetBool, '~/set_enabled', self._on_set_enabled)
 
         self._timer = self.create_timer(self._attempt_timeout, self._on_attempt_tick)
 
         self.get_logger().info(
             f'qr_fallback_node 시작 — attempt_timeout={self._attempt_timeout}s, '
-            f'fallback_threshold={self._fallback_threshold}회')
+            f'fallback_threshold={self._fallback_threshold}회, '
+            f'scan_active={self._state.active}')
+
+    def _on_set_enabled(self, request, response):
+        self._state.set_active(request.data)
+        self._sync_decoder()
+        response.success = True
+        response.message = f'scan_active={self._state.active}'
+        self.get_logger().info(response.message)
+        return response
 
     def _on_reader_data(self, msg):
-        self._reader_hit_since_tick = True
-        self._fail_streak = 0
+        if not self._state.accept_reader():
+            self.get_logger().debug('비활성 스캔 세션 — 리더기 결과 무시')
+            return
         self._pub.publish(msg)
-        if self._camera_fallback_active:
-            self._set_decoder_enabled(False)
-            self._camera_fallback_active = False
-            self.get_logger().info('리더기 복귀 — 카메라 폴백 끔')
+        self._sync_decoder()
+        self.get_logger().info('리더기 판독 성공 — 스캔 세션 종료')
 
     def _on_camera_data(self, msg):
+        if not self._state.accept_camera():
+            self.get_logger().debug('카메라 폴백 비활성 — 카메라 결과 무시')
+            return
         self._pub.publish(msg)
+        self._sync_decoder()
+        self.get_logger().info('카메라 판독 성공 — 스캔 세션 종료')
 
     def _on_attempt_tick(self):
-        if self._reader_hit_since_tick:
-            self._fail_streak = 0
-        else:
-            self._fail_streak += 1
-            self.get_logger().debug(f'리더기 미스 {self._fail_streak}/{self._fallback_threshold}')
-            if self._fail_streak >= self._fallback_threshold and not self._camera_fallback_active:
-                self._camera_fallback_active = True
-                self.get_logger().warn(
-                    f'리더기 {self._fail_streak}회 연속 미스 — 카메라 폴백 켬')
+        was_camera_enabled = self._state.camera_enabled
+        self._state.tick()
+        if self._state.active and not self._state.camera_enabled:
+            self.get_logger().debug(
+                f'리더기 미스 {self._state.fail_streak}/{self._fallback_threshold}')
+        if self._state.camera_enabled and not was_camera_enabled:
+            self.get_logger().warn(
+                f'리더기 {self._state.fail_streak}회 연속 미스 — 카메라 폴백 켬')
+        self._sync_decoder()
 
-        # 목표 상태(_camera_fallback_active)가 마지막으로 성공 전송한 값과 다르면
-        # 재전송한다. 기동 시점에 qr_decoder_node 서비스가 아직 안 떠 있어서
-        # __init__의 초기 끄기 시도가 실패했을 경우, _decoder_synced_target이
-        # None으로 남아있으니 다음 tick에서 자동으로 재시도된다.
-        if self._decoder_synced_target != self._camera_fallback_active:
-            self._set_decoder_enabled(self._camera_fallback_active)
-        self._reader_hit_since_tick = False
+    def _sync_decoder(self):
+        self._set_decoder_enabled(self._state.camera_enabled)
 
     def _set_decoder_enabled(self, enabled):
+        if self._decoder_pending_target is not None:
+            return
+        if self._decoder_synced_target == enabled:
+            return
         if not self._decoder_client.service_is_ready():
             self.get_logger().warn(
                 f'{_DECODER_ENABLE_SERVICE} 서비스 없음 — qr_decoder_node가 '
@@ -99,8 +123,29 @@ class QrFallbackNode(Node):
             return
         request = SetBool.Request()
         request.data = enabled
-        self._decoder_client.call_async(request)
-        self._decoder_synced_target = enabled
+        self._decoder_pending_target = enabled
+        future = self._decoder_client.call_async(request)
+        future.add_done_callback(
+            lambda completed, target=enabled: self._on_decoder_response(completed, target))
+
+    def _on_decoder_response(self, future, target):
+        self._decoder_pending_target = None
+        success = False
+        try:
+            response = future.result()
+        except Exception as exc:
+            self.get_logger().error(f'qr_decoder 상태 변경 실패: {exc}')
+        else:
+            if response.success:
+                self._decoder_synced_target = target
+                success = True
+            else:
+                self.get_logger().error(
+                    f'qr_decoder 상태 변경 거부: {response.message}')
+        # 성공 응답을 기다리는 동안 목표가 바뀌었으면 즉시 다시 맞춘다.
+        # 실패는 타이머의 다음 tick에서 재시도해 빠른 재귀 호출을 막는다.
+        if success:
+            self._sync_decoder()
 
 
 def main(args=None):

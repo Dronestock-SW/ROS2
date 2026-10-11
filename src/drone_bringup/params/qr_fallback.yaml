@@ -1,0 +1,12 @@
+# QR 리더기 우선·카메라 폴백 파라미터 — Dronestock 1호기
+
+qr_fallback_node:
+  ros__parameters:
+    # Sense Mode 리더기의 무응답을 판정하는 한 번의 시간 창이다.
+    attempt_timeout_sec: 3.0
+
+    # 시간 창이 이 횟수만큼 연속 실패하면 카메라 판독을 켠다.
+    fallback_threshold: 3
+
+    # 선반 정렬 완료 후 서비스로 세션을 시작한다. 부팅 즉시 세지 않는다.
+    scan_active_on_start: false
