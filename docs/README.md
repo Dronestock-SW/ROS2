@@ -10,6 +10,7 @@
 
 | 찾는 내용 | 위치 |
 |---|---|
+| 점프 OFF 이후 라이브러리 누락 복구·최신 FC 융합 | [18:18 재검증 기록](report/uwb_sender_dependency_recovery_20261011.md) |
 | 사용자 요청의 전달기 점프 차단 OFF 시험 | [10월11일 적용·융합 확인](report/uwb_sender_jump_off_20261011.md) |
 | QR 리더기 우선·카메라 폴백 | [QR 재고 판독 파이프라인](architecture/qr_inventory_pipeline.md) |
 | UWB 기능의 feature_uwb·main 병합 확인 | [10월 11일 병합 검증](report/uwb_main_merge_20261011.md) |
