@@ -93,6 +93,18 @@ DISARM·착륙·IDLE·blockers=[]·can_start=true가 필요하다.
 실제 위치·방위 대조 후 사람이 새 START를 누른다.
 START 활성화는 안정적인 비행의 증거가 아니다.
 
+현재 요청 상승 속도는 0.5m/s다. XY는 0.25m/s다.
+상승 속도 확인 도구는 기본적으로 조회만 한다.
+변경이 필요한 지상 DISARM 상태에서만 --apply를 추가한다.
+
+```bash
+python3 src/sangwon_AI/ops/px4_takeoff_speed.py \
+  --speed 0.5 --output "$STATE_DIR/takeoff-speed-check.json"
+```
+
+이 도구는 두 상승 파라미터만 다룬다.
+2026-10-11 실제 FC 재조회로 0.5m/s를 확인했다.
+
 ## RC 인계·관측 중단
 
 RC 인계 후 비행 중 자동 제어를 되찾지 않는다.
