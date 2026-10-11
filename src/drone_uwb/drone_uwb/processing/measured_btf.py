@@ -1,4 +1,4 @@
-"""Measured RAW/ToF/attitude adapter for the frozen B_TF algorithm.
+"""Measured RAW/ToF/attitude adapter with B_TF observation integrity checks.
 
 Observation-only: no FC positions, simulator truth, control or MAVLink writes.
 Unknown mounting geometry blocks ToF use; missing height is never fabricated.
@@ -158,6 +158,7 @@ class MeasuredBtf:
             return False, 'fresh_disarmed_stationary_ground_required'
         self.reset_models()
         self.raw_guard = ObservationGuard(motion_recovery=True)
+        self.candidate.b4_integrity.blocked = False
         self.observation_session += 1
         return True, 'ground_observation_history_reset'
 
@@ -166,6 +167,9 @@ class MeasuredBtf:
         old_candidate = getattr(self, 'candidate', None)
         self.window = H80Window(c['anchors_xyz_m'], c['bias_m'], BSettings(**c['B']))
         self.candidate = ToFTrackedSubsetCandidate(c, **c['tof_subset'])
+        if old_candidate is not None:
+            # Queue/clock/ToF gaps must not erase evidence of a height conflict.
+            self.candidate.b4_integrity.blocked = old_candidate.b4_integrity.blocked
         if preserve_motion and old_candidate is not None:
             # Missing ranges invalidate the fitting window, not the last
             # accepted track. Clock/session resets must still discard both.
