@@ -1,6 +1,6 @@
 # FINAL 연구 시작점
 
-2026-10-11 현장 시험을 이어받는 문서다.
+2026-10-11 현장 시험과 12일 분석을 이어받는 문서다.
 다음 연구 세션에서 이 파일부터 읽는다.
 
 **당면 목표는 XY 이동 없는 수직 이륙·제자리 호버·착륙이다.**
@@ -8,9 +8,16 @@
 최신 코드에도 이륙 중 밀림이 남아 있다.
 START 활성화와 단위 테스트 통과는 비행 성공을 뜻하지 않는다.
 
-1. [최신 실행 8과 연구 과제](docs/report/hover_research_handoff_20261011.md)
-2. [FINAL 재부팅·실행 절차](docs/runbooks/final_resume.md)
-3. [이전 이륙 분석·수정 이력](docs/report/local_xy_takeoff_20261011.md)
+1. [실행 8 ULog·영상 분석](docs/report/hover_run8_analysis_20261012.md)
+2. [실행 8 인계와 연구 과제](docs/report/hover_research_handoff_20261011.md)
+3. [FINAL 재부팅·실행 절차](docs/runbooks/final_resume.md)
+4. [이전 이륙 분석·수정 이력](docs/report/local_xy_takeoff_20261011.md)
+
+12일에 원본과 같은 ULog를 FC에서 재회수했다.
+고정 XY와 최종 공백 전 추정 변화가 확인됐다.
+영상에도 실제 측면 이동이 보인다.
+동적 관측 오류와 실제 이동량의 분리는 아직 남았다.
+속도·임계값·추력·운영 코드는 변경하지 않았다.
 
 FINAL에는 실행기·웹·브리지·설정 예제·복구 도구·테스트가 있다.
 미션 높이는 1.7m, 상승 목표 제한은 0.5m/s다.
