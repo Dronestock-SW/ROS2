@@ -42,6 +42,33 @@ def test_anchor_validity_does_not_count_invalid_flags_or_nan_as_receipt_success(
         assert not tool.usable_range(d,2)
 
 
+def test_topic_max_gap_does_not_bridge_excluded_landing_interval(tmp_path):
+    (tmp_path/'manifest.json').write_text(json.dumps({'started':{'monotonic_ns':1_000_000_000}}))
+    rows=[]
+    def add(topic,t,data):
+        ns=round(t*1e9)
+        rows.append(dict(topic=topic,type='fixture',received_monotonic_ns=ns,
+                         received_ros_ns=ns,header_ns=ns,data=data))
+    for start in (1,10):
+        add('/mavros/state',start,dict(armed=True,connected=True))
+        add('/mavros/extended_state',start,dict(landed_state=2))
+        add('/uwb/btf_pose',start+.01,{})
+        add('/uwb/btf_pose',start+.03,{})
+        add('/mavros/extended_state',start+.04,dict(landed_state=4))
+        # Actual observations continue in LANDING, outside this tool's scope.
+        add('/uwb/btf_pose',start+.05,{})
+    (tmp_path/'events.jsonl').write_text(''.join(json.dumps(r)+'\n' for r in rows))
+    report=tool.analyze(tmp_path)
+    topic=report['topics']['/uwb/btf_pose']
+    assert report['air_segments']==2
+    assert topic['samples']==4
+    assert topic['max_gap_s']==pytest.approx(.02)
+    assert topic['cross_segment_intervals_omitted']==1
+    assert report['gaps_over_250ms']==[]
+    # One sample per segment cannot establish a within-segment interval.
+    assert tool.segmented_gap_stats([1,10],[(1,1),(10,10)])['max_gap_s'] is None
+
+
 def test_missing_anchor_audit_separates_upstream_retry_from_anchor_timeout():
     cycles=[dict(valid_mask=3,raw_slant_m=[1,2,None,None],
                  failure=['ok','ok','slot_deadline','slot_deadline'],attempt_count=[2,1,0,0]),
