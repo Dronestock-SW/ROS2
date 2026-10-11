@@ -4,6 +4,7 @@ import json
 import os
 import tempfile
 import time
+import uuid
 from collections import Counter, deque
 from datetime import datetime, timezone
 
@@ -27,8 +28,11 @@ XML = '''<?xml version="1.0" encoding="UTF-8"?>
 </profiles>'''
 
 def main():
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.xml', delete=False) as profile:
-        profile.write(XML)
+    # Give each diagnostic its own participant identity, including repeat runs.
+    with tempfile.NamedTemporaryFile(mode='w', encoding='utf-8',
+                                     suffix='.xml', delete=False) as profile:
+        profile.write(XML.replace('01.0f.a1.b2.c3.d4.e5.f6.11.22.66.88',
+            '.'.join(f'{value:02x}' for value in uuid.uuid4().bytes[:12])))
     os.environ.update(FASTRTPS_DEFAULT_PROFILES_FILE=profile.name,
                       RMW_FASTRTPS_USE_QOS_FROM_XML='1')
     import rclpy
