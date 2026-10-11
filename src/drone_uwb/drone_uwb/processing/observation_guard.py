@@ -1,10 +1,11 @@
-"""Causal UWB observation integrity. Never extrapolates or repeats a pose.
+"""Causal UWB integrity. Never publishes extrapolated or repeated poses.
 
 No FC position, IMU integration, flow integration or truth input is permitted.
 The accepted positions remain measurements; PX4 owns sensor fusion.
 """
 from dataclasses import dataclass
 import math
+from drone_uwb.processing.motion_reacquisition import MotionReacquisition
 
 
 @dataclass(frozen=True)
@@ -22,19 +23,24 @@ class GuardConfig:
 
 
 class ObservationGuard:
-    def __init__(self, config=GuardConfig()):
+    def __init__(self, config=GuardConfig(), *, motion_recovery=False):
         self.config = config
         self.last_seen = self.prior_stamp = self.prior_xy = None
         self.stable_since = None
         self.ever_accepted = False
+        self.motion = MotionReacquisition() if motion_recovery else None
+        self.motion_evidence = None
 
-    def check(self, xy, stamp_ns):
+    def check(self, xy, stamp_ns, *, motion_eligible=True):
         c = self.config
+        self.motion_evidence = None
         if (type(stamp_ns) is not int or stamp_ns <= 0 or len(xy) != 2
                 or any(type(v) not in (int, float) or not math.isfinite(v) for v in xy)):
             self.stable_since = None
+            if self.motion is not None:self.motion.freeze('invalid_observation')
             return 'invalid_observation'
         if self.last_seen is not None and stamp_ns <= self.last_seen:
+            if self.motion is not None:self.motion.freeze('duplicate_or_backward_observation')
             return 'duplicate_or_backward_observation'
         gap = None if self.last_seen is None else (stamp_ns-self.last_seen)/1e9
         self.last_seen = stamp_ns
@@ -47,8 +53,24 @@ class ObservationGuard:
             limit = c.jump_margin_m+c.max_speed_m_s*min(age, c.max_gap_s)
             if math.dist(xy, self.prior_xy) > limit:
                 self.stable_since = None
-                return 'observation_jump_quarantined'
+                recovered = False
+                if self.motion is not None:
+                    # An abrupt step in a continuous stream cannot become a
+                    # permissible gap by waiting through rejected observations.
+                    if age <= c.max_gap_s:
+                        self.motion.freeze('continuous_step_freeze')
+                    recovered, self.motion_evidence = self.motion.check(
+                        stamp_ns, xy, eligible=motion_eligible, key='raw_B4')
+                if not recovered:
+                    return 'observation_jump_quarantined'
+                self.prior_xy, self.prior_stamp = tuple(xy), stamp_ns
+                self.motion.observe(stamp_ns, xy)
+                self.stable_since = stamp_ns
+                return 'observation_motion_reacquired'
         self.prior_xy, self.prior_stamp = tuple(xy), stamp_ns
+        if self.motion is not None:
+            if motion_eligible:self.motion.observe(stamp_ns, xy)
+            else:self.motion.clear()
         if self.stable_since is None:
             self.stable_since = stamp_ns
         duration = c.recover_s if self.ever_accepted else c.acquire_s

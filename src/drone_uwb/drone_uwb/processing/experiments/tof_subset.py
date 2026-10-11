@@ -5,6 +5,7 @@ from types import SimpleNamespace
 import numpy as np
 from drone_uwb.processing.h80 import fit_h80
 from drone_uwb.processing.experiments.h80_b import BSettings
+from drone_uwb.processing.motion_reacquisition import MotionReacquisition
 
 class ToFSubsetCandidate:
     def __init__(self,config,*,rms_limit_m=.06,score_margin_m=.015):
@@ -88,6 +89,7 @@ class ToFTrackedSubsetCandidate(ToFSubsetCandidate):
         self.selected_anchor=None;self.prior_xy=None;self.prior_stamp=None
         self.recovery_reference = None
         self.reacquisition = NearPriorReacquisition(continuity_margin_m, max_prior_age_s, max_speed_m_s)
+        self.motion = MotionReacquisition()
         self.ground_initializer = GroundSubsetInitialization() if config.get('ground_subset_initialization') is True else None
 
     def process(self,result):
@@ -95,7 +97,9 @@ class ToFTrackedSubsetCandidate(ToFSubsetCandidate):
         if self.last_stamp is not None and (stamp<=self.last_stamp or stamp-self.last_stamp>round(self.settings.reset_gap_s*1e6)):
             self.selected_anchor=None;self.prior_xy=None;self.prior_stamp=None
             self.reacquisition.clear()
-            if stamp<=self.last_stamp:self.recovery_reference=None
+            if stamp<=self.last_stamp:
+                self.recovery_reference=None
+                self.motion.clear()
         decision=super().process(result)
         prior_age=None if self.prior_stamp is None else (stamp-self.prior_stamp)/1e6
         prior_fresh=prior_age is not None and 0<prior_age<=self.max_prior_age
@@ -117,6 +121,15 @@ class ToFTrackedSubsetCandidate(ToFSubsetCandidate):
             reference=self.recovery_reference,
             eligible=not prior_fresh and measured)
         decision['reacquisition']=evidence
+        motion_recovered = False
+        if not prior_fresh:
+            motion_recovered, motion_evidence = self.motion.check(stamp*1000,
+                decision.get('xy_m') or [0.,0.],
+                eligible=(measured and decision.get('ok') is True
+                    and decision.get('source')=='ToF_validated_B3'
+                    and decision.get('reason')=='unique_height_consistent_subset'),
+                key=decision.get('best_excluded_anchor'))
+            decision['motion_reacquisition']=motion_evidence
         if self.selected_anchor is not None and decision['reason']=='ambiguous_subset':
             hypotheses=[h for h in decision['hypotheses'] if h.get('excluded_anchor')==self.selected_anchor and 'physical_range_rms_m' in h]
             if hypotheses and prior_fresh:
@@ -127,19 +140,25 @@ class ToFTrackedSubsetCandidate(ToFSubsetCandidate):
                     decision.update(ok=True,xy_m=h['xy_m'],source=source,reason='previously_unique_subset_still_consistent',best_excluded_anchor=self.selected_anchor)
         if decision['ok']:
             if decision['source'] in ['ToF_validated_B3','ToF_tracked_B3','ground_reference_B3','ground_reference_tracked_B3']:
-                if not prior_fresh and not initial and not reacquired:
+                if not prior_fresh and not initial and not reacquired and not motion_recovered:
                     decision.update(ok=False,xy_m=None,source='rejected',reason='no_fresh_continuity_prior')
                 elif reacquired:
                     decision['reason']='near_prior_subset_reacquired'
+                elif motion_recovered:
+                    decision['reason']='moving_subset_reacquired'
                 elif prior_fresh:
                     step=float(np.linalg.norm(np.asarray(decision['xy_m'])-self.prior_xy));limit=self.continuity_margin+self.max_speed*prior_age
                     decision.update(tracking_step_m=step,tracking_limit_m=limit)
-                    if step>limit:decision.update(ok=False,xy_m=None,source='rejected',reason='subset_position_discontinuous')
+                    if step>limit:
+                        self.motion.freeze('continuous_step_freeze')
+                        decision.update(ok=False,xy_m=None,source='rejected',reason='subset_position_discontinuous')
             if decision['ok']:
                 self.selected_anchor=None if decision['source']=='unchanged_B4' else decision['best_excluded_anchor']
                 self.prior_xy=np.asarray(decision['xy_m'],float);self.prior_stamp=stamp
                 self.recovery_reference=self.prior_xy.copy()
                 self.reacquisition.clear()
+                if measured:self.motion.observe(stamp*1000,decision['xy_m'])
+                else:self.motion.clear()
         if self.prior_stamp is not None and (stamp-self.prior_stamp)/1e6>self.max_prior_age:self.selected_anchor=None
         return decision
 

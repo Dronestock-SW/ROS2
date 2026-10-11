@@ -17,7 +17,7 @@ def apply_recorded_reset(processor, row):
     elif row['type']=='ground_session_reset' and row['accepted']:
         # Replay an accepted recorded event; this function has no live ROS path.
         processor.reset_models()
-        processor.raw_guard=ObservationGuard()
+        processor.raw_guard=ObservationGuard(motion_recovery=True)
         processor.observation_session=row['observation_session']
 
 

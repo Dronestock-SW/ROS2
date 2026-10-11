@@ -140,7 +140,7 @@ class MeasuredBtf:
         self.last_host_ns = None
         self.last_ros_offset = None
         self.last_output_stamp_ns = None
-        self.raw_guard = ObservationGuard()
+        self.raw_guard = ObservationGuard(motion_recovery=True)
         self.observation_session = 0
         self.reset_models()
 
@@ -157,14 +157,23 @@ class MeasuredBtf:
                 or not 0 <= velocity_age_s <= .2):
             return False, 'fresh_disarmed_stationary_ground_required'
         self.reset_models()
-        self.raw_guard = ObservationGuard()
+        self.raw_guard = ObservationGuard(motion_recovery=True)
         self.observation_session += 1
         return True, 'ground_observation_history_reset'
 
-    def reset_models(self):
+    def reset_models(self, *, preserve_motion=False):
         c = self.config
+        old_candidate = getattr(self, 'candidate', None)
         self.window = H80Window(c['anchors_xyz_m'], c['bias_m'], BSettings(**c['B']))
         self.candidate = ToFTrackedSubsetCandidate(c, **c['tof_subset'])
+        if preserve_motion and old_candidate is not None:
+            # Missing ranges invalidate the fitting window, not the last
+            # accepted track. Clock/session resets must still discard both.
+            self.candidate.recovery_reference = old_candidate.recovery_reference
+            self.candidate.motion = old_candidate.motion
+            self.candidate.motion.clear_confirmation()
+        elif self.raw_guard.motion is not None:
+            self.raw_guard.motion.clear()
         self.last_output_stamp_ns = None
 
     def reset(self):
@@ -172,7 +181,7 @@ class MeasuredBtf:
         self.validator.disconnect()
         self.clock.reset()
         self.reset_models()
-        self.raw_guard = ObservationGuard()
+        self.raw_guard = ObservationGuard(motion_recovery=True)
 
     def reject_queued_input(self):
         """Drop stale work without treating local callback lag as a tag reboot.
@@ -209,7 +218,7 @@ class MeasuredBtf:
                 self.validator.reset()
                 self.clock.reset()
                 self.reset_models()
-                self.raw_guard = ObservationGuard()
+                self.raw_guard = ObservationGuard(motion_recovery=True)
             if dispatch.clear_status:
                 self.validator.disconnect()
             if dispatch.message is None:
@@ -225,7 +234,7 @@ class MeasuredBtf:
                     self.validator.disconnect()
                     self.clock.reset()
                     self.reset_models()
-                    self.raw_guard = ObservationGuard()
+                    self.raw_guard = ObservationGuard(motion_recovery=True)
                 self.validator.on_status(msg, mono)
                 if msg.get('range_bias_applied') is True:
                     raise InvalidInput('already_bias_corrected_input', reset=True)
@@ -236,7 +245,7 @@ class MeasuredBtf:
             out.update(seq=cycle.seq, seq_gap=cycle.seq_gap, source_cycle_end_us=cycle.end_us,
                        sample_time_us=cycle.sample_us, raw_slant_m=msg['raw_slant_m'])
             if len(cycle.indices) != 4:
-                self.reset_models()
+                self.reset_models(preserve_motion=True)
                 raise InvalidInput('four_valid_ranges_required')
             self.clock.update(cycle.end_us, mono)
             out['clock'] = self.clock.diagnostics()
@@ -292,7 +301,13 @@ class MeasuredBtf:
                         step_m=math.dist(raw_xy,self.raw_guard.prior_xy),
                         limit_m=self.raw_guard.config.jump_margin_m+self.raw_guard.config.max_speed_m_s
                             *min(age,self.raw_guard.config.max_gap_s))
-                raw_reason = self.raw_guard.check(tuple(map(float, raw_xy)), stamp_ns)
+                # Motion recovery requires physical range consistency as well
+                # as the four-link pair residual. Normal B4 XY stays height-free.
+                raw_reason = self.raw_guard.check(tuple(map(float, raw_xy)), stamp_ns,
+                    motion_eligible=(height_source in ('measured_tof_imu','gazebo_tof_imu')
+                        and out.get('raw_height_rms_m', float('inf')) < .06))
+                if self.raw_guard.motion_evidence is not None:
+                    out['raw_motion_reacquisition'] = self.raw_guard.motion_evidence
                 if raw_reason == 'observation_jump_quarantined':
                     self.window.reset('coherent_raw_step')
                     return dict(out, reason=raw_reason, stamp_ns=stamp_ns, raw_xy_m=raw_xy.tolist())

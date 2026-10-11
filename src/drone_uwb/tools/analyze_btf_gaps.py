@@ -99,8 +99,9 @@ def compare_replays(before_path, after_path):
         if a and not b:removed.append(decision_summary(old))
         if b and not a:added.append(dict(decision_summary(new),previous_reason=old['reason']))
         if a and b:moved.append(math.dist(old['xy_m'],new['xy_m']))
-        if b and new['reason']=='near_prior_subset_reacquired':
-            recovered.append(dict(decision_summary(new),evidence=new['models']['B_TF']['reacquisition']))
+        if b and new['reason'] in ('near_prior_subset_reacquired','moving_subset_reacquired'):
+            key='motion_reacquisition' if new['reason']=='moving_subset_reacquired' else 'reacquisition'
+            recovered.append(dict(decision_summary(new),evidence=new['models']['B_TF'][key]))
     return dict(before=before_path.name,after=after_path.name,
         before_sha256=hashlib.sha256(before_path.read_bytes()).hexdigest(),
         after_sha256=hashlib.sha256(after_path.read_bytes()).hexdigest(),
@@ -109,6 +110,21 @@ def compare_replays(before_path, after_path):
         shared_xy_delta_max_m=max(moved,default=None),upstream_changed_decisions=upstream_changed,
         reacquisition_events=recovered,
         scope='aligned file replays; no independent position truth or flight validation')
+
+
+def motion_diagnostics(path):
+    """Explain recovery denials; unchanged output counts do not prove accuracy."""
+    reasons={'raw':Counter(),'subset':Counter()}; recovered=[]
+    for line in path.read_text(encoding='utf-8').splitlines():
+        row=json.loads(line)
+        if not row.get('airborne'):continue
+        for stage,e in [('raw',row.get('raw_motion_reacquisition')),
+                        ('subset',(row.get('models') or {}).get('B_TF',{}).get('motion_reacquisition'))]:
+            if not e:continue
+            reasons[stage][e['reason']]+=1
+            if e.get('ready'):recovered.append(dict(stage=stage,seq=row.get('seq'),evidence=e))
+    return dict(reasons={k:dict(v) for k,v in reasons.items()},recovered=recovered,
+                ground_truth_available=False)
 
 
 def replay_comparison(path):
@@ -263,6 +279,8 @@ def main():
     report=result if not args.replay else dict(captures=result,replays=[replay_comparison(f) for f in args.replay])
     if args.baseline_replay:
         report['paired_algorithms']=[compare_replays(a,b) for a,b in zip(args.baseline_replay,args.replay)]
+    if args.replay:
+        report['motion_diagnostics']=[motion_diagnostics(f) for f in args.replay]
     args.output.write_text(json.dumps(report,indent=2),encoding='utf-8')
     for r in result:
         print(r['capture'],json.dumps({'reasons':r['reasons'],'largest_gaps':r['gaps_over_250ms'][:3]}))

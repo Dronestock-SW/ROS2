@@ -136,3 +136,33 @@ def test_ordered_replay_distinguishes_queue_rejection_from_explicit_session_rese
     assert p.raw_guard.prior_xy==(1.,1.)
     replay.apply_recorded_reset(p,dict(type='ground_session_reset',accepted=True,observation_session=1))
     assert p.raw_guard.prior_xy is None and p.observation_session==1
+
+
+def test_recorded_gap_probe_is_causal_and_labels_injected_gaps(tmp_path):
+    spec=importlib.util.spec_from_file_location('motion_probe',
+        Path(__file__).parents[2]/'tools/probe_recorded_motion_gaps.py')
+    probe=importlib.util.module_from_spec(spec);spec.loader.exec_module(probe)
+    rows=[dict(seq=i,stamp_ns=1_000_000_000+i*25_000_000,
+               airborne=True,replay_publish=True,xy_m=[i*.025,2.],xyz_m=[i*.025,2.,1.])
+          for i in range(100)]
+    path=tmp_path/'positions.jsonl'
+    path.write_text(''.join(json.dumps(r)+'\n' for r in rows))
+    original=path.read_bytes();result=probe.probe(path)
+    assert result['recovered_outside_old_near_radius']>0
+    assert not result['independent_ground_truth'] and not result['physical_validation']
+    assert path.read_bytes()==original
+    # A stationary prefix must not use future movement to invent velocity.
+    for r in rows[:70]:r['xy_m']=[0.,2.];r['xyz_m']=[0.,2.,1.]
+    path.write_text(''.join(json.dumps(r)+'\n' for r in rows))
+    result=probe.probe(path)
+    assert all(t['start_seq']>=70 for t in result['results'])
+
+
+def test_motion_diagnostics_count_denials_separately_from_recovery(tmp_path):
+    path=tmp_path/'motion.jsonl'
+    rows=[dict(airborne=True,seq=1,raw_motion_reacquisition=dict(ready=False,reason='continuous_step_freeze')),
+          dict(airborne=True,seq=2,models={'B_TF':{'motion_reacquisition':dict(ready=True,reason='bounded_motion_confirmed')}})]
+    path.write_text(''.join(json.dumps(r)+'\n' for r in rows))
+    result=tool.motion_diagnostics(path)
+    assert result['reasons']['raw']=={'continuous_step_freeze':1}
+    assert result['recovered'][0]['seq']==2 and not result['ground_truth_available']
