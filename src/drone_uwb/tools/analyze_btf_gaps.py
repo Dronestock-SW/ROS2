@@ -82,6 +82,35 @@ def missing_anchor_failures(cycles):
         a3_a4_both_slot_deadline=len(skipped),a1_retried_before_both_skips=len(retried))
 
 
+def compare_replays(before_path, after_path):
+    """Compare aligned solver runs, separately from the two publication gates."""
+    before=[json.loads(line) for line in before_path.read_text(encoding='utf-8').splitlines()]
+    after=[json.loads(line) for line in after_path.read_text(encoding='utf-8').splitlines()]
+    if len(before)!=len(after):raise ValueError('replay decision counts differ')
+    added=[];removed=[];moved=[];upstream_changed=0;recovered=[]
+    identity=('received_monotonic_ns','seq','time_us','stamp_ns','airborne')
+    for old,new in zip(before,after):
+        if any(old.get(k)!=new.get(k) for k in identity):raise ValueError('replay decisions not aligned')
+        upstream_changed+=int(any(old.get(k)!=new.get(k) for k in
+            ('raw_slant_m','jump_check','replay_guard_prior')) or
+            (old.get('models') or {}).get('B')!=(new.get('models') or {}).get('B'))
+        if not new['airborne']:continue
+        a,b=old['replay_publish'],new['replay_publish']
+        if a and not b:removed.append(decision_summary(old))
+        if b and not a:added.append(dict(decision_summary(new),previous_reason=old['reason']))
+        if a and b:moved.append(math.dist(old['xy_m'],new['xy_m']))
+        if b and new['reason']=='near_prior_subset_reacquired':
+            recovered.append(dict(decision_summary(new),evidence=new['models']['B_TF']['reacquisition']))
+    return dict(before=before_path.name,after=after_path.name,
+        before_sha256=hashlib.sha256(before_path.read_bytes()).hexdigest(),
+        after_sha256=hashlib.sha256(after_path.read_bytes()).hexdigest(),
+        added_publications=len(added),removed_publications=len(removed),
+        removed=removed,added_previous_reasons=dict(Counter(d['previous_reason'] for d in added)),
+        shared_xy_delta_max_m=max(moved,default=None),upstream_changed_decisions=upstream_changed,
+        reacquisition_events=recovered,
+        scope='aligned file replays; no independent position truth or flight validation')
+
+
 def replay_comparison(path):
     """Compare two publication gates on identical solver results, not truth.
 
@@ -226,9 +255,14 @@ def main():
     p.add_argument('captures',nargs='+',type=Path)
     p.add_argument('--output',type=Path,required=True)
     p.add_argument('--replay',nargs='+',type=Path,help='Optional paired publication-gate replay files')
+    p.add_argument('--baseline-replay',nargs='+',type=Path,help='Aligned earlier solver runs, one per --replay')
     args=p.parse_args()
+    if args.baseline_replay and (not args.replay or len(args.baseline_replay)!=len(args.replay)):
+        p.error('--baseline-replay requires the same number of --replay files')
     result=[analyze(c) for c in args.captures]
     report=result if not args.replay else dict(captures=result,replays=[replay_comparison(f) for f in args.replay])
+    if args.baseline_replay:
+        report['paired_algorithms']=[compare_replays(a,b) for a,b in zip(args.baseline_replay,args.replay)]
     args.output.write_text(json.dumps(report,indent=2),encoding='utf-8')
     for r in result:
         print(r['capture'],json.dumps({'reasons':r['reasons'],'largest_gaps':r['gaps_over_250ms'][:3]}))

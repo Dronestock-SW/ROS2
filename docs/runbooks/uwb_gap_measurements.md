@@ -142,4 +142,5 @@ ros2 run drone_uwb uwb_manual_capture mark /absolute/path/to/capture-SESSION \
 정지 호버와 가까운 X/Y 이동을 각각 기록한다.
 이는 지상 기준점·시각 시험의 대체가 아니다.
 UWB 관측 수정과 PX4 융합·자동비행 승인은 구분한다.
-현재 긴 공백의 재획득 정책은 실측 결과 뒤 결정한다.
+마지막 승인 위치 근처는 [연속 확인 후 복구](../architecture/btf_reacquisition.md)한다.
+그 기준에서 멀어진 공백의 재획득은 실측 결과 뒤 결정한다.

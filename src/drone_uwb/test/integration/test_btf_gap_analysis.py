@@ -87,6 +87,23 @@ def test_tof_limits_are_not_ground_height_or_hover_height():
         assert not tool.valid_tof(dict(range=value,min_range=.1,max_range=35.))
 
 
+def test_solver_comparison_reports_lost_or_changed_outputs_and_rejects_unaligned_runs(tmp_path):
+    rows=[dict(received_monotonic_ns=i,seq=i,airborne=True,replay_publish=True,
+               reason='original_fit_consistent',xy_m=[float(i),0.]) for i in range(1,4)]
+    old=tmp_path/'before.jsonl';new=tmp_path/'after.jsonl'
+    old.write_text(''.join(json.dumps(r)+'\n' for r in rows))
+    rows[0].update(replay_publish=False,reason='no_fresh_continuity_prior')
+    rows[1]['xy_m']=[2.,.1]
+    new.write_text(''.join(json.dumps(r)+'\n' for r in rows))
+    r=tool.compare_replays(old,new)
+    assert r['removed_publications']==1 and r['removed'][0]['seq']==1
+    assert r['shared_xy_delta_max_m']==pytest.approx(.1)
+    assert r['upstream_changed_decisions']==0
+    rows[2]['seq']=100
+    new.write_text(''.join(json.dumps(r)+'\n' for r in rows))
+    with pytest.raises(ValueError,match='not aligned'):tool.compare_replays(old,new)
+
+
 def test_replay_comparison_keeps_zero_output_segments_and_xy_without_z(tmp_path):
     rows=[]
     for t,air,old,new in [(1.,True,False,True),(1.5,True,False,True),

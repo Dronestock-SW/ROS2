@@ -188,13 +188,24 @@ def test_ascent_b4_xy_does_not_need_tof_but_never_invents_z_or_accepts_a_jump():
             assert r['xy_m']==pytest.approx([2+.1*r['time_us']/1e6,2.],abs=.003)
             assert not r['external_output_allowed'] and not r['flight_valid']
     assert len(accepted)>60
-    for seq in range(100,120):
+    before=p.raw_guard.prior_xy
+    for seq in range(100,200):
         end=100_000+seq*22000;msg=cycle(seq,end,a)
         msg['raw_slant_m']=[float(np.linalg.norm(np.array([4.,3.,1.])-x)) for x in a]
         r=p.process(event(msg,end))
         assert r['reason']=='observation_jump_quarantined'
         assert not height_independent_b4(r)
         assert 'sample_height_m' in r and 'raw_pair_residual_max_m' in r
+        assert p.raw_guard.prior_xy==before
+    # A prolonged coherent step stays quarantined, but real observations back
+    # at the original position can refill H80 without an airborne reset.
+    for seq in range(200,240):
+        end=100_000+seq*22000;msg=cycle(seq,end,a)
+        msg['raw_slant_m']=[float(np.linalg.norm(np.array([*before,1.])-x)) for x in a]
+        r=p.process(event(msg,end))
+    assert height_independent_b4(r)
+    assert r['xy_m']==pytest.approx(before,abs=.001)
+    assert r['xyz_m'] is None and r['observation_session']==0
 
 
 def test_height_independent_b4_never_qualifies_invalid_partial_or_subset_results():
