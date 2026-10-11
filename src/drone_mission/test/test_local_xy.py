@@ -71,6 +71,17 @@ def prepared():
     return m
 
 
+def test_hover_drift_restarts_continuous_dwell_without_rebasing():
+    m=prepared();m.phase='DWELL';m.goal=(2.,2.);m.height_target=1.8
+    m.entered_s=10.;m.stable_since=1.
+    now=10.05;m.last_web_s=now;ns=round((WALL+now)*1e9)
+    m.applied_local_target((2.,2.),1.8,ns)
+    m.tick(sample(now,armed=True,mode='OFFBOARD',landed=2,altitude_enu_m=1.8,xy=(2.2,2.)),
+           now,WALL+.05,ns)
+    assert m.phase=='DWELL' and m.stable_since is None
+    assert m.home==(2.,2.) and m.completed_waypoints==0
+
+
 def test_no_stream_before_start_and_no_arm_without_actual_mode():
     m=rig();assert m.local_setpoint() is None
     m=prepared()

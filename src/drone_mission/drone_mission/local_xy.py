@@ -242,11 +242,26 @@ class LocalXYMission(MissionChain):
                     else:
                         self.visited.append(self.goal)
                         self.enter('DWELL','local_arrival_verified',now)
+                        self.stable_since = None
             else:self.stable_since = None
             if self.phase in ('MOVING','RETURNING') and now-self.entered_s > self.settings.leg_timeout_s:
                 self.abort('local_leg_timeout',s,now)
-        elif self.phase == 'DWELL' and now-self.entered_s >= self.waypoint()['dwell_s']:
-            self.completed_waypoints += 1;self.index += 1
-            if self.index == len(self.assignment['waypoints']):self.begin_return(s,now,ros_ns)
-            else:self.choose_goal(self.waypoint()['xy'],now)
+        elif self.phase == 'DWELL':
+            # Count continuous stable hover, never redefine home after drift.
+            stable = (math.dist(s.xy,self.goal) <= .15 and len(s.uwb_xy)==2
+                      and math.dist(s.uwb_xy,self.goal) <= .25
+                      and math.hypot(*s.velocity_xy) <= .1
+                      and abs(s.altitude_enu_m-self.height_target) <= .15
+                      and abs(s.vertical_speed_m_s) <= .1)
+            if math.dist(s.xy,self.goal) > .5:
+                self.abort('hover_horizontal_drift',s,now)
+            elif stable:
+                if self.stable_since is None:self.stable_since = now
+                if now-self.stable_since >= self.waypoint()['dwell_s']:
+                    self.completed_waypoints += 1;self.index += 1
+                    if self.index == len(self.assignment['waypoints']):self.begin_return(s,now,ros_ns)
+                    else:self.choose_goal(self.waypoint()['xy'],now)
+            else:self.stable_since = None
+            if self.phase == 'DWELL' and now-self.entered_s > self.settings.leg_timeout_s+self.waypoint()['dwell_s']:
+                self.abort('hover_stability_timeout',s,now)
         return self.actions
