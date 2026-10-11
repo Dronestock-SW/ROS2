@@ -96,6 +96,41 @@ raw·TDMA·H80 전체가 아닌 이동 심사기만 시험했다.
 최초 격리 시험은 의존 패키지 경로 누락으로 5개를 건너뛰었다.
 기존 설치 의존성을 읽고 격리 소스 우선으로 전부 재검사했다.
 
+## Jetson 적용과 수집 확인
+
+`820b7b4`를 기존 review checkout에 적용했다.
+FC는 최신 연결·DISARM·ON_GROUND 상태였다.
+이 코드의 실물 재획득 확인과 서비스 적용을 구분한다.
+
+| 항목 | 결과 |
+|---|---|
+| 브랜치 | `codex/mission-flight-flow-20261008` |
+| 원격 반영 | `1155967`에서 `820b7b4`로 fast-forward |
+| 복구용 브랜치 | `backup/uwb-motion-before-20261011` |
+| 빌드 | 운영 drone_uwb symlink 빌드·import 성공 |
+| 서비스 | 관측·수집 enabled/active, MAVROS 잠시 재연결 |
+| 현장 파일 | BTF/앵커 JSON·수집 env·실행 스크립트 SHA256 동일 |
+| FC 파라미터 | 주요 12개 전후 동일, 쓰기 명령 없음 |
+| 수집 revision | `820b7b45d314ba494dc8564fad06f9bda6e42dd7` |
+| 수집 파일 증가 | 2초간 16,933,353→17,752,960바이트 |
+| FC 출력 | `fc_output_enabled=false` |
+| 실제 UWB | 상태 메시지만 수신. RAW·XY 없음 |
+| 하방 거리 | 메시지 수신 중이나 현재 유효 ToF 0개 |
+| FC ULog | logger 실행 중, `Not logging` |
+
+FC ULog 기록 준비는 별도로 남는다.
+현재 지상 높이·센서 상태로 비행 준비 완료를 판정하지 않는다.
+이전 파일 크기 상한 사례와 같은 원인인지는 재확인이 필요하다.
+[부팅 수집 절차](../runbooks/manual_capture_boot.md)를 따른다.
+이번에는 FC 재부팅·logger 재시작·로그 삭제를 하지 않았다.
+Jetson의 자동 수집과 FC 내부 기록 상태는 별개다.
+
+첫 FC 조회는 Python 의존 경로 누락으로 실패했다.
+서비스와 같은 의존 경로로 전후 15개 읽기를 완료했다.
+Git bundle의 ref 이름도 확인 후 `HEAD`로 가져왔다.
+두 초기 오류 모두 서비스 중단·FC 변경 전에 발생했다.
+격리 빌드 임시 파일은 정리하고 PC 증거는 보존했다.
+
 ## 재현 및 증거
 
 원본·재생·상세 결과는 Git 밖에 보존한다.
