@@ -119,11 +119,21 @@ python3 -m drone_uwb.integration.ros.manual_capture record \
 | ROS/Python 관련 검사 | 격리 Jetson에서 68개 통과 |
 | colcon symlink 빌드 | 격리 Jetson drone_uwb 성공 |
 | WSL 전체 CMake 구성 | SQLite3 개발 의존성 부재로 미완료 |
-| 실제 상단 LiDAR 동시 기록·스캔매칭·SITL·FC 융합 | 미실시 |
+| 실제 상단 LiDAR 동시 기록 | 10월 11일 지상 약 10Hz 수신·UWB/FC 동시 저장 확인 |
+| 스캔매칭·SITL·FC 융합 | 미실시 |
 
 기존 세 공중 기록에는 /scan이 없었다.
 이번 변경만으로 그 비행의 LiDAR 분석은 할 수 없다.
 실측 장착·개별 광선 시각·독립 이동 대조가 다음 단계다.
+
+10월 11일 USB LiDAR의 기록 서비스를 켰다.
+기존 제조사 T-mini Pro 설정을 사용한다.
+제조사 launch의 임의 2cm 장착 TF는 발행하지 않는다.
+지상 표본에서 `scan_time=time_increment=0`을 확인했다.
+ROS 노드는 SDK 값을 그대로 전달하고 있었다.
+10Hz 수신 주기를 광선 시각으로 임의 대입하지 않는다.
+장착·스캔 시각 확인 뒤 상대 이동을 분석한다.
+[동시 기록 결과](../report/ulog_capture_recovery_20261011.md)를 따른다.
 
 ## 병합 경계
 
