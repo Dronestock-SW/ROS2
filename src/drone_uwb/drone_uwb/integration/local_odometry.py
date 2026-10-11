@@ -26,6 +26,7 @@ class LocalObservationSettings:
     enu_offset_x_m: float = 0.
     enu_offset_y_m: float = 0.
     max_age_s: float = .15
+    jump_guard_enabled: bool = True
     host_boot_id: str = ''
     fc_remote_ns_at_alignment: int = 0
     alignment_method: str = ''
@@ -47,7 +48,8 @@ class LocalObservationSettings:
                 raise ValueError('invalid_setting:' + name)
         if not 0 < self.max_age_s <= .2:
             raise ValueError('invalid_observation_age')
-        for name in ('enabled', 'layout_confirmed', 'sensor_mount_confirmed'):
+        for name in ('enabled', 'layout_confirmed', 'sensor_mount_confirmed',
+                     'jump_guard_enabled'):
             if type(getattr(self, name)) is not bool:
                 raise ValueError('invalid_confirmation:' + name)
 
@@ -78,6 +80,15 @@ def parameter_gate(settings, params):
     if params.get('EKF2_EV_QMIN') != 0:
         return 'require_unscored_observation_qmin_0'
     return 'ready'
+
+
+def trial_start_allowed(*, connected, armed, landed_state, state_age_s, landed_age_s):
+    """Authorize a sender bypass once, on fresh connected DISARM ground evidence."""
+    return (connected is True and armed is False
+        and type(landed_state) is int and landed_state == 1
+        and all(type(v) in (int, float) and math.isfinite(v)
+                for v in (state_age_s, landed_age_s))
+        and 0 <= state_age_s <= 2.5 and 0 <= landed_age_s <= .5)
 
 
 def horizontal_odometry(settings, *, frame, stamp_ns, now_ns, last_stamp_ns,

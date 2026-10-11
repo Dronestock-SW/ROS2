@@ -10,6 +10,7 @@
 
 | 찾는 내용 | 위치 |
 |---|---|
+| 사용자 요청의 전달기 점프 차단 OFF 시험 | [10월11일 적용·융합 확인](report/uwb_sender_jump_off_20261011.md) |
 | QR 리더기 우선·카메라 폴백 | [QR 재고 판독 파이프라인](architecture/qr_inventory_pipeline.md) |
 | UWB 기능의 feature_uwb·main 병합 확인 | [10월 11일 병합 검증](report/uwb_main_merge_20261011.md) |
 | GPS·지리적 원점 없는 실제 UWB 수평 융합 | [10월 11일 적용·FC 확인](report/local_uwb_fusion_20261011.md) |

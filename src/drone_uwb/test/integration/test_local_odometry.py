@@ -6,7 +6,8 @@ import numpy as np
 import pytest
 
 from drone_uwb.integration.local_odometry import (
-    LocalObservationSettings, horizontal_odometry, parameter_gate, alignment_yaw_deg)
+    LocalObservationSettings, horizontal_odometry, parameter_gate, alignment_yaw_deg,
+    trial_start_allowed)
 from drone_uwb.integration.planar import map_yaw_to_enu
 
 
@@ -15,6 +16,25 @@ def settings():
         sensor_mount_confirmed=True, host_boot_id='synthetic-test-boot',
         fc_remote_ns_at_alignment=1,
         alignment_method='operator_cardinal_and_stationary_px4_yaw')
+
+
+def test_sender_jump_policy_defaults_on_and_requires_an_explicit_boolean():
+    assert settings().jump_guard_enabled is True
+    assert replace(settings(), jump_guard_enabled=False).jump_guard_enabled is False
+    for invalid in (0, 1, 'false', None):
+        with pytest.raises(ValueError, match='invalid_confirmation:jump_guard_enabled'):
+            replace(settings(), jump_guard_enabled=invalid)
+
+
+def test_sender_trial_starts_only_with_fresh_disarmed_ground_evidence():
+    row = dict(connected=True, armed=False, landed_state=1,
+               state_age_s=.1, landed_age_s=.1)
+    assert trial_start_allowed(**row)
+    for key, value in (('connected',False),('armed',True),('armed',None),
+                       ('landed_state',True),('landed_state',2),
+                       ('state_age_s',2.6),('landed_age_s',.6),
+                       ('state_age_s',-.1),('landed_age_s',float('nan'))):
+        assert not trial_start_allowed(**{**row, key:value})
 
 
 @pytest.mark.parametrize('sign', [-1, 1])

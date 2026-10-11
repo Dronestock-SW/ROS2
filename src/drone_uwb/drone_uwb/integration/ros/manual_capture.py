@@ -17,6 +17,7 @@ TOPICS = {
     '/uwb/btf_pose': 'geometry_msgs/msg/PoseWithCovarianceStamped',
     '/uwb/btf_xyz': 'geometry_msgs/msg/PoseStamped',
     '/uwb/bridge_status': 'std_msgs/msg/String',
+    '/uwb/local_odometry_status': 'std_msgs/msg/String',
     '/mavros/state': 'mavros_msgs/msg/State',
     '/mavros/extended_state': 'mavros_msgs/msg/ExtendedState',
     '/mavros/rc/in': 'mavros_msgs/msg/RCIn',
@@ -31,7 +32,7 @@ TOPICS = {
     '/uas1/mavlink_source': 'mavros_msgs/msg/Mavlink',
     # Do not subscribe to the command sink: fixed FC readback tools require
     # exactly one sink subscriber (the MAVROS router). EV intent is captured
-    # above at vision_pose/pose_cov; FC receipt/fusion needs the matching ULog.
+    # at vision_pose/pose_cov and local_odometry_status; fusion needs the ULog.
 }
 REQUIRED = ['/uwb/received', '/uwb/btf_decision', '/mavros/state',
             '/mavros/extended_state', '/mavros/imu/data', '/mavros/local_position/odom',

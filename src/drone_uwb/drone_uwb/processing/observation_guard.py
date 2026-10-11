@@ -31,7 +31,9 @@ class ObservationGuard:
         self.motion = MotionReacquisition() if motion_recovery else None
         self.motion_evidence = None
 
-    def check(self, xy, stamp_ns, *, motion_eligible=True):
+    def check(self, xy, stamp_ns, *, motion_eligible=True, reject_jumps=True):
+        if type(reject_jumps) is not bool:
+            raise ValueError('boolean_jump_policy_required')
         c = self.config
         self.motion_evidence = None
         if (type(stamp_ns) is not int or stamp_ns <= 0 or len(xy) != 2
@@ -46,7 +48,7 @@ class ObservationGuard:
         self.last_seen = stamp_ns
         if gap is not None and gap > c.max_gap_s:
             self.stable_since = None
-        if self.prior_stamp is not None:
+        if reject_jumps and self.prior_stamp is not None:
             age = (stamp_ns-self.prior_stamp)/1e9
             # During a gap, permit only physically reachable displacement.
             # A coherent step cannot become a new origin after repeated rejection.
