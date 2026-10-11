@@ -18,7 +18,9 @@
     "movement_duration_s": null,
     "flight_height_m": null,
     "exact_start_time": null,
-    "independent_reference_verified": false
+    "independent_reference_verified": false,
+    "confirmed_test_purpose": "continuous_uwb_transmission_and_fusion_during_normal_roundtrip",
+    "deliberate_protection_trigger_test": false
   },
   "interpretation": "jump_protection_triggered_transmission_stopped_appropriateness_undetermined",
   "flight_continuous_ev_fusion_verified": false,
@@ -1296,6 +1298,8 @@
     ],
     "separation_m": 0.7365470710011459,
     "same_sample_appropriateness_verified": false,
-    "motion_reacquisition_separate_conditions": true
-  }
+    "motion_reacquisition_separate_conditions": true,
+    "actual_motion_speed_verified": false
+  },
+  "normal_roundtrip_continuity_verification": "incomplete"
 }
