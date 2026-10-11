@@ -12,7 +12,8 @@ import sys
 import time
 
 from drone_uwb.integration.local_odometry import (
-    LocalObservationSettings, PARAMETERS, horizontal_odometry, parameter_gate)
+    LocalObservationSettings, PARAMETERS, horizontal_odometry, parameter_gate,
+    trial_start_allowed)
 from drone_uwb.integration.clock_readiness import ClockReadiness
 from drone_uwb.processing.observation_guard import ObservationGuard
 
@@ -32,7 +33,7 @@ def main(args=None):
     from rclpy.node import Node
     from rclpy.qos import qos_profile_sensor_data as qos
     from geometry_msgs.msg import PoseWithCovarianceStamped
-    from mavros_msgs.msg import State, TimesyncStatus, Mavlink
+    from mavros_msgs.msg import State, ExtendedState, TimesyncStatus, Mavlink
     from rcl_interfaces.srv import GetParameters
     from std_msgs.msg import String
     from mavros.mavlink import convert_to_rosmsg
@@ -50,6 +51,9 @@ def main(args=None):
             self.clock = ClockReadiness()
             self.guard = ObservationGuard(motion_recovery=True)
             self.state = None
+            self.landed = None
+            self.landed_at = -float('inf')
+            self.trial_start_authorized = settings.jump_guard_enabled
             self.state_at = self.param_at = self.btf_at = self.request_at = -float('inf')
             self.params = {}
             self.future = None
@@ -69,11 +73,19 @@ def main(args=None):
             self.max_send_gap_s = 0.
             self.create_subscription(PoseWithCovarianceStamped, '/uwb/btf_pose', self.pose, qos)
             self.create_subscription(State, '/mavros/state', self.receive_state, qos)
+            self.create_subscription(ExtendedState, '/mavros/extended_state',
+                                     self.receive_landed, qos)
             self.create_subscription(TimesyncStatus, '/mavros/timesync_status', self.sync, qos)
             self.create_subscription(String, '/uwb/btf_status', self.btf_status, qos)
             self.create_subscription(String, '/uwb/btf_decision', self.btf_decision, qos)
             self.create_subscription(Mavlink, '/uas1/mavlink_source', self.inspect_source, qos)
             self.create_timer(.2, self.monitor)
+
+        def receive_landed(self, msg):
+            stamp = msg.header.stamp.sec*1_000_000_000 + msg.header.stamp.nanosec
+            age = (self.get_clock().now().nanoseconds-stamp)/1e9
+            if 0 <= age <= .5:
+                self.landed, self.landed_at = msg.landed_state, time.monotonic()
 
         def receive_state(self, msg):
             stamp = msg.header.stamp.sec*1_000_000_000 + msg.header.stamp.nanosec
@@ -122,6 +134,14 @@ def main(args=None):
                 self.decision = {}
 
         def gate(self):
+            if not self.trial_start_authorized:
+                now = time.monotonic()
+                if self.state is None or not trial_start_allowed(
+                        connected=self.state.connected, armed=self.state.armed,
+                        landed_state=self.landed, state_age_s=now-self.state_at,
+                        landed_age_s=now-self.landed_at):
+                    return 'sender_trial_requires_disarmed_ground_start'
+                self.trial_start_authorized = True
             now = time.monotonic()
             if self.frozen:
                 return self.frozen
@@ -203,6 +223,7 @@ def main(args=None):
                         y=msg.pose.pose.position.y, covariance=[[c[0], c[1]], [c[6], c[7]]],
                         reset_counter=self.reset_counter)
                     reason = self.guard.check((fields['x'], fields['y']), stamp,
+                        reject_jumps=settings.jump_guard_enabled,
                         motion_eligible=(self.decision.get('height_source') == 'measured_tof_imu'
                             and self.decision.get('height_ready') is True
                             and time.monotonic()-self.decision_at <= .1

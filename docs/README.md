@@ -10,6 +10,7 @@
 
 | 찾는 내용 | 위치 |
 |---|---|
+| 사용자 요청의 전달기 점프 차단 OFF 시험 | [10월11일 적용·융합 확인](report/uwb_sender_jump_off_20261011.md) |
 | GPS·지리적 원점 없는 실제 UWB 수평 융합 | [10월 11일 적용·FC 확인](report/local_uwb_fusion_20261011.md) |
 | 실내 UWB의 부팅 정렬·실행·원복 | [로컬 수평 융합 절차](runbooks/local_uwb_fusion.md) |
 | 현재 환경 1m 이상 호버 확인·저고도 LiDAR 전략 | [10월 10일 조명·그림자 기록](report/optical_flow_environment_20261010.md) |
