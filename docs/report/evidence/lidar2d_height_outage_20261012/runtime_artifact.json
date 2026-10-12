@@ -1,0 +1,9 @@
+{
+  "kind": "lidar2d_experiment",
+  "base_commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+  "binary_sha256": "fb2223618291204051402a940e7fddf30768b7d62d02bf8092493194f0618988",
+  "patch_sha256": "c5c789b5f08de04f4a0924a5811a3f02a13ab3efd59ca4ee498635ea001f3e1a",
+  "board_sha256": "361d844d0eb14260052ee5bb23f8f60f6ca3a6780b666b406d301ee3ef8a2833",
+  "physical_deployment": false,
+  "auxiliary_velocity_requires_other_horizontal_aiding": true
+}
