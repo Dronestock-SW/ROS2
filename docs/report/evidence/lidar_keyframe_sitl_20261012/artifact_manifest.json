@@ -1,0 +1,164 @@
+{
+  "schema": 1,
+  "created_utc": "2026-10-12T05:20:53.922474+00:00",
+  "ros2_base_commit": "8cfe94cd80e5e6094f1fb5bd173b47ebed5e293e",
+  "firmware_commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+  "all_S01_S14_passed": false,
+  "original_minus267_reproduced": false,
+  "evidence_files": {
+    ".gitattributes": {
+      "bytes": 100,
+      "sha256": "8dcedcdb20982abbc610aea94df8430490f5e7bdc02b5ec8d5e43bb8d98c0174"
+    },
+    "driver_probe.txt": {
+      "bytes": 554,
+      "sha256": "a3ae21206387b54dc4d4d8ea7bd5fb722b4caf0f1ef6a39824c0ca58797a65a2"
+    },
+    "offline_results.png": {
+      "bytes": 133159,
+      "sha256": "44f840c8749c2f2b67bf3dde7bd78678d22ea4f15093a9d2e5629379d8512ee9"
+    },
+    "python_tests.txt": {
+      "bytes": 101,
+      "sha256": "0ac5762023c110eb436ba1c227f66fdfaac156a8ce588930f3d7f63eabac7c54"
+    },
+    "raw_archive_verification.json": {
+      "bytes": 340,
+      "sha256": "d020885e2eaf2d8af562c0931f9195ccaca75737ae10023754ce276b2187dbf2"
+    },
+    "reset_probe.json": {
+      "bytes": 18901,
+      "sha256": "466992b283eed6f2ea606791fb5b7dc9648e52b12e90434c487f63141e135485"
+    },
+    "reset_probe.log": {
+      "bytes": 33515,
+      "sha256": "9e3bf5d631337262286313841503dfc55d02945ea75955e5152888e809f6eb79"
+    },
+    "reset_probe_manifest.json": {
+      "bytes": 4015,
+      "sha256": "b8cbbe7f08b47211ccfec93eefbc224f5a3b37a128ef13fc48866561f2fac7ef"
+    },
+    "scenario_status.json": {
+      "bytes": 2454,
+      "sha256": "86aa443de224e3b3c77c68dc58d17b7c896c544c4b46905e9d74479bd7355188"
+    },
+    "sitl_runs.json": {
+      "bytes": 3160551,
+      "sha256": "775b8b1166a9d308d6c8eb8e9badf5c5410265928925ef388faafaaf9bfdcb39"
+    },
+    "sitl_summary.json": {
+      "bytes": 108207,
+      "sha256": "eb9b79c0653cbe903750fd8137db2b048a18311d91bd41c2734d11c121830a89"
+    },
+    "synthetic_final.json": {
+      "bytes": 126228,
+      "sha256": "b7f6c551fb2c13db652d8e4836d757b25ca81898d910510bbce9e17bbd972aa7"
+    },
+    "synthetic_initial.json": {
+      "bytes": 65001,
+      "sha256": "8feb671515937f4a6109cd2b7f8a65137445df46ffbcedabd6a4c04bcd523055"
+    },
+    "synthetic_initial_recheck.json": {
+      "bytes": 2724,
+      "sha256": "269f16e929aab17f34f0e975340e27be7f48ae489dd52564b23e74a1c5ad9c60"
+    },
+    "vertical_aiding_seed11.png": {
+      "bytes": 214022,
+      "sha256": "7f16834b10aeaf7f7d1f884a09b72b23d7559a87a442b296a33029205331d968"
+    },
+    "vertical_trace_seed11.json": {
+      "bytes": 489565,
+      "sha256": "b49f60bf8844a92331999185abb53d8ae3ed36a972d5442311e0d4e066f31167"
+    },
+    "windows_environment.json": {
+      "bytes": 292,
+      "sha256": "1964c25edf17d43bfddb067f059ec9817d39d850f703d6532cdee916e382bfeb"
+    },
+    "wsl_environment.json": {
+      "bytes": 285,
+      "sha256": "8ba1c03bfd8bee19c0bc4c84de33d9dc600336c5723c70072ba80b8a8e43e8c0"
+    }
+  },
+  "final_source_files": {
+    "src/drone_uwb/drone_uwb/processing/experiments/lidar_replay.py": {
+      "bytes": 8981,
+      "sha256": "c6123a3dc87c968e837e114bcaf7d2e9c01db1012c3013bb3e2f15fb9a87a941"
+    },
+    "src/drone_uwb/drone_uwb/processing/experiments/lidar_scanmatch.py": {
+      "bytes": 14366,
+      "sha256": "2ed30b5013f234befd564d7b562b4c4e212935aee01f68edeacf0714413fedbf"
+    },
+    "src/drone_uwb/drone_uwb/processing/experiments/lidar_synthetic.py": {
+      "bytes": 7584,
+      "sha256": "1b7db2de8553bec34523f6971cc646c8151adacf9c12f9b9dfd7f093e97c2257"
+    },
+    "src/drone_uwb/test/experiments/test_lidar_replay.py": {
+      "bytes": 2256,
+      "sha256": "c0bade6c82f7d5a0a490ef02c6ae8b8d8200978043e1aaa646427dbe654dd542"
+    },
+    "src/drone_uwb/test/experiments/test_lidar_scanmatch.py": {
+      "bytes": 4299,
+      "sha256": "254f3cb52c05e21147bd89059876c7ad58577529149a5f890acac9c43e6758da"
+    },
+    "src/drone_uwb/tools/analyze_lidar_sitl.py": {
+      "bytes": 5728,
+      "sha256": "ae85a09aa7330a79b330f4051b2e3cbe86429180aa7bc9bee71c9e5a958616ff"
+    },
+    "src/drone_uwb/tools/analyze_lidar_vertical.py": {
+      "bytes": 2520,
+      "sha256": "0f571182155ddb83f5571e0350bb0ff351dc217f9891a34cb7b77b2f9ef0a620"
+    },
+    "src/drone_uwb/tools/build_lidar_reset_probe.py": {
+      "bytes": 2975,
+      "sha256": "07311c94fb5019005ffa46d0def6c2c7fca1f228d0dccfc16213720a2a0ec426"
+    },
+    "src/drone_uwb/tools/build_lidar_sitl.sh": {
+      "bytes": 772,
+      "sha256": "bd35861b1e325925ffe03692d31e30bf03a7109f2c71a92cff6ccd1dfda859c7"
+    },
+    "src/drone_uwb/tools/collect_lidar_sitl.py": {
+      "bytes": 8827,
+      "sha256": "3a23711ec121d5806433e1c6dba11dbbbd335adac83e96c939fdb7c661587dd8"
+    },
+    "src/drone_uwb/tools/lidar_ev_sitl.py": {
+      "bytes": 17236,
+      "sha256": "cfde334e1a229b886352539fb73ae77be8409b3147c42adcd1684c298728b3a5"
+    },
+    "src/drone_uwb/tools/lidar_px4_reset_probe.cpp": {
+      "bytes": 5308,
+      "sha256": "fb33bda247021a56eeb85a2b82b2993edacd130f264dc30753182c327d321501"
+    },
+    "src/drone_uwb/tools/make_lidar_validation_figures.py": {
+      "bytes": 4482,
+      "sha256": "feda9de7b011523861b13b63b49a804485629e9d9f87b77252e9f0947c9e0096"
+    },
+    "src/drone_uwb/tools/prepare_lidar_sitl.py": {
+      "bytes": 2156,
+      "sha256": "22ed7364bc1752395880c3c7900808080a625747735ca1765bcd4d79d0df3b2a"
+    },
+    "src/drone_uwb/tools/run_lidar_sitl_matrix.py": {
+      "bytes": 3681,
+      "sha256": "44c4b8b24e88ec8433ea93747dd016b42e831d2be79a2e49f527e8ccf4cfd575"
+    }
+  },
+  "sitl_binary_sha256": [
+    "6f8b77f94edde450dd5851619027c877ef9d51b4fae1c78284dea00e582d04d4"
+  ],
+  "sitl_board_sha256": [
+    "361d844d0eb14260052ee5bb23f8f60f6ca3a6780b666b406d301ee3ef8a2833"
+  ],
+  "scope": "Final working-tree source bytes and preserved evidence. After measured runs, explicit UTF-8 reads and guards against staged PX4 edits or reusing probe output directories were added. EKF inputs and analysis calculations unchanged. Early analysis metric name corrected in exported summaries; original raw analyses preserved.",
+  "verification": {
+    "python_unit_tests_passed": 17,
+    "synthetic_final_runs": 70,
+    "synthetic_intervals": 28000,
+    "sitl_completed_runs": 140,
+    "sitl_collection_failures": 0,
+    "actual_ekf_probe_combinations": {
+      "velocity_reset": 32,
+      "lever_arm": 18,
+      "vertical_dispatch": 8
+    },
+    "operational_ros_build": "NOT_RUN"
+  }
+}

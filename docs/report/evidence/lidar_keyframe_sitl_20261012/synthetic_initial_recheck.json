@@ -1,0 +1,96 @@
+{
+  "schema": 1,
+  "source": "synthetic_raycast",
+  "config": {
+    "range_min_m": 0.2,
+    "edge_m": 0.3,
+    "eigen_ratio": 0.12,
+    "correspondence_m": 0.2,
+    "huber_m": 0.03,
+    "trim_quantile": 0.9,
+    "iterations": 30,
+    "convergence_translation_m": 1e-05,
+    "convergence_yaw_rad": 1e-05,
+    "min_correspondences": 60,
+    "min_overlap": 0.5,
+    "residual_p90_m": 0.05,
+    "max_condition": 1000.0,
+    "max_pair_translation_m": 0.2,
+    "max_pair_yaw_rad": 0.17453292519943295,
+    "max_gap_s": 0.25,
+    "reverse_translation_m": 0.02,
+    "reverse_yaw_rad": 0.005235987755982988,
+    "imu_yaw_tolerance_rad": 0.017453292519943295,
+    "keyframe_translation_m": 0.35,
+    "keyframe_yaw_rad": 0.20943951023931956
+  },
+  "original_baseline_reproduced": false,
+  "results": [
+    {
+      "case": "xy",
+      "seed": 11,
+      "scans": 401,
+      "intervals": 400,
+      "accepted": 356,
+      "acceptance_fraction": 0.89,
+      "pair_accepted": 399,
+      "pair_unwrapped_yaw_deg": -0.07259182709394406,
+      "keyframes": 9,
+      "reasons": {
+        "new_segment": 1,
+        "not_converged": 15,
+        "reacquired_pose_only": 21,
+        "reverse_rejected": 8
+      },
+      "error": {
+        "pair": {
+          "xy": {
+            "n": 400,
+            "rms": 0.01119298560119861,
+            "p95": 0.020428149215128786,
+            "maximum": 0.021220895928895322
+          },
+          "yaw_deg": {
+            "n": 400,
+            "rms": 0.043236937284025105,
+            "p95": 0.07356996119472527,
+            "maximum": 0.08511400253041133
+          },
+          "velocity": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          }
+        },
+        "keyframe_imu": {
+          "xy": {
+            "n": 356,
+            "rms": 0.0005013862950903605,
+            "p95": 0.0008404364064107884,
+            "maximum": 0.0016435299645233864
+          },
+          "yaw_deg": {
+            "n": 356,
+            "rms": 0.006067384373079653,
+            "p95": 0.011681811074755601,
+            "maximum": 0.022582453016280497
+          },
+          "velocity": {
+            "n": 356,
+            "rms": 0.006333463679219901,
+            "p95": 0.011060339289687514,
+            "maximum": 0.019736546271241835
+          }
+        }
+      },
+      "preprocess_bidirectional_s": {
+        "n": 401,
+        "rms": 0.015541295118908364,
+        "p95": 0.02975039999000728,
+        "maximum": 0.043557200115174055
+      },
+      "scope": "synthetic planar instantaneous rays; not original capture, driver, deskew, or flight validation"
+    }
+  ]
+}

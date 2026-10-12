@@ -6,3 +6,5 @@ docs/report/evidence/multitag_web_20261007/** -text -whitespace
 docs/report/evidence/multitag_patch_20261007/** -text -whitespace
 # Unified diff context preserves PX4 tabs and blank lines.
 src/drone_mission/test/px4_sih_sensor_noise.patch -whitespace
+# The isolated Linux build helper must remain executable by Bash on WSL.
+src/drone_uwb/tools/build_lidar_sitl.sh text eol=lf

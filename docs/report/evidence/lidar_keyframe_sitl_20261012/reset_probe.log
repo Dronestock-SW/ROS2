@@ -1,0 +1,766 @@
+reset
+reset
+reset mag earth covariance
+reset mag bias covariance
+start fake position fusion
+reset fake position fusion
+reset position to last known (0.000, 0.000)
+reset velocity to zero
+start fake height fusion
+reset fake height fusion
+reset height to last known (0.000)
+reset mag bias covariance
+starting baro height fusion, resetting height
+Origin alt=122.200
+stop fake height fusion
+430000: EKF aligned, (baro hgt, IMU buf: 11, OBS buf: 11)
+starting mag fusion, resetting states
+reset mag bias covariance
+reset mag heading -0.000 -> 0.000 rad (bias:[0.000, 0.000, 0.000], declination:0.0)
+reset mag earth covariance
+resetting mag I [0.000, 0.000, 0.000] -> [0.218, 0.000, 0.430]
+RESULT {"axis":"roll","angle_deg":0,"aligned_angle_deg":0,"supplied_vz_variance":1,"before_velocity":[0,0,0.400000006],"after_velocity":[0,0,0],"after_variance":[0.0500000045,0.0500000045,5]}
+reset
+reset
+reset mag earth covariance
+reset mag bias covariance
+start fake position fusion
+reset fake position fusion
+reset position to last known (0.000, 0.000)
+reset velocity to zero
+start fake height fusion
+reset fake height fusion
+reset height to last known (0.000)
+reset mag bias covariance
+starting baro height fusion, resetting height
+Origin alt=122.200
+stop fake height fusion
+430000: EKF aligned, (baro hgt, IMU buf: 11, OBS buf: 11)
+starting mag fusion, resetting states
+reset mag bias covariance
+reset mag heading -0.000 -> 0.000 rad (bias:[0.000, 0.000, 0.000], declination:0.0)
+reset mag earth covariance
+resetting mag I [0.000, 0.000, 0.000] -> [0.218, 0.000, 0.430]
+RESULT {"axis":"roll","angle_deg":0,"aligned_angle_deg":0,"supplied_vz_variance":100,"before_velocity":[0,0,0.400000006],"after_velocity":[0,0,0],"after_variance":[0.0500000045,0.0500000045,500]}
+reset
+reset
+reset mag earth covariance
+reset mag bias covariance
+start fake position fusion
+reset fake position fusion
+reset position to last known (0.000, 0.000)
+reset velocity to zero
+start fake height fusion
+reset fake height fusion
+reset height to last known (0.000)
+reset mag bias covariance
+starting baro height fusion, resetting height
+Origin alt=122.200
+stop fake height fusion
+430000: EKF aligned, (baro hgt, IMU buf: 11, OBS buf: 11)
+starting mag fusion, resetting states
+reset mag bias covariance
+reset mag heading -0.000 -> 0.000 rad (bias:[0.000, 0.000, 0.000], declination:0.0)
+reset mag earth covariance
+resetting mag I [0.000, 0.000, 0.000] -> [0.218, 0.000, 0.430]
+RESULT {"axis":"roll","angle_deg":0,"aligned_angle_deg":0,"supplied_vz_variance":10000,"before_velocity":[0,0,0.400000006],"after_velocity":[0,0,0],"after_variance":[0.0500000045,0.0500000045,50000]}
+VERTICAL_DISPATCH {"axis":"roll","angle_deg":0,"base_vz":0,"derived_vz":0,"base_variance":10000,"derived_variance":50000,"automatic_height_failure_tested":false}
+reset
+reset
+reset mag earth covariance
+reset mag bias covariance
+start fake position fusion
+reset fake position fusion
+reset position to last known (0.000, 0.000)
+reset velocity to zero
+start fake height fusion
+reset fake height fusion
+reset height to last known (0.000)
+reset mag bias covariance
+starting baro height fusion, resetting height
+Origin alt=122.200
+stop fake height fusion
+430000: EKF aligned, (baro hgt, IMU buf: 11, OBS buf: 11)
+starting mag fusion, resetting states
+reset mag bias covariance
+reset mag heading -0.000 -> 0.000 rad (bias:[0.000, 0.000, 0.000], declination:0.0)
+reset mag earth covariance
+resetting mag I [0.000, 0.000, 0.000] -> [0.218, 0.000, 0.430]
+RESULT {"axis":"roll","angle_deg":0,"aligned_angle_deg":0,"supplied_vz_variance":1000000,"before_velocity":[0,0,0.400000006],"after_velocity":[0,0,0],"after_variance":[0.0500000045,0.0500000045,5000000]}
+reset
+reset
+reset mag earth covariance
+reset mag bias covariance
+start fake position fusion
+reset fake position fusion
+reset position to last known (0.000, -0.000)
+reset velocity to zero
+start fake height fusion
+reset fake height fusion
+reset height to last known (0.000)
+reset mag bias covariance
+starting baro height fusion, resetting height
+Origin alt=122.200
+stop fake height fusion
+430000: EKF aligned, (baro hgt, IMU buf: 11, OBS buf: 11)
+starting mag fusion, resetting states
+reset mag bias covariance
+reset mag heading 0.000 -> 0.000 rad (bias:[0.000, 0.000, 0.000], declination:0.0)
+reset mag earth covariance
+resetting mag I [0.000, 0.000, 0.000] -> [0.218, 0.000, 0.430]
+RESULT {"axis":"roll","angle_deg":5,"aligned_angle_deg":5,"supplied_vz_variance":1,"before_velocity":[-6.11447226e-10,-0.0348623022,0.398477882],"after_velocity":[-3.53017421e-10,0,0],"after_variance":[0.0500000045,0.0876008272,4.96239948]}
+reset
+reset
+reset mag earth covariance
+reset mag bias covariance
+start fake position fusion
+reset fake position fusion
+reset position to last known (0.000, -0.000)
+reset velocity to zero
+start fake height fusion
+reset fake height fusion
+reset height to last known (0.000)
+reset mag bias covariance
+starting baro height fusion, resetting height
+Origin alt=122.200
+stop fake height fusion
+430000: EKF aligned, (baro hgt, IMU buf: 11, OBS buf: 11)
+starting mag fusion, resetting states
+reset mag bias covariance
+reset mag heading 0.000 -> 0.000 rad (bias:[0.000, 0.000, 0.000], declination:0.0)
+reset mag earth covariance
+resetting mag I [0.000, 0.000, 0.000] -> [0.218, 0.000, 0.430]
+RESULT {"axis":"roll","angle_deg":5,"aligned_angle_deg":5,"supplied_vz_variance":100,"before_velocity":[-6.11447226e-10,-0.0348623022,0.398477882],"after_velocity":[-3.53017421e-10,0,0],"after_variance":[0.0500000045,3.84768271,496.202332]}
+reset
+reset
+reset mag earth covariance
+reset mag bias covariance
+start fake position fusion
+reset fake position fusion
+reset position to last known (0.000, -0.000)
+reset velocity to zero
+start fake height fusion
+reset fake height fusion
+reset height to last known (0.000)
+reset mag bias covariance
+starting baro height fusion, resetting height
+Origin alt=122.200
+stop fake height fusion
+430000: EKF aligned, (baro hgt, IMU buf: 11, OBS buf: 11)
+starting mag fusion, resetting states
+reset mag bias covariance
+reset mag heading 0.000 -> 0.000 rad (bias:[0.000, 0.000, 0.000], declination:0.0)
+reset mag earth covariance
+resetting mag I [0.000, 0.000, 0.000] -> [0.218, 0.000, 0.430]
+RESULT {"axis":"roll","angle_deg":5,"aligned_angle_deg":5,"supplied_vz_variance":10000,"before_velocity":[-6.11447226e-10,-0.0348623022,0.398477882],"after_velocity":[-3.53017421e-10,0,0],"after_variance":[0.0500000045,379.855896,49620.1953]}
+VERTICAL_DISPATCH {"axis":"roll","angle_deg":5,"base_vz":0,"derived_vz":0.0174311511,"base_variance":10000,"derived_variance":49620.1953,"automatic_height_failure_tested":false}
+reset
+reset
+reset mag earth covariance
+reset mag bias covariance
+start fake position fusion
+reset fake position fusion
+reset position to last known (0.000, -0.000)
+reset velocity to zero
+start fake height fusion
+reset fake height fusion
+reset height to last known (0.000)
+reset mag bias covariance
+starting baro height fusion, resetting height
+Origin alt=122.200
+stop fake height fusion
+430000: EKF aligned, (baro hgt, IMU buf: 11, OBS buf: 11)
+starting mag fusion, resetting states
+reset mag bias covariance
+reset mag heading 0.000 -> 0.000 rad (bias:[0.000, 0.000, 0.000], declination:0.0)
+reset mag earth covariance
+resetting mag I [0.000, 0.000, 0.000] -> [0.218, 0.000, 0.430]
+RESULT {"axis":"roll","angle_deg":5,"aligned_angle_deg":5,"supplied_vz_variance":1000000,"before_velocity":[-6.11447226e-10,-0.0348623022,0.398477882],"after_velocity":[-3.53017421e-10,0,0],"after_variance":[0.0500000045,37980.6719,4962019.5]}
+reset
+reset
+reset mag earth covariance
+reset mag bias covariance
+start fake position fusion
+reset fake position fusion
+reset position to last known (0.000, 0.000)
+reset velocity to zero
+start fake height fusion
+reset fake height fusion
+reset height to last known (0.000)
+reset mag bias covariance
+starting baro height fusion, resetting height
+Origin alt=122.200
+stop fake height fusion
+430000: EKF aligned, (baro hgt, IMU buf: 11, OBS buf: 11)
+starting mag fusion, resetting states
+reset mag bias covariance
+reset mag heading 0.000 -> 0.000 rad (bias:[0.000, 0.000, 0.000], declination:0.0)
+reset mag earth covariance
+resetting mag I [0.000, 0.000, 0.000] -> [0.218, 0.000, 0.430]
+RESULT {"axis":"roll","angle_deg":10,"aligned_angle_deg":9.99999905,"supplied_vz_variance":1,"before_velocity":[8.54055493e-10,-0.0694592297,0.393923104],"after_velocity":[2.77832624e-09,3.7252903e-08,0],"after_variance":[0.0500000045,0.199260727,4.850739]}
+reset
+reset
+reset mag earth covariance
+reset mag bias covariance
+start fake position fusion
+reset fake position fusion
+reset position to last known (0.000, 0.000)
+reset velocity to zero
+start fake height fusion
+reset fake height fusion
+reset height to last known (0.000)
+reset mag bias covariance
+starting baro height fusion, resetting height
+Origin alt=122.200
+stop fake height fusion
+430000: EKF aligned, (baro hgt, IMU buf: 11, OBS buf: 11)
+starting mag fusion, resetting states
+reset mag bias covariance
+reset mag heading 0.000 -> 0.000 rad (bias:[0.000, 0.000, 0.000], declination:0.0)
+reset mag earth covariance
+resetting mag I [0.000, 0.000, 0.000] -> [0.218, 0.000, 0.430]
+RESULT {"axis":"roll","angle_deg":10,"aligned_angle_deg":9.99999905,"supplied_vz_variance":100,"before_velocity":[8.54055493e-10,-0.0694592297,0.393923104],"after_velocity":[2.77832624e-09,3.7252903e-08,0],"after_variance":[0.0500000045,15.1253338,484.924652]}
+reset
+reset
+reset mag earth covariance
+reset mag bias covariance
+start fake position fusion
+reset fake position fusion
+reset position to last known (0.000, 0.000)
+reset velocity to zero
+start fake height fusion
+reset fake height fusion
+reset height to last known (0.000)
+reset mag bias covariance
+starting baro height fusion, resetting height
+Origin alt=122.200
+stop fake height fusion
+430000: EKF aligned, (baro hgt, IMU buf: 11, OBS buf: 11)
+starting mag fusion, resetting states
+reset mag bias covariance
+reset mag heading 0.000 -> 0.000 rad (bias:[0.000, 0.000, 0.000], declination:0.0)
+reset mag earth covariance
+resetting mag I [0.000, 0.000, 0.000] -> [0.218, 0.000, 0.430]
+RESULT {"axis":"roll","angle_deg":10,"aligned_angle_deg":9.99999905,"supplied_vz_variance":10000,"before_velocity":[8.54055493e-10,-0.0694592297,0.393923104],"after_velocity":[2.77832624e-09,3.7252903e-08,0],"after_variance":[0.0500000045,1507.73291,48492.3125]}
+VERTICAL_DISPATCH {"axis":"roll","angle_deg":10,"base_vz":0,"derived_vz":0.0347296335,"base_variance":10000,"derived_variance":48492.3125,"automatic_height_failure_tested":false}
+reset
+reset
+reset mag earth covariance
+reset mag bias covariance
+start fake position fusion
+reset fake position fusion
+reset position to last known (0.000, 0.000)
+reset velocity to zero
+start fake height fusion
+reset fake height fusion
+reset height to last known (0.000)
+reset mag bias covariance
+starting baro height fusion, resetting height
+Origin alt=122.200
+stop fake height fusion
+430000: EKF aligned, (baro hgt, IMU buf: 11, OBS buf: 11)
+starting mag fusion, resetting states
+reset mag bias covariance
+reset mag heading 0.000 -> 0.000 rad (bias:[0.000, 0.000, 0.000], declination:0.0)
+reset mag earth covariance
+resetting mag I [0.000, 0.000, 0.000] -> [0.218, 0.000, 0.430]
+RESULT {"axis":"roll","angle_deg":10,"aligned_angle_deg":9.99999905,"supplied_vz_variance":1000000,"before_velocity":[8.54055493e-10,-0.0694592297,0.393923104],"after_velocity":[2.77832624e-09,3.7252903e-08,0],"after_variance":[0.0500000045,150768.469,4849231.5]}
+reset
+reset
+reset mag earth covariance
+reset mag bias covariance
+start fake position fusion
+reset fake position fusion
+reset position to last known (0.000, 0.000)
+reset velocity to zero
+start fake height fusion
+reset fake height fusion
+reset height to last known (-0.000)
+reset mag bias covariance
+starting baro height fusion, resetting height
+Origin alt=122.200
+stop fake height fusion
+430000: EKF aligned, (baro hgt, IMU buf: 11, OBS buf: 11)
+starting mag fusion, resetting states
+reset mag bias covariance
+reset mag heading 0.000 -> -0.000 rad (bias:[0.000, 0.000, 0.000], declination:0.0)
+reset mag earth covariance
+resetting mag I [0.000, 0.000, 0.000] -> [0.218, 0.000, 0.430]
+RESULT {"axis":"roll","angle_deg":20,"aligned_angle_deg":19.9999981,"supplied_vz_variance":1,"before_velocity":[-7.63933272e-09,-0.136807978,0.375877023],"after_velocity":[3.10778603e-09,8.94069672e-08,-2.98023224e-08],"after_variance":[0.0500000045,0.629040062,4.42095995]}
+reset
+reset
+reset mag earth covariance
+reset mag bias covariance
+start fake position fusion
+reset fake position fusion
+reset position to last known (0.000, 0.000)
+reset velocity to zero
+start fake height fusion
+reset fake height fusion
+reset height to last known (-0.000)
+reset mag bias covariance
+starting baro height fusion, resetting height
+Origin alt=122.200
+stop fake height fusion
+430000: EKF aligned, (baro hgt, IMU buf: 11, OBS buf: 11)
+starting mag fusion, resetting states
+reset mag bias covariance
+reset mag heading 0.000 -> -0.000 rad (bias:[0.000, 0.000, 0.000], declination:0.0)
+reset mag earth covariance
+resetting mag I [0.000, 0.000, 0.000] -> [0.218, 0.000, 0.430]
+RESULT {"axis":"roll","angle_deg":20,"aligned_angle_deg":19.9999981,"supplied_vz_variance":100,"before_velocity":[-7.63933272e-09,-0.136807978,0.375877023],"after_velocity":[3.10778603e-09,8.94069672e-08,-2.98023224e-08],"after_variance":[0.0500000045,58.5330429,441.516968]}
+reset
+reset
+reset mag earth covariance
+reset mag bias covariance
+start fake position fusion
+reset fake position fusion
+reset position to last known (0.000, 0.000)
+reset velocity to zero
+start fake height fusion
+reset fake height fusion
+reset height to last known (-0.000)
+reset mag bias covariance
+starting baro height fusion, resetting height
+Origin alt=122.200
+stop fake height fusion
+430000: EKF aligned, (baro hgt, IMU buf: 11, OBS buf: 11)
+starting mag fusion, resetting states
+reset mag bias covariance
+reset mag heading 0.000 -> -0.000 rad (bias:[0.000, 0.000, 0.000], declination:0.0)
+reset mag earth covariance
+resetting mag I [0.000, 0.000, 0.000] -> [0.218, 0.000, 0.430]
+RESULT {"axis":"roll","angle_deg":20,"aligned_angle_deg":19.9999981,"supplied_vz_variance":10000,"before_velocity":[-7.63933272e-09,-0.136807978,0.375877023],"after_velocity":[3.10778603e-09,8.94069672e-08,-2.98023224e-08],"after_variance":[0.0500000045,5848.93359,44151.1133]}
+VERTICAL_DISPATCH {"axis":"roll","angle_deg":20,"base_vz":-2.98023224e-08,"derived_vz":0.068404004,"base_variance":10000,"derived_variance":44151.1133,"automatic_height_failure_tested":false}
+reset
+reset
+reset mag earth covariance
+reset mag bias covariance
+start fake position fusion
+reset fake position fusion
+reset position to last known (0.000, 0.000)
+reset velocity to zero
+start fake height fusion
+reset fake height fusion
+reset height to last known (-0.000)
+reset mag bias covariance
+starting baro height fusion, resetting height
+Origin alt=122.200
+stop fake height fusion
+430000: EKF aligned, (baro hgt, IMU buf: 11, OBS buf: 11)
+starting mag fusion, resetting states
+reset mag bias covariance
+reset mag heading 0.000 -> -0.000 rad (bias:[0.000, 0.000, 0.000], declination:0.0)
+reset mag earth covariance
+resetting mag I [0.000, 0.000, 0.000] -> [0.218, 0.000, 0.430]
+RESULT {"axis":"roll","angle_deg":20,"aligned_angle_deg":19.9999981,"supplied_vz_variance":1000000,"before_velocity":[-7.63933272e-09,-0.136807978,0.375877023],"after_velocity":[3.10778603e-09,8.94069672e-08,-2.98023224e-08],"after_variance":[0.0500000082,584889,4415111]}
+reset
+reset
+reset mag earth covariance
+reset mag bias covariance
+start fake position fusion
+reset fake position fusion
+reset position to last known (0.000, 0.000)
+reset velocity to zero
+start fake height fusion
+reset fake height fusion
+reset height to last known (0.000)
+reset mag bias covariance
+starting baro height fusion, resetting height
+Origin alt=122.200
+stop fake height fusion
+430000: EKF aligned, (baro hgt, IMU buf: 11, OBS buf: 11)
+starting mag fusion, resetting states
+reset mag bias covariance
+reset mag heading -0.000 -> 0.000 rad (bias:[0.000, 0.000, 0.000], declination:0.0)
+reset mag earth covariance
+resetting mag I [0.000, 0.000, 0.000] -> [0.218, 0.000, 0.430]
+RESULT {"axis":"pitch","angle_deg":0,"aligned_angle_deg":-0,"supplied_vz_variance":1,"before_velocity":[0,0,0.400000006],"after_velocity":[0,0,0],"after_variance":[0.0500000045,0.0500000045,5]}
+reset
+reset
+reset mag earth covariance
+reset mag bias covariance
+start fake position fusion
+reset fake position fusion
+reset position to last known (0.000, 0.000)
+reset velocity to zero
+start fake height fusion
+reset fake height fusion
+reset height to last known (0.000)
+reset mag bias covariance
+starting baro height fusion, resetting height
+Origin alt=122.200
+stop fake height fusion
+430000: EKF aligned, (baro hgt, IMU buf: 11, OBS buf: 11)
+starting mag fusion, resetting states
+reset mag bias covariance
+reset mag heading -0.000 -> 0.000 rad (bias:[0.000, 0.000, 0.000], declination:0.0)
+reset mag earth covariance
+resetting mag I [0.000, 0.000, 0.000] -> [0.218, 0.000, 0.430]
+RESULT {"axis":"pitch","angle_deg":0,"aligned_angle_deg":-0,"supplied_vz_variance":100,"before_velocity":[0,0,0.400000006],"after_velocity":[0,0,0],"after_variance":[0.0500000045,0.0500000045,500]}
+reset
+reset
+reset mag earth covariance
+reset mag bias covariance
+start fake position fusion
+reset fake position fusion
+reset position to last known (0.000, 0.000)
+reset velocity to zero
+start fake height fusion
+reset fake height fusion
+reset height to last known (0.000)
+reset mag bias covariance
+starting baro height fusion, resetting height
+Origin alt=122.200
+stop fake height fusion
+430000: EKF aligned, (baro hgt, IMU buf: 11, OBS buf: 11)
+starting mag fusion, resetting states
+reset mag bias covariance
+reset mag heading -0.000 -> 0.000 rad (bias:[0.000, 0.000, 0.000], declination:0.0)
+reset mag earth covariance
+resetting mag I [0.000, 0.000, 0.000] -> [0.218, 0.000, 0.430]
+RESULT {"axis":"pitch","angle_deg":0,"aligned_angle_deg":-0,"supplied_vz_variance":10000,"before_velocity":[0,0,0.400000006],"after_velocity":[0,0,0],"after_variance":[0.0500000045,0.0500000045,50000]}
+VERTICAL_DISPATCH {"axis":"pitch","angle_deg":0,"base_vz":0,"derived_vz":0,"base_variance":10000,"derived_variance":50000,"automatic_height_failure_tested":false}
+reset
+reset
+reset mag earth covariance
+reset mag bias covariance
+start fake position fusion
+reset fake position fusion
+reset position to last known (0.000, 0.000)
+reset velocity to zero
+start fake height fusion
+reset fake height fusion
+reset height to last known (0.000)
+reset mag bias covariance
+starting baro height fusion, resetting height
+Origin alt=122.200
+stop fake height fusion
+430000: EKF aligned, (baro hgt, IMU buf: 11, OBS buf: 11)
+starting mag fusion, resetting states
+reset mag bias covariance
+reset mag heading -0.000 -> 0.000 rad (bias:[0.000, 0.000, 0.000], declination:0.0)
+reset mag earth covariance
+resetting mag I [0.000, 0.000, 0.000] -> [0.218, 0.000, 0.430]
+RESULT {"axis":"pitch","angle_deg":0,"aligned_angle_deg":-0,"supplied_vz_variance":1000000,"before_velocity":[0,0,0.400000006],"after_velocity":[0,0,0],"after_variance":[0.0500000045,0.0500000045,5000000]}
+reset
+reset
+reset mag earth covariance
+reset mag bias covariance
+start fake position fusion
+reset fake position fusion
+reset position to last known (0.000, 0.000)
+reset velocity to zero
+start fake height fusion
+reset fake height fusion
+reset height to last known (0.000)
+reset mag bias covariance
+starting baro height fusion, resetting height
+Origin alt=122.200
+stop fake height fusion
+430000: EKF aligned, (baro hgt, IMU buf: 11, OBS buf: 11)
+starting mag fusion, resetting states
+reset mag bias covariance
+reset mag heading -0.000 -> 0.000 rad (bias:[0.000, 0.000, 0.000], declination:0.0)
+reset mag earth covariance
+resetting mag I [0.000, 0.000, 0.000] -> [0.218, 0.000, 0.430]
+RESULT {"axis":"pitch","angle_deg":5,"aligned_angle_deg":5,"supplied_vz_variance":1,"before_velocity":[0.0348623022,0,0.398477882],"after_velocity":[0,0,0],"after_variance":[0.0876008272,0.0500000045,4.96239948]}
+reset
+reset
+reset mag earth covariance
+reset mag bias covariance
+start fake position fusion
+reset fake position fusion
+reset position to last known (0.000, 0.000)
+reset velocity to zero
+start fake height fusion
+reset fake height fusion
+reset height to last known (0.000)
+reset mag bias covariance
+starting baro height fusion, resetting height
+Origin alt=122.200
+stop fake height fusion
+430000: EKF aligned, (baro hgt, IMU buf: 11, OBS buf: 11)
+starting mag fusion, resetting states
+reset mag bias covariance
+reset mag heading -0.000 -> 0.000 rad (bias:[0.000, 0.000, 0.000], declination:0.0)
+reset mag earth covariance
+resetting mag I [0.000, 0.000, 0.000] -> [0.218, 0.000, 0.430]
+RESULT {"axis":"pitch","angle_deg":5,"aligned_angle_deg":5,"supplied_vz_variance":100,"before_velocity":[0.0348623022,0,0.398477882],"after_velocity":[0,0,0],"after_variance":[3.84768271,0.0500000045,496.202332]}
+reset
+reset
+reset mag earth covariance
+reset mag bias covariance
+start fake position fusion
+reset fake position fusion
+reset position to last known (0.000, 0.000)
+reset velocity to zero
+start fake height fusion
+reset fake height fusion
+reset height to last known (0.000)
+reset mag bias covariance
+starting baro height fusion, resetting height
+Origin alt=122.200
+stop fake height fusion
+430000: EKF aligned, (baro hgt, IMU buf: 11, OBS buf: 11)
+starting mag fusion, resetting states
+reset mag bias covariance
+reset mag heading -0.000 -> 0.000 rad (bias:[0.000, 0.000, 0.000], declination:0.0)
+reset mag earth covariance
+resetting mag I [0.000, 0.000, 0.000] -> [0.218, 0.000, 0.430]
+RESULT {"axis":"pitch","angle_deg":5,"aligned_angle_deg":5,"supplied_vz_variance":10000,"before_velocity":[0.0348623022,0,0.398477882],"after_velocity":[0,0,0],"after_variance":[379.855896,0.0500000045,49620.1953]}
+VERTICAL_DISPATCH {"axis":"pitch","angle_deg":5,"base_vz":0,"derived_vz":-0.0435778759,"base_variance":10000,"derived_variance":49620.1953,"automatic_height_failure_tested":false}
+reset
+reset
+reset mag earth covariance
+reset mag bias covariance
+start fake position fusion
+reset fake position fusion
+reset position to last known (0.000, 0.000)
+reset velocity to zero
+start fake height fusion
+reset fake height fusion
+reset height to last known (0.000)
+reset mag bias covariance
+starting baro height fusion, resetting height
+Origin alt=122.200
+stop fake height fusion
+430000: EKF aligned, (baro hgt, IMU buf: 11, OBS buf: 11)
+starting mag fusion, resetting states
+reset mag bias covariance
+reset mag heading -0.000 -> 0.000 rad (bias:[0.000, 0.000, 0.000], declination:0.0)
+reset mag earth covariance
+resetting mag I [0.000, 0.000, 0.000] -> [0.218, 0.000, 0.430]
+RESULT {"axis":"pitch","angle_deg":5,"aligned_angle_deg":5,"supplied_vz_variance":1000000,"before_velocity":[0.0348623022,0,0.398477882],"after_velocity":[0,0,0],"after_variance":[37980.6719,0.0500000045,4962019.5]}
+reset
+reset
+reset mag earth covariance
+reset mag bias covariance
+start fake position fusion
+reset fake position fusion
+reset position to last known (0.000, 0.000)
+reset velocity to zero
+start fake height fusion
+reset fake height fusion
+reset height to last known (0.000)
+reset mag bias covariance
+starting baro height fusion, resetting height
+Origin alt=122.200
+stop fake height fusion
+430000: EKF aligned, (baro hgt, IMU buf: 11, OBS buf: 11)
+starting mag fusion, resetting states
+reset mag bias covariance
+reset mag heading -0.000 -> 0.000 rad (bias:[0.000, 0.000, 0.000], declination:0.0)
+reset mag earth covariance
+resetting mag I [0.000, 0.000, 0.000] -> [0.218, 0.000, 0.430]
+RESULT {"axis":"pitch","angle_deg":10,"aligned_angle_deg":9.99999809,"supplied_vz_variance":1,"before_velocity":[0.0694592297,0,0.393923104],"after_velocity":[-3.7252903e-08,0,0],"after_variance":[0.199260727,0.0500000045,4.850739]}
+reset
+reset
+reset mag earth covariance
+reset mag bias covariance
+start fake position fusion
+reset fake position fusion
+reset position to last known (0.000, 0.000)
+reset velocity to zero
+start fake height fusion
+reset fake height fusion
+reset height to last known (0.000)
+reset mag bias covariance
+starting baro height fusion, resetting height
+Origin alt=122.200
+stop fake height fusion
+430000: EKF aligned, (baro hgt, IMU buf: 11, OBS buf: 11)
+starting mag fusion, resetting states
+reset mag bias covariance
+reset mag heading -0.000 -> 0.000 rad (bias:[0.000, 0.000, 0.000], declination:0.0)
+reset mag earth covariance
+resetting mag I [0.000, 0.000, 0.000] -> [0.218, 0.000, 0.430]
+RESULT {"axis":"pitch","angle_deg":10,"aligned_angle_deg":9.99999809,"supplied_vz_variance":100,"before_velocity":[0.0694592297,0,0.393923104],"after_velocity":[-3.7252903e-08,0,0],"after_variance":[15.1253338,0.0500000045,484.924652]}
+reset
+reset
+reset mag earth covariance
+reset mag bias covariance
+start fake position fusion
+reset fake position fusion
+reset position to last known (0.000, 0.000)
+reset velocity to zero
+start fake height fusion
+reset fake height fusion
+reset height to last known (0.000)
+reset mag bias covariance
+starting baro height fusion, resetting height
+Origin alt=122.200
+stop fake height fusion
+430000: EKF aligned, (baro hgt, IMU buf: 11, OBS buf: 11)
+starting mag fusion, resetting states
+reset mag bias covariance
+reset mag heading -0.000 -> 0.000 rad (bias:[0.000, 0.000, 0.000], declination:0.0)
+reset mag earth covariance
+resetting mag I [0.000, 0.000, 0.000] -> [0.218, 0.000, 0.430]
+RESULT {"axis":"pitch","angle_deg":10,"aligned_angle_deg":9.99999809,"supplied_vz_variance":10000,"before_velocity":[0.0694592297,0,0.393923104],"after_velocity":[-3.7252903e-08,0,0],"after_variance":[1507.73291,0.0500000045,48492.3125]}
+VERTICAL_DISPATCH {"axis":"pitch","angle_deg":10,"base_vz":0,"derived_vz":-0.0868240818,"base_variance":10000,"derived_variance":48492.3125,"automatic_height_failure_tested":false}
+reset
+reset
+reset mag earth covariance
+reset mag bias covariance
+start fake position fusion
+reset fake position fusion
+reset position to last known (0.000, 0.000)
+reset velocity to zero
+start fake height fusion
+reset fake height fusion
+reset height to last known (0.000)
+reset mag bias covariance
+starting baro height fusion, resetting height
+Origin alt=122.200
+stop fake height fusion
+430000: EKF aligned, (baro hgt, IMU buf: 11, OBS buf: 11)
+starting mag fusion, resetting states
+reset mag bias covariance
+reset mag heading -0.000 -> 0.000 rad (bias:[0.000, 0.000, 0.000], declination:0.0)
+reset mag earth covariance
+resetting mag I [0.000, 0.000, 0.000] -> [0.218, 0.000, 0.430]
+RESULT {"axis":"pitch","angle_deg":10,"aligned_angle_deg":9.99999809,"supplied_vz_variance":1000000,"before_velocity":[0.0694592297,0,0.393923104],"after_velocity":[-3.7252903e-08,0,0],"after_variance":[150768.469,0.0500000045,4849231.5]}
+reset
+reset
+reset mag earth covariance
+reset mag bias covariance
+start fake position fusion
+reset fake position fusion
+reset position to last known (-0.000, 0.000)
+reset velocity to zero
+start fake height fusion
+reset fake height fusion
+reset height to last known (-0.000)
+reset mag bias covariance
+starting baro height fusion, resetting height
+Origin alt=122.200
+stop fake height fusion
+430000: EKF aligned, (baro hgt, IMU buf: 11, OBS buf: 11)
+starting mag fusion, resetting states
+reset mag bias covariance
+reset mag heading -0.000 -> 0.000 rad (bias:[0.000, 0.000, 0.000], declination:0.0)
+reset mag earth covariance
+resetting mag I [0.000, 0.000, 0.000] -> [0.218, 0.000, 0.430]
+RESULT {"axis":"pitch","angle_deg":20,"aligned_angle_deg":19.9999981,"supplied_vz_variance":1,"before_velocity":[0.136807978,0,0.375877023],"after_velocity":[-8.94069672e-08,0,-2.98023224e-08],"after_variance":[0.629040062,0.0500000045,4.42095995]}
+reset
+reset
+reset mag earth covariance
+reset mag bias covariance
+start fake position fusion
+reset fake position fusion
+reset position to last known (-0.000, 0.000)
+reset velocity to zero
+start fake height fusion
+reset fake height fusion
+reset height to last known (-0.000)
+reset mag bias covariance
+starting baro height fusion, resetting height
+Origin alt=122.200
+stop fake height fusion
+430000: EKF aligned, (baro hgt, IMU buf: 11, OBS buf: 11)
+starting mag fusion, resetting states
+reset mag bias covariance
+reset mag heading -0.000 -> 0.000 rad (bias:[0.000, 0.000, 0.000], declination:0.0)
+reset mag earth covariance
+resetting mag I [0.000, 0.000, 0.000] -> [0.218, 0.000, 0.430]
+RESULT {"axis":"pitch","angle_deg":20,"aligned_angle_deg":19.9999981,"supplied_vz_variance":100,"before_velocity":[0.136807978,0,0.375877023],"after_velocity":[-8.94069672e-08,0,-2.98023224e-08],"after_variance":[58.5330429,0.0500000045,441.516968]}
+reset
+reset
+reset mag earth covariance
+reset mag bias covariance
+start fake position fusion
+reset fake position fusion
+reset position to last known (-0.000, 0.000)
+reset velocity to zero
+start fake height fusion
+reset fake height fusion
+reset height to last known (-0.000)
+reset mag bias covariance
+starting baro height fusion, resetting height
+Origin alt=122.200
+stop fake height fusion
+430000: EKF aligned, (baro hgt, IMU buf: 11, OBS buf: 11)
+starting mag fusion, resetting states
+reset mag bias covariance
+reset mag heading -0.000 -> 0.000 rad (bias:[0.000, 0.000, 0.000], declination:0.0)
+reset mag earth covariance
+resetting mag I [0.000, 0.000, 0.000] -> [0.218, 0.000, 0.430]
+RESULT {"axis":"pitch","angle_deg":20,"aligned_angle_deg":19.9999981,"supplied_vz_variance":10000,"before_velocity":[0.136807978,0,0.375877023],"after_velocity":[-8.94069672e-08,0,-2.98023224e-08],"after_variance":[5848.93359,0.0500000045,44151.1133]}
+VERTICAL_DISPATCH {"axis":"pitch","angle_deg":20,"base_vz":-2.98023224e-08,"derived_vz":-0.171010107,"base_variance":10000,"derived_variance":44151.1133,"automatic_height_failure_tested":false}
+reset
+reset
+reset mag earth covariance
+reset mag bias covariance
+start fake position fusion
+reset fake position fusion
+reset position to last known (-0.000, 0.000)
+reset velocity to zero
+start fake height fusion
+reset fake height fusion
+reset height to last known (-0.000)
+reset mag bias covariance
+starting baro height fusion, resetting height
+Origin alt=122.200
+stop fake height fusion
+430000: EKF aligned, (baro hgt, IMU buf: 11, OBS buf: 11)
+starting mag fusion, resetting states
+reset mag bias covariance
+reset mag heading -0.000 -> 0.000 rad (bias:[0.000, 0.000, 0.000], declination:0.0)
+reset mag earth covariance
+resetting mag I [0.000, 0.000, 0.000] -> [0.218, 0.000, 0.430]
+RESULT {"axis":"pitch","angle_deg":20,"aligned_angle_deg":19.9999981,"supplied_vz_variance":1000000,"before_velocity":[0.136807978,0,0.375877023],"after_velocity":[-8.94069672e-08,0,-2.98023224e-08],"after_variance":[584889,0.0500000045,4415111]}
+reset
+reset
+LEVER {"height_m":0.0500000007,"axis":0,"rate_deg_s":-10,"correction_mps":0.00872664154,"composition_error_mps":1.49011612e-08,"mount_is_hypothetical":true}
+reset
+reset
+LEVER {"height_m":0.0500000007,"axis":0,"rate_deg_s":10,"correction_mps":0.00872664154,"composition_error_mps":1.49011612e-08,"mount_is_hypothetical":true}
+reset
+reset
+LEVER {"height_m":0.0500000007,"axis":1,"rate_deg_s":-10,"correction_mps":0.00872665644,"composition_error_mps":0,"mount_is_hypothetical":true}
+reset
+reset
+LEVER {"height_m":0.0500000007,"axis":1,"rate_deg_s":10,"correction_mps":0.00872665644,"composition_error_mps":0,"mount_is_hypothetical":true}
+reset
+reset
+LEVER {"height_m":0.0500000007,"axis":2,"rate_deg_s":-10,"correction_mps":0,"composition_error_mps":0,"mount_is_hypothetical":true}
+reset
+reset
+LEVER {"height_m":0.0500000007,"axis":2,"rate_deg_s":10,"correction_mps":0,"composition_error_mps":0,"mount_is_hypothetical":true}
+reset
+reset
+LEVER {"height_m":0.100000001,"axis":0,"rate_deg_s":-10,"correction_mps":0.017453298,"composition_error_mps":0,"mount_is_hypothetical":true}
+reset
+reset
+LEVER {"height_m":0.100000001,"axis":0,"rate_deg_s":10,"correction_mps":0.017453298,"composition_error_mps":0,"mount_is_hypothetical":true}
+reset
+reset
+LEVER {"height_m":0.100000001,"axis":1,"rate_deg_s":-10,"correction_mps":0.0174533129,"composition_error_mps":0,"mount_is_hypothetical":true}
+reset
+reset
+LEVER {"height_m":0.100000001,"axis":1,"rate_deg_s":10,"correction_mps":0.0174532831,"composition_error_mps":0,"mount_is_hypothetical":true}
+reset
+reset
+LEVER {"height_m":0.100000001,"axis":2,"rate_deg_s":-10,"correction_mps":0,"composition_error_mps":0,"mount_is_hypothetical":true}
+reset
+reset
+LEVER {"height_m":0.100000001,"axis":2,"rate_deg_s":10,"correction_mps":0,"composition_error_mps":0,"mount_is_hypothetical":true}
+reset
+reset
+LEVER {"height_m":0.150000006,"axis":0,"rate_deg_s":-10,"correction_mps":0.0261799395,"composition_error_mps":0,"mount_is_hypothetical":true}
+reset
+reset
+LEVER {"height_m":0.150000006,"axis":0,"rate_deg_s":10,"correction_mps":0.0261799395,"composition_error_mps":0,"mount_is_hypothetical":true}
+reset
+reset
+LEVER {"height_m":0.150000006,"axis":1,"rate_deg_s":-10,"correction_mps":0.0261799097,"composition_error_mps":5.96046448e-08,"mount_is_hypothetical":true}
+reset
+reset
+LEVER {"height_m":0.150000006,"axis":1,"rate_deg_s":10,"correction_mps":0.0261799395,"composition_error_mps":0,"mount_is_hypothetical":true}
+reset
+reset
+LEVER {"height_m":0.150000006,"axis":2,"rate_deg_s":-10,"correction_mps":0,"composition_error_mps":0,"mount_is_hypothetical":true}
+reset
+reset
+LEVER {"height_m":0.150000006,"axis":2,"rate_deg_s":10,"correction_mps":0,"composition_error_mps":0,"mount_is_hypothetical":true}

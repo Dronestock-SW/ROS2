@@ -1,0 +1,11 @@
+{
+  "platform": "Windows-11-10.0.26100-SP0",
+  "python": "3.13.9",
+  "packages": {
+    "numpy": "2.3.5",
+    "scipy": "1.16.3",
+    "pytest": "8.4.2",
+    "matplotlib": "3.10.6"
+  },
+  "scope": "Windows offline synthetic and Python unit tests; timings are not Jetson benchmarks"
+}

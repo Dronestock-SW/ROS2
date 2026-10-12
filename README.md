@@ -159,12 +159,17 @@ UWB 연동은 HW팀 정비로 보류했다.
 | /target_pose | 웹에서 들어온 목표 좌표 |
 | /target_valid | 목표 좌표 허용/거부 |
 | /cmd_vel | 이동 명령 (x, y 속도) |
-| /scan | YDLIDAR 전방 scan |
-| /tfmini_range | TFmini 하방 거리 (고도) |
+| /scan | YDLIDAR T-mini Pro의 360° 수평 scan |
+| /tfmini_range | TFmini Plus 하방 거리 (고도) |
 | /safety_stop | 장애물 정지 신호 |
 | /flight_state | Pixhawk 상태 |
 
 ## UWB 개발 자료
+
+수평 LiDAR의 [개선 후보·격리 진단](docs/report/lidar_keyframe_sitl_20261012.md)과
+[재실행 절차](docs/runbooks/lidar_keyframe_validation_20261012.md)를 추가했다.
+합성 평가와 정지 SIH 진단의 범위를 구분한다.
+원본 재현·동적 검증은 남았다. 현재 비행 입력 채택은 보류다.
 
 [활용 데이터](data/README.md)와 [코드·자료 분류 기준](docs/architecture/uwb_data_layout.md)을 따른다.
 수신은 `acquisition/`, 보정은 `processing/`, ROS 연결은 `integration/`에 둔다.
