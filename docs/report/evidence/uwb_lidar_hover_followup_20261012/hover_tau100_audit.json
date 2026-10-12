@@ -1,0 +1,616 @@
+{
+  "schema": 1,
+  "results": [
+    {
+      "source": "/home/dronestock/uwb_sim/uwb-lidar-integration-20261012/hover-tau100-20/clear-s101-a1",
+      "scenario": "clear",
+      "seed": 101,
+      "lidar_aiding": true,
+      "status": {
+        "errors": [],
+        "physical_writes": 0,
+        "armed_seen": true,
+        "airborne_seen": true,
+        "offboard_seen": true,
+        "moving_seen": true,
+        "feedback_count": 1206,
+        "ev_samples": 2226,
+        "flow_samples": 2319,
+        "flow_invalid_samples": 1300,
+        "range_samples": 1019,
+        "lidar_samples": 558,
+        "final_phase": "END",
+        "final_reason": "home_landed_disarmed",
+        "elapsed_s": 58.636,
+        "required_parameters": {
+          "COM_RC_OVERRIDE": 3,
+          "EKF2_MAG_TYPE": 0,
+          "MIS_TAKEOFF_ALT": 1.7000000476837158,
+          "MPC_XY_P": 0.949999988079071,
+          "EKF2_DELAY_MAX": 50.0,
+          "EKF2_ASP_DELAY": 0.0,
+          "EKF2_TAU_VEL": 0.10000000149011612
+        },
+        "min_wall_surface_clearance_m": 1.7688229514328324,
+        "max_estimated_horizontal_speed_m_s": 0.297806673770083,
+        "scan_fault_to_zero_command_s": null,
+        "ulog_files": [
+          "rootfs/log/2026-10-12/06_44_55.ulg"
+        ],
+        "binary_unchanged": true
+      },
+      "moving_samples": 266,
+      "moving_xy_error_m": {
+        "n": 266,
+        "rms": 0.016636000664315347,
+        "p95": 0.027429362532313484,
+        "maximum": 0.03598836280678999
+      },
+      "moving_velocity_error_m_s": {
+        "n": 266,
+        "rms": 0.054674416940778604,
+        "p95": 0.09325634980224332,
+        "maximum": 0.1267722247862523
+      },
+      "mission_phase_samples": {
+        "IDLE": 356,
+        "PREPARING": 27,
+        "ARMING": 17,
+        "TAKING_OFF": 137,
+        "MOVING": 89,
+        "DWELL": 61,
+        "RETURNING": 116,
+        "LANDING": 163,
+        "END": 1
+      },
+      "velocity_error_bound_exceeded_fraction": 0.0,
+      "guard_reasons": {
+        "clear": 264,
+        "limited": 2
+      },
+      "ulogs": [
+        {
+          "file": "rootfs/log/2026-10-12/06_44_55.ulg",
+          "sha256": "39fc2739c072a9509bf1e261a336ed7cbad338081097a83602679217d8c29664",
+          "parameters": {
+            "EKF2_ASP_DELAY": 0.0,
+            "EKF2_AVEL_DELAY": 0.0,
+            "EKF2_DELAY_MAX": 50.0,
+            "EKF2_EV_CTRL": 1,
+            "EKF2_EV_DELAY": 0.0,
+            "EKF2_GPS_CTRL": 0,
+            "EKF2_LID2_AGE": 150.0,
+            "EKF2_LID2_EN": 1,
+            "EKF2_OF_CTRL": 1,
+            "EKF2_RNG_CTRL": 1,
+            "EKF2_TAU_VEL": 0.10000000149011612,
+            "MPC_XY_P": 0.949999988079071
+          },
+          "admission": [
+            {
+              "instance": 0,
+              "samples": 559,
+              "reasons": {
+                "2": 555,
+                "9": 4
+              },
+              "fault_middle_reasons": {
+                "2": 15
+              },
+              "accepted_last": 555,
+              "rejected_last": 0
+            }
+          ],
+          "aiding": [
+            {
+              "topic": "estimator_aid_src_aux_vel",
+              "instance": 0,
+              "log_records": 554,
+              "new_samples": 554,
+              "fused_samples": 554,
+              "fault_middle_new_samples": 15,
+              "fault_middle_fused_samples": 15,
+              "max_test_ratio": 0.7341793179512024,
+              "last_sample_us": 60116138
+            },
+            {
+              "topic": "estimator_aid_src_ev_pos",
+              "instance": 0,
+              "log_records": 2220,
+              "new_samples": 2220,
+              "fused_samples": 2218,
+              "fault_middle_new_samples": 60,
+              "fault_middle_fused_samples": 60,
+              "max_test_ratio": 0.006932057440280914,
+              "last_sample_us": 60172134
+            },
+            {
+              "topic": "estimator_aid_src_optical_flow",
+              "instance": 0,
+              "log_records": 2300,
+              "new_samples": 2300,
+              "fused_samples": 1095,
+              "fault_middle_new_samples": 60,
+              "fault_middle_fused_samples": 60,
+              "max_test_ratio": 1.0275578498840332,
+              "last_sample_us": 60180000
+            }
+          ],
+          "position_resets": [
+            {
+              "instance": 0,
+              "counters": {
+                "xy_reset_counter": 2,
+                "z_reset_counter": 2,
+                "vxy_reset_counter": 1,
+                "vz_reset_counter": 0
+              },
+              "after_motion": {
+                "xy_reset_counter": 0,
+                "z_reset_counter": 0,
+                "vxy_reset_counter": 0,
+                "vz_reset_counter": 0
+              }
+            }
+          ],
+          "moving_truth_errors": {
+            "available": true,
+            "start_us": 34480000.0,
+            "end_us": 50400000.0,
+            "samples": 1990,
+            "coordinate_frame": "NED simulator origin; unaligned absolute state differences",
+            "xy_m": {
+              "n": 1990,
+              "rms": 0.016715650391085735,
+              "p95": 0.026067508450067656,
+              "maximum": 0.03742161024984697
+            },
+            "z_m": {
+              "n": 1990,
+              "rms": 0.6525549995755158,
+              "p95": 0.73760009765625,
+              "maximum": 0.7434143066406249
+            },
+            "vxy_m_s": {
+              "n": 1990,
+              "rms": 0.056428993890640336,
+              "p95": 0.09502976457603378,
+              "maximum": 0.13604376118708933
+            },
+            "vz_m_s": {
+              "n": 1990,
+              "rms": 0.08983801698964627,
+              "p95": 0.168911360045895,
+              "maximum": 0.20104557424783706
+            },
+            "z_signed_mean_m": -0.6505362567230685,
+            "z_change_error_m": {
+              "n": 1990,
+              "rms": 0.11338020091574766,
+              "p95": 0.18817993164062502,
+              "maximum": 0.19399414062499987
+            },
+            "z_initial_error_m": -0.549420166015625,
+            "z_change_scope": "error relative to first retained moving sample; constant origin offset removed, no independent height calibration",
+            "timestamp_contract": "FC output timestamp_sample vs interpolated simulator timestamp; both brackets <=40 ms"
+          }
+        }
+      ],
+      "scope": "Synthetic SIH observations and truth; not physical or raw-scan accuracy",
+      "criteria": {
+        "exercised": true,
+        "clear_mission_completed": true,
+        "wall_clearance": null,
+        "aux_fusion_observed": true,
+        "stale_zero_within_limit": null
+      }
+    },
+    {
+      "source": "/home/dronestock/uwb_sim/uwb-lidar-integration-20261012/hover-tau100-20/clear-s102-a1",
+      "scenario": "clear",
+      "seed": 102,
+      "lidar_aiding": true,
+      "status": {
+        "errors": [],
+        "physical_writes": 0,
+        "armed_seen": true,
+        "airborne_seen": true,
+        "offboard_seen": true,
+        "moving_seen": true,
+        "feedback_count": 1709,
+        "ev_samples": 2544,
+        "flow_samples": 2638,
+        "flow_invalid_samples": 1207,
+        "range_samples": 1431,
+        "lidar_samples": 637,
+        "final_phase": "END",
+        "final_reason": "home_landed_disarmed",
+        "elapsed_s": 66.6,
+        "required_parameters": {
+          "COM_RC_OVERRIDE": 3,
+          "EKF2_MAG_TYPE": 0,
+          "MIS_TAKEOFF_ALT": 1.7000000476837158,
+          "MPC_XY_P": 0.949999988079071,
+          "EKF2_DELAY_MAX": 50.0,
+          "EKF2_ASP_DELAY": 0.0,
+          "EKF2_TAU_VEL": 0.10000000149011612
+        },
+        "min_wall_surface_clearance_m": 1.7763497911575266,
+        "max_estimated_horizontal_speed_m_s": 0.3147417125202201,
+        "scan_fault_to_zero_command_s": null,
+        "ulog_files": [
+          "rootfs/log/2026-10-12/06_44_55.ulg"
+        ],
+        "binary_unchanged": true
+      },
+      "moving_samples": 434,
+      "moving_xy_error_m": {
+        "n": 434,
+        "rms": 0.022238174888743207,
+        "p95": 0.03688333856869598,
+        "maximum": 0.0544653159881117
+      },
+      "moving_velocity_error_m_s": {
+        "n": 434,
+        "rms": 0.0716936441197295,
+        "p95": 0.12377458190385032,
+        "maximum": 0.18933573534879936
+      },
+      "mission_phase_samples": {
+        "IDLE": 356,
+        "PREPARING": 27,
+        "ARMING": 16,
+        "TAKING_OFF": 138,
+        "MOVING": 159,
+        "DWELL": 127,
+        "RETURNING": 148,
+        "LANDING": 128,
+        "END": 1
+      },
+      "velocity_error_bound_exceeded_fraction": 0.0,
+      "guard_reasons": {
+        "clear": 431,
+        "limited": 3
+      },
+      "ulogs": [
+        {
+          "file": "rootfs/log/2026-10-12/06_44_55.ulg",
+          "sha256": "0ea0eb3d78b3fd9c4680240e6669cb078a4956d6410c6e20f11005de997202e0",
+          "parameters": {
+            "EKF2_ASP_DELAY": 0.0,
+            "EKF2_AVEL_DELAY": 0.0,
+            "EKF2_DELAY_MAX": 50.0,
+            "EKF2_EV_CTRL": 1,
+            "EKF2_EV_DELAY": 0.0,
+            "EKF2_GPS_CTRL": 0,
+            "EKF2_LID2_AGE": 150.0,
+            "EKF2_LID2_EN": 1,
+            "EKF2_OF_CTRL": 1,
+            "EKF2_RNG_CTRL": 1,
+            "EKF2_TAU_VEL": 0.10000000149011612,
+            "MPC_XY_P": 0.949999988079071
+          },
+          "admission": [
+            {
+              "instance": 0,
+              "samples": 637,
+              "reasons": {
+                "2": 635,
+                "9": 2
+              },
+              "fault_middle_reasons": {
+                "2": 15
+              },
+              "accepted_last": 635,
+              "rejected_last": 0
+            }
+          ],
+          "aiding": [
+            {
+              "topic": "estimator_aid_src_aux_vel",
+              "instance": 0,
+              "log_records": 635,
+              "new_samples": 635,
+              "fused_samples": 635,
+              "fault_middle_new_samples": 15,
+              "fault_middle_fused_samples": 15,
+              "max_test_ratio": 0.8964229226112366,
+              "last_sample_us": 68144023
+            },
+            {
+              "topic": "estimator_aid_src_ev_pos",
+              "instance": 0,
+              "log_records": 2539,
+              "new_samples": 2539,
+              "fused_samples": 2537,
+              "fault_middle_new_samples": 60,
+              "fault_middle_fused_samples": 60,
+              "max_test_ratio": 0.0101414630189538,
+              "last_sample_us": 68160023
+            },
+            {
+              "topic": "estimator_aid_src_optical_flow",
+              "instance": 0,
+              "log_records": 2620,
+              "new_samples": 2620,
+              "fused_samples": 1430,
+              "fault_middle_new_samples": 60,
+              "fault_middle_fused_samples": 60,
+              "max_test_ratio": 1.071388602256775,
+              "last_sample_us": 68160000
+            }
+          ],
+          "position_resets": [
+            {
+              "instance": 0,
+              "counters": {
+                "xy_reset_counter": 2,
+                "z_reset_counter": 2,
+                "vxy_reset_counter": 1,
+                "vz_reset_counter": 0
+              },
+              "after_motion": {
+                "xy_reset_counter": 0,
+                "z_reset_counter": 0,
+                "vxy_reset_counter": 0,
+                "vz_reset_counter": 0
+              }
+            }
+          ],
+          "moving_truth_errors": {
+            "available": true,
+            "start_us": 34484000.0,
+            "end_us": 60468000.0,
+            "samples": 3249,
+            "coordinate_frame": "NED simulator origin; unaligned absolute state differences",
+            "xy_m": {
+              "n": 3249,
+              "rms": 0.022698494267884763,
+              "p95": 0.03898962605012119,
+              "maximum": 0.05458681360643464
+            },
+            "z_m": {
+              "n": 3249,
+              "rms": 0.10854575703725998,
+              "p95": 0.16072265624999993,
+              "maximum": 0.1970886230468749
+            },
+            "vxy_m_s": {
+              "n": 3249,
+              "rms": 0.07323994281509617,
+              "p95": 0.1297587259856443,
+              "maximum": 0.2080866518039297
+            },
+            "vz_m_s": {
+              "n": 3249,
+              "rms": 0.07221767991898331,
+              "p95": 0.1335861727595329,
+              "maximum": 0.2087932750582695
+            },
+            "z_signed_mean_m": -0.1014630149496119,
+            "z_change_error_m": {
+              "n": 3249,
+              "rms": 0.039830896052175095,
+              "p95": 0.07112182617187499,
+              "maximum": 0.10557861328124996
+            },
+            "z_initial_error_m": -0.09151000976562496,
+            "z_change_scope": "error relative to first retained moving sample; constant origin offset removed, no independent height calibration",
+            "timestamp_contract": "FC output timestamp_sample vs interpolated simulator timestamp; both brackets <=40 ms"
+          }
+        }
+      ],
+      "scope": "Synthetic SIH observations and truth; not physical or raw-scan accuracy",
+      "criteria": {
+        "exercised": true,
+        "clear_mission_completed": true,
+        "wall_clearance": null,
+        "aux_fusion_observed": true,
+        "stale_zero_within_limit": null
+      }
+    },
+    {
+      "source": "/home/dronestock/uwb_sim/uwb-lidar-integration-20261012/hover-tau100-20/clear-s103-a1",
+      "scenario": "clear",
+      "seed": 103,
+      "lidar_aiding": true,
+      "status": {
+        "errors": [],
+        "physical_writes": 0,
+        "armed_seen": true,
+        "airborne_seen": true,
+        "offboard_seen": true,
+        "moving_seen": true,
+        "feedback_count": 1805,
+        "ev_samples": 3021,
+        "flow_samples": 3119,
+        "flow_invalid_samples": 1635,
+        "range_samples": 1484,
+        "lidar_samples": 757,
+        "final_phase": "END",
+        "final_reason": "home_landed_disarmed",
+        "elapsed_s": 78.544,
+        "required_parameters": {
+          "COM_RC_OVERRIDE": 3,
+          "EKF2_MAG_TYPE": 0,
+          "MIS_TAKEOFF_ALT": 1.7000000476837158,
+          "MPC_XY_P": 0.949999988079071,
+          "EKF2_DELAY_MAX": 50.0,
+          "EKF2_ASP_DELAY": 0.0,
+          "EKF2_TAU_VEL": 0.10000000149011612
+        },
+        "min_wall_surface_clearance_m": 1.7086082332341685,
+        "max_estimated_horizontal_speed_m_s": 0.3211405705983617,
+        "scan_fault_to_zero_command_s": null,
+        "ulog_files": [
+          "rootfs/log/2026-10-12/06_45_32.ulg"
+        ],
+        "binary_unchanged": true
+      },
+      "moving_samples": 458,
+      "moving_xy_error_m": {
+        "n": 458,
+        "rms": 0.028931109227165443,
+        "p95": 0.04436670817573879,
+        "maximum": 0.146683893790825
+      },
+      "moving_velocity_error_m_s": {
+        "n": 458,
+        "rms": 0.07677727685374483,
+        "p95": 0.13877498678758318,
+        "maximum": 0.3391620427741334
+      },
+      "mission_phase_samples": {
+        "IDLE": 357,
+        "PREPARING": 25,
+        "ARMING": 17,
+        "TAKING_OFF": 145,
+        "MOVING": 203,
+        "DWELL": 79,
+        "RETURNING": 176,
+        "LANDING": 297,
+        "END": 1
+      },
+      "velocity_error_bound_exceeded_fraction": 0.0,
+      "guard_reasons": {
+        "clear": 454,
+        "limited": 4
+      },
+      "ulogs": [
+        {
+          "file": "rootfs/log/2026-10-12/06_45_32.ulg",
+          "sha256": "a80daf621765aba66041da072712489fbf4fd389b08cbc180e0577a3a54ba4c8",
+          "parameters": {
+            "EKF2_ASP_DELAY": 0.0,
+            "EKF2_AVEL_DELAY": 0.0,
+            "EKF2_DELAY_MAX": 50.0,
+            "EKF2_EV_CTRL": 1,
+            "EKF2_EV_DELAY": 0.0,
+            "EKF2_GPS_CTRL": 0,
+            "EKF2_LID2_AGE": 150.0,
+            "EKF2_LID2_EN": 1,
+            "EKF2_OF_CTRL": 1,
+            "EKF2_RNG_CTRL": 1,
+            "EKF2_TAU_VEL": 0.10000000149011612,
+            "MPC_XY_P": 0.949999988079071
+          },
+          "admission": [
+            {
+              "instance": 0,
+              "samples": 752,
+              "reasons": {
+                "2": 752
+              },
+              "fault_middle_reasons": {
+                "2": 15
+              },
+              "accepted_last": 754,
+              "rejected_last": 0
+            }
+          ],
+          "aiding": [
+            {
+              "topic": "estimator_aid_src_aux_vel",
+              "instance": 0,
+              "log_records": 753,
+              "new_samples": 753,
+              "fused_samples": 745,
+              "fault_middle_new_samples": 14,
+              "fault_middle_fused_samples": 14,
+              "max_test_ratio": 2.5147738456726074,
+              "last_sample_us": 79128001
+            },
+            {
+              "topic": "estimator_aid_src_ev_pos",
+              "instance": 0,
+              "log_records": 3017,
+              "new_samples": 3017,
+              "fused_samples": 3015,
+              "fault_middle_new_samples": 59,
+              "fault_middle_fused_samples": 59,
+              "max_test_ratio": 0.05959227308630943,
+              "last_sample_us": 79184001
+            },
+            {
+              "topic": "estimator_aid_src_optical_flow",
+              "instance": 0,
+              "log_records": 3107,
+              "new_samples": 3107,
+              "fused_samples": 1478,
+              "fault_middle_new_samples": 59,
+              "fault_middle_fused_samples": 59,
+              "max_test_ratio": 1.2747822999954224,
+              "last_sample_us": 79176000
+            }
+          ],
+          "position_resets": [
+            {
+              "instance": 0,
+              "counters": {
+                "xy_reset_counter": 2,
+                "z_reset_counter": 2,
+                "vxy_reset_counter": 1,
+                "vz_reset_counter": 0
+              },
+              "after_motion": {
+                "xy_reset_counter": 0,
+                "z_reset_counter": 0,
+                "vxy_reset_counter": 0,
+                "vz_reset_counter": 0
+              }
+            }
+          ],
+          "moving_truth_errors": {
+            "available": true,
+            "start_us": 34028000.0,
+            "end_us": 61452000.0,
+            "samples": 3429,
+            "coordinate_frame": "NED simulator origin; unaligned absolute state differences",
+            "xy_m": {
+              "n": 3429,
+              "rms": 0.029043290501127573,
+              "p95": 0.041252583846356286,
+              "maximum": 0.14786433130822363
+            },
+            "z_m": {
+              "n": 3429,
+              "rms": 0.10926779897563715,
+              "p95": 0.17594848632812496,
+              "maximum": 0.22972412109374996
+            },
+            "vxy_m_s": {
+              "n": 3429,
+              "rms": 0.07901926675957317,
+              "p95": 0.13945949804909816,
+              "maximum": 0.34682749013801945
+            },
+            "vz_m_s": {
+              "n": 3429,
+              "rms": 0.09204827323786098,
+              "p95": 0.1824610930681229,
+              "maximum": 0.25278718695044516
+            },
+            "z_signed_mean_m": 0.0948896139416899,
+            "z_change_error_m": {
+              "n": 3429,
+              "rms": 0.10355632555194774,
+              "p95": 0.16253173828124998,
+              "maximum": 0.22423095703124996
+            },
+            "z_initial_error_m": 0.1831420898437499,
+            "z_change_scope": "error relative to first retained moving sample; constant origin offset removed, no independent height calibration",
+            "timestamp_contract": "FC output timestamp_sample vs interpolated simulator timestamp; both brackets <=40 ms"
+          }
+        }
+      ],
+      "scope": "Synthetic SIH observations and truth; not physical or raw-scan accuracy",
+      "criteria": {
+        "exercised": true,
+        "clear_mission_completed": true,
+        "wall_clearance": null,
+        "aux_fusion_observed": true,
+        "stale_zero_within_limit": null
+      }
+    }
+  ]
+}

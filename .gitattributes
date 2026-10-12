@@ -4,6 +4,13 @@ perfect_holdv2.params -text -whitespace
 docs/report/evidence/position_hold_20260927/samples.csv -text -whitespace
 docs/report/evidence/multitag_web_20261007/** -text -whitespace
 docs/report/evidence/multitag_patch_20261007/** -text -whitespace
+# Preserve the hashes of the UWB/LiDAR experiment evidence and PX4 patch.
+docs/report/evidence/uwb_lidar_integration_20261012/** -text -whitespace
+docs/report/evidence/uwb_lidar_hover_followup_20261012/** -text
+docs/report/evidence/uwb_lidar_hover10_20261012/** -text -whitespace
+docs/report/evidence/spinning_lidar_20261012/** -text -whitespace
+src/drone_uwb/tools/px4_spinning_sensor.patch -text -whitespace
+src/drone_uwb/tools/px4_lidar2d.patch -text -whitespace
 # Unified diff context preserves PX4 tabs and blank lines.
 src/drone_mission/test/px4_sih_sensor_noise.patch -whitespace
 # Linux runtime scripts must also stay executable in Windows-made archives.

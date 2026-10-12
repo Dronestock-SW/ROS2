@@ -1,0 +1,120 @@
+{
+  "schema": 1,
+  "config_sha256": "e63734c1dce3c3aef43fac877817f7ace4ae9cbf870372d4c1190acc5f15fc60",
+  "script_sha256": "52b63f6fe5e2a26989df19735fb9be93302137d51d7647e97573c667c090485d",
+  "solver_settings": {
+    "window_s": 0.8,
+    "min_samples_per_anchor": 3,
+    "min_samples_total": 12,
+    "required_anchor_count": 4,
+    "sigma_r_m": 0.08,
+    "huber_m": 0.12,
+    "h80_irls_iterations": 8,
+    "max_scaled_condition": 1000000.0,
+    "reset_gap_s": 0.15,
+    "max_extrapolation_s": 0.04,
+    "max_range_m": 80.0
+  },
+  "results": [
+    {
+      "frequency_hz": 0.1,
+      "seed": 11,
+      "range_noise_std_m": 0.0,
+      "samples": 1320,
+      "window_s": 0.8,
+      "xy_axis_rms_error_m": 0.00463095829513435,
+      "correlation_lag_25ms": null,
+      "gain": 1.0210726638064824,
+      "phase_deg": -0.24156717957843485,
+      "equivalent_phase_delay_s": 0.0067101994327343015,
+      "delay_scope": "frequency-specific sinusoidal phase; not transport or EKF2_EV_DELAY calibration"
+    },
+    {
+      "frequency_hz": 0.25,
+      "seed": 11,
+      "range_noise_std_m": 0.0,
+      "samples": 1320,
+      "window_s": 0.8,
+      "xy_axis_rms_error_m": 0.027513690611507574,
+      "correlation_lag_25ms": null,
+      "gain": 1.1163634111251128,
+      "phase_deg": -3.2396260228505156,
+      "equivalent_phase_delay_s": 0.03599584469833906,
+      "delay_scope": "frequency-specific sinusoidal phase; not transport or EKF2_EV_DELAY calibration"
+    },
+    {
+      "frequency_hz": 0.5,
+      "seed": 11,
+      "range_noise_std_m": 0.0,
+      "samples": 1320,
+      "window_s": 0.8,
+      "xy_axis_rms_error_m": 0.10068879652897551,
+      "correlation_lag_25ms": null,
+      "gain": 1.3176868373277795,
+      "phase_deg": -17.67133336774653,
+      "equivalent_phase_delay_s": 0.09817407426525851,
+      "delay_scope": "frequency-specific sinusoidal phase; not transport or EKF2_EV_DELAY calibration"
+    },
+    {
+      "frequency_hz": 1.0,
+      "seed": 11,
+      "range_noise_std_m": 0.0,
+      "samples": 1320,
+      "window_s": 0.8,
+      "xy_axis_rms_error_m": 0.2930263822733844,
+      "correlation_lag_25ms": null,
+      "gain": 1.4084337265877664,
+      "phase_deg": -67.24592810703021,
+      "equivalent_phase_delay_s": 0.1867942447417506,
+      "delay_scope": "frequency-specific sinusoidal phase; not transport or EKF2_EV_DELAY calibration"
+    },
+    {
+      "frequency_hz": 0.0,
+      "seed": 11,
+      "range_noise_std_m": 0.08,
+      "samples": 1320,
+      "window_s": 0.8,
+      "xy_axis_rms_error_m": 0.016882784204539633,
+      "correlation_lag_25ms": 0.8975860160370236
+    },
+    {
+      "frequency_hz": 0.0,
+      "seed": 22,
+      "range_noise_std_m": 0.08,
+      "samples": 1320,
+      "window_s": 0.8,
+      "xy_axis_rms_error_m": 0.019133685481039085,
+      "correlation_lag_25ms": 0.9262852449187777
+    },
+    {
+      "frequency_hz": 0.0,
+      "seed": 33,
+      "range_noise_std_m": 0.08,
+      "samples": 1320,
+      "window_s": 0.8,
+      "xy_axis_rms_error_m": 0.017557249677686834,
+      "correlation_lag_25ms": 0.9142931768789463
+    },
+    {
+      "frequency_hz": 0.0,
+      "seed": 44,
+      "range_noise_std_m": 0.08,
+      "samples": 1320,
+      "window_s": 0.8,
+      "xy_axis_rms_error_m": 0.020705520470723826,
+      "correlation_lag_25ms": 0.9313503317989982
+    },
+    {
+      "frequency_hz": 0.0,
+      "seed": 55,
+      "range_noise_std_m": 0.08,
+      "samples": 1320,
+      "window_s": 0.8,
+      "xy_axis_rms_error_m": 0.0176087945563835,
+      "correlation_lag_25ms": 0.9054296174993264
+    }
+  ],
+  "scope": "Synthetic causal H80 response and overlapping-output correlation audit.\n\nExercises the pinned range solver only. It excludes the runtime B_TF admission,\nToF subset selection, radio clock mapping, multipath and FC fusion.\n",
+  "physical_validation": false,
+  "settings_changed": false
+}

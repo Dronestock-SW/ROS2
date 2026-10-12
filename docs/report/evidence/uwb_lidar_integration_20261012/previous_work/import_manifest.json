@@ -1,0 +1,13 @@
+{
+  "source": "C:\\Users\\A\\Documents\\Codex\\2026-10-12\\dronestock-sw-ros2-feature-uwb-agents\\work\\ROS2\\docs\\report\\evidence\\lidar_keyframe_sitl_20261012",
+  "source_head": "42421fd30405bbf80eaf24665ba2d2668939ea3b",
+  "scope": "Existing user work; hash-verified read-only evidence import, not rerun in this task",
+  "files": {
+    "synthetic_final.json": "b7f6c551fb2c13db652d8e4836d757b25ca81898d910510bbce9e17bbd972aa7",
+    "sitl_summary.json": "eb9b79c0653cbe903750fd8137db2b048a18311d91bd41c2734d11c121830a89",
+    "scenario_status.json": "86aa443de224e3b3c77c68dc58d17b7c896c544c4b46905e9d74479bd7355188",
+    "reset_probe.json": "466992b283eed6f2ea606791fb5b7dc9648e52b12e90434c487f63141e135485",
+    "reset_probe_manifest.json": "b8cbbe7f08b47211ccfec93eefbc224f5a3b37a128ef13fc48866561f2fac7ef",
+    "artifact_manifest.json": "3d8ee320e6eed2e6e9e920d68abcd775db36cbae2344934e857510d525288c12"
+  }
+}

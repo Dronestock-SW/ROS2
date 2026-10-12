@@ -1,0 +1,23 @@
+{
+  "base_commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+  "files": {
+    "msg/LidarVelocity2d.msg": "020570d3b79fb8ff22a7c9d2dc22e86e502ec92f95648e1de5f202ba6f7b23c2",
+    "msg/LidarVelocity2dStatus.msg": "6abcec762b0d12a48e4a6464920e6fd36a646d182e0e7d6fe84b96d84fccd492",
+    "msg/CMakeLists.txt": "9b63aa98e21192637952a49060e9ddcb1ed2e413934bbb2393a0a639f06f0d44",
+    "src/modules/mavlink/mavlink_receiver.h": "d2ce737e397eaec5a2e0065599c61d466c101735be018e2813d9e72d9fe1b7d9",
+    "src/modules/mavlink/mavlink_receiver.cpp": "1cc83eda55f16a5797fe0efbb32a9ab6f9253fa29abefd43b7ab12f998a9734d",
+    "src/modules/ekf2/EKF2.hpp": "ca48479bd48ebd553b95828691403ba81e9cff4059f5d6e276b78303c292f9d3",
+    "src/modules/ekf2/EKF2.cpp": "8b3ac96f3ed1ef536adb75b730e3897ea4e61e1edbea3d5ae0107209d7a127bf",
+    "src/modules/ekf2/EKF/ekf.h": "5678cb9e30a7a5d776bb5162a8e56bd5f16c279f3e16ec7301d41cd6ce07d7f4",
+    "src/modules/ekf2/params_aux_velocity.yaml": "1aa5ad00196af45e0973edaca51532f399d780a7bce43b417e098759a5b10ebf",
+    "src/modules/logger/logged_topics.cpp": "82b9c99390e140d3f31c45f52c20bd44c7b2ea0e2c935cb9345acb56b96dc5d7",
+    "boards/px4/sitl/lidar2d.px4board": "361d844d0eb14260052ee5bb23f8f60f6ca3a6780b666b406d301ee3ef8a2833"
+  },
+  "default_enabled": false,
+  "contract": "Independent 2D NE velocity at IMU origin; conservative XY covariance; no synthetic vz; no EV multiplexing",
+  "limits": [
+    "a separate horizontal aid must remain active",
+    "physical timing/mount/covariance not validated",
+    "not deployed"
+  ]
+}

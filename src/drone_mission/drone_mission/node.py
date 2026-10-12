@@ -32,6 +32,7 @@ from .contracts import Settings, finite
 from .session import FlightSession, Snapshot, native_estimator_valid
 from .mission_chain import MissionChain
 from .local_xy import LocalXYMission
+from .local_command import local_command_fields
 from .writer_lock import WriterLock
 from .native_ai import NativePlanner
 from .preflight import field_preflight
@@ -53,10 +54,11 @@ def local_target_message(goal, settings, stamp):
     msg.header.stamp = stamp
     msg.header.frame_id = 'map'
     msg.coordinate_frame = PositionTarget.FRAME_LOCAL_NED
-    msg.type_mask = 8 | 16 | 32 | 64 | 128 | 256 | 2048
-    msg.position.x, msg.position.y = map_xy_to_enu(goal['xy'], settings)
-    msg.position.z = goal['altitude_enu_m']
-    msg.yaw = math.radians(map_yaw_to_enu(goal['yaw_deg'], settings))
+    fields = local_command_fields(goal, settings)
+    msg.type_mask = fields['type_mask']
+    msg.position.x, msg.position.y, msg.position.z = fields['position_enu']
+    msg.velocity.x, msg.velocity.y, msg.velocity.z = fields['velocity_enu']
+    msg.yaw = fields['yaw_enu_rad']
     return msg
 
 
@@ -342,8 +344,17 @@ class FlightNode(Node):
 
     def local_target_received(self, msg):
         age = (self.get_clock().now().nanoseconds-stamp_ns(msg))/1e9
-        if (msg.coordinate_frame != 1 or msg.type_mask & 7 or not 0 <= age <= .5
-                or not finite(msg.position.x, msg.position.y, msg.position.z)):
+        if msg.coordinate_frame != 1 or not 0 <= age <= .5:
+            return
+        velocity_handler = getattr(self.session, 'applied_local_velocity', None)
+        if (velocity_handler and msg.type_mask & 31 == 3
+                and finite(msg.velocity.x, msg.velocity.y, msg.position.z)):
+            velocity = tuple(enu_vector_to_map((msg.velocity.x, msg.velocity.y), self.settings))
+            if velocity_handler(velocity, msg.position.z, stamp_ns(msg)):
+                self.target_feedback = dict(frame='uwb_map', velocity_xy_m_s=velocity,
+                                            stamp_ns=stamp_ns(msg))
+            return
+        if msg.type_mask & 7 or not finite(msg.position.x, msg.position.y, msg.position.z):
             return
         xy = tuple(enu_xy_to_map((msg.position.x, msg.position.y), self.settings))
         self.session.applied_local_target(xy, msg.position.z, stamp_ns(msg))

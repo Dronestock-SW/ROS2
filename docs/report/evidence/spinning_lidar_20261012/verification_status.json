@@ -1,0 +1,22 @@
+{
+  "changed_packages": {
+    "passed": 255,
+    "skipped": 9,
+    "failed": 0,
+    "excluded_files": [
+      "test_local_flight_ros.py",
+      "test_local_web.py",
+      "test_mission_store.py",
+      "test_operator_arm.py",
+      "test_site.py"
+    ]
+  },
+  "expanded_demo": {
+    "passed": 312,
+    "skipped": 11,
+    "failed": 15,
+    "reason": "Windows checkout symlink placeholder gazebo_shadow.json is not JSON; untouched existing fixture"
+  },
+  "ros_flight_node_integration": "not_run",
+  "rendered_figures_visually_checked": true
+}

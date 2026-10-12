@@ -1,0 +1,88 @@
+[
+  {
+    "run": "/home/dronestock/uwb_sim/uwb-lidar-integration-20261012/hover10-armed-scan-38",
+    "interval_s": [
+      43.956,
+      78.94
+    ],
+    "topics": {
+      "vehicle_local_position": {
+        "n": 4374,
+        "error_rms_by_axis": [
+          0.021904845049860577,
+          0.055272175311187735,
+          0.04920002965735774
+        ],
+        "error_mean_by_axis": [
+          0.0002905768852055694,
+          0.00679391125565554,
+          0.007181978552129365
+        ],
+        "observed_speed_rms": 0.09307941049337387,
+        "true_speed_rms": 0.09667179325983223,
+        "publish_minus_sample_s": 0.0
+      },
+      "estimator_states": {
+        "n": 3499,
+        "error_rms_by_axis": [
+          0.018556203119199234,
+          0.03895642339710132,
+          0.041216709143358295
+        ],
+        "error_mean_by_axis": [
+          -0.0001356558836124751,
+          0.005315057431779223,
+          0.005935472553722196
+        ],
+        "observed_speed_rms": 0.09275362640619278,
+        "true_speed_rms": 0.09667269238466225,
+        "publish_minus_sample_s": 0.07200000000000002
+      },
+      "estimator_optical_flow_vel": {
+        "n": 1401,
+        "error_rms_by_axis": [
+          0.008937068762866408,
+          0.011935124833782495
+        ],
+        "error_mean_by_axis": [
+          -0.0002142407785494345,
+          0.002664563870809424
+        ],
+        "observed_speed_rms": 0.08059311658143997,
+        "true_speed_rms": 0.08453524073087211,
+        "publish_minus_sample_s": 0.07428122769450408
+      },
+      "estimator_aid_src_aux_vel": {
+        "n": 288,
+        "error_rms_by_axis": [
+          0.045823538451718646,
+          0.03834892305990394
+        ],
+        "error_mean_by_axis": [
+          0.00022091687535930117,
+          0.00018786061785964044
+        ],
+        "observed_speed_rms": 0.1036240642148022,
+        "true_speed_rms": 0.08559266277545291,
+        "publish_minus_sample_s": 0.07822443750000013
+      },
+      "estimator_aid_src_rng_hgt": {
+        "observation_variance": 0.0011494081700220704,
+        "innovation_variance": 0.0012992157135158777,
+        "fused": 1.0
+      },
+      "estimator_aid_src_baro_hgt": {
+        "observation_variance": 12.39472770690918,
+        "innovation_variance": 12.394974708557129,
+        "fused": 1.0
+      },
+      "estimator_aid_src_ev_pos": {
+        "observation_variance[0]": 0.0008999999845400453,
+        "observation_variance[1]": 0.0008999999845400453,
+        "innovation_variance[0]": 0.0009902456076815724,
+        "innovation_variance[1]": 0.0009896294213831425,
+        "fused": 1.0
+      }
+    }
+  }
+]

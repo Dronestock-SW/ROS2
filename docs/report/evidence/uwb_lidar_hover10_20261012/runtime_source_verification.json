@@ -1,0 +1,56 @@
+{
+  "checks": [
+    {
+      "run": "clear-s301-a1",
+      "runtime_sources_match": true
+    },
+    {
+      "run": "clear-s302-a1",
+      "runtime_sources_match": true
+    },
+    {
+      "run": "clear-s303-a1",
+      "runtime_sources_match": true
+    },
+    {
+      "run": "wall-s301-a1",
+      "runtime_sources_match": true
+    },
+    {
+      "run": "wall-s302-a1",
+      "runtime_sources_match": true
+    },
+    {
+      "run": "wall-s303-a1",
+      "runtime_sources_match": true
+    },
+    {
+      "run": "scan_gap-s301-a1",
+      "runtime_sources_match": true
+    },
+    {
+      "run": "lidar_gap-s301-a1",
+      "runtime_sources_match": true
+    },
+    {
+      "run": "uwb_gap-s301-a1",
+      "runtime_sources_match": true
+    },
+    {
+      "run": "uwb_jump-s301-a1",
+      "runtime_sources_match": true
+    },
+    {
+      "run": "clear-s301-a0",
+      "runtime_sources_match": true
+    },
+    {
+      "run": "clear-s302-a0",
+      "runtime_sources_match": true
+    },
+    {
+      "run": "clear-s303-a0",
+      "runtime_sources_match": true
+    }
+  ]
+}

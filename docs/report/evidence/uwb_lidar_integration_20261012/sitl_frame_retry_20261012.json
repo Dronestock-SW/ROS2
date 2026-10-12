@@ -1,0 +1,201 @@
+{
+  "schema": 1,
+  "results": [
+    {
+      "source": "/home/dronestock/uwb_sim/uwb-lidar-integration-20261012/frame-retry-50cm-15",
+      "scenario": "lidar_bad_frame",
+      "seed": 101,
+      "lidar_aiding": true,
+      "status": {
+        "errors": [],
+        "physical_writes": 0,
+        "armed_seen": true,
+        "airborne_seen": true,
+        "offboard_seen": true,
+        "moving_seen": true,
+        "feedback_count": 2302,
+        "ev_samples": 3381,
+        "flow_samples": 3478,
+        "flow_invalid_samples": 1559,
+        "range_samples": 1919,
+        "lidar_samples": 847,
+        "final_phase": "FAILED",
+        "final_reason": "hover_stability_timeout",
+        "elapsed_s": 87.568,
+        "required_parameters": {
+          "COM_RC_OVERRIDE": 3,
+          "EKF2_MAG_TYPE": 0,
+          "MIS_TAKEOFF_ALT": 1.7000000476837158
+        },
+        "min_wall_surface_clearance_m": 1.588178796970544,
+        "max_estimated_horizontal_speed_m_s": 0.28942389103004296,
+        "scan_fault_to_zero_command_s": null,
+        "ulog_files": [
+          "rootfs/log/2026-10-12/06_14_54.ulg"
+        ],
+        "binary_unchanged": true
+      },
+      "moving_samples": 620,
+      "moving_xy_error_m": {
+        "n": 620,
+        "rms": 0.044528831674918466,
+        "p95": 0.07768931170088515,
+        "maximum": 0.09713044833150844
+      },
+      "moving_velocity_error_m_s": {
+        "n": 620,
+        "rms": 0.11493747477687048,
+        "p95": 0.198706324599649,
+        "maximum": 0.2773307992018936
+      },
+      "mission_phase_samples": {
+        "IDLE": 357,
+        "PREPARING": 25,
+        "ARMING": 17,
+        "TAKING_OFF": 148,
+        "MOVING": 170,
+        "DWELL": 450,
+        "LANDING": 282,
+        "FAILED": 1
+      },
+      "velocity_error_bound_exceeded_fraction": 0.0,
+      "guard_reasons": {
+        "clear": 620
+      },
+      "ulogs": [
+        {
+          "file": "rootfs/log/2026-10-12/06_14_54.ulg",
+          "sha256": "e107b27490454f80b54c1757b1a9452e114313e1e04d193b23a142421ef9f2b6",
+          "parameters": {
+            "EKF2_AVEL_DELAY": 0.0,
+            "EKF2_EV_CTRL": 1,
+            "EKF2_EV_DELAY": 0.0,
+            "EKF2_GPS_CTRL": 0,
+            "EKF2_LID2_AGE": 150.0,
+            "EKF2_LID2_EN": 1,
+            "EKF2_OF_CTRL": 1,
+            "EKF2_RNG_CTRL": 1
+          },
+          "admission": [
+            {
+              "instance": 0,
+              "samples": 855,
+              "reasons": {
+                "2": 812,
+                "10": 20,
+                "9": 21,
+                "5": 2
+              },
+              "fault_middle_reasons": {
+                "10": 15
+              },
+              "accepted_last": 812,
+              "rejected_last": 22
+            }
+          ],
+          "aiding": [
+            {
+              "topic": "estimator_aid_src_aux_vel",
+              "instance": 0,
+              "log_records": 804,
+              "new_samples": 804,
+              "fused_samples": 803,
+              "fault_middle_new_samples": 0,
+              "fault_middle_fused_samples": 0,
+              "max_test_ratio": 1.0545119047164917,
+              "last_sample_us": 89136526
+            },
+            {
+              "topic": "estimator_aid_src_ev_pos",
+              "instance": 0,
+              "log_records": 3329,
+              "new_samples": 3329,
+              "fused_samples": 3327,
+              "fault_middle_new_samples": 59,
+              "fault_middle_fused_samples": 59,
+              "max_test_ratio": 0.015142514370381832,
+              "last_sample_us": 89216531
+            },
+            {
+              "topic": "estimator_aid_src_optical_flow",
+              "instance": 0,
+              "log_records": 3380,
+              "new_samples": 3380,
+              "fused_samples": 1846,
+              "fault_middle_new_samples": 59,
+              "fault_middle_fused_samples": 59,
+              "max_test_ratio": 1.974506139755249,
+              "last_sample_us": 89224000
+            }
+          ],
+          "position_resets": [
+            {
+              "instance": 0,
+              "counters": {
+                "xy_reset_counter": 2,
+                "z_reset_counter": 2,
+                "vxy_reset_counter": 1,
+                "vz_reset_counter": 0
+              },
+              "after_motion": {
+                "xy_reset_counter": 0,
+                "z_reset_counter": 0,
+                "vxy_reset_counter": 0,
+                "vz_reset_counter": 0
+              }
+            }
+          ],
+          "moving_truth_errors": {
+            "available": true,
+            "start_us": 35232000.0,
+            "end_us": 72404000.0,
+            "samples": 4647,
+            "coordinate_frame": "NED simulator origin; unaligned absolute state differences",
+            "xy_m": {
+              "n": 4647,
+              "rms": 0.04553290625516458,
+              "p95": 0.08021498779536193,
+              "maximum": 0.10223887977895355
+            },
+            "z_m": {
+              "n": 4647,
+              "rms": 0.33489218204341487,
+              "p95": 0.412880859375,
+              "maximum": 0.47560424804687496
+            },
+            "vxy_m_s": {
+              "n": 4647,
+              "rms": 0.11825035275718304,
+              "p95": 0.20702939667172382,
+              "maximum": 0.28436582860251314
+            },
+            "vz_m_s": {
+              "n": 4647,
+              "rms": 0.09092474077041492,
+              "p95": 0.1589812532812357,
+              "maximum": 0.27125052362680435
+            },
+            "z_signed_mean_m": -0.32968244722947937,
+            "z_change_error_m": {
+              "n": 4647,
+              "rms": 0.07917619192460461,
+              "p95": 0.1535552978515625,
+              "maximum": 0.17201538085937496
+            },
+            "z_initial_error_m": -0.382659912109375,
+            "z_change_scope": "error relative to first retained moving sample; constant origin offset removed, no independent height calibration",
+            "timestamp_contract": "FC output timestamp_sample vs interpolated simulator timestamp; both brackets <=40 ms"
+          }
+        }
+      ],
+      "scope": "Synthetic SIH observations and truth; not physical or raw-scan accuracy",
+      "criteria": {
+        "exercised": true,
+        "clear_mission_completed": null,
+        "wall_clearance": null,
+        "aux_fusion_observed": true,
+        "stale_zero_within_limit": null
+      }
+    }
+  ]
+}

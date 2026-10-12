@@ -1,0 +1,10 @@
+{
+  "MPC_XY_P": 2.0,
+  "MPC_XY_VEL_P_ACC": 3.0,
+  "MPC_XY_VEL_MAX": 0.25,
+  "EKF2_TAU_POS": 0.1,
+  "EKF2_EVP_NOISE": 0.03,
+  "EKF2_RNG_NOISE": 0.03,
+  "EKF2_RNG_SFE": 0.0,
+  "EKF2_ACC_NOISE": 1.0
+}

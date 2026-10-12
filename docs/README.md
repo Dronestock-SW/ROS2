@@ -3,6 +3,19 @@
 작업에 필요한 기준·절차·확인 기록을 찾는 색인이다.
 작업을 시작하거나 다른 채팅에 인계할 때 읽는다.
 
+- [회전 LiDAR·deskew·가림·호버 검증](report/spinning_lidar_20261012.md)
+- [광선 시각·IMU·부분 가림 설계](architecture/spinning_lidar_timing_20261012.md)
+- [회전 LiDAR 격리 재현](runbooks/spinning_lidar_reproduce_20261012.md)
+
+- [UWB·LiDAR 구현·RAW·SITL 기록](report/uwb_lidar_integration_20261012.md)
+- [호버 실패 원인·후속 격리 검증](report/uwb_lidar_hover_followup_20261012.md)
+- [PX4 입력·LiDAR 이동 추정 설계](architecture/px4_lidar_localization_design_20261012.md)
+- [10초 호버·스캔 정합 폐루프 검증](report/uwb_lidar_hover10_20261012.md)
+- [UWB·LiDAR 관측 계약](architecture/uwb_lidar_observation_contract.md)
+- [격리 실험 재현 절차](runbooks/uwb_lidar_reproduce_20261012.md)
+- [실물 지상 검증 절차](runbooks/uwb_lidar_ground_validation.md)
+- [10초 호버 격리 재현 절차](runbooks/uwb_lidar_hover10_reproduce_20261012.md)
+
 ## 먼저 찾을 위치
 
 단계별 수정 위치는 저장소 안내에서 찾는다.
@@ -213,3 +226,5 @@ Windows에서는 심볼릭 링크를 지원하는 WSL 체크아웃을 쓴다.
 - [UWB·ToF·IMU 높인 상태 정지 실험](report/uwb_raised_20261010.md)
 
 - [B_TF 이력 격리와 오차 판정 검사](report/btf_history_audit_20261010.md)
+- [UWB·수평 LiDAR 관측 계약](architecture/uwb_lidar_observation_contract.md)
+- [UWB·수평 LiDAR 지상 검증 절차](runbooks/uwb_lidar_ground_validation.md)

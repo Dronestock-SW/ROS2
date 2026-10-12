@@ -1,0 +1,12 @@
+{
+  "source_directory": "C:\\Users\\A\\Documents\\Codex\\2026-10-12\\dronestock-sw-ros2-feature-uwb-agents\\work\\ROS2",
+  "source_head": "42421fd30405bbf80eaf24665ba2d2668939ea3b",
+  "scope": "Read-only snapshot of existing parallel user work; source not modified",
+  "files": {
+    "src/drone_uwb/drone_uwb/processing/experiments/lidar_scanmatch.py": "2ed30b5013f234befd564d7b562b4c4e212935aee01f68edeacf0714413fedbf",
+    "src/drone_uwb/drone_uwb/processing/experiments/lidar_replay.py": "c6123a3dc87c968e837e114bcaf7d2e9c01db1012c3013bb3e2f15fb9a87a941",
+    "src/drone_uwb/drone_uwb/processing/experiments/lidar_synthetic.py": "1b7db2de8553bec34523f6971cc646c8151adacf9c12f9b9dfd7f093e97c2257",
+    "src/drone_uwb/test/experiments/test_lidar_scanmatch.py": "254f3cb52c05e21147bd89059876c7ad58577529149a5f890acac9c43e6758da",
+    "src/drone_uwb/test/experiments/test_lidar_replay.py": "c0bade6c82f7d5a0a490ef02c6ae8b8d8200978043e1aaa646427dbe654dd542"
+  }
+}

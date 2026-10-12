@@ -1,0 +1,47 @@
+diff --git a/src/modules/mavlink/streams/HIL_STATE_QUATERNION.hpp b/src/modules/mavlink/streams/HIL_STATE_QUATERNION.hpp
+index b2dcb5c426..9ff483a9fb 100644
+--- a/src/modules/mavlink/streams/HIL_STATE_QUATERNION.hpp
++++ b/src/modules/mavlink/streams/HIL_STATE_QUATERNION.hpp
+@@ -48,7 +48,7 @@ public:
+ 	unsigned get_size() override
+ 	{
+ 		if (_att_sub.advertised() || _gpos_sub.advertised()) {
+-			return MAVLINK_MSG_ID_HIL_STATE_QUATERNION_LEN + MAVLINK_NUM_NON_PAYLOAD_BYTES;
++			return MAVLINK_MSG_ID_HIL_STATE_QUATERNION_LEN + MAVLINK_MSG_ID_ODOMETRY_LEN + 2 * MAVLINK_NUM_NON_PAYLOAD_BYTES;
+ 		}
+ 
+ 		return 0;
+@@ -78,6 +78,7 @@ private:
+ 			_angular_velocity_sub.copy(&angular_velocity);
+ 
+ 			mavlink_hil_state_quaternion_t msg{};
++			msg.time_usec = lpos.timestamp;
+ 
+ 			// vehicle_attitude -> hil_state_quaternion
+ 			msg.attitude_quaternion[0] = att.q[0];
+@@ -104,6 +105,25 @@ private:
+ 
+ 			mavlink_msg_hil_state_quaternion_send_struct(_mavlink->get_channel(), &msg);
+ 
++			// Private spinning-LiDAR sensor backend: truth is never an estimator input.
++			// Preserve local float precision and the SIH sample clock. The old
++			// HIL latitude/longitude path remains available for baseline UWB.
++			mavlink_odometry_t simulation{};
++			simulation.time_usec = lpos.timestamp;
++			simulation.frame_id = MAV_FRAME_LOCAL_NED;
++			simulation.child_frame_id = MAV_FRAME_LOCAL_NED;
++			simulation.estimator_type = MAV_ESTIMATOR_TYPE_NAIVE;
++			simulation.quality = 100;
++			simulation.x = lpos.x;
++			simulation.y = lpos.y;
++			simulation.z = lpos.z;
++			simulation.vx = lpos.vx;
++			simulation.vy = lpos.vy;
++			simulation.vz = lpos.vz;
++			for (unsigned i = 0; i < 4; ++i) { simulation.q[i] = att.q[i]; }
++			mavlink_msg_odometry_send_struct(_mavlink->get_channel(), &simulation);
++
++
+ 			return true;
+ 		}
+ 

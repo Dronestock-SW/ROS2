@@ -80,6 +80,23 @@ class LocalXYMission(MissionChain):
         self.enter('RETURNING' if self.returning else 'MOVING', 'local_xy_target', now)
         self.targets_sent += 1
 
+    def advance_horizontal_target(self, s, dt, ros_ns):
+        """Default position ramp; experiments can supply an explicit XY contract."""
+        distance = math.dist(self.setpoint_xy, self.goal)
+        step = min(distance, self.settings.speed_m_s*dt)
+        if distance > 0:
+            self.setpoint_xy = tuple(a+(b-a)*step/distance
+                                     for a,b in zip(self.setpoint_xy,self.goal))
+        return distance
+
+    def horizontal_target_ready(self, command_distance):
+        """The position ramp must reach the goal before evaluating arrival."""
+        return command_distance <= .01
+
+    def horizontal_hover_ready(self, s, now, ros_ns):
+        """Extensions can require clear horizontal motion before counting dwell."""
+        return True
+
     def begin_return(self, s, now, ros_ns, reason='route_complete_return'):
         self.returning = True
         # Saved trial routes already include the homeward legs. Do not fly
@@ -223,12 +240,10 @@ class LocalXYMission(MissionChain):
             self.abort('airborne_state_lost', s, now)
             return self.actions
         if self.phase in ('MOVING','RETURNING'):
-            distance = math.dist(self.setpoint_xy,self.goal)
-            step = min(distance,self.settings.speed_m_s*dt)
-            if distance > 0:self.setpoint_xy = tuple(a+(b-a)*step/distance for a,b in zip(self.setpoint_xy,self.goal))
+            distance = self.advance_horizontal_target(s, dt, ros_ns)
             if math.dist(s.xy,self.setpoint_xy) > .5:
                 self.abort('local_path_tracking_error',s,now)
-            elif (distance <= .01 and math.dist(s.xy,self.goal) <= .15
+            elif (self.horizontal_target_ready(distance) and math.dist(s.xy,self.goal) <= .15
                   and len(s.uwb_xy)==2 and math.dist(s.uwb_xy,self.goal)<=.25
                   and math.hypot(*s.velocity_xy)<=.1):
                 if self.stable_since is None:self.stable_since = now
@@ -248,7 +263,7 @@ class LocalXYMission(MissionChain):
                 self.abort('local_leg_timeout',s,now)
         elif self.phase == 'DWELL':
             # Count continuous stable hover, never redefine home after drift.
-            stable = (math.dist(s.xy,self.goal) <= .15 and len(s.uwb_xy)==2
+            stable = (self.horizontal_hover_ready(s,now,ros_ns) and math.dist(s.xy,self.goal) <= .15 and len(s.uwb_xy)==2
                       and math.dist(s.uwb_xy,self.goal) <= .25
                       and math.hypot(*s.velocity_xy) <= .1
                       and abs(s.altitude_enu_m-self.height_target) <= .15

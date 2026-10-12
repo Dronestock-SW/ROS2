@@ -1,0 +1,1851 @@
+[
+  {
+    "run": "/home/dronestock/uwb_sim/uwb-lidar-integration-20261012/spinning-dev-10-p4-lpf",
+    "hover": {
+      "run": "/home/dronestock/uwb_sim/uwb-lidar-integration-20261012/spinning-dev-10-p4-lpf",
+      "scenario": "clear",
+      "seed": 407,
+      "status": {
+        "errors": [],
+        "physical_writes": 0,
+        "armed_seen": true,
+        "airborne_seen": true,
+        "offboard_seen": true,
+        "moving_seen": true,
+        "feedback_count": 2680,
+        "ev_samples": 8483,
+        "flow_samples": 4351,
+        "flow_invalid_samples": 1607,
+        "range_samples": 2744,
+        "lidar_samples": 522,
+        "final_phase": "FAILED",
+        "final_reason": "hover_stability_timeout",
+        "elapsed_s": 87.84,
+        "required_parameters": {
+          "COM_RC_OVERRIDE": 3,
+          "EKF2_ACC_NOISE": 1.0,
+          "EKF2_ASP_DELAY": 0.0,
+          "EKF2_DELAY_MAX": 200.0,
+          "EKF2_EVP_NOISE": 0.029999999329447746,
+          "EKF2_GYR_NOISE": 0.10000000149011612,
+          "EKF2_LID2_AGE": 200.0,
+          "EKF2_MAG_TYPE": 0,
+          "EKF2_RNG_NOISE": 0.029999999329447746,
+          "EKF2_RNG_SFE": 0.0,
+          "EKF2_TAU_POS": 0.10000000149011612,
+          "EKF2_TAU_VEL": 0.029999999329447746,
+          "MIS_TAKEOFF_ALT": 1.7000000476837158,
+          "MPC_VEL_LP": 3.0,
+          "MPC_XY_P": 4.0,
+          "MPC_XY_VEL_D_ACC": 0.0,
+          "MPC_XY_VEL_MAX": 0.25,
+          "MPC_XY_VEL_P_ACC": 3.0
+        },
+        "min_wall_surface_clearance_m": 1.7010813935094744,
+        "max_estimated_horizontal_speed_m_s": 0.402527241218221,
+        "scan_fault_to_zero_command_s": null,
+        "ulog_files": [
+          "rootfs/log/2026-10-12/09_50_31.ulg"
+        ],
+        "binary_unchanged": true
+      },
+      "manifest": {
+        "schema": 1,
+        "firmware_commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+        "binary_sha256": "36656b12094c32b84f698a63ca72d7d1cbd2804b3ec8311d3f65b53317376fa9",
+        "board_sha256": "361d844d0eb14260052ee5bb23f8f60f6ca3a6780b666b406d301ee3ef8a2833",
+        "script_sha256": "d0c586c68eda18e9fc6673151d7cf10eae3283be6c39ed161e6670e7f606f989",
+        "settings": {
+          "command_frame": "local_xy",
+          "execution_profile": "anchor_trial",
+          "bridge_topic": "/uwb/bridge_status",
+          "bridge_host_boot_id": "",
+          "execute": true,
+          "full_mission": true,
+          "takeoff_settle_s": 2.0,
+          "observation_recovery_s": 3.0,
+          "observation_settle_s": 0.5,
+          "scan_timeout_s": 20.0,
+          "scan_speed_m_s": 0.05,
+          "layout_confirmed": true,
+          "alignment_confirmed": false,
+          "fusion_confirmed": false,
+          "timing_confirmed": false,
+          "sensor_mount_confirmed": true,
+          "takeoff_settings_confirmed": true,
+          "heading_control_confirmed": false,
+          "expected_ekf2_mag_type": 0,
+          "expected_mis_takeoff_alt_m": 1.7,
+          "enu_yaw_deg": 0.0,
+          "map_y_axis_sign": 1,
+          "enu_offset_x_m": -2.0,
+          "enu_offset_y_m": -2.0,
+          "expected_ev_delay_ms": 0.0,
+          "expected_ev_pos_x_m": 0.0,
+          "expected_ev_pos_y_m": 0.0,
+          "expected_ev_pos_z_m": 0.0,
+          "bounds_xy_m": [
+            0.3,
+            4.7,
+            0.3,
+            4.7
+          ],
+          "max_leg_m": 1.0,
+          "speed_m_s": 0.25,
+          "web_timeout_s": 2.0,
+          "state_timeout_s": 2.5,
+          "pose_timeout_s": 0.2,
+          "command_timeout_s": 3.0,
+          "takeoff_timeout_s": 35.0,
+          "leg_timeout_s": 25.0,
+          "landing_timeout_s": 30.0,
+          "request_ttl_s": 30.0,
+          "drone_id": "5",
+          "layout_id": "warehouse-rectangle-6p3x4p6-z2p2-20261004"
+        },
+        "guard": {
+          "radius_m": 0.2,
+          "clearance_m": 0.5,
+          "brake_accel_m_s2": 0.5,
+          "command_latency_s": 0.2,
+          "max_age_s": 0.25,
+          "max_speed_m_s": 0.25,
+          "range_error_m": 0.015,
+          "pose_error_m": 0.04,
+          "obstacle_speed_bound_m_s": 0.0,
+          "velocity_error_m_s": 0.35,
+          "bins": 72
+        },
+        "scenario": "clear",
+        "seed": 407,
+        "baseline": false,
+        "instance": 55,
+        "speed_factor": 1.0,
+        "dwell_control": "position",
+        "fusion_horizon_ms": 200.0,
+        "zero_unused_airspeed_delay": true,
+        "velocity_output_tau_s": 0.03,
+        "sitl_parameters": {
+          "MPC_XY_P": 4.0,
+          "MPC_XY_VEL_P_ACC": 3.0,
+          "MPC_XY_VEL_MAX": 0.25,
+          "EKF2_TAU_POS": 0.1,
+          "EKF2_EVP_NOISE": 0.03,
+          "EKF2_RNG_NOISE": 0.03,
+          "EKF2_RNG_SFE": 0.0,
+          "EKF2_ACC_NOISE": 1.0,
+          "EKF2_GYR_NOISE": 0.1,
+          "EKF2_LID2_AGE": 200,
+          "MPC_XY_VEL_D_ACC": 0.0,
+          "MPC_VEL_LP": 3.0
+        },
+        "hover_duration_s": 10.0,
+        "lidar_source": "spinning",
+        "deskew_enabled": true,
+        "spatial_support_enabled": true,
+        "lidar_velocity_intervals": 1,
+        "simulated_lidar": {
+          "beams": 430,
+          "range_noise_m": 0.01,
+          "scan_bias_noise_m": 0.003,
+          "origin_quantization_bound_m": 0.0,
+          "zero_imu_lever_arm": true,
+          "instantaneous_scan": false,
+          "sequential_beams": true,
+          "first_ray_header": true,
+          "beam_time_increment_s": 0.00023255813953488373,
+          "lidar_clock_offset_s": 0.037,
+          "lidar_clock_drift_ppm": 35.0
+        },
+        "scan_algorithm_sha256": "b626a0f1811b162b5f4f4bb1ad6104b997e4eb37acfa156a82d1359d59792e3f",
+        "scan_matcher_sha256": "2b4cf8085e6aa2b2bafe200990145f8299caf638669d6a4d7b1c81505feb6b64",
+        "native_position_gain_bound_s_inv": 4.0,
+        "source_sha256": {
+          "guarded_local_xy.py": "7e6e649edcd267089828ec58538fc74a19d0b6afcf4503b0ecfc67b261ba2304",
+          "local_xy.py": "a303f751dc876949d92121af925030792b796b16085b963241204451d631848f",
+          "horizontal_obstacles.py": "8e245e7cb5369dc969f05aefda24008edb04896e808b5d4439140e02d887de77",
+          "local_command.py": "3b4b368f62701d3f49cf6d3ef9f013581f173773ac99503595f9f5a0eea95474"
+        },
+        "scope": "closed-loop mission command test with synthetic UWB and virtual horizontal obstacles",
+        "lidar_aiding": true,
+        "lidar_transmitted": true,
+        "raw_lidar_used": false,
+        "physical_writes": 0,
+        "ros_used": false,
+        "patched_firmware": {
+          "kind": "lidar2d_experiment",
+          "base_commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "binary_sha256": "36656b12094c32b84f698a63ca72d7d1cbd2804b3ec8311d3f65b53317376fa9",
+          "patch_sha256": "e085dfb2853f9269bab3b78d222fa121d2ba37784689b5539c1c95a32e88e45e",
+          "board_sha256": "361d844d0eb14260052ee5bb23f8f60f6ca3a6780b666b406d301ee3ef8a2833",
+          "physical_deployment": false,
+          "auxiliary_velocity_requires_other_horizontal_aiding": true,
+          "simulation_truth_stream": "ODOMETRY estimator_type=NAIVE, LOCAL_NED, sample timestamp, float coordinates",
+          "simulator_dynamics_or_noise_changed": false,
+          "truth_for_sensor_backend_and_evaluation_only": true,
+          "highres_imu_stamp": "vehicle_imu.timestamp_sample; upstream bias-corrected gyro"
+        },
+        "lidar_observation": "10 Hz sequential noisy rays -> aligned capture-time IMU deskew -> spatial/temporal robust matcher -> interval midpoint NE velocity",
+        "random_seed_scope": "seed applies to synthetic UWB; seed+10000 independently to synthetic LiDAR. SIH sensor RNG is not overridden.",
+        "synthetic_optical_flow": true,
+        "obstacle_transform": "Synthetic ranges use truth; placement uses same-time FC estimated XY. No truth position is supplied to the guard.",
+        "run8_core_alignment": {
+          "EKF2_MAG_TYPE": 0,
+          "EKF2_HGT_REF": 0,
+          "EKF2_EV_CTRL": 1,
+          "EKF2_EV_DELAY": 0,
+          "EKF2_GPS_CTRL": 0,
+          "MIS_TAKEOFF_ALT": 1.7,
+          "missing_physical_modalities": [],
+          "note": "Not a full run8 reproduction. Synthetic sensor mounting is zero."
+        },
+        "time_contract": "EV sampled per new HIL truth message; latest PX4 local-position clock; timestamp uncertainty <= 40 ms required",
+        "network_namespace": "net:[4026532226]",
+        "predeclared": {
+          "min_wall_surface_clearance_m": 0.5,
+          "body_radius_m": 0.2,
+          "stale_scan_zero_command_within_s": 0.3,
+          "require_actual_arm": true,
+          "require_airborne": true,
+          "require_offboard": true,
+          "require_feedback": true,
+          "note": "braking criteria apply after the mission reaches MOVING; no 3D collision guarantee"
+        }
+      },
+      "parameters": [
+        {
+          "EKF2_GPS_CTRL": 0,
+          "EKF2_EV_CTRL": 1,
+          "EKF2_EV_NOISE_MD": 0,
+          "EKF2_EVP_NOISE": 0.029999999329447746,
+          "EKF2_EV_DELAY": 0.0,
+          "EKF2_EV_POS_X": 0.0,
+          "EKF2_EV_POS_Y": 0.0,
+          "EKF2_EV_POS_Z": 0.0,
+          "EKF2_OF_CTRL": 1,
+          "EKF2_OF_DELAY": 20.0,
+          "EKF2_OF_GYR_SRC": 0,
+          "EKF2_RNG_CTRL": 1,
+          "EKF2_RNG_NOISE": 0.029999999329447746,
+          "EKF2_RNG_DELAY": 5.0,
+          "EKF2_HGT_REF": 0,
+          "EKF2_BARO_CTRL": 1,
+          "EKF2_MAG_TYPE": 0,
+          "EKF2_DELAY_MAX": 200.0,
+          "EKF2_TAU_POS": 0.10000000149011612,
+          "EKF2_TAU_VEL": 0.029999999329447746,
+          "EKF2_LID2_EN": 1,
+          "EKF2_LID2_AGE": 200.0,
+          "EKF2_AVEL_DELAY": 0.0,
+          "MPC_XY_P": 4.0,
+          "MPC_XY_VEL_P_ACC": 3.0,
+          "MPC_XY_VEL_I_ACC": 0.4000000059604645,
+          "MPC_XY_VEL_D_ACC": 0.0,
+          "MPC_VEL_LP": 3.0,
+          "MPC_Z_P": 1.0,
+          "MPC_Z_VEL_P_ACC": 4.0,
+          "COM_ARM_WO_GPS": 1,
+          "COM_OF_LOSS_T": 1.0,
+          "COM_OBL_RC_ACT": 0,
+          "COM_RC_OVERRIDE": 3,
+          "MIS_TAKEOFF_ALT": 1.7000000476837158,
+          "EKF2_PREDICT_US": 10000,
+          "IMU_INTEG_RATE": 250,
+          "EKF2_ACC_NOISE": 1.0,
+          "EKF2_GYR_NOISE": 0.10000000149011612,
+          "EKF2_RNG_SFE": 0.0,
+          "MPC_XY_VEL_MAX": 0.25
+        }
+      ],
+      "raw_hashes": {
+        "mission.jsonl": "67cdf83ec2924336230bc7aa46d6d89600ae9a1b6a28d22ab09acd8d5f6a33d7",
+        "telemetry.jsonl": "1a2c52ca46eb56ed824560930fefa8b1a4041f55c1d7c12359f9000ce7adeb5a",
+        "manifest.json": "2dbd869492cd0a2e4793647bf5bd1d87455aee87ca0c9fb38b181bef11b4fab2",
+        "run_status.json": "fde55419ceb81925d3720ba8d20cb393b90d5255fd5ac2c6d1e3c90d70823214"
+      },
+      "ulog_hashes": {
+        "rootfs/log/2026-10-12/09_50_31.ulg": "d76a0c3a7efcc51764055f7f52d6c08a15574cac25cb85030de4eaf927e4d87f"
+      },
+      "dwell_samples": 584,
+      "mission_10s_complete": false,
+      "precision_hover_pass": false,
+      "whole_dwell": {
+        "samples": 584,
+        "duration_s": 34.983999999999995,
+        "max_gap_s": 0.06400000000000716,
+        "target_xy_m": [
+          2.9,
+          2.0
+        ],
+        "height_target_m": 1.69810791015625,
+        "fc_goal_xy_m": {
+          "n": 584,
+          "rms": 0.06650406924891694,
+          "p95": 0.11010452057551277,
+          "maximum": 0.21287100187752364
+        },
+        "truth_goal_xy_m": {
+          "n": 584,
+          "rms": 0.06665778169306268,
+          "p95": 0.11042360239280158,
+          "maximum": 0.19891860649052573
+        },
+        "fc_speed_m_s": {
+          "n": 584,
+          "rms": 0.20534999449574726,
+          "p95": 0.31707052544175957,
+          "maximum": 0.402527241218221
+        },
+        "fc_height_error_m": {
+          "n": 584,
+          "rms": 0.03255066105585594,
+          "p95": 0.0610763549804688,
+          "maximum": 0.07521362304687496
+        },
+        "fc_vertical_speed_m_s": {
+          "n": 584,
+          "rms": 0.05041514157330378,
+          "p95": 0.09870588928461076,
+          "maximum": 0.19282078742980957
+        },
+        "uwb_goal_xy_m": {
+          "n": 584,
+          "rms": 0.06879007490051006,
+          "p95": 0.1214395578037322,
+          "maximum": 0.2096986753966685
+        },
+        "complete": false,
+        "precision_pass": false,
+        "reasons": [
+          "xy_limit_exceeded",
+          "speed_limit_exceeded",
+          "vz_limit_exceeded",
+          "fc_goal_xy_rms_exceeded",
+          "truth_goal_xy_rms_exceeded"
+        ],
+        "criterion": {
+          "duration_s": 10.0,
+          "xy_rms_m": 0.03,
+          "scope": "fixed target; no mean subtraction; both FC and simulator truth"
+        }
+      },
+      "first_10s_from_arrival": {
+        "samples": 168,
+        "duration_s": 10.024000000000001,
+        "max_gap_s": 0.06400000000000006,
+        "target_xy_m": [
+          2.9,
+          2.0
+        ],
+        "height_target_m": 1.69810791015625,
+        "fc_goal_xy_m": {
+          "n": 168,
+          "rms": 0.05449156563098402,
+          "p95": 0.096110589025921,
+          "maximum": 0.11015023503562968
+        },
+        "truth_goal_xy_m": {
+          "n": 168,
+          "rms": 0.05494643229727551,
+          "p95": 0.09759248280736284,
+          "maximum": 0.11042360239280158
+        },
+        "fc_speed_m_s": {
+          "n": 168,
+          "rms": 0.1920253949325389,
+          "p95": 0.31278317015640256,
+          "maximum": 0.3488448451004546
+        },
+        "fc_height_error_m": {
+          "n": 168,
+          "rms": 0.03073623583515244,
+          "p95": 0.05741271972656255,
+          "maximum": 0.07521362304687496
+        },
+        "fc_vertical_speed_m_s": {
+          "n": 168,
+          "rms": 0.05655163830327241,
+          "p95": 0.1136130191385746,
+          "maximum": 0.19282078742980957
+        },
+        "uwb_goal_xy_m": {
+          "n": 168,
+          "rms": 0.057134705828709526,
+          "p95": 0.09984338809834283,
+          "maximum": 0.12077869857935905
+        },
+        "complete": false,
+        "precision_pass": false,
+        "reasons": [
+          "speed_limit_exceeded",
+          "vz_limit_exceeded",
+          "fc_goal_xy_rms_exceeded",
+          "truth_goal_xy_rms_exceeded"
+        ],
+        "criterion": {
+          "duration_s": 10.0,
+          "xy_rms_m": 0.03,
+          "scope": "fixed target; no mean subtraction; both FC and simulator truth"
+        }
+      },
+      "first_10s_ulog": [
+        {
+          "fc_goal_xy_m": {
+            "n": 1251,
+            "rms": 0.054474544677161035,
+            "p95": 0.09691758643608032,
+            "maximum": 0.11025798739858661
+          },
+          "fc_speed_m_s": {
+            "n": 1251,
+            "rms": 0.19284476129085187,
+            "p95": 0.31706708669662476,
+            "maximum": 0.36144036054611206
+          },
+          "fc_vertical_speed_m_s": {
+            "n": 1251,
+            "rms": 0.05677417742930213,
+            "p95": 0.11149650439620018,
+            "maximum": 0.19685666263103485
+          },
+          "truth_goal_xy_m": {
+            "n": 500,
+            "rms": 0.0551000178500747,
+            "p95": 0.09557384903501032,
+            "maximum": 0.11627408465833654
+          },
+          "truth_speed_m_s": {
+            "n": 500,
+            "rms": 0.1865905747885328,
+            "p95": 0.30171680748462676,
+            "maximum": 0.3516346514225006
+          },
+          "truth_vertical_speed_m_s": {
+            "n": 500,
+            "rms": 0.06078381552176295,
+            "p95": 0.13305141776800145,
+            "maximum": 0.19134648144245148
+          },
+          "precision_pass": false,
+          "scope": "High-rate native FC/physics samples in the preselected mission window"
+        }
+      ]
+    },
+    "frontend": {
+      "run": "/home/dronestock/uwb_sim/uwb-lidar-integration-20261012/spinning-dev-10-p4-lpf",
+      "scans": 840,
+      "accepted": 522,
+      "reject_reasons": {
+        "floor_ceiling_clearance_unavailable": 261,
+        "new_segment": 1,
+        "missing_measured_floor_range": 56
+      },
+      "scope": "offline SIH interval displacement; no ground truth is passed to scan matcher",
+      "covariance_scope": "explicit simulation model; not physical calibration",
+      "velocity_error_rms_xy_m_s": 0.032036110663435306,
+      "velocity_error_rms_axes_m_s": [
+        0.024333069994849493,
+        0.02083780437247718
+      ],
+      "velocity_error_p95_xy_m_s": 0.054580611688035116,
+      "nominal_95_percent_covariance_coverage": 1.0,
+      "midpoint_age_s": {
+        "min": 0.10000852554127704,
+        "max": 0.10421345308424179
+      },
+      "interval_s": {
+        "min": 0.09991242742285067,
+        "max": 0.10007793893454675
+      }
+    },
+    "active_scans": 437,
+    "active_accepted": 437,
+    "active_reasons": {},
+    "active_withholding_fraction": 0.0,
+    "process_ms": {
+      "n": 437,
+      "minimum": 12.295300999994652,
+      "maximum": 35.14390200007256,
+      "mean": 17.433978123574512,
+      "p95": 20.486860999972123
+    },
+    "clock_uncertainty_ms": {
+      "n": 437,
+      "minimum": 0.5545442444905291,
+      "maximum": 0.7510473750400593,
+      "mean": 0.6556119530712934,
+      "p95": 0.7159482799295347
+    },
+    "imu_gap_ms": {
+      "n": 437,
+      "minimum": 8.000000000002672,
+      "maximum": 12.000000000000455,
+      "mean": 9.583524027462934,
+      "p95": 12.000000000000455
+    },
+    "first_ray_clock_error_ms": {
+      "n": 437,
+      "minimum": -0.09750030811517263,
+      "maximum": 0.10141154518805706,
+      "mean": 0.0011534558364291036,
+      "p95": 0.05976129706795063
+    },
+    "scope": "isolated simulation; capture-time gyro/clock alignment; no physical calibration",
+    "ulog_topics": [
+      "actuator_armed",
+      "actuator_motors",
+      "actuator_outputs",
+      "battery_status",
+      "config_overrides",
+      "control_allocator_status",
+      "cpuload",
+      "distance_sensor",
+      "distance_sensor_mode_change_request",
+      "ekf2_timestamps",
+      "estimator_aid_src_aux_vel",
+      "estimator_aid_src_baro_hgt",
+      "estimator_aid_src_ev_pos",
+      "estimator_aid_src_fake_hgt",
+      "estimator_aid_src_fake_pos",
+      "estimator_aid_src_gravity",
+      "estimator_aid_src_mag",
+      "estimator_aid_src_optical_flow",
+      "estimator_aid_src_rng_hgt",
+      "estimator_baro_bias",
+      "estimator_event_flags",
+      "estimator_innovation_test_ratios",
+      "estimator_innovation_variances",
+      "estimator_innovations",
+      "estimator_optical_flow_vel",
+      "estimator_sensor_bias",
+      "estimator_states",
+      "estimator_status",
+      "estimator_status_flags",
+      "event",
+      "failsafe_flags",
+      "failure_detector_status",
+      "gripper",
+      "home_position",
+      "hover_thrust_estimate",
+      "landing_gear",
+      "lidar_velocity2d",
+      "lidar_velocity2d_status",
+      "manual_control_setpoint",
+      "mission_result",
+      "navigator_status",
+      "offboard_control_mode",
+      "parameter_update",
+      "position_setpoint_triplet",
+      "rate_ctrl_status",
+      "rtl_status",
+      "rtl_time_estimate",
+      "sensor_accel",
+      "sensor_baro",
+      "sensor_combined",
+      "sensor_gps",
+      "sensor_gyro",
+      "sensor_gyro_fft",
+      "sensor_mag",
+      "sensor_optical_flow",
+      "sensor_selection",
+      "sensors_status_imu",
+      "system_power",
+      "takeoff_status",
+      "telemetry_status",
+      "timesync_status",
+      "trajectory_setpoint",
+      "transponder_report",
+      "vehicle_acceleration",
+      "vehicle_air_data",
+      "vehicle_angular_velocity",
+      "vehicle_angular_velocity_groundtruth",
+      "vehicle_attitude",
+      "vehicle_attitude_groundtruth",
+      "vehicle_attitude_setpoint",
+      "vehicle_command",
+      "vehicle_command_ack",
+      "vehicle_constraints",
+      "vehicle_control_mode",
+      "vehicle_global_position_groundtruth",
+      "vehicle_gps_position",
+      "vehicle_imu",
+      "vehicle_imu_status",
+      "vehicle_land_detected",
+      "vehicle_local_position",
+      "vehicle_local_position_groundtruth",
+      "vehicle_local_position_setpoint",
+      "vehicle_magnetometer",
+      "vehicle_optical_flow",
+      "vehicle_rates_setpoint",
+      "vehicle_status",
+      "vehicle_thrust_setpoint",
+      "vehicle_torque_setpoint",
+      "vehicle_visual_odometry"
+    ],
+    "px4_receipt_minus_midpoint_ms": {
+      "n": 437,
+      "minimum": 127.885,
+      "maximum": 148.139,
+      "mean": 132.54885125858124,
+      "p95": 136.12820000000002
+    },
+    "mavlink_time_conversion_shift_ms": {
+      "n": 437,
+      "minimum": -0.00622689702822754,
+      "maximum": 0.1959570635179375,
+      "mean": 0.06962666456392726,
+      "p95": 0.1886986595053486
+    },
+    "admission_reasons": {
+      "2": 437
+    },
+    "auxiliary_fusion": {
+      "reports": 438,
+      "fused": 438
+    },
+    "resets_during_motion": {
+      "xy_reset_counter": 0,
+      "z_reset_counter": 0,
+      "vxy_reset_counter": 0,
+      "vz_reset_counter": 0
+    },
+    "evidence_hashes": {
+      "scan_observations.jsonl": "09af1d756270b20b48f4738b96b0ae6e89a113d150566b57135a65226a83438c",
+      "mission.jsonl": "67cdf83ec2924336230bc7aa46d6d89600ae9a1b6a28d22ab09acd8d5f6a33d7",
+      "telemetry.jsonl": "1a2c52ca46eb56ed824560930fefa8b1a4041f55c1d7c12359f9000ce7adeb5a",
+      "manifest.json": "2dbd869492cd0a2e4793647bf5bd1d87455aee87ca0c9fb38b181bef11b4fab2"
+    }
+  },
+  {
+    "run": "/home/dronestock/uwb_sim/uwb-lidar-integration-20261012/spinning-dev-11-capture",
+    "hover": {
+      "run": "/home/dronestock/uwb_sim/uwb-lidar-integration-20261012/spinning-dev-11-capture",
+      "scenario": "clear",
+      "seed": 408,
+      "status": {
+        "errors": [],
+        "physical_writes": 0,
+        "armed_seen": true,
+        "airborne_seen": true,
+        "offboard_seen": true,
+        "moving_seen": true,
+        "feedback_count": 2703,
+        "ev_samples": 3416,
+        "flow_samples": 4137,
+        "flow_invalid_samples": 1560,
+        "range_samples": 2577,
+        "lidar_samples": 526,
+        "final_phase": "FAILED",
+        "final_reason": "hover_stability_timeout",
+        "elapsed_s": 88.376,
+        "required_parameters": {
+          "COM_RC_OVERRIDE": 3,
+          "EKF2_ACC_NOISE": 1.0,
+          "EKF2_ASP_DELAY": 0.0,
+          "EKF2_DELAY_MAX": 200.0,
+          "EKF2_EVP_NOISE": 0.029999999329447746,
+          "EKF2_GYR_NOISE": 0.10000000149011612,
+          "EKF2_LID2_AGE": 200.0,
+          "EKF2_MAG_TYPE": 0,
+          "EKF2_OF_DELAY": 0.0,
+          "EKF2_RNG_NOISE": 0.029999999329447746,
+          "EKF2_RNG_SFE": 0.0,
+          "EKF2_TAU_POS": 0.10000000149011612,
+          "EKF2_TAU_VEL": 0.05000000074505806,
+          "MIS_TAKEOFF_ALT": 1.7000000476837158,
+          "MPC_XY_P": 2.0,
+          "MPC_XY_VEL_MAX": 0.25,
+          "MPC_XY_VEL_P_ACC": 3.0
+        },
+        "min_wall_surface_clearance_m": 1.7612961117081383,
+        "max_estimated_horizontal_speed_m_s": 0.31550496680859763,
+        "scan_fault_to_zero_command_s": null,
+        "ulog_files": [
+          "rootfs/log/2026-10-12/09_54_58.ulg"
+        ],
+        "binary_unchanged": true
+      },
+      "manifest": {
+        "schema": 1,
+        "firmware_commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+        "binary_sha256": "36656b12094c32b84f698a63ca72d7d1cbd2804b3ec8311d3f65b53317376fa9",
+        "board_sha256": "361d844d0eb14260052ee5bb23f8f60f6ca3a6780b666b406d301ee3ef8a2833",
+        "script_sha256": "2f137d2406f6a26bea0e6dc425de3eb66c5f5b39eb8478fec9e144ed31b5d589",
+        "settings": {
+          "command_frame": "local_xy",
+          "execution_profile": "anchor_trial",
+          "bridge_topic": "/uwb/bridge_status",
+          "bridge_host_boot_id": "",
+          "execute": true,
+          "full_mission": true,
+          "takeoff_settle_s": 2.0,
+          "observation_recovery_s": 3.0,
+          "observation_settle_s": 0.5,
+          "scan_timeout_s": 20.0,
+          "scan_speed_m_s": 0.05,
+          "layout_confirmed": true,
+          "alignment_confirmed": false,
+          "fusion_confirmed": false,
+          "timing_confirmed": false,
+          "sensor_mount_confirmed": true,
+          "takeoff_settings_confirmed": true,
+          "heading_control_confirmed": false,
+          "expected_ekf2_mag_type": 0,
+          "expected_mis_takeoff_alt_m": 1.7,
+          "enu_yaw_deg": 0.0,
+          "map_y_axis_sign": 1,
+          "enu_offset_x_m": -2.0,
+          "enu_offset_y_m": -2.0,
+          "expected_ev_delay_ms": 0.0,
+          "expected_ev_pos_x_m": 0.0,
+          "expected_ev_pos_y_m": 0.0,
+          "expected_ev_pos_z_m": 0.0,
+          "bounds_xy_m": [
+            0.3,
+            4.7,
+            0.3,
+            4.7
+          ],
+          "max_leg_m": 1.0,
+          "speed_m_s": 0.25,
+          "web_timeout_s": 2.0,
+          "state_timeout_s": 2.5,
+          "pose_timeout_s": 0.2,
+          "command_timeout_s": 3.0,
+          "takeoff_timeout_s": 35.0,
+          "leg_timeout_s": 25.0,
+          "landing_timeout_s": 30.0,
+          "request_ttl_s": 30.0,
+          "drone_id": "5",
+          "layout_id": "warehouse-rectangle-6p3x4p6-z2p2-20261004"
+        },
+        "guard": {
+          "radius_m": 0.2,
+          "clearance_m": 0.5,
+          "brake_accel_m_s2": 0.5,
+          "command_latency_s": 0.2,
+          "max_age_s": 0.25,
+          "max_speed_m_s": 0.25,
+          "range_error_m": 0.015,
+          "pose_error_m": 0.04,
+          "obstacle_speed_bound_m_s": 0.0,
+          "velocity_error_m_s": 0.35,
+          "bins": 72
+        },
+        "scenario": "clear",
+        "seed": 408,
+        "baseline": false,
+        "instance": 54,
+        "speed_factor": 1.0,
+        "dwell_control": "position",
+        "fusion_horizon_ms": 200.0,
+        "zero_unused_airspeed_delay": true,
+        "velocity_output_tau_s": 0.05,
+        "sitl_parameters": {
+          "MPC_XY_P": 2.0,
+          "MPC_XY_VEL_P_ACC": 3.0,
+          "MPC_XY_VEL_MAX": 0.25,
+          "EKF2_TAU_POS": 0.1,
+          "EKF2_EVP_NOISE": 0.03,
+          "EKF2_RNG_NOISE": 0.03,
+          "EKF2_RNG_SFE": 0.0,
+          "EKF2_ACC_NOISE": 1.0,
+          "EKF2_GYR_NOISE": 0.1,
+          "EKF2_LID2_AGE": 200,
+          "EKF2_OF_DELAY": 0.0
+        },
+        "hover_duration_s": 10.0,
+        "lidar_source": "spinning",
+        "deskew_enabled": true,
+        "spatial_support_enabled": true,
+        "sensor_capture_time": true,
+        "lidar_velocity_intervals": 1,
+        "simulated_lidar": {
+          "beams": 430,
+          "range_noise_m": 0.01,
+          "scan_bias_noise_m": 0.003,
+          "origin_quantization_bound_m": 0.0,
+          "zero_imu_lever_arm": true,
+          "instantaneous_scan": false,
+          "sequential_beams": true,
+          "first_ray_header": true,
+          "beam_time_increment_s": 0.00023255813953488373,
+          "lidar_clock_offset_s": 0.037,
+          "lidar_clock_drift_ppm": 35.0
+        },
+        "scan_algorithm_sha256": "b626a0f1811b162b5f4f4bb1ad6104b997e4eb37acfa156a82d1359d59792e3f",
+        "scan_matcher_sha256": "2b4cf8085e6aa2b2bafe200990145f8299caf638669d6a4d7b1c81505feb6b64",
+        "native_position_gain_bound_s_inv": 2.0,
+        "source_sha256": {
+          "guarded_local_xy.py": "7e6e649edcd267089828ec58538fc74a19d0b6afcf4503b0ecfc67b261ba2304",
+          "local_xy.py": "a303f751dc876949d92121af925030792b796b16085b963241204451d631848f",
+          "horizontal_obstacles.py": "8e245e7cb5369dc969f05aefda24008edb04896e808b5d4439140e02d887de77",
+          "local_command.py": "3b4b368f62701d3f49cf6d3ef9f013581f173773ac99503595f9f5a0eea95474"
+        },
+        "scope": "closed-loop mission command test with synthetic UWB and virtual horizontal obstacles",
+        "lidar_aiding": true,
+        "lidar_transmitted": true,
+        "raw_lidar_used": false,
+        "physical_writes": 0,
+        "ros_used": false,
+        "patched_firmware": {
+          "kind": "lidar2d_experiment",
+          "base_commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "binary_sha256": "36656b12094c32b84f698a63ca72d7d1cbd2804b3ec8311d3f65b53317376fa9",
+          "patch_sha256": "e085dfb2853f9269bab3b78d222fa121d2ba37784689b5539c1c95a32e88e45e",
+          "board_sha256": "361d844d0eb14260052ee5bb23f8f60f6ca3a6780b666b406d301ee3ef8a2833",
+          "physical_deployment": false,
+          "auxiliary_velocity_requires_other_horizontal_aiding": true,
+          "simulation_truth_stream": "ODOMETRY estimator_type=NAIVE, LOCAL_NED, sample timestamp, float coordinates",
+          "simulator_dynamics_or_noise_changed": false,
+          "truth_for_sensor_backend_and_evaluation_only": true,
+          "highres_imu_stamp": "vehicle_imu.timestamp_sample; upstream bias-corrected gyro"
+        },
+        "lidar_observation": "10 Hz sequential noisy rays -> aligned capture-time IMU deskew -> spatial/temporal robust matcher -> interval midpoint NE velocity",
+        "random_seed_scope": "seed applies to synthetic UWB; seed+10000 independently to synthetic LiDAR. SIH sensor RNG is not overridden.",
+        "synthetic_optical_flow": true,
+        "obstacle_transform": "Synthetic ranges use truth; placement uses same-time FC estimated XY. No truth position is supplied to the guard.",
+        "run8_core_alignment": {
+          "EKF2_MAG_TYPE": 0,
+          "EKF2_HGT_REF": 0,
+          "EKF2_EV_CTRL": 1,
+          "EKF2_EV_DELAY": 0,
+          "EKF2_GPS_CTRL": 0,
+          "MIS_TAKEOFF_ALT": 1.7,
+          "missing_physical_modalities": [],
+          "note": "Not a full run8 reproduction. Synthetic sensor mounting is zero."
+        },
+        "time_contract": "EV sampled per new HIL truth message; latest PX4 local-position clock; timestamp uncertainty <= 40 ms required",
+        "network_namespace": "net:[4026532227]",
+        "predeclared": {
+          "min_wall_surface_clearance_m": 0.5,
+          "body_radius_m": 0.2,
+          "stale_scan_zero_command_within_s": 0.3,
+          "require_actual_arm": true,
+          "require_airborne": true,
+          "require_offboard": true,
+          "require_feedback": true,
+          "note": "braking criteria apply after the mission reaches MOVING; no 3D collision guarantee"
+        }
+      },
+      "parameters": [
+        {
+          "EKF2_GPS_CTRL": 0,
+          "EKF2_EV_CTRL": 1,
+          "EKF2_EV_NOISE_MD": 0,
+          "EKF2_EVP_NOISE": 0.029999999329447746,
+          "EKF2_EV_DELAY": 0.0,
+          "EKF2_EV_POS_X": 0.0,
+          "EKF2_EV_POS_Y": 0.0,
+          "EKF2_EV_POS_Z": 0.0,
+          "EKF2_OF_CTRL": 1,
+          "EKF2_OF_DELAY": 0.0,
+          "EKF2_OF_GYR_SRC": 0,
+          "EKF2_RNG_CTRL": 1,
+          "EKF2_RNG_NOISE": 0.029999999329447746,
+          "EKF2_RNG_DELAY": 5.0,
+          "EKF2_HGT_REF": 0,
+          "EKF2_BARO_CTRL": 1,
+          "EKF2_MAG_TYPE": 0,
+          "EKF2_DELAY_MAX": 200.0,
+          "EKF2_TAU_POS": 0.10000000149011612,
+          "EKF2_TAU_VEL": 0.05000000074505806,
+          "EKF2_LID2_EN": 1,
+          "EKF2_LID2_AGE": 200.0,
+          "EKF2_AVEL_DELAY": 0.0,
+          "MPC_XY_P": 2.0,
+          "MPC_XY_VEL_P_ACC": 3.0,
+          "MPC_XY_VEL_I_ACC": 0.4000000059604645,
+          "MPC_XY_VEL_D_ACC": 0.20000000298023224,
+          "MPC_VEL_LP": 0.0,
+          "MPC_Z_P": 1.0,
+          "MPC_Z_VEL_P_ACC": 4.0,
+          "COM_ARM_WO_GPS": 1,
+          "COM_OF_LOSS_T": 1.0,
+          "COM_OBL_RC_ACT": 0,
+          "COM_RC_OVERRIDE": 3,
+          "MIS_TAKEOFF_ALT": 1.7000000476837158,
+          "EKF2_PREDICT_US": 10000,
+          "IMU_INTEG_RATE": 250,
+          "EKF2_ACC_NOISE": 1.0,
+          "EKF2_GYR_NOISE": 0.10000000149011612,
+          "EKF2_RNG_SFE": 0.0,
+          "MPC_XY_VEL_MAX": 0.25
+        }
+      ],
+      "raw_hashes": {
+        "mission.jsonl": "14bf9f4a33aeb722eaf9f8a0651c092d308a327a63e7b7cd62a21a0d6799e4bd",
+        "telemetry.jsonl": "59163d4104d0ee8544aebdb5b089cb8716475a88b7642b5dce9b62191d23c7d0",
+        "manifest.json": "07314d86590fd4d6f9898c987673d44a553e939b72db3d1b69718fe11af22750",
+        "run_status.json": "b39ebef4c05cb15570dd272427195d33ab00a77ee523b5b7f4d4aa97a4b51200"
+      },
+      "ulog_hashes": {
+        "rootfs/log/2026-10-12/09_54_58.ulg": "f201ec8156c38833d10b670a3ac162059bf866144a18354ba1a197e89959e6d1"
+      },
+      "dwell_samples": 584,
+      "mission_10s_complete": false,
+      "precision_hover_pass": false,
+      "whole_dwell": {
+        "samples": 584,
+        "duration_s": 34.976000000000006,
+        "max_gap_s": 0.06400000000000716,
+        "target_xy_m": [
+          2.9,
+          2.0
+        ],
+        "height_target_m": 2.245989990234375,
+        "fc_goal_xy_m": {
+          "n": 584,
+          "rms": 0.04848596218089949,
+          "p95": 0.08834888287428745,
+          "maximum": 0.1462489387137738
+        },
+        "truth_goal_xy_m": {
+          "n": 584,
+          "rms": 0.05085620791043814,
+          "p95": 0.0932707098866172,
+          "maximum": 0.1404754110415773
+        },
+        "fc_speed_m_s": {
+          "n": 584,
+          "rms": 0.09497717702016728,
+          "p95": 0.17818079702979728,
+          "maximum": 0.2686002254826661
+        },
+        "fc_height_error_m": {
+          "n": 584,
+          "rms": 0.031480101526543625,
+          "p95": 0.05857910156250013,
+          "maximum": 0.07905883789062518
+        },
+        "fc_vertical_speed_m_s": {
+          "n": 584,
+          "rms": 0.042145569449685616,
+          "p95": 0.08417704552412035,
+          "maximum": 0.13110989332199097
+        },
+        "uwb_goal_xy_m": {
+          "n": 584,
+          "rms": 0.053030428163958546,
+          "p95": 0.10092296508256267,
+          "maximum": 0.16881454426942524
+        },
+        "complete": false,
+        "precision_pass": false,
+        "reasons": [
+          "speed_limit_exceeded",
+          "vz_limit_exceeded",
+          "fc_goal_xy_rms_exceeded",
+          "truth_goal_xy_rms_exceeded"
+        ],
+        "criterion": {
+          "duration_s": 10.0,
+          "xy_rms_m": 0.03,
+          "scope": "fixed target; no mean subtraction; both FC and simulator truth"
+        }
+      },
+      "first_10s_from_arrival": {
+        "samples": 168,
+        "duration_s": 10.016000000000005,
+        "max_gap_s": 0.06400000000000006,
+        "target_xy_m": [
+          2.9,
+          2.0
+        ],
+        "height_target_m": 2.245989990234375,
+        "fc_goal_xy_m": {
+          "n": 168,
+          "rms": 0.04289817476364583,
+          "p95": 0.08164319162116357,
+          "maximum": 0.09774440634612168
+        },
+        "truth_goal_xy_m": {
+          "n": 168,
+          "rms": 0.04473261628797757,
+          "p95": 0.078489170093198,
+          "maximum": 0.07939551829107602
+        },
+        "fc_speed_m_s": {
+          "n": 168,
+          "rms": 0.09189980917508257,
+          "p95": 0.1755511543454196,
+          "maximum": 0.23567532718415327
+        },
+        "fc_height_error_m": {
+          "n": 168,
+          "rms": 0.029691647588540683,
+          "p95": 0.057327270507812327,
+          "maximum": 0.07905883789062518
+        },
+        "fc_vertical_speed_m_s": {
+          "n": 168,
+          "rms": 0.04390270390017126,
+          "p95": 0.08517215736210348,
+          "maximum": 0.10700264573097229
+        },
+        "uwb_goal_xy_m": {
+          "n": 168,
+          "rms": 0.0459838144348103,
+          "p95": 0.07724491802373275,
+          "maximum": 0.09871445220289117
+        },
+        "complete": false,
+        "precision_pass": false,
+        "reasons": [
+          "speed_limit_exceeded",
+          "vz_limit_exceeded",
+          "fc_goal_xy_rms_exceeded",
+          "truth_goal_xy_rms_exceeded"
+        ],
+        "criterion": {
+          "duration_s": 10.0,
+          "xy_rms_m": 0.03,
+          "scope": "fixed target; no mean subtraction; both FC and simulator truth"
+        }
+      },
+      "first_10s_ulog": [
+        {
+          "fc_goal_xy_m": {
+            "n": 1251,
+            "rms": 0.0430302137843843,
+            "p95": 0.08202353815729072,
+            "maximum": 0.09781466806770134
+          },
+          "fc_speed_m_s": {
+            "n": 1251,
+            "rms": 0.09197297963274215,
+            "p95": 0.1752537041902542,
+            "maximum": 0.24723945558071136
+          },
+          "fc_vertical_speed_m_s": {
+            "n": 1251,
+            "rms": 0.044626455243547435,
+            "p95": 0.08734147250652313,
+            "maximum": 0.12092036008834839
+          },
+          "truth_goal_xy_m": {
+            "n": 501,
+            "rms": 0.045040050327115375,
+            "p95": 0.07865847062397964,
+            "maximum": 0.08505188358524822
+          },
+          "truth_speed_m_s": {
+            "n": 501,
+            "rms": 0.09226704242782459,
+            "p95": 0.1707760989665985,
+            "maximum": 0.18993240594863892
+          },
+          "truth_vertical_speed_m_s": {
+            "n": 501,
+            "rms": 0.05547567814228,
+            "p95": 0.11539848148822784,
+            "maximum": 0.17555466294288635
+          },
+          "precision_pass": false,
+          "scope": "High-rate native FC/physics samples in the preselected mission window"
+        }
+      ]
+    },
+    "frontend": {
+      "run": "/home/dronestock/uwb_sim/uwb-lidar-integration-20261012/spinning-dev-11-capture",
+      "scans": 849,
+      "accepted": 526,
+      "reject_reasons": {
+        "floor_ceiling_clearance_unavailable": 262,
+        "new_segment": 1,
+        "missing_measured_floor_range": 60
+      },
+      "scope": "offline SIH interval displacement; no ground truth is passed to scan matcher",
+      "covariance_scope": "explicit simulation model; not physical calibration",
+      "velocity_error_rms_xy_m_s": 0.021596738118273954,
+      "velocity_error_rms_axes_m_s": [
+        0.015586975564781794,
+        0.01494875546967715
+      ],
+      "velocity_error_p95_xy_m_s": 0.03685848572208951,
+      "nominal_95_percent_covariance_coverage": 1.0,
+      "midpoint_age_s": {
+        "min": 0.1000151281417665,
+        "max": 0.10419660456203417
+      },
+      "interval_s": {
+        "min": 0.0999233113127076,
+        "max": 0.1000685949531146
+      }
+    },
+    "active_scans": 440,
+    "active_accepted": 440,
+    "active_reasons": {},
+    "active_withholding_fraction": 0.0,
+    "process_ms": {
+      "n": 440,
+      "minimum": 12.37518499988255,
+      "maximum": 24.98567699990417,
+      "mean": 17.092876843180832,
+      "p95": 20.311256049842537
+    },
+    "clock_uncertainty_ms": {
+      "n": 440,
+      "minimum": 0.5649944269165985,
+      "maximum": 0.7572799412045583,
+      "mean": 0.6625898837043638,
+      "p95": 0.7219192022083621
+    },
+    "imu_gap_ms": {
+      "n": 440,
+      "minimum": 8.000000000002672,
+      "maximum": 12.000000000000455,
+      "mean": 10.909090909092454,
+      "p95": 12.000000000000455
+    },
+    "first_ray_clock_error_ms": {
+      "n": 440,
+      "minimum": -0.07949343940083509,
+      "maximum": 0.08262954354165686,
+      "mean": 0.006786808973835434,
+      "p95": 0.05460960543750558
+    },
+    "scope": "isolated simulation; capture-time gyro/clock alignment; no physical calibration",
+    "ulog_topics": [
+      "actuator_armed",
+      "actuator_motors",
+      "actuator_outputs",
+      "battery_status",
+      "config_overrides",
+      "control_allocator_status",
+      "cpuload",
+      "distance_sensor",
+      "distance_sensor_mode_change_request",
+      "ekf2_timestamps",
+      "estimator_aid_src_aux_vel",
+      "estimator_aid_src_baro_hgt",
+      "estimator_aid_src_ev_pos",
+      "estimator_aid_src_fake_hgt",
+      "estimator_aid_src_fake_pos",
+      "estimator_aid_src_gravity",
+      "estimator_aid_src_mag",
+      "estimator_aid_src_optical_flow",
+      "estimator_aid_src_rng_hgt",
+      "estimator_baro_bias",
+      "estimator_event_flags",
+      "estimator_innovation_test_ratios",
+      "estimator_innovation_variances",
+      "estimator_innovations",
+      "estimator_optical_flow_vel",
+      "estimator_sensor_bias",
+      "estimator_states",
+      "estimator_status",
+      "estimator_status_flags",
+      "event",
+      "failsafe_flags",
+      "failure_detector_status",
+      "gripper",
+      "home_position",
+      "hover_thrust_estimate",
+      "landing_gear",
+      "lidar_velocity2d",
+      "lidar_velocity2d_status",
+      "manual_control_setpoint",
+      "mission_result",
+      "navigator_status",
+      "offboard_control_mode",
+      "parameter_update",
+      "position_setpoint_triplet",
+      "rate_ctrl_status",
+      "rtl_status",
+      "rtl_time_estimate",
+      "sensor_accel",
+      "sensor_baro",
+      "sensor_combined",
+      "sensor_gps",
+      "sensor_gyro",
+      "sensor_gyro_fft",
+      "sensor_mag",
+      "sensor_optical_flow",
+      "sensor_selection",
+      "sensors_status_imu",
+      "system_power",
+      "takeoff_status",
+      "telemetry_status",
+      "timesync_status",
+      "trajectory_setpoint",
+      "transponder_report",
+      "vehicle_acceleration",
+      "vehicle_air_data",
+      "vehicle_angular_velocity",
+      "vehicle_angular_velocity_groundtruth",
+      "vehicle_attitude",
+      "vehicle_attitude_groundtruth",
+      "vehicle_attitude_setpoint",
+      "vehicle_command",
+      "vehicle_command_ack",
+      "vehicle_constraints",
+      "vehicle_control_mode",
+      "vehicle_global_position_groundtruth",
+      "vehicle_gps_position",
+      "vehicle_imu",
+      "vehicle_imu_status",
+      "vehicle_land_detected",
+      "vehicle_local_position",
+      "vehicle_local_position_groundtruth",
+      "vehicle_local_position_setpoint",
+      "vehicle_magnetometer",
+      "vehicle_optical_flow",
+      "vehicle_rates_setpoint",
+      "vehicle_status",
+      "vehicle_thrust_setpoint",
+      "vehicle_torque_setpoint",
+      "vehicle_visual_odometry"
+    ],
+    "px4_receipt_minus_midpoint_ms": {
+      "n": 440,
+      "minimum": 119.868,
+      "maximum": 144.08,
+      "mean": 134.0794090909091,
+      "p95": 139.96130000000002
+    },
+    "mavlink_time_conversion_shift_ms": {
+      "n": 440,
+      "minimum": 0.06986123395336108,
+      "maximum": 0.2468644771624895,
+      "mean": 0.1573011700180225,
+      "p95": 0.23948301873311095
+    },
+    "admission_reasons": {
+      "2": 440
+    },
+    "auxiliary_fusion": {
+      "reports": 441,
+      "fused": 441
+    },
+    "resets_during_motion": {
+      "xy_reset_counter": 0,
+      "z_reset_counter": 0,
+      "vxy_reset_counter": 0,
+      "vz_reset_counter": 0
+    },
+    "evidence_hashes": {
+      "scan_observations.jsonl": "f13420c5b9a20cdeec00022d79c092bae4f8df86f6dfca3939f66e0b18dfd6bb",
+      "mission.jsonl": "14bf9f4a33aeb722eaf9f8a0651c092d308a327a63e7b7cd62a21a0d6799e4bd",
+      "telemetry.jsonl": "59163d4104d0ee8544aebdb5b089cb8716475a88b7642b5dce9b62191d23c7d0",
+      "manifest.json": "07314d86590fd4d6f9898c987673d44a553e939b72db3d1b69718fe11af22750"
+    }
+  },
+  {
+    "run": "/home/dronestock/uwb_sim/uwb-lidar-integration-20261012/spinning-dev-12-flow",
+    "hover": {
+      "run": "/home/dronestock/uwb_sim/uwb-lidar-integration-20261012/spinning-dev-12-flow",
+      "scenario": "clear",
+      "seed": 408,
+      "status": {
+        "errors": [],
+        "physical_writes": 0,
+        "armed_seen": true,
+        "airborne_seen": true,
+        "offboard_seen": true,
+        "moving_seen": true,
+        "feedback_count": 2717,
+        "ev_samples": 3454,
+        "flow_samples": 4065,
+        "flow_invalid_samples": 1549,
+        "range_samples": 2516,
+        "lidar_samples": 523,
+        "final_phase": "FAILED",
+        "final_reason": "hover_stability_timeout",
+        "elapsed_s": 89.34400000000001,
+        "required_parameters": {
+          "COM_RC_OVERRIDE": 3,
+          "EKF2_ACC_NOISE": 1.0,
+          "EKF2_ASP_DELAY": 0.0,
+          "EKF2_DELAY_MAX": 200.0,
+          "EKF2_EVP_NOISE": 0.029999999329447746,
+          "EKF2_GYR_NOISE": 0.10000000149011612,
+          "EKF2_LID2_AGE": 200.0,
+          "EKF2_MAG_TYPE": 0,
+          "EKF2_OF_DELAY": 0.0,
+          "EKF2_OF_N_MIN": 0.05000000074505806,
+          "EKF2_RNG_NOISE": 0.029999999329447746,
+          "EKF2_RNG_SFE": 0.0,
+          "EKF2_TAU_POS": 0.10000000149011612,
+          "EKF2_TAU_VEL": 0.05000000074505806,
+          "MIS_TAKEOFF_ALT": 1.7000000476837158,
+          "MPC_XY_P": 2.0,
+          "MPC_XY_VEL_MAX": 0.25,
+          "MPC_XY_VEL_P_ACC": 3.0
+        },
+        "min_wall_surface_clearance_m": 1.8139839900484047,
+        "max_estimated_horizontal_speed_m_s": 0.3808550535608042,
+        "scan_fault_to_zero_command_s": null,
+        "ulog_files": [
+          "rootfs/log/2026-10-12/09_54_58.ulg"
+        ],
+        "binary_unchanged": true
+      },
+      "manifest": {
+        "schema": 1,
+        "firmware_commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+        "binary_sha256": "36656b12094c32b84f698a63ca72d7d1cbd2804b3ec8311d3f65b53317376fa9",
+        "board_sha256": "361d844d0eb14260052ee5bb23f8f60f6ca3a6780b666b406d301ee3ef8a2833",
+        "script_sha256": "2f137d2406f6a26bea0e6dc425de3eb66c5f5b39eb8478fec9e144ed31b5d589",
+        "settings": {
+          "command_frame": "local_xy",
+          "execution_profile": "anchor_trial",
+          "bridge_topic": "/uwb/bridge_status",
+          "bridge_host_boot_id": "",
+          "execute": true,
+          "full_mission": true,
+          "takeoff_settle_s": 2.0,
+          "observation_recovery_s": 3.0,
+          "observation_settle_s": 0.5,
+          "scan_timeout_s": 20.0,
+          "scan_speed_m_s": 0.05,
+          "layout_confirmed": true,
+          "alignment_confirmed": false,
+          "fusion_confirmed": false,
+          "timing_confirmed": false,
+          "sensor_mount_confirmed": true,
+          "takeoff_settings_confirmed": true,
+          "heading_control_confirmed": false,
+          "expected_ekf2_mag_type": 0,
+          "expected_mis_takeoff_alt_m": 1.7,
+          "enu_yaw_deg": 0.0,
+          "map_y_axis_sign": 1,
+          "enu_offset_x_m": -2.0,
+          "enu_offset_y_m": -2.0,
+          "expected_ev_delay_ms": 0.0,
+          "expected_ev_pos_x_m": 0.0,
+          "expected_ev_pos_y_m": 0.0,
+          "expected_ev_pos_z_m": 0.0,
+          "bounds_xy_m": [
+            0.3,
+            4.7,
+            0.3,
+            4.7
+          ],
+          "max_leg_m": 1.0,
+          "speed_m_s": 0.25,
+          "web_timeout_s": 2.0,
+          "state_timeout_s": 2.5,
+          "pose_timeout_s": 0.2,
+          "command_timeout_s": 3.0,
+          "takeoff_timeout_s": 35.0,
+          "leg_timeout_s": 25.0,
+          "landing_timeout_s": 30.0,
+          "request_ttl_s": 30.0,
+          "drone_id": "5",
+          "layout_id": "warehouse-rectangle-6p3x4p6-z2p2-20261004"
+        },
+        "guard": {
+          "radius_m": 0.2,
+          "clearance_m": 0.5,
+          "brake_accel_m_s2": 0.5,
+          "command_latency_s": 0.2,
+          "max_age_s": 0.25,
+          "max_speed_m_s": 0.25,
+          "range_error_m": 0.015,
+          "pose_error_m": 0.04,
+          "obstacle_speed_bound_m_s": 0.0,
+          "velocity_error_m_s": 0.35,
+          "bins": 72
+        },
+        "scenario": "clear",
+        "seed": 408,
+        "baseline": false,
+        "instance": 55,
+        "speed_factor": 1.0,
+        "dwell_control": "position",
+        "fusion_horizon_ms": 200.0,
+        "zero_unused_airspeed_delay": true,
+        "velocity_output_tau_s": 0.05,
+        "sitl_parameters": {
+          "MPC_XY_P": 2.0,
+          "MPC_XY_VEL_P_ACC": 3.0,
+          "MPC_XY_VEL_MAX": 0.25,
+          "EKF2_TAU_POS": 0.1,
+          "EKF2_EVP_NOISE": 0.03,
+          "EKF2_RNG_NOISE": 0.03,
+          "EKF2_RNG_SFE": 0.0,
+          "EKF2_ACC_NOISE": 1.0,
+          "EKF2_GYR_NOISE": 0.1,
+          "EKF2_LID2_AGE": 200,
+          "EKF2_OF_DELAY": 0.0,
+          "EKF2_OF_N_MIN": 0.05
+        },
+        "hover_duration_s": 10.0,
+        "lidar_source": "spinning",
+        "deskew_enabled": true,
+        "spatial_support_enabled": true,
+        "sensor_capture_time": true,
+        "lidar_velocity_intervals": 1,
+        "simulated_lidar": {
+          "beams": 430,
+          "range_noise_m": 0.01,
+          "scan_bias_noise_m": 0.003,
+          "origin_quantization_bound_m": 0.0,
+          "zero_imu_lever_arm": true,
+          "instantaneous_scan": false,
+          "sequential_beams": true,
+          "first_ray_header": true,
+          "beam_time_increment_s": 0.00023255813953488373,
+          "lidar_clock_offset_s": 0.037,
+          "lidar_clock_drift_ppm": 35.0
+        },
+        "scan_algorithm_sha256": "b626a0f1811b162b5f4f4bb1ad6104b997e4eb37acfa156a82d1359d59792e3f",
+        "scan_matcher_sha256": "2b4cf8085e6aa2b2bafe200990145f8299caf638669d6a4d7b1c81505feb6b64",
+        "native_position_gain_bound_s_inv": 2.0,
+        "source_sha256": {
+          "guarded_local_xy.py": "7e6e649edcd267089828ec58538fc74a19d0b6afcf4503b0ecfc67b261ba2304",
+          "local_xy.py": "a303f751dc876949d92121af925030792b796b16085b963241204451d631848f",
+          "horizontal_obstacles.py": "8e245e7cb5369dc969f05aefda24008edb04896e808b5d4439140e02d887de77",
+          "local_command.py": "3b4b368f62701d3f49cf6d3ef9f013581f173773ac99503595f9f5a0eea95474"
+        },
+        "scope": "closed-loop mission command test with synthetic UWB and virtual horizontal obstacles",
+        "lidar_aiding": true,
+        "lidar_transmitted": true,
+        "raw_lidar_used": false,
+        "physical_writes": 0,
+        "ros_used": false,
+        "patched_firmware": {
+          "kind": "lidar2d_experiment",
+          "base_commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "binary_sha256": "36656b12094c32b84f698a63ca72d7d1cbd2804b3ec8311d3f65b53317376fa9",
+          "patch_sha256": "e085dfb2853f9269bab3b78d222fa121d2ba37784689b5539c1c95a32e88e45e",
+          "board_sha256": "361d844d0eb14260052ee5bb23f8f60f6ca3a6780b666b406d301ee3ef8a2833",
+          "physical_deployment": false,
+          "auxiliary_velocity_requires_other_horizontal_aiding": true,
+          "simulation_truth_stream": "ODOMETRY estimator_type=NAIVE, LOCAL_NED, sample timestamp, float coordinates",
+          "simulator_dynamics_or_noise_changed": false,
+          "truth_for_sensor_backend_and_evaluation_only": true,
+          "highres_imu_stamp": "vehicle_imu.timestamp_sample; upstream bias-corrected gyro"
+        },
+        "lidar_observation": "10 Hz sequential noisy rays -> aligned capture-time IMU deskew -> spatial/temporal robust matcher -> interval midpoint NE velocity",
+        "random_seed_scope": "seed applies to synthetic UWB; seed+10000 independently to synthetic LiDAR. SIH sensor RNG is not overridden.",
+        "synthetic_optical_flow": true,
+        "obstacle_transform": "Synthetic ranges use truth; placement uses same-time FC estimated XY. No truth position is supplied to the guard.",
+        "run8_core_alignment": {
+          "EKF2_MAG_TYPE": 0,
+          "EKF2_HGT_REF": 0,
+          "EKF2_EV_CTRL": 1,
+          "EKF2_EV_DELAY": 0,
+          "EKF2_GPS_CTRL": 0,
+          "MIS_TAKEOFF_ALT": 1.7,
+          "missing_physical_modalities": [],
+          "note": "Not a full run8 reproduction. Synthetic sensor mounting is zero."
+        },
+        "time_contract": "EV sampled per new HIL truth message; latest PX4 local-position clock; timestamp uncertainty <= 40 ms required",
+        "network_namespace": "net:[4026532228]",
+        "predeclared": {
+          "min_wall_surface_clearance_m": 0.5,
+          "body_radius_m": 0.2,
+          "stale_scan_zero_command_within_s": 0.3,
+          "require_actual_arm": true,
+          "require_airborne": true,
+          "require_offboard": true,
+          "require_feedback": true,
+          "note": "braking criteria apply after the mission reaches MOVING; no 3D collision guarantee"
+        }
+      },
+      "parameters": [
+        {
+          "EKF2_GPS_CTRL": 0,
+          "EKF2_EV_CTRL": 1,
+          "EKF2_EV_NOISE_MD": 0,
+          "EKF2_EVP_NOISE": 0.029999999329447746,
+          "EKF2_EV_DELAY": 0.0,
+          "EKF2_EV_POS_X": 0.0,
+          "EKF2_EV_POS_Y": 0.0,
+          "EKF2_EV_POS_Z": 0.0,
+          "EKF2_OF_CTRL": 1,
+          "EKF2_OF_DELAY": 0.0,
+          "EKF2_OF_GYR_SRC": 0,
+          "EKF2_RNG_CTRL": 1,
+          "EKF2_RNG_NOISE": 0.029999999329447746,
+          "EKF2_RNG_DELAY": 5.0,
+          "EKF2_HGT_REF": 0,
+          "EKF2_BARO_CTRL": 1,
+          "EKF2_MAG_TYPE": 0,
+          "EKF2_DELAY_MAX": 200.0,
+          "EKF2_TAU_POS": 0.10000000149011612,
+          "EKF2_TAU_VEL": 0.05000000074505806,
+          "EKF2_LID2_EN": 1,
+          "EKF2_LID2_AGE": 200.0,
+          "EKF2_AVEL_DELAY": 0.0,
+          "MPC_XY_P": 2.0,
+          "MPC_XY_VEL_P_ACC": 3.0,
+          "MPC_XY_VEL_I_ACC": 0.4000000059604645,
+          "MPC_XY_VEL_D_ACC": 0.20000000298023224,
+          "MPC_VEL_LP": 0.0,
+          "MPC_Z_P": 1.0,
+          "MPC_Z_VEL_P_ACC": 4.0,
+          "COM_ARM_WO_GPS": 1,
+          "COM_OF_LOSS_T": 1.0,
+          "COM_OBL_RC_ACT": 0,
+          "COM_RC_OVERRIDE": 3,
+          "MIS_TAKEOFF_ALT": 1.7000000476837158,
+          "EKF2_PREDICT_US": 10000,
+          "IMU_INTEG_RATE": 250,
+          "EKF2_ACC_NOISE": 1.0,
+          "EKF2_GYR_NOISE": 0.10000000149011612,
+          "EKF2_RNG_SFE": 0.0,
+          "MPC_XY_VEL_MAX": 0.25
+        }
+      ],
+      "raw_hashes": {
+        "mission.jsonl": "350debbdf1055c3526c2a2703a080f21ef1d9a92f288e5b61dadb0f9fcf4e5fd",
+        "telemetry.jsonl": "0b8d4aa12197817a31c5fa6d8bd2707c3f3a6be31625e812e1166d155efea9be",
+        "manifest.json": "2460cc9417b5e05d553a14b21cc6abb5035f14f7e1869f00999db319bb6d6e22",
+        "run_status.json": "efe5e02fdd6c7f574169812f7f1a327af3cacb595774768fa307b22228031e76"
+      },
+      "ulog_hashes": {
+        "rootfs/log/2026-10-12/09_54_58.ulg": "423032e6575bb810ce7d23f5b8f9caf9554c45160ba54449802e96895b5bc7a7"
+      },
+      "dwell_samples": 584,
+      "mission_10s_complete": false,
+      "precision_hover_pass": false,
+      "whole_dwell": {
+        "samples": 584,
+        "duration_s": 34.983999999999995,
+        "max_gap_s": 0.06400000000000716,
+        "target_xy_m": [
+          2.9,
+          2.0
+        ],
+        "height_target_m": 1.28941650390625,
+        "fc_goal_xy_m": {
+          "n": 584,
+          "rms": 0.0467822809905921,
+          "p95": 0.0891281630518384,
+          "maximum": 0.1112658328759631
+        },
+        "truth_goal_xy_m": {
+          "n": 584,
+          "rms": 0.05054455762625726,
+          "p95": 0.09116131492900377,
+          "maximum": 0.10454766047821389
+        },
+        "fc_speed_m_s": {
+          "n": 584,
+          "rms": 0.09407590043986148,
+          "p95": 0.17462955206974787,
+          "maximum": 0.3206744559625484
+        },
+        "fc_height_error_m": {
+          "n": 584,
+          "rms": 0.03445604239881265,
+          "p95": 0.06588500976562497,
+          "maximum": 0.09096069335937496
+        },
+        "fc_vertical_speed_m_s": {
+          "n": 584,
+          "rms": 0.04606284064624688,
+          "p95": 0.08597974218428137,
+          "maximum": 0.15545111894607544
+        },
+        "uwb_goal_xy_m": {
+          "n": 584,
+          "rms": 0.05289253484195901,
+          "p95": 0.09375097172302906,
+          "maximum": 0.12497414306212751
+        },
+        "complete": false,
+        "precision_pass": false,
+        "reasons": [
+          "speed_limit_exceeded",
+          "vz_limit_exceeded",
+          "fc_goal_xy_rms_exceeded",
+          "truth_goal_xy_rms_exceeded"
+        ],
+        "criterion": {
+          "duration_s": 10.0,
+          "xy_rms_m": 0.03,
+          "scope": "fixed target; no mean subtraction; both FC and simulator truth"
+        }
+      },
+      "first_10s_from_arrival": {
+        "samples": 168,
+        "duration_s": 10.024000000000001,
+        "max_gap_s": 0.06400000000000006,
+        "target_xy_m": [
+          2.9,
+          2.0
+        ],
+        "height_target_m": 1.28941650390625,
+        "fc_goal_xy_m": {
+          "n": 168,
+          "rms": 0.04541319188342594,
+          "p95": 0.08680970234928648,
+          "maximum": 0.1112658328759631
+        },
+        "truth_goal_xy_m": {
+          "n": 168,
+          "rms": 0.047899008666391456,
+          "p95": 0.08155643696478476,
+          "maximum": 0.10454766047821389
+        },
+        "fc_speed_m_s": {
+          "n": 168,
+          "rms": 0.0897388106914065,
+          "p95": 0.1691068219390426,
+          "maximum": 0.2508796245649042
+        },
+        "fc_height_error_m": {
+          "n": 168,
+          "rms": 0.03492292331967252,
+          "p95": 0.07201843261718754,
+          "maximum": 0.09096069335937496
+        },
+        "fc_vertical_speed_m_s": {
+          "n": 168,
+          "rms": 0.04755227171548646,
+          "p95": 0.08929821103811267,
+          "maximum": 0.15545111894607544
+        },
+        "uwb_goal_xy_m": {
+          "n": 168,
+          "rms": 0.050272501700248724,
+          "p95": 0.0861805590591565,
+          "maximum": 0.12497414306212751
+        },
+        "complete": false,
+        "precision_pass": false,
+        "reasons": [
+          "speed_limit_exceeded",
+          "vz_limit_exceeded",
+          "fc_goal_xy_rms_exceeded",
+          "truth_goal_xy_rms_exceeded"
+        ],
+        "criterion": {
+          "duration_s": 10.0,
+          "xy_rms_m": 0.03,
+          "scope": "fixed target; no mean subtraction; both FC and simulator truth"
+        }
+      },
+      "first_10s_ulog": [
+        {
+          "fc_goal_xy_m": {
+            "n": 1251,
+            "rms": 0.04548207081585034,
+            "p95": 0.08815014641981721,
+            "maximum": 0.11142134085433295
+          },
+          "fc_speed_m_s": {
+            "n": 1251,
+            "rms": 0.08927942010553733,
+            "p95": 0.16658107191324234,
+            "maximum": 0.2508796155452728
+          },
+          "fc_vertical_speed_m_s": {
+            "n": 1251,
+            "rms": 0.047896455311264546,
+            "p95": 0.08785825967788696,
+            "maximum": 0.16060534119606018
+          },
+          "truth_goal_xy_m": {
+            "n": 501,
+            "rms": 0.047795706976490986,
+            "p95": 0.08047306962312081,
+            "maximum": 0.10223035101091804
+          },
+          "truth_speed_m_s": {
+            "n": 501,
+            "rms": 0.09308748377694186,
+            "p95": 0.17558246850967407,
+            "maximum": 0.1910063922405243
+          },
+          "truth_vertical_speed_m_s": {
+            "n": 501,
+            "rms": 0.05913739762104415,
+            "p95": 0.14579255878925323,
+            "maximum": 0.21117015182971954
+          },
+          "precision_pass": false,
+          "scope": "High-rate native FC/physics samples in the preselected mission window"
+        }
+      ]
+    },
+    "frontend": {
+      "run": "/home/dronestock/uwb_sim/uwb-lidar-integration-20261012/spinning-dev-12-flow",
+      "scans": 859,
+      "accepted": 523,
+      "reject_reasons": {
+        "floor_ceiling_clearance_unavailable": 280,
+        "new_segment": 1,
+        "missing_measured_floor_range": 55
+      },
+      "scope": "offline SIH interval displacement; no ground truth is passed to scan matcher",
+      "covariance_scope": "explicit simulation model; not physical calibration",
+      "velocity_error_rms_xy_m_s": 0.02248867792513039,
+      "velocity_error_rms_axes_m_s": [
+        0.016191570911083593,
+        0.015606846774784426
+      ],
+      "velocity_error_p95_xy_m_s": 0.03882767407159955,
+      "nominal_95_percent_covariance_coverage": 1.0,
+      "midpoint_age_s": {
+        "min": 0.08802741676317893,
+        "max": 0.11610388770578339
+      },
+      "interval_s": {
+        "min": 0.09992397797714858,
+        "max": 0.10006312835122344
+      }
+    },
+    "active_scans": 461,
+    "active_accepted": 461,
+    "active_reasons": {},
+    "active_withholding_fraction": 0.0,
+    "process_ms": {
+      "n": 461,
+      "minimum": 12.303240000164806,
+      "maximum": 33.84039699994901,
+      "mean": 16.900091377434215,
+      "p95": 20.239586999878156
+    },
+    "clock_uncertainty_ms": {
+      "n": 461,
+      "minimum": 0.5568042295962528,
+      "maximum": 0.7764223897019491,
+      "mean": 0.6610629667307477,
+      "p95": 0.7171688599569848
+    },
+    "imu_gap_ms": {
+      "n": 461,
+      "minimum": 8.000000000002672,
+      "maximum": 12.000000000000455,
+      "mean": 11.314533622560656,
+      "p95": 12.000000000000455
+    },
+    "first_ray_clock_error_ms": {
+      "n": 461,
+      "minimum": -0.08214211666057736,
+      "maximum": 0.0831620150805179,
+      "mean": 0.00582203696517085,
+      "p95": 0.05969061214727844
+    },
+    "scope": "isolated simulation; capture-time gyro/clock alignment; no physical calibration",
+    "ulog_topics": [
+      "actuator_armed",
+      "actuator_motors",
+      "actuator_outputs",
+      "battery_status",
+      "config_overrides",
+      "control_allocator_status",
+      "cpuload",
+      "distance_sensor",
+      "distance_sensor_mode_change_request",
+      "ekf2_timestamps",
+      "estimator_aid_src_aux_vel",
+      "estimator_aid_src_baro_hgt",
+      "estimator_aid_src_ev_pos",
+      "estimator_aid_src_fake_hgt",
+      "estimator_aid_src_fake_pos",
+      "estimator_aid_src_gravity",
+      "estimator_aid_src_mag",
+      "estimator_aid_src_optical_flow",
+      "estimator_aid_src_rng_hgt",
+      "estimator_baro_bias",
+      "estimator_event_flags",
+      "estimator_innovation_test_ratios",
+      "estimator_innovation_variances",
+      "estimator_innovations",
+      "estimator_optical_flow_vel",
+      "estimator_sensor_bias",
+      "estimator_states",
+      "estimator_status",
+      "estimator_status_flags",
+      "event",
+      "failsafe_flags",
+      "failure_detector_status",
+      "gripper",
+      "home_position",
+      "hover_thrust_estimate",
+      "landing_gear",
+      "lidar_velocity2d",
+      "lidar_velocity2d_status",
+      "manual_control_setpoint",
+      "mission_result",
+      "navigator_status",
+      "offboard_control_mode",
+      "parameter_update",
+      "position_setpoint_triplet",
+      "rate_ctrl_status",
+      "rtl_status",
+      "rtl_time_estimate",
+      "sensor_accel",
+      "sensor_baro",
+      "sensor_combined",
+      "sensor_gps",
+      "sensor_gyro",
+      "sensor_gyro_fft",
+      "sensor_mag",
+      "sensor_optical_flow",
+      "sensor_selection",
+      "sensors_status_imu",
+      "system_power",
+      "takeoff_status",
+      "telemetry_status",
+      "timesync_status",
+      "trajectory_setpoint",
+      "transponder_report",
+      "vehicle_acceleration",
+      "vehicle_air_data",
+      "vehicle_angular_velocity",
+      "vehicle_angular_velocity_groundtruth",
+      "vehicle_attitude",
+      "vehicle_attitude_groundtruth",
+      "vehicle_attitude_setpoint",
+      "vehicle_command",
+      "vehicle_command_ack",
+      "vehicle_constraints",
+      "vehicle_control_mode",
+      "vehicle_global_position_groundtruth",
+      "vehicle_gps_position",
+      "vehicle_imu",
+      "vehicle_imu_status",
+      "vehicle_land_detected",
+      "vehicle_local_position",
+      "vehicle_local_position_groundtruth",
+      "vehicle_local_position_setpoint",
+      "vehicle_magnetometer",
+      "vehicle_optical_flow",
+      "vehicle_rates_setpoint",
+      "vehicle_status",
+      "vehicle_thrust_setpoint",
+      "vehicle_torque_setpoint",
+      "vehicle_visual_odometry"
+    ],
+    "px4_receipt_minus_midpoint_ms": {
+      "n": 462,
+      "minimum": 119.352,
+      "maximum": 151.352,
+      "mean": 132.79656493506494,
+      "p95": 139.5828
+    },
+    "mavlink_time_conversion_shift_ms": {
+      "n": 462,
+      "minimum": 0.3036232327531252,
+      "maximum": 0.7588052550318025,
+      "mean": 0.5000386703574479,
+      "p95": 0.7376020233589742
+    },
+    "admission_reasons": {
+      "2": 462
+    },
+    "auxiliary_fusion": {
+      "reports": 461,
+      "fused": 461
+    },
+    "resets_during_motion": {
+      "xy_reset_counter": 0,
+      "z_reset_counter": 0,
+      "vxy_reset_counter": 0,
+      "vz_reset_counter": 0
+    },
+    "evidence_hashes": {
+      "scan_observations.jsonl": "6d4ac29ebc51fed4d6e9f9403bb9bb63705cb265805963428cff743a090e9867",
+      "mission.jsonl": "350debbdf1055c3526c2a2703a080f21ef1d9a92f288e5b61dadb0f9fcf4e5fd",
+      "telemetry.jsonl": "0b8d4aa12197817a31c5fa6d8bd2707c3f3a6be31625e812e1166d155efea9be",
+      "manifest.json": "2460cc9417b5e05d553a14b21cc6abb5035f14f7e1869f00999db319bb6d6e22"
+    }
+  }
+]

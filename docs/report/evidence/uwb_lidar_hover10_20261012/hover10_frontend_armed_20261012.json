@@ -1,0 +1,31 @@
+[
+  {
+    "run": "/home/dronestock/uwb_sim/uwb-lidar-integration-20261012/hover10-armed-scan-38",
+    "scans": 852,
+    "accepted": 447,
+    "reject_reasons": {
+      "floor_ceiling_clearance_unavailable": 334,
+      "new_segment": 1,
+      "not_converged": 18,
+      "reacquired_pose_only": 34,
+      "reverse_rejected": 20
+    },
+    "scope": "offline SIH interval displacement; no ground truth is passed to scan matcher",
+    "covariance_scope": "explicit simulation model; not physical calibration",
+    "velocity_error_rms_xy_m_s": 0.05947778427107042,
+    "velocity_error_rms_axes_m_s": [
+      0.045637263456036165,
+      0.03814245673839505
+    ],
+    "velocity_error_p95_xy_m_s": 0.11627814676914444,
+    "nominal_95_percent_covariance_coverage": 0.9955257270693513,
+    "midpoint_age_s": {
+      "min": 0.03999999999999204,
+      "max": 0.060000000000002274
+    },
+    "interval_s": {
+      "min": 0.0799999999999983,
+      "max": 0.12000000000000455
+    }
+  }
+]

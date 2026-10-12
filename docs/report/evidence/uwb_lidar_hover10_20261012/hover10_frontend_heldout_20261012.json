@@ -1,0 +1,90 @@
+[
+  {
+    "run": "/home/dronestock/uwb_sim/uwb-lidar-integration-20261012/hover10-heldout-scan-41/clear-s301-a1",
+    "scans": 854,
+    "accepted": 428,
+    "reject_reasons": {
+      "floor_ceiling_clearance_unavailable": 329,
+      "new_segment": 1,
+      "not_converged": 27,
+      "reacquired_pose_only": 44,
+      "reverse_rejected": 25
+    },
+    "scope": "offline SIH interval displacement; no ground truth is passed to scan matcher",
+    "covariance_scope": "explicit simulation model; not physical calibration",
+    "velocity_error_rms_xy_m_s": 0.058707942295861855,
+    "velocity_error_rms_axes_m_s": [
+      0.042714053279504914,
+      0.04027570162082669
+    ],
+    "velocity_error_p95_xy_m_s": 0.10779170765250584,
+    "nominal_95_percent_covariance_coverage": 0.9953271028037384,
+    "midpoint_age_s": {
+      "min": 0.04799999999998761,
+      "max": 0.05200000000000671
+    },
+    "interval_s": {
+      "min": 0.09599999999998943,
+      "max": 0.10400000000000631
+    }
+  },
+  {
+    "run": "/home/dronestock/uwb_sim/uwb-lidar-integration-20261012/hover10-heldout-scan-41/clear-s302-a1",
+    "scans": 854,
+    "accepted": 444,
+    "reject_reasons": {
+      "floor_ceiling_clearance_unavailable": 276,
+      "new_segment": 1,
+      "not_converged": 22,
+      "reacquired_pose_only": 35,
+      "reverse_rejected": 18,
+      "missing_or_stale_fc_attitude_or_range": 60
+    },
+    "scope": "offline SIH interval displacement; no ground truth is passed to scan matcher",
+    "covariance_scope": "explicit simulation model; not physical calibration",
+    "velocity_error_rms_xy_m_s": 0.060255572173330024,
+    "velocity_error_rms_axes_m_s": [
+      0.0483113671334364,
+      0.0360103566163084
+    ],
+    "velocity_error_p95_xy_m_s": 0.1213067662427965,
+    "nominal_95_percent_covariance_coverage": 0.9977477477477478,
+    "midpoint_age_s": {
+      "min": 0.03999999999999204,
+      "max": 0.060000000000002274
+    },
+    "interval_s": {
+      "min": 0.0799999999999983,
+      "max": 0.12000000000000455
+    }
+  },
+  {
+    "run": "/home/dronestock/uwb_sim/uwb-lidar-integration-20261012/hover10-heldout-scan-41/clear-s303-a1",
+    "scans": 859,
+    "accepted": 412,
+    "reject_reasons": {
+      "floor_ceiling_clearance_unavailable": 335,
+      "new_segment": 1,
+      "not_converged": 28,
+      "reacquired_pose_only": 53,
+      "reverse_rejected": 32
+    },
+    "scope": "offline SIH interval displacement; no ground truth is passed to scan matcher",
+    "covariance_scope": "explicit simulation model; not physical calibration",
+    "velocity_error_rms_xy_m_s": 0.05587748948322277,
+    "velocity_error_rms_axes_m_s": [
+      0.044416780679086845,
+      0.033903442672589594
+    ],
+    "velocity_error_p95_xy_m_s": 0.0956554544168247,
+    "nominal_95_percent_covariance_coverage": 1.0,
+    "midpoint_age_s": {
+      "min": 0.04799999999998761,
+      "max": 0.05200000000000671
+    },
+    "interval_s": {
+      "min": 0.09599999999998943,
+      "max": 0.10400000000001342
+    }
+  }
+]

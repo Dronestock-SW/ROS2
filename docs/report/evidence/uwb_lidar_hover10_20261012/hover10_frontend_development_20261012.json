@@ -1,0 +1,62 @@
+[
+  {
+    "run": "/home/dronestock/uwb_sim/uwb-lidar-integration-20261012/hover10-scan-candidate-26",
+    "scans": 1042,
+    "accepted": 411,
+    "reject_reasons": {
+      "floor_ceiling_clearance_unavailable": 541,
+      "new_segment": 1,
+      "not_converged": 18,
+      "reacquired_pose_only": 44,
+      "reverse_rejected": 28
+    },
+    "scope": "offline SIH interval displacement; no ground truth is passed to scan matcher",
+    "covariance_scope": "explicit simulation model; not physical calibration",
+    "velocity_error_rms_xy_m_s": 0.057888195013234944,
+    "velocity_error_rms_axes_m_s": [
+      0.04606600469351666,
+      0.035056616115466975
+    ],
+    "velocity_error_p95_xy_m_s": 0.10096877251561867,
+    "nominal_95_percent_covariance_coverage": 0.8321167883211679,
+    "midpoint_age_s": {
+      "min": 0.03999999999999915,
+      "max": 0.060000000000002274
+    },
+    "interval_s": {
+      "min": 0.0799999999999983,
+      "max": 0.12000000000000455
+    }
+  },
+  {
+    "run": "/home/dronestock/uwb_sim/uwb-lidar-integration-20261012/hover10-scan-baro-28",
+    "scans": 839,
+    "accepted": 158,
+    "reject_reasons": {
+      "floor_ceiling_clearance_unavailable": 282,
+      "new_segment": 1,
+      "scan_tilt_limit": 272,
+      "reacquired_pose_only": 54,
+      "reverse_rejected": 17,
+      "not_converged": 12,
+      "missing_or_stale_fc_attitude_or_range": 44
+    },
+    "scope": "offline SIH interval displacement; no ground truth is passed to scan matcher",
+    "covariance_scope": "explicit simulation model; not physical calibration",
+    "velocity_error_rms_xy_m_s": 0.07030170555646607,
+    "velocity_error_rms_axes_m_s": [
+      0.053869943261369915,
+      0.045170333374515176
+    ],
+    "velocity_error_p95_xy_m_s": 0.13007898657269365,
+    "nominal_95_percent_covariance_coverage": 0.7784810126582279,
+    "midpoint_age_s": {
+      "min": 0.03999999999999204,
+      "max": 0.06400000000000006
+    },
+    "interval_s": {
+      "min": 0.0799999999999983,
+      "max": 0.1280000000000001
+    }
+  }
+]

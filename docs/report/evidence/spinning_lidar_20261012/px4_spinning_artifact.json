@@ -1,0 +1,13 @@
+{
+  "kind": "lidar2d_experiment",
+  "base_commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+  "binary_sha256": "36656b12094c32b84f698a63ca72d7d1cbd2804b3ec8311d3f65b53317376fa9",
+  "patch_sha256": "e085dfb2853f9269bab3b78d222fa121d2ba37784689b5539c1c95a32e88e45e",
+  "board_sha256": "361d844d0eb14260052ee5bb23f8f60f6ca3a6780b666b406d301ee3ef8a2833",
+  "physical_deployment": false,
+  "auxiliary_velocity_requires_other_horizontal_aiding": true,
+  "simulation_truth_stream": "ODOMETRY estimator_type=NAIVE, LOCAL_NED, sample timestamp, float coordinates",
+  "simulator_dynamics_or_noise_changed": false,
+  "truth_for_sensor_backend_and_evaluation_only": true,
+  "highres_imu_stamp": "vehicle_imu.timestamp_sample; upstream bias-corrected gyro"
+}

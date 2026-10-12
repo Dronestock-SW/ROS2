@@ -1,0 +1,352 @@
+{
+  "results": [
+    {
+      "run": "/home/dronestock/uwb_sim/uwb-lidar-integration-20261012/hover-position-16/clear-s101-a1",
+      "status": {
+        "errors": [],
+        "physical_writes": 0,
+        "armed_seen": true,
+        "airborne_seen": true,
+        "offboard_seen": true,
+        "moving_seen": true,
+        "feedback_count": 2499,
+        "ev_samples": 3659,
+        "flow_samples": 3759,
+        "flow_invalid_samples": 1688,
+        "range_samples": 2071,
+        "lidar_samples": 916,
+        "final_phase": "FAILED",
+        "final_reason": "hover_stability_timeout",
+        "elapsed_s": 94.448,
+        "required_parameters": {
+          "COM_RC_OVERRIDE": 3,
+          "EKF2_MAG_TYPE": 0,
+          "MIS_TAKEOFF_ALT": 1.7000000476837158
+        },
+        "min_wall_surface_clearance_m": 1.354846764034286,
+        "max_estimated_horizontal_speed_m_s": 0.31084377444321243,
+        "scan_fault_to_zero_command_s": null,
+        "ulog_files": [
+          "rootfs/log/2026-10-12/06_31_00.ulg"
+        ],
+        "binary_unchanged": true
+      },
+      "samples": 451,
+      "duration_s": 26.999999999999993,
+      "failure_counts": {
+        "speed": 173,
+        "xy": 181,
+        "vz": 56,
+        "uwb": 78,
+        "z": 17
+      },
+      "failure_combinations": {
+        "none": 145,
+        "speed": 94,
+        "xy,speed": 32,
+        "xy": 57,
+        "speed,vz": 12,
+        "xy,uwb": 39,
+        "xy,speed,uwb": 18,
+        "xy,vz": 4,
+        "xy,speed,vz": 4,
+        "xy,speed,z,vz": 4,
+        "xy,speed,z": 2,
+        "xy,z": 1,
+        "xy,z,vz": 5,
+        "speed,z,vz": 3,
+        "vz": 10,
+        "xy,z,uwb": 1,
+        "xy,z,vz,uwb": 1,
+        "xy,vz,uwb": 9,
+        "xy,speed,vz,uwb": 4,
+        "uwb": 6
+      },
+      "longest_continuous_s": {
+        "xy": 4.920000000000002,
+        "speed": 2.8799999999999955,
+        "z": 12.719999999999999,
+        "vz": 6.119999999999997,
+        "all_available": 1.6799999999999926
+      },
+      "error_stats": {
+        "xy": {
+          "p50": 0.13038564391545404,
+          "p95": 0.2742578043741994,
+          "maximum": 0.41205272412783694
+        },
+        "speed": {
+          "p50": 0.08102308723511394,
+          "p95": 0.20618293447317998,
+          "maximum": 0.26955400042882416
+        },
+        "z": {
+          "p50": 0.05732421874999982,
+          "p95": 0.14478759765624982,
+          "maximum": 0.17283325195312482
+        },
+        "vz": {
+          "p50": 0.045499466359615326,
+          "p95": 0.12579035013914108,
+          "maximum": 0.19997088611125946
+        },
+        "uwb": {
+          "p50": 0.15775291314039136,
+          "p95": 0.30322859023277293,
+          "maximum": 0.5177457565716608
+        }
+      },
+      "truth_xy_error_stats": {
+        "p50": 0.15733460445452974,
+        "p95": 0.2974479112746916,
+        "maximum": 0.5300995563826225
+      },
+      "truth_speed_stats": {
+        "p50": 0.07280109889280519,
+        "p95": 0.3004162739817654,
+        "maximum": 0.41012193308819755
+      },
+      "velocity_estimation_error_stats": {
+        "p50": 0.09588705584877624,
+        "p95": 0.2751722771995463,
+        "maximum": 0.4487421482152842
+      },
+      "horizontal_control_counts": {
+        "position": 451
+      },
+      "source_sha256": {
+        "mission.jsonl": "1ec2523cde55ccc5589811b0cebd2cadb25add3c87cf416afa8e22e62ba6caf1",
+        "telemetry.jsonl": "bb3d030ab5899ee3d671b750c8a895a5060e77e005eb120a15972f2caf3f96dc"
+      },
+      "scope": "Exact timestamp telemetry z/vz; legacy UWB snapshots unavailable, hence all_available is an upper bound on stable duration."
+    },
+    {
+      "run": "/home/dronestock/uwb_sim/uwb-lidar-integration-20261012/hover-position-16/clear-s102-a1",
+      "status": {
+        "errors": [],
+        "physical_writes": 0,
+        "armed_seen": true,
+        "airborne_seen": true,
+        "offboard_seen": true,
+        "moving_seen": true,
+        "feedback_count": 2364,
+        "ev_samples": 3065,
+        "flow_samples": 3159,
+        "flow_invalid_samples": 1208,
+        "range_samples": 1951,
+        "lidar_samples": 767,
+        "final_phase": "FAILED",
+        "final_reason": "hover_stability_timeout",
+        "elapsed_s": 79.616,
+        "required_parameters": {
+          "COM_RC_OVERRIDE": 3,
+          "EKF2_MAG_TYPE": 0,
+          "MIS_TAKEOFF_ALT": 1.7000000476837158
+        },
+        "min_wall_surface_clearance_m": 1.6333398355861164,
+        "max_estimated_horizontal_speed_m_s": 0.3627470141901437,
+        "scan_fault_to_zero_command_s": null,
+        "ulog_files": [
+          "rootfs/log/2026-10-12/06_31_55.ulg"
+        ],
+        "binary_unchanged": true
+      },
+      "samples": 451,
+      "duration_s": 26.999999999999993,
+      "failure_counts": {
+        "vz": 72,
+        "speed": 119,
+        "xy": 72,
+        "uwb": 19,
+        "z": 34
+      },
+      "failure_combinations": {
+        "vz": 44,
+        "none": 220,
+        "speed,vz": 10,
+        "speed": 71,
+        "xy,speed": 23,
+        "xy": 30,
+        "xy,uwb": 13,
+        "xy,speed,uwb": 4,
+        "speed,z": 6,
+        "z": 12,
+        "z,vz": 12,
+        "speed,z,vz": 4,
+        "xy,speed,vz,uwb": 1,
+        "xy,vz,uwb": 1
+      },
+      "longest_continuous_s": {
+        "xy": 6.783999999999999,
+        "speed": 2.280000000000001,
+        "z": 13.143999999999998,
+        "vz": 4.079999999999998,
+        "all_available": 1.6240000000000023
+      },
+      "error_stats": {
+        "xy": {
+          "p50": 0.09741266304244914,
+          "p95": 0.227329268018631,
+          "maximum": 0.24585652491206322
+        },
+        "speed": {
+          "p50": 0.06925365812453207,
+          "p95": 0.19475996448542832,
+          "maximum": 0.2774215830126236
+        },
+        "z": {
+          "p50": 0.06138916015625018,
+          "p95": 0.18426513671875,
+          "maximum": 0.23543090820312518
+        },
+        "vz": {
+          "p50": 0.045767709612846375,
+          "p95": 0.13910304754972458,
+          "maximum": 0.21169304847717285
+        },
+        "uwb": {
+          "p50": 0.10843715616931784,
+          "p95": 0.24690383518407216,
+          "maximum": 0.2805192368331337
+        }
+      },
+      "truth_xy_error_stats": {
+        "p50": 0.10582710580868732,
+        "p95": 0.24829544362961856,
+        "maximum": 0.26689190022412485
+      },
+      "truth_speed_stats": {
+        "p50": 0.09433981132056604,
+        "p95": 0.21046908226708763,
+        "maximum": 0.25
+      },
+      "velocity_estimation_error_stats": {
+        "p50": 0.07481262072989163,
+        "p95": 0.18197376471085921,
+        "maximum": 0.24116717601355672
+      },
+      "horizontal_control_counts": {
+        "position": 451
+      },
+      "source_sha256": {
+        "mission.jsonl": "6925be6007ff07790bca0807398609ac84c7a0c94ab96ec0acebb96d5d11baa4",
+        "telemetry.jsonl": "f1eb209ed38c82794522ee1b72700f64738081ee49bde9cdfbd65cb747ca6fe3"
+      },
+      "scope": "Exact timestamp telemetry z/vz; legacy UWB snapshots unavailable, hence all_available is an upper bound on stable duration."
+    },
+    {
+      "run": "/home/dronestock/uwb_sim/uwb-lidar-integration-20261012/hover-position-16/clear-s103-a1",
+      "status": {
+        "errors": [],
+        "physical_writes": 0,
+        "armed_seen": true,
+        "airborne_seen": true,
+        "offboard_seen": true,
+        "moving_seen": true,
+        "feedback_count": 2103,
+        "ev_samples": 2869,
+        "flow_samples": 2958,
+        "flow_invalid_samples": 1229,
+        "range_samples": 1729,
+        "lidar_samples": 718,
+        "final_phase": "FAILED",
+        "final_reason": "hover_stability_timeout",
+        "elapsed_s": 74.72,
+        "required_parameters": {
+          "COM_RC_OVERRIDE": 3,
+          "EKF2_MAG_TYPE": 0,
+          "MIS_TAKEOFF_ALT": 1.7000000476837158
+        },
+        "min_wall_surface_clearance_m": 1.422588321957644,
+        "max_estimated_horizontal_speed_m_s": 0.3235415996432787,
+        "scan_fault_to_zero_command_s": null,
+        "ulog_files": [
+          "rootfs/log/2026-10-12/06_32_42.ulg"
+        ],
+        "binary_unchanged": true
+      },
+      "samples": 451,
+      "duration_s": 27.0,
+      "failure_counts": {
+        "speed": 163,
+        "vz": 68,
+        "z": 12,
+        "xy": 139,
+        "uwb": 31
+      },
+      "failure_combinations": {
+        "none": 166,
+        "speed": 86,
+        "speed,vz": 16,
+        "vz": 32,
+        "z,vz": 6,
+        "speed,z,vz": 3,
+        "xy,vz": 6,
+        "xy": 53,
+        "xy,speed": 44,
+        "xy,uwb": 24,
+        "xy,speed,uwb": 7,
+        "xy,speed,vz": 5,
+        "z": 1,
+        "speed,z": 2
+      },
+      "longest_continuous_s": {
+        "xy": 4.975999999999999,
+        "speed": 1.9199999999999946,
+        "z": 18.0,
+        "vz": 8.399999999999999,
+        "all_available": 1.1999999999999957
+      },
+      "error_stats": {
+        "xy": {
+          "p50": 0.11586210569336898,
+          "p95": 0.24137038222651816,
+          "maximum": 0.3266411788993703
+        },
+        "speed": {
+          "p50": 0.07917991806188844,
+          "p95": 0.20977702609949223,
+          "maximum": 0.2950831759184579
+        },
+        "z": {
+          "p50": 0.05772094726562482,
+          "p95": 0.14294738769531268,
+          "maximum": 0.15452880859375018
+        },
+        "vz": {
+          "p50": 0.050738222897052765,
+          "p95": 0.1313132494688034,
+          "maximum": 0.1828010082244873
+        },
+        "uwb": {
+          "p50": 0.13299949054602161,
+          "p95": 0.26633894564956845,
+          "maximum": 0.36017063214322254
+        }
+      },
+      "truth_xy_error_stats": {
+        "p50": 0.13483103744154862,
+        "p95": 0.27029693961125384,
+        "maximum": 0.335671240666716
+      },
+      "truth_speed_stats": {
+        "p50": 0.1,
+        "p95": 0.26124657138707696,
+        "maximum": 0.37483329627982626
+      },
+      "velocity_estimation_error_stats": {
+        "p50": 0.09797711317992422,
+        "p95": 0.20388591816504403,
+        "maximum": 0.2718583578592738
+      },
+      "horizontal_control_counts": {
+        "position": 451
+      },
+      "source_sha256": {
+        "mission.jsonl": "b092450a8bfe47cf0f6dce820e423417edeb1ce32c3873be2b35b9d132ca97a1",
+        "telemetry.jsonl": "40b95c197b34bae679a41d4274b852871fd38dfa88a4ec8babb6baff1ef1381b"
+      },
+      "scope": "Exact timestamp telemetry z/vz; legacy UWB snapshots unavailable, hence all_available is an upper bound on stable duration."
+    }
+  ]
+}

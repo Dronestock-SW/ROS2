@@ -1,0 +1,17 @@
+{
+  "base_commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+  "source": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\dronestock\\uwb_sim\\uwb-lidar-integration-20261012\\PX4-lidar2d\\src\\modules\\simulation\\simulator_sih\\sih.cpp",
+  "sha256": "aa88fe177815b7a0e7ebbc74575e5611e28d0b2ebba7bf68aae7ed5d43de0fec",
+  "condition": "nonzero simulated body thrust",
+  "accel_stddev_m_s2": [
+    0.5,
+    1.7,
+    1.4
+  ],
+  "gyro_stddev_rad_s": [
+    0.14,
+    0.07,
+    0.03
+  ],
+  "sensor_noise_modified": false
+}

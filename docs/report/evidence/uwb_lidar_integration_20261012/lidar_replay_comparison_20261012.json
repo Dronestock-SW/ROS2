@@ -1,0 +1,483 @@
+{
+  "schema": 1,
+  "scope": "diagnostic stability and availability; no independent position/rotation truth",
+  "results": [
+    {
+      "schema": 1,
+      "raw_path": "C:\\Users\\A\\Documents\\Codex\\2026-10-12\\new-chat\\work\\capture-archive-20261011\\capture-1791705608923473188-6120f433\\events.jsonl",
+      "raw_sha256": "9e6036bbb58af75c08461561bbdcfe6df134df11b2b4deedd92524454be0db40",
+      "topics": {
+        "/uwb/received": 3854,
+        "/uwb/status": 48,
+        "/uwb/btf_pose": 1889,
+        "/uwb/btf_decision": 1891,
+        "/uwb/btf_xyz": 646,
+        "/uwb/btf_status": 47,
+        "/uas1/mavlink_source": 22477,
+        "/mavros/imu/data": 4577,
+        "/mavros/downward_0": 451,
+        "/mavros/estimator_status": 458,
+        "/mavros/local_position/odom": 1373,
+        "/mavros/timesync_status": 457,
+        "/mavros/rc/in": 457,
+        "/scan": 456,
+        "/mavros/extended_state": 228,
+        "/mavros/state": 45
+      },
+      "scans": 456,
+      "accepted_displacements": 113,
+      "reasons": {
+        "new_segment": 1,
+        "bidirectional_inconsistent": 5,
+        "reacquired_pose_only": 11,
+        "large_residual": 303,
+        "not_converged": 308,
+        "reverse_rejected": 324,
+        "insufficient_correspondences": 303,
+        "low_overlap": 306,
+        "degenerate_geometry": 239
+      },
+      "new_comparator_yaw_deg": 19.748053896635493,
+      "original_analyze_py_reproduced": false,
+      "original_minus267_reproduced": false,
+      "imu_gate": "NOT_EVALUATED_NO_MOUNT_ROTATION",
+      "imu_to_scan_rotation": null,
+      "gyro_bias_calibrated": false,
+      "header_epoch": "unaltered recorded header.stamp; physical timestamp definition not verified",
+      "median_ray_span_to_scan_time": 1.0724999799806896,
+      "config": {
+        "range_min_m": 0.2,
+        "edge_m": 0.3,
+        "eigen_ratio": 0.12,
+        "correspondence_m": 0.2,
+        "huber_m": 0.03,
+        "trim_quantile": 0.9,
+        "iterations": 30,
+        "convergence_translation_m": 0.0001,
+        "convergence_yaw_rad": 5e-05,
+        "min_correspondences": 60,
+        "min_overlap": 0.5,
+        "residual_p90_m": 0.05,
+        "max_condition": 1000.0,
+        "max_pair_translation_m": 0.2,
+        "max_pair_yaw_rad": 0.17453292519943295,
+        "max_gap_s": 0.25,
+        "reverse_translation_m": 0.02,
+        "reverse_yaw_rad": 0.005235987755982988,
+        "imu_yaw_tolerance_rad": 0.017453292519943295,
+        "keyframe_translation_m": 0.35,
+        "keyframe_yaw_rad": 0.20943951023931956
+      },
+      "deskew_applied": false,
+      "fc_output": false,
+      "processing_ms": {
+        "median": 5.878349999999999,
+        "p95": 14.90195,
+        "maximum": 29.7242
+      },
+      "processing_scope": "Includes candidate and two comparators on this replay host; not Jetson deployment latency",
+      "scope": "file replay only; no independent position truth or flight validation",
+      "candidate_segments": [
+        {
+          "segment": 0,
+          "pose_outputs": 125,
+          "last_yaw_deg": 1.620233698251475,
+          "max_abs_yaw_deg": 2.539036701865469
+        }
+      ],
+      "accepted_fraction_of_scan_intervals": 0.24835164835164836,
+      "max_accepted_output_gap_s": 0.5012021064758301,
+      "summary_path": "outputs\\replay_1700_lidar_only\\summary.json",
+      "scans_sha256": "4452984b5c7d0e2de02edd299ba8e9041f1f69ac11d11f5d62c71710584b8e71"
+    },
+    {
+      "schema": 1,
+      "raw_path": "C:\\Users\\A\\Documents\\Codex\\2026-10-12\\new-chat\\work\\capture-archive-20261011\\capture-1791711678327240944-a2ec1aa5\\events.jsonl",
+      "raw_sha256": "d8f0b19cc2f68988a627792a22188418d2257a5557623d870150dc59e10861be",
+      "topics": {
+        "/uwb/received": 5861,
+        "/uwb/status": 73,
+        "/uwb/btf_decision": 2923,
+        "/uwb/btf_status": 73,
+        "/uwb/btf_pose": 2917,
+        "/scan": 723,
+        "/uas1/mavlink_source": 34935,
+        "/mavros/imu/data": 7138,
+        "/mavros/local_position/odom": 2140,
+        "/mavros/downward_0": 703,
+        "/mavros/extended_state": 357,
+        "/mavros/rc/in": 713,
+        "/mavros/timesync_status": 713,
+        "/mavros/estimator_status": 713,
+        "/mavros/state": 71
+      },
+      "scans": 723,
+      "accepted_displacements": 653,
+      "reasons": {
+        "new_segment": 1,
+        "bidirectional_inconsistent": 7,
+        "reacquired_pose_only": 34,
+        "not_converged": 20,
+        "reverse_rejected": 9
+      },
+      "new_comparator_yaw_deg": -82.36635412872695,
+      "original_analyze_py_reproduced": false,
+      "original_minus267_reproduced": false,
+      "imu_gate": "NOT_EVALUATED_NO_MOUNT_ROTATION",
+      "imu_to_scan_rotation": null,
+      "gyro_bias_calibrated": false,
+      "header_epoch": "unaltered recorded header.stamp; physical timestamp definition not verified",
+      "median_ray_span_to_scan_time": 1.072499955137283,
+      "config": {
+        "range_min_m": 0.2,
+        "edge_m": 0.3,
+        "eigen_ratio": 0.12,
+        "correspondence_m": 0.2,
+        "huber_m": 0.03,
+        "trim_quantile": 0.9,
+        "iterations": 30,
+        "convergence_translation_m": 0.0001,
+        "convergence_yaw_rad": 5e-05,
+        "min_correspondences": 60,
+        "min_overlap": 0.5,
+        "residual_p90_m": 0.05,
+        "max_condition": 1000.0,
+        "max_pair_translation_m": 0.2,
+        "max_pair_yaw_rad": 0.17453292519943295,
+        "max_gap_s": 0.25,
+        "reverse_translation_m": 0.02,
+        "reverse_yaw_rad": 0.005235987755982988,
+        "imu_yaw_tolerance_rad": 0.017453292519943295,
+        "keyframe_translation_m": 0.35,
+        "keyframe_yaw_rad": 0.20943951023931956
+      },
+      "deskew_applied": false,
+      "fc_output": false,
+      "processing_ms": {
+        "median": 8.8802,
+        "p95": 18.025739999999995,
+        "maximum": 31.3518
+      },
+      "processing_scope": "Includes candidate and two comparators on this replay host; not Jetson deployment latency",
+      "scope": "file replay only; no independent position truth or flight validation",
+      "candidate_segments": [
+        {
+          "segment": 0,
+          "pose_outputs": 688,
+          "last_yaw_deg": -0.33180715411113076,
+          "max_abs_yaw_deg": 0.43644926163874104
+        }
+      ],
+      "accepted_fraction_of_scan_intervals": 0.9044321329639889,
+      "max_accepted_output_gap_s": 0.5013229846954346,
+      "summary_path": "outputs\\replay_1841_lidar_only\\summary.json",
+      "scans_sha256": "2c0bfb550be55bf3e0d9be9ce03f5d5654d4b00fc505963ccb6c5b80d6957cb6"
+    },
+    {
+      "schema": 1,
+      "raw_path": "C:\\Users\\A\\Documents\\Codex\\2026-10-12\\new-chat\\work\\capture-archive-20261011\\capture-1791711678327240944-a2ec1aa5\\events.jsonl",
+      "raw_sha256": "d8f0b19cc2f68988a627792a22188418d2257a5557623d870150dc59e10861be",
+      "topics": {
+        "/uwb/received": 5861,
+        "/uwb/status": 73,
+        "/uwb/btf_decision": 2923,
+        "/uwb/btf_status": 73,
+        "/uwb/btf_pose": 2917,
+        "/scan": 723,
+        "/uas1/mavlink_source": 34935,
+        "/mavros/imu/data": 7138,
+        "/mavros/local_position/odom": 2140,
+        "/mavros/downward_0": 703,
+        "/mavros/extended_state": 357,
+        "/mavros/rc/in": 713,
+        "/mavros/timesync_status": 713,
+        "/mavros/estimator_status": 713,
+        "/mavros/state": 71
+      },
+      "scans": 723,
+      "accepted_displacements": 638,
+      "reasons": {
+        "imu_unavailable": 12,
+        "new_segment": 1,
+        "reverse_rejected": 21,
+        "reacquired_pose_only": 35,
+        "not_converged": 12,
+        "bidirectional_inconsistent": 7
+      },
+      "new_comparator_yaw_deg": -82.36635412872695,
+      "original_analyze_py_reproduced": false,
+      "original_minus267_reproduced": false,
+      "imu_gate": "planar scan-Z gyro diagnostic",
+      "imu_to_scan_rotation": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "gyro_bias_calibrated": false,
+      "header_epoch": "unaltered recorded header.stamp; physical timestamp definition not verified",
+      "median_ray_span_to_scan_time": 1.072499955137283,
+      "config": {
+        "range_min_m": 0.2,
+        "edge_m": 0.3,
+        "eigen_ratio": 0.12,
+        "correspondence_m": 0.2,
+        "huber_m": 0.03,
+        "trim_quantile": 0.9,
+        "iterations": 30,
+        "convergence_translation_m": 0.0001,
+        "convergence_yaw_rad": 5e-05,
+        "min_correspondences": 60,
+        "min_overlap": 0.5,
+        "residual_p90_m": 0.05,
+        "max_condition": 1000.0,
+        "max_pair_translation_m": 0.2,
+        "max_pair_yaw_rad": 0.17453292519943295,
+        "max_gap_s": 0.25,
+        "reverse_translation_m": 0.02,
+        "reverse_yaw_rad": 0.005235987755982988,
+        "imu_yaw_tolerance_rad": 0.017453292519943295,
+        "keyframe_translation_m": 0.35,
+        "keyframe_yaw_rad": 0.20943951023931956
+      },
+      "deskew_applied": false,
+      "fc_output": false,
+      "processing_ms": {
+        "median": 8.8885,
+        "p95": 18.38325,
+        "maximum": 28.9291
+      },
+      "processing_scope": "Includes candidate and two comparators on this replay host; not Jetson deployment latency",
+      "scope": "file replay only; no independent position truth or flight validation",
+      "candidate_segments": [
+        {
+          "segment": 0,
+          "pose_outputs": 674,
+          "last_yaw_deg": -0.33294563812778555,
+          "max_abs_yaw_deg": 0.44005648635898786
+        }
+      ],
+      "accepted_fraction_of_scan_intervals": 0.8836565096952909,
+      "max_accepted_output_gap_s": 0.6010980606079102,
+      "summary_path": "outputs\\replay_1841_imu_z_up_assumption\\summary.json",
+      "scans_sha256": "2895024eefc7948f039bd4e92d35b2e60c17da1bca46aeb2088683f6adcb5ec7"
+    },
+    {
+      "schema": 1,
+      "raw_path": "C:\\Users\\A\\Documents\\Codex\\2026-10-12\\new-chat\\work\\capture-archive-20261011\\capture-1791711935890071726-52ca3d2e\\events.jsonl",
+      "raw_sha256": "d6389183eabad4bea78bf0cad68d110ff6911005704c4712c62923f249ce13ec",
+      "topics": {
+        "/scan": 1791,
+        "/uwb/btf_decision": 7158,
+        "/uwb/btf_pose": 7118,
+        "/uas1/mavlink_source": 87458,
+        "/mavros/imu/data": 17847,
+        "/mavros/local_position/odom": 5359,
+        "/mavros/extended_state": 893,
+        "/mavros/downward_0": 1760,
+        "/mavros/rc/in": 1786,
+        "/mavros/timesync_status": 1786,
+        "/mavros/estimator_status": 1786,
+        "/uwb/btf_status": 179,
+        "/mavros/state": 178,
+        "/uwb/received": 14262,
+        "/uwb/status": 178
+      },
+      "scans": 1791,
+      "accepted_displacements": 1633,
+      "reasons": {
+        "imu_unavailable": 12,
+        "new_segment": 2,
+        "not_converged": 41,
+        "reacquired_pose_only": 71,
+        "bidirectional_inconsistent": 20,
+        "reverse_rejected": 16
+      },
+      "new_comparator_yaw_deg": -242.79083048044623,
+      "original_analyze_py_reproduced": false,
+      "original_minus267_reproduced": false,
+      "imu_gate": "planar scan-Z gyro diagnostic",
+      "imu_to_scan_rotation": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "gyro_bias_calibrated": false,
+      "header_epoch": "unaltered recorded header.stamp; physical timestamp definition not verified",
+      "median_ray_span_to_scan_time": 1.0724999602292073,
+      "config": {
+        "range_min_m": 0.2,
+        "edge_m": 0.3,
+        "eigen_ratio": 0.12,
+        "correspondence_m": 0.2,
+        "huber_m": 0.03,
+        "trim_quantile": 0.9,
+        "iterations": 30,
+        "convergence_translation_m": 0.0001,
+        "convergence_yaw_rad": 5e-05,
+        "min_correspondences": 60,
+        "min_overlap": 0.5,
+        "residual_p90_m": 0.05,
+        "max_condition": 1000.0,
+        "max_pair_translation_m": 0.2,
+        "max_pair_yaw_rad": 0.17453292519943295,
+        "max_gap_s": 0.25,
+        "reverse_translation_m": 0.02,
+        "reverse_yaw_rad": 0.005235987755982988,
+        "imu_yaw_tolerance_rad": 0.017453292519943295,
+        "keyframe_translation_m": 0.35,
+        "keyframe_yaw_rad": 0.20943951023931956
+      },
+      "deskew_applied": false,
+      "fc_output": false,
+      "processing_ms": {
+        "median": 8.915,
+        "p95": 17.1994,
+        "maximum": 29.779
+      },
+      "processing_scope": "Includes candidate and two comparators on this replay host; not Jetson deployment latency",
+      "scope": "file replay only; no independent position truth or flight validation",
+      "candidate_segments": [
+        {
+          "segment": 0,
+          "pose_outputs": 1559,
+          "last_yaw_deg": -0.29410862554548134,
+          "max_abs_yaw_deg": 0.38939504109620227
+        },
+        {
+          "segment": 1,
+          "pose_outputs": 147,
+          "last_yaw_deg": -0.30468028437167727,
+          "max_abs_yaw_deg": 0.3403835830658409
+        }
+      ],
+      "accepted_fraction_of_scan_intervals": 0.912290502793296,
+      "max_accepted_output_gap_s": 0.5013482570648193,
+      "summary_path": "outputs\\replay_1845_imu_z_up_assumption\\summary.json",
+      "scans_sha256": "e773132a2ef906d44a96589ac47a4b5b5db9621ed15909150739f260ce0ad4f3"
+    },
+    {
+      "schema": 1,
+      "raw_path": "C:\\Users\\A\\Documents\\Codex\\2026-10-12\\new-chat\\work\\capture-archive-20261011\\capture-1791713032937613871-26cb9aa9\\events.jsonl",
+      "raw_sha256": "531721e5ab67ccd741acd9bf4e1d590f1dc2d1a6e34c15ea866a738c4221fdea",
+      "topics": {
+        "/uwb/received": 14417,
+        "/uwb/status": 180,
+        "/scan": 1780,
+        "/uwb/btf_decision": 7109,
+        "/uas1/mavlink_source": 95231,
+        "/mavros/imu/data": 17753,
+        "/mavros/downward_0": 1749,
+        "/mavros/local_position/odom": 5326,
+        "/mavros/timesync_status": 1776,
+        "/mavros/extended_state": 888,
+        "/uwb/btf_status": 178,
+        "/mavros/rc/in": 1775,
+        "/mavros/estimator_status": 1775,
+        "/mavros/state": 177,
+        "/uwb/btf_pose": 1
+      },
+      "scans": 1780,
+      "accepted_displacements": 1640,
+      "reasons": {
+        "imu_unavailable": 10,
+        "new_segment": 1,
+        "not_converged": 26,
+        "reacquired_pose_only": 64,
+        "bidirectional_inconsistent": 11,
+        "reverse_rejected": 31
+      },
+      "new_comparator_yaw_deg": -183.92907307084783,
+      "original_analyze_py_reproduced": false,
+      "original_minus267_reproduced": false,
+      "imu_gate": "planar scan-Z gyro diagnostic",
+      "imu_to_scan_rotation": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "gyro_bias_calibrated": false,
+      "header_epoch": "unaltered recorded header.stamp; physical timestamp definition not verified",
+      "median_ray_span_to_scan_time": 1.0724999553367502,
+      "config": {
+        "range_min_m": 0.2,
+        "edge_m": 0.3,
+        "eigen_ratio": 0.12,
+        "correspondence_m": 0.2,
+        "huber_m": 0.03,
+        "trim_quantile": 0.9,
+        "iterations": 30,
+        "convergence_translation_m": 0.0001,
+        "convergence_yaw_rad": 5e-05,
+        "min_correspondences": 60,
+        "min_overlap": 0.5,
+        "residual_p90_m": 0.05,
+        "max_condition": 1000.0,
+        "max_pair_translation_m": 0.2,
+        "max_pair_yaw_rad": 0.17453292519943295,
+        "max_gap_s": 0.25,
+        "reverse_translation_m": 0.02,
+        "reverse_yaw_rad": 0.005235987755982988,
+        "imu_yaw_tolerance_rad": 0.017453292519943295,
+        "keyframe_translation_m": 0.35,
+        "keyframe_yaw_rad": 0.20943951023931956
+      },
+      "deskew_applied": false,
+      "fc_output": false,
+      "processing_ms": {
+        "median": 10.47735,
+        "p95": 19.527964999999988,
+        "maximum": 79.9037
+      },
+      "processing_scope": "Includes candidate and two comparators on this replay host; not Jetson deployment latency",
+      "scope": "file replay only; no independent position truth or flight validation",
+      "candidate_segments": [
+        {
+          "segment": 0,
+          "pose_outputs": 1705,
+          "last_yaw_deg": 0.0852791700351287,
+          "max_abs_yaw_deg": 0.39242768318073334
+        }
+      ],
+      "accepted_fraction_of_scan_intervals": 0.9218662169758292,
+      "max_accepted_output_gap_s": 0.40166568756103516,
+      "summary_path": "outputs\\replay_1903_imu_z_up_assumption\\summary.json",
+      "scans_sha256": "77dfbeffbf5a652116711532284a22fc21fab961df0516f15f84f0da216d275a"
+    }
+  ]
+}

@@ -1,0 +1,1265 @@
+{
+  "validation_runs": 20,
+  "checks": [
+    {
+      "run": "clear-s501-a1",
+      "source": "obstacle_sitl.py",
+      "current_sha256": "af7d902291a2d6cef8b8b82a1e0f5d3d99453b51e4aac2f6f5d27d311ffd0ff9",
+      "recorded_sha256": "af7d902291a2d6cef8b8b82a1e0f5d3d99453b51e4aac2f6f5d27d311ffd0ff9",
+      "equal": true
+    },
+    {
+      "run": "clear-s501-a1",
+      "source": "guarded_local_xy.py",
+      "current_sha256": "7e6e649edcd267089828ec58538fc74a19d0b6afcf4503b0ecfc67b261ba2304",
+      "recorded_sha256": "7e6e649edcd267089828ec58538fc74a19d0b6afcf4503b0ecfc67b261ba2304",
+      "equal": true
+    },
+    {
+      "run": "clear-s501-a1",
+      "source": "local_xy.py",
+      "current_sha256": "a303f751dc876949d92121af925030792b796b16085b963241204451d631848f",
+      "recorded_sha256": "a303f751dc876949d92121af925030792b796b16085b963241204451d631848f",
+      "equal": true
+    },
+    {
+      "run": "clear-s501-a1",
+      "source": "horizontal_obstacles.py",
+      "current_sha256": "8e245e7cb5369dc969f05aefda24008edb04896e808b5d4439140e02d887de77",
+      "recorded_sha256": "8e245e7cb5369dc969f05aefda24008edb04896e808b5d4439140e02d887de77",
+      "equal": true
+    },
+    {
+      "run": "clear-s501-a1",
+      "source": "local_command.py",
+      "current_sha256": "3b4b368f62701d3f49cf6d3ef9f013581f173773ac99503595f9f5a0eea95474",
+      "recorded_sha256": "3b4b368f62701d3f49cf6d3ef9f013581f173773ac99503595f9f5a0eea95474",
+      "equal": true
+    },
+    {
+      "run": "clear-s501-a1",
+      "source": "lidar_spinning.py",
+      "current_sha256": "707693ba34cdc446812a6bc7649b61b40b3691eea59eb959820f79618a44d81d",
+      "recorded_sha256": "707693ba34cdc446812a6bc7649b61b40b3691eea59eb959820f79618a44d81d",
+      "equal": true
+    },
+    {
+      "run": "clear-s501-a1",
+      "source": "lidar_timing.py",
+      "current_sha256": "0445e57dbce77c042eb063d15b2635885aca86c1caf925d94138773bb221849e",
+      "recorded_sha256": "0445e57dbce77c042eb063d15b2635885aca86c1caf925d94138773bb221849e",
+      "equal": true
+    },
+    {
+      "run": "clear-s501-a1",
+      "source": "lidar_scanmatch.py",
+      "current_sha256": "2b4cf8085e6aa2b2bafe200990145f8299caf638669d6a4d7b1c81505feb6b64",
+      "recorded_sha256": "2b4cf8085e6aa2b2bafe200990145f8299caf638669d6a4d7b1c81505feb6b64",
+      "equal": true
+    },
+    {
+      "run": "clear-s501-a1",
+      "source": "lidar_sitl_observation.py",
+      "current_sha256": "b626a0f1811b162b5f4f4bb1ad6104b997e4eb37acfa156a82d1359d59792e3f",
+      "recorded_sha256": "b626a0f1811b162b5f4f4bb1ad6104b997e4eb37acfa156a82d1359d59792e3f",
+      "equal": true
+    },
+    {
+      "run": "clear-s502-a1",
+      "source": "obstacle_sitl.py",
+      "current_sha256": "af7d902291a2d6cef8b8b82a1e0f5d3d99453b51e4aac2f6f5d27d311ffd0ff9",
+      "recorded_sha256": "af7d902291a2d6cef8b8b82a1e0f5d3d99453b51e4aac2f6f5d27d311ffd0ff9",
+      "equal": true
+    },
+    {
+      "run": "clear-s502-a1",
+      "source": "guarded_local_xy.py",
+      "current_sha256": "7e6e649edcd267089828ec58538fc74a19d0b6afcf4503b0ecfc67b261ba2304",
+      "recorded_sha256": "7e6e649edcd267089828ec58538fc74a19d0b6afcf4503b0ecfc67b261ba2304",
+      "equal": true
+    },
+    {
+      "run": "clear-s502-a1",
+      "source": "local_xy.py",
+      "current_sha256": "a303f751dc876949d92121af925030792b796b16085b963241204451d631848f",
+      "recorded_sha256": "a303f751dc876949d92121af925030792b796b16085b963241204451d631848f",
+      "equal": true
+    },
+    {
+      "run": "clear-s502-a1",
+      "source": "horizontal_obstacles.py",
+      "current_sha256": "8e245e7cb5369dc969f05aefda24008edb04896e808b5d4439140e02d887de77",
+      "recorded_sha256": "8e245e7cb5369dc969f05aefda24008edb04896e808b5d4439140e02d887de77",
+      "equal": true
+    },
+    {
+      "run": "clear-s502-a1",
+      "source": "local_command.py",
+      "current_sha256": "3b4b368f62701d3f49cf6d3ef9f013581f173773ac99503595f9f5a0eea95474",
+      "recorded_sha256": "3b4b368f62701d3f49cf6d3ef9f013581f173773ac99503595f9f5a0eea95474",
+      "equal": true
+    },
+    {
+      "run": "clear-s502-a1",
+      "source": "lidar_spinning.py",
+      "current_sha256": "707693ba34cdc446812a6bc7649b61b40b3691eea59eb959820f79618a44d81d",
+      "recorded_sha256": "707693ba34cdc446812a6bc7649b61b40b3691eea59eb959820f79618a44d81d",
+      "equal": true
+    },
+    {
+      "run": "clear-s502-a1",
+      "source": "lidar_timing.py",
+      "current_sha256": "0445e57dbce77c042eb063d15b2635885aca86c1caf925d94138773bb221849e",
+      "recorded_sha256": "0445e57dbce77c042eb063d15b2635885aca86c1caf925d94138773bb221849e",
+      "equal": true
+    },
+    {
+      "run": "clear-s502-a1",
+      "source": "lidar_scanmatch.py",
+      "current_sha256": "2b4cf8085e6aa2b2bafe200990145f8299caf638669d6a4d7b1c81505feb6b64",
+      "recorded_sha256": "2b4cf8085e6aa2b2bafe200990145f8299caf638669d6a4d7b1c81505feb6b64",
+      "equal": true
+    },
+    {
+      "run": "clear-s502-a1",
+      "source": "lidar_sitl_observation.py",
+      "current_sha256": "b626a0f1811b162b5f4f4bb1ad6104b997e4eb37acfa156a82d1359d59792e3f",
+      "recorded_sha256": "b626a0f1811b162b5f4f4bb1ad6104b997e4eb37acfa156a82d1359d59792e3f",
+      "equal": true
+    },
+    {
+      "run": "clear-s503-a1",
+      "source": "obstacle_sitl.py",
+      "current_sha256": "af7d902291a2d6cef8b8b82a1e0f5d3d99453b51e4aac2f6f5d27d311ffd0ff9",
+      "recorded_sha256": "af7d902291a2d6cef8b8b82a1e0f5d3d99453b51e4aac2f6f5d27d311ffd0ff9",
+      "equal": true
+    },
+    {
+      "run": "clear-s503-a1",
+      "source": "guarded_local_xy.py",
+      "current_sha256": "7e6e649edcd267089828ec58538fc74a19d0b6afcf4503b0ecfc67b261ba2304",
+      "recorded_sha256": "7e6e649edcd267089828ec58538fc74a19d0b6afcf4503b0ecfc67b261ba2304",
+      "equal": true
+    },
+    {
+      "run": "clear-s503-a1",
+      "source": "local_xy.py",
+      "current_sha256": "a303f751dc876949d92121af925030792b796b16085b963241204451d631848f",
+      "recorded_sha256": "a303f751dc876949d92121af925030792b796b16085b963241204451d631848f",
+      "equal": true
+    },
+    {
+      "run": "clear-s503-a1",
+      "source": "horizontal_obstacles.py",
+      "current_sha256": "8e245e7cb5369dc969f05aefda24008edb04896e808b5d4439140e02d887de77",
+      "recorded_sha256": "8e245e7cb5369dc969f05aefda24008edb04896e808b5d4439140e02d887de77",
+      "equal": true
+    },
+    {
+      "run": "clear-s503-a1",
+      "source": "local_command.py",
+      "current_sha256": "3b4b368f62701d3f49cf6d3ef9f013581f173773ac99503595f9f5a0eea95474",
+      "recorded_sha256": "3b4b368f62701d3f49cf6d3ef9f013581f173773ac99503595f9f5a0eea95474",
+      "equal": true
+    },
+    {
+      "run": "clear-s503-a1",
+      "source": "lidar_spinning.py",
+      "current_sha256": "707693ba34cdc446812a6bc7649b61b40b3691eea59eb959820f79618a44d81d",
+      "recorded_sha256": "707693ba34cdc446812a6bc7649b61b40b3691eea59eb959820f79618a44d81d",
+      "equal": true
+    },
+    {
+      "run": "clear-s503-a1",
+      "source": "lidar_timing.py",
+      "current_sha256": "0445e57dbce77c042eb063d15b2635885aca86c1caf925d94138773bb221849e",
+      "recorded_sha256": "0445e57dbce77c042eb063d15b2635885aca86c1caf925d94138773bb221849e",
+      "equal": true
+    },
+    {
+      "run": "clear-s503-a1",
+      "source": "lidar_scanmatch.py",
+      "current_sha256": "2b4cf8085e6aa2b2bafe200990145f8299caf638669d6a4d7b1c81505feb6b64",
+      "recorded_sha256": "2b4cf8085e6aa2b2bafe200990145f8299caf638669d6a4d7b1c81505feb6b64",
+      "equal": true
+    },
+    {
+      "run": "clear-s503-a1",
+      "source": "lidar_sitl_observation.py",
+      "current_sha256": "b626a0f1811b162b5f4f4bb1ad6104b997e4eb37acfa156a82d1359d59792e3f",
+      "recorded_sha256": "b626a0f1811b162b5f4f4bb1ad6104b997e4eb37acfa156a82d1359d59792e3f",
+      "equal": true
+    },
+    {
+      "run": "wall-s501-a1",
+      "source": "obstacle_sitl.py",
+      "current_sha256": "af7d902291a2d6cef8b8b82a1e0f5d3d99453b51e4aac2f6f5d27d311ffd0ff9",
+      "recorded_sha256": "af7d902291a2d6cef8b8b82a1e0f5d3d99453b51e4aac2f6f5d27d311ffd0ff9",
+      "equal": true
+    },
+    {
+      "run": "wall-s501-a1",
+      "source": "guarded_local_xy.py",
+      "current_sha256": "7e6e649edcd267089828ec58538fc74a19d0b6afcf4503b0ecfc67b261ba2304",
+      "recorded_sha256": "7e6e649edcd267089828ec58538fc74a19d0b6afcf4503b0ecfc67b261ba2304",
+      "equal": true
+    },
+    {
+      "run": "wall-s501-a1",
+      "source": "local_xy.py",
+      "current_sha256": "a303f751dc876949d92121af925030792b796b16085b963241204451d631848f",
+      "recorded_sha256": "a303f751dc876949d92121af925030792b796b16085b963241204451d631848f",
+      "equal": true
+    },
+    {
+      "run": "wall-s501-a1",
+      "source": "horizontal_obstacles.py",
+      "current_sha256": "8e245e7cb5369dc969f05aefda24008edb04896e808b5d4439140e02d887de77",
+      "recorded_sha256": "8e245e7cb5369dc969f05aefda24008edb04896e808b5d4439140e02d887de77",
+      "equal": true
+    },
+    {
+      "run": "wall-s501-a1",
+      "source": "local_command.py",
+      "current_sha256": "3b4b368f62701d3f49cf6d3ef9f013581f173773ac99503595f9f5a0eea95474",
+      "recorded_sha256": "3b4b368f62701d3f49cf6d3ef9f013581f173773ac99503595f9f5a0eea95474",
+      "equal": true
+    },
+    {
+      "run": "wall-s501-a1",
+      "source": "lidar_spinning.py",
+      "current_sha256": "707693ba34cdc446812a6bc7649b61b40b3691eea59eb959820f79618a44d81d",
+      "recorded_sha256": "707693ba34cdc446812a6bc7649b61b40b3691eea59eb959820f79618a44d81d",
+      "equal": true
+    },
+    {
+      "run": "wall-s501-a1",
+      "source": "lidar_timing.py",
+      "current_sha256": "0445e57dbce77c042eb063d15b2635885aca86c1caf925d94138773bb221849e",
+      "recorded_sha256": "0445e57dbce77c042eb063d15b2635885aca86c1caf925d94138773bb221849e",
+      "equal": true
+    },
+    {
+      "run": "wall-s501-a1",
+      "source": "lidar_scanmatch.py",
+      "current_sha256": "2b4cf8085e6aa2b2bafe200990145f8299caf638669d6a4d7b1c81505feb6b64",
+      "recorded_sha256": "2b4cf8085e6aa2b2bafe200990145f8299caf638669d6a4d7b1c81505feb6b64",
+      "equal": true
+    },
+    {
+      "run": "wall-s501-a1",
+      "source": "lidar_sitl_observation.py",
+      "current_sha256": "b626a0f1811b162b5f4f4bb1ad6104b997e4eb37acfa156a82d1359d59792e3f",
+      "recorded_sha256": "b626a0f1811b162b5f4f4bb1ad6104b997e4eb37acfa156a82d1359d59792e3f",
+      "equal": true
+    },
+    {
+      "run": "wall-s502-a1",
+      "source": "obstacle_sitl.py",
+      "current_sha256": "af7d902291a2d6cef8b8b82a1e0f5d3d99453b51e4aac2f6f5d27d311ffd0ff9",
+      "recorded_sha256": "af7d902291a2d6cef8b8b82a1e0f5d3d99453b51e4aac2f6f5d27d311ffd0ff9",
+      "equal": true
+    },
+    {
+      "run": "wall-s502-a1",
+      "source": "guarded_local_xy.py",
+      "current_sha256": "7e6e649edcd267089828ec58538fc74a19d0b6afcf4503b0ecfc67b261ba2304",
+      "recorded_sha256": "7e6e649edcd267089828ec58538fc74a19d0b6afcf4503b0ecfc67b261ba2304",
+      "equal": true
+    },
+    {
+      "run": "wall-s502-a1",
+      "source": "local_xy.py",
+      "current_sha256": "a303f751dc876949d92121af925030792b796b16085b963241204451d631848f",
+      "recorded_sha256": "a303f751dc876949d92121af925030792b796b16085b963241204451d631848f",
+      "equal": true
+    },
+    {
+      "run": "wall-s502-a1",
+      "source": "horizontal_obstacles.py",
+      "current_sha256": "8e245e7cb5369dc969f05aefda24008edb04896e808b5d4439140e02d887de77",
+      "recorded_sha256": "8e245e7cb5369dc969f05aefda24008edb04896e808b5d4439140e02d887de77",
+      "equal": true
+    },
+    {
+      "run": "wall-s502-a1",
+      "source": "local_command.py",
+      "current_sha256": "3b4b368f62701d3f49cf6d3ef9f013581f173773ac99503595f9f5a0eea95474",
+      "recorded_sha256": "3b4b368f62701d3f49cf6d3ef9f013581f173773ac99503595f9f5a0eea95474",
+      "equal": true
+    },
+    {
+      "run": "wall-s502-a1",
+      "source": "lidar_spinning.py",
+      "current_sha256": "707693ba34cdc446812a6bc7649b61b40b3691eea59eb959820f79618a44d81d",
+      "recorded_sha256": "707693ba34cdc446812a6bc7649b61b40b3691eea59eb959820f79618a44d81d",
+      "equal": true
+    },
+    {
+      "run": "wall-s502-a1",
+      "source": "lidar_timing.py",
+      "current_sha256": "0445e57dbce77c042eb063d15b2635885aca86c1caf925d94138773bb221849e",
+      "recorded_sha256": "0445e57dbce77c042eb063d15b2635885aca86c1caf925d94138773bb221849e",
+      "equal": true
+    },
+    {
+      "run": "wall-s502-a1",
+      "source": "lidar_scanmatch.py",
+      "current_sha256": "2b4cf8085e6aa2b2bafe200990145f8299caf638669d6a4d7b1c81505feb6b64",
+      "recorded_sha256": "2b4cf8085e6aa2b2bafe200990145f8299caf638669d6a4d7b1c81505feb6b64",
+      "equal": true
+    },
+    {
+      "run": "wall-s502-a1",
+      "source": "lidar_sitl_observation.py",
+      "current_sha256": "b626a0f1811b162b5f4f4bb1ad6104b997e4eb37acfa156a82d1359d59792e3f",
+      "recorded_sha256": "b626a0f1811b162b5f4f4bb1ad6104b997e4eb37acfa156a82d1359d59792e3f",
+      "equal": true
+    },
+    {
+      "run": "wall-s503-a1",
+      "source": "obstacle_sitl.py",
+      "current_sha256": "af7d902291a2d6cef8b8b82a1e0f5d3d99453b51e4aac2f6f5d27d311ffd0ff9",
+      "recorded_sha256": "af7d902291a2d6cef8b8b82a1e0f5d3d99453b51e4aac2f6f5d27d311ffd0ff9",
+      "equal": true
+    },
+    {
+      "run": "wall-s503-a1",
+      "source": "guarded_local_xy.py",
+      "current_sha256": "7e6e649edcd267089828ec58538fc74a19d0b6afcf4503b0ecfc67b261ba2304",
+      "recorded_sha256": "7e6e649edcd267089828ec58538fc74a19d0b6afcf4503b0ecfc67b261ba2304",
+      "equal": true
+    },
+    {
+      "run": "wall-s503-a1",
+      "source": "local_xy.py",
+      "current_sha256": "a303f751dc876949d92121af925030792b796b16085b963241204451d631848f",
+      "recorded_sha256": "a303f751dc876949d92121af925030792b796b16085b963241204451d631848f",
+      "equal": true
+    },
+    {
+      "run": "wall-s503-a1",
+      "source": "horizontal_obstacles.py",
+      "current_sha256": "8e245e7cb5369dc969f05aefda24008edb04896e808b5d4439140e02d887de77",
+      "recorded_sha256": "8e245e7cb5369dc969f05aefda24008edb04896e808b5d4439140e02d887de77",
+      "equal": true
+    },
+    {
+      "run": "wall-s503-a1",
+      "source": "local_command.py",
+      "current_sha256": "3b4b368f62701d3f49cf6d3ef9f013581f173773ac99503595f9f5a0eea95474",
+      "recorded_sha256": "3b4b368f62701d3f49cf6d3ef9f013581f173773ac99503595f9f5a0eea95474",
+      "equal": true
+    },
+    {
+      "run": "wall-s503-a1",
+      "source": "lidar_spinning.py",
+      "current_sha256": "707693ba34cdc446812a6bc7649b61b40b3691eea59eb959820f79618a44d81d",
+      "recorded_sha256": "707693ba34cdc446812a6bc7649b61b40b3691eea59eb959820f79618a44d81d",
+      "equal": true
+    },
+    {
+      "run": "wall-s503-a1",
+      "source": "lidar_timing.py",
+      "current_sha256": "0445e57dbce77c042eb063d15b2635885aca86c1caf925d94138773bb221849e",
+      "recorded_sha256": "0445e57dbce77c042eb063d15b2635885aca86c1caf925d94138773bb221849e",
+      "equal": true
+    },
+    {
+      "run": "wall-s503-a1",
+      "source": "lidar_scanmatch.py",
+      "current_sha256": "2b4cf8085e6aa2b2bafe200990145f8299caf638669d6a4d7b1c81505feb6b64",
+      "recorded_sha256": "2b4cf8085e6aa2b2bafe200990145f8299caf638669d6a4d7b1c81505feb6b64",
+      "equal": true
+    },
+    {
+      "run": "wall-s503-a1",
+      "source": "lidar_sitl_observation.py",
+      "current_sha256": "b626a0f1811b162b5f4f4bb1ad6104b997e4eb37acfa156a82d1359d59792e3f",
+      "recorded_sha256": "b626a0f1811b162b5f4f4bb1ad6104b997e4eb37acfa156a82d1359d59792e3f",
+      "equal": true
+    },
+    {
+      "run": "person-s501-a1",
+      "source": "obstacle_sitl.py",
+      "current_sha256": "af7d902291a2d6cef8b8b82a1e0f5d3d99453b51e4aac2f6f5d27d311ffd0ff9",
+      "recorded_sha256": "af7d902291a2d6cef8b8b82a1e0f5d3d99453b51e4aac2f6f5d27d311ffd0ff9",
+      "equal": true
+    },
+    {
+      "run": "person-s501-a1",
+      "source": "guarded_local_xy.py",
+      "current_sha256": "7e6e649edcd267089828ec58538fc74a19d0b6afcf4503b0ecfc67b261ba2304",
+      "recorded_sha256": "7e6e649edcd267089828ec58538fc74a19d0b6afcf4503b0ecfc67b261ba2304",
+      "equal": true
+    },
+    {
+      "run": "person-s501-a1",
+      "source": "local_xy.py",
+      "current_sha256": "a303f751dc876949d92121af925030792b796b16085b963241204451d631848f",
+      "recorded_sha256": "a303f751dc876949d92121af925030792b796b16085b963241204451d631848f",
+      "equal": true
+    },
+    {
+      "run": "person-s501-a1",
+      "source": "horizontal_obstacles.py",
+      "current_sha256": "8e245e7cb5369dc969f05aefda24008edb04896e808b5d4439140e02d887de77",
+      "recorded_sha256": "8e245e7cb5369dc969f05aefda24008edb04896e808b5d4439140e02d887de77",
+      "equal": true
+    },
+    {
+      "run": "person-s501-a1",
+      "source": "local_command.py",
+      "current_sha256": "3b4b368f62701d3f49cf6d3ef9f013581f173773ac99503595f9f5a0eea95474",
+      "recorded_sha256": "3b4b368f62701d3f49cf6d3ef9f013581f173773ac99503595f9f5a0eea95474",
+      "equal": true
+    },
+    {
+      "run": "person-s501-a1",
+      "source": "lidar_spinning.py",
+      "current_sha256": "707693ba34cdc446812a6bc7649b61b40b3691eea59eb959820f79618a44d81d",
+      "recorded_sha256": "707693ba34cdc446812a6bc7649b61b40b3691eea59eb959820f79618a44d81d",
+      "equal": true
+    },
+    {
+      "run": "person-s501-a1",
+      "source": "lidar_timing.py",
+      "current_sha256": "0445e57dbce77c042eb063d15b2635885aca86c1caf925d94138773bb221849e",
+      "recorded_sha256": "0445e57dbce77c042eb063d15b2635885aca86c1caf925d94138773bb221849e",
+      "equal": true
+    },
+    {
+      "run": "person-s501-a1",
+      "source": "lidar_scanmatch.py",
+      "current_sha256": "2b4cf8085e6aa2b2bafe200990145f8299caf638669d6a4d7b1c81505feb6b64",
+      "recorded_sha256": "2b4cf8085e6aa2b2bafe200990145f8299caf638669d6a4d7b1c81505feb6b64",
+      "equal": true
+    },
+    {
+      "run": "person-s501-a1",
+      "source": "lidar_sitl_observation.py",
+      "current_sha256": "b626a0f1811b162b5f4f4bb1ad6104b997e4eb37acfa156a82d1359d59792e3f",
+      "recorded_sha256": "b626a0f1811b162b5f4f4bb1ad6104b997e4eb37acfa156a82d1359d59792e3f",
+      "equal": true
+    },
+    {
+      "run": "imu_gap-s501-a1",
+      "source": "obstacle_sitl.py",
+      "current_sha256": "af7d902291a2d6cef8b8b82a1e0f5d3d99453b51e4aac2f6f5d27d311ffd0ff9",
+      "recorded_sha256": "af7d902291a2d6cef8b8b82a1e0f5d3d99453b51e4aac2f6f5d27d311ffd0ff9",
+      "equal": true
+    },
+    {
+      "run": "imu_gap-s501-a1",
+      "source": "guarded_local_xy.py",
+      "current_sha256": "7e6e649edcd267089828ec58538fc74a19d0b6afcf4503b0ecfc67b261ba2304",
+      "recorded_sha256": "7e6e649edcd267089828ec58538fc74a19d0b6afcf4503b0ecfc67b261ba2304",
+      "equal": true
+    },
+    {
+      "run": "imu_gap-s501-a1",
+      "source": "local_xy.py",
+      "current_sha256": "a303f751dc876949d92121af925030792b796b16085b963241204451d631848f",
+      "recorded_sha256": "a303f751dc876949d92121af925030792b796b16085b963241204451d631848f",
+      "equal": true
+    },
+    {
+      "run": "imu_gap-s501-a1",
+      "source": "horizontal_obstacles.py",
+      "current_sha256": "8e245e7cb5369dc969f05aefda24008edb04896e808b5d4439140e02d887de77",
+      "recorded_sha256": "8e245e7cb5369dc969f05aefda24008edb04896e808b5d4439140e02d887de77",
+      "equal": true
+    },
+    {
+      "run": "imu_gap-s501-a1",
+      "source": "local_command.py",
+      "current_sha256": "3b4b368f62701d3f49cf6d3ef9f013581f173773ac99503595f9f5a0eea95474",
+      "recorded_sha256": "3b4b368f62701d3f49cf6d3ef9f013581f173773ac99503595f9f5a0eea95474",
+      "equal": true
+    },
+    {
+      "run": "imu_gap-s501-a1",
+      "source": "lidar_spinning.py",
+      "current_sha256": "707693ba34cdc446812a6bc7649b61b40b3691eea59eb959820f79618a44d81d",
+      "recorded_sha256": "707693ba34cdc446812a6bc7649b61b40b3691eea59eb959820f79618a44d81d",
+      "equal": true
+    },
+    {
+      "run": "imu_gap-s501-a1",
+      "source": "lidar_timing.py",
+      "current_sha256": "0445e57dbce77c042eb063d15b2635885aca86c1caf925d94138773bb221849e",
+      "recorded_sha256": "0445e57dbce77c042eb063d15b2635885aca86c1caf925d94138773bb221849e",
+      "equal": true
+    },
+    {
+      "run": "imu_gap-s501-a1",
+      "source": "lidar_scanmatch.py",
+      "current_sha256": "2b4cf8085e6aa2b2bafe200990145f8299caf638669d6a4d7b1c81505feb6b64",
+      "recorded_sha256": "2b4cf8085e6aa2b2bafe200990145f8299caf638669d6a4d7b1c81505feb6b64",
+      "equal": true
+    },
+    {
+      "run": "imu_gap-s501-a1",
+      "source": "lidar_sitl_observation.py",
+      "current_sha256": "b626a0f1811b162b5f4f4bb1ad6104b997e4eb37acfa156a82d1359d59792e3f",
+      "recorded_sha256": "b626a0f1811b162b5f4f4bb1ad6104b997e4eb37acfa156a82d1359d59792e3f",
+      "equal": true
+    },
+    {
+      "run": "clock_gap-s501-a1",
+      "source": "obstacle_sitl.py",
+      "current_sha256": "af7d902291a2d6cef8b8b82a1e0f5d3d99453b51e4aac2f6f5d27d311ffd0ff9",
+      "recorded_sha256": "af7d902291a2d6cef8b8b82a1e0f5d3d99453b51e4aac2f6f5d27d311ffd0ff9",
+      "equal": true
+    },
+    {
+      "run": "clock_gap-s501-a1",
+      "source": "guarded_local_xy.py",
+      "current_sha256": "7e6e649edcd267089828ec58538fc74a19d0b6afcf4503b0ecfc67b261ba2304",
+      "recorded_sha256": "7e6e649edcd267089828ec58538fc74a19d0b6afcf4503b0ecfc67b261ba2304",
+      "equal": true
+    },
+    {
+      "run": "clock_gap-s501-a1",
+      "source": "local_xy.py",
+      "current_sha256": "a303f751dc876949d92121af925030792b796b16085b963241204451d631848f",
+      "recorded_sha256": "a303f751dc876949d92121af925030792b796b16085b963241204451d631848f",
+      "equal": true
+    },
+    {
+      "run": "clock_gap-s501-a1",
+      "source": "horizontal_obstacles.py",
+      "current_sha256": "8e245e7cb5369dc969f05aefda24008edb04896e808b5d4439140e02d887de77",
+      "recorded_sha256": "8e245e7cb5369dc969f05aefda24008edb04896e808b5d4439140e02d887de77",
+      "equal": true
+    },
+    {
+      "run": "clock_gap-s501-a1",
+      "source": "local_command.py",
+      "current_sha256": "3b4b368f62701d3f49cf6d3ef9f013581f173773ac99503595f9f5a0eea95474",
+      "recorded_sha256": "3b4b368f62701d3f49cf6d3ef9f013581f173773ac99503595f9f5a0eea95474",
+      "equal": true
+    },
+    {
+      "run": "clock_gap-s501-a1",
+      "source": "lidar_spinning.py",
+      "current_sha256": "707693ba34cdc446812a6bc7649b61b40b3691eea59eb959820f79618a44d81d",
+      "recorded_sha256": "707693ba34cdc446812a6bc7649b61b40b3691eea59eb959820f79618a44d81d",
+      "equal": true
+    },
+    {
+      "run": "clock_gap-s501-a1",
+      "source": "lidar_timing.py",
+      "current_sha256": "0445e57dbce77c042eb063d15b2635885aca86c1caf925d94138773bb221849e",
+      "recorded_sha256": "0445e57dbce77c042eb063d15b2635885aca86c1caf925d94138773bb221849e",
+      "equal": true
+    },
+    {
+      "run": "clock_gap-s501-a1",
+      "source": "lidar_scanmatch.py",
+      "current_sha256": "2b4cf8085e6aa2b2bafe200990145f8299caf638669d6a4d7b1c81505feb6b64",
+      "recorded_sha256": "2b4cf8085e6aa2b2bafe200990145f8299caf638669d6a4d7b1c81505feb6b64",
+      "equal": true
+    },
+    {
+      "run": "clock_gap-s501-a1",
+      "source": "lidar_sitl_observation.py",
+      "current_sha256": "b626a0f1811b162b5f4f4bb1ad6104b997e4eb37acfa156a82d1359d59792e3f",
+      "recorded_sha256": "b626a0f1811b162b5f4f4bb1ad6104b997e4eb37acfa156a82d1359d59792e3f",
+      "equal": true
+    },
+    {
+      "run": "scan_gap-s501-a1",
+      "source": "obstacle_sitl.py",
+      "current_sha256": "af7d902291a2d6cef8b8b82a1e0f5d3d99453b51e4aac2f6f5d27d311ffd0ff9",
+      "recorded_sha256": "af7d902291a2d6cef8b8b82a1e0f5d3d99453b51e4aac2f6f5d27d311ffd0ff9",
+      "equal": true
+    },
+    {
+      "run": "scan_gap-s501-a1",
+      "source": "guarded_local_xy.py",
+      "current_sha256": "7e6e649edcd267089828ec58538fc74a19d0b6afcf4503b0ecfc67b261ba2304",
+      "recorded_sha256": "7e6e649edcd267089828ec58538fc74a19d0b6afcf4503b0ecfc67b261ba2304",
+      "equal": true
+    },
+    {
+      "run": "scan_gap-s501-a1",
+      "source": "local_xy.py",
+      "current_sha256": "a303f751dc876949d92121af925030792b796b16085b963241204451d631848f",
+      "recorded_sha256": "a303f751dc876949d92121af925030792b796b16085b963241204451d631848f",
+      "equal": true
+    },
+    {
+      "run": "scan_gap-s501-a1",
+      "source": "horizontal_obstacles.py",
+      "current_sha256": "8e245e7cb5369dc969f05aefda24008edb04896e808b5d4439140e02d887de77",
+      "recorded_sha256": "8e245e7cb5369dc969f05aefda24008edb04896e808b5d4439140e02d887de77",
+      "equal": true
+    },
+    {
+      "run": "scan_gap-s501-a1",
+      "source": "local_command.py",
+      "current_sha256": "3b4b368f62701d3f49cf6d3ef9f013581f173773ac99503595f9f5a0eea95474",
+      "recorded_sha256": "3b4b368f62701d3f49cf6d3ef9f013581f173773ac99503595f9f5a0eea95474",
+      "equal": true
+    },
+    {
+      "run": "scan_gap-s501-a1",
+      "source": "lidar_spinning.py",
+      "current_sha256": "707693ba34cdc446812a6bc7649b61b40b3691eea59eb959820f79618a44d81d",
+      "recorded_sha256": "707693ba34cdc446812a6bc7649b61b40b3691eea59eb959820f79618a44d81d",
+      "equal": true
+    },
+    {
+      "run": "scan_gap-s501-a1",
+      "source": "lidar_timing.py",
+      "current_sha256": "0445e57dbce77c042eb063d15b2635885aca86c1caf925d94138773bb221849e",
+      "recorded_sha256": "0445e57dbce77c042eb063d15b2635885aca86c1caf925d94138773bb221849e",
+      "equal": true
+    },
+    {
+      "run": "scan_gap-s501-a1",
+      "source": "lidar_scanmatch.py",
+      "current_sha256": "2b4cf8085e6aa2b2bafe200990145f8299caf638669d6a4d7b1c81505feb6b64",
+      "recorded_sha256": "2b4cf8085e6aa2b2bafe200990145f8299caf638669d6a4d7b1c81505feb6b64",
+      "equal": true
+    },
+    {
+      "run": "scan_gap-s501-a1",
+      "source": "lidar_sitl_observation.py",
+      "current_sha256": "b626a0f1811b162b5f4f4bb1ad6104b997e4eb37acfa156a82d1359d59792e3f",
+      "recorded_sha256": "b626a0f1811b162b5f4f4bb1ad6104b997e4eb37acfa156a82d1359d59792e3f",
+      "equal": true
+    },
+    {
+      "run": "lidar_gap-s501-a1",
+      "source": "obstacle_sitl.py",
+      "current_sha256": "af7d902291a2d6cef8b8b82a1e0f5d3d99453b51e4aac2f6f5d27d311ffd0ff9",
+      "recorded_sha256": "af7d902291a2d6cef8b8b82a1e0f5d3d99453b51e4aac2f6f5d27d311ffd0ff9",
+      "equal": true
+    },
+    {
+      "run": "lidar_gap-s501-a1",
+      "source": "guarded_local_xy.py",
+      "current_sha256": "7e6e649edcd267089828ec58538fc74a19d0b6afcf4503b0ecfc67b261ba2304",
+      "recorded_sha256": "7e6e649edcd267089828ec58538fc74a19d0b6afcf4503b0ecfc67b261ba2304",
+      "equal": true
+    },
+    {
+      "run": "lidar_gap-s501-a1",
+      "source": "local_xy.py",
+      "current_sha256": "a303f751dc876949d92121af925030792b796b16085b963241204451d631848f",
+      "recorded_sha256": "a303f751dc876949d92121af925030792b796b16085b963241204451d631848f",
+      "equal": true
+    },
+    {
+      "run": "lidar_gap-s501-a1",
+      "source": "horizontal_obstacles.py",
+      "current_sha256": "8e245e7cb5369dc969f05aefda24008edb04896e808b5d4439140e02d887de77",
+      "recorded_sha256": "8e245e7cb5369dc969f05aefda24008edb04896e808b5d4439140e02d887de77",
+      "equal": true
+    },
+    {
+      "run": "lidar_gap-s501-a1",
+      "source": "local_command.py",
+      "current_sha256": "3b4b368f62701d3f49cf6d3ef9f013581f173773ac99503595f9f5a0eea95474",
+      "recorded_sha256": "3b4b368f62701d3f49cf6d3ef9f013581f173773ac99503595f9f5a0eea95474",
+      "equal": true
+    },
+    {
+      "run": "lidar_gap-s501-a1",
+      "source": "lidar_spinning.py",
+      "current_sha256": "707693ba34cdc446812a6bc7649b61b40b3691eea59eb959820f79618a44d81d",
+      "recorded_sha256": "707693ba34cdc446812a6bc7649b61b40b3691eea59eb959820f79618a44d81d",
+      "equal": true
+    },
+    {
+      "run": "lidar_gap-s501-a1",
+      "source": "lidar_timing.py",
+      "current_sha256": "0445e57dbce77c042eb063d15b2635885aca86c1caf925d94138773bb221849e",
+      "recorded_sha256": "0445e57dbce77c042eb063d15b2635885aca86c1caf925d94138773bb221849e",
+      "equal": true
+    },
+    {
+      "run": "lidar_gap-s501-a1",
+      "source": "lidar_scanmatch.py",
+      "current_sha256": "2b4cf8085e6aa2b2bafe200990145f8299caf638669d6a4d7b1c81505feb6b64",
+      "recorded_sha256": "2b4cf8085e6aa2b2bafe200990145f8299caf638669d6a4d7b1c81505feb6b64",
+      "equal": true
+    },
+    {
+      "run": "lidar_gap-s501-a1",
+      "source": "lidar_sitl_observation.py",
+      "current_sha256": "b626a0f1811b162b5f4f4bb1ad6104b997e4eb37acfa156a82d1359d59792e3f",
+      "recorded_sha256": "b626a0f1811b162b5f4f4bb1ad6104b997e4eb37acfa156a82d1359d59792e3f",
+      "equal": true
+    },
+    {
+      "run": "uwb_gap-s501-a1",
+      "source": "obstacle_sitl.py",
+      "current_sha256": "af7d902291a2d6cef8b8b82a1e0f5d3d99453b51e4aac2f6f5d27d311ffd0ff9",
+      "recorded_sha256": "af7d902291a2d6cef8b8b82a1e0f5d3d99453b51e4aac2f6f5d27d311ffd0ff9",
+      "equal": true
+    },
+    {
+      "run": "uwb_gap-s501-a1",
+      "source": "guarded_local_xy.py",
+      "current_sha256": "7e6e649edcd267089828ec58538fc74a19d0b6afcf4503b0ecfc67b261ba2304",
+      "recorded_sha256": "7e6e649edcd267089828ec58538fc74a19d0b6afcf4503b0ecfc67b261ba2304",
+      "equal": true
+    },
+    {
+      "run": "uwb_gap-s501-a1",
+      "source": "local_xy.py",
+      "current_sha256": "a303f751dc876949d92121af925030792b796b16085b963241204451d631848f",
+      "recorded_sha256": "a303f751dc876949d92121af925030792b796b16085b963241204451d631848f",
+      "equal": true
+    },
+    {
+      "run": "uwb_gap-s501-a1",
+      "source": "horizontal_obstacles.py",
+      "current_sha256": "8e245e7cb5369dc969f05aefda24008edb04896e808b5d4439140e02d887de77",
+      "recorded_sha256": "8e245e7cb5369dc969f05aefda24008edb04896e808b5d4439140e02d887de77",
+      "equal": true
+    },
+    {
+      "run": "uwb_gap-s501-a1",
+      "source": "local_command.py",
+      "current_sha256": "3b4b368f62701d3f49cf6d3ef9f013581f173773ac99503595f9f5a0eea95474",
+      "recorded_sha256": "3b4b368f62701d3f49cf6d3ef9f013581f173773ac99503595f9f5a0eea95474",
+      "equal": true
+    },
+    {
+      "run": "uwb_gap-s501-a1",
+      "source": "lidar_spinning.py",
+      "current_sha256": "707693ba34cdc446812a6bc7649b61b40b3691eea59eb959820f79618a44d81d",
+      "recorded_sha256": "707693ba34cdc446812a6bc7649b61b40b3691eea59eb959820f79618a44d81d",
+      "equal": true
+    },
+    {
+      "run": "uwb_gap-s501-a1",
+      "source": "lidar_timing.py",
+      "current_sha256": "0445e57dbce77c042eb063d15b2635885aca86c1caf925d94138773bb221849e",
+      "recorded_sha256": "0445e57dbce77c042eb063d15b2635885aca86c1caf925d94138773bb221849e",
+      "equal": true
+    },
+    {
+      "run": "uwb_gap-s501-a1",
+      "source": "lidar_scanmatch.py",
+      "current_sha256": "2b4cf8085e6aa2b2bafe200990145f8299caf638669d6a4d7b1c81505feb6b64",
+      "recorded_sha256": "2b4cf8085e6aa2b2bafe200990145f8299caf638669d6a4d7b1c81505feb6b64",
+      "equal": true
+    },
+    {
+      "run": "uwb_gap-s501-a1",
+      "source": "lidar_sitl_observation.py",
+      "current_sha256": "b626a0f1811b162b5f4f4bb1ad6104b997e4eb37acfa156a82d1359d59792e3f",
+      "recorded_sha256": "b626a0f1811b162b5f4f4bb1ad6104b997e4eb37acfa156a82d1359d59792e3f",
+      "equal": true
+    },
+    {
+      "run": "uwb_jump-s501-a1",
+      "source": "obstacle_sitl.py",
+      "current_sha256": "af7d902291a2d6cef8b8b82a1e0f5d3d99453b51e4aac2f6f5d27d311ffd0ff9",
+      "recorded_sha256": "af7d902291a2d6cef8b8b82a1e0f5d3d99453b51e4aac2f6f5d27d311ffd0ff9",
+      "equal": true
+    },
+    {
+      "run": "uwb_jump-s501-a1",
+      "source": "guarded_local_xy.py",
+      "current_sha256": "7e6e649edcd267089828ec58538fc74a19d0b6afcf4503b0ecfc67b261ba2304",
+      "recorded_sha256": "7e6e649edcd267089828ec58538fc74a19d0b6afcf4503b0ecfc67b261ba2304",
+      "equal": true
+    },
+    {
+      "run": "uwb_jump-s501-a1",
+      "source": "local_xy.py",
+      "current_sha256": "a303f751dc876949d92121af925030792b796b16085b963241204451d631848f",
+      "recorded_sha256": "a303f751dc876949d92121af925030792b796b16085b963241204451d631848f",
+      "equal": true
+    },
+    {
+      "run": "uwb_jump-s501-a1",
+      "source": "horizontal_obstacles.py",
+      "current_sha256": "8e245e7cb5369dc969f05aefda24008edb04896e808b5d4439140e02d887de77",
+      "recorded_sha256": "8e245e7cb5369dc969f05aefda24008edb04896e808b5d4439140e02d887de77",
+      "equal": true
+    },
+    {
+      "run": "uwb_jump-s501-a1",
+      "source": "local_command.py",
+      "current_sha256": "3b4b368f62701d3f49cf6d3ef9f013581f173773ac99503595f9f5a0eea95474",
+      "recorded_sha256": "3b4b368f62701d3f49cf6d3ef9f013581f173773ac99503595f9f5a0eea95474",
+      "equal": true
+    },
+    {
+      "run": "uwb_jump-s501-a1",
+      "source": "lidar_spinning.py",
+      "current_sha256": "707693ba34cdc446812a6bc7649b61b40b3691eea59eb959820f79618a44d81d",
+      "recorded_sha256": "707693ba34cdc446812a6bc7649b61b40b3691eea59eb959820f79618a44d81d",
+      "equal": true
+    },
+    {
+      "run": "uwb_jump-s501-a1",
+      "source": "lidar_timing.py",
+      "current_sha256": "0445e57dbce77c042eb063d15b2635885aca86c1caf925d94138773bb221849e",
+      "recorded_sha256": "0445e57dbce77c042eb063d15b2635885aca86c1caf925d94138773bb221849e",
+      "equal": true
+    },
+    {
+      "run": "uwb_jump-s501-a1",
+      "source": "lidar_scanmatch.py",
+      "current_sha256": "2b4cf8085e6aa2b2bafe200990145f8299caf638669d6a4d7b1c81505feb6b64",
+      "recorded_sha256": "2b4cf8085e6aa2b2bafe200990145f8299caf638669d6a4d7b1c81505feb6b64",
+      "equal": true
+    },
+    {
+      "run": "uwb_jump-s501-a1",
+      "source": "lidar_sitl_observation.py",
+      "current_sha256": "b626a0f1811b162b5f4f4bb1ad6104b997e4eb37acfa156a82d1359d59792e3f",
+      "recorded_sha256": "b626a0f1811b162b5f4f4bb1ad6104b997e4eb37acfa156a82d1359d59792e3f",
+      "equal": true
+    },
+    {
+      "run": "clear-s501-a0",
+      "source": "obstacle_sitl.py",
+      "current_sha256": "af7d902291a2d6cef8b8b82a1e0f5d3d99453b51e4aac2f6f5d27d311ffd0ff9",
+      "recorded_sha256": "af7d902291a2d6cef8b8b82a1e0f5d3d99453b51e4aac2f6f5d27d311ffd0ff9",
+      "equal": true
+    },
+    {
+      "run": "clear-s501-a0",
+      "source": "guarded_local_xy.py",
+      "current_sha256": "7e6e649edcd267089828ec58538fc74a19d0b6afcf4503b0ecfc67b261ba2304",
+      "recorded_sha256": "7e6e649edcd267089828ec58538fc74a19d0b6afcf4503b0ecfc67b261ba2304",
+      "equal": true
+    },
+    {
+      "run": "clear-s501-a0",
+      "source": "local_xy.py",
+      "current_sha256": "a303f751dc876949d92121af925030792b796b16085b963241204451d631848f",
+      "recorded_sha256": "a303f751dc876949d92121af925030792b796b16085b963241204451d631848f",
+      "equal": true
+    },
+    {
+      "run": "clear-s501-a0",
+      "source": "horizontal_obstacles.py",
+      "current_sha256": "8e245e7cb5369dc969f05aefda24008edb04896e808b5d4439140e02d887de77",
+      "recorded_sha256": "8e245e7cb5369dc969f05aefda24008edb04896e808b5d4439140e02d887de77",
+      "equal": true
+    },
+    {
+      "run": "clear-s501-a0",
+      "source": "local_command.py",
+      "current_sha256": "3b4b368f62701d3f49cf6d3ef9f013581f173773ac99503595f9f5a0eea95474",
+      "recorded_sha256": "3b4b368f62701d3f49cf6d3ef9f013581f173773ac99503595f9f5a0eea95474",
+      "equal": true
+    },
+    {
+      "run": "clear-s501-a0",
+      "source": "lidar_spinning.py",
+      "current_sha256": "707693ba34cdc446812a6bc7649b61b40b3691eea59eb959820f79618a44d81d",
+      "recorded_sha256": "707693ba34cdc446812a6bc7649b61b40b3691eea59eb959820f79618a44d81d",
+      "equal": true
+    },
+    {
+      "run": "clear-s501-a0",
+      "source": "lidar_timing.py",
+      "current_sha256": "0445e57dbce77c042eb063d15b2635885aca86c1caf925d94138773bb221849e",
+      "recorded_sha256": "0445e57dbce77c042eb063d15b2635885aca86c1caf925d94138773bb221849e",
+      "equal": true
+    },
+    {
+      "run": "clear-s501-a0",
+      "source": "lidar_scanmatch.py",
+      "current_sha256": "2b4cf8085e6aa2b2bafe200990145f8299caf638669d6a4d7b1c81505feb6b64",
+      "recorded_sha256": "2b4cf8085e6aa2b2bafe200990145f8299caf638669d6a4d7b1c81505feb6b64",
+      "equal": true
+    },
+    {
+      "run": "clear-s501-a0",
+      "source": "lidar_sitl_observation.py",
+      "current_sha256": "b626a0f1811b162b5f4f4bb1ad6104b997e4eb37acfa156a82d1359d59792e3f",
+      "recorded_sha256": "b626a0f1811b162b5f4f4bb1ad6104b997e4eb37acfa156a82d1359d59792e3f",
+      "equal": true
+    },
+    {
+      "run": "clear-s502-a0",
+      "source": "obstacle_sitl.py",
+      "current_sha256": "af7d902291a2d6cef8b8b82a1e0f5d3d99453b51e4aac2f6f5d27d311ffd0ff9",
+      "recorded_sha256": "af7d902291a2d6cef8b8b82a1e0f5d3d99453b51e4aac2f6f5d27d311ffd0ff9",
+      "equal": true
+    },
+    {
+      "run": "clear-s502-a0",
+      "source": "guarded_local_xy.py",
+      "current_sha256": "7e6e649edcd267089828ec58538fc74a19d0b6afcf4503b0ecfc67b261ba2304",
+      "recorded_sha256": "7e6e649edcd267089828ec58538fc74a19d0b6afcf4503b0ecfc67b261ba2304",
+      "equal": true
+    },
+    {
+      "run": "clear-s502-a0",
+      "source": "local_xy.py",
+      "current_sha256": "a303f751dc876949d92121af925030792b796b16085b963241204451d631848f",
+      "recorded_sha256": "a303f751dc876949d92121af925030792b796b16085b963241204451d631848f",
+      "equal": true
+    },
+    {
+      "run": "clear-s502-a0",
+      "source": "horizontal_obstacles.py",
+      "current_sha256": "8e245e7cb5369dc969f05aefda24008edb04896e808b5d4439140e02d887de77",
+      "recorded_sha256": "8e245e7cb5369dc969f05aefda24008edb04896e808b5d4439140e02d887de77",
+      "equal": true
+    },
+    {
+      "run": "clear-s502-a0",
+      "source": "local_command.py",
+      "current_sha256": "3b4b368f62701d3f49cf6d3ef9f013581f173773ac99503595f9f5a0eea95474",
+      "recorded_sha256": "3b4b368f62701d3f49cf6d3ef9f013581f173773ac99503595f9f5a0eea95474",
+      "equal": true
+    },
+    {
+      "run": "clear-s502-a0",
+      "source": "lidar_spinning.py",
+      "current_sha256": "707693ba34cdc446812a6bc7649b61b40b3691eea59eb959820f79618a44d81d",
+      "recorded_sha256": "707693ba34cdc446812a6bc7649b61b40b3691eea59eb959820f79618a44d81d",
+      "equal": true
+    },
+    {
+      "run": "clear-s502-a0",
+      "source": "lidar_timing.py",
+      "current_sha256": "0445e57dbce77c042eb063d15b2635885aca86c1caf925d94138773bb221849e",
+      "recorded_sha256": "0445e57dbce77c042eb063d15b2635885aca86c1caf925d94138773bb221849e",
+      "equal": true
+    },
+    {
+      "run": "clear-s502-a0",
+      "source": "lidar_scanmatch.py",
+      "current_sha256": "2b4cf8085e6aa2b2bafe200990145f8299caf638669d6a4d7b1c81505feb6b64",
+      "recorded_sha256": "2b4cf8085e6aa2b2bafe200990145f8299caf638669d6a4d7b1c81505feb6b64",
+      "equal": true
+    },
+    {
+      "run": "clear-s502-a0",
+      "source": "lidar_sitl_observation.py",
+      "current_sha256": "b626a0f1811b162b5f4f4bb1ad6104b997e4eb37acfa156a82d1359d59792e3f",
+      "recorded_sha256": "b626a0f1811b162b5f4f4bb1ad6104b997e4eb37acfa156a82d1359d59792e3f",
+      "equal": true
+    },
+    {
+      "run": "clear-s503-a0",
+      "source": "obstacle_sitl.py",
+      "current_sha256": "af7d902291a2d6cef8b8b82a1e0f5d3d99453b51e4aac2f6f5d27d311ffd0ff9",
+      "recorded_sha256": "af7d902291a2d6cef8b8b82a1e0f5d3d99453b51e4aac2f6f5d27d311ffd0ff9",
+      "equal": true
+    },
+    {
+      "run": "clear-s503-a0",
+      "source": "guarded_local_xy.py",
+      "current_sha256": "7e6e649edcd267089828ec58538fc74a19d0b6afcf4503b0ecfc67b261ba2304",
+      "recorded_sha256": "7e6e649edcd267089828ec58538fc74a19d0b6afcf4503b0ecfc67b261ba2304",
+      "equal": true
+    },
+    {
+      "run": "clear-s503-a0",
+      "source": "local_xy.py",
+      "current_sha256": "a303f751dc876949d92121af925030792b796b16085b963241204451d631848f",
+      "recorded_sha256": "a303f751dc876949d92121af925030792b796b16085b963241204451d631848f",
+      "equal": true
+    },
+    {
+      "run": "clear-s503-a0",
+      "source": "horizontal_obstacles.py",
+      "current_sha256": "8e245e7cb5369dc969f05aefda24008edb04896e808b5d4439140e02d887de77",
+      "recorded_sha256": "8e245e7cb5369dc969f05aefda24008edb04896e808b5d4439140e02d887de77",
+      "equal": true
+    },
+    {
+      "run": "clear-s503-a0",
+      "source": "local_command.py",
+      "current_sha256": "3b4b368f62701d3f49cf6d3ef9f013581f173773ac99503595f9f5a0eea95474",
+      "recorded_sha256": "3b4b368f62701d3f49cf6d3ef9f013581f173773ac99503595f9f5a0eea95474",
+      "equal": true
+    },
+    {
+      "run": "clear-s503-a0",
+      "source": "lidar_spinning.py",
+      "current_sha256": "707693ba34cdc446812a6bc7649b61b40b3691eea59eb959820f79618a44d81d",
+      "recorded_sha256": "707693ba34cdc446812a6bc7649b61b40b3691eea59eb959820f79618a44d81d",
+      "equal": true
+    },
+    {
+      "run": "clear-s503-a0",
+      "source": "lidar_timing.py",
+      "current_sha256": "0445e57dbce77c042eb063d15b2635885aca86c1caf925d94138773bb221849e",
+      "recorded_sha256": "0445e57dbce77c042eb063d15b2635885aca86c1caf925d94138773bb221849e",
+      "equal": true
+    },
+    {
+      "run": "clear-s503-a0",
+      "source": "lidar_scanmatch.py",
+      "current_sha256": "2b4cf8085e6aa2b2bafe200990145f8299caf638669d6a4d7b1c81505feb6b64",
+      "recorded_sha256": "2b4cf8085e6aa2b2bafe200990145f8299caf638669d6a4d7b1c81505feb6b64",
+      "equal": true
+    },
+    {
+      "run": "clear-s503-a0",
+      "source": "lidar_sitl_observation.py",
+      "current_sha256": "b626a0f1811b162b5f4f4bb1ad6104b997e4eb37acfa156a82d1359d59792e3f",
+      "recorded_sha256": "b626a0f1811b162b5f4f4bb1ad6104b997e4eb37acfa156a82d1359d59792e3f",
+      "equal": true
+    },
+    {
+      "run": "clear-s501-a1",
+      "source": "obstacle_sitl.py",
+      "current_sha256": "af7d902291a2d6cef8b8b82a1e0f5d3d99453b51e4aac2f6f5d27d311ffd0ff9",
+      "recorded_sha256": "af7d902291a2d6cef8b8b82a1e0f5d3d99453b51e4aac2f6f5d27d311ffd0ff9",
+      "equal": true
+    },
+    {
+      "run": "clear-s501-a1",
+      "source": "guarded_local_xy.py",
+      "current_sha256": "7e6e649edcd267089828ec58538fc74a19d0b6afcf4503b0ecfc67b261ba2304",
+      "recorded_sha256": "7e6e649edcd267089828ec58538fc74a19d0b6afcf4503b0ecfc67b261ba2304",
+      "equal": true
+    },
+    {
+      "run": "clear-s501-a1",
+      "source": "local_xy.py",
+      "current_sha256": "a303f751dc876949d92121af925030792b796b16085b963241204451d631848f",
+      "recorded_sha256": "a303f751dc876949d92121af925030792b796b16085b963241204451d631848f",
+      "equal": true
+    },
+    {
+      "run": "clear-s501-a1",
+      "source": "horizontal_obstacles.py",
+      "current_sha256": "8e245e7cb5369dc969f05aefda24008edb04896e808b5d4439140e02d887de77",
+      "recorded_sha256": "8e245e7cb5369dc969f05aefda24008edb04896e808b5d4439140e02d887de77",
+      "equal": true
+    },
+    {
+      "run": "clear-s501-a1",
+      "source": "local_command.py",
+      "current_sha256": "3b4b368f62701d3f49cf6d3ef9f013581f173773ac99503595f9f5a0eea95474",
+      "recorded_sha256": "3b4b368f62701d3f49cf6d3ef9f013581f173773ac99503595f9f5a0eea95474",
+      "equal": true
+    },
+    {
+      "run": "clear-s501-a1",
+      "source": "lidar_spinning.py",
+      "current_sha256": "707693ba34cdc446812a6bc7649b61b40b3691eea59eb959820f79618a44d81d",
+      "recorded_sha256": "707693ba34cdc446812a6bc7649b61b40b3691eea59eb959820f79618a44d81d",
+      "equal": true
+    },
+    {
+      "run": "clear-s501-a1",
+      "source": "lidar_timing.py",
+      "current_sha256": "0445e57dbce77c042eb063d15b2635885aca86c1caf925d94138773bb221849e",
+      "recorded_sha256": "0445e57dbce77c042eb063d15b2635885aca86c1caf925d94138773bb221849e",
+      "equal": true
+    },
+    {
+      "run": "clear-s501-a1",
+      "source": "lidar_scanmatch.py",
+      "current_sha256": "2b4cf8085e6aa2b2bafe200990145f8299caf638669d6a4d7b1c81505feb6b64",
+      "recorded_sha256": "2b4cf8085e6aa2b2bafe200990145f8299caf638669d6a4d7b1c81505feb6b64",
+      "equal": true
+    },
+    {
+      "run": "clear-s501-a1",
+      "source": "lidar_sitl_observation.py",
+      "current_sha256": "b626a0f1811b162b5f4f4bb1ad6104b997e4eb37acfa156a82d1359d59792e3f",
+      "recorded_sha256": "b626a0f1811b162b5f4f4bb1ad6104b997e4eb37acfa156a82d1359d59792e3f",
+      "equal": true
+    },
+    {
+      "run": "clear-s502-a1",
+      "source": "obstacle_sitl.py",
+      "current_sha256": "af7d902291a2d6cef8b8b82a1e0f5d3d99453b51e4aac2f6f5d27d311ffd0ff9",
+      "recorded_sha256": "af7d902291a2d6cef8b8b82a1e0f5d3d99453b51e4aac2f6f5d27d311ffd0ff9",
+      "equal": true
+    },
+    {
+      "run": "clear-s502-a1",
+      "source": "guarded_local_xy.py",
+      "current_sha256": "7e6e649edcd267089828ec58538fc74a19d0b6afcf4503b0ecfc67b261ba2304",
+      "recorded_sha256": "7e6e649edcd267089828ec58538fc74a19d0b6afcf4503b0ecfc67b261ba2304",
+      "equal": true
+    },
+    {
+      "run": "clear-s502-a1",
+      "source": "local_xy.py",
+      "current_sha256": "a303f751dc876949d92121af925030792b796b16085b963241204451d631848f",
+      "recorded_sha256": "a303f751dc876949d92121af925030792b796b16085b963241204451d631848f",
+      "equal": true
+    },
+    {
+      "run": "clear-s502-a1",
+      "source": "horizontal_obstacles.py",
+      "current_sha256": "8e245e7cb5369dc969f05aefda24008edb04896e808b5d4439140e02d887de77",
+      "recorded_sha256": "8e245e7cb5369dc969f05aefda24008edb04896e808b5d4439140e02d887de77",
+      "equal": true
+    },
+    {
+      "run": "clear-s502-a1",
+      "source": "local_command.py",
+      "current_sha256": "3b4b368f62701d3f49cf6d3ef9f013581f173773ac99503595f9f5a0eea95474",
+      "recorded_sha256": "3b4b368f62701d3f49cf6d3ef9f013581f173773ac99503595f9f5a0eea95474",
+      "equal": true
+    },
+    {
+      "run": "clear-s502-a1",
+      "source": "lidar_spinning.py",
+      "current_sha256": "707693ba34cdc446812a6bc7649b61b40b3691eea59eb959820f79618a44d81d",
+      "recorded_sha256": "707693ba34cdc446812a6bc7649b61b40b3691eea59eb959820f79618a44d81d",
+      "equal": true
+    },
+    {
+      "run": "clear-s502-a1",
+      "source": "lidar_timing.py",
+      "current_sha256": "0445e57dbce77c042eb063d15b2635885aca86c1caf925d94138773bb221849e",
+      "recorded_sha256": "0445e57dbce77c042eb063d15b2635885aca86c1caf925d94138773bb221849e",
+      "equal": true
+    },
+    {
+      "run": "clear-s502-a1",
+      "source": "lidar_scanmatch.py",
+      "current_sha256": "2b4cf8085e6aa2b2bafe200990145f8299caf638669d6a4d7b1c81505feb6b64",
+      "recorded_sha256": "2b4cf8085e6aa2b2bafe200990145f8299caf638669d6a4d7b1c81505feb6b64",
+      "equal": true
+    },
+    {
+      "run": "clear-s502-a1",
+      "source": "lidar_sitl_observation.py",
+      "current_sha256": "b626a0f1811b162b5f4f4bb1ad6104b997e4eb37acfa156a82d1359d59792e3f",
+      "recorded_sha256": "b626a0f1811b162b5f4f4bb1ad6104b997e4eb37acfa156a82d1359d59792e3f",
+      "equal": true
+    },
+    {
+      "run": "clear-s503-a1",
+      "source": "obstacle_sitl.py",
+      "current_sha256": "af7d902291a2d6cef8b8b82a1e0f5d3d99453b51e4aac2f6f5d27d311ffd0ff9",
+      "recorded_sha256": "af7d902291a2d6cef8b8b82a1e0f5d3d99453b51e4aac2f6f5d27d311ffd0ff9",
+      "equal": true
+    },
+    {
+      "run": "clear-s503-a1",
+      "source": "guarded_local_xy.py",
+      "current_sha256": "7e6e649edcd267089828ec58538fc74a19d0b6afcf4503b0ecfc67b261ba2304",
+      "recorded_sha256": "7e6e649edcd267089828ec58538fc74a19d0b6afcf4503b0ecfc67b261ba2304",
+      "equal": true
+    },
+    {
+      "run": "clear-s503-a1",
+      "source": "local_xy.py",
+      "current_sha256": "a303f751dc876949d92121af925030792b796b16085b963241204451d631848f",
+      "recorded_sha256": "a303f751dc876949d92121af925030792b796b16085b963241204451d631848f",
+      "equal": true
+    },
+    {
+      "run": "clear-s503-a1",
+      "source": "horizontal_obstacles.py",
+      "current_sha256": "8e245e7cb5369dc969f05aefda24008edb04896e808b5d4439140e02d887de77",
+      "recorded_sha256": "8e245e7cb5369dc969f05aefda24008edb04896e808b5d4439140e02d887de77",
+      "equal": true
+    },
+    {
+      "run": "clear-s503-a1",
+      "source": "local_command.py",
+      "current_sha256": "3b4b368f62701d3f49cf6d3ef9f013581f173773ac99503595f9f5a0eea95474",
+      "recorded_sha256": "3b4b368f62701d3f49cf6d3ef9f013581f173773ac99503595f9f5a0eea95474",
+      "equal": true
+    },
+    {
+      "run": "clear-s503-a1",
+      "source": "lidar_spinning.py",
+      "current_sha256": "707693ba34cdc446812a6bc7649b61b40b3691eea59eb959820f79618a44d81d",
+      "recorded_sha256": "707693ba34cdc446812a6bc7649b61b40b3691eea59eb959820f79618a44d81d",
+      "equal": true
+    },
+    {
+      "run": "clear-s503-a1",
+      "source": "lidar_timing.py",
+      "current_sha256": "0445e57dbce77c042eb063d15b2635885aca86c1caf925d94138773bb221849e",
+      "recorded_sha256": "0445e57dbce77c042eb063d15b2635885aca86c1caf925d94138773bb221849e",
+      "equal": true
+    },
+    {
+      "run": "clear-s503-a1",
+      "source": "lidar_scanmatch.py",
+      "current_sha256": "2b4cf8085e6aa2b2bafe200990145f8299caf638669d6a4d7b1c81505feb6b64",
+      "recorded_sha256": "2b4cf8085e6aa2b2bafe200990145f8299caf638669d6a4d7b1c81505feb6b64",
+      "equal": true
+    },
+    {
+      "run": "clear-s503-a1",
+      "source": "lidar_sitl_observation.py",
+      "current_sha256": "b626a0f1811b162b5f4f4bb1ad6104b997e4eb37acfa156a82d1359d59792e3f",
+      "recorded_sha256": "b626a0f1811b162b5f4f4bb1ad6104b997e4eb37acfa156a82d1359d59792e3f",
+      "equal": true
+    },
+    {
+      "run": "partial_occlusion-s501-a1",
+      "source": "obstacle_sitl.py",
+      "current_sha256": "af7d902291a2d6cef8b8b82a1e0f5d3d99453b51e4aac2f6f5d27d311ffd0ff9",
+      "recorded_sha256": "af7d902291a2d6cef8b8b82a1e0f5d3d99453b51e4aac2f6f5d27d311ffd0ff9",
+      "equal": true
+    },
+    {
+      "run": "partial_occlusion-s501-a1",
+      "source": "guarded_local_xy.py",
+      "current_sha256": "7e6e649edcd267089828ec58538fc74a19d0b6afcf4503b0ecfc67b261ba2304",
+      "recorded_sha256": "7e6e649edcd267089828ec58538fc74a19d0b6afcf4503b0ecfc67b261ba2304",
+      "equal": true
+    },
+    {
+      "run": "partial_occlusion-s501-a1",
+      "source": "local_xy.py",
+      "current_sha256": "a303f751dc876949d92121af925030792b796b16085b963241204451d631848f",
+      "recorded_sha256": "a303f751dc876949d92121af925030792b796b16085b963241204451d631848f",
+      "equal": true
+    },
+    {
+      "run": "partial_occlusion-s501-a1",
+      "source": "horizontal_obstacles.py",
+      "current_sha256": "8e245e7cb5369dc969f05aefda24008edb04896e808b5d4439140e02d887de77",
+      "recorded_sha256": "8e245e7cb5369dc969f05aefda24008edb04896e808b5d4439140e02d887de77",
+      "equal": true
+    },
+    {
+      "run": "partial_occlusion-s501-a1",
+      "source": "local_command.py",
+      "current_sha256": "3b4b368f62701d3f49cf6d3ef9f013581f173773ac99503595f9f5a0eea95474",
+      "recorded_sha256": "3b4b368f62701d3f49cf6d3ef9f013581f173773ac99503595f9f5a0eea95474",
+      "equal": true
+    },
+    {
+      "run": "partial_occlusion-s501-a1",
+      "source": "lidar_spinning.py",
+      "current_sha256": "707693ba34cdc446812a6bc7649b61b40b3691eea59eb959820f79618a44d81d",
+      "recorded_sha256": "707693ba34cdc446812a6bc7649b61b40b3691eea59eb959820f79618a44d81d",
+      "equal": true
+    },
+    {
+      "run": "partial_occlusion-s501-a1",
+      "source": "lidar_timing.py",
+      "current_sha256": "0445e57dbce77c042eb063d15b2635885aca86c1caf925d94138773bb221849e",
+      "recorded_sha256": "0445e57dbce77c042eb063d15b2635885aca86c1caf925d94138773bb221849e",
+      "equal": true
+    },
+    {
+      "run": "partial_occlusion-s501-a1",
+      "source": "lidar_scanmatch.py",
+      "current_sha256": "2b4cf8085e6aa2b2bafe200990145f8299caf638669d6a4d7b1c81505feb6b64",
+      "recorded_sha256": "2b4cf8085e6aa2b2bafe200990145f8299caf638669d6a4d7b1c81505feb6b64",
+      "equal": true
+    },
+    {
+      "run": "partial_occlusion-s501-a1",
+      "source": "lidar_sitl_observation.py",
+      "current_sha256": "b626a0f1811b162b5f4f4bb1ad6104b997e4eb37acfa156a82d1359d59792e3f",
+      "recorded_sha256": "b626a0f1811b162b5f4f4bb1ad6104b997e4eb37acfa156a82d1359d59792e3f",
+      "equal": true
+    }
+  ]
+}

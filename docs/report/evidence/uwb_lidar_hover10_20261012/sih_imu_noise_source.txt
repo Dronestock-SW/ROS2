@@ -1,0 +1,30 @@
+611: void Sih::reconstruct_sensors_signals(const hrt_abstime &time_now_us)
+612: {
+613: 	// The sensor signals reconstruction and noise levels are from [1]
+614: 	// [1] Bulka, Eitan, and Meyer Nahon. "Autonomous fixed-wing aerobatics: from theory to flight."
+615: 	//     In 2018 IEEE International Conference on Robotics and Automation (ICRA), pp. 6573-6580. IEEE, 2018.
+616: 
+617: 	// IMU
+618: 	const Dcmf R_E2B(_q_E.inversed());
+619: 	Vector3f accel_noise;
+620: 	Vector3f gyro_noise;
+621: 
+622: 	if (_T_B.longerThan(FLT_EPSILON)) {
+623: 		accel_noise = noiseGauss3f(0.5f, 1.7f, 1.4f);
+624: 		gyro_noise = noiseGauss3f(0.14f, 0.07f, 0.03f);
+625: 
+626: 	} else {
+627: 		// Lower noise when not armed
+628: 		accel_noise = noiseGauss3f(0.1f, 0.1f, 0.1f);
+629: 		gyro_noise = noiseGauss3f(0.01f, 0.01f, 0.01f);
+630: 	}
+631: 
+632: 	Vector3f specific_force_B = R_E2B * _specific_force_E;
+633: 	Vector3f accel = specific_force_B + accel_noise;
+634: 
+635: 	const Vector3f earth_spin_rate_B = R_E2B * Vector3f(0.f, 0.f, CONSTANTS_EARTH_SPIN_RATE);
+636: 	Vector3f gyro = _w_B + earth_spin_rate_B + gyro_noise;
+637: 
+638: 	// update IMU every iteration
+639: 	_px4_accel.update(time_now_us, accel(0), accel(1), accel(2));
+640: 	_px4_gyro.update(time_now_us, gyro(0), gyro(1), gyro(2));

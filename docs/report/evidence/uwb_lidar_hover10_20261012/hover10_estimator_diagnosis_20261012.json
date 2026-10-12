@@ -1,0 +1,174 @@
+[
+  {
+    "run": "/home/dronestock/uwb_sim/uwb-lidar-integration-20261012/hover10-p2-velp3-24/clear-s201-a1",
+    "interval_s": [
+      40.044,
+      75.028
+    ],
+    "topics": {
+      "vehicle_local_position": {
+        "n": 4374,
+        "error_rms_by_axis": [
+          0.02207991376889762,
+          0.07006360920210482,
+          0.08196541517916332
+        ],
+        "error_mean_by_axis": [
+          0.0037551186886844476,
+          0.006945659393214769,
+          -0.01088474821444236
+        ],
+        "observed_speed_rms": 0.1054593175649643,
+        "true_speed_rms": 0.11529571163404964,
+        "publish_minus_sample_s": 0.0
+      },
+      "estimator_states": {
+        "n": 3499,
+        "error_rms_by_axis": [
+          0.01887095135590576,
+          0.05746973948118118,
+          0.07847540703048904
+        ],
+        "error_mean_by_axis": [
+          0.003502075765621007,
+          0.0064159579383814384,
+          -0.010433360184809243
+        ],
+        "observed_speed_rms": 0.10487424582242966,
+        "true_speed_rms": 0.11527593149737993,
+        "publish_minus_sample_s": 0.032000000000000035
+      },
+      "estimator_optical_flow_vel": {
+        "n": 1400,
+        "error_rms_by_axis": [
+          0.007307466186069682,
+          0.01159802812522323
+        ],
+        "error_mean_by_axis": [
+          0.0006667737454050195,
+          0.002229640071815595
+        ],
+        "observed_speed_rms": 0.08144042640924454,
+        "true_speed_rms": 0.08592243560963693,
+        "publish_minus_sample_s": 0.04220571428571447
+      },
+      "estimator_aid_src_aux_vel": {
+        "n": 349,
+        "error_rms_by_axis": [
+          0.0205564919020094,
+          0.020690477310779942
+        ],
+        "error_mean_by_axis": [
+          -0.001168471256200572,
+          -0.0006062202392502219
+        ],
+        "observed_speed_rms": 0.08558952827156756,
+        "true_speed_rms": 0.08567933378884908,
+        "publish_minus_sample_s": 0.03597108882521513
+      },
+      "estimator_aid_src_rng_hgt": {
+        "observation_variance": 0.018414638936519623,
+        "innovation_variance": 0.019100431352853775,
+        "fused": 1.0
+      },
+      "estimator_aid_src_baro_hgt": {
+        "observation_variance": 12.394721984863281,
+        "innovation_variance": 12.395503997802734,
+        "fused": 1.0
+      },
+      "estimator_aid_src_ev_pos": {
+        "observation_variance[0]": 0.009999999776482582,
+        "observation_variance[1]": 0.009999999776482582,
+        "innovation_variance[0]": 0.010163047350943089,
+        "innovation_variance[1]": 0.01016302965581417,
+        "fused": 1.0
+      }
+    }
+  },
+  {
+    "run": "/home/dronestock/uwb_sim/uwb-lidar-integration-20261012/hover10-scan-candidate-26",
+    "interval_s": [
+      43.036,
+      78.004
+    ],
+    "topics": {
+      "vehicle_local_position": {
+        "n": 4372,
+        "error_rms_by_axis": [
+          0.02914833041825146,
+          0.07491003351250237,
+          0.07745319788519696
+        ],
+        "error_mean_by_axis": [
+          0.0009649228784518239,
+          -0.007990155951298364,
+          0.006801960668705197
+        ],
+        "observed_speed_rms": 0.10955438017845154,
+        "true_speed_rms": 0.135984559944978,
+        "publish_minus_sample_s": 0.0
+      },
+      "estimator_states": {
+        "n": 3498,
+        "error_rms_by_axis": [
+          0.026471605636576783,
+          0.06123507583122789,
+          0.07419114333446489
+        ],
+        "error_mean_by_axis": [
+          0.0010606775449323884,
+          -0.007437339048462779,
+          0.006491890602064299
+        ],
+        "observed_speed_rms": 0.11429506540298462,
+        "true_speed_rms": 0.13598637490471419,
+        "publish_minus_sample_s": 0.03199999999999999
+      },
+      "estimator_optical_flow_vel": {
+        "n": 1391,
+        "error_rms_by_axis": [
+          0.00893668983429537,
+          0.012017496965334384
+        ],
+        "error_mean_by_axis": [
+          0.0033487946306531248,
+          -0.0012760947549126178
+        ],
+        "observed_speed_rms": 0.1093720942735672,
+        "true_speed_rms": 0.11488126356791335,
+        "publish_minus_sample_s": 0.042375269590222905
+      },
+      "estimator_aid_src_aux_vel": {
+        "n": 252,
+        "error_rms_by_axis": [
+          0.0497973548608397,
+          0.03313492172630669
+        ],
+        "error_mean_by_axis": [
+          -0.0009065862766097817,
+          0.00024455039877684256
+        ],
+        "observed_speed_rms": 0.1326414305857294,
+        "true_speed_rms": 0.11761786814148721,
+        "publish_minus_sample_s": 0.07242240079365037
+      },
+      "estimator_aid_src_rng_hgt": {
+        "observation_variance": 0.016542907804250717,
+        "innovation_variance": 0.01717507839202881,
+        "fused": 1.0
+      },
+      "estimator_aid_src_baro_hgt": {
+        "observation_variance": 12.394732475280762,
+        "innovation_variance": 12.395459175109863,
+        "fused": 1.0
+      },
+      "estimator_aid_src_ev_pos": {
+        "observation_variance[0]": 0.009999999776482582,
+        "observation_variance[1]": 0.009999999776482582,
+        "innovation_variance[0]": 0.010205070488154888,
+        "innovation_variance[1]": 0.010195109993219376,
+        "fused": 1.0
+      }
+    }
+  }
+]

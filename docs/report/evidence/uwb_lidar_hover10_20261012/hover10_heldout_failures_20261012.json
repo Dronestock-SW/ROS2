@@ -1,0 +1,343 @@
+{
+  "results": [
+    {
+      "run": "/home/dronestock/uwb_sim/uwb-lidar-integration-20261012/hover10-heldout-scan-41/clear-s301-a1",
+      "status": {
+        "errors": [],
+        "physical_writes": 0,
+        "armed_seen": true,
+        "airborne_seen": true,
+        "offboard_seen": true,
+        "moving_seen": true,
+        "feedback_count": 2685,
+        "ev_samples": 3413,
+        "flow_samples": 3519,
+        "flow_invalid_samples": 1318,
+        "range_samples": 2201,
+        "lidar_samples": 428,
+        "final_phase": "FAILED",
+        "final_reason": "hover_stability_timeout",
+        "elapsed_s": 88.32,
+        "required_parameters": {
+          "COM_RC_OVERRIDE": 3,
+          "EKF2_ACC_NOISE": 1.0,
+          "EKF2_ASP_DELAY": 0.0,
+          "EKF2_DELAY_MAX": 100.0,
+          "EKF2_EVP_NOISE": 0.029999999329447746,
+          "EKF2_GYR_NOISE": 0.10000000149011612,
+          "EKF2_MAG_TYPE": 0,
+          "EKF2_RNG_NOISE": 0.029999999329447746,
+          "EKF2_RNG_SFE": 0.0,
+          "EKF2_TAU_POS": 0.10000000149011612,
+          "EKF2_TAU_VEL": 0.05000000074505806,
+          "MIS_TAKEOFF_ALT": 1.7000000476837158,
+          "MPC_XY_P": 2.0,
+          "MPC_XY_VEL_MAX": 0.25,
+          "MPC_XY_VEL_P_ACC": 3.0
+        },
+        "min_wall_surface_clearance_m": 1.7763497911575266,
+        "max_estimated_horizontal_speed_m_s": 0.3087730406897838,
+        "scan_fault_to_zero_command_s": null,
+        "ulog_files": [
+          "rootfs/log/2026-10-12/08_38_59.ulg"
+        ],
+        "binary_unchanged": true
+      },
+      "samples": 584,
+      "duration_s": 34.97599999999999,
+      "failure_counts": {
+        "vz": 10,
+        "speed": 155
+      },
+      "failure_combinations": {
+        "vz": 6,
+        "speed,vz": 4,
+        "none": 423,
+        "speed": 151
+      },
+      "longest_continuous_s": {
+        "xy": 34.97599999999999,
+        "speed": 2.823999999999998,
+        "z": 34.97599999999999,
+        "vz": 9.536000000000001,
+        "all_available": 2.823999999999998
+      },
+      "error_stats": {
+        "xy": {
+          "p50": 0.032438424815708425,
+          "p95": 0.08220188911757806,
+          "maximum": 0.13017949175389829
+        },
+        "speed": {
+          "p50": 0.06875608721157794,
+          "p95": 0.1688794557769203,
+          "maximum": 0.24989890753323132
+        },
+        "z": {
+          "p50": 0.020510864257812678,
+          "p95": 0.050479125976562324,
+          "maximum": 0.06264038085937518
+        },
+        "vz": {
+          "p50": 0.02467761468142271,
+          "p95": 0.07699260823428633,
+          "maximum": 0.15025834739208221
+        },
+        "uwb": {
+          "p50": 0.038372345219316366,
+          "p95": 0.08976177832635421,
+          "maximum": 0.12788118115415903
+        }
+      },
+      "truth_xy_error_stats": {
+        "p50": 0.035090617512885,
+        "p95": 0.08624357915659511,
+        "maximum": 0.12365020884247357
+      },
+      "truth_speed_stats": {
+        "p50": 0.0670820393249937,
+        "p95": 0.15132745950421556,
+        "maximum": 0.20024984394500786
+      },
+      "velocity_estimation_error_stats": {
+        "p50": 0.04256136072831035,
+        "p95": 0.11686253586852237,
+        "maximum": 0.21962463788767156
+      },
+      "horizontal_control_counts": {
+        "position": 584
+      },
+      "source_sha256": {
+        "mission.jsonl": "c83124c602924eb16d94b9f0a0f57d6a321a3f1afb850580d01bcd9f41bce155",
+        "telemetry.jsonl": "edf4ba3337f5f21200419a433a1d2dbe7d016b43a8a9e54cac079e9ba0de6ed2"
+      },
+      "scope": "Exact timestamp telemetry z/vz; legacy logs lack UWB and evaluate phase after tick. In legacy logs all_available omits UWB and the final transition tick."
+    },
+    {
+      "run": "/home/dronestock/uwb_sim/uwb-lidar-integration-20261012/hover10-heldout-scan-41/clear-s302-a1",
+      "status": {
+        "errors": [],
+        "physical_writes": 0,
+        "armed_seen": true,
+        "airborne_seen": true,
+        "offboard_seen": true,
+        "moving_seen": true,
+        "feedback_count": 2637,
+        "ev_samples": 3411,
+        "flow_samples": 3518,
+        "flow_invalid_samples": 1347,
+        "range_samples": 2171,
+        "lidar_samples": 444,
+        "final_phase": "FAILED",
+        "final_reason": "hover_stability_timeout",
+        "elapsed_s": 88.256,
+        "required_parameters": {
+          "COM_RC_OVERRIDE": 3,
+          "EKF2_ACC_NOISE": 1.0,
+          "EKF2_ASP_DELAY": 0.0,
+          "EKF2_DELAY_MAX": 100.0,
+          "EKF2_EVP_NOISE": 0.029999999329447746,
+          "EKF2_GYR_NOISE": 0.10000000149011612,
+          "EKF2_MAG_TYPE": 0,
+          "EKF2_RNG_NOISE": 0.029999999329447746,
+          "EKF2_RNG_SFE": 0.0,
+          "EKF2_TAU_POS": 0.10000000149011612,
+          "EKF2_TAU_VEL": 0.05000000074505806,
+          "MIS_TAKEOFF_ALT": 1.7000000476837158,
+          "MPC_XY_P": 2.0,
+          "MPC_XY_VEL_MAX": 0.25,
+          "MPC_XY_VEL_P_ACC": 3.0
+        },
+        "min_wall_surface_clearance_m": 1.8064571503237101,
+        "max_estimated_horizontal_speed_m_s": 0.3131413088084073,
+        "scan_fault_to_zero_command_s": null,
+        "ulog_files": [
+          "rootfs/log/2026-10-12/08_38_59.ulg"
+        ],
+        "binary_unchanged": true
+      },
+      "samples": 584,
+      "duration_s": 34.983999999999995,
+      "failure_counts": {
+        "vz": 6,
+        "speed": 134
+      },
+      "failure_combinations": {
+        "vz": 5,
+        "none": 445,
+        "speed": 133,
+        "speed,vz": 1
+      },
+      "longest_continuous_s": {
+        "xy": 34.983999999999995,
+        "speed": 2.823999999999998,
+        "z": 34.983999999999995,
+        "vz": 17.823999999999998,
+        "all_available": 2.823999999999998
+      },
+      "error_stats": {
+        "xy": {
+          "p50": 0.03343580646881515,
+          "p95": 0.07116644767941477,
+          "maximum": 0.0988002166201899
+        },
+        "speed": {
+          "p50": 0.06754407818369448,
+          "p95": 0.15459198622088455,
+          "maximum": 0.21841196063767793
+        },
+        "z": {
+          "p50": 0.0185546875,
+          "p95": 0.04887084960937482,
+          "maximum": 0.06052856445312482
+        },
+        "vz": {
+          "p50": 0.025919940322637558,
+          "p95": 0.07919323705136776,
+          "maximum": 0.15265388786792755
+        },
+        "uwb": {
+          "p50": 0.037191736053875574,
+          "p95": 0.08285213803568232,
+          "maximum": 0.11098081991837291
+        }
+      },
+      "truth_xy_error_stats": {
+        "p50": 0.03441342644573231,
+        "p95": 0.07957446506130461,
+        "maximum": 0.10215498436909032
+      },
+      "truth_speed_stats": {
+        "p50": 0.06324555320336758,
+        "p95": 0.13601470508735444,
+        "maximum": 0.18439088914585774
+      },
+      "velocity_estimation_error_stats": {
+        "p50": 0.03950064436329681,
+        "p95": 0.10569279825626837,
+        "maximum": 0.16775813417024454
+      },
+      "horizontal_control_counts": {
+        "position": 584
+      },
+      "source_sha256": {
+        "mission.jsonl": "687474da44294c4525f52cf739008fb4b85278d32f7f43aa77329e04571a91b6",
+        "telemetry.jsonl": "0dc4046bb9a0e7614f2a0d073d5740f29b5db2202ea977b675de83eea661df7c"
+      },
+      "scope": "Exact timestamp telemetry z/vz; legacy logs lack UWB and evaluate phase after tick. In legacy logs all_available omits UWB and the final transition tick."
+    },
+    {
+      "run": "/home/dronestock/uwb_sim/uwb-lidar-integration-20261012/hover10-heldout-scan-41/clear-s303-a1",
+      "status": {
+        "errors": [],
+        "physical_writes": 0,
+        "armed_seen": true,
+        "airborne_seen": true,
+        "offboard_seen": true,
+        "moving_seen": true,
+        "feedback_count": 2688,
+        "ev_samples": 3432,
+        "flow_samples": 3518,
+        "flow_invalid_samples": 1316,
+        "range_samples": 2202,
+        "lidar_samples": 412,
+        "final_phase": "FAILED",
+        "final_reason": "hover_stability_timeout",
+        "elapsed_s": 88.8,
+        "required_parameters": {
+          "COM_RC_OVERRIDE": 3,
+          "EKF2_ACC_NOISE": 1.0,
+          "EKF2_ASP_DELAY": 0.0,
+          "EKF2_DELAY_MAX": 100.0,
+          "EKF2_EVP_NOISE": 0.029999999329447746,
+          "EKF2_GYR_NOISE": 0.10000000149011612,
+          "EKF2_MAG_TYPE": 0,
+          "EKF2_RNG_NOISE": 0.029999999329447746,
+          "EKF2_RNG_SFE": 0.0,
+          "EKF2_TAU_POS": 0.10000000149011612,
+          "EKF2_TAU_VEL": 0.05000000074505806,
+          "MIS_TAKEOFF_ALT": 1.7000000476837158,
+          "MPC_XY_P": 2.0,
+          "MPC_XY_VEL_MAX": 0.25,
+          "MPC_XY_VEL_P_ACC": 3.0
+        },
+        "min_wall_surface_clearance_m": 1.7914034707406186,
+        "max_estimated_horizontal_speed_m_s": 0.3199346666297652,
+        "scan_fault_to_zero_command_s": null,
+        "ulog_files": [
+          "rootfs/log/2026-10-12/08_40_37.ulg"
+        ],
+        "binary_unchanged": true
+      },
+      "samples": 584,
+      "duration_s": 34.98400000000001,
+      "failure_counts": {
+        "vz": 13,
+        "speed": 139
+      },
+      "failure_combinations": {
+        "vz": 9,
+        "none": 436,
+        "speed": 135,
+        "speed,vz": 4
+      },
+      "longest_continuous_s": {
+        "xy": 34.98400000000001,
+        "speed": 2.1040000000000063,
+        "z": 34.98400000000001,
+        "vz": 8.760000000000005,
+        "all_available": 2.1040000000000063
+      },
+      "error_stats": {
+        "xy": {
+          "p50": 0.028935298690521083,
+          "p95": 0.07326958840738679,
+          "maximum": 0.12108501025946364
+        },
+        "speed": {
+          "p50": 0.06819437357033839,
+          "p95": 0.15187211466357534,
+          "maximum": 0.24918722923841077
+        },
+        "z": {
+          "p50": 0.018145751953125178,
+          "p95": 0.04960479736328108,
+          "maximum": 0.05964355468749982
+        },
+        "vz": {
+          "p50": 0.023103957064449787,
+          "p95": 0.0783978771418333,
+          "maximum": 0.15164493024349213
+        },
+        "uwb": {
+          "p50": 0.03466427240827953,
+          "p95": 0.08224519865562646,
+          "maximum": 0.12110474434047014
+        }
+      },
+      "truth_xy_error_stats": {
+        "p50": 0.033695500911301204,
+        "p95": 0.07915534194818116,
+        "maximum": 0.1108502532572773
+      },
+      "truth_speed_stats": {
+        "p50": 0.06,
+        "p95": 0.14142135623730953,
+        "maximum": 0.17117242768623692
+      },
+      "velocity_estimation_error_stats": {
+        "p50": 0.044933484614608415,
+        "p95": 0.1025357587897015,
+        "maximum": 0.1748807824089841
+      },
+      "horizontal_control_counts": {
+        "position": 584
+      },
+      "source_sha256": {
+        "mission.jsonl": "b6fab0adced0fad203420e0d13cc04cd16928fa759fc7c7429adaf42bd43a9bf",
+        "telemetry.jsonl": "5419f35f6e0147967ee2fc7c43d8b22d7452c25152601bb5c6df5b0533b86191"
+      },
+      "scope": "Exact timestamp telemetry z/vz; legacy logs lack UWB and evaluate phase after tick. In legacy logs all_available omits UWB and the final transition tick."
+    }
+  ]
+}
