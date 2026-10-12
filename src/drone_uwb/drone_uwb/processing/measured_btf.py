@@ -201,7 +201,7 @@ class MeasuredBtf:
     def process(self, event):
         out = {'schema': 1, 'source': 'measured_uwb_btf', 'truth_used': False,
                'external_output_allowed': False, 'flight_valid': False,
-               'timestamp_calibrated': False, 'ok': False}
+               'timestamp_calibrated': False, 'jump_guard_enabled': False, 'ok': False}
         out['observation_session'] = self.observation_session
         try:
             msg = event['message']
@@ -301,20 +301,17 @@ class MeasuredBtf:
             if raw_residual < .06:
                 if self.raw_guard.prior_stamp is not None:
                     age=(stamp_ns-self.raw_guard.prior_stamp)/1e9
-                    out['jump_check'] = dict(prior_age_s=age,
+                    out['jump_check'] = dict(enforced=False, prior_age_s=age,
                         step_m=math.dist(raw_xy,self.raw_guard.prior_xy),
                         limit_m=self.raw_guard.config.jump_margin_m+self.raw_guard.config.max_speed_m_s
                             *min(age,self.raw_guard.config.max_gap_s))
                 # Motion recovery requires physical range consistency as well
                 # as the four-link pair residual. Normal B4 XY stays height-free.
-                raw_reason = self.raw_guard.check(tuple(map(float, raw_xy)), stamp_ns,
+                self.raw_guard.check(tuple(map(float, raw_xy)), stamp_ns,
                     motion_eligible=(height_source in ('measured_tof_imu','gazebo_tof_imu')
                         and out.get('raw_height_rms_m', float('inf')) < .06))
                 if self.raw_guard.motion_evidence is not None:
                     out['raw_motion_reacquisition'] = self.raw_guard.motion_evidence
-                if raw_reason == 'observation_jump_quarantined':
-                    self.window.reset('coherent_raw_step')
-                    return dict(out, reason=raw_reason, stamp_ns=stamp_ns, raw_xy_m=raw_xy.tolist())
             b = self.window.process(cycle, cycle.seq)
             candidate_input = {'time_us': stamp, 'sample_time_us': cycle.sample_us,
                  'cal_slant_m': corrected.tolist(), 'height_m': height,

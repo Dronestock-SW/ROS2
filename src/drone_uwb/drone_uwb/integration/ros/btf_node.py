@@ -264,6 +264,7 @@ class BtfNode(Node):
         row = {'utc':datetime.now(timezone.utc).isoformat(),'elapsed_s':time.monotonic()-self.started,
                'counts':dict(self.counts),'height_counts':dict(self.height_counts),
                'last_reason':self.last.get('reason') if self.last else None,
+               'jump_guard_enabled':False,
                'last_xy_m':self.last.get('xy_m') if self.last else None,
                'last_xyz_m':self.last.get('xyz_m') if self.last else None,
                'require_height_for_pose':self.require_height,

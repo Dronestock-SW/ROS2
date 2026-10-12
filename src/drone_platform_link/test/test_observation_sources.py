@@ -4,6 +4,20 @@ import pytest
 from drone_platform_link.telemetry import Observations
 
 
+def test_live_jump_policy_is_per_stage_and_expires_without_mission():
+    o = Observations('btf_xy')
+    with patch('drone_platform_link.telemetry.time.monotonic', return_value=10.):
+        o.receive_uwb_pipeline('btf', {'jump_guard_enabled': False, 'last_reason': 'ready'})
+        o.receive_uwb_pipeline('sender', {'jump_guard_enabled': True, 'gate': 'ready'})
+        policy = o.fields()['uwb_pipeline']
+        assert policy['btf']['jump_guard_enabled'] is False
+        assert policy['sender']['jump_guard_enabled'] is True
+        o.receive_uwb_pipeline('sender', {'jump_guard_enabled': 'false'})
+        assert o.fields()['uwb_pipeline']['sender']['jump_guard_enabled'] is None
+    with patch('drone_platform_link.telemetry.time.monotonic', return_value=11.6):
+        assert o.fields()['uwb_pipeline'] == {}
+
+
 def test_actual_ai_identity_and_decision_state_reach_web_and_expire():
     o=Observations('btf_xy')
     ai=dict(backend='sangwon_cpp_bt',connected=True,phase='DWELL',plan_ref='plan',decision_sequence=12)

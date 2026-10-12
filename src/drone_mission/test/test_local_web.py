@@ -30,12 +30,15 @@ def local_http():
 
 
 def test_local_page_and_http_start_retry_preserve_one_request(local_http):
-    _, origin = local_http
+    platform, origin = local_http
     with urlopen(origin+'/', timeout=2) as response:
         assert '미션 START · ARM·이륙 포함' in response.read().decode('utf-8')
     body = json.dumps({'action':'start', 'client_request_id':'same-click-request', 'route_tasks':[{'id':'P1', 'x':2.3, 'y':2.}]}).encode()
     request = Request(origin+'/local/command', data=body,
                       headers={'Content-Type':'application/json'}, method='POST')
+    # Model a current telemetry heartbeat after the page request. Windows
+    # server startup can exceed the production one-second freshness limit.
+    platform.telemetry_received_s = time.monotonic()
     with urlopen(request, timeout=2) as response:
         first = json.load(response)
     with urlopen(request, timeout=2) as response:

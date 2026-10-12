@@ -21,6 +21,7 @@ class Observations:
         self.pose = None
         self.battery = None
         self.height = self.fc = self.position = self.mission = None
+        self.uwb_pipeline = {}
 
         self.last_stamp_ns = None
 
@@ -56,6 +57,16 @@ class Observations:
 
     def receive_fc(self, connected, armed, mode):
         self.fc = (connected, armed, mode, time.monotonic())
+
+    def receive_uwb_pipeline(self, stage, value):
+        if stage not in ('btf', 'sender') or not isinstance(value, dict):
+            return
+        # Only explicit booleans from a current process prove its policy.
+        enabled = value.get('jump_guard_enabled')
+        self.uwb_pipeline[stage] = (dict(
+            jump_guard_enabled=enabled if type(enabled) is bool else None,
+            reason=value.get('gate') or value.get('last_reason')),
+            time.monotonic())
 
     def receive_position(self, xyz, frame, stamp_ns):
         if frame == 'map' and all(map(math.isfinite, xyz)) and 0 <= time.time_ns()-stamp_ns <= 200_000_000:
@@ -136,4 +147,7 @@ class Observations:
                 current_z_source='ground_antenna_reference', current_z_reference='floor',
                 current_z_estimated=True, current_z_trusted=False, xyz_valid=False,
                 z_source='ground_antenna_reference')
+        result['uwb_pipeline'] = {
+            stage: dict(value, fresh=True) for stage, (value, received) in self.uwb_pipeline.items()
+            if 0 <= now-received <= 1.5}
         return result

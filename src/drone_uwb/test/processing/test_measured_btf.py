@@ -15,7 +15,7 @@ CONFIG = Path(__file__).parents[2]/'config/runtime/uwb_btf_real.json'
 def test_explicit_ground_session_resets_geometry_not_clock_or_source_identity():
     p = MeasuredBtf(config())
     p.raw_guard.check((1.,1.),1_000_000_000)
-    assert p.raw_guard.check((3.,3.),2_000_000_000)=='observation_jump_quarantined'
+    assert p.raw_guard.check((3.,3.),2_000_000_000)=='observation_acquiring'
     clock, tdma, validator = p.clock, p.tdma, p.validator
     valid = dict(connected=True,armed=False,landed=1,state_age_s=.1,
                  landed_age_s=.1,stationary=True,velocity_age_s=.05)
@@ -23,13 +23,13 @@ def test_explicit_ground_session_resets_geometry_not_clock_or_source_identity():
                       ('landed',True),('stationary',False),('state_age_s',1.6),
                       ('state_age_s',-.1),('landed_age_s',2.),('velocity_age_s',.21)]:
         assert not p.start_ground_session(**dict(valid,**{key:value}))[0]
-        assert p.raw_guard.prior_xy == (1.,1.) and p.observation_session == 0
+        assert p.raw_guard.prior_xy == (3.,3.) and p.observation_session == 0
     assert p.start_ground_session(**valid)[0]
     assert p.raw_guard.prior_xy is None and p.observation_session==1
     assert p.clock is clock and p.tdma is tdma and p.validator is validator
     assert p.raw_guard.check((3.,3.),3_000_000_000)=='observation_acquiring'
     assert p.raw_guard.check((3.,3.),3_300_000_000)=='observation_acquiring'  # gap restarts acquisition
-    assert p.raw_guard.check((5.,3.),3_320_000_000)=='observation_jump_quarantined'
+    assert p.raw_guard.check((5.,3.),3_320_000_000)=='observation_acquiring'
 
 
 def test_ground_xy_never_inserts_a_height_or_accepts_a_tof_subset():
@@ -172,7 +172,7 @@ def test_missing_anchor_does_not_return_a_position():
     assert p.process(event(msg,122000))['reason']=='four_valid_ranges_required'
 
 
-def test_ascent_b4_xy_does_not_need_tof_but_never_invents_z_or_accepts_a_jump():
+def test_ascent_b4_xy_never_invents_z_and_step_can_refill_geometry():
     c=config();p=MeasuredBtf(c);a=np.asarray(c['anchors_xyz_m'])
     p.process(event(status(),100_000));accepted=[]
     for seq in range(1,100):
@@ -193,12 +193,14 @@ def test_ascent_b4_xy_does_not_need_tof_but_never_invents_z_or_accepts_a_jump():
         end=100_000+seq*22000;msg=cycle(seq,end,a)
         msg['raw_slant_m']=[float(np.linalg.norm(np.array([4.,3.,1.])-x)) for x in a]
         r=p.process(event(msg,end))
-        assert r['reason']=='observation_jump_quarantined'
-        assert not height_independent_b4(r)
+        assert r['reason']!='observation_jump_quarantined'
+        assert r['jump_guard_enabled'] is False
+        assert r['jump_check']['enforced'] is False
         assert 'sample_height_m' in r and 'raw_pair_residual_max_m' in r
-        assert p.raw_guard.prior_xy==before
-    # A prolonged coherent step stays quarantined, but real observations back
-    # at the original position can refill H80 without an airborne reset.
+        assert p.raw_guard.prior_xy==pytest.approx((4.,3.))
+    assert height_independent_b4(r)
+    assert r['xy_m']==pytest.approx((4.,3.),abs=.001)
+    # Actual return observations refill H80 without a ground-session reset.
     for seq in range(200,240):
         end=100_000+seq*22000;msg=cycle(seq,end,a)
         msg['raw_slant_m']=[float(np.linalg.norm(np.array([*before,1.])-x)) for x in a]
@@ -243,12 +245,13 @@ def test_real_source_restart_forgets_old_jump_prior_but_warms_up_again(restart):
     assert outcomes[-1]['ok'] and outcomes[-1]['xy_m']==pytest.approx([4,3],abs=.001)
 
 
-def test_queue_rejection_does_not_erase_quarantined_jump():
+def test_queue_rejection_preserves_observation_history_without_jump_lock():
     p=MeasuredBtf(config())
     p.raw_guard.check((1.,1.),1_000_000_000)
-    assert p.raw_guard.check((3.,3.),1_100_000_000)=='observation_jump_quarantined'
+    assert p.raw_guard.check((3.,3.),1_100_000_000)=='observation_acquiring'
     p.reject_queued_input()
-    assert p.raw_guard.check((3.,3.),2_000_000_000)=='observation_jump_quarantined'
+    assert p.raw_guard.prior_xy==(3.,3.)
+    assert p.raw_guard.check((3.,3.),2_000_000_000)=='observation_acquiring'
 
 
 @pytest.mark.parametrize('height_source,prefix', [

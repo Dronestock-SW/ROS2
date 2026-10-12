@@ -19,8 +19,9 @@ def settings():
         alignment_method='operator_cardinal_and_stationary_px4_yaw')
 
 
-def test_sender_jump_policy_defaults_on_and_requires_an_explicit_boolean():
-    assert settings().jump_guard_enabled is True
+def test_sender_jump_policy_is_removed_and_migrates_legacy_boolean():
+    assert settings().jump_guard_enabled is False
+    assert replace(settings(), jump_guard_enabled=True).jump_guard_enabled is False
     assert replace(settings(), jump_guard_enabled=False).jump_guard_enabled is False
     for invalid in (0, 1, 'false', None):
         with pytest.raises(ValueError, match='invalid_confirmation:jump_guard_enabled'):
@@ -40,7 +41,7 @@ def test_ros_sender_boundary_acquires_new_measurements_and_applies_jump_policy(r
     assert reason == 'ready'
     assert fields['time_usec'] == 1_475_000
     reason, fields = send(3., 1_500_000_000)
-    assert reason == ('observation_jump_quarantined' if reject_jumps else 'ready')
+    assert reason == 'ready'
     assert fields['x'] == -2. and fields['y'] == 3.
     assert send(3., 1_500_000_000)[0] == 'duplicate_or_backward_observation'
     with pytest.raises(ValueError, match='invalid XY observation'):

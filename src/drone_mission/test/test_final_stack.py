@@ -26,8 +26,8 @@ def aligned():
         host_boot_id=BOOT, fc_remote_ns=123456789)
 
 
-def test_new_final_alignment_template_keeps_sender_jump_protection_on():
-    assert templates()[1]['settings']['jump_guard_enabled'] is True
+def test_new_final_alignment_template_records_removed_jump_quarantine():
+    assert templates()[1]['settings']['jump_guard_enabled'] is False
 
 
 @pytest.mark.parametrize('sign', [-1, 1])

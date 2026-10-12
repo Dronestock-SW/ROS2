@@ -52,6 +52,15 @@ def start(observations, config=None, mission_queue=None, stop_event=None):
                 pass
 
         node.create_subscription(String, '/flight_state', mission, 10)
+        def uwb_status(stage, msg):
+            try:
+                observations.receive_uwb_pipeline(stage, json.loads(msg.data))
+            except ValueError:
+                pass
+        node.create_subscription(String, '/uwb/btf_status',
+            lambda msg: uwb_status('btf', msg), qos_profile_sensor_data)
+        node.create_subscription(String, '/uwb/local_odometry_status',
+            lambda msg: uwb_status('sender', msg), qos_profile_sensor_data)
         if mission_queue is not None:
             publisher = node.create_publisher(String, '/mission/assignment', 10)
 

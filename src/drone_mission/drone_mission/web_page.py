@@ -18,6 +18,7 @@ pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px}.hint{color:#5261
 <input id="ceiling" type="number" min="0.5" max="100" step="0.1" placeholder="예: 3.0">
 <button id="setceiling">천장 설정 저장</button><span id="site"></span>
 <p class="hint">이륙 높이는 PX4 설정을 사용합니다. 출발점은 START 시 PX4 기체 위치를 앵커 좌표로 변환해 확인합니다.</p><p id="profile" class="hint"></p></section>
+<section><h2>UWB 관측 연결</h2><p id="uwbpolicy" role="status">기체의 적용 상태 확인 대기</p><p class="hint">현재 버전은 XY 점프에 따른 관측 차단을 사용하지 않습니다. 새 관측의 시각·유효성과 거리 기하 검사는 유지합니다.</p></section>
 <section><h2>저장 미션</h2><label for="saved">미션 목록 </label><select id="saved"><option value="">저장 미션 없음</option></select>
 <button id="load">불러오기</button><button id="new" class="quiet">새 미션</button><button id="delete" class="quiet">선택 미션 삭제</button>
 <p id="selection" class="hint">새 미션 · 아직 저장하지 않았습니다.</p>
@@ -64,6 +65,7 @@ by('arm').onclick=()=>command('arm');
 by('make').onclick=async()=>{try{if(by('preset').value==='custom')throw Error('직접 경유지는 JSON 내용을 확인하세요.');const r=await fetch('/local/preset?'+new URLSearchParams({case:by('preset').value})),d=await r.json();if(!r.ok)throw Error(d.error);route.value=JSON.stringify(d.route_tasks,null,2);notice.textContent='현재 출발점 '+JSON.stringify(d.start_xy_m)+' · START 때 다시 계산합니다.';}catch(e){notice.textContent=e.message;}};
 let polls=0;
 async function update(){try{const r=await fetch('/local/status',{cache:'no-store'}),s=await r.json(),t=s.telemetry;lastStatus=s;
+const up=t.uwb_pipeline??{};by('uwbpolicy').textContent=[['btf','B_TF 입력'],['sender','PX4 송신']].map(([key,label])=>{const p=up[key];return label+': '+(!s.telemetry_fresh||!p?.fresh?'확인 대기':p.jump_guard_enabled===false?'점프 차단 제거 확인':p.jump_guard_enabled===true?'이전 점프 차단 사용 중':'적용 여부 미확인')+(p?.fresh&&p.reason?' · '+p.reason:'');}).join(' / ');
 by('start').disabled=busy||(!s.can_start&&pending?.action!=='start');
 by('arm').disabled=busy||(!s.can_arm&&pending?.action!=='arm');
 const ar=t.operator_arm_result;by('armstate').textContent=(t.fc_armed===true?'실제 시동: ARM':t.fc_armed===false?'실제 시동: DISARM':'실제 시동: 미확인')+(ar?' · ARM 요청: '+ar.reason:'');
@@ -76,6 +78,6 @@ const checks=(t.preflight?.checks??[]).map(c=>({...c,title:c.code==='estimator'?
 by('checks').replaceChildren();by('observations').replaceChildren();for(const c of checks){const row=document.createElement('div');row.textContent=(c.passed?'✓ ':c.required===false?'미확인 · ':'대기 · ')+c.title+(c.code==='local_start'&&s.automatic_start_xy_m?' · X '+s.automatic_start_xy_m[0].toFixed(3)+'m / Y '+s.automatic_start_xy_m[1].toFixed(3)+'m':'');by(c.required===false?'observations':'checks').appendChild(row);}
 by('state').textContent=JSON.stringify({기체:s.assignment.drone_id,배치:s.assignment.anchor_layout_id,텔레메트리수신:s.telemetry_fresh,상태:t.flight_state,사유:t.flight_reason,시동:t.fc_armed,PX4모드:t.fc_mode,UWB_XYZ:[t.x,t.y,t.current_z_m],Z출처:t.current_z_source,Z지상기준추정:t.current_z_estimated,Z실측유효:t.current_z_trusted,XYZ실측유효:t.xyz_valid,PX4_ENU:t.px4_position_enu_m,자동출발점_창고XY:s.automatic_start_xy_m,고정복귀점_창고XY:t.home_xy_m,착륙확인:t.landing_verified,출발점복귀확인:t.home_verified,비행결과:t.flight_outcome,작업결과:t.work_outcome,스캔결과:t.scan_results,요청검사:t.target_validation},null,2);
 if(++polls%6===0)await refreshCatalog();
-}catch(e){by('start').disabled=true;by('arm').disabled=true;by('land').disabled=true;by('home').disabled=true;by('runstate').textContent='연결 대기 · 이전 미션을 자동 실행하지 않습니다.';by('readiness').textContent='웹 연결 끊김 · START 대기';}setTimeout(update,500);}
+}catch(e){by('uwbpolicy').textContent='연결 끊김 · 적용 상태 확인 대기';by('start').disabled=true;by('arm').disabled=true;by('land').disabled=true;by('home').disabled=true;by('runstate').textContent='연결 대기 · 이전 미션을 자동 실행하지 않습니다.';by('readiness').textContent='웹 연결 끊김 · START 대기';}setTimeout(update,500);}
 refreshCatalog().catch(e=>{notice.textContent=e.message;});update();
 </script></html>'''.encode('utf-8')

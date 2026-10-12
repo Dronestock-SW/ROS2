@@ -26,7 +26,7 @@ class LocalObservationSettings:
     enu_offset_x_m: float = 0.
     enu_offset_y_m: float = 0.
     max_age_s: float = .15
-    jump_guard_enabled: bool = True
+    jump_guard_enabled: bool = False
     host_boot_id: str = ''
     fc_remote_ns_at_alignment: int = 0
     alignment_method: str = ''
@@ -52,6 +52,9 @@ class LocalObservationSettings:
                      'jump_guard_enabled'):
             if type(getattr(self, name)) is not bool:
                 raise ValueError('invalid_confirmation:' + name)
+        # Legacy private alignment files may contain true. Report the effective
+        # policy after migration instead of claiming that a removed gate is on.
+        object.__setattr__(self, 'jump_guard_enabled', False)
 
     @property
     def ros_domain_id(self):

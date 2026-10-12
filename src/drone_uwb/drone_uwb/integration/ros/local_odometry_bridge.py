@@ -185,6 +185,7 @@ def main(args=None):
                 self.future = self.client.call_async(GetParameters.Request(names=list(PARAMETERS)))
                 self.future.add_done_callback(self.parameters_received)
             row = {'gate': self.gate(), 'last_reason': self.last_reason,
+                'jump_guard_enabled':False,
                 'counts': dict(self.counts), 'last_sample_stamp_ns': self.last_stamp,
                 'last_send_age_s': now-self.last_send_at if self.last_fields else None,
                 'max_send_gap_s': self.max_send_gap_s, 'parameters': self.params,

@@ -156,11 +156,12 @@ def test_ordered_replay_distinguishes_queue_rejection_from_explicit_session_rese
     p=MeasuredBtf(json.loads((root/'config/runtime/uwb_btf_real.json').read_text()))
     p.raw_guard.check((1.,1.),1_000_000_000)
     replay.apply_recorded_reset(p,dict(type='uwb_rejected',reset_scope='queued_models'))
-    assert p.raw_guard.check((3.,3.),2_000_000_000)=='observation_jump_quarantined'
+    assert p.raw_guard.prior_xy==(1.,1.)
+    assert p.raw_guard.check((3.,3.),2_000_000_000)=='observation_acquiring'
     with pytest.raises(ValueError,match='legacy rejection'):
         replay.apply_recorded_reset(p,dict(type='uwb_rejected'))
     replay.apply_recorded_reset(p,dict(type='ground_session_reset',accepted=False))
-    assert p.raw_guard.prior_xy==(1.,1.)
+    assert p.raw_guard.prior_xy==(3.,3.)
     replay.apply_recorded_reset(p,dict(type='ground_session_reset',accepted=True,observation_session=1))
     assert p.raw_guard.prior_xy is None and p.observation_session==1
 

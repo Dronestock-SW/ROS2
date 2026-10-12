@@ -36,11 +36,14 @@ def test_sequential_tdma_raw_faults_recover_without_moving_accepted_xy(fault,win
             expected=[2+.05*out['time_us']/1e6,2.]
             accepted.append((seq,math.dist(out['xy_m'],expected)))
     assert len(accepted)>120
-    assert max(error for _,error in accepted)<.15
+    if fault!='coherent_step':
+        assert max(error for _,error in accepted)<.15
     assert accepted[-1][0]==239 and accepted[-1][1]<.02
     if fault=='coherent_step':
-        assert 'observation_jump_quarantined' in reasons
-        assert not any(100<=seq<132 for seq,_ in accepted)
+        assert 'observation_jump_quarantined' not in reasons
+        # Removal deliberately permits a coherent false position to enter the
+        # geometry pipeline. Do not retain the former accuracy guarantee.
+        assert all(d.get('jump_guard_enabled') is False for d in decisions)
     if fault=='nlos':
         assert any(d.get('models',{}).get('B_TF',{}).get('best_excluded_anchor')==2 for d in decisions)
 
