@@ -1,0 +1,42 @@
+{
+  "scope": "stationary disarmed SIH with the frozen LiDAR2D-v2 runtime",
+  "paths": [
+    "lidar2d",
+    "position_only",
+    "legacy3d"
+  ],
+  "scenarios": [
+    "nominal",
+    "range_gap",
+    "all_height_gap"
+  ],
+  "seeds": [
+    11,
+    22,
+    33,
+    44,
+    55
+  ],
+  "total_runs": 45,
+  "duration_s": 120,
+  "start_input_s": 20,
+  "stop_height_s": 40,
+  "restore_height_s": 90,
+  "evaluation": {
+    "restored": [
+      105,
+      120
+    ],
+    "outage": [
+      55,
+      85
+    ],
+    "before": [
+      25,
+      40
+    ]
+  },
+  "range_stop": "SIH_DISTSNSR_OVR 10000 gates publisher; fusion remains enabled",
+  "baro_stop": "sensor_baro_sim stop; start to restore",
+  "height_metric": "change from pre-outage 25-40s mean with truth motion removed; not absolute height accuracy"
+}

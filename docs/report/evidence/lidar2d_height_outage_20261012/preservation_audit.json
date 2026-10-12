@@ -1,0 +1,38 @@
+{
+  "selected_runs": 45,
+  "excluded_runs_preserved": 1,
+  "pilot_preserved": 1,
+  "record_files_verified_in_archives": 414,
+  "raw_ulog_count_verified": 46,
+  "mismatches": [],
+  "runtime": {
+    "source_unchanged": true,
+    "copy_unchanged": true,
+    "entry_count": 262
+  },
+  "archives": [
+    {
+      "local_path": "/mnt/c/Users/A/Documents/ChatGPT/DroneStock/outputs/lidar2d-height-outage-raw-20261012.tar.gz",
+      "wsl_path": "/home/dronestock/uwb_sim/lidar2d-height-outage-20261012/lidar2d-height-outage-raw-20261012.tar.gz",
+      "bytes": 440582005,
+      "sha256": "01dfc258d6173621b5b6634ab77b3d698b24e5ec942390a394786910f7ed6b35"
+    },
+    {
+      "local_path": "/mnt/c/Users/A/Documents/ChatGPT/DroneStock/outputs/lidar2d-height-outage-supplement-20261012.tar.gz",
+      "wsl_path": "/home/dronestock/uwb_sim/lidar2d-height-outage-20261012/lidar2d-height-outage-supplement-20261012.tar.gz",
+      "bytes": 10756850,
+      "sha256": "cc6ca0858be536fba3d59157a24de3928596c31f7c8ecfaad75c270c9eabc41d"
+    }
+  ],
+  "tool_sources": {
+    "src/drone_uwb/tools/analyze_lidar2d_height_outage.py": "8215dcb7370e574bf0faca7fbdf2a16b364dcfd795f4cefbd2ebc33b1edc54b1",
+    "src/drone_uwb/tools/lidar2d_height_outage.py": "c2ea736c9436904060910fbd0536116a1f575fe6df7d036f170a8af1b4656a15",
+    "src/drone_uwb/tools/run_lidar2d_height_matrix.py": "7703837cfd50d187873ac6905ac9818144104c07b64e9675cb5779a6cdacdaad"
+  },
+  "comparison_sha256": "7337b60ead4c4c99cc0fbba7c4ad1409d683c0e7a8afb96254601ecfb17b9cb2",
+  "checks": {
+    "run_count": 45,
+    "failures": [],
+    "note": "Diagnostic checks verify stimulus and measured behavior; not a flight acceptance gate."
+  }
+}
