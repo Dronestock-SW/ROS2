@@ -126,7 +126,8 @@ def main(args=None):
 
         def inspect_source(self, msg):
             if (msg.msgid in (102, 104, 138, 331)
-                    and (msg.sysid, msg.compid) not in ((1, 1), (255, 196))):
+                    and (msg.sysid, msg.compid) not in ((1, 1), (255, 196))
+                    and not (msg.msgid == 331 and (msg.sysid, msg.compid) == (255, 198))):
                 self.frozen = 'another_external_observation_writer'
 
         def btf_decision(self, msg):
@@ -165,7 +166,8 @@ def main(args=None):
                     or self.output.get_subscription_count() != 1):
                 # Keep one router sink, including for guarded FC readback.
                 return 'ambiguous_or_missing_transport'
-            allowed = {'mavros', 'uwb_local_odometry_bridge', 'px4_fixed_sensor_readback'}
+            from drone_uwb.integration.lidar_velocity import RAW_WRITERS
+            allowed = RAW_WRITERS
             if any(info.node_name not in allowed for info in
                     self.get_publishers_info_by_topic('/uas1/mavlink_sink')):
                 return 'unrecognized_raw_route_writer'

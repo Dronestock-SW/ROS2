@@ -13,7 +13,7 @@
   "expected_ev_delay_ms": 0.0,
   "expected_ev_pos_x_m": -0.1,
   "expected_ev_pos_y_m": 0.0,
-  "expected_ev_pos_z_m": -0.1,
+  "expected_ev_pos_z_m": -0.07,
   "bounds_xy_m": [
     0.5,
     5.3,
@@ -50,9 +50,9 @@
     "timing_ref": "",
     "scene_ref": "",
     "sensor_to_body_flu_m": [
-      null,
-      null,
-      0.15
+      0.0,
+      0.0,
+      0.10
     ],
     "sensor_to_body_yaw_rad": null,
     "scan_plane_parallel_to_body_xy": false

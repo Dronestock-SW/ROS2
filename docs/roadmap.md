@@ -690,3 +690,10 @@ FC aiding과 companion 자세·고도 제어는 추가하지 않았다.
 [지상 시각 기록](report/lidar_ground_audit_20261012.md),
 [실측 절차](runbooks/lidar_ground_qualification.md),
 [FC 자세 분석](report/run8_offboard_attitude_20261012.md)을 따른다.
+
+## 2026-10-12 실측 LiDAR 입력 상태
+
+수동·OFFBOARD 공통 2D 관측 로직을 추가했다.
+FMUv6C 전용 펌웨어 빌드는 통과했다.
+FC 설치·실제 융합·비행 검증은 아직 남았다.
+[검증 기록](report/lidar_physical_20261012.md)을 기준으로 한다.

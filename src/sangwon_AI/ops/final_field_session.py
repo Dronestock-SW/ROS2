@@ -20,6 +20,8 @@ def main():
         p.add_argument('--' + name, type=Path, required=True)
     p.add_argument('--check-only', action='store_true')
     p.add_argument('--cpp-ai-binary', type=Path, required=True)
+    p.add_argument('--external-observation-bridge', action='store_true',
+        help='Reuse the shared manual/OFFBOARD UWB+LiDAR service; mission readiness still checks its live status')
     a = p.parse_args()
     for path in (a.config, a.alignment, a.site_config, a.mission_store, a.ledger):
         if not path.is_file():
@@ -78,6 +80,8 @@ def main():
                      'record_directory:=' + str(a.state_dir / ('events-' + str(time.time_ns())))]),
         ('telemetry', ['-m', 'drone_platform_link.runtime']),
     ]
+    if a.external_observation_bridge:
+        commands = [(name, command) for name, command in commands if name != 'uwb_bridge']
     children, rows = [], []
     try:
         for name, args in commands:
