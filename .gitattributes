@@ -8,3 +8,12 @@ docs/report/evidence/multitag_patch_20261007/** -text -whitespace
 src/drone_mission/test/px4_sih_sensor_noise.patch -whitespace
 # The isolated Linux build helper must remain executable by Bash on WSL.
 src/drone_uwb/tools/build_lidar_sitl.sh text eol=lf
+# Follow-up manifests refer to exact diagnostic-source and evidence bytes.
+src/drone_uwb/tools/*lidar_vertical* text eol=lf
+src/drone_uwb/tools/analyze_lidar_state_output.py text eol=lf
+docs/report/evidence/lidar_vertical_followup_20261012/** -text -whitespace
+# Frozen LiDAR2D height-outage experiment sources and recorded evidence.
+src/drone_uwb/tools/*lidar2d_height* text eol=lf
+# Preserve the exact runner bytes hashed by all completed SIH manifests.
+src/drone_uwb/tools/lidar2d_height_outage.py -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/report/evidence/lidar2d_height_outage_20261012/** -text -whitespace
