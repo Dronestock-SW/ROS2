@@ -17,7 +17,7 @@
     "expected_ev_delay_ms": 0.0,
     "antenna_body_frd_x_m": -0.1,
     "antenna_body_frd_y_m": 0.0,
-    "antenna_body_frd_z_m": -0.1
+    "antenna_body_frd_z_m": -0.07
   },
   "flight_verified": false,
   "dynamic_alignment_verified": false,

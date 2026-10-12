@@ -1,0 +1,66 @@
+{
+  "flight_actions": false,
+  "parameter_writes": false,
+  "queries": [
+    {
+      "command": "ver all",
+      "response": "\nNuttShell (NSH) NuttX-12.12.0\nnsh> \u001b[Kver all\nHW arch: PX4_FMU_V6C\nHW type: V6C002002\nHW version: 0x002\nHW revision: 0x002\nPX4 git-hash: d6f12ad1c4f70ad3230afd7d86e971421e02fef4\nPX4 version: Release 1.17.0 (17891583)\nOS: NuttX\nOS version: Release 12.12.0 (202113279)\nOS git-hash: fb2fadf6f599c1406f052db013efd00a2518e72c\nBuild datetime: Sep 19 2026 11:17:24\nBuild uri: localhost\nBuild variant: default\nToolchain: GNU GCC, 10.3.1 20210621 (release)\nPX4GUID: 0006000000003132343830345115001e0031\nMCU: STM32H7[4|5]xxx, rev. V\nnsh> \u001b[K",
+      "complete": true
+    },
+    {
+      "command": "param show EKF2_LID2_VER",
+      "response": "param show EKF2_LID2_VER\nSymbols: x = used, + = saved, * = unsaved\n\n 1095/2040 parameters used.\nnsh> \u001b[K",
+      "complete": true
+    },
+    {
+      "command": "param show EKF2_LID2_EN",
+      "response": "param show EKF2_LID2_EN\nSymbols: x = used, + = saved, * = unsaved\n\n 1095/2040 parameters used.\nnsh> \u001b[K",
+      "complete": true
+    },
+    {
+      "command": "param show EKF2_LID2_AGE",
+      "response": "param show EKF2_LID2_AGE\nSymbols: x = used, + = saved, * = unsaved\n\n 1095/2040 parameters used.\nnsh> \u001b[K",
+      "complete": true
+    },
+    {
+      "command": "param show EKF2_AVEL_DELAY",
+      "response": "param show EKF2_AVEL_DELAY\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_AVEL_DELAY [322,569] : 5.0000\n\n 1095/2040 parameters used.\nnsh> \u001b[K",
+      "complete": true
+    },
+    {
+      "command": "param show EKF2_EV_POS_X",
+      "response": "param show EKF2_EV_POS_X\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_EV_POS_X [345,592] : -0.1000\n\n 1095/2040 parameters used.\nnsh> \u001b[K",
+      "complete": true
+    },
+    {
+      "command": "param show EKF2_EV_POS_Y",
+      "response": "param show EKF2_EV_POS_Y\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_EV_POS_Y [346,593] : 0.0000\n\n 1095/2040 parameters used.\nnsh> \u001b[K",
+      "complete": true
+    },
+    {
+      "command": "param show EKF2_EV_POS_Z",
+      "response": "param show EKF2_EV_POS_Z\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_EV_POS_Z [347,594] : -0.1000\n\n 1095/2040 parameters used.\nnsh> \u001b[K",
+      "complete": true
+    },
+    {
+      "command": "listener lidar_velocity2d_status -n 1",
+      "response": "listener lidar_velocity2d_status -n 1\nTopic lidar_velocity2d_status did not match any known topics\nnsh> \u001b[K",
+      "complete": true
+    },
+    {
+      "command": "listener estimator_aid_src_aux_vel -n 1",
+      "response": "listener estimator_aid_src_aux_vel -n 1\nnever published\nnsh> \u001b[K",
+      "complete": true
+    },
+    {
+      "command": "listener estimator_status_flags -n 1",
+      "response": "listener estimator_status_flags -n 1\n\nTOPIC: estimator_status_flags 2 instances\n\nInstance 0:\n estimator_status_flags\n    timestamp: 1666090974 (0.654034 seconds ago)\n    timestamp_sample: 1665902538 (188436 us before timestamp)\n    control_status_changes: 154\n    fault_status_changes: 0\n    innovation_fault_status_changes: 56\n    cs_tilt_align: True\n    cs_yaw_align: True\n    cs_gnss_pos: False\n    cs_opt_flow: False\n    cs_mag_hdg: False\n    cs_mag_3d: True\n    cs_mag_dec: True\n    cs_in_air: False\n    cs_wind: False\n    cs_baro_hgt: True\n    cs_rng_hgt: True\n    cs_gps_hgt: False\n    cs_ev_pos: False\n    cs_ev_yaw: False\n    cs_ev_hgt: False\n    cs_fuse_beta: False\n    cs_mag_field_disturbed: False\n    cs_fixed_wing: False\n    cs_mag_fault: False\n    cs_fuse_aspd: False\n    cs_gnd_effect: False\n    cs_rng_stuck: False\n    cs_gnss_yaw: False\n    cs_mag_aligned_in_flight: True\n    cs_ev_vel: False\n    cs_synthetic_mag_z: False\n    cs_vehicle_at_rest: True\n    cs_gnss_yaw_fault: False\n    cs_rng_fault: False\n    cs_inertial_dead_reckoning: False\n    cs_wind_dead_reckoning: False\n    cs_rng_kin_consistent: True\n    cs_fake_pos: False\n    cs_fake_hgt: False\n    cs_gravity_vector: True\n    cs_mag: True\n    cs_ev_yaw_fault: False\n    cs_mag_heading_consistent: True\n    cs_aux_gpos: False\n    cs_rng_terrain: True\n    cs_opt_flow_terrain: False\n    cs_valid_fake_pos: True\n    cs_constant_pos: False\n    cs_baro_fault: False\n    cs_gnss_vel: False\n    cs_gnss_fault: False\n    cs_yaw_manual: False\n    cs_gnss_hgt_fault: False\n    fs_bad_mag_x: False\n    fs_bad_mag_y: False\n    fs_bad_mag_z: False\n    fs_bad_hdg: False\n    fs_bad_mag_decl: False\n    fs_bad_airspeed: False\n    fs_bad_sideslip: False\n    fs_bad_optflow_x: False\n    fs_bad_optflow_y: False\n    fs_bad_acc_vertical: False\n    fs_bad_acc_clipping: False\n    reject_hor_vel: False\n    reject_ver_vel: False\n    reject_hor_pos: False\n    reject_ver_pos: False\n    reject_yaw: False\n    reject_airspeed: False\n    reject_sideslip: False\n    reject_hagl: False\n    reject_optflow_x: False\n    reject_optflow_y: False\n\n\nInstance 1:\n estimator_status_flags\n    timestamp: 1666752507 (0.085358 seconds ago)\n    timestamp_sample: 1666562694 (189813 us before timestamp)\n    control_status_changes: 162\n    fault_status_changes: 0\n    innovation_fault_status_changes: 56\n    cs_tilt_align: True\n    cs_yaw_align: True\n    cs_gnss_pos: False\n    cs_opt_flow: False\n    cs_mag_hdg: False\n    cs_mag_3d: True\n    cs_mag_dec: True\n    cs_in_air: False\n    cs_wind: False\n    cs_baro_hgt: True\n    cs_rng_hgt: True\n    cs_gps_hgt: False\n    cs_ev_pos: False\n    cs_ev_yaw: False\n    cs_ev_hgt: False\n    cs_fuse_beta: False\n    cs_mag_field_disturbed: False\n    cs_fixed_wing: False\n    cs_mag_fault: False\n    cs_fuse_aspd: False\n    cs_gnd_effect: False\n    cs_rng_stuck: False\n    cs_gnss_yaw: False\n    cs_mag_aligned_in_flight: True\n    cs_ev_vel: False\n    cs_synthetic_mag_z: False\n    cs_vehicle_at_rest: True\n    cs_gnss_yaw_fault: False\n    cs_rng_fault: False\n    cs_inertial_dead_reckoning: False\n    cs_wind_dead_reckoning: False\n    cs_rng_kin_consistent: True\n    cs_fake_pos: False\n    cs_fake_hgt: False\n    cs_gravity_vector: True\n    cs_mag: True\n    cs_ev_yaw_fault: False\n    cs_mag_heading_consistent: True\n    cs_aux_gpos: False\n    cs_rng_terrain: True\n    cs_opt_flow_terrain: False\n    cs_valid_fake_pos: True\n    cs_constant_pos: False\n    cs_baro_fault: False\n    cs_gnss_vel: False\n    cs_gnss_fault: False\n    cs_yaw_manual: False\n    cs_gnss_hgt_fault: False\n    fs_bad_mag_x: False\n    fs_bad_mag_y: False\n    fs_bad_mag_z: False\n    fs_bad_hdg: False\n    fs_bad_mag_decl: False\n    fs_bad_airspeed: False\n    fs_bad_sideslip: False\n    fs_bad_optflow_x: False\n    fs_bad_optflow_y: False\n    fs_bad_acc_vertical: False\n    fs_bad_acc_clipping: False\n    reject_hor_vel: False\n    reject_ver_vel: False\n    reject_hor_pos: False\n    reject_ver_pos: False\n    reject_yaw: False\n    reject_airspeed: False\n    reject_sideslip: False\n    reject_hagl: False\n    reject_optflow_x: False\n    reject_optflow_y: False\n\nnsh> \u001b[K",
+      "complete": true
+    },
+    {
+      "command": "listener vehicle_local_position -n 1",
+      "response": "listener vehicle_local_position -n 1\n\nTOPIC: vehicle_local_position\n vehicle_local_position\n    timestamp: 1666932382 (0.004448 seconds ago)\n    timestamp_sample: 1666931842 (540 us before timestamp)\n    ref_timestamp: 0\n    ref_lat: nan\n    ref_lon: nan\n    x: 2.71528\n    y: 2.99289\n    z: 0.62158\n    delta_xy: [0.00000, 0.00000]\n    delta_z: -0.69568\n    vx: 0.00127\n    vy: 0.00059\n    vz: 0.00084\n    z_deriv: -0.00160\n    delta_vxy: [0.00447, 0.00240]\n    delta_vz: -0.13950\n    ax: 0.00525\n    ay: 0.02325\n    az: 0.02812\n    heading: 1.70162\n    heading_var: 0.00056\n    unaided_heading: -0.01824\n    delta_heading: -0.02264\n    tilt_var: 0.00002\n    ref_alt: nan\n    dist_bottom: 0.01863\n    dist_bottom_var: 0.00073\n    delta_dist_bottom: -21.25131\n    eph: 0.01384\n    epv: 0.04858\n    evh: 0.04085\n    evv: 0.04023\n    vxy_max: inf\n    vz_max: inf\n    hagl_min: inf\n    hagl_max_z: inf\n    hagl_max_xy: inf\n    xy_valid: True\n    z_valid: True\n    v_xy_valid: True\n    v_z_valid: True\n    xy_reset_counter: 49\n    z_reset_counter: 4\n    vxy_reset_counter: 25\n    vz_reset_counter: 3\n    heading_reset_counter: 4\n    heading_good_for_control: True\n    xy_global: False\n    z_global: False\n    dist_bottom_valid: True\n    dist_bottom_reset_counter: 4\n    dist_bottom_sensor_bitfield: 1\n    dead_reckoning: False\nnsh> \u001b[K",
+      "complete": true
+    }
+  ]
+}

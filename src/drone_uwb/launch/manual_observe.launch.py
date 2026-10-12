@@ -42,9 +42,16 @@ def components(context):
                           'require_height_for_pose':True}]),
         Node(package='drone_uwb', executable='manual_observation_streams', output='screen'),
     ]
+    essential = list(children)
+    lidar_config = value('lidar_velocity_config')
+    if lidar_config:
+        # One sensor-level lifecycle serves manual/POSCTL and OFFBOARD alike.
+        # A LiDAR failure withholds its aid, without shutting down UWB/MAVROS.
+        children.append(Node(package='drone_uwb', executable='lidar_velocity_bridge',
+            output='screen', arguments=['--config', lidar_config, '--same-user-dds']))
     handlers = [RegisterEventHandler(OnProcessExit(target_action=child,
         on_exit=[EmitEvent(event=Shutdown(reason='manual observation component stopped'))]))
-        for child in children]
+        for child in essential]
     return [SetEnvironmentVariable('ROS_DOMAIN_ID', domain)]+handlers+children
 
 
@@ -54,6 +61,7 @@ def generate_launch_description():
         DeclareLaunchArgument('btf_config'), DeclareLaunchArgument('anchor_file', default_value=''),
         DeclareLaunchArgument('uwb_port', default_value='/dev/uwb'),
         DeclareLaunchArgument('fcu_url', default_value='/dev/pixhawk:921600'),
+        DeclareLaunchArgument('lidar_velocity_config', default_value=os.environ.get('LIDAR_VELOCITY_CONFIG', '')),
         DeclareLaunchArgument('local_setpoints', choices=['true','false'],
             default_value='true' if os.environ.get('DRONESTOCK_LOCAL_SETPOINTS') == '1' else 'false'),
         OpaqueFunction(function=components),
