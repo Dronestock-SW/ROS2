@@ -43,10 +43,14 @@ def test_local_takeoff_separate_start_uses_current_height_and_never_rearms():
     assert m.phase=='PREPARING' and m.height_target==pytest.approx(alt)
 
 
-def test_local_takeoff_requires_feedback_before_mode_or_arm():
-    m=rig();m.last_web_s=12.
-    assert m.tick(sample(12.),12.,WALL,time.time_ns())==[]
-    assert m.phase=='LOCAL_TAKEOFF_PREPARING'
+def test_ground_warmup_does_not_require_prearm_controller_echo():
+    m=rig();m.last_web_s=11.
+    assert m.tick(sample(11.),11.,WALL,time.time_ns())==[]
+    m.last_web_s=11.3
+    actions=m.tick(sample(11.3),11.3,WALL,time.time_ns())
+    assert [a['kind'] for a in actions]==['offboard_mode']
+    assert m.phase=='LOCAL_TAKEOFF_MODE'
+    assert m.feedback_ns is None
 
 
 def test_position_rc_takeover_never_reclaims_or_starts():

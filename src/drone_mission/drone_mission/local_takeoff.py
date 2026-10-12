@@ -75,11 +75,12 @@ class LocalTakeoff:
             return []
         feedback = self.feedback_ns is not None and 0 <= (ros_ns-self.feedback_ns)/1e9 <= .5
         if self.phase == 'LOCAL_TAKEOFF_PREPARING':
-            if now-self.entered_s >= 1. and feedback:
+            # PX4 does not echo controller targets before spool-up.
+            # OFFBOARD acknowledgement verifies reception of the warmup stream.
+            if now-self.entered_s >= 1.2:
                 self.enter('LOCAL_TAKEOFF_MODE','request_offboard_for_local_takeoff',now)
                 self.issue('offboard_mode',now)
-            elif now-self.entered_s > 6:
-                self.native_land('local_takeoff_feedback_missing',s,now)
+            
         elif self.phase == 'LOCAL_TAKEOFF_MODE':
             if self.pending is None and self.accepted_command and s.mode == 'OFFBOARD':
                 self.enter('LOCAL_TAKEOFF_ARMING','offboard_confirmed',now)
@@ -91,7 +92,7 @@ class LocalTakeoff:
                 self.feedback_ns = None
                 self.enter('LOCAL_TAKEOFF_CLIMB','armed_waiting_for_local_target_ascent',now)
         else:
-            if self.phase == 'LOCAL_TAKEOFF_CLIMB' and not feedback and now-self.entered_s > 1.:
+            if self.phase == 'LOCAL_TAKEOFF_CLIMB' and not feedback and now-self.entered_s > 6.:
                 self.native_land('local_takeoff_feedback_stale',s,now)
                 return self.actions
             stable = (s.landed == 2 and abs(s.altitude_enu_m-self.native_ground-self.settings.expected_mis_takeoff_alt_m) <= .15
