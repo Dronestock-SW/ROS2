@@ -1,0 +1,165 @@
+{
+  "common_interval_s": [
+    0.016443912,
+    178.447451
+  ],
+  "common_interval_spread": {
+    "uwb": {
+      "n": 7135,
+      "radial_about_own_median_m": {
+        "n": 7135,
+        "min": 6.719602128268217e-05,
+        "median": 0.005510510943180638,
+        "p95": 0.011609649325406327,
+        "max": 0.018392248782096016,
+        "mean": 0.005904119312830125,
+        "std": 0.0030966589002519784
+      }
+    },
+    "odom": {
+      "n": 5353,
+      "radial_about_own_median_m": {
+        "n": 5353,
+        "min": 5.6402077848424985e-05,
+        "median": 0.0014510317469574173,
+        "p95": 0.00253975783848177,
+        "max": 0.00340428949931351,
+        "mean": 0.0014702873019130753,
+        "std": 0.0006531075702060497
+      }
+    },
+    "reference": {
+      "n": 1780,
+      "radial_about_own_median_m": {
+        "n": 1780,
+        "min": 1.3038711553778614e-05,
+        "median": 0.001560355237500921,
+        "p95": 0.005881867035707423,
+        "max": 0.013017267731119624,
+        "mean": 0.002146434753348056,
+        "std": 0.001864795890228216
+      }
+    }
+  },
+  "accepted_only_accumulation_freezing_rejected_pairs": {
+    "xy_m": [
+      0.11432311389788137,
+      -0.07490627304608141
+    ],
+    "yaw_deg": -258.3432051668972,
+    "warning": "Artificially freezing rejected increments; not a usable trajectory"
+  },
+  "near_returns_per_scan": {
+    "n": 1781,
+    "min": 65.0,
+    "median": 67.0,
+    "p95": 68.0,
+    "max": 69.0,
+    "mean": 67.25098259404828,
+    "std": 0.6797011846590824
+  },
+  "always_invalid_ray_bins": 7,
+  "mostly_invalid_ray_bins": 32,
+  "fixed_reference_yaw_deg": {
+    "n": 1781,
+    "min": -0.36351276903620977,
+    "median": 0.039046158957264106,
+    "p95": 0.31151369393200184,
+    "max": 0.3726419774119024,
+    "mean": 0.026346370829645974,
+    "std": 0.18947956417546283
+  },
+  "bidirectional_cycle_translation_m": {
+    "n": 178,
+    "min": 5.085148426729502e-05,
+    "median": 0.0008802979154565957,
+    "p95": 0.004408611560084063,
+    "max": 0.010656532598333568,
+    "mean": 0.0013977026815952406,
+    "std": 0.0016453457705197416
+  },
+  "bidirectional_cycle_yaw_deg": {
+    "n": 178,
+    "min": -0.5145693025763328,
+    "median": -0.0013910011940070162,
+    "p95": 0.02316642745343274,
+    "max": 0.636878960453498,
+    "mean": -0.0005732349089632292,
+    "std": 0.06456550321097898
+  },
+  "body_mount": {
+    "source": "Latest user clarification in this side conversation",
+    "sensor": "360-degree horizontal LiDAR, not downward TFmini Plus",
+    "horizontal_offset": "approximately zero relative to UWB antenna",
+    "vertical_offset": "approximately 0.10 m below UWB antenna; estimate, not measured",
+    "reference_point": "UWB antenna",
+    "nominal_uwb_to_lidar_body_frd_m": [
+      0,
+      0,
+      0.1
+    ],
+    "rotation": "not surveyed"
+  },
+  "reset_covariance_example": [
+    {
+      "pitch_deg": 0,
+      "z_variance_m2_s2": 100,
+      "reset_north_std_m_s": 0.4472135954999579
+    },
+    {
+      "pitch_deg": 0,
+      "z_variance_m2_s2": 10000.0,
+      "reset_north_std_m_s": 0.4472135954999579
+    },
+    {
+      "pitch_deg": 0,
+      "z_variance_m2_s2": 1000000.0,
+      "reset_north_std_m_s": 0.4472135954999579
+    },
+    {
+      "pitch_deg": 5,
+      "z_variance_m2_s2": 100,
+      "reset_north_std_m_s": 1.9991354436979014
+    },
+    {
+      "pitch_deg": 5,
+      "z_variance_m2_s2": 10000.0,
+      "reset_north_std_m_s": 19.493708099540726
+    },
+    {
+      "pitch_deg": 5,
+      "z_variance_m2_s2": 1000000.0,
+      "reset_north_std_m_s": 194.88667463491478
+    },
+    {
+      "pitch_deg": 10,
+      "z_variance_m2_s2": 100,
+      "reset_north_std_m_s": 3.907788897266777
+    },
+    {
+      "pitch_deg": 10,
+      "z_variance_m2_s2": 10000.0,
+      "reset_north_std_m_s": 38.83141060551843
+    },
+    {
+      "pitch_deg": 10,
+      "z_variance_m2_s2": 1000000.0,
+      "reset_north_std_m_s": 388.2893792063995
+    },
+    {
+      "pitch_deg": 20,
+      "z_variance_m2_s2": 100,
+      "reset_north_std_m_s": 7.659340289121993
+    },
+    {
+      "pitch_deg": 20,
+      "z_variance_m2_s2": 10000.0,
+      "reset_north_std_m_s": 76.47918361534634
+    },
+    {
+      "pitch_deg": 20,
+      "z_variance_m2_s2": 1000000.0,
+      "reset_north_std_m_s": 764.7804056113096
+    }
+  ]
+}

@@ -1,0 +1,117 @@
+{
+  "status": "DESIGNED_NOT_EXECUTED",
+  "firmware_commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+  "seeds": [
+    11,
+    22,
+    33,
+    44,
+    55
+  ],
+  "baseline": "UWB horizontal position + existing optical flow; original altitude/heading aiding",
+  "candidate": "Baseline + LiDAR-derived body-plane velocity via standard EV path",
+  "run_duration_s": 120,
+  "normal_phases": "0–20 s alignment, 20–40 s nominal, 40–45 s injected condition, 45–120 s recovery; override per case",
+  "metrics": [
+    "simulator-truth XY/velocity RMSE and p95",
+    "vertical error",
+    "availability",
+    "innovation/test ratios",
+    "state resets",
+    "covariance",
+    "recovery time",
+    "control tracking"
+  ],
+  "cases": [
+    {
+      "id": "S01",
+      "name": "기본 수신·축·시각",
+      "stimulus": "알려진 +X/+Y 이동과 좌우 회전, UWB 40 Hz·LiDAR 10 Hz. 같은 기준점·관측 시각으로 만든 단일 EV 입력.",
+      "check": "vehicle_visual_odometry와 estimator_aid_src_ev_pos/vel에서 축·단위·샘플 시각 확인. 송신 성공과 실제 융합을 구분한다."
+    },
+    {
+      "id": "S02",
+      "name": "분산 전달 경로",
+      "stimulus": "수직 속도는 유한값 0, 수직 분산 1/100/10,000/1,000,000 (m/s)². EKF2_EV_NOISE_MD=0과 반대 설정을 대조.",
+      "check": "입력 분산이 수신·최솟값 적용 뒤 실제 사용되는지 확인. 큰 수직 분산이 설정값으로 대체되면 이 방식 채택 불가."
+    },
+    {
+      "id": "S03",
+      "name": "3축 유효성 음성 대조",
+      "stimulus": "vz=NaN 입력과 3축 유한값 입력을 비교. 잘못된 frame·timestamp도 별도 시험.",
+      "check": "NaN인 입력을 수평 2축만 유효한 관측으로 간주하지 않는지 확인. 잘못된 입력이 조용히 정상 처리되면 실패."
+    },
+    {
+      "id": "S04",
+      "name": "융합 시작과 속도 리셋",
+      "stimulus": "정지뿐 아니라 수평 0.5 m/s·상하 ±0.3 m/s 이동 중 EV 속도 활성화. 다른 수평 aiding 유무를 각각 시험.",
+      "check": "속도 평균 리셋·reset_counter·Pxx/Pyy/Pzz·수직 속도/고도 오차를 기록. vz=0이 실제 수직 운동을 지우는 경로를 찾는다."
+    },
+    {
+      "id": "S05",
+      "name": "기울어진 상태의 리셋",
+      "stimulus": "roll/pitch 0/5/10/20°, S02의 분산 조합. 동일한 실제 속도에서 시작·복구·좌표 리셋.",
+      "check": "큰 z 분산의 수평 투영과 분산 ×5, 평균 회전 효과를 확인. 자세·고도 제어까지 정상인지 확인하기 전 비행 입력으로 승인하지 않는다."
+    },
+    {
+      "id": "S06",
+      "name": "LiDAR 중단·복구",
+      "stimulus": "40초에 0.2/1/5초 LiDAR 중단. UWB는 계속. 복구 때 reset_counter 정상/증가 각각 시험.",
+      "check": "UWB 위치 융합이 불필요하게 꺼지는지, 오래된 속도가 새 시각으로 재전송되는지, 복구 때 속도 리셋이 발생하는지 확인."
+    },
+    {
+      "id": "S07",
+      "name": "UWB 중단·복구",
+      "stimulus": "40초에 0.2/1/5초 UWB 중단. LiDAR는 계속. LiDAR 위치를 UWB 절대 위치로 바꿔 보내지 않는다.",
+      "check": "유효하지 않은 position 표현과 단일 EV 샘플 버퍼의 동작을 검증. UWB가 없는데 절대 위치가 계속 유효하다고 나타나면 실패."
+    },
+    {
+      "id": "S08",
+      "name": "공통 샘플과 발행 정책",
+      "stimulus": "서로 다른 시각의 위치·속도를 한 패킷에 넣는 음성 대조, 관측 시각에 맞춘 입력, 교대 입력을 비교.",
+      "check": "입력 주기·quality·reset_counter가 두 융합원에 미치는 영향 확인. 공통 시각을 만들 수 없는 경우 송신 설계부터 수정한다."
+    },
+    {
+      "id": "S09",
+      "name": "지연·중복·시계 점프",
+      "stimulus": "정상 100 ms 지연, 추가 50/100 ms, 20 ms 지터, 중복·순서 뒤집힘·clock reset을 분리 주입.",
+      "check": "timestamp_sample, innovation, rejected/timeout 및 회복 시간 측정. 중복 데이터로 신뢰도가 계속 증가하지 않는지 검사."
+    },
+    {
+      "id": "S10",
+      "name": "장착 높이",
+      "stimulus": "UWB 안테나에서 수평 LiDAR까지 r=(0,0,+0.10)m, body FRD의 아래가 +z. 사용자 추정값 주위 0.05/0.10/0.15m 민감도. roll/pitch/yaw ±10°/s.",
+      "check": "v_UWB = v_LiDAR − ω×r_UWB→LiDAR. 같은 몸체 좌표로 변환한 뒤 UWB 기준점의 위치·속도를 묶는다. PX4의 UWB→IMU 보정은 한 번만 적용. 실제 배포에는 실측값을 사용한다."
+    },
+    {
+      "id": "S11",
+      "name": "복도·반복 구조·가림",
+      "stimulus": "단일 벽/평행 벽/코너/반복 선반에서 정합. 일부 광선 가림·사람 이동·낮은 overlap.",
+      "check": "잔차가 작아도 잘못된 이동이 나올 수 있다. geometry·양방향 일관성·IMU 회전 일관성·keyframe 재정합으로 검출되는지 검사."
+    },
+    {
+      "id": "S12",
+      "name": "기존 광류와의 추가 가치",
+      "stimulus": "기본 UWB+광류와 +LiDAR 비교. 광류 품질 저하 및 UWB 0.5/1 m 편향을 각각 주입.",
+      "check": "시뮬레이터 정답 기준 XY RMS/p95·속도 오차·최대 오차·가용성 비교. 정상 상태 악화 없이 정의한 고장 상황에서 개선돼야 한다."
+    },
+    {
+      "id": "S13",
+      "name": "수직 aiding의 부수 효과",
+      "stimulus": "정상 거리센서/기압계 유지 및 해당 센서 저하를 각각 시험. 큰 vz 분산의 EV 속도는 계속 입력.",
+      "check": "body velocity 융합 시 vertical last-fuse 시각도 갱신된다. 수직 관측 부족을 가리는지, 고도 failsafe 판단을 바꾸는지 검사."
+    },
+    {
+      "id": "S14",
+      "name": "추정기 검증 뒤 폐루프",
+      "stimulus": "앞 시험을 통과한 설정만 사용해 모의 Position 정지·X/Y 왕복·Offboard 정지 명령을 같은 궤적으로 비교.",
+      "check": "입력 융합 성공뿐 아니라 실제 추종 오차·기울기·고도·실패 전환까지 확인. 실기 비행은 이 보고서의 실행 범위 밖이다."
+    }
+  ],
+  "acceptance": "Predeclare mission error limits before execution. Paired same-seed normal runs must not materially degrade; targeted fault runs must improve. Any hidden vertical reset or stale-input-as-fresh behavior blocks deployment.",
+  "not_done": [
+    "No same-commit SITL run",
+    "No firmware/parameter edits",
+    "No flight or FC commands"
+  ]
+}
