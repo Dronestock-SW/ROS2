@@ -18,6 +18,11 @@ class ToFSubsetCandidate:
         self.limit=rms_limit_m;self.margin=score_margin_m;self.history=deque();self.last_stamp=None
         self.b4_integrity = B4HeightIntegrity(self.anchors, limit_m=self.limit,
                                             window_s=self.settings.window_s)
+        # The height veto is documented as not deployed. A fresh FINAL install
+        # must retain the field observation contract until explicitly enabled.
+        self.enforce_b4_height_integrity = config.get('enforce_b4_height_integrity', False)
+        if type(self.enforce_b4_height_integrity) is not bool:
+            raise ValueError('boolean_b4_height_integrity_policy_required')
 
     def process(self,result):
         stamp=result['time_us'];b=result['models']['B'];height=result.get('height_m')
@@ -42,8 +47,9 @@ class ToFSubsetCandidate:
         if type(rms) not in [int,float] or not np.isfinite(rms):return dict(output,reason='missing_fit_integrity')
         if 0<=rms<self.limit:
             allowed, integrity = self.b4_integrity.check(result)
+            integrity['enforced'] = self.enforce_b4_height_integrity
             output['b4_height_check'] = integrity
-            if allowed:
+            if allowed or not self.enforce_b4_height_integrity:
                 return dict(output,ok=True,xy_m=list(b['xy_m']),source='unchanged_B4',reason='original_fit_consistent')
             # Do not evade a failed B4 check by dropping ToF or by clearing the
             # fit window. Only a fresh physically qualified B3 can be considered.

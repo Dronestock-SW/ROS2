@@ -8,10 +8,11 @@
 최신 코드에도 이륙 중 밀림이 남아 있다.
 START 활성화와 단위 테스트 통과는 비행 성공을 뜻하지 않는다.
 
-1. [실행 8 ULog·영상 분석](docs/report/hover_run8_analysis_20261012.md)
-2. [실행 8 인계와 연구 과제](docs/report/hover_research_handoff_20261011.md)
-3. [FINAL 재부팅·실행 절차](docs/runbooks/final_resume.md)
-4. [이전 이륙 분석·수정 이력](docs/report/local_xy_takeoff_20261011.md)
+1. [UWB 공백·계산 시간·이력 격리 비교](docs/report/uwb_gap_processing_20261012.md)
+2. [실행 8 ULog·영상 분석](docs/report/hover_run8_analysis_20261012.md)
+3. [실행 8 인계와 연구 과제](docs/report/hover_research_handoff_20261011.md)
+4. [FINAL 재부팅·실행 절차](docs/runbooks/final_resume.md)
+5. [이전 이륙 분석·수정 이력](docs/report/local_xy_takeoff_20261011.md)
 
 12일에 원본과 같은 ULog를 FC에서 재회수했다.
 고정 XY와 최종 공백 전 추정 변화가 확인됐다.

@@ -32,6 +32,7 @@ def guard():
 def config():
     c = json.loads((Path(__file__).parents[2]/'config/runtime/uwb_btf_real.json').read_text(encoding='utf-8'))
     c['anchors_xyz_m'] = ANCHORS.tolist()
+    c['enforce_b4_height_integrity'] = True
     return c
 
 
@@ -138,3 +139,39 @@ def test_persistent_bad_ranges_do_not_reopen_when_tof_expires():
             assert p.prior_xy is None
             assert not height_independent_b4(dict(d, **result))
     assert result['reason'] == 'b4_height_conflict_unresolved'
+
+
+@pytest.mark.parametrize('policy', ['missing', False, True])
+def test_fresh_install_retains_field_b4_output_and_veto_requires_explicit_policy(policy):
+    c = config()
+    if policy == 'missing':
+        del c['enforce_b4_height_integrity']
+    else:
+        c['enforce_b4_height_integrity'] = policy
+    w = H80Window(ANCHORS, [0]*4, BSettings(**c['B']))
+    p = ToFTrackedSubsetCandidate(c, **c['tof_subset'])
+    checked = 0
+    for i in range(100):
+        d = row(1_000_000+i*25_000, velocity=(0., 0.), bias=-.15)
+        cy = Cycle(i, d['sample_time_us'][0], d['time_us'], 15,
+                   np.array(d['cal_slant_m']), d['sample_time_us'], ['ok']*4, list(range(4)))
+        d['models']['B'] = w.process(cy, i)
+        result = p.process(d)
+        if i <= 40:
+            continue
+        checked += 1
+        assert result['b4_height_check']['state'] == 'inconsistent'
+        if policy is True:
+            assert not result['ok'] and result['xy_m'] is None
+        else:
+            assert result['ok'] and result['xy_m'] == d['models']['B']['xy_m']
+            assert result['source'] == 'unchanged_B4'
+            assert result['b4_height_check']['enforced'] is False
+    assert checked == 59
+
+
+@pytest.mark.parametrize('policy', ['false', 0, 1, None])
+def test_invalid_policy_cannot_silently_enable_or_disable_veto(policy):
+    c = config(); c['enforce_b4_height_integrity'] = policy
+    with pytest.raises(ValueError, match='boolean_b4_height_integrity_policy'):
+        ToFTrackedSubsetCandidate(c, **c['tof_subset'])

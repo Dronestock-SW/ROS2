@@ -152,6 +152,22 @@ def test_capture_does_not_change_command_sink_subscriber_guard():
     assert '/mavros/vision_pose/pose_cov' in TOPICS
 
 
+def test_local_odometry_gate_evidence_survives_capture_without_control(tmp_path):
+    topic = '/uwb/local_odometry_status'
+    c = capture(tmp_path)
+    status = {'gate': 'ready', 'last_reason': 'observation_jump_quarantined',
+              'counts': {'published': 7, 'observation_jump_quarantined': 2},
+              'last_send_age_s': .28, 'last_sample_stamp_ns': 123}
+    assert c.add(topic, TOPICS[topic], {'data': json.dumps(status)},
+                 mono_ns=1_000_000_000, ros_ns=2_000_000_000, header_ns=None)
+    summary = c.close('test')
+    row = json.loads((c.directory/'events.jsonl').read_text().splitlines()[0])
+    assert row['topic'] == topic and json.loads(row['data']['data']) == status
+    assert row['received_monotonic_ns'] == 1_000_000_000
+    assert summary['fc_commands_sent'] == summary['parameter_writes'] == 0
+    assert summary['topics'][topic]['received'] == 1
+
+
 def test_lidar_capture_is_optional_and_retains_raw_transform_topics():
     from drone_uwb.integration.ros.manual_capture import selected_topics
     assert '/scan' not in selected_topics()

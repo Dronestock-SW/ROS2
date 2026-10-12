@@ -17,6 +17,9 @@ TOPICS = {
     '/uwb/btf_pose': 'geometry_msgs/msg/PoseWithCovarianceStamped',
     '/uwb/btf_xyz': 'geometry_msgs/msg/PoseStamped',
     '/uwb/bridge_status': 'std_msgs/msg/String',
+    # FINAL sends horizontal ODOMETRY through the raw router. Its gate and
+    # rejection counters use a different status topic from the vision bridge.
+    '/uwb/local_odometry_status': 'std_msgs/msg/String',
     '/mavros/state': 'mavros_msgs/msg/State',
     '/mavros/extended_state': 'mavros_msgs/msg/ExtendedState',
     '/mavros/rc/in': 'mavros_msgs/msg/RCIn',

@@ -268,6 +268,7 @@ class BtfNode(Node):
                'last_xyz_m':self.last.get('xyz_m') if self.last else None,
                'require_height_for_pose':self.require_height,
                'allow_b4_xy_without_tof':self.config.get('allow_b4_xy_without_tof', True),
+               'enforce_b4_height_integrity':self.processor.candidate.enforce_b4_height_integrity,
                'input_age_s':(now_ns-self.last_source_ns)/1e9 if self.last_source_ns else None,
                'fc_output_enabled':False,'timestamp_calibrated':False,'timesync_ready':self.sync_ready(),
                'recording_error':self.recorder.error if self.recorder else None,
