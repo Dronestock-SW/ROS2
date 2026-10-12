@@ -12,7 +12,7 @@ from .native_takeoff import NativeTakeoff
 class LocalXYMission(NativeTakeoff, MissionChain):
     ACTIVE = {'PREPARING', 'ARMING', 'TAKING_OFF', 'HANDOFF', 'MOVING', 'DWELL',
               'RETURNING', 'RECOVERING', 'LANDING', 'GROUND_RECOVERY'}
-    STREAMING = ACTIVE - {'LANDING', 'GROUND_RECOVERY'}
+    STREAMING = (ACTIVE - {'LANDING', 'GROUND_RECOVERY'}) | NativeTakeoff.LOCAL_TAKEOFF_STREAMING
     AUTO_MODES = {'OFFBOARD', 'AUTO.LAND'}
 
     def __init__(self, *args, **kwargs):
@@ -78,7 +78,7 @@ class LocalXYMission(NativeTakeoff, MissionChain):
     def abort(self, reason, s, now):
         self.failure = reason
         self.setpoint_xy = None
-        if self.settings.start_mode == 'takeoff_hold' and self.phase == 'PREPARING' and s.mode == 'AUTO.LOITER':
+        if self.settings.start_mode == 'takeoff_hold' and self.phase == 'PREPARING' and s.mode == self.waiting_mode:
             self.end('UNCONFIRMED' if self.pending else 'FAILED', reason, now)
             return
         # A late ARM acknowledgement has an unknown effect: never resume it.
@@ -133,7 +133,7 @@ class LocalXYMission(NativeTakeoff, MissionChain):
 
     def tick(self, s, now, wall_s, ros_ns):
         if self.phase in self.NATIVE_PHASES:
-            return self.tick_native(s, now)
+            return self.tick_native(s, now, ros_ns)
         self.actions, self.scan_requests = [], []
         dt = 0. if self.last_tick is None else now-self.last_tick
         self.last_tick = now

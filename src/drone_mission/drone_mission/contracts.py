@@ -18,6 +18,7 @@ class Settings:
     lidar_gap: dict = field(default_factory=dict)
     mission_ai: str = 'python_test'
     start_mode: str = 'ground_takeoff'
+    takeoff_backend: str = 'native'
     command_frame: str = 'global'
     execution_profile: str = 'surveyed_mission'
     bridge_topic: str = '/uwb/bridge_status'
@@ -61,6 +62,10 @@ class Settings:
     layout_id: str = LAYOUT
 
     def __post_init__(self):
+        if self.takeoff_backend not in ('native', 'local_position'):
+            raise ValueError('unsupported_takeoff_backend')
+        if self.takeoff_backend == 'local_position' and (self.start_mode != 'takeoff_hold' or not self.local_xy):
+            raise ValueError('local_position_takeoff_requires_separate_local_start')
         if self.start_mode not in ('ground_takeoff', 'takeoff_hold'):
             raise ValueError('unsupported_start_mode')
         if self.start_mode == 'takeoff_hold' and not self.local_xy:

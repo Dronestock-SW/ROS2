@@ -488,6 +488,7 @@ class FlightNode(Node):
                         for axis in ('x', 'y', 'z')))
         s.takeoff_alt_m = self.param_value
         s.takeoff_action = getattr(self, 'takeoff_action', None)
+        s.native_takeoff_speeds = getattr(self, 'native_takeoff_speeds', ())
         s.mag_type = getattr(self, 'mag_type', None)
         s.rc_override = getattr(self, 'rc_override', None)
         s.rc_mode = getattr(self, 'rc_mode', None)
@@ -507,6 +508,10 @@ class FlightNode(Node):
             if b.present and finite(b.voltage, b.percentage) and b.voltage > 0 and 0 <= b.percentage <= 1:
                 s.battery, s.battery_age_s = b.percentage, self.age('battery')
         s.takeoff_param_age_s = time.monotonic()-self.param_received
+        if self.settings.takeoff_backend == 'local_position':
+            from .local_takeoff import sticks_centered
+            s.rc_sticks_centered = (s.takeoff_param_age_s <= 5 and s.rc_age_s <= 1
+                and sticks_centered(s.rc_channels,getattr(self,'rc_calibration',{})))
         return s
 
     def query(self):
@@ -520,6 +525,12 @@ class FlightNode(Node):
             if self.settings.full_mission:
                 names.extend(['EKF2_MAG_TYPE', 'COM_RC_OVERRIDE', 'COM_RC_IN_MODE',
                               'RC_MAP_FLTMODE', 'RC_MAP_ARM_SW', 'RC_MAP_KILL_SW'])
+                if self.settings.start_mode == 'takeoff_hold':
+                    names.extend(['MPC_Z_VEL_MAX_UP', 'MPC_TKO_SPEED', 'MPC_Z_V_AUTO_UP', 'MPC_Z_VEL_MAX_DN'])
+                if self.settings.takeoff_backend == 'local_position':
+                    self.rc_calibration_names = ['RC_MAP_'+axis for axis in ('ROLL','PITCH','YAW','THROTTLE')]
+                    self.rc_calibration_names += [f'RC{i}_{key}' for i in range(1,19) for key in ('MIN','MAX','TRIM')]
+                    names.extend(self.rc_calibration_names)
             self.param_future = self.param_client.call_async(GetParameters.Request(names=names))
             self.param_future.add_done_callback(self.parameters_received)
         if self.stream_client.service_is_ready():
@@ -560,6 +571,11 @@ class FlightNode(Node):
                 mode = future.result().values[4]
                 self.rc_mode = mode.integer_value if mode.type == 2 else None
                 self.rc_mappings = tuple(v.integer_value if v.type == 2 else None for v in future.result().values[5:8])
+                if self.settings.start_mode == 'takeoff_hold':
+                    self.native_takeoff_speeds = tuple(v.double_value if v.type == 3 else None for v in future.result().values[8:12])
+                if self.settings.takeoff_backend == 'local_position':
+                    self.rc_calibration = dict(zip(self.rc_calibration_names,
+                        (v.integer_value if v.type == 2 else v.double_value if v.type == 3 else None for v in future.result().values[12:])))
         except Exception:
             self.param_value = None
 
@@ -743,6 +759,8 @@ class FlightNode(Node):
             status['target_feedback'] = self.target_feedback
             status['target_requested_global'] = self.session.target_global
             status['input_checks'] = dict(estimator_valid=s.estimator_valid,
+                state_age_s=s.state_age_s if math.isfinite(s.state_age_s) else None,
+                landed_age_s=s.landed_age_s if math.isfinite(s.landed_age_s) else None,
                 vertical_estimator_valid=s.vertical_estimator_valid,
                 pose_age_s=s.pose_age_s if math.isfinite(s.pose_age_s) else None,
                 velocity_xy=s.velocity_xy, yaw_deg=s.yaw_deg,
@@ -755,7 +773,9 @@ class FlightNode(Node):
                 bridge_gate=self.samples.get('bridge',({},0))[0].get('gate'),
                 bridge_reason=self.samples.get('bridge',({},0))[0].get('last_reason'),
                 takeoff_alt_m=s.takeoff_alt_m, takeoff_action=s.takeoff_action, mag_type=s.mag_type,
+                native_takeoff_speeds=s.native_takeoff_speeds,
                 battery=s.battery, rc_required=s.rc_required, rc_valid=s.rc_valid,
+                rc_sticks_centered=s.rc_sticks_centered,
                 rc_age_s=s.rc_age_s if math.isfinite(s.rc_age_s) else None, rc_override=s.rc_override, rc_mode=s.rc_mode,
                 rc_mapping_valid=s.rc_mapping_valid, rc_switch_channels=s.rc_switch_channels)
         if self.settings.start_mode == 'takeoff_hold':
@@ -765,16 +785,18 @@ class FlightNode(Node):
             if self.session.phase == 'HOLD_READY':
                 for check in status['preflight']['checks']:
                     if check['code'] == 'ground':
-                        check.update(title='PX4 HOLD · 이륙 완료·위치 안정', passed=hold_ok)
+                        check.update(title='PX4 '+self.session.waiting_mode+' · 이륙 완료·위치 안정', passed=hold_ok)
                 report = status['preflight']
                 report['blockers'] = [c['code'] for c in report['checks'] if c['required'] and not c['passed']]
                 report['checked_inputs_passed'] = not report['blockers']
             status['native_takeoff'].update(can_takeoff=takeoff_ok, can_start=hold_ok,
                 can_land=self.session.phase in self.session.NATIVE_PHASES and self.session.pending is None
-                    and s.connected and s.armed and s.state_age_s <= 1)
+                    and s.connected and s.armed and 0 <= s.state_age_s <= self.settings.state_timeout_s)
         if (s.armed or self.session.phase in self.session.ACTIVE) and time.monotonic()-getattr(self,'last_flight_sample_s',0) >= .2:
             self.last_flight_sample_s = time.monotonic()
             self.record(dict(type='flight_sample', state=self.session.phase, mode=s.mode, armed=s.armed,
+                state_age_s=s.state_age_s if math.isfinite(s.state_age_s) else None,
+                landed_age_s=s.landed_age_s if math.isfinite(s.landed_age_s) else None,
                 landed=s.landed, xy=s.xy, uwb_xy=s.uwb_xy, altitude_enu_m=s.altitude_enu_m,
                 velocity_xy=s.velocity_xy, vertical_speed_m_s=s.vertical_speed_m_s, yaw_deg=s.yaw_deg,
                 target=self.session.local_setpoint() if self.settings.local_xy else None, target_feedback=self.target_feedback,

@@ -1,23 +1,37 @@
 #!/usr/bin/env python3
-"""Read or explicitly set only the PX4 upward and takeoff speed limits.
+"""Read or explicitly set the PX4 upward and native takeoff speed limits.
 
 Requires fresh, connected, disarmed, landed FC data before every request.
-Never sends flight commands. XY, descent, hover thrust and EKF are unchanged.
+Never sends flight commands. XY, landing speed, hover thrust and EKF are unchanged.
 """
 import argparse
 import json
 from pathlib import Path
 import time
 
-NAMES = ['MPC_Z_VEL_MAX_UP', 'MPC_TKO_SPEED']
+NAMES = ['MPC_Z_VEL_MAX_UP', 'MPC_TKO_SPEED', 'MPC_Z_V_AUTO_UP']
+
+
+def targets(speed, native_takeoff=False):
+    values = dict.fromkeys(NAMES, speed)
+    if native_takeoff:
+        if speed <= .3:
+            raise ValueError('Native PX4 takeoff requires upward speed above 0.3 m/s')
+        # Pinned PX4 Auto reActivate starts smoothing at +0.7 m/s. A lower
+        # descent ceiling repeatedly triggers emergency braking before liftoff.
+        values['MPC_Z_VEL_MAX_DN'] = .6
+    return values
 
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--speed', type=float, choices=(.25, .5), default=.5)
     p.add_argument('--apply', action='store_true')
+    p.add_argument('--native-takeoff', action='store_true')
     p.add_argument('--output', type=Path, required=True)
     a = p.parse_args()
+    desired = targets(a.speed, a.native_takeoff)
+    names = list(desired)
     import rclpy
     from rclpy.qos import qos_profile_sensor_data as qos
     from mavros_msgs.msg import State, ExtendedState
@@ -33,7 +47,7 @@ def main():
     n.create_subscription(State, '/mavros/state', lambda m: update('fc', m), qos)
     n.create_subscription(ExtendedState, '/mavros/extended_state', lambda m: update('landed', m), qos)
     result = dict(flight_commands=False, requested_speed=a.speed, apply=a.apply,
-                  parameters=NAMES, writes=[], verified=False)
+                  parameters=desired, writes=[], verified=False)
     def guard():
         now = time.monotonic()
         for key in ('fc', 'landed'):
@@ -67,25 +81,25 @@ def main():
         pull = call(ParamPull, '/mavros/param/pull', ParamPull.Request(force_pull=True), 45)
         if not pull.success:
             raise RuntimeError('Fresh FC parameter pull failed')
-        response = call(GetParameters, '/mavros/param/get_parameters', GetParameters.Request(names=NAMES))
-        if len(response.values) != len(NAMES) or any(v.type != 3 for v in response.values):
+        response = call(GetParameters, '/mavros/param/get_parameters', GetParameters.Request(names=names))
+        if len(response.values) != len(names) or any(v.type != 3 for v in response.values):
             raise RuntimeError('Expected floating-point speed parameters')
-        return dict(zip(NAMES, (v.double_value for v in response.values)))
+        return dict(zip(names, (v.double_value for v in response.values)))
     try:
         end = time.monotonic()+4
         while time.monotonic() < end:
             rclpy.spin_once(n, timeout_sec=.1)
         result['before'] = read()
         if a.apply:
-            for name in NAMES:
+            for name, value in desired.items():
                 request = SetParameters.Request(parameters=[Parameter(
-                    name=name, value=ParameterValue(type=3, double_value=a.speed))])
+                    name=name, value=ParameterValue(type=3, double_value=value))])
                 response = call(SetParameters, '/mavros/param/set_parameters', request)
                 result['writes'].append(dict(name=name, successful=bool(response.results and response.results[0].successful)))
                 if not response.results or not response.results[0].successful:
                     raise RuntimeError('Parameter write failed: '+name)
             result['after'] = read()
-            result['verified'] = all(abs(v-a.speed)<1e-5 for v in result['after'].values())
+            result['verified'] = all(abs(v-desired[k])<1e-5 for k,v in result['after'].items())
             if not result['verified']:
                 raise RuntimeError('FC speed readback mismatch')
         print(json.dumps(result))

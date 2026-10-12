@@ -117,7 +117,7 @@ def test_http_hover_uses_cpp_bt_from_start_through_confirmed_END(tmp_path,scenar
                 native_commands.append(a['kind']);mission.command_result(a['token'],True,now)
                 if a['kind']=='takeoff_mode':mode='AUTO.TAKEOFF'
                 elif a['kind']=='arm':armed=True
-            if mission.phase=='NATIVE_CLIMB':mode='AUTO.LOITER';landed=2;alt=1.8
+            if mission.phase in ('NATIVE_WAIT_ASCENT','NATIVE_CLIMB'):mode='AUTO.LOITER';landed=2;alt=1.8
             if mission.phase=='HOLD_READY':break
             time.sleep(.05)
         assert mission.phase=='HOLD_READY' and native_commands==['takeoff_mode','arm']

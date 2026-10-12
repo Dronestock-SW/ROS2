@@ -19,7 +19,8 @@ def rig(case='hover'):
 
 
 def sample(now=10., **kw):
-    return replace(inputs(now, origin=None, altitude_enu_m=.1, local_setpoint_ready=True), **kw)
+    return replace(inputs(now, origin=None, altitude_enu_m=.1, local_setpoint_ready=True),
+                   **(dict(native_takeoff_speeds=(.5,.5,.5,.6),rc_sticks_centered=True) | kw))
 
 
 def test_local_preflight_has_current_xy_and_never_demands_geographic_origin():

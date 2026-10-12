@@ -62,7 +62,7 @@ class LocalPlatform:
         t = self.telemetry
         return (self.telemetry_received_s is not None and 0 <= time.monotonic()-self.telemetry_received_s <= 1
             and t.get('fc_connected') is True and t.get('fc_armed') is True and t.get('fc_landed') == 2
-            and t.get('fc_mode') == 'AUTO.LOITER' and t.get('flight_state') == 'HOLD_READY'
+            and t.get('fc_mode') == ('POSCTL' if self.settings.takeoff_backend == 'local_position' else 'AUTO.LOITER') and t.get('flight_state') == 'HOLD_READY'
             and t.get('native_takeoff',{}).get('can_start') is True)
 
     def can_takeoff(self):
@@ -324,7 +324,7 @@ class LocalPlatform:
                             site=platform.site, site_editable=platform.site_editable(),
                             can_start=platform.can_start(), can_arm=platform.can_arm(), active_run_id=(platform.store.active() or {}).get('id'),
                             ceiling_required=platform.settings.full_mission,
-                            start_mode=platform.settings.start_mode, can_takeoff=platform.can_takeoff(),
+                            start_mode=platform.settings.start_mode, takeoff_backend=platform.settings.takeoff_backend, can_takeoff=platform.can_takeoff(),
                             expected_takeoff_height_m=platform.settings.expected_mis_takeoff_alt_m,
                             execution_profile=platform.settings.execution_profile,
                             command_frame=platform.settings.command_frame,

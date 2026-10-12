@@ -1,6 +1,7 @@
 """Read-only field checklist. Never changes approvals or issues commands."""
 from .bridge_status import BRIDGE_OBSERVATION_MAX_AGE_S
 from .contracts import finite
+from .native_takeoff import native_speed_ready
 
 
 def field_preflight(settings, sample, *, map_loaded, recording_ok, cpp_ai_ready=False):
@@ -53,6 +54,10 @@ def field_preflight(settings, sample, *, map_loaded, recording_ok, cpp_ai_ready=
     check('height_parameter', 'FC 이륙 높이 일치', fresh_params and finite(sample.takeoff_alt_m)
           and abs(sample.takeoff_alt_m-settings.expected_mis_takeoff_alt_m) <= .01)
     check('takeoff_action', '이륙 후 Hold 설정', fresh_params and sample.takeoff_action == 0)
+    if settings.start_mode == 'takeoff_hold' and settings.takeoff_backend == 'native':
+        check('native_takeoff_speed', 'PX4 자동 이륙 속도 호환', native_speed_ready(sample))
+    if settings.takeoff_backend == 'local_position':
+        check('position_sticks', 'POSITION 전환용 RC 스틱 중립', not sample.rc_required or sample.rc_sticks_centered)
     check('heading_policy', '방위·높이 정책 일치', fresh_params and sample.mag_type == settings.expected_ekf2_mag_type
           and not (sample.mag_type in (0, 1) and settings.expected_mis_takeoff_alt_m < 1.6))
     check('rc', '실제 RC 입력 (SITL 제외)', not sample.rc_required or sample.rc_valid and 0 <= sample.rc_age_s <= 1)

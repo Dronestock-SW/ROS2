@@ -29,9 +29,11 @@ class Snapshot:
     battery: object = None
     battery_age_s: float = math.inf
     takeoff_action: object = None
+    native_takeoff_speeds: tuple = ()
     mag_type: object = None
     rc_required: bool = True
     rc_valid: bool = False
+    rc_sticks_centered: bool = False
     rc_age_s: float = math.inf
     rc_override: object = None
     rc_mode: object = None

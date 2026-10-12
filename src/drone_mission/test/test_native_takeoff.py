@@ -30,6 +30,8 @@ def hold(m):
     action=advance(m,10.1,mode='AUTO.TAKEOFF')[0]; assert action['kind']=='arm'
     m.command_result(action['token'],True,10.1)
     advance(m,10.2,mode='AUTO.TAKEOFF',armed=True)
+    assert m.phase=='NATIVE_WAIT_ASCENT'
+    advance(m,10.3,mode='AUTO.TAKEOFF',armed=True,landed=2)
     assert m.phase=='NATIVE_CLIMB'
     for now in (11.,12.,13.,14.1):
         assert advance(m,now,mode='AUTO.LOITER',armed=True,landed=2,altitude_enu_m=1.4)==[]
@@ -91,6 +93,31 @@ def test_unknown_mode_response_never_arms():
     m=rig();a=advance(m,10.)
     assert a[0]['kind']=='takeoff_mode'
     assert advance(m,14.)==[] and m.phase=='UNCONFIRMED'
+
+
+def test_one_hz_fc_state_uses_configured_timeout_but_stale_state_stops():
+    m=rig();hold(m)
+    assert advance(m,15.,mode='AUTO.LOITER',armed=True,landed=2,altitude_enu_m=1.4,
+                   state_age_s=1.1,landed_age_s=1.1)==[]
+    assert m.phase=='HOLD_READY'
+    advance(m,16.,mode='AUTO.LOITER',armed=True,landed=2,altitude_enu_m=1.4,
+            state_age_s=m.settings.state_timeout_s+.01)
+    assert m.phase=='UNCONFIRMED' and not m.native_ready
+
+
+@pytest.mark.parametrize('speeds',[(),(.5,.5,.25,.6),(.5,.5,.5,.25)])
+def test_incompatible_native_speed_configuration_never_arms(speeds):
+    m=rig();m.phase='IDLE'
+    assert m.takeoff_blocker(sample(10.,native_takeoff_speeds=speeds),10.)=='native_takeoff_speed_incompatible'
+
+
+def test_armed_on_ground_is_not_reported_as_climb():
+    m=rig();a=advance(m,10.)[0];m.command_result(a['token'],True,10.)
+    a=advance(m,10.1,mode='AUTO.TAKEOFF')[0];m.command_result(a['token'],True,10.1)
+    advance(m,10.2,mode='AUTO.TAKEOFF',armed=True)
+    assert m.phase=='NATIVE_WAIT_ASCENT' and not m.native_ready
+    advance(m,11.,mode='AUTO.TAKEOFF',armed=False)
+    assert m.reason=='disarmed_before_liftoff'
 
 
 def test_web_separate_takeoff_idempotent_and_start_only_in_hold(tmp_path):
