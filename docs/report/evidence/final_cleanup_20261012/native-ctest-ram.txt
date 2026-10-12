@@ -1,0 +1,87 @@
+Internal ctest changing into directory: /home/arialhanho/ROS2-review-20261008-codex/.review/final-cleanup-20261012/native-build
+Test project /home/arialhanho/ROS2-review-20261008-codex/.review/final-cleanup-20261012/native-build
+      Start  1: native_hover_sequence
+ 1/32 Test  #1: native_hover_sequence ............   Passed    0.01 sec
+      Start  2: sangwon_core_tests
+ 2/32 Test  #2: sangwon_core_tests ...............   Passed    0.07 sec
+      Start  3: sangwon_mode_tests
+ 3/32 Test  #3: sangwon_mode_tests ...............   Passed    0.04 sec
+      Start  4: sangwon_scan_tests
+ 4/32 Test  #4: sangwon_scan_tests ...............   Passed    0.02 sec
+      Start  5: sangwon_geometry_tests
+ 5/32 Test  #5: sangwon_geometry_tests ...........   Passed    0.01 sec
+      Start  6: sangwon_planner_tests
+ 6/32 Test  #6: sangwon_planner_tests ............   Passed    0.21 sec
+      Start  7: replay_nominal
+ 7/32 Test  #7: replay_nominal ...................   Passed    0.02 sec
+      Start  8: replay_overshoot
+ 8/32 Test  #8: replay_overshoot .................   Passed    0.02 sec
+      Start  9: replay_native_takeoff
+ 9/32 Test  #9: replay_native_takeoff ............   Passed    0.02 sec
+      Start 10: independent_guard_process
+10/32 Test #10: independent_guard_process ........   Passed    0.60 sec
+      Start 11: host_health_monitor
+11/32 Test #11: host_health_monitor ..............   Passed    0.21 sec
+      Start 12: perception_health_boundaries
+12/32 Test #12: perception_health_boundaries .....   Passed    0.20 sec
+      Start 13: source_handoff_boundaries
+13/32 Test #13: source_handoff_boundaries ........   Passed    0.20 sec
+      Start 14: ros_perception_transport
+14/32 Test #14: ros_perception_transport .........   Passed    5.80 sec
+      Start 15: capture_observation_contract
+15/32 Test #15: capture_observation_contract .....   Passed    0.02 sec
+      Start 16: capture_replay_files
+16/32 Test #16: capture_replay_files .............   Passed    0.29 sec
+      Start 17: native_plan_contracts
+17/32 Test #17: native_plan_contracts ............   Passed    0.24 sec
+      Start 18: px4_health_reducer
+18/32 Test #18: px4_health_reducer ...............   Passed    0.01 sec
+      Start 19: px4_health_boundaries
+19/32 Test #19: px4_health_boundaries ............   Passed    0.18 sec
+      Start 20: native_hover_ros
+20/32 Test #20: native_hover_ros .................***Failed  106.74 sec
+Traceback (most recent call last):
+  File "/home/arialhanho/ROS2-review-20261008-codex/.review/final-cleanup-20261012/source/src/sangwon_AI/tests/native_hover_ros.py", line 300, in <module>
+    main()
+  File "/home/arialhanho/ROS2-review-20261008-codex/.review/final-cleanup-20261012/source/src/sangwon_AI/tests/native_hover_ros.py", line 284, in main
+    results = [run(sys.argv[1], fc, directory, s) for s in (
+  File "/home/arialhanho/ROS2-review-20261008-codex/.review/final-cleanup-20261012/source/src/sangwon_AI/tests/native_hover_ros.py", line 284, in <listcomp>
+    results = [run(sys.argv[1], fc, directory, s) for s in (
+  File "/home/arialhanho/ROS2-review-20261008-codex/.review/final-cleanup-20261012/source/src/sangwon_AI/tests/native_hover_ros.py", line 182, in run
+    status = wait(lambda s: not s['start_blocker'])
+  File "/home/arialhanho/ROS2-review-20261008-codex/.review/final-cleanup-20261012/source/src/sangwon_AI/tests/native_hover_ros.py", line 172, in wait
+    raise AssertionError((scenario, 'timeout', last, fc.calls))
+AssertionError: ('global_loss', 'timeout', {'armed': False, 'battery_fraction': 0.8999999761581421, 'battery_ok': True, 'command_pending': False, 'const_pos_mode': False, 'hover_seconds': 2.0, 'landed': True, 'landing_verified': False, 'last_reply': '', 'mode': 'POSCTL', 'outcome': 'NOT_RUN', 'output_enabled': True, 'parameter_readback_ok': True, 'parameters': {'COM_RC_OVERRIDE': 3, 'COM_TAKEOFF_ACT': 0, 'MIS_TAKEOFF_ALT': 1.3, 'RC_MAP_ARM_SW': 8, 'RC_MAP_FLTMODE': 5, 'RC_MAP_KILL_SW': 7, 'RC_MAP_PITCH': 2, 'RC_MAP_ROLL': 1, 'RC_MAP_THROTTLE': 3, 'RC_MAP_YAW': 4}, 'phase': 'IDLE', 'preflight_checks': {'battery': True, 'command_services': True, 'disarmed_on_ground': True, 'estimator': True, 'global_reference': True, 'log': True, 'output_enabled': True, 'parameters': True, 'position_mode': True, 'px4_auto_rc_override': True, 'rc': False, 'rc_handoff_policy': True, 'stationary_hold': False, 'telemetry': False, 'unused_session': True}, 'profile': 'SITL', 'px4_estimator_ok': True, 'px4_text': '', 'rc_channels': [1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500], 'rc_handoff_evaluation': False, 'rc_handoff_verified': True, 'rc_ok': False, 'reason': '', 'session': '71d1c3bed8be05809796fcd77c3a7124', 'start_blocker': 'TELEMETRY_NOT_FRESH', 'stream_age_s': {'battery': 0.6569347320037195, 'estimator': 0.6570576790036284, 'global': 0.656951980003214, 'landed': 0.6570930400048383, 'odom': 0.6570716949936468, 'rc': 0.65704321499652, 'state': 0.6571194409989403}, 'takeoff_height_m': 1.3, 'telemetry_fresh': False, 'uwb_fusion_verified': False, 'xyz_px4_enu_m': [0.0, 0.0, 0.0]}, [])
+
+      Start 21: ros_px4_observation
+21/32 Test #21: ros_px4_observation ..............   Passed   11.76 sec
+      Start 22: scan_capture_window
+22/32 Test #22: scan_capture_window ..............   Passed    0.18 sec
+      Start 23: scan_delivery_receipts
+23/32 Test #23: scan_delivery_receipts ...........   Passed    0.19 sec
+      Start 24: scan_sensor_transport
+24/32 Test #24: scan_sensor_transport ............   Passed   70.62 sec
+      Start 25: web_transport_boundaries
+25/32 Test #25: web_transport_boundaries .........   Passed    0.35 sec
+      Start 26: bench_plan_boundaries
+26/32 Test #26: bench_plan_boundaries ............   Passed    0.16 sec
+      Start 27: bench_plan_cpp_replay
+27/32 Test #27: bench_plan_cpp_replay ............   Passed   32.69 sec
+      Start 28: web_service_integration
+28/32 Test #28: web_service_integration ..........   Passed   19.40 sec
+      Start 29: web_planner_delivery
+29/32 Test #29: web_planner_delivery .............   Passed    0.39 sec
+      Start 30: web_mode_integration
+30/32 Test #30: web_mode_integration .............   Passed   13.52 sec
+      Start 31: web_scan_integration
+31/32 Test #31: web_scan_integration .............   Passed   52.95 sec
+      Start 32: web_planner_integration
+32/32 Test #32: web_planner_integration ..........   Passed    8.92 sec
+
+97% tests passed, 1 tests failed out of 32
+
+Total Test time (real) = 327.05 sec
+
+The following tests FAILED:
+	 20 - native_hover_ros (Failed)
+Errors while running CTest

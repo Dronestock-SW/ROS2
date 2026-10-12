@@ -1,0 +1,1119 @@
+Internal ctest changing into directory: /home/arialhanho/ROS2-review-20261008-codex/.review/final-cleanup-20261012/native-build
+Test project /home/arialhanho/ROS2-review-20261008-codex/.review/final-cleanup-20261012/native-build
+      Start  1: native_hover_sequence
+ 1/32 Test  #1: native_hover_sequence ............   Passed    0.01 sec
+      Start  2: sangwon_core_tests
+ 2/32 Test  #2: sangwon_core_tests ...............   Passed    0.07 sec
+      Start  3: sangwon_mode_tests
+ 3/32 Test  #3: sangwon_mode_tests ...............   Passed    0.05 sec
+      Start  4: sangwon_scan_tests
+ 4/32 Test  #4: sangwon_scan_tests ...............   Passed    0.02 sec
+      Start  5: sangwon_geometry_tests
+ 5/32 Test  #5: sangwon_geometry_tests ...........   Passed    0.01 sec
+      Start  6: sangwon_planner_tests
+ 6/32 Test  #6: sangwon_planner_tests ............   Passed    0.19 sec
+      Start  7: replay_nominal
+ 7/32 Test  #7: replay_nominal ...................   Passed    0.02 sec
+      Start  8: replay_overshoot
+ 8/32 Test  #8: replay_overshoot .................   Passed    0.02 sec
+      Start  9: replay_native_takeoff
+ 9/32 Test  #9: replay_native_takeoff ............   Passed    0.02 sec
+      Start 10: independent_guard_process
+10/32 Test #10: independent_guard_process ........   Passed    0.60 sec
+      Start 11: host_health_monitor
+11/32 Test #11: host_health_monitor ..............   Passed    0.24 sec
+      Start 12: perception_health_boundaries
+12/32 Test #12: perception_health_boundaries .....   Passed    0.19 sec
+      Start 13: source_handoff_boundaries
+13/32 Test #13: source_handoff_boundaries ........   Passed    0.19 sec
+      Start 14: ros_perception_transport
+14/32 Test #14: ros_perception_transport .........   Passed    4.58 sec
+      Start 15: capture_observation_contract
+15/32 Test #15: capture_observation_contract .....   Passed    0.02 sec
+      Start 16: capture_replay_files
+16/32 Test #16: capture_replay_files .............   Passed    0.30 sec
+      Start 17: native_plan_contracts
+17/32 Test #17: native_plan_contracts ............   Passed    0.25 sec
+      Start 18: px4_health_reducer
+18/32 Test #18: px4_health_reducer ...............   Passed    0.01 sec
+      Start 19: px4_health_boundaries
+19/32 Test #19: px4_health_boundaries ............   Passed    0.22 sec
+      Start 20: native_hover_ros
+20/32 Test #20: native_hover_ros .................   Passed  105.28 sec
+      Start 21: ros_px4_observation
+21/32 Test #21: ros_px4_observation ..............   Passed   13.94 sec
+      Start 22: scan_capture_window
+22/32 Test #22: scan_capture_window ..............   Passed    0.18 sec
+      Start 23: scan_delivery_receipts
+23/32 Test #23: scan_delivery_receipts ...........   Passed    0.19 sec
+      Start 24: scan_sensor_transport
+24/32 Test #24: scan_sensor_transport ............***Failed   67.84 sec
+PASS source/ROS/C++ SCANNER_SUCCESS; timestamp, producer, sequence, activation, task/window and durable egress boundaries
+PASS source/ROS/C++ CAMERA_SUCCESS; timestamp, producer, sequence, activation, task/window and durable egress boundaries
+last_core_status      "applicable": true,
+        "blocking": false,
+        "check_id": "BP-C10",
+        "check_seq": 96,
+        "code": "REPLAY_FIXTURE_ASSUMPTION",
+        "max_age_ms": 2000,
+        "observed_at": "2026-10-12T02:03:55.242Z",
+        "operator_action": null,
+        "reason": "Synthetic fixture environment only; no physical preflight evidence",
+        "required": true,
+        "source": "APPROVED_REPLAY_FIXTURE",
+        "source_age_ms": 0,
+        "status": "PASS"
+      },
+      {
+        "applicable": true,
+        "blocking": false,
+        "check_id": "BP-C11",
+        "check_seq": 96,
+        "code": "REPLAY_FIXTURE_ASSUMPTION",
+        "max_age_ms": 2000,
+        "observed_at": "2026-10-12T02:03:55.242Z",
+        "operator_action": null,
+        "reason": "Synthetic fixture environment only; no physical preflight evidence",
+        "required": true,
+        "source": "APPROVED_REPLAY_FIXTURE",
+        "source_age_ms": 0,
+        "status": "PASS"
+      },
+      {
+        "applicable": true,
+        "blocking": false,
+        "check_id": "BP-C12",
+        "check_seq": 96,
+        "code": "REPLAY_FIXTURE_ASSUMPTION",
+        "max_age_ms": 2000,
+        "observed_at": "2026-10-12T02:03:55.242Z",
+        "operator_action": null,
+        "reason": "Synthetic fixture environment only; no physical preflight evidence",
+        "required": true,
+        "source": "APPROVED_REPLAY_FIXTURE",
+        "source_age_ms": 0,
+        "status": "PASS"
+      },
+      {
+        "applicable": true,
+        "blocking": false,
+        "check_id": "BP-C13",
+        "check_seq": 96,
+        "code": "REPLAY_FIXTURE_ASSUMPTION",
+        "max_age_ms": 2000,
+        "observed_at": "2026-10-12T02:03:55.242Z",
+        "operator_action": null,
+        "reason": "Synthetic fixture environment only; no physical preflight evidence",
+        "required": true,
+        "source": "APPROVED_REPLAY_FIXTURE",
+        "source_age_ms": 0,
+        "status": "PASS"
+      },
+      {
+        "applicable": true,
+        "blocking": false,
+        "check_id": "BP-C14",
+        "check_seq": 96,
+        "code": "REPLAY_FIXTURE_ASSUMPTION",
+        "max_age_ms": 2000,
+        "observed_at": "2026-10-12T02:03:55.242Z",
+        "operator_action": null,
+        "reason": "Synthetic fixture environment only; no physical preflight evidence",
+        "required": true,
+        "source": "APPROVED_REPLAY_FIXTURE",
+        "source_age_ms": 0,
+        "status": "PASS"
+      },
+      {
+        "applicable": true,
+        "blocking": false,
+        "check_id": "BP-C15",
+        "check_seq": 96,
+        "code": "REPLAY_FIXTURE_ASSUMPTION",
+        "max_age_ms": 2000,
+        "observed_at": "2026-10-12T02:03:55.242Z",
+        "operator_action": null,
+        "reason": "Synthetic fixture environment only; no physical preflight evidence",
+        "required": true,
+        "source": "APPROVED_REPLAY_FIXTURE",
+        "source_age_ms": 0,
+        "status": "PASS"
+      },
+      {
+        "applicable": true,
+        "blocking": false,
+        "check_id": "BP-C16",
+        "check_seq": 96,
+        "code": "REPLAY_FIXTURE_ASSUMPTION",
+        "max_age_ms": 2000,
+        "observed_at": "2026-10-12T02:03:55.242Z",
+        "operator_action": null,
+        "reason": "Synthetic fixture environment only; no physical preflight evidence",
+        "required": true,
+        "source": "APPROVED_REPLAY_FIXTURE",
+        "source_age_ms": 0,
+        "status": "PASS"
+      },
+      {
+        "applicable": true,
+        "blocking": false,
+        "check_id": "BP-C17",
+        "check_seq": 96,
+        "code": "REPLAY_FIXTURE_ASSUMPTION",
+        "max_age_ms": 2000,
+        "observed_at": "2026-10-12T02:03:55.242Z",
+        "operator_action": null,
+        "reason": "Synthetic fixture environment only; no physical preflight evidence",
+        "required": true,
+        "source": "APPROVED_REPLAY_FIXTURE",
+        "source_age_ms": 0,
+        "status": "PASS"
+      },
+      {
+        "applicable": true,
+        "blocking": false,
+        "check_id": "BP-C18",
+        "check_seq": 96,
+        "code": "REPLAY_FIXTURE_ASSUMPTION",
+        "max_age_ms": 2000,
+        "observed_at": "2026-10-12T02:03:55.242Z",
+        "operator_action": null,
+        "reason": "Synthetic fixture environment only; no physical preflight evidence",
+        "required": true,
+        "source": "APPROVED_REPLAY_FIXTURE",
+        "source_age_ms": 0,
+        "status": "PASS"
+      },
+      {
+        "applicable": true,
+        "blocking": false,
+        "check_id": "BP-C19",
+        "check_seq": 96,
+        "code": "REPLAY_FIXTURE_ASSUMPTION",
+        "max_age_ms": 2000,
+        "observed_at": "2026-10-12T02:03:55.242Z",
+        "operator_action": null,
+        "reason": "Synthetic fixture environment only; no physical preflight evidence",
+        "required": true,
+        "source": "APPROVED_REPLAY_FIXTURE",
+        "source_age_ms": 0,
+        "status": "PASS"
+      },
+      {
+        "applicable": true,
+        "blocking": false,
+        "check_id": "BP-C20",
+        "check_seq": 96,
+        "code": "OK",
+        "max_age_ms": 2000,
+        "observed_at": "2026-10-12T02:03:55.242Z",
+        "operator_action": null,
+        "reason": "Current control session and fresh contract link required",
+        "required": true,
+        "source": "CPP_SESSION",
+        "source_age_ms": 0,
+        "status": "PASS"
+      },
+      {
+        "applicable": true,
+        "blocking": false,
+        "check_id": "BP-C21",
+        "check_seq": 96,
+        "code": "REPLAY_FIXTURE_ASSUMPTION",
+        "max_age_ms": 2000,
+        "observed_at": "2026-10-12T02:03:55.242Z",
+        "operator_action": null,
+        "reason": "Synthetic fixture environment only; no physical preflight evidence",
+        "required": true,
+        "source": "APPROVED_REPLAY_FIXTURE",
+        "source_age_ms": 0,
+        "status": "PASS"
+      },
+      {
+        "applicable": true,
+        "blocking": false,
+        "check_id": "BP-C22",
+        "check_seq": 96,
+        "code": "REPLAY_FIXTURE_ASSUMPTION",
+        "max_age_ms": 2000,
+        "observed_at": "2026-10-12T02:03:55.242Z",
+        "operator_action": null,
+        "reason": "Synthetic fixture environment only; no physical preflight evidence",
+        "required": true,
+        "source": "APPROVED_REPLAY_FIXTURE",
+        "source_age_ms": 0,
+        "status": "PASS"
+      },
+      {
+        "applicable": true,
+        "blocking": false,
+        "check_id": "BP-C23",
+        "check_seq": 96,
+        "code": "REPLAY_FIXTURE_ASSUMPTION",
+        "max_age_ms": 2000,
+        "observed_at": "2026-10-12T02:03:55.242Z",
+        "operator_action": null,
+        "reason": "Synthetic fixture environment only; no physical preflight evidence",
+        "required": true,
+        "source": "APPROVED_REPLAY_FIXTURE",
+        "source_age_ms": 0,
+        "status": "PASS"
+      },
+      {
+        "applicable": true,
+        "blocking": false,
+        "check_id": "BP-C24",
+        "check_seq": 96,
+        "code": "REPLAY_FIXTURE_ASSUMPTION",
+        "max_age_ms": 2000,
+        "observed_at": "2026-10-12T02:03:55.242Z",
+        "operator_action": null,
+        "reason": "Synthetic fixture environment only; no physical preflight evidence",
+        "required": true,
+        "source": "APPROVED_REPLAY_FIXTURE",
+        "source_age_ms": 0,
+        "status": "PASS"
+      },
+      {
+        "applicable": true,
+        "blocking": false,
+        "check_id": "BP-C25",
+        "check_seq": 96,
+        "code": "REPLAY_FIXTURE_ASSUMPTION",
+        "max_age_ms": 2000,
+        "observed_at": "2026-10-12T02:03:55.242Z",
+        "operator_action": null,
+        "reason": "Synthetic fixture environment only; no physical preflight evidence",
+        "required": true,
+        "source": "APPROVED_REPLAY_FIXTURE",
+        "source_age_ms": 0,
+        "status": "PASS"
+      },
+      {
+        "applicable": true,
+        "blocking": false,
+        "check_id": "BP-C26",
+        "check_seq": 96,
+        "code": "REPLAY_FIXTURE_ASSUMPTION",
+        "max_age_ms": 2000,
+        "observed_at": "2026-10-12T02:03:55.242Z",
+        "operator_action": null,
+        "reason": "Synthetic fixture environment only; no physical preflight evidence",
+        "required": true,
+        "source": "APPROVED_REPLAY_FIXTURE",
+        "source_age_ms": 0,
+        "status": "PASS"
+      },
+      {
+        "applicable": true,
+        "blocking": false,
+        "check_id": "BP-C27",
+        "check_seq": 96,
+        "code": "REPLAY_FIXTURE_ASSUMPTION",
+        "max_age_ms": 2000,
+        "observed_at": "2026-10-12T02:03:55.242Z",
+        "operator_action": null,
+        "reason": "Synthetic fixture environment only; no physical preflight evidence",
+        "required": true,
+        "source": "APPROVED_REPLAY_FIXTURE",
+        "source_age_ms": 0,
+        "status": "PASS"
+      },
+      {
+        "applicable": true,
+        "blocking": false,
+        "check_id": "BP-C28",
+        "check_seq": 96,
+        "code": "OK",
+        "max_age_ms": 2000,
+        "observed_at": "2026-10-12T02:03:55.242Z",
+        "operator_action": null,
+        "reason": "Current control session and fresh contract link required",
+        "required": true,
+        "source": "CPP_SESSION",
+        "source_age_ms": 0,
+        "status": "PASS"
+      },
+      {
+        "applicable": true,
+        "blocking": false,
+        "check_id": "QS-C01",
+        "check_seq": 96,
+        "code": "REPLAY_FIXTURE_ASSUMPTION",
+        "max_age_ms": 2000,
+        "observed_at": "2026-10-12T02:03:55.242Z",
+        "operator_action": null,
+        "reason": "Synthetic fixture environment only; no physical preflight evidence",
+        "required": true,
+        "source": "APPROVED_REPLAY_FIXTURE",
+        "source_age_ms": 0,
+        "status": "PASS"
+      },
+      {
+        "applicable": true,
+        "blocking": false,
+        "check_id": "QS-C02",
+        "check_seq": 96,
+        "code": "REPLAY_FIXTURE_ASSUMPTION",
+        "max_age_ms": 2000,
+        "observed_at": "2026-10-12T02:03:55.242Z",
+        "operator_action": null,
+        "reason": "Synthetic fixture environment only; no physical preflight evidence",
+        "required": true,
+        "source": "APPROVED_REPLAY_FIXTURE",
+        "source_age_ms": 0,
+        "status": "PASS"
+      },
+      {
+        "applicable": true,
+        "blocking": false,
+        "check_id": "QS-C03",
+        "check_seq": 96,
+        "code": "REPLAY_FIXTURE_ASSUMPTION",
+        "max_age_ms": 2000,
+        "observed_at": "2026-10-12T02:03:55.242Z",
+        "operator_action": null,
+        "reason": "Synthetic fixture environment only; no physical preflight evidence",
+        "required": true,
+        "source": "APPROVED_REPLAY_FIXTURE",
+        "source_age_ms": 0,
+        "status": "PASS"
+      },
+      {
+        "applicable": true,
+        "blocking": false,
+        "check_id": "QS-C04",
+        "check_seq": 96,
+        "code": "REPLAY_FIXTURE_ASSUMPTION",
+        "max_age_ms": 2000,
+        "observed_at": "2026-10-12T02:03:55.242Z",
+        "operator_action": null,
+        "reason": "Synthetic fixture environment only; no physical preflight evidence",
+        "required": true,
+        "source": "APPROVED_REPLAY_FIXTURE",
+        "source_age_ms": 0,
+        "status": "PASS"
+      },
+      {
+        "applicable": true,
+        "blocking": false,
+        "check_id": "QS-C05",
+        "check_seq": 96,
+        "code": "REPLAY_FIXTURE_ASSUMPTION",
+        "max_age_ms": 2000,
+        "observed_at": "2026-10-12T02:03:55.242Z",
+        "operator_action": null,
+        "reason": "Synthetic fixture environment only; no physical preflight evidence",
+        "required": true,
+        "source": "APPROVED_REPLAY_FIXTURE",
+        "source_age_ms": 0,
+        "status": "PASS"
+      }
+    ],
+    "context": {
+      "assignment_id": "test-assignment",
+      "boot_id": "e7b15851-f2eb-4b05-a46f-3f1945648baa",
+      "control_session_id": "test-session-d7bd2911bf1e408bb7b3496793b9ab61",
+      "execution_id": "execution-cafb28ec-7520-42c9-a3bc-a5f133e145a0",
+      "flight_id": "flight-424c1409-f6da-4cdd-ad39-8fd3155b70df",
+      "preparation_id": null,
+      "readiness_revision": 4,
+      "runtime_session_id": "runtime-eab0b4d7-ce94-4a92-bbe9-12c9513a7d63",
+      "snapshot_id": "synthetic-scan-TEST-DRONE-01"
+    },
+    "contract_version": "1.1-draft.4",
+    "drone_id": "TEST-DRONE-01",
+    "flight_authority": false,
+    "generated_at": "2026-10-12T02:03:55.242Z",
+    "host_diagnostics": {
+      "checks": [],
+      "state": "UNKNOWN"
+    },
+    "mission_state": "NOT_READY",
+    "profile": "REPLAY",
+    "readiness_revision": 4,
+    "readiness_seq": 96,
+    "service_checks": [
+      {
+        "blocking": false,
+        "check_id": "SVC_CPP",
+        "code": "OK",
+        "status": "PASS"
+      },
+      {
+        "blocking": false,
+        "check_id": "SVC_WEB_CONTRACT",
+        "code": "OK",
+        "status": "PASS"
+      },
+      {
+        "blocking": false,
+        "check_id": "SVC_PHYSICAL_OUTPUT",
+        "code": "PHYSICAL_OUTPUT_NOT_IMPLEMENTED",
+        "status": "UNKNOWN"
+      },
+      {
+        "blocking": true,
+        "check_id": "SVC_MISSION",
+        "code": "OK",
+        "status": "UNKNOWN"
+      },
+      {
+        "blocking": false,
+        "check_id": "SVC_RESTART",
+        "code": "OK",
+        "status": "PASS"
+      }
+    ],
+    "system_state": "READY",
+    "type": "readiness",
+    "valid_until": "2026-10-12T02:03:57.242Z",
+    "validation_scope": "ALLOWLISTED_SYNTHETIC_MAP_SCAN_ONLY"
+  },
+  "recovery_locked": false,
+  "supported_capabilities": [
+    "mission_xyz",
+    "arrival_yaw",
+    "command_session",
+    "readiness_binding",
+    "replay_waypoints_v1",
+    "map_volumes",
+    "scan_task_v1",
+    "label_pose_v1",
+    "scan_workspace_v1",
+    "replay_static_detour_v1",
+    "planner_plan_v1"
+  ],
+  "telemetry": {
+    "allowed_commands": [],
+    "context": {
+      "assignment_id": "test-assignment",
+      "boot_id": "e7b15851-f2eb-4b05-a46f-3f1945648baa",
+      "control_session_id": "test-session-d7bd2911bf1e408bb7b3496793b9ab61",
+      "execution_id": "execution-cafb28ec-7520-42c9-a3bc-a5f133e145a0",
+      "flight_id": "flight-424c1409-f6da-4cdd-ad39-8fd3155b70df",
+      "preparation_id": null,
+      "readiness_revision": 4,
+      "runtime_session_id": "runtime-eab0b4d7-ce94-4a92-bbe9-12c9513a7d63",
+      "snapshot_id": "synthetic-scan-TEST-DRONE-01"
+    },
+    "contract_version": "1.1-draft.4",
+    "control_owner": "NONE",
+    "drone_id": "TEST-DRONE-01",
+    "flight_authority": false,
+    "generated_at": "2026-10-12T02:03:55.242Z",
+    "manual_lock": false,
+    "phase": "ENDED",
+    "pose_fused": {
+      "frame": "WAREHOUSE_MAP",
+      "observed_at": "2026-10-12T02:03:55.242Z",
+      "position_m": {
+        "x": 3.88,
+        "y": 1.5,
+        "z": 0.0
+      },
+      "source": "FAKE_PX4",
+      "source_age_ms": 0,
+      "valid": true,
+      "yaw_deg": 0.0
+    },
+    "position_transport": "JETSON_WIFI",
+    "profile": "REPLAY",
+    "px4": {
+      "armed": false,
+      "connected": true,
+      "landed": true
+    },
+    "reason": "GOAL_NOT_REACHED",
+    "scan": null,
+    "source": "FAKE_PX4",
+    "telemetry_seq": 314,
+    "type": "telemetry",
+    "uwb_map_position": {
+      "frame": "WAREHOUSE_MAP",
+      "observed_at": null,
+      "position_m": null,
+      "reason_code": "UWB_SPEC_PENDING",
+      "source": "JETSON_UWB_MAP_TRANSFORM",
+      "source_age_ms": null,
+      "transform_ref": null,
+      "valid": false
+    },
+    "uwb_observation": {
+      "is_new_observation": false,
+      "observed_at": null,
+      "position_m": null,
+      "reason_code": "UWB_SPEC_PENDING",
+      "source": "UWB_ADAPTER_PENDING",
+      "source_age_ms": null,
+      "valid": false
+    },
+    "validation_scope": "ALLOWLISTED_SYNTHETIC_MAP_SCAN_ONLY",
+    "visited": 2
+  },
+  "type": "service_status",
+  "web": {
+    "code": "WEB_NOT_CONNECTED",
+    "connected": true,
+    "fresh": true,
+    "observed_contract": ""
+  }
+}
+
+sensor-bridge.log SCAN_REPLAY_BRIDGE accepted=531 rejected=52 codes={'STALE_SCAN_REQUEST': 44, 'TimeoutError': 3, 'SCAN_INPUT_INACTIVE': 5} flight_authority=false
+
+core.log sangwon_companiond profile="REPLAY" physical_output=false
+
+Traceback (most recent call last):
+  File "/home/arialhanho/ROS2-review-20261008-codex/.review/final-cleanup-20261012/source/src/sangwon_AI/tests/scan_sensor_integration.py", line 207, in <module>
+    for mode in ('SCANNER_SUCCESS', 'CAMERA_SUCCESS', 'QR_UNREADABLE', 'STALE_HEALTH_RETRY'):run(mode)
+  File "/home/arialhanho/ROS2-review-20261008-codex/.review/final-cleanup-20261012/source/src/sangwon_AI/tests/scan_sensor_integration.py", line 173, in run
+    assert result['status'] == 'COMPLETED' and result['visited'] == 3, result
+AssertionError: {'blocking_check_ids': [], 'code': 'FAILED', 'context': {'assignment_id': 'test-assignment', 'boot_id': 'e7b15851-f2eb-4b05-a46f-3f1945648baa', 'control_session_id': 'test-session-d7bd2911bf1e408bb7b3496793b9ab61', 'execution_id': 'execution-cafb28ec-7520-42c9-a3bc-a5f133e145a0', 'flight_id': 'flight-424c1409-f6da-4cdd-ad39-8fd3155b70df', 'preparation_id': 'preparation-23571ec0-2009-45d6-9a5b-ed7e7b5ce794', 'readiness_revision': 2, 'runtime_session_id': 'runtime-eab0b4d7-ce94-4a92-bbe9-12c9513a7d63', 'snapshot_id': 'synthetic-scan-TEST-DRONE-01'}, 'contract_version': '1.1-draft.4', 'control_request_id': 'req-9e5268b350c146f28c14d38ed8336b54', 'drone_id': 'TEST-DRONE-01', 'field_errors': [], 'flight_outcome': 'FAILED', 'operator_action': None, 'profile': 'REPLAY', 'reason': 'FAILED', 'recorded_at': '2026-10-12T02:03:55.003Z', 'result_revision': 2, 'status': 'COMPLETED', 'type': 'command_result', 'visited': 2, 'work_outcome': 'INCOMPLETE'}
+
+      Start 25: web_transport_boundaries
+25/32 Test #25: web_transport_boundaries .........   Passed    0.59 sec
+      Start 26: bench_plan_boundaries
+26/32 Test #26: bench_plan_boundaries ............   Passed    0.15 sec
+      Start 27: bench_plan_cpp_replay
+27/32 Test #27: bench_plan_cpp_replay ............   Passed   32.96 sec
+      Start 28: web_service_integration
+28/32 Test #28: web_service_integration ..........   Passed   20.23 sec
+      Start 29: web_planner_delivery
+29/32 Test #29: web_planner_delivery .............   Passed    0.49 sec
+      Start 30: web_mode_integration
+30/32 Test #30: web_mode_integration .............   Passed   13.76 sec
+      Start 31: web_scan_integration
+31/32 Test #31: web_scan_integration .............   Passed   56.75 sec
+      Start 32: web_planner_integration
+32/32 Test #32: web_planner_integration ..........***Failed   11.73 sec
+last_core_status eck_seq": 282,
+        "code": "REPLAY_FIXTURE_ASSUMPTION",
+        "max_age_ms": 2000,
+        "observed_at": "2026-10-12T02:06:09.759Z",
+        "operator_action": null,
+        "reason": "Synthetic fixture environment only; no physical preflight evidence",
+        "required": true,
+        "source": "APPROVED_REPLAY_FIXTURE",
+        "source_age_ms": 0,
+        "status": "PASS"
+      },
+      {
+        "applicable": true,
+        "blocking": false,
+        "check_id": "BP-C11",
+        "check_seq": 282,
+        "code": "REPLAY_FIXTURE_ASSUMPTION",
+        "max_age_ms": 2000,
+        "observed_at": "2026-10-12T02:06:09.759Z",
+        "operator_action": null,
+        "reason": "Synthetic fixture environment only; no physical preflight evidence",
+        "required": true,
+        "source": "APPROVED_REPLAY_FIXTURE",
+        "source_age_ms": 0,
+        "status": "PASS"
+      },
+      {
+        "applicable": true,
+        "blocking": false,
+        "check_id": "BP-C12",
+        "check_seq": 282,
+        "code": "REPLAY_FIXTURE_ASSUMPTION",
+        "max_age_ms": 2000,
+        "observed_at": "2026-10-12T02:06:09.759Z",
+        "operator_action": null,
+        "reason": "Synthetic fixture environment only; no physical preflight evidence",
+        "required": true,
+        "source": "APPROVED_REPLAY_FIXTURE",
+        "source_age_ms": 0,
+        "status": "PASS"
+      },
+      {
+        "applicable": true,
+        "blocking": false,
+        "check_id": "BP-C13",
+        "check_seq": 282,
+        "code": "REPLAY_FIXTURE_ASSUMPTION",
+        "max_age_ms": 2000,
+        "observed_at": "2026-10-12T02:06:09.759Z",
+        "operator_action": null,
+        "reason": "Synthetic fixture environment only; no physical preflight evidence",
+        "required": true,
+        "source": "APPROVED_REPLAY_FIXTURE",
+        "source_age_ms": 0,
+        "status": "PASS"
+      },
+      {
+        "applicable": true,
+        "blocking": false,
+        "check_id": "BP-C14",
+        "check_seq": 282,
+        "code": "REPLAY_FIXTURE_ASSUMPTION",
+        "max_age_ms": 2000,
+        "observed_at": "2026-10-12T02:06:09.759Z",
+        "operator_action": null,
+        "reason": "Synthetic fixture environment only; no physical preflight evidence",
+        "required": true,
+        "source": "APPROVED_REPLAY_FIXTURE",
+        "source_age_ms": 0,
+        "status": "PASS"
+      },
+      {
+        "applicable": true,
+        "blocking": false,
+        "check_id": "BP-C15",
+        "check_seq": 282,
+        "code": "REPLAY_FIXTURE_ASSUMPTION",
+        "max_age_ms": 2000,
+        "observed_at": "2026-10-12T02:06:09.759Z",
+        "operator_action": null,
+        "reason": "Synthetic fixture environment only; no physical preflight evidence",
+        "required": true,
+        "source": "APPROVED_REPLAY_FIXTURE",
+        "source_age_ms": 0,
+        "status": "PASS"
+      },
+      {
+        "applicable": true,
+        "blocking": false,
+        "check_id": "BP-C16",
+        "check_seq": 282,
+        "code": "REPLAY_FIXTURE_ASSUMPTION",
+        "max_age_ms": 2000,
+        "observed_at": "2026-10-12T02:06:09.759Z",
+        "operator_action": null,
+        "reason": "Synthetic fixture environment only; no physical preflight evidence",
+        "required": true,
+        "source": "APPROVED_REPLAY_FIXTURE",
+        "source_age_ms": 0,
+        "status": "PASS"
+      },
+      {
+        "applicable": true,
+        "blocking": false,
+        "check_id": "BP-C17",
+        "check_seq": 282,
+        "code": "REPLAY_FIXTURE_ASSUMPTION",
+        "max_age_ms": 2000,
+        "observed_at": "2026-10-12T02:06:09.759Z",
+        "operator_action": null,
+        "reason": "Synthetic fixture environment only; no physical preflight evidence",
+        "required": true,
+        "source": "APPROVED_REPLAY_FIXTURE",
+        "source_age_ms": 0,
+        "status": "PASS"
+      },
+      {
+        "applicable": true,
+        "blocking": false,
+        "check_id": "BP-C18",
+        "check_seq": 282,
+        "code": "REPLAY_FIXTURE_ASSUMPTION",
+        "max_age_ms": 2000,
+        "observed_at": "2026-10-12T02:06:09.759Z",
+        "operator_action": null,
+        "reason": "Synthetic fixture environment only; no physical preflight evidence",
+        "required": true,
+        "source": "APPROVED_REPLAY_FIXTURE",
+        "source_age_ms": 0,
+        "status": "PASS"
+      },
+      {
+        "applicable": true,
+        "blocking": false,
+        "check_id": "BP-C19",
+        "check_seq": 282,
+        "code": "REPLAY_FIXTURE_ASSUMPTION",
+        "max_age_ms": 2000,
+        "observed_at": "2026-10-12T02:06:09.759Z",
+        "operator_action": null,
+        "reason": "Synthetic fixture environment only; no physical preflight evidence",
+        "required": true,
+        "source": "APPROVED_REPLAY_FIXTURE",
+        "source_age_ms": 0,
+        "status": "PASS"
+      },
+      {
+        "applicable": true,
+        "blocking": false,
+        "check_id": "BP-C20",
+        "check_seq": 282,
+        "code": "OK",
+        "max_age_ms": 2000,
+        "observed_at": "2026-10-12T02:06:09.759Z",
+        "operator_action": null,
+        "reason": "Current control session and fresh contract link required",
+        "required": true,
+        "source": "CPP_SESSION",
+        "source_age_ms": 0,
+        "status": "PASS"
+      },
+      {
+        "applicable": true,
+        "blocking": false,
+        "check_id": "BP-C21",
+        "check_seq": 282,
+        "code": "REPLAY_FIXTURE_ASSUMPTION",
+        "max_age_ms": 2000,
+        "observed_at": "2026-10-12T02:06:09.759Z",
+        "operator_action": null,
+        "reason": "Synthetic fixture environment only; no physical preflight evidence",
+        "required": true,
+        "source": "APPROVED_REPLAY_FIXTURE",
+        "source_age_ms": 0,
+        "status": "PASS"
+      },
+      {
+        "applicable": true,
+        "blocking": false,
+        "check_id": "BP-C22",
+        "check_seq": 282,
+        "code": "REPLAY_FIXTURE_ASSUMPTION",
+        "max_age_ms": 2000,
+        "observed_at": "2026-10-12T02:06:09.759Z",
+        "operator_action": null,
+        "reason": "Synthetic fixture environment only; no physical preflight evidence",
+        "required": true,
+        "source": "APPROVED_REPLAY_FIXTURE",
+        "source_age_ms": 0,
+        "status": "PASS"
+      },
+      {
+        "applicable": true,
+        "blocking": false,
+        "check_id": "BP-C23",
+        "check_seq": 282,
+        "code": "REPLAY_FIXTURE_ASSUMPTION",
+        "max_age_ms": 2000,
+        "observed_at": "2026-10-12T02:06:09.759Z",
+        "operator_action": null,
+        "reason": "Synthetic fixture environment only; no physical preflight evidence",
+        "required": true,
+        "source": "APPROVED_REPLAY_FIXTURE",
+        "source_age_ms": 0,
+        "status": "PASS"
+      },
+      {
+        "applicable": true,
+        "blocking": false,
+        "check_id": "BP-C24",
+        "check_seq": 282,
+        "code": "REPLAY_FIXTURE_ASSUMPTION",
+        "max_age_ms": 2000,
+        "observed_at": "2026-10-12T02:06:09.759Z",
+        "operator_action": null,
+        "reason": "Synthetic fixture environment only; no physical preflight evidence",
+        "required": true,
+        "source": "APPROVED_REPLAY_FIXTURE",
+        "source_age_ms": 0,
+        "status": "PASS"
+      },
+      {
+        "applicable": true,
+        "blocking": false,
+        "check_id": "BP-C25",
+        "check_seq": 282,
+        "code": "REPLAY_FIXTURE_ASSUMPTION",
+        "max_age_ms": 2000,
+        "observed_at": "2026-10-12T02:06:09.759Z",
+        "operator_action": null,
+        "reason": "Synthetic fixture environment only; no physical preflight evidence",
+        "required": true,
+        "source": "APPROVED_REPLAY_FIXTURE",
+        "source_age_ms": 0,
+        "status": "PASS"
+      },
+      {
+        "applicable": true,
+        "blocking": false,
+        "check_id": "BP-C26",
+        "check_seq": 282,
+        "code": "REPLAY_FIXTURE_ASSUMPTION",
+        "max_age_ms": 2000,
+        "observed_at": "2026-10-12T02:06:09.759Z",
+        "operator_action": null,
+        "reason": "Synthetic fixture environment only; no physical preflight evidence",
+        "required": true,
+        "source": "APPROVED_REPLAY_FIXTURE",
+        "source_age_ms": 0,
+        "status": "PASS"
+      },
+      {
+        "applicable": true,
+        "blocking": false,
+        "check_id": "BP-C27",
+        "check_seq": 282,
+        "code": "REPLAY_FIXTURE_ASSUMPTION",
+        "max_age_ms": 2000,
+        "observed_at": "2026-10-12T02:06:09.759Z",
+        "operator_action": null,
+        "reason": "Synthetic fixture environment only; no physical preflight evidence",
+        "required": true,
+        "source": "APPROVED_REPLAY_FIXTURE",
+        "source_age_ms": 0,
+        "status": "PASS"
+      },
+      {
+        "applicable": true,
+        "blocking": false,
+        "check_id": "BP-C28",
+        "check_seq": 282,
+        "code": "OK",
+        "max_age_ms": 2000,
+        "observed_at": "2026-10-12T02:06:09.759Z",
+        "operator_action": null,
+        "reason": "Current control session and fresh contract link required",
+        "required": true,
+        "source": "CPP_SESSION",
+        "source_age_ms": 0,
+        "status": "PASS"
+      },
+      {
+        "applicable": false,
+        "blocking": false,
+        "check_id": "QS-C01",
+        "check_seq": 282,
+        "code": "NOT_APPLICABLE",
+        "max_age_ms": 2000,
+        "observed_at": null,
+        "operator_action": "Provide fresh evidence before flight readiness",
+        "reason": "Waypoint-only fixture has no scan tasks",
+        "required": false,
+        "source": "APPROVED_REPLAY_FIXTURE",
+        "source_age_ms": null,
+        "status": "UNKNOWN"
+      },
+      {
+        "applicable": false,
+        "blocking": false,
+        "check_id": "QS-C02",
+        "check_seq": 282,
+        "code": "NOT_APPLICABLE",
+        "max_age_ms": 2000,
+        "observed_at": null,
+        "operator_action": "Provide fresh evidence before flight readiness",
+        "reason": "Waypoint-only fixture has no scan tasks",
+        "required": false,
+        "source": "APPROVED_REPLAY_FIXTURE",
+        "source_age_ms": null,
+        "status": "UNKNOWN"
+      },
+      {
+        "applicable": false,
+        "blocking": false,
+        "check_id": "QS-C03",
+        "check_seq": 282,
+        "code": "NOT_APPLICABLE",
+        "max_age_ms": 2000,
+        "observed_at": null,
+        "operator_action": "Provide fresh evidence before flight readiness",
+        "reason": "Waypoint-only fixture has no scan tasks",
+        "required": false,
+        "source": "APPROVED_REPLAY_FIXTURE",
+        "source_age_ms": null,
+        "status": "UNKNOWN"
+      },
+      {
+        "applicable": false,
+        "blocking": false,
+        "check_id": "QS-C04",
+        "check_seq": 282,
+        "code": "NOT_APPLICABLE",
+        "max_age_ms": 2000,
+        "observed_at": null,
+        "operator_action": "Provide fresh evidence before flight readiness",
+        "reason": "Waypoint-only fixture has no scan tasks",
+        "required": false,
+        "source": "APPROVED_REPLAY_FIXTURE",
+        "source_age_ms": null,
+        "status": "UNKNOWN"
+      },
+      {
+        "applicable": false,
+        "blocking": false,
+        "check_id": "QS-C05",
+        "check_seq": 282,
+        "code": "NOT_APPLICABLE",
+        "max_age_ms": 2000,
+        "observed_at": null,
+        "operator_action": "Provide fresh evidence before flight readiness",
+        "reason": "Waypoint-only fixture has no scan tasks",
+        "required": false,
+        "source": "APPROVED_REPLAY_FIXTURE",
+        "source_age_ms": null,
+        "status": "UNKNOWN"
+      }
+    ],
+    "context": {
+      "assignment_id": "test-assignment",
+      "boot_id": "e7b15851-f2eb-4b05-a46f-3f1945648baa",
+      "control_session_id": "test-session-b231716f36624d289083bdeae50b9f65",
+      "execution_id": "execution-a60a1a29-6545-4504-96db-e8b4e2ca1c4c",
+      "flight_id": "flight-2974811d-aeeb-41ac-87ec-b73bbaba221d",
+      "preparation_id": null,
+      "readiness_revision": 3,
+      "runtime_session_id": "runtime-91f9d6a9-1385-4c3c-8b12-8ebf8fef1cca",
+      "snapshot_id": "synthetic-scan-TEST-DRONE-01"
+    },
+    "contract_version": "1.1-draft.4",
+    "drone_id": "TEST-DRONE-01",
+    "flight_authority": false,
+    "generated_at": "2026-10-12T02:06:09.759Z",
+    "host_diagnostics": {
+      "checks": [],
+      "state": "UNKNOWN"
+    },
+    "mission_state": "BUSY",
+    "profile": "REPLAY",
+    "readiness_revision": 3,
+    "readiness_seq": 282,
+    "service_checks": [
+      {
+        "blocking": false,
+        "check_id": "SVC_CPP",
+        "code": "OK",
+        "status": "PASS"
+      },
+      {
+        "blocking": false,
+        "check_id": "SVC_WEB_CONTRACT",
+        "code": "OK",
+        "status": "PASS"
+      },
+      {
+        "blocking": false,
+        "check_id": "SVC_PHYSICAL_OUTPUT",
+        "code": "PHYSICAL_OUTPUT_NOT_IMPLEMENTED",
+        "status": "UNKNOWN"
+      },
+      {
+        "blocking": false,
+        "check_id": "SVC_MISSION",
+        "code": "OK",
+        "status": "PASS"
+      },
+      {
+        "blocking": false,
+        "check_id": "SVC_RESTART",
+        "code": "OK",
+        "status": "PASS"
+      }
+    ],
+    "system_state": "READY",
+    "type": "readiness",
+    "valid_until": "2026-10-12T02:06:11.759Z",
+    "validation_scope": "ALLOWLISTED_SYNTHETIC_MAP_STATIC_DETOUR_ONLY"
+  },
+  "recovery_locked": false,
+  "supported_capabilities": [
+    "mission_xyz",
+    "arrival_yaw",
+    "command_session",
+    "readiness_binding",
+    "replay_waypoints_v1",
+    "map_volumes",
+    "scan_task_v1",
+    "label_pose_v1",
+    "scan_workspace_v1",
+    "replay_static_detour_v1",
+    "planner_plan_v1"
+  ],
+  "telemetry": {
+    "allowed_commands": [
+      "CANCEL",
+      "LAND_NOW"
+    ],
+    "context": {
+      "assignment_id": "test-assignment",
+      "boot_id": "e7b15851-f2eb-4b05-a46f-3f1945648baa",
+      "control_session_id": "test-session-b231716f36624d289083bdeae50b9f65",
+      "execution_id": "execution-a60a1a29-6545-4504-96db-e8b4e2ca1c4c",
+      "flight_id": "flight-2974811d-aeeb-41ac-87ec-b73bbaba221d",
+      "preparation_id": null,
+      "readiness_revision": 3,
+      "runtime_session_id": "runtime-91f9d6a9-1385-4c3c-8b12-8ebf8fef1cca",
+      "snapshot_id": "synthetic-scan-TEST-DRONE-01"
+    },
+    "contract_version": "1.1-draft.4",
+    "control_owner": "JETSON",
+    "drone_id": "TEST-DRONE-01",
+    "flight_authority": false,
+    "generated_at": "2026-10-12T02:06:09.760Z",
+    "manual_lock": false,
+    "phase": "RETURNING",
+    "pose_fused": {
+      "frame": "WAREHOUSE_MAP",
+      "observed_at": "2026-10-12T02:06:09.760Z",
+      "position_m": {
+        "x": 2.198265522819304,
+        "y": 3.7189220633412665,
+        "z": 1.0000000000000009
+      },
+      "source": "FAKE_PX4",
+      "source_age_ms": 0,
+      "valid": true,
+      "yaw_deg": 51.75083450898778
+    },
+    "position_transport": "JETSON_WIFI",
+    "profile": "REPLAY",
+    "px4": {
+      "armed": true,
+      "connected": true,
+      "landed": false
+    },
+    "reason": "MISSION_FINISHED",
+    "scan": null,
+    "source": "FAKE_PX4",
+    "telemetry_seq": 124,
+    "type": "telemetry",
+    "uwb_map_position": {
+      "frame": "WAREHOUSE_MAP",
+      "observed_at": null,
+      "position_m": null,
+      "reason_code": "UWB_SPEC_PENDING",
+      "source": "JETSON_UWB_MAP_TRANSFORM",
+      "source_age_ms": null,
+      "transform_ref": null,
+      "valid": false
+    },
+    "uwb_observation": {
+      "is_new_observation": false,
+      "observed_at": null,
+      "position_m": null,
+      "reason_code": "UWB_SPEC_PENDING",
+      "source": "UWB_ADAPTER_PENDING",
+      "source_age_ms": null,
+      "valid": false
+    },
+    "validation_scope": "ALLOWLISTED_SYNTHETIC_MAP_STATIC_DETOUR_ONLY",
+    "visited": 2
+  },
+  "type": "service_status",
+  "web": {
+    "code": "OK",
+    "connected": true,
+    "fresh": true,
+    "observed_contract": "1.1-draft.4"
+  }
+}
+
+core.log sangwon_companiond profile="REPLAY" physical_output=false
+
+Traceback (most recent call last):
+  File "/home/arialhanho/ROS2-review-20261008-codex/.review/final-cleanup-20261012/source/src/sangwon_AI/tests/web_planner_integration.py", line 100, in <module>
+    run_detour(); reject_before_takeoff()
+  File "/home/arialhanho/ROS2-review-20261008-codex/.review/final-cleanup-20261012/source/src/sangwon_AI/tests/web_planner_integration.py", line 52, in run_detour
+    status = rig.core.call('status')
+  File "/home/arialhanho/ROS2-review-20261008-codex/.review/final-cleanup-20261012/source/src/sangwon_AI/python/sangwon_web/ipc.py", line 24, in call
+    chunk = connection.recv(65536)
+TimeoutError: timed out
+
+
+94% tests passed, 2 tests failed out of 32
+
+Total Test time (real) = 331.13 sec
+
+The following tests FAILED:
+	 24 - scan_sensor_transport (Failed)
+	 32 - web_planner_integration (Failed)
+Errors while running CTest

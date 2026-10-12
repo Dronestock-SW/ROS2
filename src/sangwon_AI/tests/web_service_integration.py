@@ -117,6 +117,9 @@ class Rig:
 
     def __enter__(self):return self
     def __exit__(self,kind,value,tb):
+        if kind:
+            status = self.root/".runtime/c/core_status.json"
+            if status.exists(): print("last_core_status", status.read_text()[-16000:])
         for proc in reversed(self.procs):stop(proc)
         for handle in self.handles:handle.close()
         if kind:

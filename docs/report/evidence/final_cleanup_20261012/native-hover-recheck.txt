@@ -1,0 +1,8 @@
+Internal ctest changing into directory: /home/arialhanho/ROS2-review-20261008-codex/.review/final-cleanup-20261012/native-build
+Test project /home/arialhanho/ROS2-review-20261008-codex/.review/final-cleanup-20261012/native-build
+    Start 20: native_hover_ros
+1/1 Test #20: native_hover_ros .................   Passed  101.96 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) = 101.97 sec

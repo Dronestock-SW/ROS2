@@ -158,3 +158,13 @@ ros2 service call /uwb/reset_observation_history std_srvs/srv/Trigger '{}'
 새 시작·보정 도구는 구문·도움말만 검증했다.
 두 도구를 이용한 새 부팅 실기 재현은 미실시다.
 저장 작업 중 기존 실기 스택은 재시작하지 않았다.
+
+2026-10-12: 새 격리 소스로 전체를 다시 검증했다.
+Python 1,105개 통과. 실패·skip은 0개다.
+ROS 패키지 4개와 C++ 전체 빌드가 성공했다.
+CTest 마지막 묶음은 31/32개 통과했다.
+실패한 native_hover_ros는 단독 재실행에서 통과했다.
+32개 개별 통과와 묶음 반복 안정성을 구분한다.
+간헐 입력 만료·IPC 지연은 미해결로 기록했다.
+정리본의 실비행·새 SITL은 수행하지 않았다.
+[검증 기록](../report/evidence/final_cleanup_20261012/README.md)을 확인한다.

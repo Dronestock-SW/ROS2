@@ -1,0 +1,8 @@
+Internal ctest changing into directory: /home/arialhanho/ROS2-review-20261008-codex/.review/final-cleanup-20261012/native-build
+Test project /home/arialhanho/ROS2-review-20261008-codex/.review/final-cleanup-20261012/native-build
+    Start 28: web_service_integration
+1/1 Test #28: web_service_integration ..........   Passed   45.24 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =  45.24 sec

@@ -1,0 +1,113 @@
+[  2%] Building CXX object _deps/behaviortree_cpp-build/3rdparty/lexy/src/CMakeFiles/lexy_file.dir/input/file.cpp.o
+[  2%] Building CXX object _deps/behaviortree_cpp-build/CMakeFiles/minitrace.dir/3rdparty/minitrace/minitrace.cpp.o
+[  3%] Linking CXX static library liblexy_file.a
+[  3%] Built target lexy_file
+[  4%] Linking CXX static library libminitrace.a
+[  5%] Building CXX object CMakeFiles/sangwon_native_hover_tests.dir/tests/native_hover_tests.cpp.o
+[  5%] Built target minitrace
+[  6%] Building CXX object CMakeFiles/sangwon_capture_observations.dir/src/capture_observations.cpp.o
+[  7%] Linking CXX executable sangwon_native_hover_tests
+[  7%] Built target sangwon_native_hover_tests
+[  8%] Building CXX object _deps/behaviortree_cpp-build/CMakeFiles/behaviortree_cpp.dir/src/action_node.cpp.o
+[  9%] Building CXX object _deps/behaviortree_cpp-build/CMakeFiles/behaviortree_cpp.dir/src/basic_types.cpp.o
+[ 10%] Linking CXX static library libsangwon_capture_observations.a
+[ 10%] Built target sangwon_capture_observations
+[ 12%] Building CXX object _deps/behaviortree_cpp-build/CMakeFiles/behaviortree_cpp.dir/src/behavior_tree.cpp.o
+[ 13%] Building CXX object _deps/behaviortree_cpp-build/CMakeFiles/behaviortree_cpp.dir/src/blackboard.cpp.o
+[ 14%] Building CXX object _deps/behaviortree_cpp-build/CMakeFiles/behaviortree_cpp.dir/src/bt_factory.cpp.o
+[ 15%] Building CXX object _deps/behaviortree_cpp-build/CMakeFiles/behaviortree_cpp.dir/src/decorator_node.cpp.o
+[ 16%] Building CXX object CMakeFiles/sangwon_capture_replay.dir/src/capture_replay.cpp.o
+[ 17%] Linking CXX executable sangwon_capture_replay
+[ 17%] Built target sangwon_capture_replay
+[ 18%] Building CXX object CMakeFiles/sangwon_capture_observation_tests.dir/tests/capture_observation_tests.cpp.o
+[ 19%] Linking CXX executable sangwon_capture_observation_tests
+[ 20%] Building CXX object _deps/behaviortree_cpp-build/CMakeFiles/behaviortree_cpp.dir/src/condition_node.cpp.o
+[ 20%] Built target sangwon_capture_observation_tests
+[ 21%] Building CXX object _deps/behaviortree_cpp-build/CMakeFiles/behaviortree_cpp.dir/src/control_node.cpp.o
+[ 23%] Building CXX object _deps/behaviortree_cpp-build/CMakeFiles/behaviortree_cpp.dir/src/shared_library.cpp.o
+[ 24%] Building CXX object _deps/behaviortree_cpp-build/CMakeFiles/behaviortree_cpp.dir/src/tree_node.cpp.o
+[ 25%] Building CXX object _deps/behaviortree_cpp-build/CMakeFiles/behaviortree_cpp.dir/src/script_parser.cpp.o
+[ 26%] Building CXX object _deps/behaviortree_cpp-build/CMakeFiles/behaviortree_cpp.dir/src/json_export.cpp.o
+[ 27%] Building CXX object _deps/behaviortree_cpp-build/CMakeFiles/behaviortree_cpp.dir/src/xml_parsing.cpp.o
+[ 28%] Building CXX object _deps/behaviortree_cpp-build/CMakeFiles/behaviortree_cpp.dir/src/actions/test_node.cpp.o
+[ 29%] Building CXX object _deps/behaviortree_cpp-build/CMakeFiles/behaviortree_cpp.dir/src/actions/sleep_node.cpp.o
+[ 30%] Building CXX object _deps/behaviortree_cpp-build/CMakeFiles/behaviortree_cpp.dir/src/actions/updated_action.cpp.o
+[ 31%] Building CXX object _deps/behaviortree_cpp-build/CMakeFiles/behaviortree_cpp.dir/src/decorators/delay_node.cpp.o
+[ 32%] Building CXX object _deps/behaviortree_cpp-build/CMakeFiles/behaviortree_cpp.dir/src/decorators/inverter_node.cpp.o
+[ 34%] Building CXX object _deps/behaviortree_cpp-build/CMakeFiles/behaviortree_cpp.dir/src/decorators/repeat_node.cpp.o
+[ 35%] Building CXX object _deps/behaviortree_cpp-build/CMakeFiles/behaviortree_cpp.dir/src/decorators/retry_node.cpp.o
+[ 36%] Building CXX object _deps/behaviortree_cpp-build/CMakeFiles/behaviortree_cpp.dir/src/decorators/subtree_node.cpp.o
+[ 37%] Building CXX object _deps/behaviortree_cpp-build/CMakeFiles/behaviortree_cpp.dir/src/decorators/timeout_node.cpp.o
+[ 38%] Building CXX object _deps/behaviortree_cpp-build/CMakeFiles/behaviortree_cpp.dir/src/decorators/updated_decorator.cpp.o
+[ 39%] Building CXX object _deps/behaviortree_cpp-build/CMakeFiles/behaviortree_cpp.dir/src/controls/if_then_else_node.cpp.o
+[ 40%] Building CXX object _deps/behaviortree_cpp-build/CMakeFiles/behaviortree_cpp.dir/src/controls/fallback_node.cpp.o
+[ 41%] Building CXX object _deps/behaviortree_cpp-build/CMakeFiles/behaviortree_cpp.dir/src/controls/parallel_node.cpp.o
+[ 42%] Building CXX object _deps/behaviortree_cpp-build/CMakeFiles/behaviortree_cpp.dir/src/controls/parallel_all_node.cpp.o
+[ 43%] Building CXX object _deps/behaviortree_cpp-build/CMakeFiles/behaviortree_cpp.dir/src/controls/reactive_sequence.cpp.o
+[ 45%] Building CXX object _deps/behaviortree_cpp-build/CMakeFiles/behaviortree_cpp.dir/src/controls/reactive_fallback.cpp.o
+[ 46%] Building CXX object _deps/behaviortree_cpp-build/CMakeFiles/behaviortree_cpp.dir/src/controls/sequence_node.cpp.o
+[ 47%] Building CXX object _deps/behaviortree_cpp-build/CMakeFiles/behaviortree_cpp.dir/src/controls/sequence_with_memory_node.cpp.o
+[ 48%] Building CXX object _deps/behaviortree_cpp-build/CMakeFiles/behaviortree_cpp.dir/src/controls/switch_node.cpp.o
+[ 49%] Building CXX object _deps/behaviortree_cpp-build/CMakeFiles/behaviortree_cpp.dir/src/controls/while_do_else_node.cpp.o
+[ 50%] Building CXX object _deps/behaviortree_cpp-build/CMakeFiles/behaviortree_cpp.dir/src/loggers/bt_cout_logger.cpp.o
+[ 51%] Building CXX object _deps/behaviortree_cpp-build/CMakeFiles/behaviortree_cpp.dir/src/loggers/bt_file_logger_v2.cpp.o
+[ 52%] Building CXX object _deps/behaviortree_cpp-build/CMakeFiles/behaviortree_cpp.dir/src/loggers/bt_minitrace_logger.cpp.o
+[ 53%] Building CXX object _deps/behaviortree_cpp-build/CMakeFiles/behaviortree_cpp.dir/src/loggers/bt_observer.cpp.o
+[ 54%] Building CXX object _deps/behaviortree_cpp-build/CMakeFiles/behaviortree_cpp.dir/3rdparty/tinyxml2/tinyxml2.cpp.o
+[ 56%] Building CXX object _deps/behaviortree_cpp-build/CMakeFiles/behaviortree_cpp.dir/src/shared_library_UNIX.cpp.o
+[ 57%] Linking CXX shared library libbehaviortree_cpp.so
+[ 57%] Built target behaviortree_cpp
+[ 59%] Building CXX object CMakeFiles/sangwon_core.dir/src/trajectory.cpp.o
+[ 59%] Building CXX object CMakeFiles/sangwon_core.dir/src/mode_manager.cpp.o
+[ 60%] Building CXX object CMakeFiles/sangwon_core.dir/src/guard.cpp.o
+[ 61%] Building CXX object CMakeFiles/sangwon_core.dir/src/runtime.cpp.o
+[ 62%] Building CXX object CMakeFiles/sangwon_core.dir/src/scan.cpp.o
+[ 63%] Building CXX object CMakeFiles/sangwon_core.dir/src/geometry.cpp.o
+[ 64%] Building CXX object CMakeFiles/sangwon_core.dir/src/planner.cpp.o
+[ 65%] Linking CXX static library libsangwon_core.a
+[ 65%] Built target sangwon_core
+[ 68%] Building CXX object CMakeFiles/sangwon_core_tests.dir/tests/core_tests.cpp.o
+[ 68%] Building CXX object CMakeFiles/sangwon_replay.dir/src/replay.cpp.o
+[ 69%] Linking CXX executable sangwon_replay
+[ 69%] Built target sangwon_replay
+[ 70%] Building CXX object CMakeFiles/sangwon_mode_tests.dir/tests/mode_tests.cpp.o
+[ 71%] Linking CXX executable sangwon_core_tests
+[ 71%] Built target sangwon_core_tests
+[ 72%] Building CXX object CMakeFiles/sangwon_scan_tests.dir/tests/scan_tests.cpp.o
+[ 73%] Linking CXX executable sangwon_mode_tests
+[ 73%] Built target sangwon_mode_tests
+[ 74%] Building CXX object CMakeFiles/sangwon_geometry_tests.dir/tests/geometry_tests.cpp.o
+[ 75%] Linking CXX executable sangwon_scan_tests
+[ 75%] Built target sangwon_scan_tests
+[ 76%] Building CXX object CMakeFiles/sangwon_planner_tests.dir/tests/planner_tests.cpp.o
+[ 78%] Linking CXX executable sangwon_geometry_tests
+[ 78%] Built target sangwon_geometry_tests
+[ 79%] Building CXX object CMakeFiles/sangwon_guard_replay.dir/src/guard_replay.cpp.o
+[ 80%] Linking CXX executable sangwon_guard_replay
+[ 80%] Built target sangwon_guard_replay
+[ 81%] Building CXX object CMakeFiles/sangwon_native_plan.dir/src/native_plan.cpp.o
+[ 82%] Linking CXX executable sangwon_planner_tests
+[ 82%] Built target sangwon_planner_tests
+[ 83%] Building CXX object CMakeFiles/sangwon_px4_health.dir/src/px4_health.cpp.o
+[ 84%] Linking CXX executable sangwon_native_plan
+[ 84%] Built target sangwon_native_plan
+[ 85%] Building CXX object CMakeFiles/sangwon_native_hover.dir/src/native_hover_node.cpp.o
+[ 86%] Linking CXX static library libsangwon_px4_health.a
+[ 86%] Built target sangwon_px4_health
+[ 87%] Building CXX object CMakeFiles/sangwon_service.dir/src/service/ledger.cpp.o
+[ 89%] Building CXX object CMakeFiles/sangwon_service.dir/src/service/engine.cpp.o
+[ 90%] Building CXX object CMakeFiles/sangwon_service.dir/src/service/snapshot.cpp.o
+[ 91%] Building CXX object CMakeFiles/sangwon_service.dir/src/service/scan_ingress.cpp.o
+[ 92%] Linking CXX static library libsangwon_service.a
+[ 92%] Built target sangwon_service
+[ 93%] Building CXX object CMakeFiles/sangwon_px4_health_tests.dir/tests/px4_health_tests.cpp.o
+[ 94%] Linking CXX executable sangwon_px4_health_tests
+[ 94%] Built target sangwon_px4_health_tests
+[ 95%] Building CXX object CMakeFiles/sangwon_px4_observer.dir/src/px4_observer.cpp.o
+[ 96%] Linking CXX executable sangwon_native_hover
+[ 96%] Built target sangwon_native_hover
+[ 97%] Building CXX object CMakeFiles/sangwon_companiond.dir/src/service/daemon.cpp.o
+[ 98%] Linking CXX executable sangwon_companiond
+[ 98%] Built target sangwon_companiond
+[100%] Linking CXX executable sangwon_px4_observer
+[100%] Built target sangwon_px4_observer

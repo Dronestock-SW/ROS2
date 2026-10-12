@@ -11,6 +11,8 @@
 원격 11개와 로컬 보존 5개를 확인했다.
 원격 전체 heads를 fetch한 뒤 조상을 대조했다.
 기준 FINAL은 `767a35c`다.
+작업 중 올라온 `76d64b3`도 포함했다.
+B4 옵션·진단 도구·기록 수정을 보존했다.
 [브랜치 SHA·소스 차이](evidence/final_cleanup_20261012/branch_inventory.json)를 보존했다.
 
 | 원격 브랜치 | 검토 시 HEAD | 처리 |
@@ -63,7 +65,7 @@ ROS와 오프라인 시험이 같은 관측 경계를 사용한다.
 
 ## B4 높이 연구와 현장 경로
 
-미배포 연구 검사를 기본 실행에서 분리했다.
+기본 진단과 연구의 출력 거절 적용을 분리했다.
 임계값을 낮추거나 실패를 성공으로 바꾸지 않았다.
 
 FINAL의 B4 높이 검사는 기존에 기본 적용됐다.
@@ -74,6 +76,7 @@ Jetson 실제 B_TF 코드에도 이 검사가 없었다.
 
 `enforce_b4_height_integrity`는 명시적 bool이다.
 기본 false는 현장 배포 B_TF 경로를 유지한다.
+false에서도 검사값과 enforced=false를 기록한다.
 true는 기존 연구의 차단·복구 상태를 유지한다.
 연구 시험은 true를 명시한다.
 현장에 적용했다고 소급하지 않는다.
@@ -123,17 +126,40 @@ FINAL 시작 도구가 관측 송신기 하나를 관리한다.
 Jetson의 별도 소스 폴더에서 검증했다.
 운영 소스·서비스·FC 설정은 수정하지 않았다.
 Python ROS 시험은 domain 99를 사용한다.
-C++ ROS 시험은 합성 domain 181·182·183을 쓴다.
+C++ ROS 시험은 합성 domain 173·181·182·183을 쓴다.
 
 | 항목 | 결과 |
 |---|---|
 | 수정 전 Linux Python 전체 | 1,071 통과·4 실패 |
 | 기존 실패 2개 | 웹 ARM 추가 뒤 시험 어댑터 필드 누락 |
 | 기존 실패 2개 | bridge 0.35초·직접 UWB 0.25초 혼동 |
-| 수정 후 전체 Python | 최종 결과 기록 예정 |
-| ROS 패키지 빌드 | 최종 결과 기록 예정 |
-| C++ native AI 빌드·CTest | 최종 결과 기록 예정 |
+| 수정 후 전체 Python | 1,105 통과·0 실패·0 skip |
+| ROS 패키지 빌드 | drone_uwb·drone_demo·drone_mission·drone_platform_link 성공 |
+| C++ native AI 빌드 | 전체 빌드 성공 |
+| CTest 마지막 전체 묶음 | 31/32 통과. native_hover_ros 실패 |
+| 실패 항목 단독 재확인 | native_hover_ros 1/1 통과 |
+| CTest 개별 항목 통과 범위 | 전체 32개. 묶음 반복 안정성 미확인 |
 | 새 실제 비행·SITL | 미실시 |
+
+[검증 영수증·원본 시험 출력](evidence/final_cleanup_20261012/README.md)을 보존했다.
+Jetson에서 시험한 변경 소스 42개를 해시로 대조했다.
+Windows 개행은 Git의 LF 바이트로 정규화했다.
+승인된 합성 JSON의 원본 해시는 그대로다.
+
+CTest의 간헐 실패를 미해결로 남긴다.
+이전 묶음은 scan_sensor_transport·웹 IPC가 실패했다.
+마지막 묶음은 합성 입력 나이가 약 0.657초였다.
+native_hover_ros는 TELEMETRY_NOT_FRESH로 시작을 막았다.
+이때 명령 호출은 없었다. 한계값은 바꾸지 않았다.
+동일 설정의 단독 재실행은 통과했다.
+마지막 묶음의 합성 임시 파일은 /dev/shm에 뒀다.
+운영 파일 저장 위치는 변경하지 않았다.
+이 결과만으로 저장장치·스케줄링 원인을 확정하지 않는다.
+단독 통과를 전체 묶음 32/32 성공으로 합산하지 않는다.
+
+native_hover_ros는 기존 C++ 2초 호버 시험이다.
+FINAL LocalXY의 10초 호버는 Python 시험에 포함된다.
+두 경로의 실기 성공은 모두 미검증이다.
 
 UWB 0.25초·bridge 0.35초를 유지했다.
 두 검사의 독립성을 회귀 시험으로 확인한다.
@@ -143,6 +169,20 @@ Git symlink가 링크 문자열로 체크아웃됐다.
 ROS·fcntl·websockets도 없는 환경이었다.
 이를 센서나 비행 로직 실패로 집계하지 않았다.
 Linux의 정상 symlink·ROS 환경에서 전체를 검증한다.
+
+Windows의 archive 변환도 별도로 확인했다.
+Git 원본 LF가 CRLF로 바뀌면 쉘 실행이 실패했다.
+승인된 합성 JSON의 바이트 해시도 달라졌다.
+스크립트·해당 JSON에 LF 속성을 추가했다.
+기존 원본 기록의 -text 보호 규칙을 보존했다.
+합성 JSON 승인 해시 목록은 변경하지 않았다.
+새 회귀 시험은 실제 Git archive를 검사한다.
+원본 JSONL은 CRLF 그대로, 스크립트는 LF다.
+
+C++ 웹 시험의 자식 환경도 수정했다.
+시험 Rig가 PYTHONPATH를 덮어쓰던 문제다.
+상속한 별도 의존성 경로를 유지하도록 바꿨다.
+시스템 Python에 라이브러리가 없어도 검증할 수 있다.
 
 ## 유지한 목표와 남은 조사
 
