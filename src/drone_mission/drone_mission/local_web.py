@@ -57,17 +57,56 @@ class LocalPlatform:
                 and t.get('fc_connected') is True and t.get('fc_armed') is False
                 and t.get('fc_landed') == 1)
 
+    def start_state(self):
+        if self.settings.start_mode != 'takeoff_hold': return self.ground()
+        t = self.telemetry
+        return (self.telemetry_received_s is not None and 0 <= time.monotonic()-self.telemetry_received_s <= 1
+            and t.get('fc_connected') is True and t.get('fc_armed') is True and t.get('fc_landed') == 2
+            and t.get('fc_mode') == 'AUTO.LOITER' and t.get('flight_state') == 'HOLD_READY'
+            and t.get('native_takeoff',{}).get('can_start') is True)
+
+    def can_takeoff(self):
+        return (self.settings.start_mode == 'takeoff_hold' and not self.store.active() and self.ground()
+            and self.assignment.get('control_action') is None
+            and self.telemetry.get('native_takeoff',{}).get('can_takeoff') is True
+            and self.site['ceiling_height_m'] is not None
+            and self.site['ceiling_height_m'] >= self.settings.expected_mis_takeoff_alt_m+.25)
+
+    def takeoff(self, value):
+        with self.lock:
+            action = value['action']
+            key = value.get('client_request_id')
+            body = dict(action=action, operator_session_id=value.get('operator_session_id'))
+            previous = self.store.receipt(key, body)
+            if previous is not None: return previous
+            native = self.telemetry.get('native_takeoff',{})
+            allowed = self.can_takeoff() if action == 'takeoff' else (
+                self.settings.start_mode == 'takeoff_hold' and not self.store.active()
+                and self.telemetry_received_s is not None and 0 <= time.monotonic()-self.telemetry_received_s <= 1
+                and self.telemetry.get('fc_connected') is True and self.telemetry.get('fc_armed') is True
+                and native.get('can_land') is True)
+            if not allowed or not body['operator_session_id'] or body['operator_session_id'] != self.telemetry.get('operator_session_id'):
+                raise ValueError('이륙·착륙 요청 조건 또는 실행기 세션을 확인하세요.')
+            now = datetime.now(timezone.utc).isoformat()
+            assignment = dict(self.assignment, control_action=action, control_request_id=key,
+                control_requested_at=now, generated_at=now, ceiling_height_m=self.site['ceiling_height_m'],
+                operator_session_id=body['operator_session_id'])
+            self.store.operator_receipt(key, body, assignment)
+            self.assignment = assignment
+            return dict(assignment)
+
     def can_start(self):
-        return (self.assignment.get('control_action') != 'arm' and not self.store.active() and self.ground()
+        return (self.assignment.get('control_action') != 'arm' and not self.store.active() and self.start_state()
                 and (self.settings.mission_ai != 'cpp_bt' or (
                     self.telemetry.get('mission_ai', {}).get('backend') == 'sangwon_cpp_bt'
                     and self.telemetry.get('mission_ai', {}).get('connected') is True))
-                and self.telemetry.get('flight_state') == 'IDLE'
+                and self.telemetry.get('flight_state') == ('HOLD_READY' if self.settings.start_mode == 'takeoff_hold' else 'IDLE')
                 and (not self.settings.full_mission or (
                     self.site['ceiling_height_m'] is not None
                     and self.telemetry.get('preflight', {}).get('checked_inputs_passed') is True)))
 
     def can_arm(self):
+        if self.settings.start_mode == 'takeoff_hold': return False
         return (not self.store.active() and self.ground()
                 and (self.settings.mission_ai != 'cpp_bt' or (
                     self.telemetry.get('mission_ai', {}).get('backend') == 'sangwon_cpp_bt'
@@ -153,8 +192,8 @@ class LocalPlatform:
         if not self.settings.anchor_trial:
             required += ('alignment_confirmed',)
         if (self.telemetry_received_s is None or not 0 <= time.monotonic()-self.telemetry_received_s <= .5
-                or t.get('fc_armed') is not False or t.get('fc_landed') != 1
-                or t.get('flight_state') not in ('IDLE','READY')
+                or (not self.start_state() if self.settings.start_mode == 'takeoff_hold' else
+                    t.get('fc_armed') is not False or t.get('fc_landed') != 1 or t.get('flight_state') not in ('IDLE','READY'))
                 or not all(checks.get(k) is True for k in required)
                 or not isinstance(xy,(list,tuple)) or len(xy)!=2 or not finite(*xy)):
             raise ValueError('출발점 확인 대기: 최신 PX4 위치·지상 상태·좌표 변환 검증이 필요합니다.')
@@ -285,6 +324,7 @@ class LocalPlatform:
                             site=platform.site, site_editable=platform.site_editable(),
                             can_start=platform.can_start(), can_arm=platform.can_arm(), active_run_id=(platform.store.active() or {}).get('id'),
                             ceiling_required=platform.settings.full_mission,
+                            start_mode=platform.settings.start_mode, can_takeoff=platform.can_takeoff(),
                             expected_takeoff_height_m=platform.settings.expected_mis_takeoff_alt_m,
                             execution_profile=platform.settings.execution_profile,
                             command_frame=platform.settings.command_frame,
@@ -313,6 +353,8 @@ class LocalPlatform:
                         for key, expected in (('expected_drone_id',platform.drone_id), ('expected_layout_id',platform.settings.layout_id)):
                             if key in value and value[key] != expected:
                                 raise ValueError('요청의 기체·배치가 현재 페이지와 다릅니다. 새로 불러오세요.')
+                        if value.get('action') in ('takeoff','takeoff_land'):
+                            return self.send_json(platform.takeoff(value))
                         if value.get('action') == 'arm':
                             return self.send_json(platform.arm(value))
                         return self.send_json(platform.command(value.get('action'),value.get('route_tasks'),value.get('ceiling_height_m'),value.get('trial_case'),value.get('client_request_id'),value.get('draft_id'),value.get('revision')))

@@ -31,14 +31,15 @@ def test_new_final_alignment_template_records_removed_jump_quarantine():
 
 
 @pytest.mark.parametrize('sign', [-1, 1])
-def test_stationary_minus_y_alignment_roundtrips_both_warehouse_charts(sign):
+@pytest.mark.parametrize('heading, yaw', [('-Y', -90.), ('+Y', 90.)])
+def test_stationary_cardinal_alignment_roundtrips_both_warehouse_charts(sign, heading, yaw):
     mission, alignment = templates()
     original = deepcopy((mission, alignment))
     mission['map_y_axis_sign'] = alignment['settings']['map_y_axis_sign'] = sign
     out_mission, out_alignment = aligned_field_configuration(mission, alignment,
-        body_enu_yaw_deg=-16.309430414773477, host_boot_id=BOOT, fc_remote_ns=1)
+        body_enu_yaw_deg=-16.309430414773477, host_boot_id=BOOT, fc_remote_ns=1, operator_heading=heading)
     cfg, obs = validate_field_configuration(out_mission, out_alignment, host_boot_id=BOOT)
-    assert map_yaw_to_enu(-90., cfg) == pytest.approx(-16.309430414773477)
+    assert map_yaw_to_enu(yaw, cfg) == pytest.approx(-16.309430414773477)
     assert cfg.enu_yaw_deg == obs.enu_yaw_deg
     assert mission['enu_yaw_deg'] == original[0]['enu_yaw_deg']
     assert alignment['settings']['host_boot_id'] == original[1]['settings']['host_boot_id']

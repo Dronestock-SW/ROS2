@@ -6,10 +6,11 @@ The vertical reference is a fixed PX4-relative height goal, not a height control
 import math
 from .contracts import finite
 from .mission_chain import MissionChain
+from .native_takeoff import NativeTakeoff
 
 
-class LocalXYMission(MissionChain):
-    ACTIVE = {'PREPARING', 'ARMING', 'TAKING_OFF', 'MOVING', 'DWELL',
+class LocalXYMission(NativeTakeoff, MissionChain):
+    ACTIVE = {'PREPARING', 'ARMING', 'TAKING_OFF', 'HANDOFF', 'MOVING', 'DWELL',
               'RETURNING', 'RECOVERING', 'LANDING', 'GROUND_RECOVERY'}
     STREAMING = ACTIVE - {'LANDING', 'GROUND_RECOVERY'}
     AUTO_MODES = {'OFFBOARD', 'AUTO.LAND'}
@@ -29,8 +30,19 @@ class LocalXYMission(MissionChain):
         self.cpp_wait_since = None
         self.cpp_reply = None
         self.cpp_leg_sequence = 0
+        self.init_native()
 
     def submit(self, payload, now, wall_s):
+        if self.settings.start_mode == 'takeoff_hold':
+            if (self.native_request and payload.get('control_request_id') == self.native_request['request_id']
+                    and payload.get('control_action') in (None, 'takeoff')
+                    and str(payload.get('drone_id')) == self.settings.drone_id):
+                self.last_web_s = now
+                return True
+            if (payload.get('control_action') == 'start' and not self.assignment and not self.intent
+                    and self.phase != 'HOLD_READY'):
+                self.validation = dict(accepted=False, reason='separate_takeoff_hold_required')
+                return False
         accepted = super().submit(payload, now, wall_s)
         if accepted and self.intent and self.intent['action'] == 'start':
             self.cpp_ceiling = payload.get('ceiling_height_m')
@@ -66,6 +78,9 @@ class LocalXYMission(MissionChain):
     def abort(self, reason, s, now):
         self.failure = reason
         self.setpoint_xy = None
+        if self.settings.start_mode == 'takeoff_hold' and self.phase == 'PREPARING' and s.mode == 'AUTO.LOITER':
+            self.end('UNCONFIRMED' if self.pending else 'FAILED', reason, now)
+            return
         # A late ARM acknowledgement has an unknown effect: never resume it.
         if self.pending is not None:
             self.end('UNCONFIRMED', reason, now)
@@ -117,6 +132,8 @@ class LocalXYMission(MissionChain):
         self.choose_goal(self.return_path[0], now)
 
     def tick(self, s, now, wall_s, ros_ns):
+        if self.phase in self.NATIVE_PHASES:
+            return self.tick_native(s, now)
         self.actions, self.scan_requests = [], []
         dt = 0. if self.last_tick is None else now-self.last_tick
         self.last_tick = now
@@ -154,12 +171,15 @@ class LocalXYMission(MissionChain):
         if self.intent:
             r = self.intent
             if r['action'] == 'start' and self.phase == 'READY':
-                self.reason = self.ready(s, now, ground=True)
+                self.reason = self.ready(s, now, ground=self.settings.start_mode != 'takeoff_hold')
+                if self.settings.start_mode == 'takeoff_hold' and self.reason == 'ready':
+                    self.reason = self.hold_blocker(s, now) or 'ready'
                 if not 0 <= wall_s-r['requested_s'] <= self.settings.request_ttl_s:
                     self.end('FAILED', 'control_request_expired', now)
                 elif not self.settings.execute:
                     self.reason = 'execution_disabled'
-                elif self.reason == 'ready' and self.ground_since is not None and now-self.ground_since >= 3:
+                elif self.reason == 'ready' and (self.settings.start_mode == 'takeoff_hold'
+                        or self.ground_since is not None and now-self.ground_since >= 3):
                     points = [s.xy]+[p['xy'] for p in r['waypoints']]
                     if any(math.dist(a,b)>self.settings.max_leg_m for a,b in zip(points,points[1:])):
                         self.end('FAILED', 'route_leg_exceeds_trial_limit', now)
@@ -184,6 +204,8 @@ class LocalXYMission(MissionChain):
                     self.held_yaw = s.yaw_deg
                     self.started_s, self.started_ns = now, ros_ns
                     self.rc_switch_reference = {ch:s.rc_channels[ch-1] for ch in s.rc_switch_channels}
+                    self.accepted_command = False
+                    self.command_confirmed_s = None
                     self.enter('PREPARING', 'local_setpoint_warmup', now)
                     self.cpp_wait_since = now
                 return []
@@ -260,17 +282,25 @@ class LocalXYMission(MissionChain):
             self.abort('mission_time_or_battery_limit', s, now)
             return self.actions
         if self.phase == 'PREPARING':
+            if self.settings.start_mode == 'takeoff_hold' and (not s.armed or s.landed != 2
+                    or math.dist(s.xy,self.home) > .15 or abs(s.altitude_enu_m-self.height_target) > .15):
+                self.abort('hold_handoff_pose_changed', s, now)
+                return self.actions
             if self.pending is None and not self.accepted_command and now-self.entered_s >= 1.2:
                 self.issue('offboard_mode', now)
             elif self.pending is None and self.accepted_command and s.mode == 'OFFBOARD':
                 # PX4 only publishes controller position targets after spool-up.
                 # OFFBOARD confirmation proves the warmup stream was accepted.
-                self.enter('ARMING', 'local_mode_confirmed', now)
-                self.issue('arm', now)
+                if self.settings.start_mode == 'takeoff_hold':
+                    self.enter('HANDOFF', 'px4_hold_to_offboard_confirmed', now)
+                    self.feedback_ns = None
+                else:
+                    self.enter('ARMING', 'local_mode_confirmed', now)
+                    self.issue('arm', now)
             elif now-self.entered_s > 6:
                 self.abort('local_mode_or_target_not_confirmed', s, now)
             return self.actions
-        if self.phase not in ('ARMING','TAKING_OFF') and not feedback_fresh:
+        if self.phase not in ('ARMING','TAKING_OFF','HANDOFF') and not feedback_fresh:
             self.abort('local_target_feedback_lost', s, now)
             return self.actions
         if self.phase == 'ARMING':
@@ -281,7 +311,7 @@ class LocalXYMission(MissionChain):
             elif now-self.entered_s > self.settings.command_timeout_s:
                 self.abort('arm_state_not_confirmed', s, now)
             return self.actions
-        if self.phase == 'TAKING_OFF':
+        if self.phase in ('TAKING_OFF','HANDOFF'):
             if self.mission_ai is not None:
                 try:
                     if self.cpp_reply['phase'] == 'MOVING': self.apply_cpp_navigation(now)
@@ -392,6 +422,10 @@ class LocalXYMission(MissionChain):
 
     def status(self):
         out = super().status()
+        out['native_takeoff'] = dict(enabled=self.settings.start_mode == 'takeoff_hold',
+            hold_ready=self.native_ready, phase=self.phase,
+            flight_commands_enabled=self.phase in self.NATIVE_PHASES)
+        out['flight_control_enabled'] = out['flight_control_enabled'] or self.phase in self.NATIVE_PHASES
         if self.mission_ai is not None:
             out['mission_ai'] = self.mission_ai.status(self.last_tick)
             if self.cpp_reply:

@@ -194,7 +194,7 @@ class MissionAI {
   void advance() {
     const auto executor = input_.at("executor_phase").get<std::string>();
     const auto& s = input_.at("state");
-    if(phase_ == "WAIT_TAKEOFF" && executor != "TAKING_OFF") return;
+    if(phase_ == "WAIT_TAKEOFF" && executor != "TAKING_OFF" && executor != "HANDOFF") return;
     const Vec3 current = point(s.at("xy")), measured = point(s.at("uwb_xy"));
     const double velocity = xy(point(s.at("velocity_xy")));
     const double vertical = std::abs(number(s.at("vertical_speed_m_s"), -20, 20));

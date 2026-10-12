@@ -86,9 +86,11 @@ def test_cpp_field_web_requires_live_backend_for_START_and_ARM(tmp_path,status,a
     finally:p.store.close()
 
 
-@pytest.mark.parametrize('scenario',['complete','cpp_loss','rc_takeover','lidar_gap','lidar_loss','lidar_sdk_gap'])
+@pytest.mark.parametrize('scenario',['complete','native_takeoff','cpp_loss','rc_takeover','lidar_gap','lidar_loss','lidar_sdk_gap'])
 def test_http_hover_uses_cpp_bt_from_start_through_confirmed_END(tmp_path,scenario):
     cfg=replace(config(command_frame='local_xy', mission_ai='cpp_bt'),expected_mis_takeoff_alt_m=1.7)
+    native=scenario=='native_takeoff'
+    if native:cfg=replace(cfg,start_mode='takeoff_hold')
     use_lidar=scenario.startswith('lidar_')
     if use_lidar:
         sys.path.insert(0,str(Path(__file__).resolve().parents[2]/'sangwon_AI/tests'))
@@ -102,9 +104,28 @@ def test_http_hover_uses_cpp_bt_from_start_through_confirmed_END(tmp_path,scenar
     now=time.monotonic()
     for t in (now-3.1,now-2.,now-.1):
         mission.tick(sample(t,takeoff_alt_m=1.7),t,time.time(),time.time_ns())
+    if native:
+        now=time.monotonic()
+        mission.begin_native(dict(action='takeoff',request_id='synthetic-native',requested_at='synthetic'),sample(now,takeoff_alt_m=1.7),now)
+        mode='POSCTL';armed=False;landed=1;alt=.1;native_commands=[]
+        deadline=now+8
+        while time.monotonic()<deadline:
+            now=time.monotonic();mission.last_web_s=now
+            actions=mission.tick(sample(now,takeoff_alt_m=1.7,mode=mode,armed=armed,landed=landed,altitude_enu_m=alt),now,time.time(),time.time_ns())
+            assert mission.local_setpoint() is None
+            for a in actions:
+                native_commands.append(a['kind']);mission.command_result(a['token'],True,now)
+                if a['kind']=='takeoff_mode':mode='AUTO.TAKEOFF'
+                elif a['kind']=='arm':armed=True
+            if mission.phase=='NATIVE_CLIMB':mode='AUTO.LOITER';landed=2;alt=1.8
+            if mission.phase=='HOLD_READY':break
+            time.sleep(.05)
+        assert mission.phase=='HOLD_READY' and native_commands==['takeoff_mode','arm']
+        assert mission.assignment is None and ai.plan_ref is None
     checks=dict(checked_inputs_passed=True,checks=[dict(code=k,passed=True) for k in ('layout_confirmed','transform','pose','estimator')])
     p.telemetry=dict(fc_connected=True,fc_armed=False,fc_landed=1,flight_state='IDLE',
         px4_map_xy_m=[2.,2.],preflight=checks,mission_ai=ai.status())
+    if native:p.telemetry.update(fc_armed=True,fc_landed=2,fc_mode='AUTO.LOITER',flight_state='HOLD_READY',native_takeoff=dict(can_start=True))
     p.telemetry_received_s=time.monotonic();p.site['ceiling_height_m']=3.
     server=ThreadingHTTPServer(('127.0.0.1',0),p.http_handler())
     web=threading.Thread(target=server.serve_forever,daemon=True);web.start()
@@ -116,7 +137,7 @@ def test_http_hover_uses_cpp_bt_from_start_through_confirmed_END(tmp_path,scenar
         with urlopen(request,timeout=2) as response:assignment=json.load(response)
         with urlopen(request,timeout=2) as response:assert json.load(response)==assignment
         assert mission.submit(assignment,time.monotonic(),time.time())
-        armed=False;mode='POSCTL';landed=1;alt=.1;xy=(2.,2.)
+        armed=native;mode='AUTO.LOITER' if native else 'POSCTL';landed=2 if native else 1;alt=1.8 if native else .1;xy=(2.,2.)
         commands=[];phases=[];trace=[];prior=time.monotonic();start=prior;injected=False
         last_uwb=prior;gap_start=None;gap_seen=False;uwb_history=[]
         peer=stack.enter_context(websocket_peer(p));sender=stack.enter_context(TelemetrySender(peer))
@@ -171,7 +192,7 @@ def test_http_hover_uses_cpp_bt_from_start_through_confirmed_END(tmp_path,scenar
             assert mission.phase=='FAILED' and commands==['offboard_mode','arm','land'],(mission.phase,mission.reason)
             assert not mission.status()['mission_complete'] and not gap_seen
             return
-        if scenario not in ('complete','lidar_gap','lidar_sdk_gap'):
+        if scenario not in ('complete','native_takeoff','lidar_gap','lidar_sdk_gap'):
             assert mission.phase==('UNCONFIRMED' if scenario=='cpp_loss' else 'PILOT_OVERRIDE'),(mission.phase,mission.reason)
             assert commands==(['offboard_mode','arm','land'] if scenario=='cpp_loss' else ['offboard_mode','arm'])
             assert mission.local_setpoint() is None and not mission.status()['mission_complete']
@@ -179,11 +200,12 @@ def test_http_hover_uses_cpp_bt_from_start_through_confirmed_END(tmp_path,scenar
             return
         assert mission.phase=='END',(mission.reason,ai.status(),phases)
         if use_lidar:assert gap_seen,'a fresh independent LiDAR must support the injected 0.6s gap'
-        assert commands==['offboard_mode','arm','land']
+        assert commands==(['offboard_mode','land'] if native else ['offboard_mode','arm','land'])
+        if native:assert all(row['height_m']<=1.800001 for row in trace)
         assert mission.completed_waypoints==1 and mission.home==(2.,2.)
         assert mission.home_verified and mission.landing_verified and mission.status()['mission_complete']
         assert ai.status()['phase']=='END' and ai.status()['plan_ref'].startswith('cpp-bt-local-xy:')
-        assert set(phases)>={'PREPARING','ARMING','TAKING_OFF','MOVING','DWELL','RETURNING','LANDING','END'}
+        assert set(phases)>=({'PREPARING','HANDOFF','MOVING','DWELL','RETURNING','LANDING','END'} if native else {'PREPARING','ARMING','TAKING_OFF','MOVING','DWELL','RETURNING','LANDING','END'})
         assert all(math.dist(row['xy'],(2.,2.))==0 for row in trace)
         end=time.monotonic()+2
         while True:

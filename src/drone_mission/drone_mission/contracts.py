@@ -17,6 +17,7 @@ def finite(*values):
 class Settings:
     lidar_gap: dict = field(default_factory=dict)
     mission_ai: str = 'python_test'
+    start_mode: str = 'ground_takeoff'
     command_frame: str = 'global'
     execution_profile: str = 'surveyed_mission'
     bridge_topic: str = '/uwb/bridge_status'
@@ -60,6 +61,10 @@ class Settings:
     layout_id: str = LAYOUT
 
     def __post_init__(self):
+        if self.start_mode not in ('ground_takeoff', 'takeoff_hold'):
+            raise ValueError('unsupported_start_mode')
+        if self.start_mode == 'takeoff_hold' and not self.local_xy:
+            raise ValueError('takeoff_hold_requires_local_xy')
         if not isinstance(self.lidar_gap, dict):
             raise ValueError('lidar_gap_must_be_object')
         if self.lidar_gap.get('enabled') is True and (self.mission_ai != 'cpp_bt' or not self.local_xy):

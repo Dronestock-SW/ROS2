@@ -153,7 +153,7 @@ class CppMissionAI:
                 self.prepare_ground_height = s.altitude_enu_m
                 config = asdict(settings)
                 self.pending = ('prepare', dict(execution_id=self.execution_id, settings=config,
-                    home_xy=self.prepare_home, height_reference_m=s.altitude_enu_m+settings.expected_mis_takeoff_alt_m,
+                    home_xy=self.prepare_home, height_reference_m=s.altitude_enu_m+(0. if settings.start_mode == 'takeoff_hold' else settings.expected_mis_takeoff_alt_m),
                     waypoints=request['waypoints'], ceiling_height_m=ceiling))
                 self.preparing = True
                 self.condition.notify()

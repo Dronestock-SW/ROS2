@@ -54,9 +54,11 @@ def stationary_yaw_mean(samples):
 
 
 def aligned_field_configuration(mission, alignment, *, body_enu_yaw_deg,
-                                host_boot_id, fc_remote_ns):
+                                host_boot_id, fc_remote_ns, operator_heading="-Y"):
     mission, alignment = deepcopy(mission), deepcopy(alignment)
-    angle = alignment_yaw_deg(body_enu_yaw_deg, -90., alignment['settings']['map_y_axis_sign'])
+    if operator_heading not in ('-Y', '+Y'):
+        raise ValueError('operator_heading_must_be_plus_or_minus_y')
+    angle = alignment_yaw_deg(body_enu_yaw_deg, 90. if operator_heading == '+Y' else -90., alignment['settings']['map_y_axis_sign'])
     alignment['settings'].update(host_boot_id=host_boot_id,
         fc_remote_ns_at_alignment=fc_remote_ns, enu_yaw_deg=angle)
     mission.update(bridge_host_boot_id=host_boot_id, enu_yaw_deg=angle)

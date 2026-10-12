@@ -28,9 +28,9 @@ def arm_blocker(settings, sample, *, idle, recording_ok):
     return ''
 
 
-def arm_request(payload, settings, session_id, wall_s):
+def arm_request(payload, settings, session_id, wall_s, *, action='arm'):
     if (payload.get('ok') is not True or payload.get('contract_version') != '1.0'
-            or payload.get('control_action') != 'arm'
+            or payload.get('control_action') != action
             or str(payload.get('drone_id')) != settings.drone_id
             or payload.get('anchor_layout_id') != settings.layout_id
             or payload.get('operator_session_id') != session_id):

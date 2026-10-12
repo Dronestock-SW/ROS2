@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Record a new stationary -Y heading alignment; no FC commands or parameters.
+"""Record a new stationary cardinal heading alignment; no FC commands or parameters.
 
-Operator must physically confirm the nose is pointing along anchor -Y.
+Operator must physically confirm the nose is pointing along the confirmed anchor direction.
 Writes new private files only; never overwrites existing evidence.
 """
 import argparse
@@ -13,7 +13,9 @@ import time
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument('--confirm-nose-minus-y', action='store_true', required=True)
+    heading = p.add_mutually_exclusive_group(required=True)
+    heading.add_argument('--confirm-nose-minus-y', action='store_true')
+    heading.add_argument('--confirm-nose-plus-y', action='store_true')
     for key in ('alignment-template', 'mission-template', 'output-dir'):
         p.add_argument('--' + key, type=Path, required=True)
     a = p.parse_args()
@@ -66,8 +68,9 @@ def main():
         alignment = json.loads(a.alignment_template.read_text(encoding='utf-8'))
         mission = json.loads(a.mission_template.read_text(encoding='utf-8'))
         mission, alignment = aligned_field_configuration(mission, alignment,
-            body_enu_yaw_deg=yaw, host_boot_id=boot, fc_remote_ns=values['remote'])
-        alignment.update(operator_heading='-Y', yaw_samples=len(yaws), yaw_span_deg=span,
+            body_enu_yaw_deg=yaw, host_boot_id=boot, fc_remote_ns=values['remote'],
+            operator_heading='+Y' if a.confirm_nose_plus_y else '-Y')
+        alignment.update(operator_heading='+Y' if a.confirm_nose_plus_y else '-Y', yaw_samples=len(yaws), yaw_span_deg=span,
                          body_enu_yaw_deg=yaw,
                          flight_commands=False, flight_verified=False)
         a.output_dir.mkdir(parents=True)

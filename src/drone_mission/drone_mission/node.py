@@ -279,6 +279,9 @@ class FlightNode(Node):
             if len(msg.data) > 65536:
                 raise ValueError('assignment_too_large')
             payload = json.loads(msg.data)
+            if payload.get('control_action') in ('takeoff', 'takeoff_land'):
+                self.operator_takeoff(payload)
+                return
             if payload.get('control_action') == 'arm':
                 self.operator_arm(payload)
                 return
@@ -287,7 +290,8 @@ class FlightNode(Node):
                     if (not self.session.assignment and not self.session.intent
                             and payload.get('control_action') == 'start'):
                         sample = self.snapshot()
-                        if (sample.armed or sample.landed != 1
+                        if ((self.settings.start_mode == 'takeoff_hold' and self.session.hold_blocker(sample, time.monotonic()))
+                                or (self.settings.start_mode != 'takeoff_hold' and (sample.armed or sample.landed != 1))
                                 or not 0 <= sample.state_age_s <= self.settings.state_timeout_s
                                 or not 0 <= sample.landed_age_s <= self.settings.state_timeout_s
                                 or not 0 <= sample.pose_age_s <= self.settings.pose_timeout_s):
@@ -604,7 +608,39 @@ class FlightNode(Node):
 
         future.add_done_callback(completed)
 
+    def operator_takeoff(self, payload):
+        action = payload['control_action']
+        if self.settings.start_mode != 'takeoff_hold': raise ValueError('separate_takeoff_disabled')
+        if (self.session.native_request and payload.get('control_request_id') == self.session.native_request['request_id']):
+            self.session.submit(payload, time.monotonic(), time.time())
+            return
+        key = arm_request(payload, self.settings, self.operator_session_id, time.time(), action=action)
+        if key in self.session.consumed: return
+        s, now = self.snapshot(), time.monotonic()
+        request = dict(action=action, request_id=key, requested_at=payload['control_requested_at'])
+        if self.log is None or self.record_fault: raise ValueError('command_recording_unavailable')
+        if action == 'takeoff':
+            report = field_preflight(self.settings, s, map_loaded=False, recording_ok=True,
+                cpp_ai_ready=self.session.mission_ai is not None and self.session.mission_ai.status()['connected'])
+            if not report['checked_inputs_passed']: raise ValueError('takeoff_preflight_failed')
+            ceiling = payload.get('ceiling_height_m')
+            if type(ceiling) not in (float,int) or not math.isfinite(ceiling) or ceiling < self.settings.expected_mis_takeoff_alt_m+.25:
+                raise ValueError('takeoff_ceiling_clearance_required')
+            self.session.begin_native(request, s, now)
+        else:
+            if self.session.phase not in self.session.NATIVE_PHASES or self.session.pending:
+                raise ValueError('native_land_unavailable')
+            self.session.consume(request)
+            self.session.actions = []
+            self.session.native_land('operator_land_before_mission', s, now)
+            for command in self.session.actions: self.dispatch(command)
+            self.session.actions = []
+        self.session.last_web_s = now
+        self.record(dict(type='operator_takeoff_request', **request))
+
     def operator_arm_gate(self, sample):
+        if self.settings.start_mode == 'takeoff_hold':
+            return 'use_separate_web_takeoff'
         if self.settings.mission_ai == 'cpp_bt':
             ai = getattr(self.session, 'mission_ai', None)
             if ai is None or not ai.status()['connected']:
@@ -722,6 +758,27 @@ class FlightNode(Node):
                 battery=s.battery, rc_required=s.rc_required, rc_valid=s.rc_valid,
                 rc_age_s=s.rc_age_s if math.isfinite(s.rc_age_s) else None, rc_override=s.rc_override, rc_mode=s.rc_mode,
                 rc_mapping_valid=s.rc_mapping_valid, rc_switch_channels=s.rc_switch_channels)
+        if self.settings.start_mode == 'takeoff_hold':
+            takeoff_ok = (not self.session.takeoff_blocker(s, time.monotonic())
+                and status['preflight']['checked_inputs_passed'])
+            hold_ok = (self.session.phase == 'HOLD_READY' and not self.session.hold_blocker(s, time.monotonic()))
+            if self.session.phase == 'HOLD_READY':
+                for check in status['preflight']['checks']:
+                    if check['code'] == 'ground':
+                        check.update(title='PX4 HOLD · 이륙 완료·위치 안정', passed=hold_ok)
+                report = status['preflight']
+                report['blockers'] = [c['code'] for c in report['checks'] if c['required'] and not c['passed']]
+                report['checked_inputs_passed'] = not report['blockers']
+            status['native_takeoff'].update(can_takeoff=takeoff_ok, can_start=hold_ok,
+                can_land=self.session.phase in self.session.NATIVE_PHASES and self.session.pending is None
+                    and s.connected and s.armed and s.state_age_s <= 1)
+        if (s.armed or self.session.phase in self.session.ACTIVE) and time.monotonic()-getattr(self,'last_flight_sample_s',0) >= .2:
+            self.last_flight_sample_s = time.monotonic()
+            self.record(dict(type='flight_sample', state=self.session.phase, mode=s.mode, armed=s.armed,
+                landed=s.landed, xy=s.xy, uwb_xy=s.uwb_xy, altitude_enu_m=s.altitude_enu_m,
+                velocity_xy=s.velocity_xy, vertical_speed_m_s=s.vertical_speed_m_s, yaw_deg=s.yaw_deg,
+                target=self.session.local_setpoint() if self.settings.local_xy else None, target_feedback=self.target_feedback,
+                uwb_age_s=s.uwb_age_s if math.isfinite(s.uwb_age_s) else None))
         changed = self.session.phase != self.previous_state
         if changed:
             self.record(dict(type='transition', **status))
