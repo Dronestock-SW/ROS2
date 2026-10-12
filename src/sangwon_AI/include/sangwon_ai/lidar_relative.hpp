@@ -27,6 +27,7 @@ class LidarGapSupport {
  private:
   bool enabled_{}, qualified_{}, anchored_{}, failed_{}, match_valid_{};
   std::string frame_{"laser_frame"}, mount_ref_, timing_ref_, scene_ref_, reason_{"MISSING"};
+  std::string input_source_{"sdk_pointcloud"};
   std::array<double,3> mount_{};
   int map_sign_{1};
   double mount_yaw_{}, last_scan_s_{}, last_scan_age_{}, anchor_s_{}, variance_{}, last_yaw_{}, last_roll_{}, last_pitch_{};

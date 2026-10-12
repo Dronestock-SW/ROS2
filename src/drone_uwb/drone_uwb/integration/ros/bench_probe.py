@@ -13,7 +13,7 @@ from rclpy.node import Node
 from rclpy.qos import qos_profile_sensor_data
 from rcl_interfaces.srv import GetParameters
 from rosidl_runtime_py.convert import message_to_ordereddict
-from sensor_msgs.msg import Imu, LaserScan, Range
+from sensor_msgs.msg import Imu, LaserScan, PointCloud, Range
 from mavros_msgs.msg import State, ExtendedState, TimesyncStatus, RCIn
 from nav_msgs.msg import Odometry
 from geometry_msgs.msg import PoseStamped, PoseWithCovarianceStamped
@@ -39,7 +39,8 @@ def main():
         value = message_to_ordereddict(msg)
         times.setdefault(name, []).append(now)
         last[name] = value
-        records.write(json.dumps({'topic': name, 'monotonic_ns': now, 'message': value},
+        records.write(json.dumps({'topic': name, 'monotonic_ns': now,
+                                 'received_ros_ns':node.get_clock().now().nanoseconds,'message': value},
                                  ensure_ascii=False) + '\n')
         if name == '/mavros/imu/data' and msg.orientation_covariance[0] >= 0:
             q = msg.orientation
@@ -52,7 +53,7 @@ def main():
         '/mavros/extended_state': ExtendedState, '/mavros/timesync_status': TimesyncStatus,
         '/mavros/rc/in': RCIn,
         '/mavros/downward_0': Range, '/mavros/downward_1': Range,
-        '/scan': LaserScan, '/uwb_pose': PoseWithCovarianceStamped,
+        '/scan': LaserScan, '/point_cloud':PointCloud, '/uwb_pose': PoseWithCovarianceStamped,
         '/uwb/btf_pose': PoseWithCovarianceStamped, '/uwb/btf_status': String,
         '/uwb/status': String, '/uwb/bridge_status': String,
         '/mavros/vision_pose/pose_cov': PoseWithCovarianceStamped,

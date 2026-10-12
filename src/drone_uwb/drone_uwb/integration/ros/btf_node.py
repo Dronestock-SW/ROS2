@@ -293,11 +293,11 @@ class BtfNode(Node):
 
 
 def main(args=None):
-    from .lifecycle import init_for_main
-    init_for_main(args)
+    from .lifecycle import init_for_main, spin_until_stopped
+    init_for_main(args, interrupt_spin=False)
     node = BtfNode()
     try:
-        rclpy.spin(node)
+        spin_until_stopped(node)
     except (KeyboardInterrupt, ExternalShutdownException):
         pass
     finally:

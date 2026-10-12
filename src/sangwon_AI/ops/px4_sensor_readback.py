@@ -42,6 +42,18 @@ MANUAL_FLIGHT_QUERIES = (
     'listener estimator_status_flags -n 1', 'listener vehicle_local_position -n 1',
 )
 
+OFFBOARD_QUERIES = (
+    'ver all', 'param show COM_SPOOLUP_TIME', 'param show MPC_TKO_RAMP_T',
+    'param show MPC_TILTMAX_LND', 'param show MPC_TILTMAX_AIR',
+    'param show MPC_THR_HOVER', 'param show MPC_Z_VEL_MAX_UP',
+    'param show MPC_XY_P', 'param show MPC_XY_VEL_P_ACC', 'param show MPC_XY_VEL_I_ACC',
+    'param show SENS_BOARD_ROT', 'param show SENS_BOARD_X_OFF', 'param show SENS_BOARD_Y_OFF',
+    'listener vehicle_control_mode -n 1', 'listener offboard_control_mode -n 1',
+    'listener takeoff_status -n 1', 'listener vehicle_attitude_setpoint -n 1',
+    'listener vehicle_local_position_setpoint -n 1', 'listener vehicle_rates_setpoint -n 1',
+    'listener estimator_selector_status -n 1',
+)
+
 
 def completed(text, query):
     terminal = re.sub(r'\x1b\[[0-?]*[ -/]*[@-~]', '', text)
@@ -51,11 +63,11 @@ def completed(text, query):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
-    parser.add_argument('--profile', choices=('sensors','manual-flight'), default='sensors')
+    parser.add_argument('--profile', choices=('sensors','manual-flight','offboard'), default='sensors')
     parser.add_argument('--ros-domain', type=int, choices=(1, 2, 99),
                         help='Use the existing /uas1 MAVROS router; never open the FC serial port.')
     args = parser.parse_args()
-    queries = MANUAL_FLIGHT_QUERIES if args.profile == 'manual-flight' else QUERIES
+    queries = {'sensors':QUERIES,'manual-flight':MANUAL_FLIGHT_QUERIES,'offboard':OFFBOARD_QUERIES}[args.profile]
     os.environ['MAVLINK20'] = '1'
     from pymavlink import mavutil
     if args.ros_domain is None:

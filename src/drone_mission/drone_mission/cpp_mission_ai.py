@@ -31,7 +31,7 @@ def state_input(s, feedback_age_s):
              'vertical_speed_m_s', 'altitude_enu_m', 'pose_age_s', 'uwb_age_s',
              'state_age_s', 'landed_age_s', 'estimator_age_s', 'estimator_valid',
              'vertical_estimator_valid', 'bridge_ready', 'alignment_matches',
-             'bridge_observation_age_s', 'battery', 'battery_age_s', 'uwb_stamp_ns', 'lidar_scan')
+             'bridge_observation_age_s', 'battery', 'battery_age_s', 'uwb_stamp_ns', 'lidar_scan', 'lidar_input_error')
     def clean(v):
         if isinstance(v, (list, tuple)): return [clean(x) for x in v]
         if isinstance(v, dict): return {k:clean(x) for k,x in v.items()}
@@ -54,6 +54,7 @@ class CppMissionAI:
         self.sequence = 0
         self.reply_received_s = None
         self.last_roundtrip_s = self.max_roundtrip_s = 0.
+        self.last_submit_s = self.max_submit_s = self.max_input_to_reply_s = 0.
         self.plan_ref = None
         self.prepare_home = self.prepare_ground_height = None
         self.stderr = tempfile.TemporaryFile()
@@ -73,12 +74,14 @@ class CppMissionAI:
         self.worker.start()
 
     def _exchange(self, method, payload, timeout=.1):
+        started=time.monotonic();end=started+timeout
         self.sequence += 1
         req = dict(schema=SCHEMA, session_id=self.session_id, sequence=self.sequence,
                    method=method, payload=payload)
         raw = json.dumps(req, allow_nan=False, separators=(',', ':')).encode('utf-8') + b'\n'
         if len(raw) > 262144: raise ValueError('cpp_ai_request_too_large')
-        started=time.monotonic();end=started+timeout;offset=0
+        if time.monotonic()>=end:raise ValueError('cpp_ai_request_encoding_timeout')
+        offset=0
         while offset<len(raw):
             remaining=end-time.monotonic()
             if remaining<=0 or not select.select([], [self.process.stdin], [], remaining)[1]:
@@ -130,6 +133,8 @@ class CppMissionAI:
                             raise ValueError('cpp_ai_decision_context_mismatch')
                         self.reply = result
                         self.reply_received_s = time.monotonic()
+                        self.max_input_to_reply_s=max(self.max_input_to_reply_s,
+                            self.reply_received_s-value['sample_time_s'])
             except Exception as exc:
                 with self.condition:
                     self.error = str(exc)
@@ -156,6 +161,7 @@ class CppMissionAI:
 
     def step(self, s, now, *, executor_phase, feedback_age_s, landing_confirmed=False,
              executor_failure='', command=''):
+        submitted_at=time.monotonic()
         with self.condition:
             if self.error: raise ValueError(self.error)
             if self.process.poll() is not None: raise ValueError('cpp_ai_process_exited')
@@ -164,6 +170,8 @@ class CppMissionAI:
                 sample_time_s=now, executor_phase=executor_phase, executor_failure=executor_failure,
                 command=command, landing_confirmed=landing_confirmed, state=state_input(s, feedback_age_s)))
             self.condition.notify()
+            self.last_submit_s=time.monotonic()-submitted_at
+            self.max_submit_s=max(self.max_submit_s,self.last_submit_s)
             reply = self.reply
             if reply and 0 <= now-reply['sample_time_s'] <= .15:
                 return dict(reply)
@@ -179,6 +187,8 @@ class CppMissionAI:
                 decision_sequence=self.reply.get('_sequence') if self.reply else None,
                 decision_age_s=max(0., now-self.reply['sample_time_s']) if self.reply else None,
                 last_roundtrip_s=self.last_roundtrip_s,max_roundtrip_s=self.max_roundtrip_s,
+                last_submit_s=self.last_submit_s,max_submit_s=self.max_submit_s,
+                max_input_to_reply_s=self.max_input_to_reply_s,
                 error=self.error, fc_transport=False)
 
     def release(self, outcome, reason):

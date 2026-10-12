@@ -44,6 +44,7 @@ REQUIRED = ['/uwb/received', '/uwb/btf_decision', '/mavros/state',
             '/uas1/mavlink_source']
 
 LIDAR_TOPICS = {'/scan': 'sensor_msgs/msg/LaserScan',
+                '/point_cloud':'sensor_msgs/msg/PointCloud',
                 '/tf': 'tf2_msgs/msg/TFMessage', '/tf_static': 'tf2_msgs/msg/TFMessage'}
 
 

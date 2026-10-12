@@ -40,6 +40,7 @@
   "execution_profile": "anchor_trial",
   "command_frame": "local_xy",
   "lidar_gap": {
+    "input_source": "sdk_pointcloud",
     "enabled": false,
     "frame_id": "laser_frame",
     "mount_confirmed": false,

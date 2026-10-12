@@ -26,6 +26,9 @@ FC IMU 아래 10cm로 해석하지 않는다.
 Z=+0.15m는 미확인 정보다. X·Y·yaw는 실측해야 한다.
 [상단 LiDAR 후속 구현](report/lidar_gap_support_20261012.md)을 따른다.
 [C++ LiDAR 준비](architecture/cpp_lidar_input.md)를 따른다.
+12일 설치 SDK는 1.2.20을 읽었다.
+/point_cloud의 SDK stamps를 후속 입력으로 쓴다.
+[정지 시각 확인](report/lidar_ground_audit_20261012.md)은 실측 yaw 검증이 아니다.
 
 ## 1호기 탑재 부품 (기체 1대 기준 소요량)
 

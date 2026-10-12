@@ -24,6 +24,7 @@ def native_estimator_valid(msg):
 @dataclass
 class Snapshot:
     lidar_scan: object = None
+    lidar_input_error: str = ''
     yaw_deg: object = None
     battery: object = None
     battery_age_s: float = math.inf

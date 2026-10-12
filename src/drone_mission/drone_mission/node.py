@@ -23,13 +23,13 @@ from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
 from rclpy.qos import DurabilityPolicy, QoSProfile, qos_profile_sensor_data
 from std_msgs.msg import String
-from sensor_msgs.msg import BatteryState, LaserScan
+from sensor_msgs.msg import BatteryState, PointCloud
 
 from drone_uwb.processing.gazebo_geometry import rotation_world_body
 from drone_uwb.integration.sitl.sitl_target_contract import PX4GlobalReference
 from drone_uwb.integration.planar import enu_xy_to_map, enu_vector_to_map, enu_yaw_to_map, map_xy_to_enu, map_yaw_to_enu
 from .contracts import Settings, finite
-from .lidar_input import beam_attitudes, nearest_uwb
+from .lidar_input import cloud_scan, nearest_uwb
 from .session import FlightSession, Snapshot, native_estimator_valid
 from .mission_chain import MissionChain
 from .local_xy import LocalXYMission
@@ -153,7 +153,7 @@ class FlightNode(Node):
             self.create_subscription(cls, topic, lambda msg, key=name: self.receive(key, msg),
                                      qos_profile_sensor_data)
         if self.settings.mission_ai == 'cpp_bt':
-            self.create_subscription(LaserScan, '/scan', lambda msg: self.receive('lidar', msg), qos_profile_sensor_data)
+            self.create_subscription(PointCloud, '/point_cloud', lambda msg: self.receive('lidar', msg), qos_profile_sensor_data)
         self.create_subscription(String, self.settings.bridge_topic, self.bridge, 10)
         self.create_subscription(GeoPointStamped, '/mavros/global_position/gp_origin', self.receive_origin,
             QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL))
@@ -235,7 +235,7 @@ class FlightNode(Node):
             stamp=stamp_ns(msg)
             if key=='pose' and msg.header.frame_id=='map':
                 q=msg.pose.pose.orientation;value=(q.w,q.x,q.y,q.z);history=self.attitude_history
-                if not finite(*value) or abs(sum(v*v for v in value)-1)>.02:return
+                if not finite(*value) or abs(sum(v*v for v in value)-1)>.002:return
             elif key=='uwb' and msg.header.frame_id=='uwb_map':
                 p=msg.pose.pose.position;value=(p.x,p.y);history=self.uwb_history
                 if not finite(*value):return
@@ -431,38 +431,26 @@ class FlightNode(Node):
             if msg.header.frame_id == 'uwb_map' and finite(p.x, p.y):
                 s.uwb_xy, s.uwb_stamp_ns = (p.x, p.y), stamp_ns(msg)
                 s.uwb_age_s = self.age('uwb')
+        if self.settings.mission_ai=='cpp_bt':s.lidar_input_error='point_cloud_or_pose_missing'
         if 'lidar' in self.samples and 'pose' in self.samples:
-            scan=None
+            s.lidar_scan=None
             for candidate,received in reversed(getattr(self,'lidar_history',[])):
                 try:
-                    reference,beams=beam_attitudes(getattr(self,'attitude_history',[]),stamp_ns(candidate),float(candidate.time_increment),len(candidate.ranges))
-                    end_stamp=stamp_ns(candidate)+round((len(candidate.ranges)-1)*candidate.time_increment*1e9)
-                    end_age=(self.get_clock().now().nanoseconds-end_stamp)/1e9
-                    if not 0<=end_age<=.15:continue
-                    scan=candidate;break
-                except ValueError:continue
-            try:
-                if scan is None:raise ValueError('lidar_measured_time_attitude_unavailable')
-                w,x,y,z=reference
-                roll=math.atan2(2*(w*x+y*z),1-2*(x*x+y*y))
-                pitch=math.asin(max(-1.,min(1.,2*(w*y-z*x))))
-                yaw_enu=math.degrees(math.atan2(2*(w*z+x*y),1-2*(y*y+z*z)))
-                s.lidar_scan=dict(stamp_ns=end_stamp,first_beam_stamp_ns=stamp_ns(scan),frame_id=scan.header.frame_id,
-                    age_s=max(end_age,time.monotonic()-received),first_beam_age_s=(self.get_clock().now().nanoseconds-stamp_ns(scan))/1e9,
-                    angle_min=float(scan.angle_min),
-                    angle_increment=float(scan.angle_increment),range_min=float(scan.range_min),range_max=float(scan.range_max),
-                    time_increment=float(scan.time_increment),scan_time=float(scan.scan_time),
-                    ranges=[float(v) if math.isfinite(v) else None for v in scan.ranges],
-                    roll_rad=roll,pitch_rad=pitch,map_yaw_rad=math.radians(enu_yaw_to_map(yaw_enu,self.settings)),
-                    reference_quaternion=reference,beam_quaternions=beams,
-                    attitude_age_s=end_age,attitude_time_error_s=0.)
+                    s.lidar_scan=cloud_scan(
+                        [dict(x=p.x,y=p.y,z=p.z) for p in candidate.points],
+                        [dict(name=c.name,values=c.values) for c in candidate.channels],
+                        getattr(self,'attitude_history',[]),stamp_ns(candidate),candidate.header.frame_id,
+                        self.get_clock().now().nanoseconds,time.monotonic()-received,
+                        lambda yaw:math.radians(enu_yaw_to_map(math.degrees(yaw),self.settings)))
+                except (ValueError,TypeError,KeyError) as error:
+                    s.lidar_input_error=str(error);continue
+                s.lidar_input_error=''
                 try:
-                    stamp,xy=nearest_uwb(getattr(self,'uwb_history',[]),end_stamp)
+                    stamp,xy=nearest_uwb(getattr(self,'uwb_history',[]),s.lidar_scan['stamp_ns'])
                     s.lidar_scan.update(anchor_uwb_stamp_ns=stamp,anchor_uwb_xy=xy,
                         anchor_uwb_age_s=(self.get_clock().now().nanoseconds-stamp)/1e9)
                 except ValueError:pass
-            except (ValueError,TypeError):
-                s.lidar_scan=None
+                break
         if 'height' in self.samples:
             msg = self.samples['height'][0]
             p = msg.pose.position

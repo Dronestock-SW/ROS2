@@ -15,6 +15,9 @@
 | 원본 해시 replay·격리 SIH·실제 EKF probe 재실행 | [검증 재실행 절차](runbooks/lidar_keyframe_validation_20261012.md) |
 | 수평 LiDAR 지상 1,781스캔·장착 10cm 추정·정합 한계 | [10월 12일 분석](report/lidar_ground_analysis_20261012.md) |
 | LiDAR 후속 작업 프롬프트·같은 PX4 커밋의 SITL 14개 시험 | [작업 인계 절차](runbooks/lidar_uwb_sitl_handoff_20261012.md) |
+| 상단 LiDAR의 SDK 점별 시각·정지 대조 | [12일 지상 확인](report/lidar_ground_audit_20261012.md) |
+| LiDAR X·Y·Z·yaw 실측과 활성화 조건 | [지상 대조 절차](runbooks/lidar_ground_qualification.md) |
+| 실행 8 OFFBOARD의 자세 요구·추종·추정 변화 | [12일 FC 자세 분석](report/run8_offboard_attitude_20261012.md) |
 | 테스트 웹의 실제 C++ 판단·단일 실행기 연결 | [12일 C++ 통합](report/cpp_field_mission_integration_20261012.md) |
 | 상단 LiDAR 상대 이동·제한된 UWB 공백 대응 | [12일 LiDAR 연결](report/lidar_gap_support_20261012.md) |
 | 모든 브랜치 대조·관측 계약·새 FINAL 검증 | [12일 FINAL 정리](report/final_cleanup_20261012.md) |

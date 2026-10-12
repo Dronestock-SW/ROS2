@@ -7,6 +7,9 @@
 12일 후속 작업은 `FINAL-TEST1-SANGWON`이다.
 [LiDAR 관측 보완](../report/lidar_gap_support_20261012.md)을 함께 읽는다.
 [C++ 미션 AI 통합](../report/cpp_field_mission_integration_20261012.md)을 필수로 읽는다.
+[LiDAR 지상 시각 확인](../report/lidar_ground_audit_20261012.md)도 읽는다.
+[실측·활성화 절차](lidar_ground_qualification.md)를 따른다.
+[OFFBOARD 자세 추종 분석](../report/run8_offboard_attitude_20261012.md)을 읽는다.
 12일 [UWB 공백·현재 관측](../report/uwb_gap_processing_20261012.md)도 읽는다.
 실기 원인 조사는 [실행 8 인계](../report/hover_research_handoff_20261011.md)를 따른다.
 저장 후 수정본으로 재비행했지만 이륙 밀림이 남았다.
@@ -70,6 +73,10 @@ ROS Humble·MAVROS·시스템 NumPy는 별도로 필요하다.
 상단 LiDAR의 lidar_gap.enabled 기본값은 false다.
 장착·시각·환경을 확인한 뒤에만 활성화한다.
 YDLIDAR와 MAVROS 관측은 같은 ROS domain이어야 한다.
+ROS_LOCALHOST_ONLY도 센서 서비스와 같아야 한다.
+현재 센서 서비스는 domain 2·localhost 1이다.
+상대 이동 입력은 /point_cloud의 SDK stamps다.
+/scan 배열 번호로 광선 시각을 만들지 않는다.
 의존 패키지 drone_demo도 같은 체크아웃에서 빌드한다.
 이유: 이전 install을 쓰면 새 체크아웃의 누락이 숨겨진다.
 MAVROS·B_TF 센서 서비스를 먼저 확인한다.

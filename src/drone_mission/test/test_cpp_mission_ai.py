@@ -86,14 +86,16 @@ def test_cpp_field_web_requires_live_backend_for_START_and_ARM(tmp_path,status,a
     finally:p.store.close()
 
 
-@pytest.mark.parametrize('scenario',['complete','cpp_loss','rc_takeover','lidar_gap','lidar_loss'])
+@pytest.mark.parametrize('scenario',['complete','cpp_loss','rc_takeover','lidar_gap','lidar_loss','lidar_sdk_gap'])
 def test_http_hover_uses_cpp_bt_from_start_through_confirmed_END(tmp_path,scenario):
     cfg=replace(config(command_frame='local_xy', mission_ai='cpp_bt'),expected_mis_takeoff_alt_m=1.7)
     use_lidar=scenario.startswith('lidar_')
     if use_lidar:
         sys.path.insert(0,str(Path(__file__).resolve().parents[2]/'sangwon_AI/tests'))
-        from lidar_relative_contracts import CONFIG,scan
-        cfg=replace(cfg,lidar_gap=CONFIG)
+        from lidar_relative_contracts import CONFIG,scan,sdk_state
+        lidar_config=dict(CONFIG)
+        if scenario=='lidar_sdk_gap':lidar_config['input_source']='sdk_pointcloud'
+        cfg=replace(cfg,lidar_gap=lidar_config)
     ai=CppMissionAI(binary())
     mission=LocalXYMission(cfg);mission.mission_ai=ai
     p=LocalPlatform(cfg.drone_id,cfg.layout_id,settings=cfg,mission_file=tmp_path/'missions.sqlite3')
@@ -116,7 +118,7 @@ def test_http_hover_uses_cpp_bt_from_start_through_confirmed_END(tmp_path,scenar
         assert mission.submit(assignment,time.monotonic(),time.time())
         armed=False;mode='POSCTL';landed=1;alt=.1;xy=(2.,2.)
         commands=[];phases=[];trace=[];prior=time.monotonic();start=prior;injected=False
-        last_uwb=prior;gap_start=None;gap_seen=False
+        last_uwb=prior;gap_start=None;gap_seen=False;uwb_history=[]
         peer=stack.enter_context(websocket_peer(p));sender=stack.enter_context(TelemetrySender(peer))
         while time.monotonic()-start<30:
             now=time.monotonic();dt=now-prior;prior=now;ns=time.time_ns();previous_alt=alt
@@ -133,9 +135,17 @@ def test_http_hover_uses_cpp_bt_from_start_through_confirmed_END(tmp_path,scenar
                 altitude_enu_m=alt,vertical_speed_m_s=(alt-previous_alt)/dt)
             if use_lidar:
                 stamp=math.floor(now*10)/10-.005
-                s.lidar_scan=scan(stamp);s.lidar_scan['age_s']=now-stamp
+                s.lidar_scan=(sdk_state(stamp-.0719)['lidar_scan'] if scenario=='lidar_sdk_gap' else scan(stamp))
+                s.lidar_scan['age_s']=now-stamp
+                s.lidar_scan['first_beam_age_s']=now-s.lidar_scan['first_beam_stamp_ns']/1e9
                 if gap_start is None or now-gap_start>.6:last_uwb=now
                 s.uwb_stamp_ns=round(last_uwb*1e9);s.uwb_age_s=s.bridge_observation_age_s=now-last_uwb
+                if last_uwb==now:uwb_history.append((s.uwb_stamp_ns,xy));uwb_history=uwb_history[-40:]
+                from drone_mission.lidar_input import nearest_uwb
+                try:
+                    anchor,anchor_xy=nearest_uwb(uwb_history,s.lidar_scan['stamp_ns'])
+                    s.lidar_scan.update(anchor_uwb_stamp_ns=anchor,anchor_uwb_xy=anchor_xy,anchor_uwb_age_s=now-anchor/1e9)
+                except ValueError:pass
                 if scenario=='lidar_loss' and gap_start is not None:s.lidar_scan['ranges']=[None]*720
             actions=mission.tick(s,now,time.time(),ns)
             mission.submit(assignment,now,time.time())
@@ -161,7 +171,7 @@ def test_http_hover_uses_cpp_bt_from_start_through_confirmed_END(tmp_path,scenar
             assert mission.phase=='FAILED' and commands==['offboard_mode','arm','land'],(mission.phase,mission.reason)
             assert not mission.status()['mission_complete'] and not gap_seen
             return
-        if scenario not in ('complete','lidar_gap'):
+        if scenario not in ('complete','lidar_gap','lidar_sdk_gap'):
             assert mission.phase==('UNCONFIRMED' if scenario=='cpp_loss' else 'PILOT_OVERRIDE'),(mission.phase,mission.reason)
             assert commands==(['offboard_mode','arm','land'] if scenario=='cpp_loss' else ['offboard_mode','arm'])
             assert mission.local_setpoint() is None and not mission.status()['mission_complete']
@@ -191,9 +201,13 @@ def test_http_hover_uses_cpp_bt_from_start_through_confirmed_END(tmp_path,scenar
     finally:
         output=os.environ.get('SANGWON_CPP_AI_EVIDENCE')
         if output and 'trace' in locals():
-            Path(output).with_name('executor-'+scenario+'.json').write_text(json.dumps(dict(
+            evidence=json.dumps(dict(
                 scope='SYNTHETIC_FC_HTTP_CPP_BT_EXECUTOR',scenario=scenario,physical_flight=False,
-                state=mission.phase,reason=mission.reason,commands=commands,trace=trace,ai=ai.status()),indent=2)+'\n',encoding='utf-8')
+                state=mission.phase,reason=mission.reason,commands=commands,trace=trace,ai=ai.status()),indent=2)+'\n'
+            archive=Path(output).parent/('execution-'+ai.session_id)
+            archive.mkdir(exist_ok=False)
+            (archive/('executor-'+scenario+'.json')).write_text(evidence,encoding='utf-8')
+            Path(output).with_name('executor-'+scenario+'.json').write_text(evidence,encoding='utf-8')
         stack.close()
         server.shutdown();server.server_close();web.join(2);ai.close();p.store.close()
 

@@ -7,6 +7,9 @@
 테스트 웹도 [C++ AI 통합 경로](docs/report/cpp_field_mission_integration_20261012.md)를 사용한다.
 후속 구현 브랜치는 `FINAL-TEST1-SANGWON`이다.
 [상단 LiDAR 연결과 활성화 조건](docs/report/lidar_gap_support_20261012.md)을 읽는다.
+[지상 시각 결함·수정](docs/report/lidar_ground_audit_20261012.md)을 읽는다.
+[실측과 활성화 절차](docs/runbooks/lidar_ground_qualification.md)를 따른다.
+[실행 8 자세 요구·추종](docs/report/run8_offboard_attitude_20261012.md)을 확인한다.
 실제 기체 밀림과 위치 추정 오류의 선후관계를 먼저 밝힌다.
 실행 8에서 이륙 중 밀림이 남았다.
 정리본의 현장 비행 검증은 아직 수행하지 않았다.

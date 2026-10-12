@@ -18,6 +18,9 @@
 12일 상대 관측과 제한된 미션 공백 대응을 추가했다.
 [후속 구현·검증](../report/lidar_gap_support_20261012.md)을 따른다.
 실기 기본값은 진단 모드다. PX4 aiding은 미구현이다.
+현재 상대 이동 입력은 /point_cloud의 SDK stamps다.
+/scan 각도 배열은 취득 시각 배열이 아니다.
+[지상 시각 확인](../report/lidar_ground_audit_20261012.md)을 따른다.
 아래는 11일까지의 수집 경계 기록이다.
 기존 `CaptureObservations`와 schema 1을 확장했다.
 별도 Python 임무 실행기나 companion EKF를 만들지 않았다.

@@ -8,7 +8,7 @@ import sys
 import unittest
 
 BINARY=sys.argv[1] if len(sys.argv)>1 else None
-CONFIG=dict(enabled=True,mount_confirmed=True,timing_confirmed=True,vertical_structure_confirmed=True,
+CONFIG=dict(input_source='uniform_laserscan',enabled=True,mount_confirmed=True,timing_confirmed=True,vertical_structure_confirmed=True,
     mount_ref='SYNTHETIC_ONLY',timing_ref='SYNTHETIC_ONLY',scene_ref='SYNTHETIC_ONLY',frame_id='laser_frame',
     sensor_to_body_flu_m=[0,0,.15],sensor_to_body_yaw_rad=0,scan_plane_parallel_to_body_xy=True)
 
@@ -24,7 +24,7 @@ def scan(t,xy=(2.,2.),yaw=0.,noisy=False,corridor=False):
         r=min(options) if options else 20.
         if noisy:r+=rng.gauss(0,.004)
         ranges.append(None if noisy and rng.random()<.025 else r)
-    return dict(stamp_ns=round(t*1e9)+719_000,first_beam_stamp_ns=round(t*1e9),first_beam_age_s=.005719,
+    return dict(input_source='uniform_laserscan',stamp_ns=round(t*1e9)+719_000,first_beam_stamp_ns=round(t*1e9),first_beam_age_s=.005719,
         frame_id='laser_frame',age_s=.005,angle_min=-math.pi,
         angle_increment=math.pi/360,range_min=.03,range_max=12.,time_increment=.000001,scan_time=.1,
         ranges=ranges,roll_rad=0.,pitch_rad=0.,map_yaw_rad=yaw,attitude_age_s=.005,attitude_time_error_s=0.,
@@ -34,6 +34,16 @@ def scan(t,xy=(2.,2.),yaw=0.,noisy=False,corridor=False):
 def state(t,xy=(2.,2.),uwb_age=0.,**kw):
     return dict(xy=list(xy),velocity_xy=[0.,0.],uwb_xy=list(xy),uwb_age_s=uwb_age,
         uwb_stamp_ns=round((t-uwb_age)*1e9),lidar_scan=scan(t,xy,**kw))
+
+def sdk_state(t,**kw):
+    s=state(t,**kw);sc=s['lidar_scan'];order=list(range(283,720))+list(range(283))
+    sc.update(input_source='sdk_pointcloud',point_times_s=[i*.0001 for i in range(720)],
+        point_angles_rad=[-math.pi+i*math.pi/360 for i in order],
+        ranges=[sc['ranges'][i] for i in order],
+        beam_quaternions=[sc['beam_quaternions'][i] for i in order],
+        stamp_ns=round(t*1e9)+71_900_000,first_beam_age_s=.0769)
+    s['uwb_stamp_ns']=sc['stamp_ns']-round(s['uwb_age_s']*1e9)
+    return s
 
 class Peer:
     def __init__(self,config=CONFIG):
@@ -118,6 +128,24 @@ class Contracts(unittest.TestCase):
                 ((4 if dy>0 else 0)-2)/dy if abs(dy)>1e-8 else 1e9])
         out=self.peer.step(10.6,s)
         self.assertTrue(out['approved'],out);self.assertLess(math.hypot(*out['delta_xy']),.003)
+    def test_sdk_acquisition_order_cloud_motion_and_timing_fault(self):
+        self.peer.close();self.peer=Peer(dict(CONFIG,input_source='sdk_pointcloud'))
+        for i in range(6):out=self.peer.step(10+i*.1,sdk_state(10+i*.1))
+        self.assertTrue(out['approved'],out)
+        out=self.peer.step(10.6,sdk_state(10.6,xy=(2.02,1.99),uwb_age=.3))
+        self.assertTrue(out['approved'],out)
+        self.assertAlmostEqual(out['delta_xy'][0],.02,delta=.003)
+        self.assertAlmostEqual(out['delta_xy'][1],-.01,delta=.003)
+        s=sdk_state(10.7,uwb_age=.4);s['lidar_scan']['point_times_s'][4]=0.
+        out=self.peer.step(10.7,s);self.assertFalse(out['approved'])
+        self.assertEqual(out['reason'],'LIDAR_BEAM_TIMING_INVALID')
+    def test_wrong_input_source_cannot_modify_qualified_baseline(self):
+        self.warm();out=self.peer.step(10.6,sdk_state(10.6))
+        self.assertFalse(out['approved']);self.assertEqual(out['reason'],'LIDAR_INPUT_SOURCE_MISMATCH')
+    def test_recent_but_unaligned_UWB_cannot_anchor(self):
+        for i in range(6):
+            s=state(10+i*.1);s['uwb_stamp_ns']-=100_000_000;out=self.peer.step(10+i*.1,s)
+        self.assertFalse(out['approved']);self.assertEqual(out['uwb_anchor_stamp_ns'],0)
 
 if __name__=='__main__':
     sys.argv=sys.argv[:1]
