@@ -195,7 +195,10 @@ class FlightNode(Node):
     def record(self, event):
         if self.log:
             try:
-                self.log.write(json.dumps(event, ensure_ascii=False, allow_nan=False)+'\n')
+                row = dict(event, logged_wall_ns=time.time_ns(),
+                    logged_monotonic_ns=time.monotonic_ns(),
+                    logged_ros_ns=self.get_clock().now().nanoseconds)
+                self.log.write(json.dumps(row, ensure_ascii=False, allow_nan=False)+'\n')
                 self.log.flush()
             except OSError:
                 self.record_fault = True

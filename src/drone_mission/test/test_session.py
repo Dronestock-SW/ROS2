@@ -6,6 +6,7 @@ import pytest
 
 from drone_mission.contracts import LAYOUT, Settings
 from drone_mission.session import FlightSession, Snapshot
+from drone_mission.bridge_status import BRIDGE_OBSERVATION_MAX_AGE_S
 from drone_uwb.integration.sitl.sitl_target_contract import PX4GlobalReference
 
 
@@ -105,7 +106,7 @@ def test_invalid_web_coordinates_never_arm(changes):
     ('command_services_ready',False), ('connected',False), ('state_age_s',3.),
     ('estimator_valid',False), ('pose_age_s',.5), ('uwb_age_s',.5),
     ('height_age_s',.5), ('bridge_ready',False), ('bridge_published',0),
-    ('bridge_observation_age_s',.3),
+    ('bridge_observation_age_s',BRIDGE_OBSERVATION_MAX_AGE_S+.001),
     ('alignment_matches',False), ('origin',None), ('takeoff_alt_m',2.5),
 ])
 def test_ground_readiness_blocks_start(field,value):
@@ -117,7 +118,8 @@ def test_ground_readiness_blocks_start(field,value):
 
 @pytest.mark.parametrize('changes', [
     {'uwb_age_s':.6}, {'pose_age_s':.6}, {'height_age_s':.6},
-    {'estimator_valid':False}, {'alignment_matches':False}, {'bridge_observation_age_s':.3},
+    {'estimator_valid':False}, {'alignment_matches':False},
+    {'bridge_observation_age_s':BRIDGE_OBSERVATION_MAX_AGE_S+.001},
     {'origin':PX4GlobalReference(48.,8.,2)},
 ])
 def test_inflight_input_loss_requests_land_once_and_never_auto_resumes(changes):
@@ -140,6 +142,14 @@ def test_manual_override_never_sends_land_or_restarts_on_late_reply():
     assert s.phase == 'PILOT_OVERRIDE'
     s.command_result(command['token'],True,10.3)
     assert tick(s,10.4,armed=True,landed=2,mode='AUTO.LOITER') == []
+
+
+def test_direct_uwb_freshness_is_independent_of_sender_status_report_margin():
+    s = FlightSession(settings())
+    assert s.submit(payload(), 10., WALL)
+    assert s.ready(snapshot(uwb_age_s=.25, bridge_observation_age_s=BRIDGE_OBSERVATION_MAX_AGE_S),10.) == 'ready'
+    assert s.ready(snapshot(uwb_age_s=.250001, bridge_observation_age_s=.3),10.) == 'uwb_unavailable'
+    assert s.ready(snapshot(uwb_age_s=0., bridge_observation_age_s=BRIDGE_OBSERVATION_MAX_AGE_S+.001),10.) == 'uwb_px4_bridge_unavailable'
 
 
 def test_manual_override_during_arming_prevents_takeoff():

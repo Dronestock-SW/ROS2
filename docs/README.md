@@ -10,6 +10,7 @@
 
 | 찾는 내용 | 위치 |
 |---|---|
+| 모든 브랜치 대조·관측 계약·새 FINAL 검증 | [12일 FINAL 정리](report/final_cleanup_20261012.md) |
 | FINAL 실행 8·추정 변화·관측 공백·영상·속도 검토 | [12일 로그·영상 분석](report/hover_run8_analysis_20261012.md) |
 | UWB 공백·계산 시간·이력 격리 비교·수집기 보완 | [12일 처리 경로 분석](report/uwb_gap_processing_20261012.md) |
 | 새 UWB 송신기·수동 ARM·START 연결 | [웹 명령 연결 기록](report/web_operator_commands_20261011.md) |

@@ -83,12 +83,24 @@ def parameter_gate(settings, params):
 
 
 def trial_start_allowed(*, connected, armed, landed_state, state_age_s, landed_age_s):
-    """Authorize a sender bypass once, on fresh connected DISARM ground evidence."""
+    """Authorize a sender start on fresh connected DISARM ground evidence."""
     return (connected is True and armed is False
         and type(landed_state) is int and landed_state == 1
         and all(type(v) in (int, float) and math.isfinite(v)
                 for v in (state_age_s, landed_age_s))
         and 0 <= state_age_s <= 2.5 and 0 <= landed_age_s <= .5)
+
+
+@dataclass
+class SenderStartGate:
+    authorized: bool = False
+
+    def check(self, **state):
+        # A new sender needs ground evidence even with jump protection on.
+        # After that start, fusion continues through ARM and RC takeover.
+        if not self.authorized:
+            self.authorized = trial_start_allowed(**state)
+        return self.authorized
 
 
 def horizontal_odometry(settings, *, frame, stamp_ns, now_ns, last_stamp_ns,
@@ -108,6 +120,14 @@ def horizontal_odometry(settings, *, frame, stamp_ns, now_ns, last_stamp_ns,
         rollspeed=math.nan, pitchspeed=math.nan, yawspeed=math.nan,
         pose_covariance=packed, velocity_covariance=[math.nan] + [0.] * 20,
         reset_counter=reset_counter, quality=0)
+
+
+def guarded_horizontal_odometry(settings, guard, *, motion_eligible=True, **observation):
+    """Use the same measured-field/guard boundary in ROS and offline tests."""
+    fields = horizontal_odometry(settings, **observation)
+    reason = guard.check((fields['x'], fields['y']), observation['stamp_ns'],
+        reject_jumps=settings.jump_guard_enabled, motion_eligible=motion_eligible)
+    return reason, fields
 
 
 def alignment_yaw_deg(body_enu_yaw_deg, body_map_yaw_deg, map_y_axis_sign):

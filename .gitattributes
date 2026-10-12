@@ -1,8 +1,6 @@
-# Preserve recorded bytes and archived evidence, including original line endings.
-data/** -text -whitespace
-perfect_holdv2.params -text -whitespace
-docs/report/evidence/position_hold_20260927/samples.csv -text -whitespace
-docs/report/evidence/multitag_web_20261007/** -text -whitespace
-docs/report/evidence/multitag_patch_20261007/** -text -whitespace
-# Unified diff context preserves PX4 tabs and blank lines.
-src/drone_mission/test/px4_sih_sensor_noise.patch -whitespace
+# Linux runtime scripts must also stay executable in Windows-made archives.
+src/sangwon_AI/**/*.sh text eol=lf
+src/drone_uwb/deployment/*.sh text eol=lf
+# The C++ REPLAY approval is a hash of these exact bytes.
+src/sangwon_AI/contracts/runtime_replay/waypoint_snapshot.json text eol=lf
+.gitattributes text eol=lf

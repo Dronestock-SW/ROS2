@@ -24,17 +24,17 @@ def main():
         if not path.is_file():
             p.error('Required private file missing: ' + str(path))
     cfg = json.loads(a.config.read_text(encoding='utf-8'))
-    alignment = json.loads(a.alignment.read_text(encoding='utf-8'))['settings']
+    alignment = json.loads(a.alignment.read_text(encoding='utf-8'))
     boot = Path('/proc/sys/kernel/random/boot_id').read_text().strip()
-    if alignment['host_boot_id'] != boot or cfg['bridge_host_boot_id'] != boot:
-        p.error('New boot: stationary heading/alignment review is required')
-    for key in ('enu_yaw_deg', 'map_y_axis_sign', 'enu_offset_x_m', 'enu_offset_y_m'):
-        if cfg[key] != alignment[key]:
-            p.error('Observation/mission transform mismatch: ' + key)
-    if cfg.get('command_frame') != 'local_xy' or cfg.get('execution_profile') != 'anchor_trial':
-        p.error('Expected explicit local_xy anchor_trial configuration')
     if not os.environ.get('AMENT_PREFIX_PATH'):
         p.error('Source ROS and the workspace install/setup.bash first')
+    from drone_mission.final_stack import validate_field_configuration, require_field_dependencies
+    try:
+        mission_settings, observation_settings = validate_field_configuration(
+            cfg, alignment, host_boot_id=boot)
+        require_field_dependencies()
+    except (ValueError, RuntimeError) as exc:
+        p.error(str(exc))
     manifest = a.state_dir / 'processes.json'
     if manifest.exists():
         for row in json.loads(manifest.read_text()):
@@ -51,10 +51,10 @@ def main():
         return
     root = Path(__file__).resolve().parents[3]
     env = dict(os.environ)
-    env.update(ROS_DOMAIN_ID='2', ROS_LOCALHOST_ONLY='1', MAVLINK20='1',
+    env.update(ROS_DOMAIN_ID=str(observation_settings.ros_domain_id), ROS_LOCALHOST_ONLY='1', MAVLINK20='1',
                DRONESTOCK_SERVER_URL='http://127.0.0.1:8001',
-               DRONESTOCK_WS_URL='ws://127.0.0.1:8002/ws/drones/6/',
-               DRONESTOCK_DRONE_ID='6', DRONESTOCK_MISSION_FORWARDING='true',
+               DRONESTOCK_WS_URL='ws://127.0.0.1:8002/ws/drones/' + mission_settings.drone_id + '/',
+               DRONESTOCK_DRONE_ID=mission_settings.drone_id, DRONESTOCK_MISSION_FORWARDING='true',
                DRONESTOCK_STATE_DIR=str(a.state_dir / 'telemetry'))
     env['PYTHONPATH'] = ':'.join(str(root / 'src' / x) for x in
                                ('drone_mission', 'drone_uwb', 'drone_platform_link')) + ':' + env.get('PYTHONPATH', '')

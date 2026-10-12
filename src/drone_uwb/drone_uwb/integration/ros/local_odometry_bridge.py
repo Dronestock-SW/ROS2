@@ -12,8 +12,8 @@ import sys
 import time
 
 from drone_uwb.integration.local_odometry import (
-    LocalObservationSettings, PARAMETERS, horizontal_odometry, parameter_gate,
-    trial_start_allowed)
+    LocalObservationSettings, PARAMETERS, guarded_horizontal_odometry, parameter_gate,
+    SenderStartGate)
 from drone_uwb.integration.clock_readiness import ClockReadiness
 from drone_uwb.processing.observation_guard import ObservationGuard
 
@@ -56,7 +56,7 @@ def main(args=None):
             self.state = None
             self.landed = None
             self.landed_at = -float('inf')
-            self.trial_start_authorized = settings.jump_guard_enabled
+            self.start_gate = SenderStartGate()
             self.state_at = self.param_at = self.btf_at = self.request_at = -float('inf')
             self.params = {}
             self.future = None
@@ -137,14 +137,13 @@ def main(args=None):
                 self.decision = {}
 
         def gate(self):
-            if not self.trial_start_authorized:
+            if not self.start_gate.authorized:
                 now = time.monotonic()
-                if self.state is None or not trial_start_allowed(
+                if self.state is None or not self.start_gate.check(
                         connected=self.state.connected, armed=self.state.armed,
                         landed_state=self.landed, state_age_s=now-self.state_at,
                         landed_age_s=now-self.landed_at):
-                    return 'sender_trial_requires_disarmed_ground_start'
-                self.trial_start_authorized = True
+                    return 'sender_requires_disarmed_ground_start'
             now = time.monotonic()
             if self.frozen:
                 return self.frozen
@@ -220,17 +219,16 @@ def main(args=None):
             if reason == 'ready':
                 try:
                     c = msg.pose.covariance
-                    fields = horizontal_odometry(settings, frame=msg.header.frame_id,
+                    reason, fields = guarded_horizontal_odometry(settings, self.guard,
+                        motion_eligible=(self.decision.get('height_source') == 'measured_tof_imu'
+                            and self.decision.get('height_ready') is True
+                            and time.monotonic()-self.decision_at <= .1
+                            and abs(stamp-self.decision.get('stamp_ns', 0)) <= 100_000_000),
+                        frame=msg.header.frame_id,
                         stamp_ns=stamp, now_ns=self.get_clock().now().nanoseconds,
                         last_stamp_ns=self.last_stamp, x=msg.pose.pose.position.x,
                         y=msg.pose.pose.position.y, covariance=[[c[0], c[1]], [c[6], c[7]]],
                         reset_counter=self.reset_counter)
-                    reason = self.guard.check((fields['x'], fields['y']), stamp,
-                        reject_jumps=settings.jump_guard_enabled,
-                        motion_eligible=(self.decision.get('height_source') == 'measured_tof_imu'
-                            and self.decision.get('height_ready') is True
-                            and time.monotonic()-self.decision_at <= .1
-                            and abs(stamp-self.decision.get('stamp_ns', 0)) <= 100_000_000))
                 except (ValueError, ArithmeticError) as exc:
                     reason = str(exc)
             self.last_reason = reason

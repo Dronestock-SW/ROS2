@@ -17,9 +17,9 @@ TOPICS = {
     '/uwb/btf_pose': 'geometry_msgs/msg/PoseWithCovarianceStamped',
     '/uwb/btf_xyz': 'geometry_msgs/msg/PoseStamped',
     '/uwb/bridge_status': 'std_msgs/msg/String',
-    # FINAL sends horizontal ODOMETRY through the raw router. Its gate and
-    # rejection counters use a different status topic from the vision bridge.
     '/uwb/local_odometry_status': 'std_msgs/msg/String',
+    '/flight_state': 'std_msgs/msg/String',
+    '/mavros/setpoint_raw/target_local': 'mavros_msgs/msg/PositionTarget',
     '/mavros/state': 'mavros_msgs/msg/State',
     '/mavros/extended_state': 'mavros_msgs/msg/ExtendedState',
     '/mavros/rc/in': 'mavros_msgs/msg/RCIn',
@@ -34,7 +34,9 @@ TOPICS = {
     '/uas1/mavlink_source': 'mavros_msgs/msg/Mavlink',
     # Do not subscribe to the command sink: fixed FC readback tools require
     # exactly one sink subscriber (the MAVROS router). EV intent is captured
-    # above at vision_pose/pose_cov; FC receipt/fusion needs the matching ULog.
+    # at vision_pose/pose_cov and local_odometry_status; fusion needs the ULog.
+    # Outbound setpoint_raw/local also stays unobserved: its writer requires
+    # exactly one subscriber. target_local records FC feedback instead.
 }
 REQUIRED = ['/uwb/received', '/uwb/btf_decision', '/mavros/state',
             '/mavros/extended_state', '/mavros/imu/data', '/mavros/local_position/odom',

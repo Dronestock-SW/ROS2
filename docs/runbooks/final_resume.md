@@ -3,11 +3,9 @@
 다음 현장 시험에서 FINAL을 다시 실행하는 절차다.
 재부팅·작업 인계 시 읽는다.
 
-다음 연구는 [최신 실행 8 인계](../report/hover_research_handoff_20261011.md)부터 읽는다.
-12일 [공백·운영 코드 차이](../report/uwb_gap_processing_20261012.md)도 읽는다.
-배포 보류인 B4 높이 검사는 기본 진단 전용이다.
-`enforce_b4_height_integrity=true`는 연구 거절 적용이다.
-현장 설치와 로그 재생의 적용 모드를 구분한다.
+최신 코드는 [브랜치 대조·FINAL 정리](../report/final_cleanup_20261012.md)를 따른다.
+12일 [UWB 공백·현재 관측](../report/uwb_gap_processing_20261012.md)도 읽는다.
+실기 원인 조사는 [실행 8 인계](../report/hover_research_handoff_20261011.md)를 따른다.
 저장 후 수정본으로 재비행했지만 이륙 밀림이 남았다.
 
 ## 저장 범위와 한계
@@ -45,13 +43,24 @@ FINAL 체크아웃에서 실행한다.
 git switch FINAL
 git pull --ff-only origin FINAL
 source /opt/ros/humble/setup.bash
-colcon build --symlink-install --packages-select drone_uwb drone_mission drone_platform_link
+colcon build --symlink-install --packages-up-to drone_mission drone_platform_link
 source install/setup.bash
 export ROS_DOMAIN_ID=2 ROS_LOCALHOST_ONLY=1 MAVLINK20=1
 ```
 
 Python 환경에 pymavlink와 websockets를 준비한다.
-현재 현장에는 기존 `.test-deps` 환경이 있다.
+고정 버전은 src/drone_mission/requirements-field.txt에 있다.
+다른 체크아웃의 임시 라이브러리 경로에 의존하지 않는다.
+pip가 준비된 Python에서 새 비공개 폴더에 설치한다.
+
+```bash
+python3 -m pip install --target .review/final-deps -r src/drone_mission/requirements-field.txt
+export PYTHONPATH="$PWD/.review/final-deps${PYTHONPATH:+:$PYTHONPATH}"
+```
+
+ROS Humble·MAVROS·시스템 NumPy는 별도로 필요하다.
+의존 패키지 drone_demo도 같은 체크아웃에서 빌드한다.
+이유: 이전 install을 쓰면 새 체크아웃의 누락이 숨겨진다.
 MAVROS·B_TF 센서 서비스를 먼저 확인한다.
 현장 서비스의 DRONESTOCK_LOCAL_SETPOINTS=1을 보존한다.
 
@@ -73,12 +82,25 @@ python3 src/sangwon_AI/ops/final_ground_alignment.py \
 파라미터·비행 명령은 보내지 않는다.
 부팅마다 달라질 수 있는 방위 기준을 새로 기록한다.
 동적 정확도를 검증하는 도구는 아니다.
+새 예제의 송신기 점프 보호는 true다.
+보호 ON/OFF 모두 새 송신기는 착륙·DISARM에서 시작한다.
+시작 확인 뒤 ARM·RC 인계 중 관측 융합은 유지한다.
+실행 8의 false 설정을 새 보정에 자동 재사용하지 않는다.
+이유: false는 당시 별도 송신기 우회 시험의 값이다.
+B4 높이 연구 검사는 명시적 true일 때만 적용한다.
+기본 현장 경로·비행 준비를 연구 재생과 구분한다.
 
 ## 스택 시작
 
 SITE, STORE, LEDGER는 위 표의 기존 파일 경로다.
 STATE_DIR는 새로운 로그·프로세스 기록 경로다.
 센서와 같은 OS 계정에서 실행한다.
+
+먼저 같은 인자로 --check-only를 실행한다.
+의존성·부팅·태그·좌표·레버암·지연 계약을 검사한다.
+기존 프로세스와 포트 점유도 확인한다.
+검사는 START·ARM·관측 송신을 시작하지 않는다.
+FC 상태·관측의 현장 대조는 별도로 수행한다.
 
 ```bash
 python3 src/sangwon_AI/ops/final_field_session.py \

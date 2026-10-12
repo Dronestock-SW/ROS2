@@ -8,7 +8,7 @@
     "enu_offset_x_m": 0.0,
     "enu_offset_y_m": 0.0,
     "max_age_s": 0.15,
-    "jump_guard_enabled": false,
+    "jump_guard_enabled": true,
     "host_boot_id": "REQUIRES_NEW_GROUND_ALIGNMENT",
     "fc_remote_ns_at_alignment": 0,
     "alignment_method": "operator_cardinal_and_stationary_px4_yaw",

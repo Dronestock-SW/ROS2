@@ -19,6 +19,7 @@ def main():
     a = p.parse_args()
     if a.output_dir.exists():
         p.error('Use a new private output directory')
+    from drone_mission.final_stack import stationary_yaw_mean, aligned_field_configuration
     import rclpy
     from geometry_msgs.msg import PoseStamped, TwistStamped
     from mavros_msgs.msg import State, ExtendedState, TimesyncStatus
@@ -30,6 +31,11 @@ def main():
         values[key], stamps[key] = value, time.monotonic()
     def pose(m):
         q = m.pose.orientation
+        if (m.header.frame_id != 'map'
+                or not all(math.isfinite(v) for v in (q.w, q.x, q.y, q.z))
+                or abs(q.w*q.w+q.x*q.x+q.y*q.y+q.z*q.z-1.) > .01):
+            save('pose', False)
+            return
         yaws.append(math.degrees(math.atan2(2*(q.w*q.z+q.x*q.y), 1-2*(q.y*q.y+q.z*q.z))))
         save('pose', True)
     n.create_subscription(PoseStamped, '/mavros/local_position/pose', pose, qos)
@@ -44,24 +50,26 @@ def main():
             rclpy.spin_once(n, timeout_sec=.1)
             if values.get('state') is False or values.get('landed') is False:
                 raise RuntimeError('Connected DISARM and landed are required throughout')
-            if values.get('speed', 0) > .1:
+            if values.get('pose') is False:
+                raise RuntimeError('Valid map-frame FC attitude required')
+            if not math.isfinite(values.get('speed', 0)) or values.get('speed', 0) > .1:
                 raise RuntimeError('Stationary estimate required')
+            if time.monotonic()-start > 1.5 and any(
+                    time.monotonic()-stamps.get(k, -1e9) > 1
+                    for k in ('state','landed','remote','pose','speed')):
+                raise RuntimeError('Continuous fresh FC observations required')
         now = time.monotonic()
         if any(now-stamps.get(k, -1e9) > 1 for k in ('state','landed','remote','pose','speed')):
             raise RuntimeError('Fresh FC observations required')
-        if len(yaws) < 50 or max(yaws)-min(yaws) > 1:
-            raise RuntimeError('Stable yaw samples required; wrap or movement detected')
-        yaw = sum(yaws)/len(yaws)-90
+        yaw, span = stationary_yaw_mean(yaws)
         boot = Path('/proc/sys/kernel/random/boot_id').read_text().strip()
         alignment = json.loads(a.alignment_template.read_text(encoding='utf-8'))
         mission = json.loads(a.mission_template.read_text(encoding='utf-8'))
-        alignment['settings'].update(host_boot_id=boot, fc_remote_ns_at_alignment=values['remote'], enu_yaw_deg=yaw)
-        alignment.update(operator_heading='-Y', yaw_samples=len(yaws), yaw_span_deg=max(yaws)-min(yaws),
+        mission, alignment = aligned_field_configuration(mission, alignment,
+            body_enu_yaw_deg=yaw, host_boot_id=boot, fc_remote_ns=values['remote'])
+        alignment.update(operator_heading='-Y', yaw_samples=len(yaws), yaw_span_deg=span,
+                         body_enu_yaw_deg=yaw,
                          flight_commands=False, flight_verified=False)
-        mission.update(bridge_host_boot_id=boot, enu_yaw_deg=yaw)
-        for key in ('map_y_axis_sign','enu_offset_x_m','enu_offset_y_m'):
-            if mission[key] != alignment['settings'][key]:
-                raise RuntimeError('Template coordinate conventions differ')
         a.output_dir.mkdir(parents=True)
         for name, data in [('alignment.json',alignment),('mission.json',mission)]:
             (a.output_dir/name).write_text(json.dumps(data, indent=2)+'\n', encoding='utf-8')
