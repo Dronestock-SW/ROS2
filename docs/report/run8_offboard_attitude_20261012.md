@@ -115,3 +115,43 @@ spoolup 1초·ramp 1.8초·상승 제한 0.5m/s도 같다.
 근거: [PX4 OFFBOARD](https://docs.px4.io/v1.17/en/flight_modes/offboard),
 [Altitude](https://docs.px4.io/v1.17/en/flight_modes_mc/altitude.html),
 [해당 FC 위치 제어 소스](https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/mc_pos_control/MulticopterPositionControl.cpp).
+
+## AUTO.TAKEOFF 비교 후보
+
+FC가 직접 이륙을 수행하는 경로는 비교 가치가 있다.
+OFFBOARD 주기 송신의 영향과 FC 제어 문제를 분리한다.
+실기 모드를 전환하거나 기본 경로를 바꾸지는 않았다.
+
+| 단계 | 비교 후보의 책임 |
+|---|---|
+| START | C++ 실행기의 준비·단일 writer 확인 |
+| 이륙 | PX4 AUTO.TAKEOFF, 기존 높이 기준 1.7m |
+| 호버 | PX4 Hold, 원래 출발 XY에서 연속 10초 |
+| 착륙 | AUTO.LAND와 실제 지상·DISARM 확인 |
+| 이후 경로 미션 | 안정화 뒤 OFFBOARD. 원래 home XY 유지 |
+
+AUTO도 같은 PX4 위치·자세 제어기를 쓴다.
+따라서 모드 변경으로 밀림 해결을 보장하지 않는다.
+spoolup 1초와 rampup 1.8초도 공통 경로다.
+지면효과 구간을 자동으로 없애는 전환이 아니다.
+
+PX4 1.17 AUTO 이륙은 유효한 local position을 요구한다.
+GPS나 global position이 반드시 필요한 모드는 아니다.
+현재 지상에서 외부 위치·광류 융합은 꺼져 있었다.
+그 상태의 작은 XY만으로 이륙 준비를 통과시키지 않는다.
+
+MPC_TKO_SPEED와 자동 상승 제약을 비교해야 한다.
+확인한 FC 코드에는 MPC_Z_VEL_MAX_UP 제한이 있다.
+현재 읽은 그 값은 0.5m/s다.
+새 모드의 실제 상승 제약·높이 기준도 로그로 확인한다.
+1m/s로 올려 비교 결과를 섞지 않는다.
+
+기존 C++ native_hover는 직접 대체판이 아니다.
+예제 높이는 1.3m, 기본 호버는 2초다.
+실기 wrapper에는 global_reference 검사도 남아 있다.
+현재의 1.7m·10초·UWB·출발 XY 계약을 이식해야 한다.
+검사를 삭제해 시작시키는 방식은 사용하지 않는다.
+
+이 비교 후보는 구현·실비행 검증을 마친 경로가 아니다.
+[PX4 Takeoff 기준](https://docs.px4.io/v1.17/en/flight_modes_mc/takeoff.html)과
+[해당 FC Auto task](https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/flight_mode_manager/tasks/Auto/FlightTaskAuto.cpp)를 대조했다.
