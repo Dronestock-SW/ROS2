@@ -1,0 +1,12 @@
+{
+  "base_commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+  "board": "px4_fmu-v6c_lidar2d",
+  "board_id": 56,
+  "firmware_sha256": "5d2af3c58a40cdf40ba4aa19fe7a7f52561a3831dc3ebe01e91e33d50a2356a6",
+  "patch_sha256": "ac1182f3d102e2d3a5c967e8823da7606b6cd0f69cb3acd6b941a18916fff3a5",
+  "build_command": "make px4_fmu-v6c_lidar2d -j2",
+  "build_success": true,
+  "firmware_uploaded": false,
+  "fc_parameters_written": false,
+  "flight_verified": false
+}

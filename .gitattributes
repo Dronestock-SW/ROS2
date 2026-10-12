@@ -17,3 +17,8 @@ src/drone_uwb/tools/*lidar2d_height* text eol=lf
 # Preserve the exact runner bytes hashed by all completed SIH manifests.
 src/drone_uwb/tools/lidar2d_height_outage.py -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 docs/report/evidence/lidar2d_height_outage_20261012/** -text -whitespace
+
+# Physical LiDAR firmware and patch checksums refer to original bytes.
+src/drone_uwb/firmware/*.px4 -text -diff
+src/drone_uwb/tools/px4_lidar2d*.patch -text -whitespace
+src/drone_uwb/tools/run_lidar*.sh text eol=lf
