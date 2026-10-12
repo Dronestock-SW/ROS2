@@ -1,0 +1,36 @@
+{
+  "counts": {
+    "imu": 3984,
+    "cloud": 399,
+    "timesync_unavailable_or_unstable": 32,
+    "mount_yaw_unconfirmed": 367
+  },
+  "gate": "disabled",
+  "parameters": {
+    "EKF2_LID2_VER": null,
+    "EKF2_LID2_EN": null,
+    "EKF2_LID2_AGE": null,
+    "EKF2_AVEL_DELAY": 5.0
+  },
+  "last": {
+    "accepted": false,
+    "observed_axes": [
+      "x",
+      "y"
+    ],
+    "z_observed": false,
+    "reference_point": "fc_imu",
+    "physical_accuracy_verified": false,
+    "uncertainty_model": "provisional_engineering_bound",
+    "reasons": [
+      "mount_yaw_unconfirmed"
+    ],
+    "processing_s": 0.0009158420000403567,
+    "received_age_s": 0.007680417000074158,
+    "recorded_ros_ns": 1791802821638865219,
+    "gate": "disabled",
+    "mode": "POSCTL",
+    "published": false,
+    "fusion_verified": false
+  }
+}

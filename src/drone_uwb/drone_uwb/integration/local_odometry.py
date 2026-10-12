@@ -91,6 +91,18 @@ def trial_start_allowed(*, connected, armed, landed_state, state_age_s, landed_a
         and 0 <= state_age_s <= 2.5 and 0 <= landed_age_s <= .5)
 
 
+@dataclass
+class SenderStartGate:
+    authorized: bool = False
+
+    def check(self, **state):
+        # A new sender needs ground evidence even with jump protection on.
+        # After that start, fusion continues through ARM and RC takeover.
+        if not self.authorized:
+            self.authorized = trial_start_allowed(**state)
+        return self.authorized
+
+
 def horizontal_odometry(settings, *, frame, stamp_ns, now_ns, last_stamp_ns,
                         x, y, covariance, reset_counter=0):
     xy, cov = observation_xy(settings, frame=frame, stamp_ns=stamp_ns,

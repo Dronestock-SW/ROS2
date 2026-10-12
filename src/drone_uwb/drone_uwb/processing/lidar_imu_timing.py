@@ -66,5 +66,3 @@ class ImuTimeline:
         output = Slerp(knots, Rotation.concatenate(rotations))(times).as_matrix()
         return output, dict(imu_max_gap_s=float(np.max(np.diff(gt))),
             attitude_anchor_age_s=float(times[0]-stamp), imu_samples=len(gt))
-
-

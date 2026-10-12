@@ -28,6 +28,7 @@ setup(
         'uwb_btf_node = drone_uwb.integration.ros.btf_node:main',
         'uwb_px4_bridge = drone_uwb.integration.ros.bridge:main',
         'uwb_local_odometry_bridge = drone_uwb.integration.ros.local_odometry_bridge:main',
+        'lidar_velocity_bridge = drone_uwb.integration.ros.lidar_velocity_bridge:main',
         'uwb_replay = drone_uwb.integration.replay:main',
         'uwb_bench_probe = drone_uwb.integration.ros.bench_probe:main',
         'uwb_manual_capture = drone_uwb.integration.ros.manual_capture:main',
