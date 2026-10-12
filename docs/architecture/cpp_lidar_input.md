@@ -8,6 +8,10 @@
 사용자 장착 추정은 UWB 아래 약 10cm다.
 하향 TFmini Plus와 구분한다. 실측 TF로 적용하지 않았다.
 [후속 SITL 절차](../runbooks/lidar_uwb_sitl_handoff_20261012.md)를 따른다.
+[개선 후보·격리 진단](../report/lidar_keyframe_sitl_20261012.md)을 추가했다.
+정지·DISARM SIH 140회는 표준 EV 입력 진단이다.
+운영 C++ LiDAR의 동적 융합 검증과 구분한다.
+수직 리셋·발산 위험으로 현재 자리값 후보는 보류다.
 
 ## 현재 구현
 
@@ -135,7 +139,8 @@ python3 -m drone_uwb.integration.ros.manual_capture record \
 | WSL 전체 CMake 구성 | SQLite3 개발 의존성 부재로 미완료 |
 | 실제 상단 LiDAR 동시 기록 | 10월 11일 지상 약 10Hz 수신·UWB/FC 동시 저장 확인 |
 | 지상 스캔매칭 | 10월 12일 별도 간이 분석. 운영 구현·실제 이동 검증 아님 |
-| SITL·FC LiDAR 융합 | 시험 설계만 완료. 실행 미실시 |
+| 표준 EV 격리 SIH | 140회 정지 진단. 위험 조건 포함. 전체 S01–S14 미완료 |
+| 운영 LiDAR·FC 융합 | 미검증. 현재 자리값 후보의 채택 보류 |
 
 기존 세 공중 기록에는 /scan이 없었다.
 이번 변경만으로 그 비행의 LiDAR 분석은 할 수 없다.
