@@ -1,0 +1,43 @@
+{
+  "archive": {
+    "path": "C:\\Users\\A\\Documents\\ChatGPT\\DroneStock\\outputs\\lidar-vertical-followup-raw-20261012.tar.gz",
+    "bytes": 60887908,
+    "sha256": "efcf418a037e9ab8178e128a8aa0adfe3f62cfad9d641a480c2bb8384967ab29",
+    "matrix_log_members_verified": 70
+  },
+  "unchanged_libraries": {
+    "src/modules/ekf2/EKF/libecl_EKF.a": true,
+    "src/lib/motion_planning/libmotion_planning.a": true,
+    "src/modules/ekf2/EKF/output_predictor/liboutput_predictor.a": true,
+    "src/modules/ekf2/EKF/bias_estimator/libbias_estimator.a": true,
+    "src/modules/ekf2/EKF/yaw_estimator/libyaw_estimator.a": true,
+    "src/lib/lat_lon_alt/liblat_lon_alt.a": true,
+    "src/lib/geo/libgeo.a": true,
+    "src/lib/world_magnetic_model/libworld_magnetic_model.a": true,
+    "src/lib/mathlib/libmathlib.a": true,
+    "src/lib/perf/libperf.a": true,
+    "platforms/common/libpx4_platform.a": true,
+    "platforms/posix/src/px4/common/libpx4_layer.a": true
+  },
+  "source_matches": {
+    "ev_vel_control.cpp": true,
+    "velocity_fusion.cpp": true,
+    "lidar_vertical_probe.cpp": true
+  },
+  "unit_tests": {
+    "passed": 17,
+    "failed": 0,
+    "seconds": 1.28
+  },
+  "notes": [
+    "No physical PX4 configuration, service or flight change",
+    "No process termination commands issued",
+    "Output figures visually inspected"
+  ],
+  "runner_guard": {
+    "binary_hash_check_passed": true,
+    "uninstrumented_causal_mode_rejected": true,
+    "simulation_started": false
+  },
+  "sih_reanalysis_after_trace_origin_fix": "All ten analyses identical to preserved results"
+}

@@ -10,6 +10,8 @@
 
 | 찾는 내용 | 위치 |
 |---|---|
+| 다른 채팅의 2D LiDAR 구현·높이 센서 실제 공백·45조합 검증 | [2D 높이 공백 결과](report/lidar2d_height_outage_20261012.md) |
+| 고정한 2D runtime·격리 SIH 센서 중단·복구 재실행 | [2D 공백 재현 절차](runbooks/lidar2d_height_outage_20261012.md) |
 | LiDAR 개선·수직 위험 조사를 다른 세션에서 계속 | [다음 세션 프롬프트](runbooks/lidar_next_session_20261012.md) |
 | 기준 스캔·IMU 합성 평가·같은 PX4 진단·vz 리셋 위험 | [10월 12일 개선 후보 결과](report/lidar_keyframe_sitl_20261012.md) |
 | 원본 해시 replay·격리 SIH·실제 EKF probe 재실행 | [검증 재실행 절차](runbooks/lidar_keyframe_validation_20261012.md) |

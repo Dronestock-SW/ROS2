@@ -4,6 +4,25 @@
 
 ## 이어갈 때의 기준
 
+후속 [수직 진단 보고서](../report/lidar_vertical_followup_20261012.md)를 추가했다.
+현재 작업은 `a0fa040`에서 분리한 진단 브랜치다.
+이름은 `codex/lidar-vertical-diagnosis-20261012`다.
+아래 기존 시험 이력과 프롬프트는 보존한다.
+이어갈 때는 새 결과를 먼저 읽어 중복 실행을 줄인다.
+
+| 후속 확인 | 이어갈 조건 |
+|---|---|
+| ULog 140개·기록 840개 해시 일치 | 원본 보존 유지 |
+| 내부 z 발산 확인 | output predictor 단독 문제로 처리하지 않음 |
+| 라이브러리 70회 원인 분리 | SIH 70회로 세지 않음 |
+| 합성 NE 2D 대조군 | body XY LiDAR로 바로 적용하지 않음 |
+| 원본 두 파일 미회수 | −267° 재현 미완료 유지 |
+| pgyxn CLI 복구 | 앱 재연결은 별도 확인 필요 |
+
+[후속 재실행 절차](lidar_vertical_diagnosis_20261012.md)와
+[현재 상태](../report/evidence/lidar_vertical_followup_20261012/scenario_status.json)를 따른다.
+기존 두 운영 브랜치로의 자동 병합·push는 하지 않았다.
+
 현재 속도 입력 후보와 S14는 채택 보류다.
 원본 −267° 재현과 전체 S01–S14는 미완료다.
 구현·진단 기준 커밋은 `42421fd`다.
@@ -17,7 +36,8 @@
 | `feature_uwb` | 기존 분석 기준에 이번 도구·근거·인계를 추가 |
 | `FINAL-TEST1-SANGWON` | 기존 C++ 미션·관측 이력을 보존하며 같은 분석을 추가 |
 
-이번 도구·결과·프롬프트는 두 브랜치에 동일하게 반영한다.
+기존 인계 도구·결과·프롬프트는 두 브랜치에 반영했다.
+새 수직 진단은 위의 별도 작업 브랜치에 기록한다.
 두 브랜치의 전체 코드가 같다는 뜻은 아니다.
 
 ## 복사할 프롬프트
@@ -38,6 +58,9 @@ AGENTS.md와 다음 문서를 먼저 읽어줘.
 - docs/runbooks/lidar_uwb_sitl_handoff_20261012.md
 - docs/runbooks/lidar_keyframe_validation_20261012.md
 - docs/report/evidence/lidar_keyframe_sitl_20261012/scenario_status.json
+- docs/report/lidar_vertical_followup_20261012.md
+- docs/runbooks/lidar_vertical_diagnosis_20261012.md
+- docs/report/evidence/lidar_vertical_followup_20261012/scenario_status.json
 
 이전 작업의 범위는 다음과 같아.
 - 기준 스캔+IMU 각속도 기반 후보와 해시 검사 replay 도구 구현.
@@ -49,6 +72,12 @@ AGENTS.md와 다음 문서를 먼저 읽어줘.
   기존 누적 yaw −267.13°는 아직 재현하지 못했어.
 
 우선 현재 후보의 수직 위험을 분리·조사해줘.
+후속 라이브러리 70회에서 이미 분리한 경로는 재사용해줘.
+내부 z 발산은 보존 ULog에서도 확인됐어.
+output predictor 리셋만 끈 10쌍의 내부 기록값은 같았어.
+non-virtual 호출만 수정해도 발산과 수직 유효가 남았어.
+합성 NE 2D는 수직 리셋 0회였지만 실제 body XY가 아니야.
+다음 단계는 body 2D 관측 계약과 이동·회복 검증이야.
 몸체 속도 vz=0에 큰 분산을 주어도 평균 리셋은 막히지 않았어.
 기울기에서는 z 분산이 수평 속도 분산으로 투영됐어.
 높이 관측을 제거한 정지 SIH 5회에서는
@@ -73,6 +102,9 @@ events.jsonl 기대 SHA-256:
 연결된 companion의 기본 capture 후보 경로는
 /home/arialhanho/.local/share/dronestock/manual-captures/야.
 이전 pgyxn 계정으로는 읽지 못했어.
+후속에서는 승인된 소유자 계정으로 읽었지만 대상은 못 찾았어.
+관련 압축파일 9개와 두 계정의 홈 탐색에도 없었어.
+삭제를 단정하지 말고 다른 보관 위치를 확인해줘.
 읽기 권한 없이 우회하거나 권한을 임의로 바꾸지 마.
 fetch만으로 원본이나 접근 권한이 생기는 것은 아니야.
 원본이 없으면 재현 완료라고 쓰지 말고 가능한 준비를 계속해줘.
