@@ -1,0 +1,27 @@
+{
+  "date_kst": "2026-10-12",
+  "ros2_base_commit": "8cfe94cd80e5e6094f1fb5bd173b47ebed5e293e",
+  "firmware_commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+  "original_minus267_reproduced": false,
+  "all_S01_S14_passed": false,
+  "mission_acceptance_thresholds": "User requested measurements first; no mission thresholds defined",
+  "physical_configuration_service_or_flight_changed": false,
+  "raw_capture_status": "NOT_RECOVERED; known candidate directory not readable as pgyxn",
+  "original_analyze_py_status": "NOT_RECOVERED",
+  "cases": [
+    {"id":"S01","status":"PARTIAL_STATIC_SIH","remaining":"Known motion, axes, actual 40 Hz UWB plus 10 Hz LiDAR alignment"},
+    {"id":"S02","status":"STATIC_TRANSPORT_MEASURED","remaining":"Dynamic state and control consequences; no flight acceptance"},
+    {"id":"S03","status":"PARTIAL_STATIC_SIH","remaining":"Dynamic invalid-input behavior and production sender contract"},
+    {"id":"S04","status":"HAZARD_REPRODUCED_EKF_CALL","remaining":"Automatic starts with other aiding and physical plus/minus 0.3 m/s vertical motion"},
+    {"id":"S05","status":"HAZARD_REPRODUCED_EKF_CALL","remaining":"Dynamic start, reset, recovery and controller behavior"},
+    {"id":"S06","status":"PARTIAL_STATIC_SIH","remaining":"Reset-counter change on gap recovery and moving LiDAR"},
+    {"id":"S07","status":"PARTIAL_STATIC_SIH","remaining":"Absolute position validity during motion"},
+    {"id":"S08","status":"PARTIAL_STATIC_SIH","remaining":"Real asynchronous observation alignment and single publisher implementation"},
+    {"id":"S09","status":"PARTIAL_STATIC_SIH","remaining":"Real clock drift, 20 ms jitter and dynamic-delay consequences"},
+    {"id":"S10","status":"OFFLINE_GEOMETRY_AND_EKF_CALL","remaining":"Measured scan/IMU rotation, physical lever arms, dynamic sensor integration"},
+    {"id":"S11","status":"SYNTHETIC_ONLY","remaining":"Original capture, repeated shelves, moving people and real adverse scenes"},
+    {"id":"S12","status":"NOT_RUN","remaining":"UWB plus optical-flow baseline, flow degradation and UWB bias"},
+    {"id":"S13","status":"HAZARD_REPRODUCED_STATIC_SIH","remaining":"Airborne vertical faults, failsafe effects and separating EKF/output-predictor cause; static Z RMS 55.98-100.76 m while Z-valid remains true"},
+    {"id":"S14","status":"NOT_RUN_PREREQUISITE_FAILED","remaining":"Resolve vertical reset hazard and complete estimator comparison before closed loop"}
+  ]
+}

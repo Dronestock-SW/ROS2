@@ -10,6 +10,8 @@
 
 | 찾는 내용 | 위치 |
 |---|---|
+| 기준 스캔·IMU 합성 평가·같은 PX4 진단·vz 리셋 위험 | [10월 12일 개선 후보 결과](report/lidar_keyframe_sitl_20261012.md) |
+| 원본 해시 replay·격리 SIH·실제 EKF probe 재실행 | [검증 재실행 절차](runbooks/lidar_keyframe_validation_20261012.md) |
 | 수평 LiDAR 지상 1,781스캔·장착 10cm 추정·정합 한계 | [10월 12일 분석](report/lidar_ground_analysis_20261012.md) |
 | LiDAR 후속 작업 프롬프트·같은 PX4 커밋의 SITL 14개 시험 | [작업 인계 절차](runbooks/lidar_uwb_sitl_handoff_20261012.md) |
 | 테스트 웹의 실제 C++ 판단·단일 실행기 연결 | [12일 C++ 통합](report/cpp_field_mission_integration_20261012.md) |

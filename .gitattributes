@@ -12,3 +12,5 @@ src/drone_uwb/deployment/*.sh text eol=lf
 # The C++ REPLAY approval is a hash of these exact bytes.
 src/sangwon_AI/contracts/runtime_replay/waypoint_snapshot.json text eol=lf
 .gitattributes text eol=lf
+# The isolated Linux build helper must remain executable by Bash on WSL.
+src/drone_uwb/tools/build_lidar_sitl.sh text eol=lf

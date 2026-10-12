@@ -1,0 +1,4716 @@
+{
+  "expected_runs": 140,
+  "completed_runs": 140,
+  "failures": [],
+  "actual_firmware_commits": [
+    "d6f12ad1c4f70ad3230afd7d86e971421e02fef4"
+  ],
+  "scope": "stationary disarmed synthetic EV diagnostic; not full S01-S14 acceptance",
+  "acceptance": "No mission error thresholds provided; S14 blocked by velocity reset hazard",
+  "groups": {
+    "alternating": {
+      "seeds": [
+        11,
+        22,
+        33,
+        44,
+        55
+      ],
+      "sent": {
+        "n": 5,
+        "minimum": 1000,
+        "maximum": 1000
+      },
+      "variance_z": {
+        "n": 5,
+        "minimum": 10000.0,
+        "maximum": 10000.0
+      },
+      "nominal_xy_rms_m": {
+        "n": 5,
+        "minimum": 0.014159197777239372,
+        "maximum": 0.01690233147324344
+      },
+      "nominal_vxy_rms_mps": {
+        "n": 5,
+        "minimum": 0.013923517008175353,
+        "maximum": 0.01882065588134328
+      },
+      "recovery_z_rms_m": {
+        "n": 5,
+        "minimum": 0.0038745239756022465,
+        "maximum": 0.00444536603001661
+      },
+      "recovery_vz_rms_mps": {
+        "n": 5,
+        "minimum": 0.006115264083366483,
+        "maximum": 0.0070862879558591645
+      },
+      "fault_receive_minus_sample_ms": {
+        "n": 5,
+        "minimum": 3.9025,
+        "maximum": 7.9765
+      },
+      "reset_increments": {
+        "normal": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 75,
+            "maximum": 75
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "fault": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 25,
+            "maximum": 25
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "recovery": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 348,
+            "maximum": 350
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        }
+      },
+      "aid_updates": {
+        "ev_pos": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 74,
+            "maximum": 74
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 24,
+            "maximum": 24
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 347,
+            "maximum": 349
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 0.20000000000000284,
+            "maximum": 0.21600000000000108
+          },
+          "recovery_s": {
+            "n": 0,
+            "minimum": null,
+            "maximum": null
+          }
+        },
+        "ev_vel": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 75,
+            "maximum": 75
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 25,
+            "maximum": 25
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 347,
+            "maximum": 350
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 0.20000000000000284,
+            "maximum": 0.2079999999999984
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.35199999999999676,
+            "maximum": 0.35999999999999943
+          }
+        }
+      }
+    },
+    "clock_jump": {
+      "seeds": [
+        11,
+        22,
+        33,
+        44,
+        55
+      ],
+      "sent": {
+        "n": 5,
+        "minimum": 1000,
+        "maximum": 1000
+      },
+      "variance_z": {
+        "n": 5,
+        "minimum": 10000.0,
+        "maximum": 10000.0
+      },
+      "nominal_xy_rms_m": {
+        "n": 5,
+        "minimum": 0.00687381595522934,
+        "maximum": 0.0093263395975463
+      },
+      "nominal_vxy_rms_mps": {
+        "n": 5,
+        "minimum": 0.011065407258487855,
+        "maximum": 0.01567990276545173
+      },
+      "recovery_z_rms_m": {
+        "n": 5,
+        "minimum": 0.0036261330045412364,
+        "maximum": 0.005648901337245861
+      },
+      "recovery_vz_rms_mps": {
+        "n": 5,
+        "minimum": 0.005493649987155995,
+        "maximum": 0.006698851484615574
+      },
+      "fault_receive_minus_sample_ms": {
+        "n": 5,
+        "minimum": 10003.9905,
+        "maximum": 10006.016
+      },
+      "reset_increments": {
+        "normal": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "fault": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 1,
+            "maximum": 1
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 1,
+            "maximum": 1
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "recovery": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        }
+      },
+      "aid_updates": {
+        "ev_pos": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 149,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 699,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 5.199999999999996,
+            "maximum": 5.207999999999998
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.35199999999999676,
+            "maximum": 0.3680000000000021
+          }
+        },
+        "ev_vel": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 149,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 699,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 5.280000000000001,
+            "maximum": 5.312000000000005
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.35199999999999676,
+            "maximum": 0.3680000000000021
+          }
+        }
+      }
+    },
+    "delay-100": {
+      "seeds": [
+        11,
+        22,
+        33,
+        44,
+        55
+      ],
+      "sent": {
+        "n": 5,
+        "minimum": 1000,
+        "maximum": 1000
+      },
+      "variance_z": {
+        "n": 5,
+        "minimum": 10000.0,
+        "maximum": 10000.0
+      },
+      "nominal_xy_rms_m": {
+        "n": 5,
+        "minimum": 0.007294510960159677,
+        "maximum": 0.0098149821940716
+      },
+      "nominal_vxy_rms_mps": {
+        "n": 5,
+        "minimum": 0.013661347268265005,
+        "maximum": 0.018281200566584818
+      },
+      "recovery_z_rms_m": {
+        "n": 5,
+        "minimum": 0.00404721263152273,
+        "maximum": 0.0065661757424487445
+      },
+      "recovery_vz_rms_mps": {
+        "n": 5,
+        "minimum": 0.0056181182375823905,
+        "maximum": 0.00693168119229999
+      },
+      "fault_receive_minus_sample_ms": {
+        "n": 5,
+        "minimum": 103.8445,
+        "maximum": 103.987
+      },
+      "reset_increments": {
+        "normal": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "fault": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "recovery": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        }
+      },
+      "aid_updates": {
+        "ev_pos": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 149,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 49,
+            "maximum": 49
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 699,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 0.1839999999999975,
+            "maximum": 0.19999999999999574
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.16799999999999926,
+            "maximum": 0.28000000000000114
+          }
+        },
+        "ev_vel": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 149,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 49,
+            "maximum": 49
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 699,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 0.1839999999999975,
+            "maximum": 0.19999999999999574
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.16799999999999926,
+            "maximum": 0.28000000000000114
+          }
+        }
+      }
+    },
+    "delay-150": {
+      "seeds": [
+        11,
+        22,
+        33,
+        44,
+        55
+      ],
+      "sent": {
+        "n": 5,
+        "minimum": 1000,
+        "maximum": 1000
+      },
+      "variance_z": {
+        "n": 5,
+        "minimum": 10000.0,
+        "maximum": 10000.0
+      },
+      "nominal_xy_rms_m": {
+        "n": 5,
+        "minimum": 0.007456584251905656,
+        "maximum": 0.010171495416838766
+      },
+      "nominal_vxy_rms_mps": {
+        "n": 5,
+        "minimum": 0.01239248931875592,
+        "maximum": 0.016510174606342062
+      },
+      "recovery_z_rms_m": {
+        "n": 5,
+        "minimum": 0.0034177475381975625,
+        "maximum": 0.007704324064403224
+      },
+      "recovery_vz_rms_mps": {
+        "n": 5,
+        "minimum": 0.00533711840427159,
+        "maximum": 0.00704040661382237
+      },
+      "fault_receive_minus_sample_ms": {
+        "n": 5,
+        "minimum": 153.94299999999998,
+        "maximum": 157.777
+      },
+      "reset_increments": {
+        "normal": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "fault": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "recovery": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        }
+      },
+      "aid_updates": {
+        "ev_pos": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 148,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 48,
+            "maximum": 48
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 693,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 0.22399999999999665,
+            "maximum": 0.2640000000000029
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.1599999999999966,
+            "maximum": 0.27199999999999847
+          }
+        },
+        "ev_vel": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 148,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 48,
+            "maximum": 48
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 693,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 0.22399999999999665,
+            "maximum": 0.2640000000000029
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.1599999999999966,
+            "maximum": 0.27199999999999847
+          }
+        }
+      }
+    },
+    "delay-50": {
+      "seeds": [
+        11,
+        22,
+        33,
+        44,
+        55
+      ],
+      "sent": {
+        "n": 5,
+        "minimum": 1000,
+        "maximum": 1000
+      },
+      "variance_z": {
+        "n": 5,
+        "minimum": 10000.0,
+        "maximum": 10000.0
+      },
+      "nominal_xy_rms_m": {
+        "n": 5,
+        "minimum": 0.00677935590875128,
+        "maximum": 0.009712399645012632
+      },
+      "nominal_vxy_rms_mps": {
+        "n": 5,
+        "minimum": 0.013157094070999234,
+        "maximum": 0.016007766891243065
+      },
+      "recovery_z_rms_m": {
+        "n": 5,
+        "minimum": 0.003231717163950529,
+        "maximum": 0.0065206350958298435
+      },
+      "recovery_vz_rms_mps": {
+        "n": 5,
+        "minimum": 0.005293328695625771,
+        "maximum": 0.007058421292836374
+      },
+      "fault_receive_minus_sample_ms": {
+        "n": 5,
+        "minimum": 53.9,
+        "maximum": 56.042500000000004
+      },
+      "reset_increments": {
+        "normal": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "fault": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "recovery": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        }
+      },
+      "aid_updates": {
+        "ev_pos": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 149,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 48,
+            "maximum": 48
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 698,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 0.1280000000000001,
+            "maximum": 0.14399999999999835
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.2560000000000002,
+            "maximum": 0.28000000000000114
+          }
+        },
+        "ev_vel": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 149,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 48,
+            "maximum": 48
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 698,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 0.1280000000000001,
+            "maximum": 0.14399999999999835
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.2560000000000002,
+            "maximum": 0.28000000000000114
+          }
+        }
+      }
+    },
+    "duplicate": {
+      "seeds": [
+        11,
+        22,
+        33,
+        44,
+        55
+      ],
+      "sent": {
+        "n": 5,
+        "minimum": 1000,
+        "maximum": 1000
+      },
+      "variance_z": {
+        "n": 5,
+        "minimum": 10000.0,
+        "maximum": 10000.0
+      },
+      "nominal_xy_rms_m": {
+        "n": 5,
+        "minimum": 0.007531898912217851,
+        "maximum": 0.010060754305857417
+      },
+      "nominal_vxy_rms_mps": {
+        "n": 5,
+        "minimum": 0.012499606774771743,
+        "maximum": 0.016280831348311542
+      },
+      "recovery_z_rms_m": {
+        "n": 5,
+        "minimum": 0.003997376247241122,
+        "maximum": 0.007903617830216049
+      },
+      "recovery_vz_rms_mps": {
+        "n": 5,
+        "minimum": 0.006229197188087984,
+        "maximum": 0.007210867928306081
+      },
+      "fault_receive_minus_sample_ms": {
+        "n": 5,
+        "minimum": 2453.8734999999997,
+        "maximum": 2464.006
+      },
+      "reset_increments": {
+        "normal": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "fault": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 1,
+            "maximum": 1
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 1,
+            "maximum": 1
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "recovery": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        }
+      },
+      "aid_updates": {
+        "ev_pos": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 148,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 2
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 687,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 5.039999999999999,
+            "maximum": 5.064
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.35199999999999676,
+            "maximum": 0.3680000000000021
+          }
+        },
+        "ev_vel": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 148,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 2
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 687,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 5.1440000000000055,
+            "maximum": 5.200000000000003
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.35199999999999676,
+            "maximum": 0.3680000000000021
+          }
+        }
+      }
+    },
+    "invalid_velocity_frame": {
+      "seeds": [
+        11,
+        22,
+        33,
+        44,
+        55
+      ],
+      "sent": {
+        "n": 5,
+        "minimum": 1000,
+        "maximum": 1000
+      },
+      "variance_z": {
+        "n": 5,
+        "minimum": 10000.0,
+        "maximum": 10000.0
+      },
+      "nominal_xy_rms_m": {
+        "n": 5,
+        "minimum": 0.0070381144667510005,
+        "maximum": 0.00879066028508994
+      },
+      "nominal_vxy_rms_mps": {
+        "n": 5,
+        "minimum": 0.011146523693053224,
+        "maximum": 0.01662888733422994
+      },
+      "recovery_z_rms_m": {
+        "n": 5,
+        "minimum": 0.0038534339798345536,
+        "maximum": 0.006725029517403606
+      },
+      "recovery_vz_rms_mps": {
+        "n": 5,
+        "minimum": 0.005939432416633041,
+        "maximum": 0.006670380169996274
+      },
+      "fault_receive_minus_sample_ms": {
+        "n": 5,
+        "minimum": 3.992,
+        "maximum": 6.027
+      },
+      "reset_increments": {
+        "normal": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "fault": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "recovery": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        }
+      },
+      "aid_updates": {
+        "ev_pos": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 149,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 49,
+            "maximum": 49
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 695,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 0.10400000000000631,
+            "maximum": 0.12000000000000455
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.1599999999999966,
+            "maximum": 0.28000000000000114
+          }
+        },
+        "ev_vel": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 149,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 695,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 5.079999999999998,
+            "maximum": 5.103999999999999
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.1599999999999966,
+            "maximum": 0.28000000000000114
+          }
+        }
+      }
+    },
+    "lidar_gap-0.2": {
+      "seeds": [
+        11,
+        22,
+        33,
+        44,
+        55
+      ],
+      "sent": {
+        "n": 5,
+        "minimum": 1000,
+        "maximum": 1000
+      },
+      "variance_z": {
+        "n": 5,
+        "minimum": 10000.0,
+        "maximum": 10000.0
+      },
+      "nominal_xy_rms_m": {
+        "n": 5,
+        "minimum": 0.008070621929859925,
+        "maximum": 0.011124357779253077
+      },
+      "nominal_vxy_rms_mps": {
+        "n": 5,
+        "minimum": 0.014608359461840541,
+        "maximum": 0.016887186323838416
+      },
+      "recovery_z_rms_m": {
+        "n": 5,
+        "minimum": 0.003913896500863572,
+        "maximum": 0.005416540277718741
+      },
+      "recovery_vz_rms_mps": {
+        "n": 5,
+        "minimum": 0.006090855440873544,
+        "maximum": 0.007164009200069828
+      },
+      "fault_receive_minus_sample_ms": {
+        "n": 5,
+        "minimum": 3.971,
+        "maximum": 7.971
+      },
+      "reset_increments": {
+        "normal": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "fault": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "recovery": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        }
+      },
+      "aid_updates": {
+        "ev_pos": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 149,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 49,
+            "maximum": 49
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 699,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 0.10400000000000631,
+            "maximum": 0.12000000000000455
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.1599999999999966,
+            "maximum": 0.27199999999999847
+          }
+        },
+        "ev_vel": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 149,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 47,
+            "maximum": 47
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 699,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 0.28000000000000114,
+            "maximum": 0.30399999999999494
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.1599999999999966,
+            "maximum": 0.27199999999999847
+          }
+        }
+      }
+    },
+    "lidar_gap-1": {
+      "seeds": [
+        11,
+        22,
+        33,
+        44,
+        55
+      ],
+      "sent": {
+        "n": 5,
+        "minimum": 1000,
+        "maximum": 1000
+      },
+      "variance_z": {
+        "n": 5,
+        "minimum": 10000.0,
+        "maximum": 10000.0
+      },
+      "nominal_xy_rms_m": {
+        "n": 5,
+        "minimum": 0.007174826883811484,
+        "maximum": 0.00930923777677962
+      },
+      "nominal_vxy_rms_mps": {
+        "n": 5,
+        "minimum": 0.014165858406069862,
+        "maximum": 0.01660977970779859
+      },
+      "recovery_z_rms_m": {
+        "n": 5,
+        "minimum": 0.003377715788874406,
+        "maximum": 0.011549197541485645
+      },
+      "recovery_vz_rms_mps": {
+        "n": 5,
+        "minimum": 0.005057776787767488,
+        "maximum": 0.007257428117151083
+      },
+      "fault_receive_minus_sample_ms": {
+        "n": 5,
+        "minimum": 3.9444999999999997,
+        "maximum": 5.9795
+      },
+      "reset_increments": {
+        "normal": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "fault": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "recovery": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        }
+      },
+      "aid_updates": {
+        "ev_pos": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 148,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 48,
+            "maximum": 49
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 698,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 0.1039999999999992,
+            "maximum": 0.12000000000000455
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.2560000000000002,
+            "maximum": 0.28000000000000114
+          }
+        },
+        "ev_vel": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 148,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 39,
+            "maximum": 39
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 698,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 1.0799999999999983,
+            "maximum": 1.0960000000000036
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.2560000000000002,
+            "maximum": 0.28000000000000114
+          }
+        }
+      }
+    },
+    "lidar_gap-5": {
+      "seeds": [
+        11,
+        22,
+        33,
+        44,
+        55
+      ],
+      "sent": {
+        "n": 5,
+        "minimum": 1000,
+        "maximum": 1000
+      },
+      "variance_z": {
+        "n": 5,
+        "minimum": 10000.0,
+        "maximum": 10000.0
+      },
+      "nominal_xy_rms_m": {
+        "n": 5,
+        "minimum": 0.008407559416562287,
+        "maximum": 0.0103391983685199
+      },
+      "nominal_vxy_rms_mps": {
+        "n": 5,
+        "minimum": 0.014017980489856639,
+        "maximum": 0.01756970178537136
+      },
+      "recovery_z_rms_m": {
+        "n": 5,
+        "minimum": 0.004184148742046301,
+        "maximum": 0.005187093258358192
+      },
+      "recovery_vz_rms_mps": {
+        "n": 5,
+        "minimum": 0.006658024824470731,
+        "maximum": 0.00687142386900669
+      },
+      "fault_receive_minus_sample_ms": {
+        "n": 5,
+        "minimum": 3.9825,
+        "maximum": 5.9735
+      },
+      "reset_increments": {
+        "normal": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "fault": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "recovery": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        }
+      },
+      "aid_updates": {
+        "ev_pos": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 149,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 49,
+            "maximum": 49
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 699,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 0.10400000000000631,
+            "maximum": 0.13599999999999568
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.1599999999999966,
+            "maximum": 0.28000000000000114
+          }
+        },
+        "ev_vel": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 149,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 699,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 5.079999999999998,
+            "maximum": 5.103999999999999
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.1599999999999966,
+            "maximum": 0.28000000000000114
+          }
+        }
+      }
+    },
+    "nan_vz": {
+      "seeds": [
+        11,
+        22,
+        33,
+        44,
+        55
+      ],
+      "sent": {
+        "n": 5,
+        "minimum": 1000,
+        "maximum": 1000
+      },
+      "variance_z": {
+        "n": 5,
+        "minimum": 10000.0,
+        "maximum": 10000.0
+      },
+      "nominal_xy_rms_m": {
+        "n": 5,
+        "minimum": 0.007937174969999815,
+        "maximum": 0.00959741299886885
+      },
+      "nominal_vxy_rms_mps": {
+        "n": 5,
+        "minimum": 0.013430875217758542,
+        "maximum": 0.016692151102914544
+      },
+      "recovery_z_rms_m": {
+        "n": 5,
+        "minimum": 0.004251572326369568,
+        "maximum": 0.005775930172827866
+      },
+      "recovery_vz_rms_mps": {
+        "n": 5,
+        "minimum": 0.00641623529536448,
+        "maximum": 0.006862791202901968
+      },
+      "fault_receive_minus_sample_ms": {
+        "n": 5,
+        "minimum": 3.7634999999999996,
+        "maximum": 7.8195
+      },
+      "reset_increments": {
+        "normal": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "fault": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "recovery": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        }
+      },
+      "aid_updates": {
+        "ev_pos": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 149,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 49,
+            "maximum": 49
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 699,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 0.10400000000000631,
+            "maximum": 0.12000000000000455
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.1599999999999966,
+            "maximum": 0.27199999999999847
+          }
+        },
+        "ev_vel": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 149,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 699,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 5.079999999999998,
+            "maximum": 5.103999999999999
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.1599999999999966,
+            "maximum": 0.27199999999999847
+          }
+        }
+      }
+    },
+    "quality": {
+      "seeds": [
+        11,
+        22,
+        33,
+        44,
+        55
+      ],
+      "sent": {
+        "n": 5,
+        "minimum": 1000,
+        "maximum": 1000
+      },
+      "variance_z": {
+        "n": 5,
+        "minimum": 10000.0,
+        "maximum": 10000.0
+      },
+      "nominal_xy_rms_m": {
+        "n": 5,
+        "minimum": 0.00865703676862011,
+        "maximum": 0.01007659301341235
+      },
+      "nominal_vxy_rms_mps": {
+        "n": 5,
+        "minimum": 0.014712957121153749,
+        "maximum": 0.018057631310862222
+      },
+      "recovery_z_rms_m": {
+        "n": 5,
+        "minimum": 0.003837751932030691,
+        "maximum": 0.03884668091081158
+      },
+      "recovery_vz_rms_mps": {
+        "n": 5,
+        "minimum": 0.00597234732918647,
+        "maximum": 0.006967503055117867
+      },
+      "fault_receive_minus_sample_ms": {
+        "n": 5,
+        "minimum": 3.8440000000000003,
+        "maximum": 6.003
+      },
+      "reset_increments": {
+        "normal": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "fault": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 1,
+            "maximum": 1
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 1,
+            "maximum": 1
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "recovery": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        }
+      },
+      "aid_updates": {
+        "ev_pos": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 148,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 698,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 5.199999999999996,
+            "maximum": 5.200000000000003
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.35199999999999676,
+            "maximum": 0.3680000000000021
+          }
+        },
+        "ev_vel": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 148,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 698,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 5.295999999999999,
+            "maximum": 5.304000000000002
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.35199999999999676,
+            "maximum": 0.3680000000000021
+          }
+        }
+      }
+    },
+    "reset": {
+      "seeds": [
+        11,
+        22,
+        33,
+        44,
+        55
+      ],
+      "sent": {
+        "n": 5,
+        "minimum": 1000,
+        "maximum": 1000
+      },
+      "variance_z": {
+        "n": 5,
+        "minimum": 10000.0,
+        "maximum": 10000.0
+      },
+      "nominal_xy_rms_m": {
+        "n": 5,
+        "minimum": 0.007179159209930354,
+        "maximum": 0.00919628383187588
+      },
+      "nominal_vxy_rms_mps": {
+        "n": 5,
+        "minimum": 0.012334190680196736,
+        "maximum": 0.016542261161297457
+      },
+      "recovery_z_rms_m": {
+        "n": 5,
+        "minimum": 0.0037408417876784,
+        "maximum": 0.006348008661717354
+      },
+      "recovery_vz_rms_mps": {
+        "n": 5,
+        "minimum": 0.005895666611965657,
+        "maximum": 0.006606024485307999
+      },
+      "fault_receive_minus_sample_ms": {
+        "n": 5,
+        "minimum": 3.9625000000000004,
+        "maximum": 6.0025
+      },
+      "reset_increments": {
+        "normal": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "fault": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 1,
+            "maximum": 1
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "recovery": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        }
+      },
+      "aid_updates": {
+        "ev_pos": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 149,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 48,
+            "maximum": 49
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 697,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 0.1039999999999992,
+            "maximum": 0.1280000000000001
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.16799999999999926,
+            "maximum": 0.27199999999999847
+          }
+        },
+        "ev_vel": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 149,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 48,
+            "maximum": 49
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 697,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 0.1039999999999992,
+            "maximum": 0.1280000000000001
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.16799999999999926,
+            "maximum": 0.27199999999999847
+          }
+        }
+      }
+    },
+    "reverse_time": {
+      "seeds": [
+        11,
+        22,
+        33,
+        44,
+        55
+      ],
+      "sent": {
+        "n": 5,
+        "minimum": 1000,
+        "maximum": 1000
+      },
+      "variance_z": {
+        "n": 5,
+        "minimum": 10000.0,
+        "maximum": 10000.0
+      },
+      "nominal_xy_rms_m": {
+        "n": 5,
+        "minimum": 0.007670956152546019,
+        "maximum": 0.010016940296681199
+      },
+      "nominal_vxy_rms_mps": {
+        "n": 5,
+        "minimum": 0.011184928896420648,
+        "maximum": 0.016590543050683425
+      },
+      "recovery_z_rms_m": {
+        "n": 5,
+        "minimum": 0.004297273019754806,
+        "maximum": 0.02451343520959844
+      },
+      "recovery_vz_rms_mps": {
+        "n": 5,
+        "minimum": 0.005443859056057598,
+        "maximum": 0.006952611953659086
+      },
+      "fault_receive_minus_sample_ms": {
+        "n": 5,
+        "minimum": 4900.0225,
+        "maximum": 4924.0005
+      },
+      "reset_increments": {
+        "normal": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "fault": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 1,
+            "maximum": 1
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 1,
+            "maximum": 1
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "recovery": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        }
+      },
+      "aid_updates": {
+        "ev_pos": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 149,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 1
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 698,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 5.103999999999999,
+            "maximum": 5.128
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.35999999999999943,
+            "maximum": 0.3719999999999999
+          }
+        },
+        "ev_vel": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 149,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 1
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 698,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 5.207999999999998,
+            "maximum": 5.216000000000001
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.35999999999999943,
+            "maximum": 0.3719999999999999
+          }
+        }
+      }
+    },
+    "stale_velocity": {
+      "seeds": [
+        11,
+        22,
+        33,
+        44,
+        55
+      ],
+      "sent": {
+        "n": 5,
+        "minimum": 1000,
+        "maximum": 1000
+      },
+      "variance_z": {
+        "n": 5,
+        "minimum": 10000.0,
+        "maximum": 10000.0
+      },
+      "nominal_xy_rms_m": {
+        "n": 5,
+        "minimum": 0.007579799648416588,
+        "maximum": 0.009291368772889597
+      },
+      "nominal_vxy_rms_mps": {
+        "n": 5,
+        "minimum": 0.012308860288833606,
+        "maximum": 0.01706254088513025
+      },
+      "recovery_z_rms_m": {
+        "n": 5,
+        "minimum": 0.0037678272427292586,
+        "maximum": 0.004704979487692971
+      },
+      "recovery_vz_rms_mps": {
+        "n": 5,
+        "minimum": 0.005721289336326814,
+        "maximum": 0.007000790842086541
+      },
+      "fault_receive_minus_sample_ms": {
+        "n": 5,
+        "minimum": 3.99,
+        "maximum": 6.0135000000000005
+      },
+      "reset_increments": {
+        "normal": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "fault": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "recovery": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        }
+      },
+      "aid_updates": {
+        "ev_pos": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 149,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 49,
+            "maximum": 49
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 695,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 0.10400000000000631,
+            "maximum": 0.12000000000000455
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.1599999999999966,
+            "maximum": 0.27199999999999847
+          }
+        },
+        "ev_vel": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 149,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 49,
+            "maximum": 49
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 695,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 0.10400000000000631,
+            "maximum": 0.12000000000000455
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.1599999999999966,
+            "maximum": 0.27199999999999847
+          }
+        }
+      }
+    },
+    "uwb_gap-0.2": {
+      "seeds": [
+        11,
+        22,
+        33,
+        44,
+        55
+      ],
+      "sent": {
+        "n": 5,
+        "minimum": 1000,
+        "maximum": 1000
+      },
+      "variance_z": {
+        "n": 5,
+        "minimum": 10000.0,
+        "maximum": 10000.0
+      },
+      "nominal_xy_rms_m": {
+        "n": 5,
+        "minimum": 0.007370079235584168,
+        "maximum": 0.009507155901041368
+      },
+      "nominal_vxy_rms_mps": {
+        "n": 5,
+        "minimum": 0.012814208151573445,
+        "maximum": 0.016933319580059114
+      },
+      "recovery_z_rms_m": {
+        "n": 5,
+        "minimum": 0.0036004880100087818,
+        "maximum": 0.006031706714264943
+      },
+      "recovery_vz_rms_mps": {
+        "n": 5,
+        "minimum": 0.00557990385450423,
+        "maximum": 0.006742272715720966
+      },
+      "fault_receive_minus_sample_ms": {
+        "n": 5,
+        "minimum": 4.002,
+        "maximum": 5.977
+      },
+      "reset_increments": {
+        "normal": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "fault": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 1,
+            "maximum": 1
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "recovery": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        }
+      },
+      "aid_updates": {
+        "ev_pos": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 149,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 47,
+            "maximum": 47
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 698,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 0.28000000000000114,
+            "maximum": 0.30400000000000205
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.25199999999999534,
+            "maximum": 0.27199999999999847
+          }
+        },
+        "ev_vel": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 149,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 49,
+            "maximum": 49
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 698,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 0.1039999999999992,
+            "maximum": 0.12000000000000455
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.1599999999999966,
+            "maximum": 0.27199999999999847
+          }
+        }
+      }
+    },
+    "uwb_gap-1": {
+      "seeds": [
+        11,
+        22,
+        33,
+        44,
+        55
+      ],
+      "sent": {
+        "n": 5,
+        "minimum": 1000,
+        "maximum": 1000
+      },
+      "variance_z": {
+        "n": 5,
+        "minimum": 10000.0,
+        "maximum": 10000.0
+      },
+      "nominal_xy_rms_m": {
+        "n": 5,
+        "minimum": 0.006882798087528422,
+        "maximum": 0.00908558235130556
+      },
+      "nominal_vxy_rms_mps": {
+        "n": 5,
+        "minimum": 0.013399756871724386,
+        "maximum": 0.01976047074391498
+      },
+      "recovery_z_rms_m": {
+        "n": 5,
+        "minimum": 0.003882875403157432,
+        "maximum": 0.009137330827087889
+      },
+      "recovery_vz_rms_mps": {
+        "n": 5,
+        "minimum": 0.00575781315458478,
+        "maximum": 0.007226071257231099
+      },
+      "fault_receive_minus_sample_ms": {
+        "n": 5,
+        "minimum": 3.9355,
+        "maximum": 7.988
+      },
+      "reset_increments": {
+        "normal": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "fault": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 1,
+            "maximum": 1
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "recovery": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        }
+      },
+      "aid_updates": {
+        "ev_pos": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 149,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 39,
+            "maximum": 39
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 699,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 1.0799999999999983,
+            "maximum": 1.1039999999999992
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.2560000000000002,
+            "maximum": 0.27199999999999847
+          }
+        },
+        "ev_vel": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 149,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 49,
+            "maximum": 49
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 699,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 0.1039999999999992,
+            "maximum": 0.12000000000000455
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.1599999999999966,
+            "maximum": 0.27199999999999847
+          }
+        }
+      }
+    },
+    "uwb_gap-5": {
+      "seeds": [
+        11,
+        22,
+        33,
+        44,
+        55
+      ],
+      "sent": {
+        "n": 5,
+        "minimum": 1000,
+        "maximum": 1000
+      },
+      "variance_z": {
+        "n": 5,
+        "minimum": 10000.0,
+        "maximum": 10000.0
+      },
+      "nominal_xy_rms_m": {
+        "n": 5,
+        "minimum": 0.008713740721836644,
+        "maximum": 0.010552171126542576
+      },
+      "nominal_vxy_rms_mps": {
+        "n": 5,
+        "minimum": 0.01453905206462021,
+        "maximum": 0.0175829212399298
+      },
+      "recovery_z_rms_m": {
+        "n": 5,
+        "minimum": 0.0038363621469523234,
+        "maximum": 0.005828989226971792
+      },
+      "recovery_vz_rms_mps": {
+        "n": 5,
+        "minimum": 0.005713613105906159,
+        "maximum": 0.0069780638661926814
+      },
+      "fault_receive_minus_sample_ms": {
+        "n": 5,
+        "minimum": 3.831,
+        "maximum": 3.9785000000000004
+      },
+      "reset_increments": {
+        "normal": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "fault": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "recovery": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        }
+      },
+      "aid_updates": {
+        "ev_pos": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 148,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 699,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 5.079999999999998,
+            "maximum": 5.103999999999999
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.2560000000000002,
+            "maximum": 0.28000000000000114
+          }
+        },
+        "ev_vel": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 148,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 49,
+            "maximum": 49
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 699,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 0.10400000000000631,
+            "maximum": 0.1280000000000001
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.16799999999999926,
+            "maximum": 0.28000000000000114
+          }
+        }
+      }
+    },
+    "variance-m0-z1": {
+      "seeds": [
+        11,
+        22,
+        33,
+        44,
+        55
+      ],
+      "sent": {
+        "n": 5,
+        "minimum": 1000,
+        "maximum": 1000
+      },
+      "variance_z": {
+        "n": 5,
+        "minimum": 1.0,
+        "maximum": 1.0
+      },
+      "nominal_xy_rms_m": {
+        "n": 5,
+        "minimum": 0.0068668973861561134,
+        "maximum": 0.009704743823668467
+      },
+      "nominal_vxy_rms_mps": {
+        "n": 5,
+        "minimum": 0.013094932073704074,
+        "maximum": 0.016569945001782414
+      },
+      "recovery_z_rms_m": {
+        "n": 5,
+        "minimum": 0.004005839677881797,
+        "maximum": 0.00997746881122278
+      },
+      "recovery_vz_rms_mps": {
+        "n": 5,
+        "minimum": 0.0060751910590905655,
+        "maximum": 0.006552525535698968
+      },
+      "fault_receive_minus_sample_ms": {
+        "n": 5,
+        "minimum": 3.932,
+        "maximum": 7.9285
+      },
+      "reset_increments": {
+        "normal": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "fault": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "recovery": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        }
+      },
+      "aid_updates": {
+        "ev_pos": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 148,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 49,
+            "maximum": 49
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 696,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 0.1039999999999992,
+            "maximum": 0.12000000000000455
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.1559999999999988,
+            "maximum": 0.28000000000000114
+          }
+        },
+        "ev_vel": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 148,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 49,
+            "maximum": 49
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 696,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 0.1039999999999992,
+            "maximum": 0.12000000000000455
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.1559999999999988,
+            "maximum": 0.28000000000000114
+          }
+        }
+      }
+    },
+    "variance-m0-z100": {
+      "seeds": [
+        11,
+        22,
+        33,
+        44,
+        55
+      ],
+      "sent": {
+        "n": 5,
+        "minimum": 1000,
+        "maximum": 1000
+      },
+      "variance_z": {
+        "n": 5,
+        "minimum": 100.0,
+        "maximum": 100.0
+      },
+      "nominal_xy_rms_m": {
+        "n": 5,
+        "minimum": 0.0077939371407824655,
+        "maximum": 0.008501630933911751
+      },
+      "nominal_vxy_rms_mps": {
+        "n": 5,
+        "minimum": 0.013607364728647165,
+        "maximum": 0.014684035072677416
+      },
+      "recovery_z_rms_m": {
+        "n": 5,
+        "minimum": 0.004084741017766295,
+        "maximum": 0.009199319406663154
+      },
+      "recovery_vz_rms_mps": {
+        "n": 5,
+        "minimum": 0.006409272849572654,
+        "maximum": 0.007065380684188493
+      },
+      "fault_receive_minus_sample_ms": {
+        "n": 5,
+        "minimum": 3.6695,
+        "maximum": 7.781000000000001
+      },
+      "reset_increments": {
+        "normal": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "fault": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "recovery": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        }
+      },
+      "aid_updates": {
+        "ev_pos": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 149,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 49,
+            "maximum": 49
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 699,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 0.10400000000000631,
+            "maximum": 0.12000000000000455
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.16799999999999926,
+            "maximum": 0.27199999999999847
+          }
+        },
+        "ev_vel": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 149,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 49,
+            "maximum": 49
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 699,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 0.10400000000000631,
+            "maximum": 0.12000000000000455
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.16799999999999926,
+            "maximum": 0.27199999999999847
+          }
+        }
+      }
+    },
+    "variance-m0-z10000": {
+      "seeds": [
+        11,
+        22,
+        33,
+        44,
+        55
+      ],
+      "sent": {
+        "n": 5,
+        "minimum": 1000,
+        "maximum": 1000
+      },
+      "variance_z": {
+        "n": 5,
+        "minimum": 10000.0,
+        "maximum": 10000.0
+      },
+      "nominal_xy_rms_m": {
+        "n": 5,
+        "minimum": 0.005844517212974371,
+        "maximum": 0.010353034747999838
+      },
+      "nominal_vxy_rms_mps": {
+        "n": 5,
+        "minimum": 0.010469937935486574,
+        "maximum": 0.016641998806868223
+      },
+      "recovery_z_rms_m": {
+        "n": 5,
+        "minimum": 0.003892431912261863,
+        "maximum": 0.00907272794364695
+      },
+      "recovery_vz_rms_mps": {
+        "n": 5,
+        "minimum": 0.0059751166636817015,
+        "maximum": 0.007057541869437583
+      },
+      "fault_receive_minus_sample_ms": {
+        "n": 5,
+        "minimum": 3.6305,
+        "maximum": 7.8785
+      },
+      "reset_increments": {
+        "normal": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "fault": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "recovery": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        }
+      },
+      "aid_updates": {
+        "ev_pos": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 149,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 48,
+            "maximum": 49
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 698,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 0.10400000000000631,
+            "maximum": 0.11200000000000188
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.1599999999999966,
+            "maximum": 0.2560000000000002
+          }
+        },
+        "ev_vel": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 149,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 48,
+            "maximum": 49
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 698,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 0.10400000000000631,
+            "maximum": 0.11200000000000188
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.1599999999999966,
+            "maximum": 0.2560000000000002
+          }
+        }
+      }
+    },
+    "variance-m0-z1000000": {
+      "seeds": [
+        11,
+        22,
+        33,
+        44,
+        55
+      ],
+      "sent": {
+        "n": 5,
+        "minimum": 1000,
+        "maximum": 1000
+      },
+      "variance_z": {
+        "n": 5,
+        "minimum": 1000000.0,
+        "maximum": 1000000.0
+      },
+      "nominal_xy_rms_m": {
+        "n": 5,
+        "minimum": 0.007414277374490996,
+        "maximum": 0.010306053443967995
+      },
+      "nominal_vxy_rms_mps": {
+        "n": 5,
+        "minimum": 0.012062563556585871,
+        "maximum": 0.017619281239248087
+      },
+      "recovery_z_rms_m": {
+        "n": 5,
+        "minimum": 0.003967714741087647,
+        "maximum": 0.004870893229349491
+      },
+      "recovery_vz_rms_mps": {
+        "n": 5,
+        "minimum": 0.005915532439654596,
+        "maximum": 0.006887893520724359
+      },
+      "fault_receive_minus_sample_ms": {
+        "n": 5,
+        "minimum": 3.9935,
+        "maximum": 7.984
+      },
+      "reset_increments": {
+        "normal": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "fault": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "recovery": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        }
+      },
+      "aid_updates": {
+        "ev_pos": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 149,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 49,
+            "maximum": 49
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 698,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 0.1039999999999992,
+            "maximum": 0.12000000000000455
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.1599999999999966,
+            "maximum": 0.27199999999999847
+          }
+        },
+        "ev_vel": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 149,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 49,
+            "maximum": 49
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 698,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 0.1039999999999992,
+            "maximum": 0.12000000000000455
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.1599999999999966,
+            "maximum": 0.27199999999999847
+          }
+        }
+      }
+    },
+    "variance-m1-z1": {
+      "seeds": [
+        11,
+        22,
+        33,
+        44,
+        55
+      ],
+      "sent": {
+        "n": 5,
+        "minimum": 1000,
+        "maximum": 1000
+      },
+      "variance_z": {
+        "n": 5,
+        "minimum": 0.010000000707805157,
+        "maximum": 0.010000000707805157
+      },
+      "nominal_xy_rms_m": {
+        "n": 5,
+        "minimum": 0.006883478778921597,
+        "maximum": 0.009950768004621144
+      },
+      "nominal_vxy_rms_mps": {
+        "n": 5,
+        "minimum": 0.01182147720679992,
+        "maximum": 0.016880201247957225
+      },
+      "recovery_z_rms_m": {
+        "n": 5,
+        "minimum": 0.0026459451365177552,
+        "maximum": 0.008009114202927648
+      },
+      "recovery_vz_rms_mps": {
+        "n": 5,
+        "minimum": 0.005090977977154391,
+        "maximum": 0.006094907479083812
+      },
+      "fault_receive_minus_sample_ms": {
+        "n": 5,
+        "minimum": 3.956,
+        "maximum": 7.9935
+      },
+      "reset_increments": {
+        "normal": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "fault": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "recovery": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        }
+      },
+      "aid_updates": {
+        "ev_pos": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 148,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 49,
+            "maximum": 49
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 699,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 0.10400000000000631,
+            "maximum": 0.12000000000000455
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.2560000000000002,
+            "maximum": 0.28000000000000114
+          }
+        },
+        "ev_vel": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 148,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 49,
+            "maximum": 49
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 699,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 0.10400000000000631,
+            "maximum": 0.12000000000000455
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.2560000000000002,
+            "maximum": 0.28000000000000114
+          }
+        }
+      }
+    },
+    "variance-m1-z100": {
+      "seeds": [
+        11,
+        22,
+        33,
+        44,
+        55
+      ],
+      "sent": {
+        "n": 5,
+        "minimum": 1000,
+        "maximum": 1000
+      },
+      "variance_z": {
+        "n": 5,
+        "minimum": 0.010000000707805157,
+        "maximum": 0.010000000707805157
+      },
+      "nominal_xy_rms_m": {
+        "n": 5,
+        "minimum": 0.0067476746174463306,
+        "maximum": 0.009009610476530237
+      },
+      "nominal_vxy_rms_mps": {
+        "n": 5,
+        "minimum": 0.01162566840218343,
+        "maximum": 0.014653281185390854
+      },
+      "recovery_z_rms_m": {
+        "n": 5,
+        "minimum": 0.002595006739582173,
+        "maximum": 0.004624493612370059
+      },
+      "recovery_vz_rms_mps": {
+        "n": 5,
+        "minimum": 0.005065181886856975,
+        "maximum": 0.005517959900045941
+      },
+      "fault_receive_minus_sample_ms": {
+        "n": 5,
+        "minimum": 3.974,
+        "maximum": 5.973
+      },
+      "reset_increments": {
+        "normal": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "fault": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "recovery": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        }
+      },
+      "aid_updates": {
+        "ev_pos": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 149,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 49,
+            "maximum": 49
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 699,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 0.10400000000000631,
+            "maximum": 0.12000000000000455
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.2560000000000002,
+            "maximum": 0.27199999999999847
+          }
+        },
+        "ev_vel": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 149,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 49,
+            "maximum": 49
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 699,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 0.10400000000000631,
+            "maximum": 0.12000000000000455
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.2560000000000002,
+            "maximum": 0.27199999999999847
+          }
+        }
+      }
+    },
+    "variance-m1-z10000": {
+      "seeds": [
+        11,
+        22,
+        33,
+        44,
+        55
+      ],
+      "sent": {
+        "n": 5,
+        "minimum": 1000,
+        "maximum": 1000
+      },
+      "variance_z": {
+        "n": 5,
+        "minimum": 0.010000000707805157,
+        "maximum": 0.010000000707805157
+      },
+      "nominal_xy_rms_m": {
+        "n": 5,
+        "minimum": 0.006589851228083656,
+        "maximum": 0.009644456206388352
+      },
+      "nominal_vxy_rms_mps": {
+        "n": 5,
+        "minimum": 0.012865628525107647,
+        "maximum": 0.01722449281672102
+      },
+      "recovery_z_rms_m": {
+        "n": 5,
+        "minimum": 0.002692624261707901,
+        "maximum": 0.0037671736917238552
+      },
+      "recovery_vz_rms_mps": {
+        "n": 5,
+        "minimum": 0.004661472642253413,
+        "maximum": 0.0061969741294478475
+      },
+      "fault_receive_minus_sample_ms": {
+        "n": 5,
+        "minimum": 3.95,
+        "maximum": 7.9665
+      },
+      "reset_increments": {
+        "normal": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "fault": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "recovery": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        }
+      },
+      "aid_updates": {
+        "ev_pos": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 149,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 49,
+            "maximum": 49
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 697,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 0.1039999999999992,
+            "maximum": 0.12000000000000455
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.17999999999999972,
+            "maximum": 0.27199999999999847
+          }
+        },
+        "ev_vel": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 149,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 49,
+            "maximum": 49
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 697,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 0.1039999999999992,
+            "maximum": 0.12000000000000455
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.17999999999999972,
+            "maximum": 0.27199999999999847
+          }
+        }
+      }
+    },
+    "variance-m1-z1000000": {
+      "seeds": [
+        11,
+        22,
+        33,
+        44,
+        55
+      ],
+      "sent": {
+        "n": 5,
+        "minimum": 1000,
+        "maximum": 1000
+      },
+      "variance_z": {
+        "n": 5,
+        "minimum": 0.010000000707805157,
+        "maximum": 0.010000000707805157
+      },
+      "nominal_xy_rms_m": {
+        "n": 5,
+        "minimum": 0.006967985307198727,
+        "maximum": 0.010088816268576701
+      },
+      "nominal_vxy_rms_mps": {
+        "n": 5,
+        "minimum": 0.012625315789034211,
+        "maximum": 0.018980922948421988
+      },
+      "recovery_z_rms_m": {
+        "n": 5,
+        "minimum": 0.0022603652696242395,
+        "maximum": 0.003908599345022351
+      },
+      "recovery_vz_rms_mps": {
+        "n": 5,
+        "minimum": 0.004693218026787036,
+        "maximum": 0.005682700779731726
+      },
+      "fault_receive_minus_sample_ms": {
+        "n": 5,
+        "minimum": 3.96,
+        "maximum": 4.031
+      },
+      "reset_increments": {
+        "normal": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "fault": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "recovery": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        }
+      },
+      "aid_updates": {
+        "ev_pos": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 149,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 49,
+            "maximum": 49
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 696,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 0.12000000000000455,
+            "maximum": 0.12000000000000455
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.17999999999999972,
+            "maximum": 0.27199999999999847
+          }
+        },
+        "ev_vel": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 149,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 49,
+            "maximum": 49
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 696,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 0.12000000000000455,
+            "maximum": 0.12000000000000455
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.17999999999999972,
+            "maximum": 0.27199999999999847
+          }
+        }
+      }
+    },
+    "vertical_aiding": {
+      "seeds": [
+        11,
+        22,
+        33,
+        44,
+        55
+      ],
+      "sent": {
+        "n": 5,
+        "minimum": 1000,
+        "maximum": 1000
+      },
+      "variance_z": {
+        "n": 5,
+        "minimum": 10000.0,
+        "maximum": 10000.0
+      },
+      "nominal_xy_rms_m": {
+        "n": 5,
+        "minimum": 0.007944026396145732,
+        "maximum": 0.010038266630161025
+      },
+      "nominal_vxy_rms_mps": {
+        "n": 5,
+        "minimum": 0.013705434204554076,
+        "maximum": 0.019339603883536043
+      },
+      "recovery_z_rms_m": {
+        "n": 5,
+        "minimum": 55.982388204361946,
+        "maximum": 100.76136379550931
+      },
+      "recovery_vz_rms_mps": {
+        "n": 5,
+        "minimum": 5.448113943250076,
+        "maximum": 6.641702705776316
+      },
+      "fault_receive_minus_sample_ms": {
+        "n": 5,
+        "minimum": 3.899,
+        "maximum": 7.936
+      },
+      "reset_increments": {
+        "normal": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "fault": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "recovery": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 687,
+            "maximum": 700
+          }
+        }
+      },
+      "aid_updates": {
+        "ev_pos": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 149,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 49,
+            "maximum": 49
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 686,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 0.10400000000000631,
+            "maximum": 0.12000000000000455
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.16799999999999926,
+            "maximum": 0.27199999999999847
+          }
+        },
+        "ev_vel": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 149,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 49,
+            "maximum": 49
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 686,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 0.10400000000000631,
+            "maximum": 0.12000000000000455
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.16799999999999926,
+            "maximum": 0.27199999999999847
+          }
+        }
+      }
+    },
+    "vertical_aiding-position-only": {
+      "seeds": [
+        11,
+        22,
+        33,
+        44,
+        55
+      ],
+      "sent": {
+        "n": 5,
+        "minimum": 1000,
+        "maximum": 1000
+      },
+      "variance_z": {
+        "n": 0,
+        "minimum": null,
+        "maximum": null
+      },
+      "nominal_xy_rms_m": {
+        "n": 5,
+        "minimum": 0.011603189347632648,
+        "maximum": 0.014287656520198843
+      },
+      "nominal_vxy_rms_mps": {
+        "n": 5,
+        "minimum": 0.016525913896547995,
+        "maximum": 0.02402934176714745
+      },
+      "recovery_z_rms_m": {
+        "n": 5,
+        "minimum": 0.010480426333863153,
+        "maximum": 0.032622568174407555
+      },
+      "recovery_vz_rms_mps": {
+        "n": 5,
+        "minimum": 0.0078091899154944105,
+        "maximum": 0.00981345632369978
+      },
+      "fault_receive_minus_sample_ms": {
+        "n": 5,
+        "minimum": 3.969,
+        "maximum": 7.7405
+      },
+      "reset_increments": {
+        "normal": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        },
+        "fault": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 1
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 1
+          }
+        },
+        "recovery": {
+          "xy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "z_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vxy_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "vz_reset_counter": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          }
+        }
+      },
+      "aid_updates": {
+        "ev_pos": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 149,
+            "maximum": 149
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 48,
+            "maximum": 49
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 698,
+            "maximum": 699
+          },
+          "max_gap_s": {
+            "n": 5,
+            "minimum": 0.10400000000000631,
+            "maximum": 0.12000000000000455
+          },
+          "recovery_s": {
+            "n": 5,
+            "minimum": 0.1599999999999966,
+            "maximum": 0.2640000000000029
+          }
+        },
+        "ev_vel": {
+          "nominal_count": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "fault_count": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "recovery_count": {
+            "n": 5,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "max_gap_s": {
+            "n": 0,
+            "minimum": null,
+            "maximum": null
+          },
+          "recovery_s": {
+            "n": 0,
+            "minimum": null,
+            "maximum": null
+          }
+        }
+      }
+    }
+  }
+}
