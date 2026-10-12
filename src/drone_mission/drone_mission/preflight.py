@@ -3,13 +3,15 @@ from .bridge_status import BRIDGE_OBSERVATION_MAX_AGE_S
 from .contracts import finite
 
 
-def field_preflight(settings, sample, *, map_loaded, recording_ok):
+def field_preflight(settings, sample, *, map_loaded, recording_ok, cpp_ai_ready=False):
     checks = []
 
     def check(code, title, passed, required=True):
         checks.append(dict(code=code, title=title, passed=bool(passed), required=required))
 
     check('execution', '실기 명령 출력 활성', settings.execute)
+    if settings.mission_ai == 'cpp_bt':
+        check('mission_ai', 'C++ 미션 AI 연결', cpp_ai_ready)
     for name, title in (
         ('layout_confirmed', '앵커 배치 실측'),
         ('alignment_confirmed', '창고·PX4 좌표 방향 검증'),

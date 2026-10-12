@@ -28,6 +28,7 @@ def test_actual_field_launcher_check_only_starts_no_processes(tmp_path, change, 
     if change == 'wrong_tag': mission['drone_id'] = '5'
     files = dict(config=mission, alignment=alignment, **{'site-config':{},'ledger':{}})
     args = [sys.executable, str(root/'src/sangwon_AI/ops/final_field_session.py'), '--check-only']
+    args += ['--cpp-ai-binary', sys.executable]
     for name, content in files.items():
         path = tmp_path/(name+'.json'); path.write_text(json.dumps(content), encoding='utf-8')
         args += ['--'+name, str(path)]

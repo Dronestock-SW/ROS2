@@ -23,12 +23,13 @@ from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
 from rclpy.qos import DurabilityPolicy, QoSProfile, qos_profile_sensor_data
 from std_msgs.msg import String
-from sensor_msgs.msg import BatteryState
+from sensor_msgs.msg import BatteryState, LaserScan
 
 from drone_uwb.processing.gazebo_geometry import rotation_world_body
 from drone_uwb.integration.sitl.sitl_target_contract import PX4GlobalReference
 from drone_uwb.integration.planar import enu_xy_to_map, enu_vector_to_map, enu_yaw_to_map, map_xy_to_enu, map_yaw_to_enu
 from .contracts import Settings, finite
+from .lidar_input import beam_attitudes, nearest_uwb
 from .session import FlightSession, Snapshot, native_estimator_valid
 from .mission_chain import MissionChain
 from .local_xy import LocalXYMission
@@ -72,11 +73,14 @@ class FlightNode(Node):
         self.declare_parameter('native_plan_binary', '', descriptor)
         self.declare_parameter('native_map_file', '', descriptor)
         self.declare_parameter('native_map_sha256', '', descriptor)
+        self.declare_parameter('cpp_ai_binary', '', descriptor)
         self.declare_parameter('ledger_file', str(Path.home()/'.local/state/dronestock-flight/requests.json'), descriptor)
         values = json.loads(Path(self.get_parameter('config_file').value).read_text(encoding='utf-8'))
         self.settings = replace(Settings(**values), execute=self.get_parameter('execute').value)
         test_mode = self.get_parameter('test_mode').value
         self.rc_required = not test_mode
+        if self.settings.local_xy and self.settings.execute and not test_mode and self.settings.mission_ai != 'cpp_bt':
+            raise ValueError('field_local_xy_requires_cpp_mission_ai')
         self.native_planner = None
         if self.settings.full_mission:
             binary = self.get_parameter('native_plan_binary').value
@@ -122,6 +126,11 @@ class FlightNode(Node):
             if self.native_planner is not None:
                 (root/'native-map.json').write_bytes(self.native_planner.raw_map)
             self.log = (root/'events.jsonl').open('x', encoding='utf-8')
+        self.cpp_plan_recorded = None
+        if self.settings.mission_ai == 'cpp_bt':
+            from .cpp_mission_ai import CppMissionAI
+            self.session.mission_ai = CppMissionAI(self.get_parameter('cpp_ai_binary').value)
+            self.record(dict(type='cpp_ai_connected', **self.session.mission_ai.status()))
         self.status_pub = self.create_publisher(String, '/flight_state', 10)
         self.valid_pub = self.create_publisher(String, '/target_valid', 10)
         self.result_pub = self.create_publisher(String, '/mission_result', 10)
@@ -143,6 +152,8 @@ class FlightNode(Node):
                 ('height', PoseStamped, '/uwb/btf_xyz')):
             self.create_subscription(cls, topic, lambda msg, key=name: self.receive(key, msg),
                                      qos_profile_sensor_data)
+        if self.settings.mission_ai == 'cpp_bt':
+            self.create_subscription(LaserScan, '/scan', lambda msg: self.receive('lidar', msg), qos_profile_sensor_data)
         self.create_subscription(String, self.settings.bridge_topic, self.bridge, 10)
         self.create_subscription(GeoPointStamped, '/mavros/global_position/gp_origin', self.receive_origin,
             QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL))
@@ -216,6 +227,21 @@ class FlightNode(Node):
                     or key in self.samples and stamp <= stamp_ns(self.samples[key][0])):
                 return
         self.samples[key] = (msg, time.monotonic())
+        if key=='lidar':
+            if not hasattr(self,'lidar_history'):self.lidar_history=[]
+            self.lidar_history.append((msg,time.monotonic()));self.lidar_history[:]=self.lidar_history[-3:]
+        if key in ('pose','uwb') and self.settings.mission_ai == 'cpp_bt':
+            if not hasattr(self,'attitude_history'):self.attitude_history=[];self.uwb_history=[]
+            stamp=stamp_ns(msg)
+            if key=='pose' and msg.header.frame_id=='map':
+                q=msg.pose.pose.orientation;value=(q.w,q.x,q.y,q.z);history=self.attitude_history
+                if not finite(*value) or abs(sum(v*v for v in value)-1)>.02:return
+            elif key=='uwb' and msg.header.frame_id=='uwb_map':
+                p=msg.pose.pose.position;value=(p.x,p.y);history=self.uwb_history
+                if not finite(*value):return
+            else:return
+            if history and stamp<=history[-1][0]:return
+            history.append((stamp,value));history[:]=[(t,v) for t,v in history[-256:] if stamp-t<=2_000_000_000]
 
     def marker_observation(self, msg):
         try:
@@ -405,6 +431,38 @@ class FlightNode(Node):
             if msg.header.frame_id == 'uwb_map' and finite(p.x, p.y):
                 s.uwb_xy, s.uwb_stamp_ns = (p.x, p.y), stamp_ns(msg)
                 s.uwb_age_s = self.age('uwb')
+        if 'lidar' in self.samples and 'pose' in self.samples:
+            scan=None
+            for candidate,received in reversed(getattr(self,'lidar_history',[])):
+                try:
+                    reference,beams=beam_attitudes(getattr(self,'attitude_history',[]),stamp_ns(candidate),float(candidate.time_increment),len(candidate.ranges))
+                    end_stamp=stamp_ns(candidate)+round((len(candidate.ranges)-1)*candidate.time_increment*1e9)
+                    end_age=(self.get_clock().now().nanoseconds-end_stamp)/1e9
+                    if not 0<=end_age<=.15:continue
+                    scan=candidate;break
+                except ValueError:continue
+            try:
+                if scan is None:raise ValueError('lidar_measured_time_attitude_unavailable')
+                w,x,y,z=reference
+                roll=math.atan2(2*(w*x+y*z),1-2*(x*x+y*y))
+                pitch=math.asin(max(-1.,min(1.,2*(w*y-z*x))))
+                yaw_enu=math.degrees(math.atan2(2*(w*z+x*y),1-2*(y*y+z*z)))
+                s.lidar_scan=dict(stamp_ns=end_stamp,first_beam_stamp_ns=stamp_ns(scan),frame_id=scan.header.frame_id,
+                    age_s=max(end_age,time.monotonic()-received),first_beam_age_s=(self.get_clock().now().nanoseconds-stamp_ns(scan))/1e9,
+                    angle_min=float(scan.angle_min),
+                    angle_increment=float(scan.angle_increment),range_min=float(scan.range_min),range_max=float(scan.range_max),
+                    time_increment=float(scan.time_increment),scan_time=float(scan.scan_time),
+                    ranges=[float(v) if math.isfinite(v) else None for v in scan.ranges],
+                    roll_rad=roll,pitch_rad=pitch,map_yaw_rad=math.radians(enu_yaw_to_map(yaw_enu,self.settings)),
+                    reference_quaternion=reference,beam_quaternions=beams,
+                    attitude_age_s=end_age,attitude_time_error_s=0.)
+                try:
+                    stamp,xy=nearest_uwb(getattr(self,'uwb_history',[]),end_stamp)
+                    s.lidar_scan.update(anchor_uwb_stamp_ns=stamp,anchor_uwb_xy=xy,
+                        anchor_uwb_age_s=(self.get_clock().now().nanoseconds-stamp)/1e9)
+                except ValueError:pass
+            except (ValueError,TypeError):
+                s.lidar_scan=None
         if 'height' in self.samples:
             msg = self.samples['height'][0]
             p = msg.pose.position
@@ -559,6 +617,10 @@ class FlightNode(Node):
         future.add_done_callback(completed)
 
     def operator_arm_gate(self, sample):
+        if self.settings.mission_ai == 'cpp_bt':
+            ai = getattr(self.session, 'mission_ai', None)
+            if ai is None or not ai.status()['connected']:
+                return 'cpp_mission_ai_unavailable'
         return arm_blocker(self.settings, sample,
             idle=self.session.phase == 'IDLE' and self.session.intent is None
                  and self.session.pending is None and not self.operator_arm_pending,
@@ -626,6 +688,12 @@ class FlightNode(Node):
             self.record(dict(type='scan_request', value=request))
             self.scan_renewed_s = time.monotonic()
         status = self.session.status()
+        ai = getattr(self.session, 'mission_ai', None)
+        if ai is not None and ai.plan_ref and self.cpp_plan_recorded != ai.plan_ref:
+            self.record(dict(type='cpp_ai_mission_prepared', **ai.preparation,
+                ai_session_id=ai.session_id, binary_sha256=ai.binary_sha256))
+            if self.log: os.fsync(self.log.fileno())
+            self.cpp_plan_recorded = ai.plan_ref
         if s.armed and 0 <= s.state_age_s <= 1.:
             self.operator_arm_pending = False
         status.update(operator_session_id=self.operator_session_id,
@@ -644,7 +712,10 @@ class FlightNode(Node):
         if self.settings.full_mission:
             status['preflight'] = field_preflight(self.settings, s,
                 map_loaded=self.native_planner is not None,
-                recording_ok=self.log is not None and not self.record_fault)
+                recording_ok=self.log is not None and not self.record_fault,
+                cpp_ai_ready=ai is not None and ai.status()['connected'])
+            if self.settings.mission_ai == 'cpp_bt':
+                status['preflight']['mission_ai'] = ai.status()
             status['target_feedback'] = self.target_feedback
             status['target_requested_global'] = self.session.target_global
             status['input_checks'] = dict(estimator_valid=s.estimator_valid,
@@ -684,6 +755,8 @@ class FlightNode(Node):
             self.previous_state = self.session.phase
 
     def destroy_node(self):
+        if getattr(getattr(self, 'session', None), 'mission_ai', None) is not None:
+            self.session.mission_ai.close()
         if self.log:
             self.log.close()
         if self.writer_lock:

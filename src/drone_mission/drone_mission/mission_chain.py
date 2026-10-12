@@ -46,8 +46,8 @@ class MissionChain(FlightSession):
             return False
         return super().submit(payload, now, wall_s)
 
-    def ready(self, s, now, *, ground=False):
-        reason = super().ready(s, now, ground=ground)
+    def ready(self, s, now, *, ground=False, horizontal_support=False):
+        reason = super().ready(s, now, ground=ground, horizontal_support=horizontal_support)
         if reason != 'ready':
             return reason
         if not self.settings.anchor_trial and not self.settings.heading_control_confirmed:

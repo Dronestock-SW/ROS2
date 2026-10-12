@@ -19,6 +19,7 @@ def main():
     for name in ('config', 'alignment', 'site-config', 'mission-store', 'state-dir', 'ledger'):
         p.add_argument('--' + name, type=Path, required=True)
     p.add_argument('--check-only', action='store_true')
+    p.add_argument('--cpp-ai-binary', type=Path, required=True)
     a = p.parse_args()
     for path in (a.config, a.alignment, a.site_config, a.mission_store, a.ledger):
         if not path.is_file():
@@ -33,7 +34,9 @@ def main():
         mission_settings, observation_settings = validate_field_configuration(
             cfg, alignment, host_boot_id=boot)
         require_field_dependencies()
-    except (ValueError, RuntimeError) as exc:
+        from drone_mission.cpp_mission_ai import inspect_binary
+        cpp_binary, cpp_sha256 = inspect_binary(a.cpp_ai_binary)
+    except (ValueError, RuntimeError, OSError) as exc:
         p.error(str(exc))
     manifest = a.state_dir / 'processes.json'
     if manifest.exists():
@@ -47,7 +50,8 @@ def main():
             except OSError:
                 p.error('Port already in use: ' + str(port))
     if a.check_only:
-        print('Configuration precheck passed; FC readiness not tested; no processes started')
+        print('Configuration precheck passed; C++ executable SHA256=' + cpp_sha256
+              + '; AI handshake and FC readiness not tested; no processes started')
         return
     root = Path(__file__).resolve().parents[3]
     env = dict(os.environ)
@@ -70,6 +74,7 @@ def main():
         ('mission', ['-c', code, '--ros-args', '-p', 'execute:=true', '-p',
                      'config_file:=' + str(a.config), '-p',
                      'ledger_file:=' + str(a.ledger), '-p',
+                      'cpp_ai_binary:=' + str(cpp_binary), '-p',
                      'record_directory:=' + str(a.state_dir / ('events-' + str(time.time_ns())))]),
         ('telemetry', ['-m', 'drone_platform_link.runtime']),
     ]

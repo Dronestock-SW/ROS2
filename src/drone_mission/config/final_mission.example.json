@@ -1,4 +1,5 @@
 {
+  "mission_ai": "cpp_bt",
   "alignment_confirmed": false,
   "fusion_confirmed": false,
   "timing_confirmed": false,
@@ -37,5 +38,22 @@
   "bridge_topic": "/uwb/local_odometry_status",
   "bridge_host_boot_id": "REQUIRES_NEW_GROUND_ALIGNMENT",
   "execution_profile": "anchor_trial",
-  "command_frame": "local_xy"
+  "command_frame": "local_xy",
+  "lidar_gap": {
+    "enabled": false,
+    "frame_id": "laser_frame",
+    "mount_confirmed": false,
+    "timing_confirmed": false,
+    "vertical_structure_confirmed": false,
+    "mount_ref": "",
+    "timing_ref": "",
+    "scene_ref": "",
+    "sensor_to_body_flu_m": [
+      null,
+      null,
+      0.15
+    ],
+    "sensor_to_body_yaw_rad": null,
+    "scan_plane_parallel_to_body_xy": false
+  }
 }

@@ -24,11 +24,31 @@ class LocalXYMission(MissionChain):
         self.goal = None
         self.gap_since = None
         self.last_pose = None
+        self.mission_ai = None
+        self.cpp_ceiling = None
+        self.cpp_wait_since = None
+        self.cpp_reply = None
+        self.cpp_leg_sequence = 0
+
+    def submit(self, payload, now, wall_s):
+        accepted = super().submit(payload, now, wall_s)
+        if accepted and self.intent and self.intent['action'] == 'start':
+            self.cpp_ceiling = payload.get('ceiling_height_m')
+        return accepted
 
     def ready(self, s, now, *, ground=False):
-        reason = super().ready(s, now, ground=ground)
+        support = (not ground and self.settings.lidar_gap.get('enabled') is True
+            and self.phase in ('TAKING_OFF','MOVING','DWELL','RETURNING')
+            and self.cpp_reply is not None and 0 <= now-self.cpp_reply['sample_time_s'] <= .15
+            and self.cpp_reply.get('lidar_support',{}).get('approved') is True
+            and isinstance(s.lidar_scan,dict) and 0 <= s.lidar_scan.get('age_s',1e9) <= .15
+            and 0 <= s.uwb_age_s <= .8 and 0 <= s.bridge_observation_age_s <= .8)
+        reason = super().ready(s, now, ground=ground, horizontal_support=support)
         if reason != 'ready':
             return reason
+        if self.settings.mission_ai == 'cpp_bt':
+            if self.mission_ai is None or not self.mission_ai.status(now)['connected']:
+                return 'cpp_mission_ai_unavailable'
         if not finite(s.altitude_enu_m):
             return 'px4_local_height_unavailable'
         if not s.local_setpoint_ready:
@@ -40,6 +60,8 @@ class LocalXYMission(MissionChain):
     def end(self, phase, reason, now):
         super().end(phase, reason, now)
         self.setpoint_xy = None
+        if self.mission_ai is not None and phase in ('PILOT_OVERRIDE','UNCONFIRMED','FAILED'):
+            self.mission_ai.release(phase, reason)
 
     def abort(self, reason, s, now):
         self.failure = reason
@@ -81,6 +103,9 @@ class LocalXYMission(MissionChain):
         self.targets_sent += 1
 
     def begin_return(self, s, now, ros_ns, reason='route_complete_return'):
+        if self.mission_ai is not None:
+            self.cpp_command = 'return_to_home'
+            return
         self.returning = True
         # Saved trial routes already include the homeward legs. Do not fly
         # the complete round trip a second time after reaching home.
@@ -139,16 +164,28 @@ class LocalXYMission(MissionChain):
                     if any(math.dist(a,b)>self.settings.max_leg_m for a,b in zip(points,points[1:])):
                         self.end('FAILED', 'route_leg_exceeds_trial_limit', now)
                         return []
+                    if self.settings.mission_ai == 'cpp_bt':
+                        try:
+                            if not self.mission_ai.prepare(r, self.settings, s, self.cpp_ceiling):
+                                self.reason = 'waiting_for_cpp_mission_plan'
+                                return []
+                            if math.dist(s.xy, self.mission_ai.prepare_home) > .01:
+                                raise ValueError('cpp_ai_launch_changed_regenerate_mission')
+                        except (ValueError, OSError) as exc:
+                            self.end('FAILED', str(exc), now)
+                            return []
                     self.consume(r)
                     self.assignment, self.intent = r, None
-                    self.home = tuple(s.xy)
+                    self.home = self.mission_ai.prepare_home if self.mission_ai else tuple(s.xy)
                     self.visited = [self.home]
                     self.setpoint_xy = self.home
-                    self.ground_height = self.height_target = s.altitude_enu_m
+                    self.ground_height = self.height_target = (self.mission_ai.prepare_ground_height
+                        if self.mission_ai else s.altitude_enu_m)
                     self.held_yaw = s.yaw_deg
                     self.started_s, self.started_ns = now, ros_ns
                     self.rc_switch_reference = {ch:s.rc_channels[ch-1] for ch in s.rc_switch_channels}
                     self.enter('PREPARING', 'local_setpoint_warmup', now)
+                    self.cpp_wait_since = now
                 return []
             elif r['action'] in ('land', 'return_to_home') and self.phase in self.ACTIVE:
                 self.consume(r); self.intent = None
@@ -160,16 +197,53 @@ class LocalXYMission(MissionChain):
         if self.phase not in self.ACTIVE:
             return []
         if self.phase in ('LANDING', 'GROUND_RECOVERY'):
+            if self.mission_ai is not None:
+                try:
+                    self.cpp_step(s, now, ros_ns)
+                except (ValueError, OSError) as exc:
+                    self.end('UNCONFIRMED', str(exc), now)
+                    return []
             if (self.pending is None and self.accepted_command and self.command_confirmed_s is not None
                     and s.connected and not s.armed and s.landed == 1
                     and 0 <= s.state_age_s <= 1 and 0 <= s.landed_age_s <= 1
                     and now-s.state_age_s >= self.command_confirmed_s
                     and now-s.landed_age_s >= self.command_confirmed_s):
+                if (self.phase == 'LANDING' and not self.failure and self.mission_ai is not None
+                        and (not self.cpp_reply or self.cpp_reply['phase'] != 'END')):
+                    if now-self.entered_s > self.settings.landing_timeout_s:
+                        self.end('UNCONFIRMED', 'cpp_ai_landing_completion_unverified', now)
+                    return []
                 self.landing_verified = self.phase == 'LANDING'
                 self.end('FAILED' if self.failure else 'END', self.failure or 'home_landed_disarmed', now)
             elif now-self.entered_s > self.settings.landing_timeout_s:
                 self.end('UNCONFIRMED', 'landing_or_mode_completion_unverified', now)
             return []
+        feedback_fresh = self.feedback_ns is not None and 0 <= (ros_ns-self.feedback_ns)/1e9 <= .5
+        if self.mission_ai is not None:
+            try:
+                reply = self.cpp_step(s, now, ros_ns)
+            except (ValueError, OSError) as exc:
+                self.abort(str(exc), s, now)
+                return self.actions
+            if reply is None:
+                if now-self.cpp_wait_since > .15:
+                    self.abort('cpp_ai_decision_expired', s, now)
+                return self.actions
+            self.cpp_reply = reply
+            if reply['phase'] in ('LANDING', 'FAILED'):
+                if (reply['phase'] == 'LANDING' and reply['home_verified']
+                        and reply['completed_waypoints'] == len(self.assignment['waypoints'])):
+                    self.completed_waypoints = reply['completed_waypoints']
+                    self.home_verified = True
+                    self.setpoint_xy = None
+                    self.enter('LANDING', 'cpp_bt_home_arrival_verified', now)
+                    self.issue('land', now)
+                else:
+                    self.abort('cpp_ai:' + reply['reason'], s, now)
+                return self.actions
+            if reply['phase'] == 'PILOT_OVERRIDE':
+                self.end('PILOT_OVERRIDE', 'cpp_ai_released_control', now)
+                return []
         reason = self.ready(s, now)
         if reason != 'ready':
             self.abort(reason, s, now)
@@ -185,7 +259,6 @@ class LocalXYMission(MissionChain):
         if now-self.started_s > 300 or s.battery < .15:
             self.abort('mission_time_or_battery_limit', s, now)
             return self.actions
-        feedback_fresh = self.feedback_ns is not None and 0 <= (ros_ns-self.feedback_ns)/1e9 <= .5
         if self.phase == 'PREPARING':
             if self.pending is None and not self.accepted_command and now-self.entered_s >= 1.2:
                 self.issue('offboard_mode', now)
@@ -209,6 +282,14 @@ class LocalXYMission(MissionChain):
                 self.abort('arm_state_not_confirmed', s, now)
             return self.actions
         if self.phase == 'TAKING_OFF':
+            if self.mission_ai is not None:
+                try:
+                    if self.cpp_reply['phase'] == 'MOVING': self.apply_cpp_navigation(now)
+                except (ValueError, TypeError, KeyError) as exc:
+                    self.abort('cpp_ai_invalid_decision:' + str(exc), s, now)
+                if now-self.entered_s > self.settings.takeoff_timeout_s:
+                    self.abort('takeoff_timeout', s, now)
+                return self.actions
             if math.dist(s.xy,self.home) > .6:
                 self.abort('takeoff_horizontal_drift', s, now)
             elif (s.armed and s.landed == 2 and feedback_fresh
@@ -221,6 +302,12 @@ class LocalXYMission(MissionChain):
             return self.actions
         if not s.armed or s.landed != 2:
             self.abort('airborne_state_lost', s, now)
+            return self.actions
+        if self.mission_ai is not None:
+            try:
+                self.apply_cpp_navigation(now)
+            except (ValueError, TypeError, KeyError) as exc:
+                self.abort('cpp_ai_invalid_decision:' + str(exc), s, now)
             return self.actions
         if self.phase in ('MOVING','RETURNING'):
             distance = math.dist(self.setpoint_xy,self.goal)
@@ -265,3 +352,52 @@ class LocalXYMission(MissionChain):
             if self.phase == 'DWELL' and now-self.entered_s > self.settings.leg_timeout_s+self.waypoint()['dwell_s']:
                 self.abort('hover_stability_timeout',s,now)
         return self.actions
+
+    def cpp_step(self, s, now, ros_ns):
+        feedback_age = (ros_ns-self.feedback_ns)/1e9 if self.feedback_ns is not None else math.inf
+        confirmed = (self.pending is None and self.accepted_command
+            and self.command_confirmed_s is not None
+            and s.connected and not s.armed and s.landed == 1
+            and 0 <= s.state_age_s <= 1 and 0 <= s.landed_age_s <= 1
+            and now-s.state_age_s >= self.command_confirmed_s
+            and now-s.landed_age_s >= self.command_confirmed_s)
+        command = getattr(self, 'cpp_command', '')
+        reply = self.mission_ai.step(s, now, executor_phase=self.phase,
+            feedback_age_s=feedback_age, landing_confirmed=confirmed,
+            executor_failure=self.failure or '', command=command)
+        # The command remains in coalesced snapshots until the C++ return latch
+        # is observed. Cancel/LAND still uses the independent executor guard.
+        if reply and reply.get('returning'): self.cpp_command = ''
+        if reply: self.cpp_reply = reply
+        return reply
+
+    def apply_cpp_navigation(self, now):
+        reply = self.cpp_reply
+        if reply['phase'] not in ('MOVING', 'DWELL', 'RETURNING'):
+            raise ValueError('cpp_ai_invalid_navigation_phase')
+        goal, stream = tuple(reply['goal_xy']), tuple(reply['stream_xy'])
+        if not self.settings.inside(goal) or not self.settings.inside(stream):
+            raise ValueError('cpp_ai_goal_outside_bounds')
+        if reply['leg_sequence'] != self.cpp_leg_sequence:
+            self.targets_sent += 1
+            self.cpp_leg_sequence = reply['leg_sequence']
+        self.index = reply['waypoint_index']
+        self.completed_waypoints = reply['completed_waypoints']
+        self.goal, self.setpoint_xy = goal, stream
+        self.returning, self.home_verified = reply['returning'], reply['home_verified']
+        if self.phase != reply['phase']:
+            self.enter(reply['phase'], 'cpp_bt_mission_decision', now)
+        self.arrival = dict(source='sangwon_cpp_bt', stable_s=reply['stable_s'],
+                            decision_sequence=reply['_sequence'])
+
+    def status(self):
+        out = super().status()
+        if self.mission_ai is not None:
+            out['mission_ai'] = self.mission_ai.status(self.last_tick)
+            if self.cpp_reply:
+                out['horizontal_observation'] = dict(self.cpp_reply.get('lidar_support',{}),
+                    gap_supported=self.cpp_reply.get('gap_supported',False),
+                    observation_gap=self.cpp_reply.get('observation_gap',False))
+        else:
+            out['mission_ai'] = dict(backend='python_test', connected=False, fc_transport=False)
+        return out

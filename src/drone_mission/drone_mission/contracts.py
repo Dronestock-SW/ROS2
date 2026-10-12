@@ -1,6 +1,6 @@
 """Validate local flight trials against the Platform v1 coordinate contract."""
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime
 import math
 from drone_uwb.integration.planar import y_axis_sign
@@ -15,6 +15,8 @@ def finite(*values):
 
 @dataclass(frozen=True)
 class Settings:
+    lidar_gap: dict = field(default_factory=dict)
+    mission_ai: str = 'python_test'
     command_frame: str = 'global'
     execution_profile: str = 'surveyed_mission'
     bridge_topic: str = '/uwb/bridge_status'
@@ -58,6 +60,14 @@ class Settings:
     layout_id: str = LAYOUT
 
     def __post_init__(self):
+        if not isinstance(self.lidar_gap, dict):
+            raise ValueError('lidar_gap_must_be_object')
+        if self.lidar_gap.get('enabled') is True and (self.mission_ai != 'cpp_bt' or not self.local_xy):
+            raise ValueError('lidar_gap_requires_cpp_local_xy')
+        if self.mission_ai not in ('python_test', 'cpp_bt'):
+            raise ValueError('unsupported_mission_ai')
+        if self.mission_ai == 'cpp_bt' and not self.local_xy:
+            raise ValueError('cpp_bt_requires_local_xy')
         if self.command_frame not in ('global', 'local_xy'):
             raise ValueError('unsupported_command_frame')
         if self.command_frame == 'local_xy' and not self.anchor_trial:

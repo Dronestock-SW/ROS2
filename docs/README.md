@@ -10,6 +10,8 @@
 
 | 찾는 내용 | 위치 |
 |---|---|
+| 테스트 웹의 실제 C++ 판단·단일 실행기 연결 | [12일 C++ 통합](report/cpp_field_mission_integration_20261012.md) |
+| 상단 LiDAR 상대 이동·제한된 UWB 공백 대응 | [12일 LiDAR 연결](report/lidar_gap_support_20261012.md) |
 | 모든 브랜치 대조·관측 계약·새 FINAL 검증 | [12일 FINAL 정리](report/final_cleanup_20261012.md) |
 | FINAL 실행 8·추정 변화·관측 공백·영상·속도 검토 | [12일 로그·영상 분석](report/hover_run8_analysis_20261012.md) |
 | UWB 공백·계산 시간·이력 격리 비교·수집기 보완 | [12일 처리 경로 분석](report/uwb_gap_processing_20261012.md) |

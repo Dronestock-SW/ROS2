@@ -59,6 +59,9 @@ class LocalPlatform:
 
     def can_start(self):
         return (self.assignment.get('control_action') != 'arm' and not self.store.active() and self.ground()
+                and (self.settings.mission_ai != 'cpp_bt' or (
+                    self.telemetry.get('mission_ai', {}).get('backend') == 'sangwon_cpp_bt'
+                    and self.telemetry.get('mission_ai', {}).get('connected') is True))
                 and self.telemetry.get('flight_state') == 'IDLE'
                 and (not self.settings.full_mission or (
                     self.site['ceiling_height_m'] is not None
@@ -66,6 +69,9 @@ class LocalPlatform:
 
     def can_arm(self):
         return (not self.store.active() and self.ground()
+                and (self.settings.mission_ai != 'cpp_bt' or (
+                    self.telemetry.get('mission_ai', {}).get('backend') == 'sangwon_cpp_bt'
+                    and self.telemetry.get('mission_ai', {}).get('connected') is True))
                 and self.assignment.get('control_action') is None
                 and self.telemetry.get('flight_state') == 'IDLE'
                 and self.telemetry.get('arm_request_available') is True)

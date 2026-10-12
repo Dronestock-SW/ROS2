@@ -23,6 +23,7 @@ def native_estimator_valid(msg):
 
 @dataclass
 class Snapshot:
+    lidar_scan: object = None
     yaw_deg: object = None
     battery: object = None
     battery_age_s: float = math.inf
@@ -165,7 +166,7 @@ class FlightSession:
         self.command_confirmed_s = None
         self.actions.append(dict(self.pending, **data))
 
-    def ready(self, s, now, *, ground=False):
+    def ready(self, s, now, *, ground=False, horizontal_support=False):
         if not s.command_services_ready:
             return 'mavros_command_services_unavailable'
         for name in ('layout_confirmed', 'alignment_confirmed', 'fusion_confirmed', 'takeoff_settings_confirmed',
@@ -182,14 +183,15 @@ class FlightSession:
             return 'px4_estimator_unavailable'
         if not s.xy or not self.settings.inside(s.xy) or not 0 <= s.pose_age_s <= self.settings.pose_timeout_s:
             return 'px4_pose_unavailable_or_outside_bounds'
-        if not 0 <= s.uwb_age_s <= .25:
+        if not 0 <= s.uwb_age_s <= .25 and not (horizontal_support and not ground):
             return 'uwb_unavailable'
         if self.settings.anchor_trial and not s.vertical_estimator_valid:
             return 'px4_vertical_estimator_unavailable'
         if not self.settings.anchor_trial and not 0 <= s.height_age_s <= .2:
             return 'measured_height_unavailable'
         if (not s.bridge_ready or s.bridge_published <= 0 or not 0 <= s.bridge_age_s <= 2.5
-                or not 0 <= s.bridge_observation_age_s <= BRIDGE_OBSERVATION_MAX_AGE_S):
+                or (not 0 <= s.bridge_observation_age_s <= BRIDGE_OBSERVATION_MAX_AGE_S
+                    and not (horizontal_support and not ground))):
             return 'uwb_px4_bridge_unavailable'
         if not s.alignment_matches:
             return 'observation_and_command_alignment_mismatch'

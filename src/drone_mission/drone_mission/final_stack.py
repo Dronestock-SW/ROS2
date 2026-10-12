@@ -12,6 +12,8 @@ def validate_field_configuration(mission, alignment, *, host_boot_id):
     obs = LocalObservationSettings(**alignment['settings'])
     if not cfg.local_xy or not cfg.anchor_trial or not cfg.execute or not obs.enabled:
         raise ValueError('explicit_local_xy_anchor_trial_required')
+    if cfg.mission_ai != 'cpp_bt':
+        raise ValueError('final_field_requires_cpp_bt_mission_ai')
     if cfg.bridge_topic != '/uwb/local_odometry_status':
         raise ValueError('local_odometry_status_required')
     if obs.host_boot_id != host_boot_id or cfg.bridge_host_boot_id != host_boot_id:
