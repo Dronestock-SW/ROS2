@@ -10,6 +10,7 @@
 
 | 찾는 내용 | 위치 |
 |---|---|
+| LiDAR 개선·수직 위험 조사를 다른 세션에서 계속 | [다음 세션 프롬프트](runbooks/lidar_next_session_20261012.md) |
 | 기준 스캔·IMU 합성 평가·같은 PX4 진단·vz 리셋 위험 | [10월 12일 개선 후보 결과](report/lidar_keyframe_sitl_20261012.md) |
 | 원본 해시 replay·격리 SIH·실제 EKF probe 재실행 | [검증 재실행 절차](runbooks/lidar_keyframe_validation_20261012.md) |
 | 수평 LiDAR 지상 1,781스캔·장착 10cm 추정·정합 한계 | [10월 12일 분석](report/lidar_ground_analysis_20261012.md) |

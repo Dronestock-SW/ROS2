@@ -194,6 +194,7 @@ work/lidar-reset-probe/reset_probe > work/lidar-reset-probe/result.log
 
 ## 7. 다음 단계의 조건
 
+[다음 세션 프롬프트](lidar_next_session_20261012.md)로 이어간다.
 원래 [S01–S14 절차](lidar_uwb_sitl_handoff_20261012.md)를 유지한다.
 이번 정지 진단으로 전체 시나리오를 대체하지 않는다.
 원본 재현·동적 시작·광류 비교·수직 영향이 남았다.
