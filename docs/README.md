@@ -10,6 +10,8 @@
 
 | 찾는 내용 | 위치 |
 |---|---|
+| 수평 LiDAR 지상 1,781스캔·장착 10cm 추정·정합 한계 | [10월 12일 분석](report/lidar_ground_analysis_20261012.md) |
+| LiDAR 후속 작업 프롬프트·같은 PX4 커밋의 SITL 14개 시험 | [작업 인계 절차](runbooks/lidar_uwb_sitl_handoff_20261012.md) |
 | 테스트 웹의 실제 C++ 판단·단일 실행기 연결 | [12일 C++ 통합](report/cpp_field_mission_integration_20261012.md) |
 | 상단 LiDAR 상대 이동·제한된 UWB 공백 대응 | [12일 LiDAR 연결](report/lidar_gap_support_20261012.md) |
 | 모든 브랜치 대조·관측 계약·새 FINAL 검증 | [12일 FINAL 정리](report/final_cleanup_20261012.md) |
