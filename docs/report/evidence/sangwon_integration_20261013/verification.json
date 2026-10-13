@@ -1,0 +1,123 @@
+{
+  "source_commit": "954fe787b8c942cf20376d8fb02c0582a4fcedb4",
+  "ci_run_url": "https://github.com/Dronestock-SW/ROS2/actions/runs/38326220154",
+  "ci_conclusion": "success",
+  "physical_flight": false,
+  "fc_live_readback": "SSH_TIMEOUT",
+  "fc_parameter_writes": false,
+  "scenarios": [
+    {
+      "scenario": "bridge_delay",
+      "state": "END",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "mission_complete": true,
+      "landing_verified": true,
+      "raw_uwb_age_s_at_end": 0.135704246486398,
+      "bridge_observation_age_s_at_end": 0.4857456684112549,
+      "bridge_limit_s": 0.7,
+      "max_received_setpoint_gap_ms": 50.9821399999737,
+      "max_sender_gap_ms": 50.102180999999746,
+      "max_mock_fc_source_gap_ms": 22.20787199996721,
+      "binary_sha256": "77587edb035bafb975c3a7fec52af85dd2ad1cc4b02cf93e71404c28826e8199"
+    },
+    {
+      "scenario": "nominal",
+      "state": "END",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "mission_complete": true,
+      "landing_verified": true,
+      "raw_uwb_age_s_at_end": 0.005784688224764523,
+      "bridge_observation_age_s_at_end": 0.005835533142089844,
+      "bridge_limit_s": 0.35,
+      "max_received_setpoint_gap_ms": 51.80803799999012,
+      "max_sender_gap_ms": 50.10980700001255,
+      "max_mock_fc_source_gap_ms": 22.04852199997731,
+      "binary_sha256": "77587edb035bafb975c3a7fec52af85dd2ad1cc4b02cf93e71404c28826e8199"
+    },
+    {
+      "scenario": "pilot",
+      "state": "PILOT_OVERRIDE",
+      "commands": [
+        "OFFBOARD",
+        "ARM"
+      ],
+      "mission_complete": false,
+      "landing_verified": false,
+      "raw_uwb_age_s_at_end": 0.02073756292310236,
+      "bridge_observation_age_s_at_end": 0.020815134048461914,
+      "bridge_limit_s": 0.35,
+      "max_received_setpoint_gap_ms": 50.99480900003073,
+      "max_sender_gap_ms": 50.27233199996317,
+      "max_mock_fc_source_gap_ms": 21.649757000034242,
+      "binary_sha256": "77587edb035bafb975c3a7fec52af85dd2ad1cc4b02cf93e71404c28826e8199"
+    },
+    {
+      "scenario": "platform_link",
+      "state": "END",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "mission_complete": true,
+      "landing_verified": true,
+      "raw_uwb_age_s_at_end": 0.014330590266183663,
+      "bridge_observation_age_s_at_end": 0.014375686645507812,
+      "bridge_limit_s": 0.35,
+      "max_received_setpoint_gap_ms": 51.34431200002609,
+      "max_sender_gap_ms": 50.59153099995228,
+      "max_mock_fc_source_gap_ms": 22.61737600002789,
+      "binary_sha256": "77587edb035bafb975c3a7fec52af85dd2ad1cc4b02cf93e71404c28826e8199"
+    },
+    {
+      "scenario": "python_pause",
+      "state": "END",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "mission_complete": true,
+      "landing_verified": true,
+      "raw_uwb_age_s_at_end": 0.004721245348264347,
+      "bridge_observation_age_s_at_end": 0.004789113998413086,
+      "bridge_limit_s": 0.35,
+      "max_received_setpoint_gap_ms": 51.09203799997886,
+      "max_sender_gap_ms": 50.10806100000309,
+      "max_mock_fc_source_gap_ms": 22.609853999995266,
+      "binary_sha256": "77587edb035bafb975c3a7fec52af85dd2ad1cc4b02cf93e71404c28826e8199"
+    }
+  ],
+  "windows_selected_tests": {
+    "passed": 486,
+    "skipped": 1
+  },
+  "linux_selected_tests": {
+    "passed": 246,
+    "skipped": 0
+  },
+  "cpp_contract_cases": {
+    "executor": 16,
+    "mission_ai": 11,
+    "legacy_lidar": 13
+  },
+  "cpp_ctest_groups": {
+    "passed": 3,
+    "failed": 0
+  },
+  "ros_packages_built": 4,
+  "excluded_research_commit": "288a061492b49df18ef30f780af3edcc012815d8",
+  "legacy_lidar_optional_integration": {
+    "result": "FAILED_PROTECTIVE_LAND",
+    "run_url": "https://github.com/Dronestock-SW/ROS2/actions/runs/38325619173",
+    "enabled_in_field_example": false
+  }
+}

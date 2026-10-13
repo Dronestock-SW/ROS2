@@ -83,7 +83,7 @@ Python·C++ AI·C++ 실행기가 같은 설정을 읽는다.
 Windows의 선택 회귀는 486 passed·1 skipped다.
 skip은 rclpy 부재로 완료 기록 ROS 시험을 건너뛴 것이다.
 전체 저장소·실비행 통과 수로 해석하지 않는다.
-Linux C++ 빌드와 ROS 종단 시험은 CI에서 이어서 확인한다.
+Linux C++ 빌드와 비LiDAR ROS 종단 시험도 CI에서 통과했다.
 검사 대상은 다음과 같다.
 
 | 시험 | 확인 목적 |
@@ -112,6 +112,35 @@ CTest 3개 묶음은 모두 통과했다.
 후속 종단 CI의 범위는 비LiDAR 5개로 명시했다.
 정상·Python 중단·전달 지연·RC 인계·플랫폼 완료를 확인한다.
 전체 선택 기능이나 실비행 안정성이 확인됐다는 뜻은 아니다.
+
+최종 [비LiDAR CI](https://github.com/Dronestock-SW/ROS2/actions/runs/38326220154)는 통과했다.
+검증한 구현 커밋은 `954fe787b8c942cf20376d8fb02c0582a4fcedb4`다.
+이후 변경은 결과 문서다. 실행 소스는 같다.
+ROS 패키지 4개·실제 C++ 실행기 빌드는 통과했다.
+Linux 선택 Python 246개와 C++ 계약 40개도 통과했다.
+Windows 486개와 Linux 246개의 중복 사례를 합산하지 않는다.
+
+| 비LiDAR 시나리오 | 결과 | 모사 FC 수신 최대 간격 |
+|---|---|---:|
+| 정상 이륙·10초 호버·착륙 | END | 51.808ms |
+| Python 어댑터 중단 1초 | END | 51.092ms |
+| 0.48초 전달·0.13초 UWB | END | 50.982ms |
+| ALTCTL 조종자 인계 | PILOT_OVERRIDE | 50.995ms |
+| HTTP/WS 플랫폼→ROS→C++→웹 | END | 51.344ms |
+
+정상 완료는 Offboard→ARM→LAND 순서였다.
+착륙·DISARM의 새 상태를 확인한 뒤 END를 표시했다.
+RC 인계에서는 LAND를 추가하지 않았다.
+지연 사례의 종료 시 실제 C++ 입력 나이는
+UWB 0.1357초·전달 관측 0.4857초였다.
+관측의 원래 나이를 0으로 바꾸지 않았다.
+
+검증 바이너리 SHA-256은 다음과 같다.
+`77587edb035bafb975c3a7fec52af85dd2ad1cc4b02cf93e71404c28826e8199`.
+[수치·분모·미실시 항목](evidence/sangwon_integration_20261013/verification.json)을 보존했다.
+원본 성공·실패 trace는 PC `outputs/sangwon_integration_20261013/`에 있다.
+이번 빌드는 Ubuntu 22.04·ROS Humble CI다.
+Jetson의 현재 설치·실물 FC·실제 위치 유지 결과가 아니다.
 
 이번 접속에서 Tailscale은 peer를 Online으로 표시했다.
 하지만 실제 ping과 SSH는 시간 초과였다.

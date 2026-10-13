@@ -79,6 +79,17 @@ COM_OF_LOSS_T·EKF2_EV_DELAY·EKF2_NOAID_TOUT를 구분한다.
 FC 버전·높이·상승 속도·융합 상태도 함께 기록한다.
 이 조회는 파라미터를 쓰거나 ARM·이륙하지 않는다.
 
+XY 유지 관련 값도 기존 offboard profile로 읽는다.
+다른 새 출력 경로를 사용한다.
+
+```bash
+python3 src/sangwon_AI/ops/px4_sensor_readback.py \
+  --profile offboard --ros-domain 2 --output "$OFFBOARD_OUTPUT"
+```
+
+위 프로파일은 MPC_XY_P·속도 이득·호버 추력·기체 축을 읽는다.
+이 값을 임의로 늘리거나 바꾸지는 않는다.
+
 0.35초 LAND의 직접 제한은 mission.json이다.
 FC 값을 0.7로 바꿨다고 이 검사가 자동 변경되지 않는다.
 실물 readback과 새 지상 검증 후 다음 비행을 판단한다.
