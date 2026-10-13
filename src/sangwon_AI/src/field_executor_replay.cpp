@@ -9,6 +9,8 @@ int main() {
       else {
         require(bool(executor),"CONFIGURE_REQUIRED");
         if(method=="ack")executor->command_result(in.at("token").get<unsigned>(),flag(in,"accepted"),number(in.at("now_s"),0,1e12));
+        else if(method=="queued")executor->command_queued(in.at("token").get<unsigned>());
+        else if(method=="dispatched")executor->command_dispatched(in.at("token").get<unsigned>(),number(in.at("now_s"),0,1e12));
         else if(method=="tick")executor->tick(in.at("state"),number(in.at("now_s"),0,1e12),in.value("request",Json()),in.value("wall_s",0.));
         else require(false,"UNKNOWN_METHOD");
       }

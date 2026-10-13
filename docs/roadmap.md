@@ -5,6 +5,10 @@
 > 단, 각 Phase 종료 시 반드시 "동작하는(나는) 상태"를 유지한다 (통합 리스크 관리).
 > 최종 갱신: 2026-10-13 (통합 C++ 실행·연속 기록·Jetson 지상 검증)
 
+2026-10-13 [웹·기록 지연 분리](report/web_record_latency_20261013.md)를 추가했다.
+저장 대기와 ROS 입력·LAND 전달을 분리했다.
+별도 TAKEOFF 유효시간을 미션 기준 30초로 통일했다.
+수동 ARM 3초와 FC 송신 후 ACK 3초는 유지한다.
 2026-10-13 [상원 통합](report/sangwon_integration_20261013.md)을 추가했다.
 같은 날 [C++ POSITION 대기·별도 START](report/cpp_position_handoff_20261013.md)를 연결했다.
 실제 FC 모드를 확인하고 공중 ARM 재요청을 막는다.

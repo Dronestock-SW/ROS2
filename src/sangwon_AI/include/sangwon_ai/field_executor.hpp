@@ -19,6 +19,10 @@ class FieldExecutor {
   bool terminal() const { return phase=="END" || phase=="FAILED" || phase=="PILOT_OVERRIDE" || phase=="UNCONFIRMED"; }
   bool pending() const { return pending_token_!=0; }
   unsigned pending_token() const { return pending_token_; }
+  void command_queued(unsigned token) { if(token==pending_token_)waiting_journal_=true; }
+  void command_dispatched(unsigned token,double now) {
+    if(token==pending_token_){waiting_journal_=false;pending_at_=now;entered_=now;}
+  }
   double height() const { return height_; }
   double yaw() const { return yaw_; }
   Vec3 target() const { return target_; }
@@ -26,7 +30,7 @@ class FieldExecutor {
     Json out={{"phase",phase},{"state",phase},{"reason",reason},{"failure",failure.empty()?Json():Json(failure)},
       {"executor_backend","sangwon_cpp_executor"},{"executor_fc_transport",true},{"mission_ai",{{"backend","sangwon_cpp_bt"},{"connected",true},{"prepared",bool(ai_)},{"fc_transport",false}}},
       {"home_xy_m",ai_?xy_json(home_):Json()}, {"goal_xy_m",streaming()?xy_json(target_):Json()},
-      {"height_reference_m",ai_?Json(height_):Json()}, {"control_ack",ack_},
+      {"command_record_pending",pending()&&waiting_journal_},{"height_reference_m",ai_?Json(height_):Json()}, {"control_ack",ack_},
       {"flight_control_enabled",flag(cfg_,"execute")&&bool(ai_)&&!terminal()},
       {"bridge_observation_timeout_s",cfg_.value("bridge_observation_timeout_s",.35)},{"landing_verified",landing_verified_},{"completed_waypoints",decision.value("completed_waypoints",0)},
       {"mission_complete",phase=="END"&&landing_verified_},{"route_complete",flag(decision,"home_verified")},
@@ -42,7 +46,7 @@ class FieldExecutor {
   }
   void command_result(unsigned token,bool accepted,double now) {
     if(token!=pending_token_ || terminal()) return;
-    pending_token_=0; accepted_=accepted; confirmed_=accepted?now:-1;
+    pending_token_=0; waiting_journal_=false; accepted_=accepted; confirmed_=accepted?now:-1;
     if(!accepted) failure="px4_rejected_command";
   }
   void interrupt(const std::string& why,bool pilot,double now,const Json& s) {
@@ -65,7 +69,8 @@ class FieldExecutor {
         if(!allowed || flag(s,"rc_switch_changed")) { finish("PILOT_OVERRIDE","manual_or_px4_failsafe_has_priority",now); return; }
         if((phase=="HOLD_READY"||phase=="POSITION_HANDOFF"||phase=="RESUME_PREPARING")&&flag(s,"rc_required")&&age(s,"rc_age_s",1)&&flag(s,"rc_neutral_valid")&&!flag(s,"rc_sticks_centered")) { finish("PILOT_OVERRIDE","position_sticks_moved",now);return; }
       }
-      if(pending() && now-pending_at_>cfg_.value("command_timeout_s",3.)) { finish("UNCONFIRMED","command_response_timeout_effect_unknown",now); return; }
+      if(pending() && waiting_journal_ && now-pending_at_>cfg_.value("request_ttl_s",30.)) { abort("command_record_wait_expired_unsent",s,now); return; }
+      if(pending() && !waiting_journal_ && now-pending_at_>cfg_.value("command_timeout_s",3.)) { finish("UNCONFIRMED","command_response_timeout_effect_unknown",now); return; }
       if(dt<=0) { abort("cpp_executor_clock_invalid",s,now); return; }
     }
     if(!ai_) {
@@ -129,10 +134,10 @@ class FieldExecutor {
     if(phase=="PREPARING") {
       if(!pending() && !accepted_ && now-entered_>=1.2)issue("offboard_mode",now);
       else if(!pending() && accepted_ && s.at("mode")=="OFFBOARD") { enter("ARMING","local_mode_confirmed",now); issue("arm",now); }
-      else if(now-entered_>6)abort("local_mode_not_confirmed",s,now);
+      else if(!waiting_journal_&&now-entered_>6)abort("local_mode_not_confirmed",s,now);
     } else if(phase=="ARMING") {
       if(!pending() && accepted_ && flag(s,"armed")) { height_=ground_height_+cfg_.at("expected_mis_takeoff_alt_m").get<double>();enter("TAKING_OFF","px4_local_height_goal",now); }
-      else if(now-entered_>cfg_.value("command_timeout_s",3.))abort("arm_state_not_confirmed",s,now);
+      else if(!waiting_journal_&&now-entered_>cfg_.value("command_timeout_s",3.))abort("arm_state_not_confirmed",s,now);
     } else if(separate()&&!mission_started_) {
       tick_takeoff_hold(s,now,request,wall);
     } else if(phase=="RESUME_PREPARING") {
@@ -140,7 +145,7 @@ class FieldExecutor {
       if(!pending()&&!accepted_&&now-entered_>=1.2&&resume_gate(s)=="ready")issue("offboard_mode",now);
       else if(!pending()&&accepted_&&mode_confirmed(s,"OFFBOARD",now))enter("HANDOFF","airborne_offboard_confirmed_no_rearm",now);
       else if(!pending()&&!accepted_&&resume_gate(s)!="ready")reason="offboard_reentry_wait_for_fresh_inputs";
-      else if(now-entered_>6)abort("offboard_reentry_not_confirmed",s,now);
+      else if(!waiting_journal_&&now-entered_>6)abort("offboard_reentry_not_confirmed",s,now);
     } else if(ai_phase=="MOVING" || ai_phase=="DWELL" || ai_phase=="RETURNING") {
       target_=point(decision.at("stream_xy"));
       if(phase!=ai_phase)enter(ai_phase,"cpp_bt_mission_decision",now);
@@ -150,7 +155,7 @@ class FieldExecutor {
   Json cfg_,ack_,assignment_; std::unique_ptr<MissionAI> ai_; std::string execution_,plan_;
   Vec3 home_{},target_{},ground_{}; std::optional<Vec3> previous_pose_;
   double height_{},ground_height_{},yaw_{},ground_since_{-1},previous_height_{},previous_pose_source_{},last_{-1},started_{},entered_{},pending_at_{},confirmed_{-1};
-  unsigned counter_{},pending_token_{}; bool accepted_{},landing_verified_{};
+  unsigned counter_{},pending_token_{}; bool accepted_{},landing_verified_{},waiting_journal_{};
   bool mission_started_{},can_takeoff_{},can_start_{},last_armed_{};
   double hold_since_{-1};std::string takeoff_request_id_,hold_blocker_="waiting_for_ground_inputs";
   bool separate()const{return cfg_.value("start_mode",std::string("ground_takeoff"))=="takeoff_hold";}
@@ -191,7 +196,7 @@ class FieldExecutor {
       else if(now-entered_>cfg_.value("takeoff_timeout_s",30.))abort("takeoff_stability_timeout",s,now);
     } else if(phase=="POSITION_HANDOFF") {
       if(!pending()&&accepted_&&mode_confirmed(s,"POSCTL",now)){enter("HOLD_READY","position_confirmed_wait_for_web_start",now);hold_since_=-1;}
-      else if(now-entered_>6)abort("position_mode_not_confirmed",s,now);
+      else if(!waiting_journal_&&now-entered_>6)abort("position_mode_not_confirmed",s,now);
     } else if(phase=="HOLD_READY") {
       hold_blocker_=resume_gate(s);can_start_=stable&&hold_blocker_=="ready";
       reason=can_start_?"position_stable_wait_for_web_start":"position_wait_for_stability_or_observation";
@@ -204,11 +209,16 @@ class FieldExecutor {
     }
   }
   void enter(std::string p,std::string why,double now) { phase=std::move(p);reason=std::move(why);entered_=now;accepted_=false;confirmed_=-1; }
-  void finish(const std::string& p,const std::string& why,double now) { actions=Json::array();pending_token_=0;enter(p,why,now); }
-  void issue(const std::string& kind,double now) { pending_token_=++counter_;pending_at_=now;accepted_=false;confirmed_=-1;actions.push_back({{"kind",kind},{"token",pending_token_},{"sent_s",now}}); }
+  void finish(const std::string& p,const std::string& why,double now) { actions=Json::array();pending_token_=0;waiting_journal_=false;enter(p,why,now); }
+  void issue(const std::string& kind,double now) { pending_token_=++counter_;pending_at_=now;waiting_journal_=false;accepted_=false;confirmed_=-1;actions.push_back({{"kind",kind},{"token",pending_token_},{"sent_s",now}}); }
   void abort(const std::string& why,const Json& s,double now) {
     failure=why;
-    if(pending()) { finish("UNCONFIRMED",why,now); return; }
+    if(pending()) {
+      // An unsent command has no unknown FC effect. Cancel its token before
+      // recovery; an explicit airborne LAND also supersedes an in-flight ACK.
+      if(waiting_journal_||(why=="operator_cancelled"&&flag(s,"armed"))) {pending_token_=0;waiting_journal_=false;}
+      else { finish("UNCONFIRMED",why,now); return; }
+    }
     if(phase=="LANDING" || phase=="GROUND_RECOVERY")return;
     if(flag(s,"connected") && !flag(s,"armed") && s.value("landed",0)==1 && age(s,"state_age_s",1)) { enter("GROUND_RECOVERY",why,now);issue("position_mode",now); }
     else { enter("LANDING",why,now); issue("land",now); }

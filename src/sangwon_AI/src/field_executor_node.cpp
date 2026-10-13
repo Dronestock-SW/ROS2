@@ -89,20 +89,20 @@ class ExecutorNode final:public rclcpp::Node {
     arm_=create_client<mavros_msgs::srv::CommandBool>("/mavros/cmd/arming",rmw_qos_profile_services_default,fast_);
     land_=create_client<mavros_msgs::srv::CommandTOL>("/mavros/cmd/land",rmw_qos_profile_services_default,fast_);
     send_timer_=create_wall_timer(std::chrono::milliseconds(50),[this]{send();},fast_);
-    status_worker_=std::thread([this]{status_loop();});record_worker_=std::thread([this]{record_loop();});command_worker_=std::thread([this]{command_loop();});
+    status_worker_=std::thread([this]{status_loop();});record_worker_=std::thread([this]{record_loop();});command_worker_=std::thread([this]{command_loop();});urgent_worker_=std::thread([this]{urgent_loop();});
     worker_=std::thread([this]{auto next=std::chrono::steady_clock::now();while(!stop_.load()&&rclcpp::ok()){next+=std::chrono::milliseconds(50);try{tick();}catch(const std::exception& e){if(rclcpp::ok())std::cerr<<"NATIVE_WORKER_STOPPED: "<<e.what()<<'\n';stop_.store(true);break;}std::this_thread::sleep_until(next);if(std::chrono::steady_clock::now()>next+std::chrono::milliseconds(200))next=std::chrono::steady_clock::now();}});
   }
-  ~ExecutorNode() override {stop_.store(true);io_cv_.notify_all();if(worker_.joinable())worker_.join();if(status_worker_.joinable())status_worker_.join();if(record_worker_.joinable())record_worker_.join();if(command_worker_.joinable())command_worker_.join();if(record_fd_>=0)close(record_fd_);if(command_fd_>=0)close(command_fd_);}
+  ~ExecutorNode() override {stop_.store(true);io_cv_.notify_all();if(worker_.joinable())worker_.join();if(status_worker_.joinable())status_worker_.join();if(record_worker_.joinable())record_worker_.join();if(command_worker_.joinable())command_worker_.join();if(urgent_worker_.joinable())urgent_worker_.join();if(record_fd_>=0)close(record_fd_);if(command_fd_>=0)close(command_fd_);}
  private:
   Json outer_,cfg_,input_,bridge_state_=Json::object();FieldExecutor core_;std::string session_,last_input_error_,previous_phase_;
   std::unique_ptr<sangwon::WriterLock> lock_;std::ofstream log_;std::mutex fast_mutex_;Sample sample_;View view_;
   int record_fd_{-1},command_fd_{-1};
   std::atomic<bool> stop_{false};std::thread worker_;std::mutex input_mutex_;
-  std::thread status_worker_,record_worker_,command_worker_;std::mutex io_mutex_;std::condition_variable io_cv_;
-  std::shared_ptr<const Json> outgoing_;std::deque<Json> events_,commands_;
-  std::shared_ptr<const Json> last_evidence_,record_out_;double last_recorded_{-1e9};unsigned sample_sequence_{};std::atomic<bool> record_fault_{false},completion_persisted_{false};
+  std::thread status_worker_,record_worker_,command_worker_,urgent_worker_;std::mutex io_mutex_,dispatch_mutex_;std::condition_variable io_cv_;
+  std::shared_ptr<const Json> outgoing_;std::deque<Json> events_,commands_,urgent_commands_;
+  std::shared_ptr<const Json> last_evidence_,record_out_;double last_recorded_{-1e9};unsigned sample_sequence_{};std::atomic<double> journal_last_s_{0},journal_max_s_{0},completion_sync_s_{0};std::atomic<bool> record_fault_{false},completion_persisted_{false};
   std::shared_ptr<const Json> incoming_,incoming_bridge_;double incoming_at_{-1e9},incoming_bridge_at_{-1e9};std::string incoming_error_;
-  std::deque<std::tuple<unsigned,bool,double>> acks_;std::string fault_;bool pilot_fault_{};double input_at_{-1e9},bridge_at_{-1e9},last_send_{-1},max_send_gap_{};unsigned sent_{};
+  std::deque<std::pair<unsigned,double>> dispatched_;std::deque<std::tuple<unsigned,bool,double>> acks_;std::string fault_;bool pilot_fault_{};double input_at_{-1e9},bridge_at_{-1e9},last_send_{-1},max_send_gap_{};unsigned sent_{};
   rclcpp::CallbackGroup::SharedPtr fast_,work_;rclcpp::TimerBase::SharedPtr send_timer_,work_timer_;
   rclcpp::Publisher<mavros_msgs::msg::PositionTarget>::SharedPtr pub_;
   rclcpp::Publisher<std_msgs::msg::String>::SharedPtr status_,result_;
@@ -171,8 +171,9 @@ class ExecutorNode final:public rclcpp::Node {
     if(input && at>input_at_){input_=*input;input_at_=at;}
     if(bridge && bridge_at>bridge_at_){bridge_state_=*bridge;bridge_at_=bridge_at;}
     last_input_error_=std::move(input_error);
-    const double t=steady_s();Json s=snapshot(t);std::deque<std::tuple<unsigned,bool,double>> acks;std::string fault;bool pilot;
-    {std::lock_guard<std::mutex> g(fast_mutex_);acks.swap(acks_);fault.swap(fault_);pilot=pilot_fault_;pilot_fault_=false;}
+    const double t=steady_s();Json s=snapshot(t);std::deque<std::tuple<unsigned,bool,double>> acks;std::deque<std::pair<unsigned,double>> dispatched;std::string fault;bool pilot;
+    {std::lock_guard<std::mutex> g(fast_mutex_);acks.swap(acks_);dispatched.swap(dispatched_);fault.swap(fault_);pilot=pilot_fault_;pilot_fault_=false;}
+    for(auto [token,at]:dispatched)core_.command_dispatched(token,at);
     for(auto [token,accepted,at]:acks){core_.command_result(token,accepted,at);std::lock_guard<std::mutex> g(io_mutex_);events_.push_back(Json{{"type","command_ack"},{"token",token},{"accepted",accepted},{"sample_monotonic_ns",int64_t(at*1e9)},{"executor_owner","cpp_executor"}});}
     try {
       Json request=input_.is_object()?input_.value("request",Json()):Json();
@@ -185,12 +186,13 @@ class ExecutorNode final:public rclcpp::Node {
       if(!fault.empty())core_.interrupt(fault,pilot,t,s);
       else core_.tick(s,t,request,wall_s());
     }catch(const std::exception& e){core_.interrupt(std::string("native_input_invalid:")+e.what(),false,t,s);}
+    for(const auto& action:core_.actions)core_.command_queued(action.at("token").get<unsigned>());
     View v;v.stream=core_.streaming()&&flag(cfg_,"execute");v.pending=core_.pending();v.token=core_.pending_token();v.phase=core_.phase;v.expires=t+.15;
     v.rc_required=flag(s,"rc_required");v.calibration=s.value("rc_calibration",Json::object());
     double angle=cfg_.at("enu_yaw_deg").get<double>()*M_PI/180;auto xy=core_.target();const double y=cfg_.at("map_y_axis_sign").get<int>()*xy.y;
     v.x=std::cos(angle)*xy.x-std::sin(angle)*y+cfg_.at("enu_offset_x_m").get<double>();v.y=std::sin(angle)*xy.x+std::cos(angle)*y+cfg_.at("enu_offset_y_m").get<double>();v.z=core_.height();v.yaw=(cfg_.at("enu_yaw_deg").get<double>()+cfg_.at("map_y_axis_sign").get<int>()*core_.yaw())*M_PI/180;
     double gap;unsigned sent;
-    {std::lock_guard<std::mutex> g(fast_mutex_);if(view_.baseline.empty()&&v.stream){v.baseline=sample_.rc;if(s.contains("rc_switch_channels"))v.switches=s.at("rc_switch_channels").get<std::vector<int>>();}else{v.baseline=view_.baseline;v.switches=view_.switches;}view_=std::move(v);gap=max_send_gap_;sent=sent_;}
+    {std::lock_guard<std::mutex> d(dispatch_mutex_);std::lock_guard<std::mutex> g(fast_mutex_);if(view_.baseline.empty()&&v.stream){v.baseline=sample_.rc;if(s.contains("rc_switch_channels"))v.switches=s.at("rc_switch_channels").get<std::vector<int>>();}else{v.baseline=view_.baseline;v.switches=view_.switches;}view_=std::move(v);gap=max_send_gap_;sent=sent_;}
     auto out=core_.status();out.update({{"executor_session",session_},{"test_mode",flag(outer_,"test_mode")},{"physical_flight",!flag(outer_,"test_mode")&&flag(cfg_,"execute")},{"output_enabled",flag(cfg_,"execute")},{"input_error",last_input_error_},{"input_age_s",t-input_at_},{"max_sender_gap_s",gap},{"setpoints_sent",sent},{"fc_connected",s.value("connected",false)},{"fc_armed",s.value("armed",false)},{"fc_mode",s.value("mode",std::string())},{"fc_landed",s.value("landed",0)}});
     out["operator_session_id"]=session_;
     if(s.at("xy").size()==2&&out.at("home_xy_m").is_array()) {
@@ -208,6 +210,7 @@ class ExecutorNode final:public rclcpp::Node {
     out["observer_metadata_delayed"]=t-input_at_>2.5;
     out["web_report_delayed"]=!age(s,"web_age_s",cfg_.value("web_timeout_s",2.));
     out["observation_status"]=observation_status(s,cfg_.value("bridge_observation_timeout_s",.35));
+    out["storage"]={{"journal_last_s",journal_last_s_.load()},{"journal_max_s",journal_max_s_.load()},{"completion_sync_s",completion_sync_s_.load()},{"observer",input_.is_object()?input_.value("storage",Json::object()):Json::object()}};
     out["record_schema"]="flight-evidence/2";
     out["sample_sequence"]=++sample_sequence_;
     out["executor_owner"]="cpp_executor";
@@ -219,7 +222,7 @@ class ExecutorNode final:public rclcpp::Node {
     out["preflight"]=input_.is_object()?input_.value("preflight",Json::object()):Json::object();
     if(t-input_at_>2.5)out["preflight"]["checked_inputs_passed"]=false;
     auto value=std::make_shared<const Json>(std::move(out));
-    {std::lock_guard<std::mutex> g(io_mutex_);outgoing_=value;record_out_=value;last_evidence_=value;for(const auto& a:core_.actions)commands_.push_back(a);if(previous_phase_!=core_.phase){auto transition=*value;transition["type"]="transition";events_.push_back(std::move(transition));previous_phase_=core_.phase;}}
+    {std::lock_guard<std::mutex> g(io_mutex_);outgoing_=value;record_out_=value;last_evidence_=value;for(const auto& a:core_.actions)(a.at("kind")=="land"?urgent_commands_:commands_).push_back(a);if(previous_phase_!=core_.phase){auto transition=*value;transition["type"]="transition";events_.push_back(std::move(transition));previous_phase_=core_.phase;}}
     io_cv_.notify_all();
   }
   void io_fault(const std::string& reason) {std::lock_guard<std::mutex> g(fast_mutex_);if(fault_.empty())fault_=reason;}
@@ -248,7 +251,7 @@ class ExecutorNode final:public rclcpp::Node {
         for(const auto& e:events){const auto raw=e.dump();log_<<raw<<'\n';log_.flush();require(bool(log_),"native_event_record_failed");
           const auto state=e.value("state",std::string());
           if(state=="END"||state=="FAILED"||state=="UNCONFIRMED"||state=="PILOT_OVERRIDE"){
-            require(fsync(record_fd_)==0,"native_completion_record_sync_failed");
+            const auto began=steady_s();require(fsync(record_fd_)==0,"native_completion_record_sync_failed");completion_sync_s_=steady_s()-began;
             completion_persisted_=true;
             std_msgs::msg::String msg;msg.data=raw;result_->publish(msg);
           }
@@ -258,6 +261,16 @@ class ExecutorNode final:public rclcpp::Node {
           if(sample-last_recorded_>=.1){auto row=*out;row["type"]="flight_sample";row["written_monotonic_ns"]=int64_t(steady_s()*1e9);log_<<row.dump()<<'\n';log_.flush();require(bool(log_),"native_sample_record_failed");last_recorded_=sample;}
         }
       }catch(const std::exception& e){record_fault_=true;if(rclcpp::ok())io_fault(std::string("native_record_or_status_failed:")+e.what());}
+    }
+  }
+  void urgent_loop() {
+    while(!stop_.load()&&rclcpp::ok()) {
+      Json action;
+      {std::unique_lock<std::mutex> g(io_mutex_);io_cv_.wait(g,[this]{return stop_.load()||!urgent_commands_.empty();});if(stop_.load())break;action=std::move(urgent_commands_.front());urgent_commands_.pop_front();}
+      try {dispatch(action);}catch(const std::exception& e){if(rclcpp::ok())io_fault(std::string("native_land_transport_failed:")+e.what());}
+      // Sole disk writer persists LAND afterward, even while an earlier fsync
+      // is blocked. It must never dispatch this token a second time.
+      {std::lock_guard<std::mutex> g(io_mutex_);commands_.push_back(std::move(action));}io_cv_.notify_all();
     }
   }
   void command_loop() {
@@ -271,10 +284,10 @@ class ExecutorNode final:public rclcpp::Node {
         // An already requested landing must not wait for storage. Keep its
         // intent in the asynchronous evidence stream, dispatch with current
         // FC/pilot authority, then persist the dedicated command journal.
-        if(landing){{std::lock_guard<std::mutex> g(io_mutex_);events_.push_back(intent);}io_cv_.notify_all();dispatch(action);}
+        if(landing){{std::lock_guard<std::mutex> g(io_mutex_);events_.push_back(intent);}io_cv_.notify_all();}
         auto raw=intent.dump()+"\n";
         size_t offset=0;while(offset<raw.size()){auto n=write(command_fd_,raw.data()+offset,raw.size()-offset);require(n>0,"COMMAND_RECORD_WRITE_FAILED");offset+=size_t(n);}
-        require(fsync(command_fd_)==0,"COMMAND_RECORD_SYNC_FAILED");
+        require(fsync(command_fd_)==0,"COMMAND_RECORD_SYNC_FAILED");journal_last_s_=steady_s()-queued;journal_max_s_=std::max(journal_max_s_.load(),journal_last_s_.load());
         {std::lock_guard<std::mutex> g(io_mutex_);events_.push_back(Json{{"type","command_record_persisted"},{"token",action.at("token")},{"kind",action.at("kind")},{"sample_monotonic_ns",int64_t(steady_s()*1e9)},{"journal_elapsed_s",steady_s()-queued},{"durable_before_dispatch",!landing}});}io_cv_.notify_all();
         if(landing)continue;
         // A slow fsync cannot dispatch a command from an expired/cancelled
@@ -307,8 +320,10 @@ class ExecutorNode final:public rclcpp::Node {
     mavros_msgs::msg::PositionTarget m;m.header.stamp=now();m.header.frame_id="map";m.coordinate_frame=1;m.type_mask=2552;m.position.x=v.x;m.position.y=v.y;m.position.z=v.z;m.yaw=v.yaw;pub_->publish(m);
     std::lock_guard<std::mutex> g(fast_mutex_);if(last_send_>=0)max_send_gap_=std::max(max_send_gap_,t-last_send_);last_send_=t;++sent_;
   }
+  void dispatched(unsigned token){std::lock_guard<std::mutex> g(fast_mutex_);dispatched_.emplace_back(token,steady_s());}
   void ack(unsigned token,bool accepted){std::lock_guard<std::mutex> g(fast_mutex_);acks_.emplace_back(token,accepted,steady_s());}
   void dispatch(const Json& action) {
+    std::lock_guard<std::mutex> order(dispatch_mutex_);
     require(flag(cfg_,"execute"),"EXECUTION_DISABLED");const auto kind=action.at("kind").get<std::string>();const auto token=action.at("token").get<unsigned>();
     // Recheck live authority after durable recording and immediately before
     // handing a command to MAVROS; callbacks may run during fsync/BT work.
@@ -326,9 +341,9 @@ class ExecutorNode final:public rclcpp::Node {
     const bool resume=kind=="offboard_mode"&&view.phase=="RESUME_PREPARING";
     if((kind=="arm"||kind=="offboard_mode")&&(!live.estimator||!live.vertical||!live.pose_ok||steady_s()-live.pose_at>.2||steady_s()-live.uwb_at>.25||(resume?(!live.armed||live.landed!=2):live.armed))){ack(token,false);return;}
     if((resume||(kind=="position_mode"&&view.phase=="POSITION_HANDOFF"))&&view.rc_required&&(steady_s()-live.rc_at>1||neutral_rc(live.rc,view.calibration)!=1)){ack(token,false);return;}
-    if(kind=="offboard_mode"||kind=="position_mode") {if(!mode_->service_is_ready()){ack(token,false);return;}auto req=std::make_shared<mavros_msgs::srv::SetMode::Request>();req->custom_mode=kind=="offboard_mode"?"OFFBOARD":"POSCTL";mode_->async_send_request(req,[this,token](rclcpp::Client<mavros_msgs::srv::SetMode>::SharedFuture f){try{ack(token,f.get()->mode_sent);}catch(...){/* Unknown effect: command timeout latches UNCONFIRMED. */}});}
-    else if(kind=="arm") {if(!arm_->service_is_ready()){ack(token,false);return;}auto req=std::make_shared<mavros_msgs::srv::CommandBool::Request>();req->value=true;arm_->async_send_request(req,[this,token](rclcpp::Client<mavros_msgs::srv::CommandBool>::SharedFuture f){try{auto r=f.get();ack(token,r->success&&r->result==0);}catch(...){}});}
-    else if(kind=="land") {if(!land_->service_is_ready()){ack(token,false);return;}auto req=std::make_shared<mavros_msgs::srv::CommandTOL::Request>();req->yaw=req->latitude=req->longitude=req->altitude=std::numeric_limits<double>::quiet_NaN();land_->async_send_request(req,[this,token](rclcpp::Client<mavros_msgs::srv::CommandTOL>::SharedFuture f){try{auto r=f.get();ack(token,r->success&&r->result==0);}catch(...){}});}
+    if(kind=="offboard_mode"||kind=="position_mode") {if(!mode_->service_is_ready()){ack(token,false);return;}auto req=std::make_shared<mavros_msgs::srv::SetMode::Request>();req->custom_mode=kind=="offboard_mode"?"OFFBOARD":"POSCTL";dispatched(token);mode_->async_send_request(req,[this,token](rclcpp::Client<mavros_msgs::srv::SetMode>::SharedFuture f){try{ack(token,f.get()->mode_sent);}catch(...){/* Unknown effect: command timeout latches UNCONFIRMED. */}});}
+    else if(kind=="arm") {if(!arm_->service_is_ready()){ack(token,false);return;}auto req=std::make_shared<mavros_msgs::srv::CommandBool::Request>();req->value=true;dispatched(token);arm_->async_send_request(req,[this,token](rclcpp::Client<mavros_msgs::srv::CommandBool>::SharedFuture f){try{auto r=f.get();ack(token,r->success&&r->result==0);}catch(...){}});}
+    else if(kind=="land") {if(!land_->service_is_ready()){ack(token,false);return;}auto req=std::make_shared<mavros_msgs::srv::CommandTOL::Request>();req->yaw=req->latitude=req->longitude=req->altitude=std::numeric_limits<double>::quiet_NaN();dispatched(token);land_->async_send_request(req,[this,token](rclcpp::Client<mavros_msgs::srv::CommandTOL>::SharedFuture f){try{auto r=f.get();ack(token,r->success&&r->result==0);}catch(...){}});}
     else require(false,"UNKNOWN_NATIVE_ACTION");
   }
 };

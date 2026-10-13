@@ -19,6 +19,7 @@ from websockets.asyncio.server import serve
 from .contracts import LAYOUT, Settings, finite, parse_request
 from .field_presets import field_route
 from .mission_store import MissionStore, digest
+from .persistence import DiskWorker
 from .site import ceiling_value
 
 
@@ -27,7 +28,11 @@ from .web_page import PAGE
 
 class LocalPlatform:
     def __init__(self, drone_id='5', layout_id=LAYOUT, settings=None, site_file=None, mission_file=None):
-        self.lock = threading.Lock()
+        self.lock = threading.Lock()  # Only disk mutations serialize here.
+        self.state_lock = threading.Lock()
+        self.control_epoch = 0
+        self.urgent_receipts = {}
+        self.disk = DiskWorker('web-evidence-writer')
         self.drone_id = drone_id
         self.settings = settings or Settings(drone_id=drone_id, layout_id=layout_id)
         self.store = MissionStore(mission_file, drone_id, layout_id)
@@ -50,6 +55,84 @@ class LocalPlatform:
             # Restore the route heartbeat but never replay an old flight command.
             self.assignment['control_action'] = None
 
+    def write_background(self, key, function, priority=1, replace=False):
+        def write():
+            with self.lock:
+                return function()
+        return self.disk.submit(key, write, priority=priority, replace=replace)
+
+    def receive_telemetry(self, value):
+        if str(value.get('drone_id')) != self.drone_id:
+            return
+        # The received timestamp belongs to receipt, never delayed disk completion.
+        self.telemetry = value
+        self.telemetry_received_s = time.monotonic()
+        self.write_background('observation', lambda: self.store.observe(value), priority=2, replace=True)
+
+    def publish_assignment(self, assignment, epoch):
+        with self.state_lock:
+            if epoch != self.control_epoch:
+                return False
+            self.assignment = assignment
+            return True
+
+    def acknowledge(self, value):
+        with self.state_lock:
+            self.acks = (self.acks + [value])[-200:]
+            if value.get('request_id') != self.assignment.get('control_request_id'):
+                return
+            assignment = dict(self.assignment, control_action=None)
+            self.assignment = assignment
+        self.write_background('ack:'+str(value.get('request_id')), lambda: self.store.acknowledge(assignment))
+
+    def urgent_land(self, value):
+        # LAND can cancel an airborne run while any disk writer is stalled.
+        # Durability follows dispatch; START/TAKEOFF keep the opposite ordering.
+        action = value['action']
+        key = value.get('client_request_id') or uuid.uuid4().hex
+        body = dict(action=action, operator_session_id=value.get('operator_session_id'))
+        if not isinstance(key, str) or not 8 <= len(key) <= 128:
+            raise ValueError('요청 식별자가 필요합니다.')
+        with self.state_lock:
+            if key in self.urgent_receipts:
+                saved_body, saved = self.urgent_receipts[key]
+                if saved_body != body:
+                    raise ValueError('같은 요청 식별자로 다른 명령을 보낼 수 없습니다.')
+                return dict(saved)
+            previous = self.store.receipt(key, body)
+            if previous is not None:
+                return previous
+            t = self.telemetry
+            fresh = self.telemetry_received_s is not None and 0 <= time.monotonic()-self.telemetry_received_s <= 1
+            if not fresh or not t.get('fc_connected') or not t.get('fc_armed'):
+                raise ValueError('착륙 요청에는 최신 연결·ARM 상태가 필요합니다.')
+            separate = action == 'takeoff_land'
+            if separate:
+                if (self.settings.start_mode != 'takeoff_hold' or self.store.active()
+                        or not t.get('native_takeoff',{}).get('can_land')
+                        or not body['operator_session_id'] or body['operator_session_id'] != t.get('operator_session_id')):
+                    raise ValueError('현재 별도 이륙 세션의 착륙 가능 상태를 확인하세요.')
+            elif (not self.store.active() or any(t.get(k) != self.assignment.get(k) for k in ('mission_db_id','mission_code','route_revision'))
+                  or t.get('flight_state') in ('IDLE','END','LANDED','PILOT_OVERRIDE','UNCONFIRMED','FAILED')):
+                raise ValueError('제어 가능한 현재 미션이 없습니다.')
+            now = datetime.now(timezone.utc).isoformat()
+            assignment = dict(self.assignment, control_action=action, control_request_id=key, control_requested_at=now, generated_at=now)
+            if separate:
+                assignment['operator_session_id'] = body['operator_session_id']
+            self.control_epoch += 1
+            self.assignment = assignment
+            self.urgent_receipts[key] = (body, dict(assignment))
+        function = (lambda: self.store.operator_receipt(key, body, assignment)) if separate else (lambda: self.store.control(key, body, assignment))
+        self.write_background('land:'+key, function, priority=0)
+        return dict(assignment)
+
+    def close(self):
+        if not self.disk.close():
+            return False
+        with self.lock:
+            self.store.close()
+        return True
+
     def ground(self):
         t = self.telemetry
         return (self.telemetry_received_s is not None
@@ -66,14 +149,17 @@ class LocalPlatform:
             and t.get('native_takeoff',{}).get('can_start') is True)
 
     def can_takeoff(self):
-        return (self.settings.start_mode == 'takeoff_hold' and not self.store.active() and self.ground()
+        return (not self.disk.error and self.settings.start_mode == 'takeoff_hold' and not self.store.active() and self.ground()
             and self.assignment.get('control_action') is None
             and self.telemetry.get('native_takeoff',{}).get('can_takeoff') is True
             and self.site['ceiling_height_m'] is not None
             and self.site['ceiling_height_m'] >= self.settings.expected_mis_takeoff_alt_m+.25)
 
     def takeoff(self, value):
+        if value.get('action') == 'takeoff_land':
+            return self.urgent_land(value)
         with self.lock:
+            epoch = self.control_epoch
             action = value['action']
             key = value.get('client_request_id')
             body = dict(action=action, operator_session_id=value.get('operator_session_id'))
@@ -92,11 +178,11 @@ class LocalPlatform:
                 control_requested_at=now, generated_at=now, ceiling_height_m=self.site['ceiling_height_m'],
                 operator_session_id=body['operator_session_id'])
             self.store.operator_receipt(key, body, assignment)
-            self.assignment = assignment
+            self.publish_assignment(assignment, epoch)
             return dict(assignment)
 
     def can_start(self):
-        return (self.assignment.get('control_action') != 'arm' and not self.store.active() and self.start_state()
+        return (not self.disk.error and self.assignment.get('control_action') != 'arm' and not self.store.active() and self.start_state()
                 and (self.settings.mission_ai != 'cpp_bt' or (
                     self.telemetry.get('mission_ai', {}).get('backend') == 'sangwon_cpp_bt'
                     and self.telemetry.get('mission_ai', {}).get('connected') is True))
@@ -107,7 +193,7 @@ class LocalPlatform:
 
     def can_arm(self):
         if self.settings.start_mode == 'takeoff_hold': return False
-        return (not self.store.active() and self.ground()
+        return (not self.disk.error and not self.store.active() and self.ground()
                 and (self.settings.mission_ai != 'cpp_bt' or (
                     self.telemetry.get('mission_ai', {}).get('backend') == 'sangwon_cpp_bt'
                     and self.telemetry.get('mission_ai', {}).get('connected') is True))
@@ -117,6 +203,7 @@ class LocalPlatform:
 
     def arm(self, value):
         with self.lock:
+            epoch = self.control_epoch
             key = value.get('client_request_id')
             body = dict(action='arm', operator_session_id=value.get('operator_session_id'))
             previous = self.store.receipt(key, body)
@@ -129,7 +216,7 @@ class LocalPlatform:
             assignment = dict(self.assignment, control_action='arm', control_request_id=key,
                               control_requested_at=now, generated_at=now, **{'operator_session_id':body['operator_session_id']})
             self.store.operator_receipt(key, body, assignment)
-            self.assignment = assignment
+            self.publish_assignment(assignment, epoch)
             return dict(assignment)
 
     def catalog_command(self, value):
@@ -166,11 +253,12 @@ class LocalPlatform:
             raise ValueError('지원하지 않는 미션 관리 요청입니다.')
 
     def validate_route(self, route):
-        now = datetime.now(timezone.utc).isoformat()
+        wall = time.time()
+        now = datetime.fromtimestamp(wall, timezone.utc).isoformat()
         payload = dict(self.assignment, control_action='start', control_request_id='draft-validation',
             control_requested_at=now, mission_db_id=1, mission_code='DRAFT', route_revision='draft',
             route_tasks=route, status='ACTIVE')
-        parse_request(payload, self.settings, time.time())
+        parse_request(payload, self.settings, datetime.fromisoformat(now).timestamp())
 
     def site_editable(self):
         # A new ground session is required after every START. Expired telemetry
@@ -202,7 +290,10 @@ class LocalPlatform:
     def command(self, action, route=None, ceiling=None, trial_case=None, client_request_id=None, draft_id=None, revision=None):
         if action not in ('start', 'land', 'return_to_home', 'set_ceiling'):
             raise ValueError('지원하지 않는 요청입니다.')
+        if action == 'land':
+            return self.urgent_land(dict(action=action, client_request_id=client_request_id))
         with self.lock:
+            epoch = self.control_epoch
             if action == 'set_ceiling':
                 if not self.site_editable():
                     raise ValueError('천장 변경은 새 지상 세션에서만 가능합니다.')
@@ -275,8 +366,9 @@ class LocalPlatform:
                 assignment = self.store.start(key, body, assignment, name, draft_id)
             else:
                 self.store.control(key, body, assignment)
-            self.assignment = assignment
-            return dict(self.assignment)
+            if not self.publish_assignment(assignment, epoch):
+                return self.store.cancel_unpublished(key, assignment, close_run=action == 'start')
+            return dict(assignment)
 
     def http_handler(self):
         platform = self
@@ -287,8 +379,11 @@ class LocalPlatform:
                 self.send_header('Content-Type', content_type)
                 self.send_header('Content-Length', str(len(body)))
                 self.send_header('Cache-Control', 'no-store')
-                self.end_headers()
-                self.wfile.write(body)
+                try:
+                    self.end_headers()
+                    self.wfile.write(body)
+                except (BrokenPipeError, ConnectionResetError):
+                    pass  # A disconnected reader cannot undo a committed receipt.
 
             def send_json(self, value, status=200):
                 self.send(json.dumps(value, allow_nan=False).encode('utf-8'), status)
@@ -300,37 +395,36 @@ class LocalPlatform:
                 if query.path == '/local/preset':
                     try:
                         q = parse_qs(query.query)
-                        with platform.lock:
-                            xy = platform.automatic_start()
-                            route = field_route(q['case'][0], xy, platform.settings)
+                        xy = platform.automatic_start()
+                        route = field_route(q['case'][0], xy, platform.settings)
                         return self.send_json(dict(route_tasks=route,start_xy_m=xy,start_source='px4_ekf2_to_uwb_map'))
                     except (KeyError, ValueError, OverflowError) as error:
                         return self.send_json({'error':str(error)[:256]},400)
-                with platform.lock:
-                    if self.path == '/local/missions':
-                        return self.send_json(platform.store.listing())
-                    if self.path == f'/api/drones/{platform.drone_id}/companion-mission/':
-                        return self.send_json(platform.assignment)
-                    if self.path == '/local/status':
-                        age = (time.monotonic()-platform.telemetry_received_s
-                               if platform.telemetry_received_s is not None else None)
-                        fresh = age is not None and 0 <= age <= 1.
-                        try:
-                            automatic_xy = platform.automatic_start()
-                        except ValueError:
-                            automatic_xy = None
-                        return self.send_json(dict(telemetry=platform.telemetry if fresh else {},
-                            telemetry_fresh=fresh, telemetry_age_ms=round(age*1000) if age is not None else None,
-                            site=platform.site, site_editable=platform.site_editable(),
-                            can_start=platform.can_start(), can_arm=platform.can_arm(), active_run_id=(platform.store.active() or {}).get('id'),
-                            ceiling_required=platform.settings.full_mission,
-                            start_mode=platform.settings.start_mode, takeoff_backend=platform.settings.takeoff_backend, can_takeoff=platform.can_takeoff(),
-                            expected_takeoff_height_m=platform.settings.expected_mis_takeoff_alt_m,
-                            execution_profile=platform.settings.execution_profile,
-                            command_frame=platform.settings.command_frame,
-                            speed_m_s=platform.settings.speed_m_s,
-                            automatic_start_xy_m=automatic_xy,
-                            assignment=platform.assignment, phase_reports=platform.reports, acks=platform.acks))
+                if self.path == '/local/missions':
+                    return self.send_json(platform.store.listing())
+                if self.path == f'/api/drones/{platform.drone_id}/companion-mission/':
+                    return self.send_json(platform.assignment)
+                if self.path == '/local/status':
+                    age = (time.monotonic()-platform.telemetry_received_s
+                           if platform.telemetry_received_s is not None else None)
+                    fresh = age is not None and 0 <= age <= 1.
+                    try:
+                        automatic_xy = platform.automatic_start()
+                    except ValueError:
+                        automatic_xy = None
+                    return self.send_json(dict(telemetry=platform.telemetry if fresh else {},
+                        telemetry_fresh=fresh, telemetry_age_ms=round(age*1000) if age is not None else None,
+                        site=platform.site, site_editable=platform.site_editable(),
+                        can_start=platform.can_start(), can_arm=platform.can_arm(), active_run_id=(platform.store.active() or {}).get('id'),
+                        ceiling_required=platform.settings.full_mission,
+                        start_mode=platform.settings.start_mode, takeoff_backend=platform.settings.takeoff_backend, can_takeoff=platform.can_takeoff(),
+                        expected_takeoff_height_m=platform.settings.expected_mis_takeoff_alt_m,
+                        execution_profile=platform.settings.execution_profile,
+                        command_frame=platform.settings.command_frame,
+                        speed_m_s=platform.settings.speed_m_s,
+                        automatic_start_xy_m=automatic_xy,
+                        assignment=platform.assignment, phase_reports=list(platform.reports), acks=list(platform.acks),
+                        storage=dict(database=platform.store.storage_status(), writer=platform.disk.status())))
                 self.send_json({'error':'unknown_endpoint'},404)
 
             def do_POST(self):
@@ -360,18 +454,12 @@ class LocalPlatform:
                         return self.send_json(platform.command(value.get('action'),value.get('route_tasks'),value.get('ceiling_height_m'),value.get('trial_case'),value.get('client_request_id'),value.get('draft_id'),value.get('revision')))
                     if self.path == '/local/missions':
                         return self.send_json(platform.catalog_command(value))
-                    with platform.lock:
-                        if self.path == f'/api/drones/{platform.drone_id}/control-action/ack/':
-                            platform.acks.append(value)
-                            platform.acks = platform.acks[-200:]
-                            if value.get('request_id') == platform.assignment.get('control_request_id'):
-                                platform.assignment['control_action'] = None
-                                platform.store.acknowledge(platform.assignment)
-                        elif self.path == f'/api/drones/{platform.drone_id}/companion-phase/':
-                            platform.reports.append(value)
-                            platform.reports = platform.reports[-200:]
-                        else:
-                            return self.send_json({'error':'unknown_endpoint'},404)
+                    if self.path == f'/api/drones/{platform.drone_id}/control-action/ack/':
+                        platform.acknowledge(value)
+                    elif self.path == f'/api/drones/{platform.drone_id}/companion-phase/':
+                        platform.reports = (platform.reports + [value])[-200:]
+                    else:
+                        return self.send_json({'error':'unknown_endpoint'},404)
                     self.send_json({'ok':True})
                 except (ValueError, TypeError) as error:
                     self.send_json({'error':str(error)[:256]},400)
@@ -394,12 +482,7 @@ class LocalPlatform:
                 value = json.loads(raw)
                 if not isinstance(value,dict) or value.get('type') != 'telemetry':
                     continue
-                with self.lock:
-                    if str(value.get('drone_id')) != self.drone_id:
-                        continue
-                    self.store.observe(value)
-                    self.telemetry = value
-                    self.telemetry_received_s = time.monotonic()
+                self.receive_telemetry(value)
             except (ValueError, TypeError, sqlite3.Error):
                 continue
 
@@ -426,7 +509,7 @@ async def run(args):
     finally:
         await asyncio.to_thread(http.shutdown)
         http.server_close()
-        platform.store.close()
+        platform.close()
 
 
 def main():

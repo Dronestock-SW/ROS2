@@ -1,0 +1,168 @@
+[
+  {
+    "scenario": "separate_resume_gap",
+    "commands": [
+      "OFFBOARD",
+      "ARM",
+      "POSCTL",
+      "OFFBOARD",
+      "LAND"
+    ],
+    "max_received_setpoint_gap_s": 0.058028011000715196,
+    "storage_land_s": null,
+    "physical_flight": false,
+    "binary_sha256": "4e1d77b517fb06b66d7688301a9e53891c29d8181ea89851cf2d231a7f843d4c",
+    "state": "END",
+    "landing_verified": true,
+    "record_pending": false,
+    "storage": {
+      "completion_sync_s": 0.09157039799902122,
+      "journal_last_s": 0.010007913002482383,
+      "journal_max_s": 0.06735106499763788,
+      "observer": {
+        "evidence": {
+          "error": null,
+          "last_sync_s": 0.011158981000335189,
+          "max_sync_s": 0.6037139170002774,
+          "pending": 0,
+          "submitted": 172,
+          "sync_count": 31,
+          "written": 172
+        },
+        "request_journal": {
+          "completed": 2,
+          "error": null,
+          "last_elapsed_s": 0.033299878999969224,
+          "max_elapsed_s": 0.033299878999969224,
+          "pending": 0,
+          "running": null,
+          "running_age_s": 0.0
+        }
+      }
+    }
+  },
+  {
+    "scenario": "separate_storage_land",
+    "commands": [
+      "OFFBOARD",
+      "ARM",
+      "LAND"
+    ],
+    "max_received_setpoint_gap_s": 0.05738326599748689,
+    "storage_land_s": 0.46373199399749865,
+    "physical_flight": false,
+    "binary_sha256": "4e1d77b517fb06b66d7688301a9e53891c29d8181ea89851cf2d231a7f843d4c",
+    "state": "FAILED",
+    "landing_verified": true,
+    "record_pending": false,
+    "storage": {
+      "completion_sync_s": 4.028753472000972,
+      "journal_last_s": 4.0168629699983285,
+      "journal_max_s": 4.096399869999004,
+      "observer": {
+        "evidence": {
+          "error": null,
+          "last_sync_s": 0.009976704001019243,
+          "max_sync_s": 4.012698515998636,
+          "pending": 1,
+          "submitted": 115,
+          "sync_count": 30,
+          "written": 114
+        },
+        "request_journal": {
+          "completed": 2,
+          "error": null,
+          "last_elapsed_s": 0.043174180998903466,
+          "max_elapsed_s": 4.0265812069992535,
+          "pending": 0,
+          "running": null,
+          "running_age_s": 0.0
+        }
+      }
+    }
+  },
+  {
+    "scenario": "separate_report_delay",
+    "commands": [
+      "OFFBOARD",
+      "ARM",
+      "POSCTL",
+      "OFFBOARD",
+      "LAND"
+    ],
+    "max_received_setpoint_gap_s": 0.07205329299904406,
+    "storage_land_s": null,
+    "physical_flight": false,
+    "binary_sha256": "4e1d77b517fb06b66d7688301a9e53891c29d8181ea89851cf2d231a7f843d4c",
+    "state": "END",
+    "landing_verified": true,
+    "record_pending": false,
+    "storage": {
+      "completion_sync_s": 0.7853518949996214,
+      "journal_last_s": 0.014178405999700772,
+      "journal_max_s": 1.8295688100006373,
+      "observer": {
+        "evidence": {
+          "error": null,
+          "last_sync_s": 0.010475473001861246,
+          "max_sync_s": 1.5997250319996965,
+          "pending": 3,
+          "submitted": 178,
+          "sync_count": 28,
+          "written": 175
+        },
+        "request_journal": {
+          "completed": 2,
+          "error": null,
+          "last_elapsed_s": 0.024135240997566143,
+          "max_elapsed_s": 0.024135240997566143,
+          "pending": 0,
+          "running": null,
+          "running_age_s": 0.0
+        }
+      }
+    }
+  },
+  {
+    "scenario": "separate_takeoff_gap",
+    "commands": [
+      "OFFBOARD",
+      "ARM",
+      "POSCTL",
+      "OFFBOARD",
+      "LAND"
+    ],
+    "max_received_setpoint_gap_s": 0.057467382997856475,
+    "storage_land_s": null,
+    "physical_flight": false,
+    "binary_sha256": "4e1d77b517fb06b66d7688301a9e53891c29d8181ea89851cf2d231a7f843d4c",
+    "state": "END",
+    "landing_verified": true,
+    "record_pending": false,
+    "storage": {
+      "completion_sync_s": 0.10822230299891089,
+      "journal_last_s": 0.020403791997523513,
+      "journal_max_s": 0.020403791997523513,
+      "observer": {
+        "evidence": {
+          "error": null,
+          "last_sync_s": 0.015711845000623725,
+          "max_sync_s": 0.20361838200187776,
+          "pending": 0,
+          "submitted": 166,
+          "sync_count": 30,
+          "written": 166
+        },
+        "request_journal": {
+          "completed": 2,
+          "error": null,
+          "last_elapsed_s": 0.012643676996958675,
+          "max_elapsed_s": 0.02797378100149217,
+          "pending": 0,
+          "running": null,
+          "running_age_s": 0.0
+        }
+      }
+    }
+  }
+]

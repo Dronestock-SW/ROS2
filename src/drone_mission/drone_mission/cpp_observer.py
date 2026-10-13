@@ -9,8 +9,6 @@ import hashlib
 import json
 import math
 import os
-import queue
-import threading
 from pathlib import Path
 import time
 
@@ -31,7 +29,8 @@ from .mission_chain import MissionChain
 from .anchor_trial import validate_anchor_trial
 from .preflight import field_preflight
 from mavros_msgs.msg import TimesyncStatus
-from .recording import flight_sample, sensor_sources
+from .recording import AsyncEventRecorder, flight_sample, sensor_sources
+from .persistence import RequestJournal
 from .observation_policy import observation_status
 from .operator_arm import arm_request
 from datetime import datetime
@@ -58,7 +57,6 @@ class CppObserver(Node):
     bridge = FlightNode.bridge
     query = FlightNode.query
     parameters_received = FlightNode.parameters_received
-    remember = FlightNode.remember
 
     def __init__(self):
         super().__init__('cpp_field_observer')
@@ -77,7 +75,8 @@ class CppObserver(Node):
         self.rc_required = not test
         self.ledger = Path(self.get_parameter('ledger_file').value)
         consumed = json.loads(self.ledger.read_text(encoding='utf-8'))['consumed'] if self.ledger.exists() else []
-        self.session = LocalXYMission(self.settings, consumed, self.remember)
+        self.session = LocalXYMission(self.settings, consumed)
+        self.journal = RequestJournal(self.ledger, consumed)
         self.samples = {}; self.origin = None
         self.param_value = None; self.param_received = self.param_requested = float('-inf'); self.param_future = None
         self.streams_requested = self.feedback_stream_requested = False; self.origin_requested = float('-inf')
@@ -114,9 +113,8 @@ class CppObserver(Node):
         if directory:
             root = Path(directory); root.mkdir(parents=True, exist_ok=False)
             self.log = (root/'observer-events.jsonl').open('x', encoding='utf-8')
-        self.record_queue = queue.Queue(maxsize=128); self.record_fault = False
-        self.record_worker = threading.Thread(target=self.record_loop,daemon=True)
-        self.record_worker.start()
+        self.recorder = AsyncEventRecorder(self.log, sync_interval_s=1.) if self.log else None
+        self.record_fault = False
         self.create_timer(.1, self.tick)
         self.create_timer(1., self.query)
         self.up_limit = None; self.up_limit_received = float('-inf'); self.up_future = None; self.up_requested = float('-inf')
@@ -159,21 +157,8 @@ class CppObserver(Node):
             estimated_offset_ns=msg.estimated_offset_ns,round_trip_time_ms=msg.round_trip_time_ms),time.monotonic())
 
     def record(self, value):
-        if self.log:
-            try:self.record_queue.put_nowait(dict(value,wall_ns=time.time_ns(),monotonic_ns=time.monotonic_ns()))
-            except queue.Full:self.record_fault = True
-
-    def record_loop(self):
-        try:
-            while True:
-                value=self.record_queue.get()
-                if value is None:return
-                if self.log:
-                    self.log.write(json.dumps(value,allow_nan=False)+'\n')
-                    self.log.flush();os.fsync(self.log.fileno())
-        except (OSError,ValueError):self.record_fault = True
-        finally:
-            if self.log:self.log.close()
+        if self.recorder and not self.recorder.submit(dict(value, wall_ns=time.time_ns(), monotonic_ns=time.monotonic_ns())):
+            self.record_fault = True
 
     def assignment(self, msg):
         try:
@@ -208,7 +193,8 @@ class CppObserver(Node):
         self.valid_pub.publish(String(data=json.dumps(self.session.validation)))
 
     def tick(self):
-        if self.record_fault:raise RuntimeError('cpp_observer_recording_unavailable')
+        # Disk delay/failure cannot stop ROS input reception and publication.
+        recording_ok = bool(self.recorder) and not self.record_fault and not self.recorder.error and not self.journal.worker.error
         s = self.snapshot(); now = time.monotonic()
         if now-getattr(self,'last_evidence_s',0) >= (.2 if s.armed else 1.):
             self.last_evidence_s=now
@@ -228,21 +214,33 @@ class CppObserver(Node):
         r = self.session.intent
         if r and self.native_session and (r['action'] != 'start' or reason == 'ready'):
             if r['request_id'] not in self.session.consumed:
-                self.session.consume(r)
-                self.forwarded = dict(r, ceiling_height_m=self.session.cpp_ceiling, executor_session=self.native_session)
-                self.record(dict(type='request_persisted_before_native', request=self.forwarded))
-                if r['action'] == 'start': self.session.assignment = r
-                self.session.intent = None
+                future = self.journal.submit(r['request_id'])
+                durable = future.done() and future.exception() is None
+                if r['action'] == 'land' or (durable and recording_ok):
+                    # A requested LAND bypasses storage; ordinary admission
+                    # still waits for the exact request to be persisted.
+                    self.session.consumed.add(r['request_id'])
+                    self.session.ack = {k:r[k] for k in ('action','request_id','requested_at')}
+                    self.forwarded = dict(r, ceiling_height_m=self.session.cpp_ceiling,
+                        executor_session=self.native_session, request_persisted=durable)
+                    self.record(dict(type='request_forwarded', durable_before_forward=durable, request=self.forwarded))
+                    if r['action'] == 'start': self.session.assignment = r
+                    self.session.intent = None
+                else:
+                    self.session.validation = dict(accepted=False, reason='request_record_pending' if not future.done() else 'request_record_failed', request_id=r['request_id'])
+        if self.forwarded:
+            future = self.journal.requests[self.forwarded['request_id']]
+            self.forwarded['request_persisted'] = future.done() and future.exception() is None
         state = asdict(s); state.pop('origin')
         state.update(web_age_s=now-self.session.last_web_s if self.session.last_web_s is not None else None,
-                     ground_gate_ready=reason == 'ready', request_persisted=self.forwarded is not None,
+                     ground_gate_ready=reason == 'ready', request_persisted=bool(self.forwarded and self.forwarded.get('request_persisted')),
                      max_up_m_s=self.up_limit,max_up_age_s=now-self.up_limit_received,
                      rc_calibration=getattr(self,'rc_calibration',{}))
         envelope = dict(schema='sangwon-cpp-observer/1', executor_session=self.native_session,
                         settings=asdict(self.settings), sample_time_s=now,
                         state=clean(state), request=self.forwarded,
                         preflight=field_preflight(self.settings,s,map_loaded=False,
-                            recording_ok=self.log is not None,cpp_ai_ready=self.native_session is not None))
+                            recording_ok=recording_ok,cpp_ai_ready=self.native_session is not None))
         up_ok = type(self.up_limit) in (float,int) and 0 < self.up_limit <= .5 and now-self.up_limit_received <= 5
         envelope['preflight']['checks'].append(dict(code='native_up_limit',title='PX4 상승 제한 0.5m/s 이하',passed=up_ok,required=True))
         if airborne_start:
@@ -258,10 +256,12 @@ class CppObserver(Node):
         checks = envelope['preflight']['checks']
         envelope['preflight']['checked_inputs_passed'] = all(c['passed'] for c in checks if c['required'])
         envelope['preflight']['blockers'] = [c['code'] for c in checks if c['required'] and not c['passed']]
+        envelope['storage'] = dict(request_journal=self.journal.worker.status(), evidence=self.recorder.status() if self.recorder else None)
         self.output.publish(String(data=json.dumps(envelope, allow_nan=False, separators=(',', ':'))))
 
     def destroy_node(self):
-        self.record_queue.put(None);self.record_worker.join(3.)
+        self.journal.worker.close()
+        if self.recorder: self.recorder.close()
         return super().destroy_node()
 
 

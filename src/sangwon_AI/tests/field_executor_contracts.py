@@ -65,6 +65,32 @@ class Contracts(unittest.TestCase):
     def tearDown(self):
         for p in self.peers:p.close()
     def peer(self,**kw):p=Peer(**kw);self.peers.append(p);return p
+    def test_unsent_journal_wait_does_not_consume_fc_ack_deadline(self):
+        p=self.peer();p.until('PREPARING')
+        while not p.out['actions']:p.tick(ack=False)
+        token=p.out['actions'][0]['token']
+        p.call(dict(method='queued',token=token))
+        p.s['mode']='POSCTL'
+        for _ in range(140):p.tick(ack=False)
+        self.assertEqual(p.out['phase'],'PREPARING')
+        self.assertTrue(p.out['command_record_pending'])
+        p.call(dict(method='dispatched',token=token,now_s=p.t))
+        p.tick(dt=3.1,ack=False)
+        self.assertEqual(p.out['phase'],'UNCONFIRMED')
+
+    def test_land_cancels_unsent_position_request_and_ignores_late_ack(self):
+        p=self.separate();p.until('TAKING_OFF')
+        p.until('POSITION_HANDOFF',ack=False)
+        token=p.out['actions'][0]['token']
+        p.call(dict(method='queued',token=token));p.s['mode']='OFFBOARD'
+        p.request=dict(action='land',request_id='cancel-during-journal')
+        p.tick(ack=False)
+        self.assertEqual(p.out['phase'],'LANDING')
+        self.assertEqual(p.out['actions'][0]['kind'],'land')
+        p.ack(token,True);p.request=None;p.tick(ack=False)
+        self.assertEqual(p.out['phase'],'LANDING')
+        self.assertFalse(p.out['landing_verified'])
+
     def test_complete_cpp_hover_ten_seconds_and_actual_ground_disarm(self):
         p=self.peer();p.until('DWELL');dwell=p.t;p.until('END')
         self.assertGreaterEqual(p.t-dwell,10.);self.assertEqual(p.commands,['offboard_mode','arm','land'])

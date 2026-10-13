@@ -76,3 +76,15 @@ def test_local_odometry_adapter_preserves_unverified_flight_flags():
     assert n['flight_verified'] is False and n['dynamic_alignment_verified'] is False
     assert normalize_bridge(v,replace(s,bridge_host_boot_id='old'))['gate']!='ready'
     assert normalize_bridge(dict(v,last_send_age_s=2.),s)['gate']!='ready'
+
+
+@pytest.mark.parametrize('action',['takeoff','takeoff_land'])
+def test_separate_takeoff_uses_mission_ttl_without_restamping(action):
+    s=Settings();now=1791417600.
+    p=dict(ok=True,contract_version='1.0',drone_id=s.drone_id,anchor_layout_id=s.layout_id,
+        operator_session_id='current',control_action=action,control_request_id='one-click',
+        control_requested_at=datetime.fromtimestamp(now,timezone.utc).isoformat())
+    assert arm_request(p,s,'current',now+4,action=action)=='one-click'
+    with pytest.raises(ValueError):arm_request(p,s,'current',now+30.01,action=action)
+    with pytest.raises(ValueError):arm_request(p,s,'old',now+4,action=action)
+    with pytest.raises(ValueError):arm_request(p,s,'current',now-1,action=action)

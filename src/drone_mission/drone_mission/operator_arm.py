@@ -40,7 +40,10 @@ def arm_request(payload, settings, session_id, wall_s, *, action='arm'):
         raise ValueError('arm_request_id_required')
     try:
         stamp = datetime.fromisoformat(payload['control_requested_at'].replace('Z', '+00:00'))
-        valid = stamp.tzinfo is not None and 0 <= wall_s-stamp.timestamp() <= 3.
+        # TAKEOFF belongs to the mission contract; manual ARM remains a
+        # short-lived separate action. Never renew the original request stamp.
+        lifetime = settings.request_ttl_s if action in ('takeoff','takeoff_land') else 3.
+        valid = stamp.tzinfo is not None and 0 <= wall_s-stamp.timestamp() <= lifetime
     except (KeyError, TypeError, AttributeError, ValueError):
         valid = False
     if not valid:

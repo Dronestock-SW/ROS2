@@ -187,10 +187,33 @@ def run(scenario):
     node=rclpy.create_node('synthetic_fc');fc=FC(node,p,cfg,scenario)
     executor=SingleThreadedExecutor();executor.add_node(node);spin=threading.Thread(target=executor.spin,daemon=True);spin.start()
     log=(root/'process.log').open('wb')
-    native_proc=subprocess.Popen([BINARY,str(native)],stdout=log,stderr=log)
+    storage_test=scenario in ('separate_storage_wait','separate_storage_land')
+    native_env=dict(os.environ);observer_env=dict(os.environ)
+    storage_probes=[];storage_stop=threading.Event();storage_thread=None
+    if storage_test:
+        # Injection is confined to test children on localhost domain 99.
+        shim=root/'storage-delay.so'
+        subprocess.run(['cc','-shared','-fPIC',str(Path(__file__).with_name('storage_delay.c')),'-ldl','-o',str(shim)],check=True)
+        native_env.update(LD_PRELOAD=str(shim),STORAGE_TEST_MARKER=str(root/'storage-marker'))
+        observer_env['PYTHONPATH']=str(Path(__file__).with_name('storage_faults'))+':'+observer_env.get('PYTHONPATH','')
+        original=p.store.operator_receipt
+        def slow_receipt(*args,**kwargs):
+            time.sleep(4.);return original(*args,**kwargs)
+        p.store.operator_receipt=slow_receipt
+        def probe():
+            while not storage_stop.wait(.1):
+                for path in ('/local/status','/api/drones/6/companion-mission/'):
+                    began=time.monotonic()
+                    with urlopen(f'http://127.0.0.1:{server.server_port}'+path,timeout=1) as response:
+                        value=json.load(response)
+                    storage_probes.append(dict(path=path,elapsed_s=time.monotonic()-began,
+                        sample=time.monotonic(),age_ms=value.get('telemetry_age_ms'),
+                        storage=value.get('storage')))
+        storage_thread=threading.Thread(target=probe,daemon=True);storage_thread.start()
+    native_proc=subprocess.Popen([BINARY,str(native)],stdout=log,stderr=log,env=native_env)
     observer=subprocess.Popen([sys.executable,'-c','from drone_mission.cpp_observer import main; main()',
         '--ros-args','-p','config_file:='+str(mission),'-p','execute:=true','-p','test_mode:=true',
-        '-p','record_directory:='+str(root/'observer'),'-p','ledger_file:='+str(root/'ledger.json')],stdout=log,stderr=log)
+        '-p','record_directory:='+str(root/'observer'),'-p','ledger_file:='+str(root/'ledger.json')],stdout=log,stderr=log,env=observer_env)
     paused=False;pause_end=None;injected=False;explicit_cancel=False;link=None;ws_context={};ws_thread=None
     try:
         if fc.real_link:
@@ -240,6 +263,17 @@ def run(scenario):
         while time.monotonic()<end:
             assert native_proc.poll() is None and observer.poll() is None,(scenario,(root/'process.log').read_text())
             phase=fc.status.get('state')
+            if scenario=='separate_storage_land' and not explicit_cancel and phase=='POSITION_HANDOFF':
+                marker=root/'storage-marker'
+                if marker.exists() and marker.read_text()=='3':
+                    began=time.monotonic()
+                    post(dict(action='takeoff_land',client_request_id='land-during-native-fsync',operator_session_id=p.telemetry['operator_session_id']))
+                    deadline=time.monotonic()+1.
+                    while 'LAND' not in fc.calls and time.monotonic()<deadline:time.sleep(.02)
+                    assert 'LAND' in fc.calls,('LAND waited for storage',fc.calls)
+                    storage_land_s=time.monotonic()-began
+                    assert storage_land_s<1.
+                    explicit_cancel=True;start_sent=True
             if separate and phase=='TAKING_OFF' and not pre_start_injected and scenario in ('separate_takeoff_gap','separate_takeoff_pose_gap'):
                 pre_start_injected=True
                 if scenario=='separate_takeoff_gap':fc.mute_uwb_until=time.monotonic()+2.5
@@ -274,10 +308,15 @@ def run(scenario):
             if paused and time.monotonic()>=pause_end:os.kill(observer.pid,signal.SIGCONT);paused=False
             if phase in ('END','FAILED','UNCONFIRMED','PILOT_OVERRIDE'):break
             time.sleep(.025)
-        expected='PILOT_OVERRIDE' if scenario in ('pilot','separate_pilot') else 'FAILED' if scenario in ('lidar_loss','fc_estimator_loss','fc_pose_loss','separate_hold_land') else 'END'
+        expected='PILOT_OVERRIDE' if scenario in ('pilot','separate_pilot') else 'FAILED' if scenario in ('lidar_loss','fc_estimator_loss','fc_pose_loss','separate_hold_land','separate_storage_land') else 'END'
         assert fc.status.get('state')==expected,(scenario,fc.status,fc.calls,(root/'process.log').read_text())
         expected_calls=(['OFFBOARD','ARM','POSCTL']+([] if scenario=='separate_pilot' else ['LAND'] if scenario=='separate_hold_land' else ['OFFBOARD','LAND'])) if separate else (['OFFBOARD','ARM'] if scenario=='pilot' else ['OFFBOARD','ARM','LAND'])
+        if scenario=='separate_storage_land':expected_calls=['OFFBOARD','ARM','LAND']
         assert fc.calls==expected_calls,fc.calls
+        if storage_test:
+            deadline=time.monotonic()+15
+            while fc.status.get('record_pending') and time.monotonic()<deadline:time.sleep(.025)
+            assert not fc.status.get('record_pending'),'terminal storage remained pending'
         if expected=='END':assert fc.status['mission_complete'] and fc.status['landing_verified']
         if fc.real_link and expected=='END':
             # END is only exposed after durable completion recording. This
@@ -300,7 +339,7 @@ def run(scenario):
             assert any(t.get('launch_displacement_body_flu_m',[0,0])[1]>.10 and t.get('target_error_body_flu_m',[0,0])[1]<-.10 for t in tracks)
             assert math.dist(fc.xy,[2.,2.])<.05
         if separate:
-            assert any(r['state']=='HOLD_READY' for r in fc.rows)
+            if scenario!='separate_storage_land':assert any(r['state']=='HOLD_READY' for r in fc.rows)
             assert fc.status['home_xy_m']==[2.,2.]
             if scenario in ('separate_takeoff_gap','separate_takeoff_pose_gap','separate_hold_gap','separate_resume_gap'):
                 assert any(r.get('observation_status',{}).get('progress_held') for r in fc.rows)
@@ -324,15 +363,26 @@ def run(scenario):
         gaps=[b[0]-a[0] for a,b in zip(fc.setpoint_rows,fc.setpoint_rows[1:]) if not separate or (a[4]=='OFFBOARD' and b[4]=='OFFBOARD')]
         assert max(gaps)<.2,(scenario,max(gaps))
         assert fc.status['max_sender_gap_s']<.2,(scenario,'native sender',fc.status['max_sender_gap_s'])
+        if storage_test:
+            assert storage_thread.is_alive(),'storage HTTP probe failed'
+            assert len(storage_probes)>20
+            assert max(r['elapsed_s'] for r in storage_probes)<1.
+            assert any(r['age_ms'] is not None and r['age_ms']<500 for r in storage_probes)
+            assert fc.status['storage']['journal_max_s']>=4.
+            if scenario=='separate_storage_land':
+                time.sleep(4.2)
+                assert fc.calls==['OFFBOARD','ARM','LAND'],'cancelled POSCTL dispatched late'
         out=dict(scenario=scenario,physical_flight=False,actual_cpp_executor=True,commands=fc.calls,
             binary_sha256=hashlib.sha256(Path(BINARY).read_bytes()).hexdigest(),
             state=fc.status,trace=fc.rows,setpoints=fc.setpoint_rows,trial_case=trial_case,command_http_timeouts=command_http_timeouts,
             command_http_durations_s=command_http_durations_s,end_confirmation_wait_s=end_confirmation_wait_s,
             final_xy_m=fc.xy,real_platform_link=fc.real_link,max_received_setpoint_gap_s=max(gaps),
-            max_mock_fc_source_gap_s=max(b-a for a,b in zip(fc.source_times,fc.source_times[1:])),source='HTTP/ROS/C++/mock-FC')
+            max_mock_fc_source_gap_s=max(b-a for a,b in zip(fc.source_times,fc.source_times[1:])),source='HTTP/ROS/C++/mock-FC',storage_probes=storage_probes,storage_land_s=locals().get('storage_land_s'))
         (root/'evidence.json').write_text(json.dumps(out,indent=2),encoding='utf-8')
         print(scenario,expected,'max_setpoint_gap_ms=',round(max(gaps)*1000,3),flush=True)
     finally:
+        storage_stop.set()
+        if storage_thread:storage_thread.join(2)
         if fc.rows:
             (root/'trace.json').write_text(json.dumps(dict(status=fc.status,commands=fc.calls,trace=fc.rows,
                 max_mock_fc_source_gap_s=max(b-a for a,b in zip(fc.source_times,fc.source_times[1:]))),indent=2),encoding='utf-8')
@@ -343,7 +393,7 @@ def run(scenario):
         for child in children:
             try:child.wait(timeout=5)
             except subprocess.TimeoutExpired:child.kill();child.wait()
-        fc.close();executor.shutdown();spin.join(3);node.destroy_node();server.shutdown();server.server_close();p.store.close();log.close()
+        fc.close();executor.shutdown();spin.join(3);node.destroy_node();server.shutdown();server.server_close();p.close();log.close()
         if ws_thread:
             ws_context['loop'].call_soon_threadsafe(ws_context['stop'].set);ws_thread.join(3)
 
