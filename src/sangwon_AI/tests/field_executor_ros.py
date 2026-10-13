@@ -242,7 +242,8 @@ def run(scenario):
                         post(dict(action='takeoff_land',client_request_id='land-before-start',operator_session_id=p.telemetry['operator_session_id']));start_sent=True
                     elif scenario=='separate_pilot':fc.mode='ALTCTL';start_sent=True
                     elif p.can_start():
-                        assignment=post(dict(action='start',trial_case=trial_case,client_request_id='native-'+scenario));start_sent=True
+                        start_request=dict(action='start',trial_case=trial_case,client_request_id='native-'+scenario)
+                        assignment=post(start_request);assert post(start_request)==assignment,'HTTP retry duplicated START';start_sent=True
             if separate and phase=='RESUME_PREPARING' and scenario=='separate_resume_gap' and not resume_injected:
                 fc.mute_uwb_until=time.monotonic()+2.5;resume_injected=True
             if phase=='TAKING_OFF' and scenario=='takeoff_pose_gap' and not injected:fc.gap_start=time.monotonic();injected=True
@@ -306,6 +307,7 @@ def run(scenario):
         # A deliberately silent POSCTL interval is not a sender outage.
         gaps=[b[0]-a[0] for a,b in zip(fc.setpoint_rows,fc.setpoint_rows[1:]) if not separate or (a[4]=='OFFBOARD' and b[4]=='OFFBOARD')]
         assert max(gaps)<.2,(scenario,max(gaps))
+        assert fc.status['max_sender_gap_s']<.2,(scenario,'native sender',fc.status['max_sender_gap_s'])
         out=dict(scenario=scenario,physical_flight=False,actual_cpp_executor=True,commands=fc.calls,
             binary_sha256=hashlib.sha256(Path(BINARY).read_bytes()).hexdigest(),
             state=fc.status,trace=fc.rows,setpoints=fc.setpoint_rows,trial_case=trial_case,

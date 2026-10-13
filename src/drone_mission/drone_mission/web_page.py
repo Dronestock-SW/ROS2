@@ -70,7 +70,7 @@ const up=t.uwb_pipeline??{};by('uwbpolicy').textContent=[['btf','B_TF 입력'],[
 by('takeoff').hidden=s.start_mode!=='takeoff_hold';by('takeoff').disabled=busy||(!s.can_takeoff&&pending?.action!=='takeoff');
 by('arm').hidden=s.start_mode==='takeoff_hold';
 if(s.start_mode==='takeoff_hold'){by('start').textContent='미션 START · HOLD에서 시작';by('flow').textContent='웹 이륙 → PX4 TAKEOFF → HOLD 안정 확인 → 별도 START → 미션 → 착륙';by('commandhint').textContent='이륙은 PX4가 수행합니다. HOLD에서는 START를 누를 때까지 미션이 시작되지 않습니다.';by('preset').options[0].textContent='10초 호버·착륙';}
-if(s.takeoff_backend==='local_position'){by('takeoff').textContent='웹 자동 이륙 · 현재 XY 유지';by('start').textContent='미션 START · POSITION에서 시작';by('flow').textContent='웹 자동 이륙 → POSITION 안정 확인 → 별도 START → 미션 → 착륙';by('commandhint').textContent='현재 XY에서 자동 상승합니다. POSITION 대기 중에는 RC 스틱을 중립에 두세요. 미션은 별도 START로 시작합니다.';}
+if(s.takeoff_backend==='local_position'){by('takeoff').textContent='웹 자동 이륙 · 현재 XY 유지';by('start').textContent='미션 START · POSITION에서 시작';by('flow').textContent='웹 자동 이륙 → POSITION 대기 → 별도 START → OFFBOARD 재진입 → 미션 → 착륙';by('commandhint').textContent='현재 XY에서 자동 상승합니다. POSITION 대기 중에는 RC 스틱을 중립에 두세요. 미션은 별도 START로 시작합니다.';}
 by('start').disabled=busy||(!s.can_start&&pending?.action!=='start');
 by('arm').disabled=busy||(!s.can_arm&&pending?.action!=='arm');
 const ar=t.operator_arm_result;by('armstate').textContent=(t.fc_armed===true?'실제 시동: ARM':t.fc_armed===false?'실제 시동: DISARM':'실제 시동: 미확인')+(ar?' · ARM 요청: '+ar.reason:'');

@@ -125,7 +125,7 @@ def test_http_hover_uses_cpp_bt_from_start_through_confirmed_END(tmp_path,scenar
     checks=dict(checked_inputs_passed=True,checks=[dict(code=k,passed=True) for k in ('layout_confirmed','transform','pose','estimator')])
     p.telemetry=dict(fc_connected=True,fc_armed=False,fc_landed=1,flight_state='IDLE',
         px4_map_xy_m=[2.,2.],preflight=checks,mission_ai=ai.status())
-    if native:p.telemetry.update(fc_armed=True,fc_landed=2,fc_mode='AUTO.LOITER',flight_state='HOLD_READY',native_takeoff=dict(can_start=True))
+    if native:p.telemetry.update(fc_armed=True,fc_landed=2,fc_mode='AUTO.LOITER',flight_state='HOLD_READY',native_takeoff=dict(can_start=True),home_xy_m=mission.status()['home_xy_m'])
     p.telemetry_received_s=time.monotonic();p.site['ceiling_height_m']=3.
     server=ThreadingHTTPServer(('127.0.0.1',0),p.http_handler())
     web=threading.Thread(target=server.serve_forever,daemon=True);web.start()
