@@ -76,3 +76,28 @@ companion published 증가
 FC 상태·센서 기록을 다시 받을 수 있어야 다음 확인이 가능하다.
 설치 후에도 다른 수평 보조와 innovation 조건을 충족해야 한다.
 자세한 계약은 [API 명세](../reference/companion_px4_api.md)에 있다.
+
+## 4. 로직 개선을 위한 API 개정
+
+반환값과 PX4 파라미터를 층별로 따라가도록 개정했다.
+각 층은 다이어그램, 실제 필드, 적용값, 코드 추적 순서로 구성했다.
+목적별 수정 함수와 값 변경이 미치는 영향을 추가했다.
+장비 실행 절차 대신 소스·기존 로그에서 연결을 찾도록 정리했다.
+최초 wire 사전과 위 실물 확인 결과는 보존했다.
+
+| 항목 | 이번 개정 기준 |
+|---|---|
+| companion | FINAL `20bd603`, `99a4a9b`의 native/local 이륙 코드 포함 |
+| path_heading 미커밋 작업 | 기준에서 제외 |
+| 파라미터 수치 | 10/12 MAVROS cache 백업에서 발췌 |
+| LiDAR2D 요구값 | companion gate와 전용 firmware 기본값을 분리 |
+| 실물 변경 | 없음. 추가 설치·융합·비행 검증 미실시 |
+
+10/12 파라미터는 오늘 FC에서 다시 읽은 값이 아니다.
+원본 해시·발췌는 [파라미터 기록](evidence/companion_px4_api_20261013/parameter_snapshot_20261012.json)에 있다.
+소스 범위는 [개정 manifest](evidence/companion_px4_api_20261013/source_manifest_v2.json)에 있다.
+
+문서 검증: Mermaid 11개를 렌더링해 그림을 확인했다.
+UTF-8, 예시 문법, 문서 링크, 기준 코드 링크도 검사했다.
+파라미터 36개의 원본 수치를 보존하고, 표의 주요 값 27개를 대조했다.
+알고리즘·설정 코드는 바꾸지 않아 실행 시험을 추가하지 않았다.

@@ -1,0 +1,593 @@
+{
+  "record_date": "2026-10-12",
+  "evidence_type": "historical MAVROS parameter cache backup",
+  "current_fc_readback": false,
+  "source_relative_to_original_workspace": ".review/lidar-physical-20261012/pre-firmware-backup/parameter_backup.json",
+  "source_sha256": "fb57a35dc6af114797a014786eb810e9ac19e7eb79c5ba08ed3cd7ee4e6898ed",
+  "original_parameter_count": 1096,
+  "selected_parameter_count": 36,
+  "parameters": {
+    "EKF2_GPS_CTRL": {
+      "value": 0,
+      "ros_parameter_type": 2,
+      "raw": {
+        "type": 2,
+        "bool_value": false,
+        "integer_value": 0,
+        "double_value": 0.0,
+        "string_value": "",
+        "byte_array_value": [],
+        "bool_array_value": [],
+        "integer_array_value": [],
+        "double_array_value": [],
+        "string_array_value": []
+      }
+    },
+    "EKF2_EV_CTRL": {
+      "value": 1,
+      "ros_parameter_type": 2,
+      "raw": {
+        "type": 2,
+        "bool_value": false,
+        "integer_value": 1,
+        "double_value": 0.0,
+        "string_value": "",
+        "byte_array_value": [],
+        "bool_array_value": [],
+        "integer_array_value": [],
+        "double_array_value": [],
+        "string_array_value": []
+      }
+    },
+    "EKF2_EV_NOISE_MD": {
+      "value": 0,
+      "ros_parameter_type": 2,
+      "raw": {
+        "type": 2,
+        "bool_value": false,
+        "integer_value": 0,
+        "double_value": 0.0,
+        "string_value": "",
+        "byte_array_value": [],
+        "bool_array_value": [],
+        "integer_array_value": [],
+        "double_array_value": [],
+        "string_array_value": []
+      }
+    },
+    "EKF2_EV_QMIN": {
+      "value": 0,
+      "ros_parameter_type": 2,
+      "raw": {
+        "type": 2,
+        "bool_value": false,
+        "integer_value": 0,
+        "double_value": 0.0,
+        "string_value": "",
+        "byte_array_value": [],
+        "bool_array_value": [],
+        "integer_array_value": [],
+        "double_array_value": [],
+        "string_array_value": []
+      }
+    },
+    "EKF2_EV_DELAY": {
+      "value": 0.0,
+      "ros_parameter_type": 3,
+      "raw": {
+        "type": 3,
+        "bool_value": false,
+        "integer_value": 0,
+        "double_value": 0.0,
+        "string_value": "",
+        "byte_array_value": [],
+        "bool_array_value": [],
+        "integer_array_value": [],
+        "double_array_value": [],
+        "string_array_value": []
+      }
+    },
+    "EKF2_EV_POS_X": {
+      "value": -0.10000000149011612,
+      "ros_parameter_type": 3,
+      "raw": {
+        "type": 3,
+        "bool_value": false,
+        "integer_value": 0,
+        "double_value": -0.10000000149011612,
+        "string_value": "",
+        "byte_array_value": [],
+        "bool_array_value": [],
+        "integer_array_value": [],
+        "double_array_value": [],
+        "string_array_value": []
+      }
+    },
+    "EKF2_EV_POS_Y": {
+      "value": 0.0,
+      "ros_parameter_type": 3,
+      "raw": {
+        "type": 3,
+        "bool_value": false,
+        "integer_value": 0,
+        "double_value": 0.0,
+        "string_value": "",
+        "byte_array_value": [],
+        "bool_array_value": [],
+        "integer_array_value": [],
+        "double_array_value": [],
+        "string_array_value": []
+      }
+    },
+    "EKF2_EV_POS_Z": {
+      "value": -0.10000000149011612,
+      "ros_parameter_type": 3,
+      "raw": {
+        "type": 3,
+        "bool_value": false,
+        "integer_value": 0,
+        "double_value": -0.10000000149011612,
+        "string_value": "",
+        "byte_array_value": [],
+        "bool_array_value": [],
+        "integer_array_value": [],
+        "double_array_value": [],
+        "string_array_value": []
+      }
+    },
+    "EKF2_EVP_NOISE": {
+      "value": 0.10000000149011612,
+      "ros_parameter_type": 3,
+      "raw": {
+        "type": 3,
+        "bool_value": false,
+        "integer_value": 0,
+        "double_value": 0.10000000149011612,
+        "string_value": "",
+        "byte_array_value": [],
+        "bool_array_value": [],
+        "integer_array_value": [],
+        "double_array_value": [],
+        "string_array_value": []
+      }
+    },
+    "EKF2_EVP_GATE": {
+      "value": 5.0,
+      "ros_parameter_type": 3,
+      "raw": {
+        "type": 3,
+        "bool_value": false,
+        "integer_value": 0,
+        "double_value": 5.0,
+        "string_value": "",
+        "byte_array_value": [],
+        "bool_array_value": [],
+        "integer_array_value": [],
+        "double_array_value": [],
+        "string_array_value": []
+      }
+    },
+    "EKF2_AVEL_DELAY": {
+      "value": 5.0,
+      "ros_parameter_type": 3,
+      "raw": {
+        "type": 3,
+        "bool_value": false,
+        "integer_value": 0,
+        "double_value": 5.0,
+        "string_value": "",
+        "byte_array_value": [],
+        "bool_array_value": [],
+        "integer_array_value": [],
+        "double_array_value": [],
+        "string_array_value": []
+      }
+    },
+    "EKF2_HGT_REF": {
+      "value": 0,
+      "ros_parameter_type": 2,
+      "raw": {
+        "type": 2,
+        "bool_value": false,
+        "integer_value": 0,
+        "double_value": 0.0,
+        "string_value": "",
+        "byte_array_value": [],
+        "bool_array_value": [],
+        "integer_array_value": [],
+        "double_array_value": [],
+        "string_array_value": []
+      }
+    },
+    "EKF2_RNG_CTRL": {
+      "value": 1,
+      "ros_parameter_type": 2,
+      "raw": {
+        "type": 2,
+        "bool_value": false,
+        "integer_value": 1,
+        "double_value": 0.0,
+        "string_value": "",
+        "byte_array_value": [],
+        "bool_array_value": [],
+        "integer_array_value": [],
+        "double_array_value": [],
+        "string_array_value": []
+      }
+    },
+    "EKF2_OF_CTRL": {
+      "value": 1,
+      "ros_parameter_type": 2,
+      "raw": {
+        "type": 2,
+        "bool_value": false,
+        "integer_value": 1,
+        "double_value": 0.0,
+        "string_value": "",
+        "byte_array_value": [],
+        "bool_array_value": [],
+        "integer_array_value": [],
+        "double_array_value": [],
+        "string_array_value": []
+      }
+    },
+    "MIS_TAKEOFF_ALT": {
+      "value": 1.7000000476837158,
+      "ros_parameter_type": 3,
+      "raw": {
+        "type": 3,
+        "bool_value": false,
+        "integer_value": 0,
+        "double_value": 1.7000000476837158,
+        "string_value": "",
+        "byte_array_value": [],
+        "bool_array_value": [],
+        "integer_array_value": [],
+        "double_array_value": [],
+        "string_array_value": []
+      }
+    },
+    "MPC_TKO_SPEED": {
+      "value": 0.5,
+      "ros_parameter_type": 3,
+      "raw": {
+        "type": 3,
+        "bool_value": false,
+        "integer_value": 0,
+        "double_value": 0.5,
+        "string_value": "",
+        "byte_array_value": [],
+        "bool_array_value": [],
+        "integer_array_value": [],
+        "double_array_value": [],
+        "string_array_value": []
+      }
+    },
+    "MPC_Z_VEL_MAX_UP": {
+      "value": 0.5,
+      "ros_parameter_type": 3,
+      "raw": {
+        "type": 3,
+        "bool_value": false,
+        "integer_value": 0,
+        "double_value": 0.5,
+        "string_value": "",
+        "byte_array_value": [],
+        "bool_array_value": [],
+        "integer_array_value": [],
+        "double_array_value": [],
+        "string_array_value": []
+      }
+    },
+    "COM_OF_LOSS_T": {
+      "value": 1.0,
+      "ros_parameter_type": 3,
+      "raw": {
+        "type": 3,
+        "bool_value": false,
+        "integer_value": 0,
+        "double_value": 1.0,
+        "string_value": "",
+        "byte_array_value": [],
+        "bool_array_value": [],
+        "integer_array_value": [],
+        "double_array_value": [],
+        "string_array_value": []
+      }
+    },
+    "COM_OBL_RC_ACT": {
+      "value": 0,
+      "ros_parameter_type": 2,
+      "raw": {
+        "type": 2,
+        "bool_value": false,
+        "integer_value": 0,
+        "double_value": 0.0,
+        "string_value": "",
+        "byte_array_value": [],
+        "bool_array_value": [],
+        "integer_array_value": [],
+        "double_array_value": [],
+        "string_array_value": []
+      }
+    },
+    "COM_RC_OVERRIDE": {
+      "value": 3,
+      "ros_parameter_type": 2,
+      "raw": {
+        "type": 2,
+        "bool_value": false,
+        "integer_value": 3,
+        "double_value": 0.0,
+        "string_value": "",
+        "byte_array_value": [],
+        "bool_array_value": [],
+        "integer_array_value": [],
+        "double_array_value": [],
+        "string_array_value": []
+      }
+    },
+    "MPC_XY_P": {
+      "value": 0.949999988079071,
+      "ros_parameter_type": 3,
+      "raw": {
+        "type": 3,
+        "bool_value": false,
+        "integer_value": 0,
+        "double_value": 0.949999988079071,
+        "string_value": "",
+        "byte_array_value": [],
+        "bool_array_value": [],
+        "integer_array_value": [],
+        "double_array_value": [],
+        "string_array_value": []
+      }
+    },
+    "MPC_Z_P": {
+      "value": 1.0,
+      "ros_parameter_type": 3,
+      "raw": {
+        "type": 3,
+        "bool_value": false,
+        "integer_value": 0,
+        "double_value": 1.0,
+        "string_value": "",
+        "byte_array_value": [],
+        "bool_array_value": [],
+        "integer_array_value": [],
+        "double_array_value": [],
+        "string_array_value": []
+      }
+    },
+    "MPC_XY_VEL_P_ACC": {
+      "value": 1.7999999523162842,
+      "ros_parameter_type": 3,
+      "raw": {
+        "type": 3,
+        "bool_value": false,
+        "integer_value": 0,
+        "double_value": 1.7999999523162842,
+        "string_value": "",
+        "byte_array_value": [],
+        "bool_array_value": [],
+        "integer_array_value": [],
+        "double_array_value": [],
+        "string_array_value": []
+      }
+    },
+    "MPC_XY_VEL_I_ACC": {
+      "value": 0.4000000059604645,
+      "ros_parameter_type": 3,
+      "raw": {
+        "type": 3,
+        "bool_value": false,
+        "integer_value": 0,
+        "double_value": 0.4000000059604645,
+        "string_value": "",
+        "byte_array_value": [],
+        "bool_array_value": [],
+        "integer_array_value": [],
+        "double_array_value": [],
+        "string_array_value": []
+      }
+    },
+    "MPC_XY_VEL_D_ACC": {
+      "value": 0.20000000298023224,
+      "ros_parameter_type": 3,
+      "raw": {
+        "type": 3,
+        "bool_value": false,
+        "integer_value": 0,
+        "double_value": 0.20000000298023224,
+        "string_value": "",
+        "byte_array_value": [],
+        "bool_array_value": [],
+        "integer_array_value": [],
+        "double_array_value": [],
+        "string_array_value": []
+      }
+    },
+    "MPC_Z_VEL_P_ACC": {
+      "value": 4.0,
+      "ros_parameter_type": 3,
+      "raw": {
+        "type": 3,
+        "bool_value": false,
+        "integer_value": 0,
+        "double_value": 4.0,
+        "string_value": "",
+        "byte_array_value": [],
+        "bool_array_value": [],
+        "integer_array_value": [],
+        "double_array_value": [],
+        "string_array_value": []
+      }
+    },
+    "MPC_Z_VEL_I_ACC": {
+      "value": 2.0,
+      "ros_parameter_type": 3,
+      "raw": {
+        "type": 3,
+        "bool_value": false,
+        "integer_value": 0,
+        "double_value": 2.0,
+        "string_value": "",
+        "byte_array_value": [],
+        "bool_array_value": [],
+        "integer_array_value": [],
+        "double_array_value": [],
+        "string_array_value": []
+      }
+    },
+    "MPC_Z_VEL_D_ACC": {
+      "value": 0.0,
+      "ros_parameter_type": 3,
+      "raw": {
+        "type": 3,
+        "bool_value": false,
+        "integer_value": 0,
+        "double_value": 0.0,
+        "string_value": "",
+        "byte_array_value": [],
+        "bool_array_value": [],
+        "integer_array_value": [],
+        "double_array_value": [],
+        "string_array_value": []
+      }
+    },
+    "MPC_XY_VEL_MAX": {
+      "value": 2.0,
+      "ros_parameter_type": 3,
+      "raw": {
+        "type": 3,
+        "bool_value": false,
+        "integer_value": 0,
+        "double_value": 2.0,
+        "string_value": "",
+        "byte_array_value": [],
+        "bool_array_value": [],
+        "integer_array_value": [],
+        "double_array_value": [],
+        "string_array_value": []
+      }
+    },
+    "MPC_TILTMAX_AIR": {
+      "value": 20.0,
+      "ros_parameter_type": 3,
+      "raw": {
+        "type": 3,
+        "bool_value": false,
+        "integer_value": 0,
+        "double_value": 20.0,
+        "string_value": "",
+        "byte_array_value": [],
+        "bool_array_value": [],
+        "integer_array_value": [],
+        "double_array_value": [],
+        "string_array_value": []
+      }
+    },
+    "MC_ROLL_P": {
+      "value": 4.0,
+      "ros_parameter_type": 3,
+      "raw": {
+        "type": 3,
+        "bool_value": false,
+        "integer_value": 0,
+        "double_value": 4.0,
+        "string_value": "",
+        "byte_array_value": [],
+        "bool_array_value": [],
+        "integer_array_value": [],
+        "double_array_value": [],
+        "string_array_value": []
+      }
+    },
+    "MC_PITCH_P": {
+      "value": 4.0,
+      "ros_parameter_type": 3,
+      "raw": {
+        "type": 3,
+        "bool_value": false,
+        "integer_value": 0,
+        "double_value": 4.0,
+        "string_value": "",
+        "byte_array_value": [],
+        "bool_array_value": [],
+        "integer_array_value": [],
+        "double_array_value": [],
+        "string_array_value": []
+      }
+    },
+    "MC_YAW_P": {
+      "value": 2.799999952316284,
+      "ros_parameter_type": 3,
+      "raw": {
+        "type": 3,
+        "bool_value": false,
+        "integer_value": 0,
+        "double_value": 2.799999952316284,
+        "string_value": "",
+        "byte_array_value": [],
+        "bool_array_value": [],
+        "integer_array_value": [],
+        "double_array_value": [],
+        "string_array_value": []
+      }
+    },
+    "MC_ROLLRATE_P": {
+      "value": 0.15000000596046448,
+      "ros_parameter_type": 3,
+      "raw": {
+        "type": 3,
+        "bool_value": false,
+        "integer_value": 0,
+        "double_value": 0.15000000596046448,
+        "string_value": "",
+        "byte_array_value": [],
+        "bool_array_value": [],
+        "integer_array_value": [],
+        "double_array_value": [],
+        "string_array_value": []
+      }
+    },
+    "MC_PITCHRATE_P": {
+      "value": 0.15000000596046448,
+      "ros_parameter_type": 3,
+      "raw": {
+        "type": 3,
+        "bool_value": false,
+        "integer_value": 0,
+        "double_value": 0.15000000596046448,
+        "string_value": "",
+        "byte_array_value": [],
+        "bool_array_value": [],
+        "integer_array_value": [],
+        "double_array_value": [],
+        "string_array_value": []
+      }
+    },
+    "MC_YAWRATE_P": {
+      "value": 0.20000000298023224,
+      "ros_parameter_type": 3,
+      "raw": {
+        "type": 3,
+        "bool_value": false,
+        "integer_value": 0,
+        "double_value": 0.20000000298023224,
+        "string_value": "",
+        "byte_array_value": [],
+        "bool_array_value": [],
+        "integer_array_value": [],
+        "double_array_value": [],
+        "string_array_value": []
+      }
+    }
+  },
+  "absent_in_original_backup": [
+    "EKF2_LID2_VER",
+    "EKF2_LID2_EN",
+    "EKF2_LID2_AGE"
+  ],
+  "note": "Not tuning recommendations or proof of present FC values; float values retained without rounding."
+}
