@@ -406,7 +406,9 @@ class FlightNode(Node):
             if self.settings.full_mission or key != 'takeoff_mode'),
             land_service_ready=self.command_clients['land'].service_is_ready())
         if self.settings.local_xy:
-            s.local_setpoint_ready = self.local_pub.get_subscription_count() == 1
+            # Passive recorders/diagnostics may also subscribe. Writer
+            # exclusivity is enforced by the writer lock, not reader count.
+            s.local_setpoint_ready = self.local_pub.get_subscription_count() >= 1
         if 'state' in self.samples:
             msg = self.samples['state'][0]
             s.connected, s.armed, s.mode = msg.connected, msg.armed, msg.mode

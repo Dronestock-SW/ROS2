@@ -194,7 +194,7 @@ class CppObserver(Node):
                 target=native.get('sender_target_enu'),feedback=getattr(self,'target_feedback',None),
                 observation=observation_status(self.settings,s),sources=sensor_sources(self.samples),owner='cpp_observer'))
         reason = MissionChain.ready(self.session, s, now, ground=True)
-        if not s.local_setpoint_ready: reason = 'local_transport_not_unique'
+        if not s.local_setpoint_ready: reason = 'local_transport_unavailable'
         if type(s.rc_override) is not int or not s.rc_override & 2: reason = 'px4_offboard_rc_override_required'
         r = self.session.intent
         if r and self.native_session and (r['action'] != 'start' or reason == 'ready'):

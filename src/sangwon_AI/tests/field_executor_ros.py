@@ -62,6 +62,7 @@ class FC:
             (GetParameters,'/mavros/param/get_parameters',self.params))]
         self.subs=[node.create_subscription(PositionTarget,'/mavros/setpoint_raw/local',self.setpoint,qos_profile_sensor_data),
                    node.create_subscription(String,'/flight_state',self.telemetry,qos_profile_sensor_data)]
+        if scenario=='passive_recorder':self.subs.append(node.create_subscription(PositionTarget,'/mavros/setpoint_raw/local',lambda m:None,qos_profile_sensor_data))
         self.echo=node.create_publisher(PositionTarget,'/mavros/setpoint_raw/target_local',qos_profile_sensor_data)
         self.cloud=PointCloud();self.cloud.header.frame_id='laser_frame'
         sc=sdk_state(0.)['lidar_scan']
@@ -283,6 +284,6 @@ def run(scenario):
 if __name__=='__main__':
     rclpy.init()
     try:
-        cases=sys.argv[3].split(',') if len(sys.argv)>3 else ('nominal','python_pause','bridge_delay','report_delay','report_silence','report_malformed','uwb_gap','pose_gap','takeoff_pose_gap','target_silence','state_1hz','fc_estimator_silence','fc_estimator_loss','fc_pose_loss','pilot','platform_link','mission_x','mission_y','mission_xy','land_mode_delay')
+        cases=sys.argv[3].split(',') if len(sys.argv)>3 else ('nominal','python_pause','bridge_delay','report_delay','report_silence','report_malformed','uwb_gap','pose_gap','takeoff_pose_gap','target_silence','state_1hz','fc_estimator_silence','fc_estimator_loss','fc_pose_loss','pilot','platform_link','mission_x','mission_y','mission_xy','land_mode_delay','passive_recorder')
         for scenario in cases:run(scenario)
     finally:rclpy.shutdown()
