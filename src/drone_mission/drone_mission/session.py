@@ -8,7 +8,6 @@ import math
 from drone_demo.mission import MissionConfig, MissionMonitor
 from drone_uwb.integration.sitl.sitl_target_contract import ned_to_global
 from drone_uwb.integration.planar import map_xy_to_enu
-from .bridge_status import BRIDGE_OBSERVATION_MAX_AGE_S
 from .contracts import finite, parse_request
 
 
@@ -193,7 +192,7 @@ class FlightSession:
         if not self.settings.anchor_trial and not 0 <= s.height_age_s <= .2:
             return 'measured_height_unavailable'
         if (not s.bridge_ready or s.bridge_published <= 0 or not 0 <= s.bridge_age_s <= 2.5
-                or (not 0 <= s.bridge_observation_age_s <= BRIDGE_OBSERVATION_MAX_AGE_S
+                or (not 0 <= s.bridge_observation_age_s <= self.settings.bridge_observation_timeout_s
                     and not (horizontal_support and not ground))):
             return 'uwb_px4_bridge_unavailable'
         if not s.alignment_matches:

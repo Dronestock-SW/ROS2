@@ -53,6 +53,7 @@ class Settings:
     web_timeout_s: float = 2.0
     state_timeout_s: float = 2.5
     pose_timeout_s: float = .2
+    bridge_observation_timeout_s: float = .35
     command_timeout_s: float = 3.0
     takeoff_timeout_s: float = 30.0
     leg_timeout_s: float = 20.0
@@ -108,6 +109,9 @@ class Settings:
                      'observation_settle_s', 'scan_timeout_s', 'scan_speed_m_s'):
             if not finite(getattr(self, name)) or getattr(self, name) <= 0:
                 raise ValueError('positive_setting_required:' + name)
+        if (not finite(self.bridge_observation_timeout_s)
+                or not .001 <= self.bridge_observation_timeout_s <= .7):
+            raise ValueError('bridge_observation_timeout_s_must_be_0p001_to_0p7')
         if self.scan_speed_m_s > .1:
             raise ValueError('scan_speed_m_s_must_not_exceed_0p1')
         if not finite(self.enu_yaw_deg, self.enu_offset_x_m, self.enu_offset_y_m,

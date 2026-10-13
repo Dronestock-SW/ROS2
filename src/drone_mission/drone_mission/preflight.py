@@ -1,5 +1,4 @@
 """Read-only field checklist. Never changes approvals or issues commands."""
-from .bridge_status import BRIDGE_OBSERVATION_MAX_AGE_S
 from .contracts import finite
 from .native_takeoff import native_speed_ready
 
@@ -41,7 +40,7 @@ def field_preflight(settings, sample, *, map_loaded, recording_ok, cpp_ai_ready=
         check('vertical_estimator', 'PX4 수직 위치·속도 추정 유효', sample.vertical_estimator_valid
               and 0 <= sample.estimator_age_s <= .5)
     check('bridge', 'UWB→PX4 실제 발행', sample.bridge_ready and sample.bridge_published > 0
-          and 0 <= sample.bridge_age_s <= 2.5 and 0 <= sample.bridge_observation_age_s <= BRIDGE_OBSERVATION_MAX_AGE_S)
+          and 0 <= sample.bridge_age_s <= 2.5 and 0 <= sample.bridge_observation_age_s <= settings.bridge_observation_timeout_s)
     check('transform', '관측·명령 좌표 변환 일치', sample.alignment_matches)
     if settings.local_xy:
         check('local_start', '현재 앵커 XY · 출발점·복귀점', bool(sample.xy)
@@ -77,6 +76,7 @@ def field_preflight(settings, sample, *, map_loaded, recording_ok, cpp_ai_ready=
                 execution_profile=settings.execution_profile,
                 checked_inputs_passed=all(row['passed'] for row in checks if row['required']), checks=checks,
                 blockers=[row['code'] for row in checks if row['required'] and not row['passed']],
+                bridge_observation_timeout_s=settings.bridge_observation_timeout_s,
                 expected_takeoff_height_m=settings.expected_mis_takeoff_alt_m,
                 expected_mag_type=settings.expected_ekf2_mag_type,
                 requires_fresh_start=True)

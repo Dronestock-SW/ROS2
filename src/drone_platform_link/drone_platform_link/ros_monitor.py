@@ -51,7 +51,7 @@ def start(observations, config=None, mission_queue=None, stop_event=None):
             except ValueError:
                 pass
 
-        node.create_subscription(String, '/flight_state', mission, 10)
+        node.create_subscription(String, '/flight_state', mission, qos_profile_sensor_data)
         def uwb_status(stage, msg):
             try:
                 observations.receive_uwb_pipeline(stage, json.loads(msg.data))

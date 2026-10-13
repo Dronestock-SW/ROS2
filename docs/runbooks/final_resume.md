@@ -1,5 +1,9 @@
 # FINAL 재개 절차
 
+13일 후속 작업은 [상원 통합 재개](sangwon_integration.md)를 따른다.
+전달 관측 0.7초는 mission.json 설정이다.
+FC EV 지연 보정값과 구분한다.
+
 다음 현장 시험에서 FINAL을 다시 실행하는 절차다.
 재부팅·작업 인계 시 읽는다.
 
@@ -10,6 +14,8 @@
 [LiDAR 지상 시각 확인](../report/lidar_ground_audit_20261012.md)도 읽는다.
 [실측·활성화 절차](lidar_ground_qualification.md)를 따른다.
 [OFFBOARD 자세 추종 분석](../report/run8_offboard_attitude_20261012.md)을 읽는다.
+[C++ 실행기 분리](../report/cpp_executor_ground_20261012.md)도 읽는다.
+새 경로는 [C++ 지상 시험](cpp_executor_ground.md)을 먼저 따른다.
 12일 [UWB 공백·현재 관측](../report/uwb_gap_processing_20261012.md)도 읽는다.
 실기 원인 조사는 [실행 8 인계](../report/hover_research_handoff_20261011.md)를 따른다.
 저장 후 수정본으로 재비행했지만 이륙 밀림이 남았다.
@@ -54,9 +60,10 @@ colcon build --symlink-install --packages-up-to drone_mission drone_platform_lin
 source install/setup.bash
 export ROS_DOMAIN_ID=2 ROS_LOCALHOST_ONLY=1 MAVLINK20=1
 cmake -S src/sangwon_AI -B .review/final-ai-build
-cmake --build .review/final-ai-build --target sangwon_field_mission_ai sangwon_lidar_relative_replay -j2
+cmake --build .review/final-ai-build --target sangwon_field_mission_ai sangwon_lidar_relative_replay sangwon_field_executor sangwon_field_executor_replay -j2
 CPP_AI_BINARY="$PWD/.review/final-ai-build/sangwon_field_mission_ai"
-ctest --test-dir .review/final-ai-build -R 'field_mission_ai_contracts|lidar_relative_contracts' --output-on-failure
+CPP_EXECUTOR_BINARY="$PWD/.review/final-ai-build/sangwon_field_executor"
+ctest --test-dir .review/final-ai-build -R 'field_executor_contracts|field_mission_ai_contracts|lidar_relative_contracts' --output-on-failure
 ```
 
 Python 환경에 pymavlink와 websockets를 준비한다.
@@ -128,6 +135,7 @@ FC 상태·관측의 현장 대조는 별도로 수행한다.
 ```bash
 python3 src/sangwon_AI/ops/final_field_session.py \
   --cpp-ai-binary "$CPP_AI_BINARY" \
+  --cpp-executor-binary "$CPP_EXECUTOR_BINARY" \
   --config "$NEW_DIR/mission.json" --alignment "$NEW_DIR/alignment.json" \
   --site-config "$SITE" --mission-store "$STORE" \
   --ledger "$LEDGER" --state-dir "$STATE_DIR"

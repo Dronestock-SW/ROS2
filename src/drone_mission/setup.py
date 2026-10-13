@@ -17,6 +17,7 @@ setup(
     license='Proprietary',
     entry_points={'console_scripts': [
         'flight_mission = drone_mission.node:main',
+        'cpp_field_observer = drone_mission.cpp_observer:main',
         'local_flight_web = drone_mission.local_web:main',
     ]},
 )

@@ -5,6 +5,7 @@ Private configuration is required; an old boot alignment is rejected.
 Run under the same OS user as MAVROS and the B_TF observations.
 """
 import argparse
+from dataclasses import asdict
 import json
 import os
 from pathlib import Path
@@ -14,6 +15,12 @@ import sys
 import time
 
 
+def select_execution_commands(commands, observer_command=None, external_observation_bridge=False):
+    """Select by role so removing the UWB child cannot replace telemetry."""
+    return [('observer', observer_command) if name == 'mission' and observer_command is not None
+            else (name, command) for name, command in commands
+            if not (external_observation_bridge and name == 'uwb_bridge')]
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     for name in ('config', 'alignment', 'site-config', 'mission-store', 'state-dir', 'ledger'):
@@ -22,6 +29,8 @@ def main():
     p.add_argument('--cpp-ai-binary', type=Path, required=True)
     p.add_argument('--external-observation-bridge', action='store_true',
         help='Reuse the shared manual/OFFBOARD UWB+LiDAR service; mission readiness still checks its live status')
+    p.add_argument('--cpp-executor-binary', type=Path,
+                   help='Use the C++ execution phases and sole MAVROS writer; Python remains a sensor/web adapter')
     a = p.parse_args()
     for path in (a.config, a.alignment, a.site_config, a.mission_store, a.ledger):
         if not path.is_file():
@@ -38,6 +47,11 @@ def main():
         require_field_dependencies()
         from drone_mission.cpp_mission_ai import inspect_binary
         cpp_binary, cpp_sha256 = inspect_binary(a.cpp_ai_binary)
+        executor_binary = None
+        if a.cpp_executor_binary:
+            if mission_settings.start_mode != 'ground_takeoff':
+                raise ValueError('cpp_executor_requires_ground_takeoff; use Python executor for separate TAKEOFF/HOLD/START')
+            executor_binary, executor_sha256 = inspect_binary(a.cpp_executor_binary)
     except (ValueError, RuntimeError, OSError) as exc:
         p.error(str(exc))
     manifest = a.state_dir / 'processes.json'
@@ -80,10 +94,28 @@ def main():
                      'record_directory:=' + str(a.state_dir / ('events-' + str(time.time_ns())))]),
         ('telemetry', ['-m', 'drone_platform_link.runtime']),
     ]
-    if a.external_observation_bridge:
-        commands = [(name, command) for name, command in commands if name != 'uwb_bridge']
+    native_command = None
+    observer_command = None
+    if executor_binary:
+        native_config = a.state_dir/'cpp-executor.json'
+        native_config.write_text(json.dumps(dict(mission=asdict(mission_settings), output_enabled=True, test_mode=False,
+            record_file=str(a.state_dir/'cpp-executor-events.jsonl')), indent=2), encoding='utf-8')
+        observer_code = ('import rclpy\nfrom drone_mission.cpp_observer import CppObserver\n'
+                         'rclpy.init()\nn=CppObserver()\nn.streams_requested=True\nrclpy.spin(n)')
+        observer_command = ['-c', observer_code, '--ros-args', '-p', 'execute:=true', '-p',
+            'config_file:='+str(a.config), '-p', 'ledger_file:='+str(a.ledger), '-p',
+            'record_directory:='+str(a.state_dir/'observer-events')]
+        native_command = [str(executor_binary), str(native_config)]
+    commands = select_execution_commands(commands, observer_command, a.external_observation_bridge)
     children, rows = [], []
     try:
+        if native_command:
+            with (a.state_dir/'cpp-executor.log').open('ab') as log:
+                child = subprocess.Popen(native_command, env=env, stdin=subprocess.DEVNULL,
+                    stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
+            children.append(child)
+            rows.append(dict(name='cpp_executor',pid=child.pid,pgid=child.pid,boot_id=boot,
+                             binary_sha256=executor_sha256))
         for name, args in commands:
             with (a.state_dir / (name + '.log')).open('ab') as log:
                 child = subprocess.Popen([sys.executable, *args], env=env,

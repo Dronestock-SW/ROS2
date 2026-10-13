@@ -1,11 +1,18 @@
 # FINAL 연구 시작점
 
+2026-10-13 후속 기준은 `이번에-상원-한거-통합-브랜치`다.
+[통합 범위·전달 관측 0.7초](docs/report/sangwon_integration_20261013.md)를 먼저 읽는다.
+[새 세션 절차](docs/runbooks/sangwon_integration.md)를 따른다.
+아래 12일 기록은 당시 근거로 보존한다.
+
 2026-10-11 현장 시험과 12일 코드 정리를 이어받는 문서다.
 다음 연구 세션에서 이 파일부터 읽는다.
 
 **당면 목표는 XY 이동 없는 수직 이륙·제자리 호버·착륙이다.**
 테스트 웹도 [C++ AI 통합 경로](docs/report/cpp_field_mission_integration_20261012.md)를 사용한다.
 후속 구현 브랜치는 `FINAL-TEST1-SANGWON`이다.
+[C++ 실행 단계·20Hz 송신 경로](docs/report/cpp_executor_ground_20261012.md)를 읽는다.
+[C++ 실행기 격리 시험](docs/runbooks/cpp_executor_ground.md)을 먼저 수행한다.
 [상단 LiDAR 연결과 활성화 조건](docs/report/lidar_gap_support_20261012.md)을 읽는다.
 [지상 시각 결함·수정](docs/report/lidar_ground_audit_20261012.md)을 읽는다.
 [실측과 활성화 절차](docs/runbooks/lidar_ground_qualification.md)를 따른다.
@@ -46,7 +53,10 @@ XY 목표 이동 제한은 0.25m/s다.
 실기 비밀정보와 로그 원본은 Git 외부에 보존한다.
 복구 경로와 해시는 위 문서에 있다.
 새 부팅에서는 기존 방위 보정 파일을 재사용하지 않는다.
-C++가 XY·호버·복귀 판단을 담당한다. Python은 단일 명령 실행기다.
+C++가 XY·호버·복귀 판단을 담당한다.
+`--cpp-executor-binary` 경로는 실행 단계·FC 송신도 C++다.
+이 경로의 Python은 센서 라이브러리와 웹 계약을 유지한다.
+해당 인자가 없는 기존 경로는 Python 실행기다.
 전체 실물 스캔·회피·미션 검증은 아직 남아 있다.
 2026-10-11 마지막 확인은 착륙·DISARM·RC 인계 상태였다.
 다음 접속에서 실제 상태를 새로 확인한다.

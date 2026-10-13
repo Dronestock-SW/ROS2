@@ -52,9 +52,10 @@
     "sensor_to_body_flu_m": [
       0.0,
       0.0,
-      0.10
+      0.1
     ],
     "sensor_to_body_yaw_rad": null,
     "scan_plane_parallel_to_body_xy": false
-  }
+  },
+  "bridge_observation_timeout_s": 0.7
 }
