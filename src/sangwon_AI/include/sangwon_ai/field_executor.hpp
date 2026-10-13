@@ -78,6 +78,7 @@ class FieldExecutor {
     }
     if(!request.is_null() && request.value("action",std::string())=="land") { abort("operator_cancelled",s,now); return; }
     if((phase=="PREPARING"||phase=="ARMING")&&!flag(s,"armed")&&!age(s,"uwb_age_s",.25)) { abort("prearm_uwb_unavailable",s,now);return; }
+    if((phase=="PREPARING"||phase=="ARMING")&&!flag(s,"armed")&&!age(s,"pose_age_s",cfg_.value("pose_timeout_s",.2))) { abort("prearm_position_feedback_missing",s,now);return; }
     if(!failure.empty() && !pending() && phase!="LANDING" && phase!="GROUND_RECOVERY") { abort(failure,s,now); return; }
     const bool landed=accepted_ && !pending() && confirmed_>=0 && flag(s,"connected") && !flag(s,"armed") && s.value("landed",0)==1 && age(s,"state_age_s",1) && age(s,"landed_age_s",1) && now-s.at("state_age_s").get<double>()>=confirmed_ && now-s.at("landed_age_s").get<double>()>=confirmed_;
     if(phase=="GROUND_RECOVERY") {
@@ -102,10 +103,13 @@ class FieldExecutor {
       else abort("cpp_ai:"+decision.at("reason").get<std::string>(),s,now);
       return;
     }
-    const auto position=point(s.at("xy"));const auto& bounds=cfg_.at("bounds_xy_m");
+    const bool pose_current=age(s,"pose_age_s",cfg_.value("pose_timeout_s",.2))&&s.at("xy").is_array()&&s.at("xy").size()==2;
+    if(pose_current){const auto position=point(s.at("xy"));const auto& bounds=cfg_.at("bounds_xy_m");
     if(position.x<bounds[0].get<double>()||position.x>bounds[1].get<double>()||position.y<bounds[2].get<double>()||position.y>bounds[3].get<double>()) { abort("px4_pose_outside_bounds",s,now); return; }
-    if(previous_pose_ && (xy(point(s.at("xy"))-*previous_pose_)>.3+dt || std::abs(s.at("altitude_enu_m").get<double>()-previous_height_)>.3+dt)) { abort("px4_local_frame_or_pose_jump",s,now); return; }
-    previous_pose_=point(s.at("xy"));previous_height_=s.at("altitude_enu_m").get<double>();
+    const double pose_source=now-s.at("pose_age_s").get<double>(),pose_dt=previous_pose_?std::max(dt,pose_source-previous_pose_source_):dt;
+    if(previous_pose_ && (xy(point(s.at("xy"))-*previous_pose_)>.3+pose_dt || std::abs(s.at("altitude_enu_m").get<double>()-previous_height_)>.3+pose_dt)) { abort("px4_local_frame_or_pose_jump",s,now); return; }
+    previous_pose_=point(s.at("xy"));previous_height_=s.at("altitude_enu_m").get<double>();previous_pose_source_=pose_source;
+    }
     if(now-started_>300) { abort("mission_time_limit",s,now); return; }
     if(phase=="PREPARING") {
       if(!pending() && !accepted_ && now-entered_>=1.2)issue("offboard_mode",now);
@@ -122,7 +126,7 @@ class FieldExecutor {
  private:
   Json cfg_,ack_,assignment_; std::unique_ptr<MissionAI> ai_; std::string execution_,plan_;
   Vec3 home_{},target_{},ground_{}; std::optional<Vec3> previous_pose_;
-  double height_{},ground_height_{},yaw_{},ground_since_{-1},previous_height_{},last_{-1},started_{},entered_{},pending_at_{},confirmed_{-1};
+  double height_{},ground_height_{},yaw_{},ground_since_{-1},previous_height_{},previous_pose_source_{},last_{-1},started_{},entered_{},pending_at_{},confirmed_{-1};
   unsigned counter_{},pending_token_{}; bool accepted_{},landing_verified_{};
   void enter(std::string p,std::string why,double now) { phase=std::move(p);reason=std::move(why);entered_=now;accepted_=false;confirmed_=-1; }
   void finish(const std::string& p,const std::string& why,double now) { actions=Json::array();pending_token_=0;enter(p,why,now); }

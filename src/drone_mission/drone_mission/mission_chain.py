@@ -72,6 +72,8 @@ class MissionChain(FlightSession):
             return 'battery_below_start_reserve'
         if auto and ground and s.takeoff_action != 0:
             return 'px4_takeoff_action_must_hold'
+        if self.settings.fc_owned_runtime and not ground and (not s.xy or s.pose_age_s>self.settings.pose_timeout_s):
+            return 'ready'  # Motion/height feedback is unavailable: hold, never credit progress.
         if len(s.velocity_xy) != 2 or not finite(*s.velocity_xy):
             return 'px4_velocity_unavailable'
         if not finite(s.vertical_speed_m_s):

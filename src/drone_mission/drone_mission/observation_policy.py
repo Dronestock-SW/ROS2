@@ -10,6 +10,9 @@ def observation_status(settings, sample, feedback_age_s=None):
     warnings = []
     if not recent(sample.estimator_age_s,.5):
         warnings.append('fc_estimator_report_delayed')
+    pose_ready=recent(sample.pose_age_s,settings.pose_timeout_s) and len(sample.xy)==2
+    if not pose_ready:
+        warnings.append('fc_position_feedback_missing')
     raw_ready = recent(sample.uwb_age_s, .25) and len(sample.uwb_xy) == 2
     if not raw_ready:
         warnings.append('uwb_observation_missing')
@@ -30,7 +33,7 @@ def observation_status(settings, sample, feedback_age_s=None):
     # is different from missing/malformed telemetry.
     if not error and sample.bridge_ready and report_current and not sample.alignment_matches:
         error = 'observation_and_command_alignment_mismatch'
-    hold = not raw_ready or 'target_feedback_delayed' in warnings
+    hold = not raw_ready or not pose_ready
     return dict(policy='fc_owned_runtime', warnings=warnings, contract_error=error,
                 progress_held=hold, mode='FC_HOLD' if hold else 'REPORT_DELAY' if warnings else 'NORMAL',
                 raw_observation_fresh=raw_ready, land_requested_by_report=False)

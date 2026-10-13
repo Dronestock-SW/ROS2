@@ -152,7 +152,7 @@ class Contracts(unittest.TestCase):
         self.assertEqual(p.out['home_xy_m'],[2.,2.])
 
     def test_actual_fc_fault_and_contract_change_still_land(self):
-        for change in (dict(estimator_valid=False),dict(pose_age_s=.21),dict(bridge_contract_error='changed')):
+        for change in (dict(estimator_valid=False),dict(bridge_contract_error='changed')):
             p=self.peer();p.until('DWELL');p.s.update(change);p.tick();self.assertEqual(p.out['phase'],'LANDING')
 
     def test_drift_guard_still_applies_during_observation_hold(self):
@@ -162,5 +162,19 @@ class Contracts(unittest.TestCase):
     def test_offboard_start_does_not_require_auto_takeoff_altitude(self):
         p=self.peer();p.s.update(takeoff_alt_m=99.,takeoff_param_age_s=99.,rc_override=2)
         p.until('END');self.assertTrue(p.out['mission_complete'])
+
+    def test_position_feedback_gap_holds_then_completes_after_recovery(self):
+        p=self.peer();p.until('DWELL');target=p.out['goal_xy_m'];p.s['pose_age_s']=2.
+        for _ in range(60):p.tick();self.assertEqual(p.out['goal_xy_m'],target);self.assertEqual(p.out['completed_waypoints'],0)
+        self.assertNotIn('land',p.commands)
+        p.s['pose_age_s']=0.;resumed=p.t;p.until('END');self.assertGreaterEqual(p.t-resumed,10.)
+
+    def test_target_echo_loss_does_not_block_real_position_hover_completion(self):
+        p=self.peer();p.until('DWELL');p.s['feedback_age_s']=20.;p.until('END')
+        self.assertTrue(p.out['mission_complete'])
+
+    def test_one_hertz_state_report_is_not_rejected_by_duplicate_age_gate(self):
+        p=self.peer();p.s.update(state_age_s=1.2,landed_age_s=1.2);p.until('TAKING_OFF')
+        self.assertIn('arm',p.commands)
 
 if __name__=='__main__':unittest.main()

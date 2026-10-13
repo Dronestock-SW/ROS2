@@ -75,11 +75,12 @@ class FC:
         values=dict(MIS_TAKEOFF_ALT=1.7,COM_TAKEOFF_ACT=0,EKF2_MAG_TYPE=0,COM_RC_OVERRIDE=3,
                     COM_RC_IN_MODE=0,RC_MAP_FLTMODE=5,RC_MAP_ARM_SW=6,RC_MAP_KILL_SW=7,MPC_Z_VEL_MAX_UP=.5,
                     EKF2_EV_DELAY=0.,EKF2_EV_CTRL=1,EKF2_OF_CTRL=1,EKF2_RNG_CTRL=1,COM_OF_LOSS_T=.7)
-        res.values=[ParameterValue(type=3,double_value=values[k]) if k in ('MIS_TAKEOFF_ALT','MPC_Z_VEL_MAX_UP') else ParameterValue(type=2,integer_value=values[k]) for k in req.names];return res
+        res.values=[ParameterValue(type=3,double_value=values[k]) if type(values[k]) is float else ParameterValue(type=2,integer_value=values[k]) for k in req.names];return res
     def setpoint(self,m):
         assert m.coordinate_frame==1 and m.type_mask==2552
         assert abs(m.position.x-2.)<1e-6 and abs(m.position.y-2.)<1e-6,'home moved'
         self.target=m;self.setpoint_times.append(time.monotonic())
+        if self.scenario=='target_silence' and self.armed:return
         m.header.stamp=self.n.get_clock().now().to_msg();self.echo.publish(m)
     def telemetry(self,m):
         value=json.loads(m.data);self.status=value
@@ -108,7 +109,10 @@ class FC:
             if self.scenario=='fc_estimator_loss' and self.gap_start is not None:est.pos_horiz_rel_status_flag=False
             rc=RCIn(channels=[1500]*8,rssi=255);battery=BatteryState(present=True,voltage=24.,percentage=.9)
             for key,m in [('state',state),('landed',landed),('odom',odom),('est',est),('rc',rc),('battery',battery)]:
-                if key=='odom' and self.scenario=='fc_pose_loss' and self.gap_start is not None:continue
+                if key=='state' and self.scenario=='state_1hz':
+                    if t-getattr(self,'last_state_publish',-1e9)<1.:continue
+                    self.last_state_publish=t
+                if key=='odom' and self.gap_start is not None and (self.scenario=='fc_pose_loss' or self.scenario=='pose_gap' and t-self.gap_start<2. or self.scenario=='takeoff_pose_gap' and t-self.gap_start<2.5):continue
                 if key=='est' and self.scenario=='fc_estimator_silence' and self.gap_start is not None:continue
                 m.header.stamp=stamp;self.pubs[key].publish(m)
             gap=self.gap_start is not None and (self.scenario=='lidar_loss' or t-self.gap_start<(2. if self.scenario=='uwb_gap' else .6))
@@ -182,13 +186,14 @@ def run(scenario):
         while time.monotonic()<end:
             assert native_proc.poll() is None and observer.poll() is None,(scenario,(root/'process.log').read_text())
             phase=fc.status.get('state')
+            if phase=='TAKING_OFF' and scenario=='takeoff_pose_gap' and not injected:fc.gap_start=time.monotonic();injected=True
             if phase=='DWELL' and not injected:
                 injected=True
                 if scenario=='python_pause':os.kill(observer.pid,signal.SIGSTOP);paused=True;pause_end=time.monotonic()+5.
                 elif scenario.startswith('lidar_'):fc.gap_start=time.monotonic()
-                elif scenario in ('uwb_gap','fc_estimator_loss','fc_estimator_silence','fc_pose_loss'):fc.gap_start=time.monotonic()
+                elif scenario in ('uwb_gap','pose_gap','fc_estimator_loss','fc_estimator_silence','fc_pose_loss'):fc.gap_start=time.monotonic()
                 elif scenario=='pilot':fc.mode='ALTCTL'
-            if scenario=='lidar_loss' and fc.gap_start is not None and time.monotonic()-fc.gap_start>2. and not explicit_cancel:
+            if scenario in ('lidar_loss','fc_pose_loss') and fc.gap_start is not None and time.monotonic()-fc.gap_start>2. and not explicit_cancel:
                 assert 'LAND' not in fc.calls and fc.status['completed_waypoints']==0
                 cancel=Request(url,data=json.dumps(dict(action='land',client_request_id='explicit-lidar-cancel')).encode(),headers={'Content-Type':'application/json'},method='POST')
                 with urlopen(cancel,timeout=2):pass
@@ -208,10 +213,10 @@ def run(scenario):
         if scenario=='lidar_gap':assert any(r['cpp_decision'].get('gap_supported') for r in fc.rows),'LiDAR bypass not exercised'
         if scenario=='bridge_delay':
             assert any(r.get('bridge_observation_age_s') is not None and .48 <= r['bridge_observation_age_s'] <= .7 for r in fc.rows),'delivery tolerance not exercised'
-        if scenario in ('report_delay','report_silence','report_malformed','fc_estimator_silence'):
+        if scenario in ('report_delay','report_silence','report_malformed','fc_estimator_silence','target_silence'):
             assert any(r.get('observation_status',{}).get('warnings') for r in fc.rows if r['state']=='DWELL'),'report warning not exercised'
-        if scenario=='uwb_gap':
-            assert any(r['cpp_decision'].get('observation_status',{}).get('progress_held') for r in fc.rows if r['state']=='DWELL'),'real observation hold not exercised'
+        if scenario in ('uwb_gap','pose_gap','takeoff_pose_gap'):
+            assert any(r['cpp_decision'].get('observation_status',{}).get('progress_held') for r in fc.rows if r['state'] in ('DWELL','TAKING_OFF')),'real observation hold not exercised'
             assert all(r['cpp_decision'].get('completed_waypoints',0)==0 for r in fc.rows if r['cpp_decision'].get('observation_status',{}).get('progress_held'))
         recorded=[json.loads(x) for x in (root/'native-events.jsonl').read_text(encoding='utf-8').splitlines()]
         samples=[x for x in recorded if x.get('type')=='flight_sample']
@@ -247,6 +252,6 @@ def run(scenario):
 if __name__=='__main__':
     rclpy.init()
     try:
-        cases=sys.argv[3].split(',') if len(sys.argv)>3 else ('nominal','python_pause','bridge_delay','report_delay','report_silence','report_malformed','uwb_gap','fc_estimator_silence','fc_estimator_loss','fc_pose_loss','pilot','platform_link')
+        cases=sys.argv[3].split(',') if len(sys.argv)>3 else ('nominal','python_pause','bridge_delay','report_delay','report_silence','report_malformed','uwb_gap','pose_gap','takeoff_pose_gap','target_silence','state_1hz','fc_estimator_silence','fc_estimator_loss','fc_pose_loss','pilot','platform_link')
         for scenario in cases:run(scenario)
     finally:rclpy.shutdown()

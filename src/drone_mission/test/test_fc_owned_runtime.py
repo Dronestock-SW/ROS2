@@ -30,7 +30,6 @@ def test_runtime_report_delay_is_warning_but_start_remains_strict(changes):
 
 @pytest.mark.parametrize('changes,reason', [
     (dict(estimator_valid=False),'px4_estimator_unavailable'),
-    (dict(pose_age_s=.21),'px4_pose_unavailable_or_outside_bounds'),
     (dict(connected=False),'fc_disconnected_or_stale'),
     (dict(bridge_contract_error='bridge_host_boot_changed'),'bridge_host_boot_changed'),
     (dict(alignment_matches=False),'observation_and_command_alignment_mismatch'),
@@ -103,3 +102,20 @@ def test_delayed_planner_cycle_keeps_existing_target_without_hover_credit():
     goal=m.local_setpoint()
     assert m.tick(sample(10.4),10.4,WALL+.4,round((WALL+.4)*1e9))==[]
     assert m.local_setpoint()==goal and m.stable_since is None
+
+
+def test_position_feedback_gap_is_hold_and_critical_battery_is_not_hidden():
+    cfg=config(command_frame='local_xy');m=LocalXYMission(cfg)
+    s=sample(armed=True,mode='OFFBOARD',landed=2,pose_age_s=2.,xy=(),velocity_xy=(),altitude_enu_m=None)
+    assert m.ready(s,10.)=='ready'
+    assessment=observation_status(cfg,s)
+    assert assessment['progress_held'] and not assessment['land_requested_by_report']
+    assert m.ready(s,10.,ground=True)!='ready'
+    assert m.ready(replace(s,estimator_valid=False),10.)=='px4_estimator_unavailable'
+
+
+def test_delayed_target_echo_is_diagnostic_not_progress_blocker():
+    s=sample(armed=True,mode='OFFBOARD',landed=2)
+    status=observation_status(config(command_frame='local_xy'),s,feedback_age_s=20.)
+    assert 'target_feedback_delayed' in status['warnings']
+    assert not status['progress_held']

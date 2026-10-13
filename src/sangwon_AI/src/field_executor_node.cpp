@@ -259,9 +259,9 @@ class ExecutorNode final:public rclcpp::Node {
     // A stale planner cannot advance the target. This immutable View remains
     // an approved position hold while direct FC health and pilot authority
     // remain valid; output cadence is independent of planner/report cadence.
-    const bool healthy=s.connected&&t-s.state_at<=2.5&&t-s.pose_at<=.2&&s.pose_ok&&s.estimator&&s.vertical;
+    const bool healthy=s.connected&&t-s.state_at<=cfg_.value("state_timeout_s",2.5)&&s.estimator&&s.vertical;
     if(pilot||!healthy){
-      const std::string why=pilot?"pilot_priority_native_sender":!s.connected||t-s.state_at>2.5?"native_sender_fc_state_expired":!s.pose_ok||t-s.pose_at>.2?"native_sender_fc_pose_expired":"native_sender_fc_estimator_expired";
+      const std::string why=pilot?"pilot_priority_native_sender":!s.connected||t-s.state_at>cfg_.value("state_timeout_s",2.5)?"native_sender_fc_state_expired":"native_sender_fc_estimator_invalid";
       std::lock_guard<std::mutex> g(fast_mutex_);if(pilot||fault_.empty())fault_=why;pilot_fault_=pilot_fault_||pilot;return;
     }
     mavros_msgs::msg::PositionTarget m;m.header.stamp=now();m.header.frame_id="map";m.coordinate_frame=1;m.type_mask=2552;m.position.x=v.x;m.position.y=v.y;m.position.z=v.z;m.yaw=v.yaw;pub_->publish(m);

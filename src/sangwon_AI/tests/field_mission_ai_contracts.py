@@ -134,7 +134,7 @@ class Contracts(unittest.TestCase):
                 self.assertNotEqual(r['phase'],'LANDING');self.assertEqual(r['completed_waypoints'],0)
                 self.assertEqual(r['observation_status']['progress_held'],key=='uwb_age_s')
         r=self.peer().step(state(pose_age_s=.201))
-        self.assertEqual(r['phase'],'LANDING');self.assertEqual(r['reason'],'PX4_POSE_UNAVAILABLE')
+        self.assertNotEqual(r['phase'],'LANDING');self.assertTrue(r['observation_status']['progress_held'])
 
     def test_drift_resets_continuous_hover_but_never_home_or_goal(self):
         p=self.peer()

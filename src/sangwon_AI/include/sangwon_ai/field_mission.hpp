@@ -33,10 +33,12 @@ inline bool age(const Json& s, const char* key, double max) {
   const double n = s.at(key).get<double>();
   return std::isfinite(n) && n >= 0 && n <= max;
 }
-inline Json observation_status(const Json& s, double bridge_limit) {
+inline Json observation_status(const Json& s, double bridge_limit, double pose_limit=.2) {
   const bool raw=age(s,"uwb_age_s",.25)&&s.contains("uwb_xy")&&s.at("uwb_xy").is_array()&&s.at("uwb_xy").size()==2;
+  const bool pose=age(s,"pose_age_s",pose_limit)&&s.contains("xy")&&s.at("xy").is_array()&&s.at("xy").size()==2;
   Json warnings=Json::array();
   if(!age(s,"estimator_age_s",.5))warnings.push_back("fc_estimator_report_delayed");
+  if(!pose)warnings.push_back("fc_position_feedback_missing");
   if(!raw)warnings.push_back("uwb_observation_missing");
   if(!age(s,"bridge_age_s",2.5))warnings.push_back("bridge_report_delayed");
   if(!age(s,"bridge_observation_age_s",bridge_limit))warnings.push_back("bridge_delivery_report_delayed");
@@ -46,9 +48,9 @@ inline Json observation_status(const Json& s, double bridge_limit) {
   const bool report_current=age(s,"bridge_age_s",2.5)&&age(s,"bridge_observation_age_s",bridge_limit);
   if(!error.empty()&&!report_current){warnings.push_back("unverified_contract_report");error.clear();}
   if(error.empty()&&flag(s,"bridge_ready")&&report_current&&!flag(s,"alignment_matches"))error="observation_and_command_alignment_mismatch";
-  const bool hold=!raw||!age(s,"feedback_age_s",.5);
+  const bool hold=!raw||!pose;
   return {{"policy","fc_owned_runtime"},{"warnings",warnings},{"contract_error",error},{"raw_observation_fresh",raw},
-    {"progress_held",hold},{"mode",hold?"FC_HOLD":warnings.empty()?"NORMAL":"REPORT_DELAY"},{"land_requested_by_report",false}};
+    {"position_feedback_fresh",pose},{"progress_held",hold},{"mode",hold?"FC_HOLD":warnings.empty()?"NORMAL":"REPORT_DELAY"},{"land_requested_by_report",false}};
 }
 struct Task { Vec3 xy; double dwell; };
 
@@ -146,7 +148,7 @@ class MissionAI {
     const auto& s = in.at("state");
     const auto executor = in.at("executor_phase").get<std::string>();
     lidar_status_ = lidar_->update(s,now_);
-    observation_status_=observation_status(s,bridge_age_limit_);
+    observation_status_=observation_status(s,bridge_age_limit_,pose_age_);
     observation_gap_ = !flag(observation_status_,"raw_observation_fresh");
     gap_supported_ = observation_gap_ && flag(lidar_status_,"approved")
         && (executor=="TAKING_OFF" || executor=="MOVING" || executor=="DWELL" || executor=="RETURNING")
@@ -166,7 +168,6 @@ class MissionAI {
     if(phase_ != "END" && phase_ != "FAILED" && phase_ != "PILOT_OVERRIDE" && phase_ != "LANDING") {
       if(!flag(s, "connected") || !age(s, "state_age_s", 2.5)) request_land("FC_STATE_UNAVAILABLE");
       else if(!flag(s, "estimator_valid") || !flag(s, "vertical_estimator_valid")) request_land("ESTIMATOR_UNAVAILABLE");
-      else if(!age(s, "pose_age_s", pose_age_)) request_land("PX4_POSE_UNAVAILABLE");
       else if(flag(lidar_status_,"enabled") && lidar_status_.at("reason") == "UWB_LIDAR_RECOVERY_DISAGREEMENT") request_land("UWB_LIDAR_RECOVERY_DISAGREEMENT");
       else if(!observation_status_.at("contract_error").get<std::string>().empty()) request_land("OBSERVATION_CONTRACT_CHANGED");
       else if(!age(s, "battery_age_s", 3) || number(s.at("battery"), 0, 1) < .15) request_land("BATTERY_UNAVAILABLE_OR_LOW");
@@ -220,11 +221,13 @@ class MissionAI {
     const auto& s = input_.at("state");
     if(phase_ == "WAIT_TAKEOFF" && executor != "TAKING_OFF" && executor != "HANDOFF") return;
     if(!flag(s,"armed")) { request_land("AIRBORNE_STATE_LOST");return; }
-    const Vec3 current=point(s.at("xy"));
-    if(phase_=="WAIT_TAKEOFF"&&xy(current-home_)>.6) { request_land("TAKEOFF_HORIZONTAL_DRIFT");return; }
-    if((phase_=="MOVING"||phase_=="RETURNING")&&xy(current-stream_)>.5) { request_land("LOCAL_PATH_TRACKING_ERROR");return; }
-    if(phase_=="DWELL"&&xy(current-goal_)>.5) { request_land("HOVER_HORIZONTAL_DRIFT");return; }
-    if(flag(observation_status_,"progress_held")&&!gap_supported_) {
+    const bool pose_current=flag(observation_status_,"position_feedback_fresh");
+    if(pose_current){const auto current=point(s.at("xy"));
+      if(phase_=="WAIT_TAKEOFF"&&xy(current-home_)>.6) { request_land("TAKEOFF_HORIZONTAL_DRIFT");return; }
+      if((phase_=="MOVING"||phase_=="RETURNING")&&xy(current-stream_)>.5) { request_land("LOCAL_PATH_TRACKING_ERROR");return; }
+      if(phase_=="DWELL"&&xy(current-goal_)>.5) { request_land("HOVER_HORIZONTAL_DRIFT");return; }
+    }
+    if(!pose_current||(observation_gap_&&!gap_supported_)) {
       stable_since_.reset();reason_="FC_HOLD_WAIT_FOR_OBSERVATION_OR_TARGET_REPORT";
       // Observation/feedback silence does not consume a leg's stability
       // timeout. The executor's total mission and battery limits still apply.
@@ -232,7 +235,7 @@ class MissionAI {
       if(takeoff_started_)takeoff_started_=now_;
       return;
     }
-    const Vec3 measured = point(s.at("uwb_xy"));
+    const Vec3 current=point(s.at("xy")),measured = point(s.at("uwb_xy"));
     const double velocity = xy(point(s.at("velocity_xy")));
     const double vertical = std::abs(number(s.at("vertical_speed_m_s"), -20, 20));
     const double height_error = std::abs(number(s.at("altitude_enu_m"), -100, 100) - height_);
@@ -240,7 +243,7 @@ class MissionAI {
       if(!takeoff_started_) takeoff_started_ = now_;
       if(now_ - takeoff_started_ > takeoff_timeout_) { request_land("TAKEOFF_TIMEOUT"); return; }
       if(gap_supported_) { stable_since_.reset(); reason_="LIDAR_SUPPORTED_TAKEOFF_WAIT_FOR_UWB"; return; }
-      if(stable(flag(s, "armed") && s.at("landed") == 2 && age(s, "feedback_age_s", .5)
+      if(stable(flag(s, "armed") && s.at("landed") == 2
           && height_error <= .15 && vertical <= .1, settle_)) choose_goal(tasks_.front().xy);
       return;
     }

@@ -139,6 +139,13 @@ class NativeTakeoff(LocalTakeoff):
             if not s.armed:
                 self.end('UNCONFIRMED', 'disarmed_before_liftoff' if self.phase == 'NATIVE_WAIT_ASCENT' else 'unexpected_disarm', now)
                 return []
+            if s.battery < .2:
+                self.native_land('battery_below_hold_reserve',s,now)
+                return self.actions
+            if not s.xy or s.pose_age_s>self.settings.pose_timeout_s:
+                self.native_hold_since=None;self.native_ready=False
+                self.reason='fc_hold_wait_for_position_feedback'
+                return []
             if self.phase == 'NATIVE_WAIT_ASCENT' and s.landed == 2:
                 self.enter('NATIVE_CLIMB', 'px4_airborne_confirmed', now)
             if math.dist(s.xy,self.native_home) > .6:
@@ -161,6 +168,4 @@ class NativeTakeoff(LocalTakeoff):
                 self.native_land('native_takeoff_timeout', s, now)
         if self.phase in ('NATIVE_MODE','NATIVE_ARMING') and now-self.entered_s > 6:
             self.end('UNCONFIRMED', 'native_mode_or_arm_not_confirmed', now)
-        if s.battery < .2 and self.phase in ('NATIVE_WAIT_ASCENT','NATIVE_CLIMB','HOLD_READY'):
-            self.native_land('battery_below_hold_reserve', s, now)
         return self.actions

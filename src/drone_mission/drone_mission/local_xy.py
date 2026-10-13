@@ -26,6 +26,7 @@ class LocalXYMission(NativeTakeoff, MissionChain):
         self.goal = None
         self.gap_since = None
         self.last_pose = None
+        self.last_pose_source_s = None
         self.mission_ai = None
         self.cpp_ceiling = None
         self.cpp_wait_since = None
@@ -62,9 +63,9 @@ class LocalXYMission(NativeTakeoff, MissionChain):
         if self.settings.mission_ai == 'cpp_bt' and (ground or self.phase in ('IDLE','READY','HOLD_READY')):
             if self.mission_ai is None or not self.mission_ai.status(now)['connected']:
                 return 'cpp_mission_ai_unavailable'
-        if not finite(s.altitude_enu_m):
+        if not finite(s.altitude_enu_m) and (ground or not s.armed):
             return 'px4_local_height_unavailable'
-        if not s.local_setpoint_ready:
+        if not s.local_setpoint_ready and (ground or not s.armed):
             return 'local_setpoint_transport_unavailable'
         if type(s.rc_override) is not int or not s.rc_override & 2:
             return 'px4_offboard_rc_override_required'
@@ -241,7 +242,6 @@ class LocalXYMission(NativeTakeoff, MissionChain):
             elif now-self.entered_s > self.settings.landing_timeout_s:
                 self.end('UNCONFIRMED', 'landing_or_mode_completion_unverified', now)
             return []
-        feedback_fresh = self.feedback_ns is not None and 0 <= (ros_ns-self.feedback_ns)/1e9 <= .5
         reason = self.ready(s, now)
         if reason != 'ready':
             self.abort(reason, s, now)
@@ -259,18 +259,24 @@ class LocalXYMission(NativeTakeoff, MissionChain):
         if self.phase in ('PREPARING','ARMING') and not s.armed and not recent(s.uwb_age_s,.25):
             self.abort('prearm_uwb_unavailable', s, now)
             return self.actions
-        if self.last_pose and (math.dist(s.xy,self.last_pose[:2]) > .3+dt
-                              or abs(s.altitude_enu_m-self.last_pose[2]) > .3+dt):
+        pose_current=recent(s.pose_age_s,self.settings.pose_timeout_s) and len(s.xy)==2 and finite(s.altitude_enu_m)
+        if self.phase in ('PREPARING','ARMING') and not s.armed and not pose_current:
+            self.abort('prearm_position_feedback_missing',s,now)
+            return self.actions
+        pose_source_s=now-s.pose_age_s
+        pose_dt=max(dt,pose_source_s-self.last_pose_source_s) if pose_current and self.last_pose_source_s is not None else dt
+        if pose_current and self.last_pose and (math.dist(s.xy,self.last_pose[:2]) > .3+pose_dt
+                              or abs(s.altitude_enu_m-self.last_pose[2]) > .3+pose_dt):
             self.abort('px4_local_frame_or_pose_jump', s, now)
             return self.actions
-        self.last_pose = (*s.xy, s.altitude_enu_m)
+        if pose_current:self.last_pose = (*s.xy, s.altitude_enu_m);self.last_pose_source_s=pose_source_s
         if self.phase in ('TAKING_OFF','HANDOFF','MOVING','DWELL','RETURNING') and not s.armed:
             self.abort('airborne_state_lost', s, now)
             return self.actions
-        if self.phase in ('TAKING_OFF','HANDOFF') and math.dist(s.xy,self.home)>.6:
+        if pose_current and self.phase in ('TAKING_OFF','HANDOFF') and math.dist(s.xy,self.home)>.6:
             self.abort('takeoff_horizontal_drift',s,now)
             return self.actions
-        if self.phase in ('MOVING','RETURNING','DWELL') and math.dist(s.xy,self.setpoint_xy)>.5:
+        if pose_current and self.phase in ('MOVING','RETURNING','DWELL') and math.dist(s.xy,self.setpoint_xy)>.5:
             self.abort('hover_horizontal_drift' if self.phase=='DWELL' else 'local_path_tracking_error',s,now)
             return self.actions
         if self.mission_ai is not None:
@@ -338,7 +344,7 @@ class LocalXYMission(NativeTakeoff, MissionChain):
                 if now-self.entered_s > self.settings.takeoff_timeout_s:
                     self.abort('takeoff_timeout', s, now)
                 return self.actions
-            if (s.armed and s.landed == 2 and feedback_fresh
+            if (s.armed and s.landed == 2
                   and abs(s.altitude_enu_m-self.height_target) <= .15 and abs(s.vertical_speed_m_s) <= .1):
                 if self.stable_since is None:self.stable_since = now
                 if now-self.stable_since >= self.settings.takeoff_settle_s:

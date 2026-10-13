@@ -67,14 +67,19 @@ class LocalTakeoff:
         if s.rc_required and (not s.rc_valid or not 0 <= s.rc_age_s <= 1):
             self.native_land('fresh_rc_required',s,now)
             return self.actions
+        if s.battery < .2 and self.native_armed_s is not None:
+            self.native_land('battery_below_hold_reserve',s,now)
+            return self.actions
+        if self.phase in ('LOCAL_TAKEOFF_CLIMB','LOCAL_POSITION_HANDOFF','HOLD_READY') and not s.armed:
+            self.native_ready=False;self.end('UNCONFIRMED','unexpected_disarm',now)
+            return []
+        if not s.xy or s.pose_age_s>self.settings.pose_timeout_s:
+            self.native_hold_since=None;self.native_ready=False
+            self.reason='fc_hold_wait_for_position_feedback'
+            return self.actions
         if math.dist(s.xy,self.native_home) > .6:
             self.native_land('local_takeoff_horizontal_drift',s,now)
             return self.actions
-        if self.phase in ('LOCAL_TAKEOFF_CLIMB','LOCAL_POSITION_HANDOFF','HOLD_READY') and not s.armed:
-            self.native_ready = False
-            self.end('UNCONFIRMED','unexpected_disarm',now)
-            return []
-        feedback = self.feedback_ns is not None and 0 <= (ros_ns-self.feedback_ns)/1e9 <= .5
         if self.phase == 'LOCAL_TAKEOFF_PREPARING':
             # PX4 does not echo controller targets before spool-up.
             # OFFBOARD acknowledgement verifies reception of the warmup stream.
@@ -119,6 +124,4 @@ class LocalTakeoff:
                 self.native_land('local_takeoff_timeout',s,now)
         if self.phase in ('LOCAL_TAKEOFF_MODE','LOCAL_TAKEOFF_ARMING','LOCAL_POSITION_HANDOFF') and now-self.entered_s > 6:
             self.native_land('local_takeoff_mode_not_confirmed',s,now)
-        if s.battery < .2 and self.native_armed_s is not None:
-            self.native_land('battery_below_hold_reserve',s,now)
         return self.actions

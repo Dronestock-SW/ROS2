@@ -187,7 +187,8 @@ class FlightSession:
             return 'landed_state_stale'
         if not s.estimator_valid or (not fc_owned and not 0 <= s.estimator_age_s <= .5):
             return 'px4_estimator_unavailable'
-        if not s.xy or not self.settings.inside(s.xy) or not 0 <= s.pose_age_s <= self.settings.pose_timeout_s:
+        pose_current=bool(s.xy) and 0 <= s.pose_age_s <= self.settings.pose_timeout_s
+        if (not fc_owned and (not pose_current or not self.settings.inside(s.xy))) or (fc_owned and pose_current and not self.settings.inside(s.xy)):
             return 'px4_pose_unavailable_or_outside_bounds'
         if not fc_owned and not 0 <= s.uwb_age_s <= .25 and not (horizontal_support and not ground):
             return 'uwb_unavailable'
