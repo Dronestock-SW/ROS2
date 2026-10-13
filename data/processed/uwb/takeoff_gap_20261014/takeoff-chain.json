@@ -1,0 +1,137 @@
+{
+  "schema": 1,
+  "input_name": "log-31.ulg",
+  "input_bytes": 19413299,
+  "input_sha256": "39b5a1c1073eb495e4931f205e7a0465486f060cc91e18ad2b3811bd32982166",
+  "px4_revision": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+  "primary_ekf": 1,
+  "ulog_dropout_count": 0,
+  "clock": "PX4 boot seconds; no conversion from wall clock",
+  "scope": "First armed takeoff, ending at first nav state other than OFFBOARD after liftoff",
+  "events": {
+    "arm": 439.685954,
+    "liftoff": 441.868051,
+    "optical_flow_active": 442.82227,
+    "first_logged_distance_in_range": 443.055385,
+    "ev_last_before_gap": 446.613431,
+    "ev_first_after_gap": 447.455044,
+    "ev_pos_stopped": 447.164934,
+    "ev_pos_restarted": 447.642243,
+    "xy_reset": 447.691839,
+    "offboard_ended": 447.696777
+  },
+  "ev_receiver_gap_s": 0.8416129999999953,
+  "ev_sample_gap_s": 0.85,
+  "liftoff_to_flow_s": 0.9542190000000232,
+  "liftoff_to_distance_in_range_s": 1.1873340000000212,
+  "xy_reset_delta_ned_m": [
+    -0.43658506870269775,
+    -0.2709019184112549
+  ],
+  "xy_target_span_m": [
+    0.0,
+    0.0
+  ],
+  "xy_target_ned_m": [
+    1.5319668054580688,
+    2.9821534156799316
+  ],
+  "distance_windows": {
+    "arm_to_liftoff": {
+      "start_fc_s": 439.685954,
+      "end_fc_s": 441.868051,
+      "samples": 22,
+      "in_declared_range": 0,
+      "min_m": 0.01100000087171793,
+      "max_m": 0.017000000923871994,
+      "max_logged_gap_s": 0.10154599999998482
+    },
+    "liftoff_to_flow": {
+      "start_fc_s": 441.868051,
+      "end_fc_s": 442.82227,
+      "samples": 9,
+      "in_declared_range": 0,
+      "min_m": 0.010000000707805157,
+      "max_m": 0.04100000113248825,
+      "max_logged_gap_s": 0.10155700000001389
+    },
+    "flow_to_ev_gap": {
+      "start_fc_s": 442.82227,
+      "end_fc_s": 446.613431,
+      "samples": 29,
+      "in_declared_range": 27,
+      "min_m": 0.04800000041723251,
+      "max_m": 0.8080000281333923,
+      "max_logged_gap_s": 0.30437599999999065
+    },
+    "ev_gap": {
+      "start_fc_s": 446.613431,
+      "end_fc_s": 447.455044,
+      "samples": 6,
+      "in_declared_range": 6,
+      "min_m": 0.8950000405311584,
+      "max_m": 1.1780000925064087,
+      "max_logged_gap_s": 0.20247299999999768
+    }
+  },
+  "distance_logged_gaps_over_150ms": [
+    {
+      "start_fc_s": 444.781001,
+      "end_fc_s": 444.983547,
+      "duration_s": 0.2025459999999839
+    },
+    {
+      "start_fc_s": 444.983547,
+      "end_fc_s": 445.287884,
+      "duration_s": 0.3043370000000323
+    },
+    {
+      "start_fc_s": 445.592504,
+      "end_fc_s": 445.894546,
+      "duration_s": 0.3020419999999717
+    },
+    {
+      "start_fc_s": 445.894546,
+      "end_fc_s": 446.097089,
+      "duration_s": 0.20254299999999148
+    },
+    {
+      "start_fc_s": 446.097089,
+      "end_fc_s": 446.401465,
+      "duration_s": 0.30437599999999065
+    },
+    {
+      "start_fc_s": 446.502966,
+      "end_fc_s": 446.705979,
+      "duration_s": 0.20301299999999856
+    },
+    {
+      "start_fc_s": 447.112035,
+      "end_fc_s": 447.314508,
+      "duration_s": 0.20247299999999768
+    },
+    {
+      "start_fc_s": 447.314508,
+      "end_fc_s": 447.516289,
+      "duration_s": 0.20178099999998267
+    }
+  ],
+  "initial_parameters": {
+    "EKF2_EV_CTRL": 1,
+    "EKF2_EV_DELAY": 0.0,
+    "EKF2_DELAY_MAX": 200.0,
+    "EKF2_GPS_CTRL": 0,
+    "EKF2_OF_CTRL": 1,
+    "EKF2_RNG_CTRL": 1,
+    "MPC_TKO_SPEED": 0.5,
+    "MPC_Z_VEL_MAX_UP": 0.5,
+    "SENS_FLOW_ROT": 4
+  },
+  "limitations": [
+    "FC estimated motion and estimator resets are not independent physical displacement.",
+    "ULog cannot determine which B_TF input was rejected; companion decision records are required.",
+    "Distance sample gaps are FC logged gaps, not proof of an I2C or MAVROS fault.",
+    "Optical-flow activation and first in-range distance are different conditions.",
+    "This flight is not the separately reported stable POSITION hover comparison."
+  ]
+}

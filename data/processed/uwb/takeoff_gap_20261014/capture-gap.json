@@ -1,0 +1,1790 @@
+{
+  "schema": 1,
+  "input_sha256": "6cb34fc5ccee92084d81d20bfaac106650e4004a3bafbbc106b572ea7a34e289",
+  "source_receipt": {
+    "type": "source_receipt",
+    "source": "/home/arialhanho/.local/share/dronestock/manual-captures-20261013/capture-1791884513951202644-a5b6e3e7/events.jsonl",
+    "bytes": 124382507,
+    "sha256": "829d1055c8d7e49b3c4e019560cb5bf4b278b885496b06c030412da5cc30c91e",
+    "selected": 7983,
+    "topics": {
+      "/uwb/received": 2014,
+      "/uwb/btf_decision": 1004,
+      "/uwb/btf_pose": 877,
+      "/uwb/local_odometry_status": 125,
+      "/mavros/extended_state": 123,
+      "/mavros/imu/data": 2445,
+      "/mavros/local_position/odom": 732,
+      "/mavros/downward_0": 223,
+      "/mavros/timesync_status": 244,
+      "/uwb/btf_status": 25,
+      "/mavros/state": 24,
+      "/uwb/btf_xyz": 147
+    }
+  },
+  "scope": "Recorded B_TF decisions; pose guard replay is separately labelled",
+  "first_rejected_seq": 17484,
+  "last_rejected_seq": 17510,
+  "rejected_count": 27,
+  "reasons": {
+    "measured_height_unavailable": 11,
+    "no_height_consistent_subset": 16
+  },
+  "source_pose_gap_s": 0.699959277,
+  "collector_pose_gap_s": 0.738067021,
+  "collector_gap_topics": {
+    "/uwb/btf_xyz": 1,
+    "/mavros/imu/data": 88,
+    "/uwb/received": 62,
+    "/uwb/btf_decision": 27,
+    "/mavros/local_position/odom": 22,
+    "/mavros/state": 1,
+    "/mavros/extended_state": 4,
+    "/mavros/downward_0": 6,
+    "/mavros/timesync_status": 7,
+    "/uwb/local_odometry_status": 4,
+    "/uwb/btf_status": 1
+  },
+  "raw_cycle_count": 31,
+  "raw_cycle_source_intervals_s": {
+    "count": 30,
+    "min": 0.024781999999959226,
+    "median": 0.02499900000000821,
+    "p95": 0.025152950000025952,
+    "max": 0.025184000000024298
+  },
+  "rejected_processing_ms": {
+    "count": 27,
+    "min": 6.761820000008356,
+    "median": 21.382506000009016,
+    "p95": 28.94284640000819,
+    "max": 36.03749499995956
+  },
+  "rejected_queue_age_s": {
+    "count": 27,
+    "min": 0.0004184430176223941,
+    "median": 0.0008384263796870073,
+    "p95": 0.004161894675297616,
+    "max": 0.005857166640566902
+  },
+  "unavailable_latest_height_reasons": {
+    "tof_stale": 7,
+    "attitude_stale": 4
+  },
+  "attitude_stale_examples": [
+    {
+      "tof_stamp_ns": 1791884535618776320,
+      "selected_imu_stamps_ns": [
+        1791884535596776320
+      ],
+      "nearby_collector_imu": [
+        {
+          "stamp_ns": 1791884535596776320,
+          "received_monotonic_ns": 414848192850,
+          "delta_from_tof_ms": -22.0
+        },
+        {
+          "stamp_ns": 1791884535606776320,
+          "received_monotonic_ns": 414852996363,
+          "delta_from_tof_ms": -12.0
+        },
+        {
+          "stamp_ns": 1791884535616776320,
+          "received_monotonic_ns": 414856219494,
+          "delta_from_tof_ms": -2.0
+        },
+        {
+          "stamp_ns": 1791884535626776320,
+          "received_monotonic_ns": 414859056474,
+          "delta_from_tof_ms": 8.0
+        },
+        {
+          "stamp_ns": 1791884535636776320,
+          "received_monotonic_ns": 414862297782,
+          "delta_from_tof_ms": 18.0
+        }
+      ]
+    }
+  ],
+  "b3_best_physical_range_rms_m": {
+    "count": 16,
+    "min": 0.06636243354182746,
+    "median": 0.07587151990566912,
+    "p95": 0.07943512478477426,
+    "max": 0.07944892843340572
+  },
+  "b3_best_excluded_anchor": {
+    "1": 16
+  },
+  "tof_context_source_intervals_s": {
+    "count": 16,
+    "min": 0.100999488,
+    "median": 0.102001536,
+    "p95": 0.22825448,
+    "max": 0.30400256
+  },
+  "tof_context_receipt_intervals_s": {
+    "count": 16,
+    "min": 0.093239765,
+    "median": 0.108195839,
+    "p95": 0.2327946325,
+    "max": 0.294985996
+  },
+  "a1_steps_over_20cm_before_rejection": [
+    {
+      "seq": 17478,
+      "source_dt_s": 0.025241,
+      "range_delta_m": [
+        0.22058,
+        -0.005790000000000184,
+        -0.012439999999999785,
+        -0.01930999999999994
+      ]
+    },
+    {
+      "seq": 17479,
+      "source_dt_s": 0.024789,
+      "range_delta_m": [
+        -0.24940000000000007,
+        0.010489999999999888,
+        0.002949999999999786,
+        0.016030000000000655
+      ]
+    },
+    {
+      "seq": 17480,
+      "source_dt_s": 0.025154,
+      "range_delta_m": [
+        0.2527299999999997,
+        0.014050000000000118,
+        0.008440000000000225,
+        0.006539999999999324
+      ]
+    },
+    {
+      "seq": 17482,
+      "source_dt_s": 0.024893,
+      "range_delta_m": [
+        0.24316000000000004,
+        -0.01487000000000016,
+        0.00024000000000024002,
+        -0.0002900000000005676
+      ]
+    }
+  ],
+  "recorded_bridge_recovery_counter_before": 26,
+  "recorded_bridge_recovery_counter_after": 32,
+  "recorded_last_bridge_send_monotonic_ns": 414429471922,
+  "guard_replay": {
+    "first_ready_stamp_ns": 1791884536139938714,
+    "withheld_count": 6,
+    "added_source_delay_s": 0.150055355,
+    "resulting_source_gap_s": 0.850014632,
+    "rows": [
+      {
+        "stamp_ns": 1791884535989883359,
+        "reason": "observation_recovering"
+      },
+      {
+        "stamp_ns": 1791884536014766756,
+        "reason": "observation_recovering"
+      },
+      {
+        "stamp_ns": 1791884536039948063,
+        "reason": "observation_recovering"
+      },
+      {
+        "stamp_ns": 1791884536064764859,
+        "reason": "observation_recovering"
+      },
+      {
+        "stamp_ns": 1791884536089985250,
+        "reason": "observation_recovering"
+      },
+      {
+        "stamp_ns": 1791884536114703856,
+        "reason": "observation_recovering"
+      },
+      {
+        "stamp_ns": 1791884536139938714,
+        "reason": "ready"
+      },
+      {
+        "stamp_ns": 1791884536164893629,
+        "reason": "ready"
+      },
+      {
+        "stamp_ns": 1791884536189879524,
+        "reason": "ready"
+      },
+      {
+        "stamp_ns": 1791884536214881611,
+        "reason": "ready"
+      },
+      {
+        "stamp_ns": 1791884536239800136,
+        "reason": "ready"
+      },
+      {
+        "stamp_ns": 1791884536264875319,
+        "reason": "ready"
+      }
+    ]
+  },
+  "before": {
+    "seq": 17483,
+    "stamp_ns": 1791884535289924082,
+    "reason": "original_fit_consistent",
+    "published": true,
+    "b4_fit_rms_m": 0.059438172214009086,
+    "raw_pair_residual_m": 0.10853980727174063,
+    "raw_slant_m": [
+      3.72471,
+      5.08371,
+      2.80607,
+      4.77916
+    ],
+    "height_m": 0.9496377848922453,
+    "height_selection": [
+      {
+        "tof_stamp_ns": 1791884535212770944,
+        "range_m": 0.800000011920929,
+        "tof_age_s": 0.070069395,
+        "imu_stamp_ns": 1791884535208770944,
+        "attitude_skew_s": 0.004,
+        "reason": "ok"
+      },
+      {
+        "tof_stamp_ns": 1791884535212770944,
+        "range_m": 0.800000011920929,
+        "tof_age_s": 0.072505307,
+        "imu_stamp_ns": 1791884535208770944,
+        "attitude_skew_s": 0.004,
+        "reason": "ok"
+      },
+      {
+        "tof_stamp_ns": 1791884535212770944,
+        "range_m": 0.800000011920929,
+        "tof_age_s": 0.074825223,
+        "imu_stamp_ns": 1791884535208770944,
+        "attitude_skew_s": 0.004,
+        "reason": "ok"
+      },
+      {
+        "tof_stamp_ns": 1791884535212770944,
+        "range_m": 0.800000011920929,
+        "tof_age_s": 0.077153138,
+        "imu_stamp_ns": 1791884535208770944,
+        "attitude_skew_s": 0.004,
+        "reason": "ok"
+      }
+    ],
+    "b3_best_excluded_anchor": null,
+    "b3_best_physical_range_rms_m": null,
+    "b4_height_check": {
+      "state": "inconsistent",
+      "checked": true,
+      "blocked": true,
+      "limit_m": 0.06,
+      "reason": "b4_height_inconsistent",
+      "physical_range_rms_m": 0.16234720102224157,
+      "predicted_minus_observed_m": [
+        -0.3101895222481983,
+        0.059919818338804554,
+        0.07068323134303256,
+        0.024948169945127496
+      ],
+      "sample_time_us": [
+        438526717,
+        438529153,
+        438531473,
+        438533801
+      ],
+      "motion_compensated": true,
+      "enforced": false
+    },
+    "processing_ms": 10.597347000043555,
+    "queue_age_s": 0.0003224815422413485
+  },
+  "after": {
+    "seq": 17511,
+    "stamp_ns": 1791884535989883359,
+    "reason": "original_fit_consistent",
+    "published": true,
+    "b4_fit_rms_m": 0.05630630191832868,
+    "raw_pair_residual_m": 0.006487208985505371,
+    "raw_slant_m": [
+      3.15784,
+      5.21204,
+      2.97414,
+      5.08526
+    ],
+    "height_m": null,
+    "height_selection": [
+      {
+        "tof_stamp_ns": 1791884535822779392,
+        "range_m": 1.0800000429153442,
+        "tof_age_s": 0.160098239,
+        "reason": "tof_stale"
+      },
+      {
+        "tof_stamp_ns": 1791884535822779392,
+        "range_m": 1.0800000429153442,
+        "tof_age_s": 0.162530145,
+        "reason": "tof_stale"
+      },
+      {
+        "tof_stamp_ns": 1791884535822779392,
+        "range_m": 1.0800000429153442,
+        "tof_age_s": 0.164850055,
+        "reason": "tof_stale"
+      },
+      {
+        "tof_stamp_ns": 1791884535822779392,
+        "range_m": 1.0800000429153442,
+        "tof_age_s": 0.167103967,
+        "reason": "tof_stale"
+      }
+    ],
+    "b3_best_excluded_anchor": null,
+    "b3_best_physical_range_rms_m": null,
+    "b4_height_check": {
+      "state": "unavailable",
+      "checked": false,
+      "blocked": true,
+      "limit_m": 0.06,
+      "reason": "measured_height_unavailable",
+      "enforced": false
+    },
+    "processing_ms": 8.240790000002107,
+    "queue_age_s": 0.0005998143255396826
+  },
+  "rejected": [
+    {
+      "seq": 17484,
+      "stamp_ns": 1791884535314825743,
+      "reason": "measured_height_unavailable",
+      "published": false,
+      "b4_fit_rms_m": 0.06416164400661228,
+      "raw_pair_residual_m": 0.11641199921739351,
+      "raw_slant_m": [
+        3.69297,
+        5.06213,
+        2.80041,
+        4.80025
+      ],
+      "height_m": null,
+      "height_selection": [
+        {
+          "tof_stamp_ns": 1791884535212770944,
+          "range_m": 0.800000011920929,
+          "tof_age_s": 0.095185048,
+          "imu_stamp_ns": 1791884535208770944,
+          "attitude_skew_s": 0.004,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535212770944,
+          "range_m": 0.800000011920929,
+          "tof_age_s": 0.097471965,
+          "imu_stamp_ns": 1791884535208770944,
+          "attitude_skew_s": 0.004,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535212770944,
+          "range_m": 0.800000011920929,
+          "tof_age_s": 0.099720884,
+          "imu_stamp_ns": 1791884535208770944,
+          "attitude_skew_s": 0.004,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535212770944,
+          "range_m": 0.800000011920929,
+          "tof_age_s": 0.102054799,
+          "reason": "tof_stale"
+        }
+      ],
+      "b3_best_excluded_anchor": null,
+      "b3_best_physical_range_rms_m": null,
+      "b4_height_check": null,
+      "processing_ms": 9.057478999977775,
+      "queue_age_s": 0.0012942258084081004
+    },
+    {
+      "seq": 17485,
+      "stamp_ns": 1791884535339916176,
+      "reason": "measured_height_unavailable",
+      "published": false,
+      "b4_fit_rms_m": 0.06611723965077324,
+      "raw_pair_residual_m": 0.1052158597391323,
+      "raw_slant_m": [
+        3.65009,
+        5.07763,
+        2.79843,
+        4.81605
+      ],
+      "height_m": null,
+      "height_selection": [
+        {
+          "tof_stamp_ns": 1791884535212770944,
+          "range_m": 0.800000011920929,
+          "tof_age_s": 0.120138488,
+          "reason": "tof_stale"
+        },
+        {
+          "tof_stamp_ns": 1791884535212770944,
+          "range_m": 0.800000011920929,
+          "tof_age_s": 0.122499402,
+          "reason": "tof_stale"
+        },
+        {
+          "tof_stamp_ns": 1791884535212770944,
+          "range_m": 0.800000011920929,
+          "tof_age_s": 0.124824317,
+          "reason": "tof_stale"
+        },
+        {
+          "tof_stamp_ns": 1791884535212770944,
+          "range_m": 0.800000011920929,
+          "tof_age_s": 0.127145232,
+          "reason": "tof_stale"
+        }
+      ],
+      "b3_best_excluded_anchor": null,
+      "b3_best_physical_range_rms_m": null,
+      "b4_height_check": null,
+      "processing_ms": 9.316364000028443,
+      "queue_age_s": 0.0005346088470901122
+    },
+    {
+      "seq": 17486,
+      "stamp_ns": 1791884535365130086,
+      "reason": "measured_height_unavailable",
+      "published": false,
+      "b4_fit_rms_m": 0.06709033582478768,
+      "raw_pair_residual_m": 0.08881073027536332,
+      "raw_slant_m": [
+        3.62142,
+        5.09335,
+        2.79608,
+        4.80591
+      ],
+      "height_m": null,
+      "height_selection": [
+        {
+          "tof_stamp_ns": 1791884535212770944,
+          "range_m": 0.800000011920929,
+          "tof_age_s": 0.145338399,
+          "reason": "tof_stale"
+        },
+        {
+          "tof_stamp_ns": 1791884535212770944,
+          "range_m": 0.800000011920929,
+          "tof_age_s": 0.147713312,
+          "reason": "tof_stale"
+        },
+        {
+          "tof_stamp_ns": 1791884535212770944,
+          "range_m": 0.800000011920929,
+          "tof_age_s": 0.150036227,
+          "reason": "tof_stale"
+        },
+        {
+          "tof_stamp_ns": 1791884535212770944,
+          "range_m": 0.800000011920929,
+          "tof_age_s": 0.152359142,
+          "reason": "tof_stale"
+        }
+      ],
+      "b3_best_excluded_anchor": null,
+      "b3_best_physical_range_rms_m": null,
+      "b4_height_check": null,
+      "processing_ms": 8.880675999989762,
+      "queue_age_s": 0.0015349739373959892
+    },
+    {
+      "seq": 17487,
+      "stamp_ns": 1791884535390000082,
+      "reason": "measured_height_unavailable",
+      "published": false,
+      "b4_fit_rms_m": 0.0675377592863986,
+      "raw_pair_residual_m": 0.06921268285869756,
+      "raw_slant_m": [
+        3.58565,
+        5.11966,
+        2.8031,
+        4.8085
+      ],
+      "height_m": null,
+      "height_selection": [
+        {
+          "tof_stamp_ns": 1791884535212770944,
+          "range_m": 0.800000011920929,
+          "tof_age_s": 0.170145397,
+          "reason": "tof_stale"
+        },
+        {
+          "tof_stamp_ns": 1791884535212770944,
+          "range_m": 0.800000011920929,
+          "tof_age_s": 0.172570308,
+          "reason": "tof_stale"
+        },
+        {
+          "tof_stamp_ns": 1791884535212770944,
+          "range_m": 0.800000011920929,
+          "tof_age_s": 0.174896223,
+          "reason": "tof_stale"
+        },
+        {
+          "tof_stamp_ns": 1791884535212770944,
+          "range_m": 0.800000011920929,
+          "tof_age_s": 0.177229138,
+          "reason": "tof_stale"
+        }
+      ],
+      "b3_best_excluded_anchor": null,
+      "b3_best_physical_range_rms_m": null,
+      "b4_height_check": null,
+      "processing_ms": 11.19495799997594,
+      "queue_age_s": 0.0006351148984435895
+    },
+    {
+      "seq": 17488,
+      "stamp_ns": 1791884535414928252,
+      "reason": "measured_height_unavailable",
+      "published": false,
+      "b4_fit_rms_m": 0.06769423954553383,
+      "raw_pair_residual_m": 0.062306525608696275,
+      "raw_slant_m": [
+        3.55322,
+        5.11666,
+        2.81954,
+        4.81916
+      ],
+      "height_m": null,
+      "height_selection": [
+        {
+          "tof_stamp_ns": 1791884535212770944,
+          "range_m": 0.800000011920929,
+          "tof_age_s": 0.195147564,
+          "reason": "tof_stale"
+        },
+        {
+          "tof_stamp_ns": 1791884535212770944,
+          "range_m": 0.800000011920929,
+          "tof_age_s": 0.197507478,
+          "reason": "tof_stale"
+        },
+        {
+          "tof_stamp_ns": 1791884535212770944,
+          "range_m": 0.800000011920929,
+          "tof_age_s": 0.199827393,
+          "reason": "tof_stale"
+        },
+        {
+          "tof_stamp_ns": 1791884535212770944,
+          "range_m": 0.800000011920929,
+          "tof_age_s": 0.202157308,
+          "reason": "tof_stale"
+        }
+      ],
+      "b3_best_excluded_anchor": null,
+      "b3_best_physical_range_rms_m": null,
+      "b4_height_check": null,
+      "processing_ms": 10.510624999994889,
+      "queue_age_s": 0.000589995922723574
+    },
+    {
+      "seq": 17489,
+      "stamp_ns": 1791884535439933209,
+      "reason": "no_height_consistent_subset",
+      "published": false,
+      "b4_fit_rms_m": 0.06953127627541983,
+      "raw_pair_residual_m": 0.063546252858697,
+      "raw_slant_m": [
+        3.47828,
+        5.10554,
+        2.8282,
+        4.87039
+      ],
+      "height_m": 1.0396451491854712,
+      "height_selection": [
+        {
+          "tof_stamp_ns": 1791884535415776064,
+          "range_m": 0.8899999856948853,
+          "tof_age_s": 0.017151401,
+          "imu_stamp_ns": 1791884535407776064,
+          "attitude_skew_s": 0.008,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535415776064,
+          "range_m": 0.8899999856948853,
+          "tof_age_s": 0.019507315,
+          "imu_stamp_ns": 1791884535407776064,
+          "attitude_skew_s": 0.008,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535415776064,
+          "range_m": 0.8899999856948853,
+          "tof_age_s": 0.021828231,
+          "imu_stamp_ns": 1791884535407776064,
+          "attitude_skew_s": 0.008,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535415776064,
+          "range_m": 0.8899999856948853,
+          "tof_age_s": 0.024157145,
+          "imu_stamp_ns": 1791884535407776064,
+          "attitude_skew_s": 0.008,
+          "reason": "ok"
+        }
+      ],
+      "b3_best_excluded_anchor": 1,
+      "b3_best_physical_range_rms_m": 0.06636243354182746,
+      "b4_height_check": null,
+      "processing_ms": 23.91906499997276,
+      "queue_age_s": 0.000873663541597125
+    },
+    {
+      "seq": 17490,
+      "stamp_ns": 1791884535465002808,
+      "reason": "no_height_consistent_subset",
+      "published": false,
+      "b4_fit_rms_m": 0.07097805135749824,
+      "raw_pair_residual_m": 0.06510625752898692,
+      "raw_slant_m": [
+        3.48186,
+        5.09033,
+        2.82055,
+        4.85186
+      ],
+      "height_m": 1.0396451491854712,
+      "height_selection": [
+        {
+          "tof_stamp_ns": 1791884535415776064,
+          "range_m": 0.8899999856948853,
+          "tof_age_s": 0.04219599,
+          "imu_stamp_ns": 1791884535407776064,
+          "attitude_skew_s": 0.008,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535415776064,
+          "range_m": 0.8899999856948853,
+          "tof_age_s": 0.044568907,
+          "imu_stamp_ns": 1791884535407776064,
+          "attitude_skew_s": 0.008,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535415776064,
+          "range_m": 0.8899999856948853,
+          "tof_age_s": 0.046899826,
+          "imu_stamp_ns": 1791884535407776064,
+          "attitude_skew_s": 0.008,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535415776064,
+          "range_m": 0.8899999856948853,
+          "tof_age_s": 0.049226744,
+          "imu_stamp_ns": 1791884535407776064,
+          "attitude_skew_s": 0.008,
+          "reason": "ok"
+        }
+      ],
+      "b3_best_excluded_anchor": 1,
+      "b3_best_physical_range_rms_m": 0.0682411431535196,
+      "b4_height_check": null,
+      "processing_ms": 22.332315999960883,
+      "queue_age_s": 0.0013738153696749578
+    },
+    {
+      "seq": 17491,
+      "stamp_ns": 1791884535489999183,
+      "reason": "no_height_consistent_subset",
+      "published": false,
+      "b4_fit_rms_m": 0.07237692145032276,
+      "raw_pair_residual_m": 0.06111665343116048,
+      "raw_slant_m": [
+        3.45914,
+        5.09701,
+        2.83973,
+        4.87491
+      ],
+      "height_m": 1.0396451491854712,
+      "height_selection": [
+        {
+          "tof_stamp_ns": 1791884535415776064,
+          "range_m": 0.8899999856948853,
+          "tof_age_s": 0.067202365,
+          "imu_stamp_ns": 1791884535407776064,
+          "attitude_skew_s": 0.008,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535415776064,
+          "range_m": 0.8899999856948853,
+          "tof_age_s": 0.069566282,
+          "imu_stamp_ns": 1791884535407776064,
+          "attitude_skew_s": 0.008,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535415776064,
+          "range_m": 0.8899999856948853,
+          "tof_age_s": 0.0718962,
+          "imu_stamp_ns": 1791884535407776064,
+          "attitude_skew_s": 0.008,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535415776064,
+          "range_m": 0.8899999856948853,
+          "tof_age_s": 0.074223119,
+          "imu_stamp_ns": 1791884535407776064,
+          "attitude_skew_s": 0.008,
+          "reason": "ok"
+        }
+      ],
+      "b3_best_excluded_anchor": 1,
+      "b3_best_physical_range_rms_m": 0.07036813138579405,
+      "b4_height_check": null,
+      "processing_ms": 23.727893000000222,
+      "queue_age_s": 0.0005704306758502753
+    },
+    {
+      "seq": 17492,
+      "stamp_ns": 1791884535514845794,
+      "reason": "no_height_consistent_subset",
+      "published": false,
+      "b4_fit_rms_m": 0.07289782986928416,
+      "raw_pair_residual_m": 0.06705804605797168,
+      "raw_slant_m": [
+        3.48353,
+        5.09989,
+        2.84424,
+        4.88
+      ],
+      "height_m": 1.0396451491854712,
+      "height_selection": [
+        {
+          "tof_stamp_ns": 1791884535415776064,
+          "range_m": 0.8899999856948853,
+          "tof_age_s": 0.09206498,
+          "imu_stamp_ns": 1791884535407776064,
+          "attitude_skew_s": 0.008,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535415776064,
+          "range_m": 0.8899999856948853,
+          "tof_age_s": 0.094417896,
+          "imu_stamp_ns": 1791884535407776064,
+          "attitude_skew_s": 0.008,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535415776064,
+          "range_m": 0.8899999856948853,
+          "tof_age_s": 0.096676815,
+          "imu_stamp_ns": 1791884535407776064,
+          "attitude_skew_s": 0.008,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535415776064,
+          "range_m": 0.8899999856948853,
+          "tof_age_s": 0.09906973,
+          "imu_stamp_ns": 1791884535407776064,
+          "attitude_skew_s": 0.008,
+          "reason": "ok"
+        }
+      ],
+      "b3_best_excluded_anchor": 1,
+      "b3_best_physical_range_rms_m": 0.07046733891769455,
+      "b4_height_check": null,
+      "processing_ms": 19.585512999981347,
+      "queue_age_s": 0.005857166640566902
+    },
+    {
+      "seq": 17493,
+      "stamp_ns": 1791884535539623872,
+      "reason": "no_height_consistent_subset",
+      "published": false,
+      "b4_fit_rms_m": 0.07427596711704047,
+      "raw_pair_residual_m": 0.06772984229347927,
+      "raw_slant_m": [
+        3.45615,
+        5.09344,
+        2.82945,
+        4.88603
+      ],
+      "height_m": 1.08962527795453,
+      "height_selection": [
+        {
+          "tof_stamp_ns": 1791884535517776320,
+          "range_m": 0.9399999976158142,
+          "tof_age_s": 0.015060794,
+          "imu_stamp_ns": 1791884535506776320,
+          "attitude_skew_s": 0.011,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535517776320,
+          "range_m": 0.9399999976158142,
+          "tof_age_s": 0.017336713,
+          "imu_stamp_ns": 1791884535506776320,
+          "attitude_skew_s": 0.011,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535517776320,
+          "range_m": 0.9399999976158142,
+          "tof_age_s": 0.019594632,
+          "imu_stamp_ns": 1791884535506776320,
+          "attitude_skew_s": 0.011,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535517776320,
+          "range_m": 0.9399999976158142,
+          "tof_age_s": 0.021847552,
+          "imu_stamp_ns": 1791884535506776320,
+          "attitude_skew_s": 0.011,
+          "reason": "ok"
+        }
+      ],
+      "b3_best_excluded_anchor": 1,
+      "b3_best_physical_range_rms_m": 0.07198415191876402,
+      "b4_height_check": null,
+      "processing_ms": 25.365298999986408,
+      "queue_age_s": 0.001319717826561373
+    },
+    {
+      "seq": 17494,
+      "stamp_ns": 1791884535564749018,
+      "reason": "no_height_consistent_subset",
+      "published": false,
+      "b4_fit_rms_m": 0.0754694908554048,
+      "raw_pair_residual_m": 0.066187126898553,
+      "raw_slant_m": [
+        3.44595,
+        5.10211,
+        2.85503,
+        4.91273
+      ],
+      "height_m": 1.08962527795453,
+      "height_selection": [
+        {
+          "tof_stamp_ns": 1791884535517776320,
+          "range_m": 0.9399999976158142,
+          "tof_age_s": 0.04017294,
+          "imu_stamp_ns": 1791884535506776320,
+          "attitude_skew_s": 0.011,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535517776320,
+          "range_m": 0.9399999976158142,
+          "tof_age_s": 0.042467858,
+          "imu_stamp_ns": 1791884535506776320,
+          "attitude_skew_s": 0.011,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535517776320,
+          "range_m": 0.9399999976158142,
+          "tof_age_s": 0.044715778,
+          "imu_stamp_ns": 1791884535506776320,
+          "attitude_skew_s": 0.011,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535517776320,
+          "range_m": 0.9399999976158142,
+          "tof_age_s": 0.046972698,
+          "imu_stamp_ns": 1791884535506776320,
+          "attitude_skew_s": 0.011,
+          "reason": "ok"
+        }
+      ],
+      "b3_best_excluded_anchor": 1,
+      "b3_best_physical_range_rms_m": 0.07233349066871984,
+      "b4_height_check": null,
+      "processing_ms": 24.926155000002836,
+      "queue_age_s": 0.0006341342583482401
+    },
+    {
+      "seq": 17495,
+      "stamp_ns": 1791884535589924055,
+      "reason": "no_height_consistent_subset",
+      "published": false,
+      "b4_fit_rms_m": 0.07662673418668961,
+      "raw_pair_residual_m": 0.05362895605434937,
+      "raw_slant_m": [
+        3.41354,
+        5.11577,
+        2.8619,
+        4.91828
+      ],
+      "height_m": 1.08962527795453,
+      "height_selection": [
+        {
+          "tof_stamp_ns": 1791884535517776320,
+          "range_m": 0.9399999976158142,
+          "tof_age_s": 0.065141988,
+          "imu_stamp_ns": 1791884535506776320,
+          "attitude_skew_s": 0.011,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535517776320,
+          "range_m": 0.9399999976158142,
+          "tof_age_s": 0.067498903,
+          "imu_stamp_ns": 1791884535506776320,
+          "attitude_skew_s": 0.011,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535517776320,
+          "range_m": 0.9399999976158142,
+          "tof_age_s": 0.069819819,
+          "imu_stamp_ns": 1791884535506776320,
+          "attitude_skew_s": 0.011,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535517776320,
+          "range_m": 0.9399999976158142,
+          "tof_age_s": 0.072147735,
+          "imu_stamp_ns": 1791884535506776320,
+          "attitude_skew_s": 0.011,
+          "reason": "ok"
+        }
+      ],
+      "b3_best_excluded_anchor": 1,
+      "b3_best_physical_range_rms_m": 0.07230960774693079,
+      "b4_height_check": null,
+      "processing_ms": 36.03749499995956,
+      "queue_age_s": 0.0016164742478395056
+    },
+    {
+      "seq": 17496,
+      "stamp_ns": 1791884535614796141,
+      "reason": "no_height_consistent_subset",
+      "published": false,
+      "b4_fit_rms_m": 0.07734071515736715,
+      "raw_pair_residual_m": 0.06086694693116025,
+      "raw_slant_m": [
+        3.42463,
+        5.10587,
+        2.84284,
+        4.90953
+      ],
+      "height_m": 1.08962527795453,
+      "height_selection": [
+        {
+          "tof_stamp_ns": 1791884535517776320,
+          "range_m": 0.9399999976158142,
+          "tof_age_s": 0.090154065,
+          "imu_stamp_ns": 1791884535506776320,
+          "attitude_skew_s": 0.011,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535517776320,
+          "range_m": 0.9399999976158142,
+          "tof_age_s": 0.092434984,
+          "imu_stamp_ns": 1791884535506776320,
+          "attitude_skew_s": 0.011,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535517776320,
+          "range_m": 0.9399999976158142,
+          "tof_age_s": 0.094693904,
+          "imu_stamp_ns": 1791884535506776320,
+          "attitude_skew_s": 0.011,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535517776320,
+          "range_m": 0.9399999976158142,
+          "tof_age_s": 0.097019821,
+          "imu_stamp_ns": 1791884535506776320,
+          "attitude_skew_s": 0.011,
+          "reason": "ok"
+        }
+      ],
+      "b3_best_excluded_anchor": 1,
+      "b3_best_physical_range_rms_m": 0.07428198029469887,
+      "b4_height_check": null,
+      "processing_ms": 30.47608100001753,
+      "queue_age_s": 0.004601661445292393
+    },
+    {
+      "seq": 17497,
+      "stamp_ns": 1791884535639705322,
+      "reason": "measured_height_unavailable",
+      "published": false,
+      "b4_fit_rms_m": 0.07793789473745082,
+      "raw_pair_residual_m": 0.05131205216304449,
+      "raw_slant_m": [
+        3.39656,
+        5.11802,
+        2.87352,
+        4.93263
+      ],
+      "height_m": null,
+      "height_selection": [
+        {
+          "tof_stamp_ns": 1791884535618776320,
+          "range_m": 0.9800000190734863,
+          "tof_age_s": 0.014065246,
+          "imu_stamp_ns": 1791884535596776320,
+          "attitude_skew_s": 0.022,
+          "reason": "attitude_stale"
+        },
+        {
+          "tof_stamp_ns": 1791884535618776320,
+          "range_m": 0.9800000190734863,
+          "tof_age_s": 0.016345165,
+          "imu_stamp_ns": 1791884535596776320,
+          "attitude_skew_s": 0.022,
+          "reason": "attitude_stale"
+        },
+        {
+          "tof_stamp_ns": 1791884535618776320,
+          "range_m": 0.9800000190734863,
+          "tof_age_s": 0.018677082,
+          "imu_stamp_ns": 1791884535596776320,
+          "attitude_skew_s": 0.022,
+          "reason": "attitude_stale"
+        },
+        {
+          "tof_stamp_ns": 1791884535618776320,
+          "range_m": 0.9800000190734863,
+          "tof_age_s": 0.020929002,
+          "imu_stamp_ns": 1791884535596776320,
+          "attitude_skew_s": 0.022,
+          "reason": "attitude_stale"
+        }
+      ],
+      "b3_best_excluded_anchor": null,
+      "b3_best_physical_range_rms_m": null,
+      "b4_height_check": null,
+      "processing_ms": 10.381118999987393,
+      "queue_age_s": 0.001156555388945435
+    },
+    {
+      "seq": 17498,
+      "stamp_ns": 1791884535664813996,
+      "reason": "measured_height_unavailable",
+      "published": false,
+      "b4_fit_rms_m": 0.07917092361418474,
+      "raw_pair_residual_m": 0.04407173808695776,
+      "raw_slant_m": [
+        3.33669,
+        5.10187,
+        2.85012,
+        4.92292
+      ],
+      "height_m": null,
+      "height_selection": [
+        {
+          "tof_stamp_ns": 1791884535618776320,
+          "range_m": 0.9800000190734863,
+          "tof_age_s": 0.039090926,
+          "imu_stamp_ns": 1791884535596776320,
+          "attitude_skew_s": 0.022,
+          "reason": "attitude_stale"
+        },
+        {
+          "tof_stamp_ns": 1791884535618776320,
+          "range_m": 0.9800000190734863,
+          "tof_age_s": 0.041534838,
+          "imu_stamp_ns": 1791884535596776320,
+          "attitude_skew_s": 0.022,
+          "reason": "attitude_stale"
+        },
+        {
+          "tof_stamp_ns": 1791884535618776320,
+          "range_m": 0.9800000190734863,
+          "tof_age_s": 0.043780757,
+          "imu_stamp_ns": 1791884535596776320,
+          "attitude_skew_s": 0.022,
+          "reason": "attitude_stale"
+        },
+        {
+          "tof_stamp_ns": 1791884535618776320,
+          "range_m": 0.9800000190734863,
+          "tof_age_s": 0.046037676,
+          "imu_stamp_ns": 1791884535596776320,
+          "attitude_skew_s": 0.022,
+          "reason": "attitude_stale"
+        }
+      ],
+      "b3_best_excluded_anchor": null,
+      "b3_best_physical_range_rms_m": null,
+      "b4_height_check": null,
+      "processing_ms": 6.761820000008356,
+      "queue_age_s": 0.0008384263796870073
+    },
+    {
+      "seq": 17499,
+      "stamp_ns": 1791884535689892538,
+      "reason": "measured_height_unavailable",
+      "published": false,
+      "b4_fit_rms_m": 0.07986654585971638,
+      "raw_pair_residual_m": 0.03657767424637734,
+      "raw_slant_m": [
+        3.33855,
+        5.11873,
+        2.8699,
+        4.92964
+      ],
+      "height_m": null,
+      "height_selection": [
+        {
+          "tof_stamp_ns": 1791884535618776320,
+          "range_m": 0.9800000190734863,
+          "tof_age_s": 0.064169467,
+          "imu_stamp_ns": 1791884535596776320,
+          "attitude_skew_s": 0.022,
+          "reason": "attitude_stale"
+        },
+        {
+          "tof_stamp_ns": 1791884535618776320,
+          "range_m": 0.9800000190734863,
+          "tof_age_s": 0.06660738,
+          "imu_stamp_ns": 1791884535596776320,
+          "attitude_skew_s": 0.022,
+          "reason": "attitude_stale"
+        },
+        {
+          "tof_stamp_ns": 1791884535618776320,
+          "range_m": 0.9800000190734863,
+          "tof_age_s": 0.068861299,
+          "imu_stamp_ns": 1791884535596776320,
+          "attitude_skew_s": 0.022,
+          "reason": "attitude_stale"
+        },
+        {
+          "tof_stamp_ns": 1791884535618776320,
+          "range_m": 0.9800000190734863,
+          "tof_age_s": 0.071116218,
+          "imu_stamp_ns": 1791884535596776320,
+          "attitude_skew_s": 0.022,
+          "reason": "attitude_stale"
+        }
+      ],
+      "b3_best_excluded_anchor": null,
+      "b3_best_physical_range_rms_m": null,
+      "b4_height_check": null,
+      "processing_ms": 9.068743000000268,
+      "queue_age_s": 0.0031034198051429485
+    },
+    {
+      "seq": 17500,
+      "stamp_ns": 1791884535714883946,
+      "reason": "measured_height_unavailable",
+      "published": false,
+      "b4_fit_rms_m": 0.08065564922383223,
+      "raw_pair_residual_m": 0.036858335416668934,
+      "raw_slant_m": [
+        3.30421,
+        5.10197,
+        2.87151,
+        4.93712
+      ],
+      "height_m": null,
+      "height_selection": [
+        {
+          "tof_stamp_ns": 1791884535618776320,
+          "range_m": 0.9800000190734863,
+          "tof_age_s": 0.089163875,
+          "imu_stamp_ns": 1791884535596776320,
+          "attitude_skew_s": 0.022,
+          "reason": "attitude_stale"
+        },
+        {
+          "tof_stamp_ns": 1791884535618776320,
+          "range_m": 0.9800000190734863,
+          "tof_age_s": 0.09152979,
+          "imu_stamp_ns": 1791884535596776320,
+          "attitude_skew_s": 0.022,
+          "reason": "attitude_stale"
+        },
+        {
+          "tof_stamp_ns": 1791884535618776320,
+          "range_m": 0.9800000190734863,
+          "tof_age_s": 0.093775709,
+          "imu_stamp_ns": 1791884535596776320,
+          "attitude_skew_s": 0.022,
+          "reason": "attitude_stale"
+        },
+        {
+          "tof_stamp_ns": 1791884535618776320,
+          "range_m": 0.9800000190734863,
+          "tof_age_s": 0.096107626,
+          "imu_stamp_ns": 1791884535596776320,
+          "attitude_skew_s": 0.022,
+          "reason": "attitude_stale"
+        }
+      ],
+      "b3_best_excluded_anchor": null,
+      "b3_best_physical_range_rms_m": null,
+      "b4_height_check": null,
+      "processing_ms": 9.909815000014532,
+      "queue_age_s": 0.0004586963154906698
+    },
+    {
+      "seq": 17501,
+      "stamp_ns": 1791884535739831570,
+      "reason": "no_height_consistent_subset",
+      "published": false,
+      "b4_fit_rms_m": 0.08168276501485133,
+      "raw_pair_residual_m": 0.04651379485145066,
+      "raw_slant_m": [
+        3.29346,
+        5.10949,
+        2.87681,
+        4.98195
+      ],
+      "height_m": 1.1795901247963025,
+      "height_selection": [
+        {
+          "tof_stamp_ns": 1791884535720777088,
+          "range_m": 1.0299999713897705,
+          "tof_age_s": 0.01212273,
+          "imu_stamp_ns": 1791884535715777088,
+          "attitude_skew_s": 0.005,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535720777088,
+          "range_m": 1.0299999713897705,
+          "tof_age_s": 0.014396649,
+          "imu_stamp_ns": 1791884535715777088,
+          "attitude_skew_s": 0.005,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535720777088,
+          "range_m": 1.0299999713897705,
+          "tof_age_s": 0.016805562,
+          "imu_stamp_ns": 1791884535715777088,
+          "attitude_skew_s": 0.005,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535720777088,
+          "range_m": 1.0299999713897705,
+          "tof_age_s": 0.019054482,
+          "imu_stamp_ns": 1791884535715777088,
+          "attitude_skew_s": 0.005,
+          "reason": "ok"
+        }
+      ],
+      "b3_best_excluded_anchor": 1,
+      "b3_best_physical_range_rms_m": 0.07746105951663937,
+      "b4_height_check": null,
+      "processing_ms": 21.801105000008647,
+      "queue_age_s": 0.003135772211976473
+    },
+    {
+      "seq": 17502,
+      "stamp_ns": 1791884535764891231,
+      "reason": "no_height_consistent_subset",
+      "published": false,
+      "b4_fit_rms_m": 0.08177855369526671,
+      "raw_pair_residual_m": 0.028087723173913722,
+      "raw_slant_m": [
+        3.26726,
+        5.12961,
+        2.8828,
+        4.97229
+      ],
+      "height_m": 1.1795901247963025,
+      "height_selection": [
+        {
+          "tof_stamp_ns": 1791884535720777088,
+          "range_m": 1.0299999713897705,
+          "tof_age_s": 0.037172392,
+          "imu_stamp_ns": 1791884535715777088,
+          "attitude_skew_s": 0.005,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535720777088,
+          "range_m": 1.0299999713897705,
+          "tof_age_s": 0.03946031,
+          "imu_stamp_ns": 1791884535715777088,
+          "attitude_skew_s": 0.005,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535720777088,
+          "range_m": 1.0299999713897705,
+          "tof_age_s": 0.041861224,
+          "imu_stamp_ns": 1791884535715777088,
+          "attitude_skew_s": 0.005,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535720777088,
+          "range_m": 1.0299999713897705,
+          "tof_age_s": 0.044114143,
+          "imu_stamp_ns": 1791884535715777088,
+          "attitude_skew_s": 0.005,
+          "reason": "ok"
+        }
+      ],
+      "b3_best_excluded_anchor": 1,
+      "b3_best_physical_range_rms_m": 0.07818144279652549,
+      "b4_height_check": null,
+      "processing_ms": 21.16931799997701,
+      "queue_age_s": 0.0004184430176223941
+    },
+    {
+      "seq": 17503,
+      "stamp_ns": 1791884535789883423,
+      "reason": "no_height_consistent_subset",
+      "published": false,
+      "b4_fit_rms_m": 0.08179299425407204,
+      "raw_pair_residual_m": 0.02665451616666783,
+      "raw_slant_m": [
+        3.251,
+        5.11763,
+        2.90613,
+        4.9802
+      ],
+      "height_m": 1.1795901247963025,
+      "height_selection": [
+        {
+          "tof_stamp_ns": 1791884535720777088,
+          "range_m": 1.0299999713897705,
+          "tof_age_s": 0.062172583,
+          "imu_stamp_ns": 1791884535715777088,
+          "attitude_skew_s": 0.005,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535720777088,
+          "range_m": 1.0299999713897705,
+          "tof_age_s": 0.064454501,
+          "imu_stamp_ns": 1791884535715777088,
+          "attitude_skew_s": 0.005,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535720777088,
+          "range_m": 1.0299999713897705,
+          "tof_age_s": 0.066776418,
+          "imu_stamp_ns": 1791884535715777088,
+          "attitude_skew_s": 0.005,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535720777088,
+          "range_m": 1.0299999713897705,
+          "tof_age_s": 0.069106335,
+          "imu_stamp_ns": 1791884535715777088,
+          "attitude_skew_s": 0.005,
+          "reason": "ok"
+        }
+      ],
+      "b3_best_excluded_anchor": 1,
+      "b3_best_physical_range_rms_m": 0.07880467761565897,
+      "b4_height_check": null,
+      "processing_ms": 24.161564999985785,
+      "queue_age_s": 0.00214492727684501
+    },
+    {
+      "seq": 17504,
+      "stamp_ns": 1791884535814833890,
+      "reason": "no_height_consistent_subset",
+      "published": false,
+      "b4_fit_rms_m": 0.08139014379864386,
+      "raw_pair_residual_m": 0.02769380948913219,
+      "raw_slant_m": [
+        3.25295,
+        5.11393,
+        2.92291,
+        4.98782
+      ],
+      "height_m": 1.1795901247963025,
+      "height_selection": [
+        {
+          "tof_stamp_ns": 1791884535720777088,
+          "range_m": 1.0299999713897705,
+          "tof_age_s": 0.087188026,
+          "imu_stamp_ns": 1791884535715777088,
+          "attitude_skew_s": 0.005,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535720777088,
+          "range_m": 1.0299999713897705,
+          "tof_age_s": 0.089473951,
+          "imu_stamp_ns": 1791884535715777088,
+          "attitude_skew_s": 0.005,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535720777088,
+          "range_m": 1.0299999713897705,
+          "tof_age_s": 0.091722878,
+          "imu_stamp_ns": 1791884535715777088,
+          "attitude_skew_s": 0.005,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535720777088,
+          "range_m": 1.0299999713897705,
+          "tof_age_s": 0.094056802,
+          "imu_stamp_ns": 1791884535715777088,
+          "attitude_skew_s": 0.005,
+          "reason": "ok"
+        }
+      ],
+      "b3_best_excluded_anchor": 1,
+      "b3_best_physical_range_rms_m": 0.07887059075994579,
+      "b4_height_check": null,
+      "processing_ms": 22.959751000030337,
+      "queue_age_s": 0.0005560089358027653
+    },
+    {
+      "seq": 17505,
+      "stamp_ns": 1791884535839752995,
+      "reason": "no_height_consistent_subset",
+      "published": false,
+      "b4_fit_rms_m": 0.08132733112240192,
+      "raw_pair_residual_m": 0.022905974452900327,
+      "raw_slant_m": [
+        3.2094,
+        5.1385,
+        2.9284,
+        5.03107
+      ],
+      "height_m": 1.2296414568732486,
+      "height_selection": [
+        {
+          "tof_stamp_ns": 1791884535822779392,
+          "range_m": 1.0800000429153442,
+          "tof_age_s": 0.010121851,
+          "imu_stamp_ns": 1791884535805779392,
+          "attitude_skew_s": 0.017,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535822779392,
+          "range_m": 1.0800000429153442,
+          "tof_age_s": 0.012396769,
+          "imu_stamp_ns": 1791884535805779392,
+          "attitude_skew_s": 0.017,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535822779392,
+          "range_m": 1.0800000429153442,
+          "tof_age_s": 0.014725684,
+          "imu_stamp_ns": 1791884535805779392,
+          "attitude_skew_s": 0.017,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535822779392,
+          "range_m": 1.0800000429153442,
+          "tof_age_s": 0.016973603,
+          "imu_stamp_ns": 1791884535805779392,
+          "attitude_skew_s": 0.017,
+          "reason": "ok"
+        }
+      ],
+      "b3_best_excluded_anchor": 1,
+      "b3_best_physical_range_rms_m": 0.07892799284877311,
+      "b4_height_check": null,
+      "processing_ms": 21.382506000009016,
+      "queue_age_s": 0.0006881833264742454
+    },
+    {
+      "seq": 17506,
+      "stamp_ns": 1791884535864736447,
+      "reason": "no_height_consistent_subset",
+      "published": false,
+      "b4_fit_rms_m": 0.08036587552365339,
+      "raw_pair_residual_m": 0.020465666742754192,
+      "raw_slant_m": [
+        3.21086,
+        5.13048,
+        2.91436,
+        5.00705
+      ],
+      "height_m": 1.2296414568732486,
+      "height_selection": [
+        {
+          "tof_stamp_ns": 1791884535822779392,
+          "range_m": 1.0800000429153442,
+          "tof_age_s": 0.035160305,
+          "imu_stamp_ns": 1791884535805779392,
+          "attitude_skew_s": 0.017,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535822779392,
+          "range_m": 1.0800000429153442,
+          "tof_age_s": 0.037448221,
+          "imu_stamp_ns": 1791884535805779392,
+          "attitude_skew_s": 0.017,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535822779392,
+          "range_m": 1.0800000429153442,
+          "tof_age_s": 0.039702138,
+          "imu_stamp_ns": 1791884535805779392,
+          "attitude_skew_s": 0.017,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535822779392,
+          "range_m": 1.0800000429153442,
+          "tof_age_s": 0.041957055,
+          "imu_stamp_ns": 1791884535805779392,
+          "attitude_skew_s": 0.017,
+          "reason": "ok"
+        }
+      ],
+      "b3_best_excluded_anchor": 1,
+      "b3_best_physical_range_rms_m": 0.07943052356856377,
+      "b4_height_check": null,
+      "processing_ms": 22.501503000000866,
+      "queue_age_s": 0.0006588225125483405
+    },
+    {
+      "seq": 17507,
+      "stamp_ns": 1791884535889854157,
+      "reason": "no_height_consistent_subset",
+      "published": false,
+      "b4_fit_rms_m": 0.07698120006273915,
+      "raw_pair_residual_m": 0.0034404193478272493,
+      "raw_slant_m": [
+        3.1743,
+        5.16462,
+        2.91346,
+        5.018
+      ],
+      "height_m": 1.2296414568732486,
+      "height_selection": [
+        {
+          "tof_stamp_ns": 1791884535822779392,
+          "range_m": 1.0800000429153442,
+          "tof_age_s": 0.060060032,
+          "imu_stamp_ns": 1791884535805779392,
+          "attitude_skew_s": 0.017,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535822779392,
+          "range_m": 1.0800000429153442,
+          "tof_age_s": 0.062410942,
+          "imu_stamp_ns": 1791884535805779392,
+          "attitude_skew_s": 0.017,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535822779392,
+          "range_m": 1.0800000429153442,
+          "tof_age_s": 0.064746853,
+          "imu_stamp_ns": 1791884535805779392,
+          "attitude_skew_s": 0.017,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535822779392,
+          "range_m": 1.0800000429153442,
+          "tof_age_s": 0.067074765,
+          "imu_stamp_ns": 1791884535805779392,
+          "attitude_skew_s": 0.017,
+          "reason": "ok"
+        }
+      ],
+      "b3_best_excluded_anchor": 1,
+      "b3_best_physical_range_rms_m": 0.07944892843340572,
+      "b4_height_check": null,
+      "processing_ms": 22.43881300000794,
+      "queue_age_s": 0.0006591033462086671
+    },
+    {
+      "seq": 17508,
+      "stamp_ns": 1791884535914854342,
+      "reason": "no_height_consistent_subset",
+      "published": false,
+      "b4_fit_rms_m": 0.0726975892038458,
+      "raw_pair_residual_m": 0.0026419961739143146,
+      "raw_slant_m": [
+        3.20142,
+        5.19222,
+        2.9161,
+        5.02858
+      ],
+      "height_m": 1.2296414568732486,
+      "height_selection": [
+        {
+          "tof_stamp_ns": 1791884535822779392,
+          "range_m": 1.0800000429153442,
+          "tof_age_s": 0.085131214,
+          "imu_stamp_ns": 1791884535805779392,
+          "attitude_skew_s": 0.017,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535822779392,
+          "range_m": 1.0800000429153442,
+          "tof_age_s": 0.087416127,
+          "imu_stamp_ns": 1791884535805779392,
+          "attitude_skew_s": 0.017,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535822779392,
+          "range_m": 1.0800000429153442,
+          "tof_age_s": 0.089742038,
+          "imu_stamp_ns": 1791884535805779392,
+          "attitude_skew_s": 0.017,
+          "reason": "ok"
+        },
+        {
+          "tof_stamp_ns": 1791884535822779392,
+          "range_m": 1.0800000429153442,
+          "tof_age_s": 0.09207495,
+          "imu_stamp_ns": 1791884535805779392,
+          "attitude_skew_s": 0.017,
+          "reason": "ok"
+        }
+      ],
+      "b3_best_excluded_anchor": 1,
+      "b3_best_physical_range_rms_m": 0.07900101747426962,
+      "b4_height_check": null,
+      "processing_ms": 23.260872999969706,
+      "queue_age_s": 0.0009402797448387901
+    },
+    {
+      "seq": 17509,
+      "stamp_ns": 1791884535939881887,
+      "reason": "measured_height_unavailable",
+      "published": false,
+      "b4_fit_rms_m": 0.0674750401358791,
+      "raw_pair_residual_m": 0.009337463286230622,
+      "raw_slant_m": [
+        3.14568,
+        5.19818,
+        2.94004,
+        5.05093
+      ],
+      "height_m": null,
+      "height_selection": [
+        {
+          "tof_stamp_ns": 1791884535822779392,
+          "range_m": 1.0800000429153442,
+          "tof_age_s": 0.11015376,
+          "reason": "tof_stale"
+        },
+        {
+          "tof_stamp_ns": 1791884535822779392,
+          "range_m": 1.0800000429153442,
+          "tof_age_s": 0.11251967,
+          "reason": "tof_stale"
+        },
+        {
+          "tof_stamp_ns": 1791884535822779392,
+          "range_m": 1.0800000429153442,
+          "tof_age_s": 0.114848581,
+          "reason": "tof_stale"
+        },
+        {
+          "tof_stamp_ns": 1791884535822779392,
+          "range_m": 1.0800000429153442,
+          "tof_age_s": 0.117102495,
+          "reason": "tof_stale"
+        }
+      ],
+      "b3_best_excluded_anchor": null,
+      "b3_best_physical_range_rms_m": null,
+      "b4_height_check": null,
+      "processing_ms": 9.570701999962239,
+      "queue_age_s": 0.0008043688654879588
+    },
+    {
+      "seq": 17510,
+      "stamp_ns": 1791884535964817580,
+      "reason": "measured_height_unavailable",
+      "published": false,
+      "b4_fit_rms_m": 0.0663882323922516,
+      "raw_pair_residual_m": 0.008409685471013232,
+      "raw_slant_m": [
+        3.14089,
+        5.19126,
+        2.95626,
+        5.05879
+      ],
+      "height_m": null,
+      "height_selection": [
+        {
+          "tof_stamp_ns": 1791884535822779392,
+          "range_m": 1.0800000429153442,
+          "tof_age_s": 0.135094457,
+          "reason": "tof_stale"
+        },
+        {
+          "tof_stamp_ns": 1791884535822779392,
+          "range_m": 1.0800000429153442,
+          "tof_age_s": 0.137381368,
+          "reason": "tof_stale"
+        },
+        {
+          "tof_stamp_ns": 1791884535822779392,
+          "range_m": 1.0800000429153442,
+          "tof_age_s": 0.139709278,
+          "reason": "tof_stale"
+        },
+        {
+          "tof_stamp_ns": 1791884535822779392,
+          "range_m": 1.0800000429153442,
+          "tof_age_s": 0.142038188,
+          "reason": "tof_stale"
+        }
+      ],
+      "b3_best_excluded_anchor": null,
+      "b3_best_physical_range_rms_m": null,
+      "b4_height_check": null,
+      "processing_ms": 7.172099000001708,
+      "queue_age_s": 0.0006588929264239596
+    }
+  ],
+  "limitations": [
+    "Collector receipt is not node callback execution time.",
+    "Guard replay checks source timing; recorded counters independently corroborate it.",
+    "Per-anchor ranging discontinuity does not identify its RF or physical cause.",
+    "Range consistency and publication rate do not establish position accuracy."
+  ],
+  "history_admission_probe": {
+    "baseline": {
+      "published": 19,
+      "max_source_gap_s": 0.699959277
+    },
+    "baseline_b4_max_abs_rms_difference_m": 4.163336342344337e-16,
+    "quarantined": {
+      "published": 30,
+      "max_source_gap_s": 0.424912472
+    },
+    "scope": "Collector-order offline probe; exact B4 comparison only. Height callback ordering can differ from the live decisions."
+  }
+}

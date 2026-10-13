@@ -1,0 +1,84 @@
+{
+  "source_receipt": {
+    "type": "source_receipt",
+    "source": "/home/arialhanho/ROS2-review-20261008-codex/.review/fc-owned-runtime-20261013/sessions/20261013-1837-plus-y/runtime/cpp-executor-events.jsonl",
+    "sha256": "925fef8b729c65a2ec17010e602eee089b440b1af4c520c820904dbff20862f4",
+    "counts": {
+      "runtime_manifest": 1,
+      "transition": 6,
+      "flight_sample": 14508,
+      "command_record_persisted": 3,
+      "command_dispatch_attempt": 3,
+      "command_ack": 3,
+      "command_before_dispatch": 1
+    },
+    "selected": 94
+  },
+  "filtered_input_sha256": "2443800effd3c20a4bdb1fe1805f4962860cae931a515397d70131e59553b58a",
+  "transitions": [
+    {
+      "sample_monotonic_ns": 407491540334,
+      "sample_wall_ns": 1791884528385031424,
+      "state": "ARMING",
+      "phase": "ARMING",
+      "reason": "local_mode_confirmed",
+      "failure": null,
+      "max_sender_gap_s": 0.05116750300004469,
+      "sender_target_enu": {
+        "x": 2.9821534156799316,
+        "y": 1.5319668054580686,
+        "yaw_rad": -0.24567929417250717,
+        "z": 0.07770538330078125
+      },
+      "setpoints_sent": 33
+    },
+    {
+      "sample_monotonic_ns": 408491165741,
+      "sample_wall_ns": 1791884529384680960,
+      "state": "TAKING_OFF",
+      "phase": "TAKING_OFF",
+      "reason": "px4_local_height_goal",
+      "failure": null,
+      "max_sender_gap_s": 0.05451207199996588,
+      "sender_target_enu": {
+        "x": 2.9821534156799316,
+        "y": 1.5319668054580686,
+        "yaw_rad": -0.24567929417250717,
+        "z": 1.7777053833007812
+      },
+      "setpoints_sent": 53
+    },
+    {
+      "sample_monotonic_ns": 415491148339,
+      "sample_wall_ns": 1791884536384728576,
+      "state": "LANDING",
+      "phase": "LANDING",
+      "reason": "px4_local_frame_or_pose_jump",
+      "failure": "px4_local_frame_or_pose_jump",
+      "max_sender_gap_s": 0.05451207199996588,
+      "sender_target_enu": {
+        "x": 2.9821534156799316,
+        "y": 1.5319668054580686,
+        "yaw_rad": -0.24567929417250717,
+        "z": 1.7777053833007812
+      },
+      "setpoints_sent": 193
+    },
+    {
+      "sample_monotonic_ns": 415891220567,
+      "sample_wall_ns": 1791884536784358400,
+      "state": "PILOT_OVERRIDE",
+      "phase": "PILOT_OVERRIDE",
+      "reason": "manual_or_px4_failsafe_has_priority",
+      "failure": "px4_local_frame_or_pose_jump",
+      "max_sender_gap_s": 0.05451207199996588,
+      "sender_target_enu": {
+        "x": 2.9821534156799316,
+        "y": 1.5319668054580686,
+        "yaw_rad": -0.24567929417250717,
+        "z": 1.7777053833007812
+      },
+      "setpoints_sent": 201
+    }
+  ]
+}
