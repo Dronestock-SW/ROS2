@@ -3,6 +3,7 @@
 조종기·앵커·현장 조종자가 준비된 뒤 읽는다.
 
 통합 브랜치는 `이번에-상원-한거-통합-브랜치`다.
+[POSITION 5초 뒤 시작점 확정](../report/position_origin_after_hold_20261013.md)이 최신 기준이다.
 [웹·기록 지연 수정](../report/web_record_latency_20261013.md)을 먼저 읽는다.
 [C++ 분리 이륙 검증](../report/cpp_position_handoff_20261013.md)을 먼저 읽는다.
 [초기 FC·기록 준비](../report/jetson_field_preparation_20261013.md)도 보존했다.
@@ -35,9 +36,10 @@ mkdir -p "$FLIGHT_RUN"
 ```
 
 소스·실행 파일 신원은 slot의 배포 기록과 대조한다.
-`latency-release.json`의 소스 커밋은 `82e3bf1`이다.
-실행기 SHA256도 [배포 대조 결과](../report/evidence/web_record_latency_20261013/deployment.json)와 확인한다.
-이후 문서·JS 시험 전용 수정은 실행기 변경이 없다.
+`position-origin-release.json`의 소스 커밋과 해시를 확인한다.
+최신 대조 결과는 [POSITION 변경 기록](../report/position_origin_after_hold_20261013.md)에 있다.
+이전 `latency-release.json`의 `82e3bf1`은 과거 실행본이다.
+두 배포 기록을 같은 실행 파일의 신원으로 쓰지 않는다.
 센서 서비스는 별도 체크아웃에서 계속 실행 중이다.
 해당 체크아웃의 변경을 이 실행본으로 덮어쓰지 않는다.
 오늘은 LiDAR 보완을 활성화하지 않는다.
@@ -62,6 +64,9 @@ RC가 실제 채널값을 내는지 확인한다.
 UWB가 heartbeat 외에 거리·XY를 내는지 확인한다.
 ToF와 배터리도 실제 값이어야 한다.
 FC의 `cs_ev_pos`와 `cs_opt_flow`를 각각 확인한다.
+이 단계는 관측 송신 전의 기준 상태를 기록한다.
+송신기 시작 전에는 EV 융합이 꺼져 있을 수 있다.
+5단계 실행 뒤 같은 조회를 반복해 실제 융합을 확인한다.
 설정값 1이나 `xy_valid`만으로 융합을 확정하지 않는다.
 `cs_valid_fake_pos`만 켜진 상태는 위치 유지 증거가 아니다.
 logger 상태와 원본 수집 기록의 파일 증가를 확인한다.
@@ -135,6 +140,24 @@ python3 "$FLIGHT_SOURCE/src/sangwon_AI/ops/final_field_session.py" "${FLIGHT_ARG
 기존 실행기나 원장을 지워 강제로 시작하지 않는다.
 비행 중 실행기 재시작은 현재 미션의 소유권을 잃게 한다.
 
+관측 송신 시작 뒤에도 DISARM을 유지한다.
+아래 조회는 ARM·모드·파라미터를 변경하지 않는다.
+
+```bash
+python3 "$FLIGHT_SOURCE/src/sangwon_AI/ops/px4_sensor_readback.py" \
+  --profile sensors --ros-domain 2 --output "$FLIGHT_RUN/fc-after-observation.json"
+```
+
+새 `vehicle_visual_odometry`와 `cs_ev_pos`를 확인한다.
+거리계 실제 값과 광류 품질·융합 상태를 따로 확인한다.
+거리계 0m나 범위 밖 값을 정상 높이로 해석하지 않는다.
+지상 광류 융합 false만으로 센서 고장을 단정하지 않는다.
+원본 수신·거리·품질과 FC가 사용한 상태를 구분한다.
+방위 유효와 FC 사전검사 실패 이유도 확인한다.
+웹의 차단 이유가 해소되기 전 이륙을 요청하지 않는다.
+관측 공백·좌표 반전은 임계값 완화로 덮지 않는다.
+이유: 실제 피드백이 잘못되면 목표 유지도 보장되지 않는다.
+
 ## 6. 웹에서 시험 순서 선택
 
 노트북에서 http://127.0.0.1:8001 을 연다.
@@ -147,10 +170,13 @@ python3 "$FLIGHT_SOURCE/src/sangwon_AI/ops/final_field_session.py" "${FLIGHT_ARG
 고정 출발 XY에서 1.7m까지 OFFBOARD로 오른다.
 높이·XY·속도·UWB가 3초간 안정돼야 전환한다.
 실제 FC `POSCTL` 확인 뒤 목표 송신을 멈춘다.
-POSITION에서 다시 3초간 안정 상태를 확인한다.
+POSITION에서 연속 5초간 안정 상태를 확인한다.
 조종기 스틱은 중립을 유지한다.
+5초가 끝난 순간의 FC 추정 XY를 한 번 저장한다.
+웹의 `mission_start_xy_m`이 그 미션 시작점이다.
+`home_xy_m`은 원래 이륙 XY로 유지한다.
 이때부터 웹의 별도 미션 START를 누를 수 있다.
-START는 원래 출발 목표를 1.2초 이상 송신한다.
+START는 확정한 미션 시작점을 1.2초 이상 송신한다.
 OFFBOARD 재진입을 확인하고 선택 미션을 수행한다.
 공중에서 ARM을 다시 요청하지 않는다.
 요청 ACK만으로 FC 모드가 바뀌었다고 보지 않는다.
@@ -161,13 +187,17 @@ OFFBOARD 재진입을 확인하고 선택 미션을 수행한다.
 
 | 순서 | 웹 미션 | 성공 확인 |
 |---|---|---|
-| 1 | 제자리 호버 | 이륙 → POSITION → 별도 START → 연속 10초 → 착륙 |
-| 2 | +X 1m 왕복 | 목표 도착 → 원래 출발점 → 착륙 |
-| 3 | +Y 1m 왕복 | 목표 도착 → 원래 출발점 → 착륙 |
+| 1 | 제자리 호버 | 이륙 → POSITION 5초 → 별도 START → 연속 10초 → 원래 이륙점 → 착륙 |
+| 2 | +X 1m 왕복 | 미션 시작점 기준 +X → 원래 이륙점 → 착륙 |
+| 3 | +Y 1m 왕복 | 미션 시작점 기준 +Y → 원래 이륙점 → 착륙 |
 | 4 | X·Y 경유 | 두 경유점 → 역순 복귀 → 착륙 |
 
 상승 제한은 0.5m/s, 수평 속도는 0.25m/s다.
-밀려간 위치를 새 출발점으로 바꾸지 않는다.
+이륙 목표와 복귀점은 원래 이륙 XY다.
+미션 시작점만 POSITION 5초 뒤 한 번 확정한다.
+확정 뒤 움직임에 따라 시작점을 갱신하지 않는다.
+호버 작업의 이동 길이는 0m다.
+이륙점과 미션 시작점이 다르면 복귀 이동은 생긴다.
 OFFBOARD 관측 공백에는 승인된 목표를 유지한다.
 POSITION 대기에서는 FC의 위치 유지를 계속한다.
 관측 공백이 있으면 START를 허용하지 않는다.
@@ -177,6 +207,8 @@ POSITION 대기에서는 FC의 위치 유지를 계속한다.
 공백 시간을 도착·호버 완료 시간으로 세지 않는다.
 실제 FC 이상·조종자 전환은 기존 중단 정책을 따른다.
 END는 명령 접수가 아니라 착륙·DISARM 확인 뒤다.
+FC 연결·추정 무효·조종자 인계와 전체 시간 제한은 유지한다.
+관측 공백 처리 변경이 모든 중단 조건의 제거는 아니다.
 
 각 실행의 원본 UWB/B_TF·C++ 기록·ULog·영상을 묶는다.
 시뮬레이션에서 통과한 결과로 실제 밀림 해결을 단정하지 않는다.

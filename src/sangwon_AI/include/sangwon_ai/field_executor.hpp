@@ -30,6 +30,8 @@ class FieldExecutor {
     Json out={{"phase",phase},{"state",phase},{"reason",reason},{"failure",failure.empty()?Json():Json(failure)},
       {"executor_backend","sangwon_cpp_executor"},{"executor_fc_transport",true},{"mission_ai",{{"backend","sangwon_cpp_bt"},{"connected",true},{"prepared",bool(ai_)},{"fc_transport",false}}},
       {"home_xy_m",ai_?xy_json(home_):Json()}, {"goal_xy_m",streaming()?xy_json(target_):Json()},
+      {"mission_start_xy_m",ai_&&(!separate()||mission_start_captured_)?xy_json(mission_start_):Json()},
+      {"mission_start_capture",mission_start_capture_},
       {"command_record_pending",pending()&&waiting_journal_},{"height_reference_m",ai_?Json(height_):Json()}, {"control_ack",ack_},
       {"flight_control_enabled",flag(cfg_,"execute")&&bool(ai_)&&!terminal()},
       {"bridge_observation_timeout_s",cfg_.value("bridge_observation_timeout_s",.35)},{"landing_verified",landing_verified_},{"completed_waypoints",decision.value("completed_waypoints",0)},
@@ -40,7 +42,8 @@ class FieldExecutor {
       {"horizontal_observation",decision.value("lidar_support",Json::object())},{"cpp_decision",decision}};
     if(separate())out["native_takeoff"]={{"can_takeoff",can_takeoff_&&!terminal()},{"can_start",can_start_&&!terminal()},
       {"can_land",bool(ai_)&&!terminal()&&last_armed_},{"blocker",hold_blocker_},{"home_xy_m",ai_?xy_json(home_):Json()},
-      {"mission_started",mission_started_},{"takeoff_request_id",takeoff_request_id_}};
+      {"mission_started",mission_started_},{"takeoff_request_id",takeoff_request_id_},
+      {"position_hold_required_s",5.},{"position_hold_elapsed_s",hold_elapsed_}};
     for(const auto* key:{"mission_db_id","mission_code","route_revision"})if(assignment_.contains(key))out[key]=assignment_.at(key);
     return out;
   }
@@ -61,6 +64,7 @@ class FieldExecutor {
     if(terminal())return;
     last_armed_=flag(s,"armed");can_takeoff_=false;can_start_=false;
     const double dt=last_>=0?now-last_:.05; last_=now;
+    if(dt>.2&&phase=="HOLD_READY"){hold_since_=-1;if(!mission_start_captured_)hold_candidate_.reset();}
     if(ai_) {
       // Pilot selections win over every decision, timeout and recovery action.
       if(flag(s,"connected") && age(s,"state_age_s",cfg_.value("state_timeout_s",2.5))) {
@@ -86,7 +90,7 @@ class FieldExecutor {
       if(!flag(cfg_,"execute")) { reason="execution_disabled"; return; }
       require(wall>=request.at("requested_s").get<double>() && wall-request.at("requested_s").get<double>()<=cfg_.value("request_ttl_s",30.),"CONTROL_REQUEST_EXPIRED");
       require(flag(s,"request_persisted"),"REQUEST_PERSISTENCE_REQUIRED");
-      home_=target_=point(s.at("xy")); ground_height_=height_=number(s.at("altitude_enu_m"),-100,100); yaw_=number(s.at("yaw_deg"),-360,360);
+      home_=mission_start_=target_=point(s.at("xy")); ground_height_=height_=number(s.at("altitude_enu_m"),-100,100); yaw_=number(s.at("yaw_deg"),-360,360);
       execution_=request.at("request_id").get<std::string>();
       assignment_=request;mission_started_=!separate();
       if(separate()){takeoff_request_id_=execution_;assignment_["waypoints"]=Json::array({Json{{"xy",xy_json(home_)},{"dwell_s",10.},{"type","hover"}}});}
@@ -141,7 +145,7 @@ class FieldExecutor {
     } else if(separate()&&!mission_started_) {
       tick_takeoff_hold(s,now,request,wall);
     } else if(phase=="RESUME_PREPARING") {
-      // Warm up the ORIGINAL launch reference. Never capture drift as home.
+      // Warm up the once-captured POSITION origin. Return home is unchanged.
       if(!pending()&&!accepted_&&now-entered_>=1.2&&resume_gate(s)=="ready")issue("offboard_mode",now);
       else if(!pending()&&accepted_&&mode_confirmed(s,"OFFBOARD",now))enter("HANDOFF","airborne_offboard_confirmed_no_rearm",now);
       else if(!pending()&&!accepted_&&resume_gate(s)!="ready")reason="offboard_reentry_wait_for_fresh_inputs";
@@ -153,14 +157,16 @@ class FieldExecutor {
   }
  private:
   Json cfg_,ack_,assignment_; std::unique_ptr<MissionAI> ai_; std::string execution_,plan_;
-  Vec3 home_{},target_{},ground_{}; std::optional<Vec3> previous_pose_;
+  Vec3 home_{},mission_start_{},target_{},ground_{}; std::optional<Vec3> previous_pose_,hold_candidate_;
   double height_{},ground_height_{},yaw_{},ground_since_{-1},previous_height_{},previous_pose_source_{},last_{-1},started_{},entered_{},pending_at_{},confirmed_{-1};
   unsigned counter_{},pending_token_{}; bool accepted_{},landing_verified_{},waiting_journal_{};
   bool mission_started_{},can_takeoff_{},can_start_{},last_armed_{};
+  bool mission_start_captured_{};double hold_elapsed_{};Json mission_start_capture_;
   double hold_since_{-1};std::string takeoff_request_id_,hold_blocker_="waiting_for_ground_inputs";
   bool separate()const{return cfg_.value("start_mode",std::string("ground_takeoff"))=="takeoff_hold";}
   void prepare_ai(const Json& request) {
     Json prep={{"execution_id",execution_},{"settings",cfg_},{"home_xy",xy_json(home_)},
+      {"start_xy",xy_json(mission_start_)},
       {"height_reference_m",ground_height_+cfg_.at("expected_mis_takeoff_alt_m").get<double>()},
       {"ceiling_height_m",request.at("ceiling_height_m")},{"waypoints",request.at("waypoints")}};
     ai_=std::make_unique<MissionAI>(prep);plan_=ai_->prepared().at("plan_ref").get<std::string>();
@@ -169,8 +175,9 @@ class FieldExecutor {
     return confirmed_>=0&&age(s,"state_age_s",cfg_.value("state_timeout_s",2.5))&&s.at("mode")==mode&&now-s.at("state_age_s").get<double>()>=confirmed_;
   }
   bool position_stable(const Json& s)const {
+    const auto reference=mission_start_captured_?mission_start_:(phase=="HOLD_READY"&&hold_candidate_?*hold_candidate_:home_);
     return !flag(observation_status(s,cfg_.value("bridge_observation_timeout_s",.35)),"progress_held")&&flag(s,"armed")&&s.value("landed",0)==2
-      &&age(s,"landed_age_s",cfg_.value("state_timeout_s",2.5))&&xy(point(s.at("xy"))-home_)<=.15&&xy(point(s.at("uwb_xy"))-home_)<=.25
+      &&age(s,"landed_age_s",cfg_.value("state_timeout_s",2.5))&&xy(point(s.at("xy"))-reference)<=.15&&xy(point(s.at("uwb_xy"))-reference)<=.25
       &&xy(point(s.at("velocity_xy")))<=.1&&std::abs(s.at("vertical_speed_m_s").get<double>())<=.1&&std::abs(s.at("altitude_enu_m").get<double>()-height_)<=.15;
   }
   std::string stability_gate(const Json& s)const {
@@ -187,9 +194,11 @@ class FieldExecutor {
   }
   void tick_takeoff_hold(const Json& s,double now,const Json& request,double wall) {
     if(!flag(s,"armed")){finish("UNCONFIRMED","unexpected_disarm",now);return;}
+    if(phase=="HOLD_READY"&&!mission_start_captured_&&!hold_candidate_&&age(s,"pose_age_s",cfg_.value("pose_timeout_s",.2)))hold_candidate_=point(s.at("xy"));
     hold_blocker_=stability_gate(s);
-    if(hold_blocker_=="ready"){if(hold_since_<0)hold_since_=now;}else hold_since_=-1;
-    const bool stable=hold_since_>=0&&now-hold_since_>=3;
+    if(hold_blocker_=="ready"){if(hold_since_<0)hold_since_=now;}else{hold_since_=-1;if(!mission_start_captured_)hold_candidate_.reset();}
+    hold_elapsed_=hold_since_>=0?now-hold_since_:0.;
+    const bool stable=hold_since_>=0&&hold_elapsed_>=(phase=="HOLD_READY"?5.:3.);
     if(phase=="TAKING_OFF") {
       if(stable){enter("POSITION_HANDOFF","height_and_xy_stable_request_position",now);issue("position_mode",now);hold_since_=-1;}
       else if(flag(observation_status(s,cfg_.value("bridge_observation_timeout_s",.35)),"progress_held")){entered_=now;reason="takeoff_wait_for_observation";}
@@ -198,14 +207,22 @@ class FieldExecutor {
       if(!pending()&&accepted_&&mode_confirmed(s,"POSCTL",now)){enter("HOLD_READY","position_confirmed_wait_for_web_start",now);hold_since_=-1;}
       else if(!waiting_journal_&&now-entered_>6)abort("position_mode_not_confirmed",s,now);
     } else if(phase=="HOLD_READY") {
+      if(stable&&!mission_start_captured_){
+        mission_start_=target_=point(s.at("xy"));mission_start_captured_=true;
+        mission_start_capture_={{"method","position_five_seconds_then_fc_xy"},{"captured_monotonic_s",now},
+          {"position_hold_s",hold_elapsed_},{"xy_m",xy_json(mission_start_)},{"return_home_xy_m",xy_json(home_)},
+          {"uwb_xy_m",s.at("uwb_xy")},{"pose_age_s",s.at("pose_age_s")},{"uwb_age_s",s.at("uwb_age_s")},
+          {"source_stamp_ns",s.value("source_stamp_ns",Json())}};
+      }
       hold_blocker_=resume_gate(s);can_start_=stable&&hold_blocker_=="ready";
+      if(!mission_start_captured_&&hold_blocker_=="ready")hold_blocker_="position_five_second_capture_pending";
       reason=can_start_?"position_stable_wait_for_web_start":"position_wait_for_stability_or_observation";
       if(request.is_null()||request.value("action",std::string())!="start"||!can_start_)return;
       require(flag(s,"request_persisted")&&wall>=request.at("requested_s").get<double>()&&wall-request.at("requested_s").get<double>()<=cfg_.value("request_ttl_s",30.),"CONTROL_REQUEST_EXPIRED_OR_UNRECORDED");
       require(request.at("request_id")!=takeoff_request_id_,"NEW_MISSION_REQUEST_REQUIRED");
       execution_=request.at("request_id").get<std::string>();assignment_=request;prepare_ai(request);mission_started_=true;
       ack_={{"action","start"},{"request_id",execution_},{"requested_at",request.at("requested_at")}};
-      can_start_=false;enter("RESUME_PREPARING","web_start_warmup_original_launch_reference",now);
+      can_start_=false;enter("RESUME_PREPARING","web_start_warmup_captured_position_reference",now);
     }
   }
   void enter(std::string p,std::string why,double now) { phase=std::move(p);reason=std::move(why);entered_=now;accepted_=false;confirmed_=-1; }

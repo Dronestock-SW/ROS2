@@ -78,14 +78,16 @@ class MissionAI {
     settle_ = number(cfg.at("takeoff_settle_s"), .001, 30);
     leg_timeout_ = number(cfg.at("leg_timeout_s"), .001, 120);
     takeoff_timeout_ = number(cfg.at("takeoff_timeout_s"), .001, 120);
-    home_ = stream_ = goal_ = point(in.at("home_xy"));
+    home_ = point(in.at("home_xy"));
+    stream_ = goal_ = point(in.value("start_xy",in.at("home_xy")));
     require(inside(home_), "LAUNCH_OUTSIDE_BOUNDS");
+    require(inside(stream_)&&xy(stream_-home_)<=max_leg_+1e-9,"MISSION_START_OUTSIDE_RETURN_LEG");
     height_ = number(in.at("height_reference_m"), -100, 100);
     const double climb = number(cfg.at("expected_mis_takeoff_alt_m"), .1, 10);
     require(number(in.at("ceiling_height_m"), .1, 100) >= climb + .25, "CEILING_CLEARANCE_REQUIRED");
     const auto& tasks = in.at("waypoints");
     require(tasks.is_array() && !tasks.empty() && tasks.size() <= 20, "ONE_TO_TWENTY_TASKS_REQUIRED");
-    Vec3 previous = home_;
+    Vec3 previous = stream_;
     for(const auto& t : tasks) {
       require(t.at("type") == "waypoint" || t.at("type") == "hover", "XY_HOVER_TASKS_ONLY");
       require(!t.contains("z") && (!t.contains("yaw_deg") || t.at("yaw_deg").is_null()), "VERTICAL_OR_YAW_TASK_FORBIDDEN");
@@ -95,6 +97,7 @@ class MissionAI {
       previous = p;
     }
     visited_.push_back(home_);
+    if(xy(stream_-home_)>.001)visited_.push_back(stream_);
     plan_ = "cpp-bt-local-xy:" + digest(in.dump());
     factory_.registerSimpleCondition("ShouldYield", [this](BT::TreeNode&) {
       return yielding_ ? BT::NodeStatus::SUCCESS : BT::NodeStatus::FAILURE;

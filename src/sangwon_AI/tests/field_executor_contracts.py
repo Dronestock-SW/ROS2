@@ -211,7 +211,7 @@ class Contracts(unittest.TestCase):
 
     def hold_ready(self,p):
         p.until('HOLD_READY')
-        for _ in range(80):
+        for _ in range(130):
             p.tick()
             if p.out['native_takeoff']['can_start']:return
         self.fail(p.out)
@@ -232,6 +232,37 @@ class Contracts(unittest.TestCase):
         for _ in range(100):p.tick()
         self.assertEqual(p.out['phase'],'IDLE');self.assertFalse(p.commands)
 
+    def test_position_five_seconds_captures_once_and_keeps_original_return_home(self):
+        p=self.separate();p.until('HOLD_READY');p.s.update(xy=[2.25,2.12],uwb_xy=[2.25,2.12])
+        began=p.t
+        for _ in range(100):
+            p.tick();self.assertFalse(p.out['native_takeoff']['can_start']);self.assertIsNone(p.out['mission_start_xy_m'])
+        p.tick();p.tick()
+        self.assertGreaterEqual(p.t-began,5.)
+        self.assertEqual(p.out['mission_start_xy_m'],[2.25,2.12]);self.assertEqual(p.out['home_xy_m'],[2.,2.])
+        capture=copy.deepcopy(p.out['mission_start_capture'])
+        p.s.update(xy=[2.27,2.12],uwb_xy=[2.27,2.12]);p.tick()
+        self.assertEqual(p.out['mission_start_capture'],capture)
+        p.request=dict(REQUEST,waypoints=[dict(type='hover',xy=[2.25,2.12],dwell_s=10.)])
+        p.until('RESUME_PREPARING');self.assertEqual(p.out['goal_xy_m'],[2.25,2.12])
+        self.assertEqual(p.out['home_xy_m'],[2.,2.]);self.assertEqual(p.commands.count('arm'),1)
+
+    def test_position_gap_or_scheduler_pause_restarts_five_second_capture(self):
+        for pause in ('uwb','scheduler'):
+            p=self.separate();p.until('HOLD_READY')
+            for _ in range(60):p.tick()
+            if pause=='uwb':p.s['uwb_age_s']=2.;p.tick();p.s['uwb_age_s']=0.
+            else:p.tick(dt=2.1)
+            self.assertIsNone(p.out['mission_start_xy_m'])
+            for _ in range(90):p.tick();self.assertFalse(p.out['native_takeoff']['can_start'])
+            for _ in range(15):p.tick()
+            self.assertTrue(p.out['native_takeoff']['can_start'])
+
+    def test_position_continuous_motion_never_captures_origin(self):
+        p=self.separate();p.until('HOLD_READY');p.s['velocity_xy']=[.11,0.]
+        for _ in range(130):p.tick()
+        self.assertIsNone(p.out['mission_start_xy_m']);self.assertFalse(p.out['native_takeoff']['can_start'])
+
     def test_takeoff_report_delay_does_not_land_or_block_position_handoff(self):
         p=self.separate();p.until('TAKING_OFF');p.s.update(bridge_age_s=9.,bridge_observation_age_s=8.,estimator_age_s=3.)
         self.hold_ready(p);self.assertNotIn('land',p.commands)
@@ -247,7 +278,7 @@ class Contracts(unittest.TestCase):
         p=self.separate();self.hold_ready(p);p.s['uwb_age_s']=2.
         for _ in range(80):p.tick();self.assertFalse(p.out['native_takeoff']['can_start']);self.assertFalse(p.out['streaming'])
         p.s['uwb_age_s']=0.;p.tick();self.assertFalse(p.out['native_takeoff']['can_start'])
-        for _ in range(62):p.tick()
+        for _ in range(102):p.tick()
         self.assertTrue(p.out['native_takeoff']['can_start']);self.assertNotIn('land',p.commands)
 
     def test_position_land_without_mission_confirms_disarm_without_offboard_reentry(self):
@@ -285,7 +316,7 @@ class Contracts(unittest.TestCase):
 
     def test_new_mission_battery_reserve_does_not_block_position_handoff(self):
         p=self.separate();p.until('TAKING_OFF');p.s['battery']=.29;p.until('HOLD_READY')
-        for _ in range(100):p.tick();self.assertFalse(p.out['native_takeoff']['can_start'])
+        for _ in range(110):p.tick();self.assertFalse(p.out['native_takeoff']['can_start'])
         self.assertNotIn('land',p.commands);self.assertFalse(p.out['streaming'])
         p.s['battery']=.9;p.tick();self.assertTrue(p.out['native_takeoff']['can_start'])
 

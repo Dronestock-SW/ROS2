@@ -44,6 +44,7 @@ class FC:
         self.n=node;self.p=platform;self.cfg=cfg;self.scenario=scenario
         self.mode='POSCTL';self.armed=False;self.z=.1;self.target=None;self.calls=[];self.rows=[]
         self.separate=scenario.startswith('separate_')
+        self.position_origin=scenario in ('separate_position_origin','separate_position_origin_gap')
         self.xy=[2.,2.];self.moving=scenario in ('mission_x','mission_y','mission_xy','separate_mission_x')
         self.real_link=scenario=='platform_link' or self.moving or self.separate
         self.mute_uwb_until=0.;self.mute_pose_until=0.
@@ -91,7 +92,9 @@ class FC:
         res.values=[ParameterValue(type=3,double_value=values[k]) if type(values[k]) is float else ParameterValue(type=2,integer_value=values[k]) for k in req.names];return res
     def setpoint(self,m):
         assert m.coordinate_frame==1 and m.type_mask==2552
-        if not self.moving or self.z < 1.65:
+        if self.position_origin and hasattr(self,'origin_shifted'):
+            assert 1.99<=m.position.x<=2.25 and 1.99<=m.position.y<=2.13,'origin or return escaped bounds'
+        elif not self.moving or self.z < 1.65:
             assert abs(m.position.x-2.)<1e-6 and abs(m.position.y-2.)<1e-6,'takeoff/home target moved'
         else:
             assert 1.99<=m.position.x<=3.01 and 1.99<=m.position.y<=3.01,'route escaped bounds'
@@ -123,7 +126,9 @@ class FC:
             elif self.armed and self.target:self.z+=max(-.5*dt,min(.5*dt,self.target.position.z-self.z))
             if self.scenario=='separate_left_error' and self.status.get('state')=='TAKING_OFF' and not hasattr(self,'left_injected'):
                 self.xy[1]+=.18;previous_xy=list(self.xy);self.left_injected=True
-            if (self.moving or self.scenario=='separate_left_error') and self.armed and self.target and self.mode=='OFFBOARD':
+            if self.position_origin and self.status.get('state')=='HOLD_READY' and not hasattr(self,'origin_shifted'):
+                self.xy=[2.24,2.12];previous_xy=list(self.xy);self.origin_shifted=True
+            if (self.moving or self.scenario=='separate_left_error' or self.position_origin) and self.armed and self.target and self.mode=='OFFBOARD':
                 dx,dy=self.target.position.x-self.xy[0],self.target.position.y-self.xy[1]
                 length=math.hypot(dx,dy);scale=min(1.,.25*dt/length) if length else 0.
                 self.xy=[self.xy[0]+dx*scale,self.xy[1]+dy*scale]
@@ -280,6 +285,8 @@ def run(scenario):
                 else:fc.mute_pose_until=time.monotonic()+2.5
             if separate and phase=='HOLD_READY' and not start_sent:
                 if hold_window is None:hold_window=time.monotonic();hold_sent=len(fc.setpoint_times)
+                if scenario=='separate_position_origin_gap' and not pre_start_injected and time.monotonic()-hold_window>3.:
+                    fc.mute_uwb_until=time.monotonic()+2.5;pre_start_injected=True
                 if scenario=='separate_hold_gap' and not pre_start_injected:
                     fc.mute_uwb_until=time.monotonic()+2.5;pre_start_injected=True
                 if time.monotonic()-hold_window>2.:
@@ -341,6 +348,13 @@ def run(scenario):
         if separate:
             if scenario!='separate_storage_land':assert any(r['state']=='HOLD_READY' for r in fc.rows)
             assert fc.status['home_xy_m']==[2.,2.]
+            if fc.position_origin:
+                assert fc.status['mission_start_xy_m']==[2.24,2.12]
+                capture=fc.status['mission_start_capture']
+                assert capture['position_hold_s']>=5.
+                assert capture['captured_monotonic_s']-hold_window>=(10. if scenario.endswith('_gap') else 4.9)
+                assert math.dist(fc.xy,[2.,2.])<.02,'did not return to original takeoff XY'
+                assert any(abs(row[1]-2.24)<1e-5 and abs(row[2]-2.12)<1e-5 for row in fc.setpoint_rows),'captured origin never streamed'
             if scenario in ('separate_takeoff_gap','separate_takeoff_pose_gap','separate_hold_gap','separate_resume_gap'):
                 assert any(r.get('observation_status',{}).get('progress_held') for r in fc.rows)
         if scenario=='lidar_gap':assert any(r['cpp_decision'].get('gap_supported') for r in fc.rows),'LiDAR bypass not exercised'
@@ -385,6 +399,7 @@ def run(scenario):
         if storage_thread:storage_thread.join(2)
         if fc.rows:
             (root/'trace.json').write_text(json.dumps(dict(status=fc.status,commands=fc.calls,trace=fc.rows,
+                setpoints=fc.setpoint_rows,
                 max_mock_fc_source_gap_s=max(b-a for a,b in zip(fc.source_times,fc.source_times[1:]))),indent=2),encoding='utf-8')
         if paused:os.kill(observer.pid,signal.SIGCONT)
         children=[observer,native_proc]+([link] if link else [])

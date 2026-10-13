@@ -185,7 +185,7 @@ class CppObserver(Node):
                 self.session.validation = dict(accepted=True,reason='request_valid',request_id=key)
                 return
             if payload.get('control_action') == 'start' and not self.session.assignment:
-                launch = getattr(self,'last_native_status',{}).get('home_xy_m') if self.settings.start_mode == 'takeoff_hold' else self.snapshot().xy
+                launch = getattr(self,'last_native_status',{}).get('mission_start_xy_m') if self.settings.start_mode == 'takeoff_hold' else self.snapshot().xy
                 validate_anchor_trial(payload, launch, self.settings, time.time())
             self.session.submit(payload, time.monotonic(), time.time())
         except (ValueError, TypeError, KeyError) as error:

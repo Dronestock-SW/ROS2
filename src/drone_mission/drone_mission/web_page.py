@@ -17,7 +17,7 @@ pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px}.hint{color:#5261
 <section><h2>현장 설정</h2><label for="ceiling">천장 높이 · 바닥 기준 m</label>
 <input id="ceiling" type="number" min="0.5" max="100" step="0.1" placeholder="예: 3.0">
 <button id="setceiling">천장 설정 저장</button><span id="site"></span>
-<p class="hint">이륙 높이는 PX4 설정을 사용합니다. 출발점은 START 시 PX4 기체 위치를 앵커 좌표로 변환해 확인합니다.</p><p id="profile" class="hint"></p></section>
+<p class="hint">이륙 높이는 PX4 설정을 사용합니다. 미션 시작점과 이륙 복귀점은 아래 상태에서 따로 확인합니다.</p><p id="profile" class="hint"></p></section>
 <section><h2>UWB 관측 연결</h2><p id="uwbpolicy" role="status">기체의 적용 상태 확인 대기</p><p class="hint">현재 버전은 XY 점프에 따른 관측 차단을 사용하지 않습니다. 새 관측의 시각·유효성과 거리 기하 검사는 유지합니다.</p></section>
 <section><h2>저장 미션</h2><label for="saved">미션 목록 </label><select id="saved"><option value="">저장 미션 없음</option></select>
 <button id="load">불러오기</button><button id="new" class="quiet">새 미션</button><button id="delete" class="quiet">선택 미션 삭제</button>
@@ -70,7 +70,7 @@ const up=t.uwb_pipeline??{};by('uwbpolicy').textContent=[['btf','B_TF 입력'],[
 by('takeoff').hidden=s.start_mode!=='takeoff_hold';by('takeoff').disabled=busy||(!s.can_takeoff&&pending?.action!=='takeoff');
 by('arm').hidden=s.start_mode==='takeoff_hold';
 if(s.start_mode==='takeoff_hold'){by('start').textContent='미션 START · HOLD에서 시작';by('flow').textContent='웹 이륙 → PX4 TAKEOFF → HOLD 안정 확인 → 별도 START → 미션 → 착륙';by('commandhint').textContent='이륙은 PX4가 수행합니다. HOLD에서는 START를 누를 때까지 미션이 시작되지 않습니다.';by('preset').options[0].textContent='10초 호버·착륙';}
-if(s.takeoff_backend==='local_position'){by('takeoff').textContent='웹 자동 이륙 · 현재 XY 유지';by('start').textContent='미션 START · POSITION에서 시작';by('flow').textContent='웹 자동 이륙 → POSITION 대기 → 별도 START → OFFBOARD 재진입 → 미션 → 착륙';by('commandhint').textContent='현재 XY에서 자동 상승합니다. POSITION 대기 중에는 RC 스틱을 중립에 두세요. 미션은 별도 START로 시작합니다.';}
+if(s.takeoff_backend==='local_position'){by('takeoff').textContent='웹 자동 이륙 · 현재 XY 유지';by('start').textContent='미션 START · POSITION에서 시작';by('flow').textContent='웹 자동 이륙 → POSITION 5초 → 미션 시작점 확정 → 별도 START → OFFBOARD → 원래 이륙점 복귀·착륙';by('commandhint').textContent='현재 XY에서 상승합니다. POSITION에서 5초간 안정화한 뒤 관측된 XY를 미션 시작점으로 고정합니다. RC 스틱은 중립을 유지하세요. 별도 START 뒤 미션을 수행하고 원래 이륙점으로 복귀합니다.';}
 by('start').disabled=busy||(!s.can_start&&pending?.action!=='start');
 by('arm').disabled=busy||(!s.can_arm&&pending?.action!=='arm');
 const ar=t.operator_arm_result;by('armstate').textContent=(t.fc_armed===true?'실제 시동: ARM':t.fc_armed===false?'실제 시동: DISARM':'실제 시동: 미확인')+(ar?' · ARM 요청: '+ar.reason:'');
@@ -85,7 +85,7 @@ if(s.storage?.writer?.error)by('readiness').textContent='기록 저장 오류 ·
 if(t.command_record_pending)by('readiness').textContent='명령 기록 저장 중 · 현재 위치 제어 유지';
 if(t.record_pending)by('readiness').textContent='착륙 확인 완료 · 완료 기록 저장 중';
 by('checks').replaceChildren();by('observations').replaceChildren();for(const c of checks){const row=document.createElement('div');row.textContent=(c.passed?'✓ ':c.required===false?'미확인 · ':'대기 · ')+c.title+(c.code==='local_start'&&s.automatic_start_xy_m?' · X '+s.automatic_start_xy_m[0].toFixed(3)+'m / Y '+s.automatic_start_xy_m[1].toFixed(3)+'m':'');by(c.required===false?'observations':'checks').appendChild(row);}
-by('state').textContent=JSON.stringify({기체:s.assignment.drone_id,배치:s.assignment.anchor_layout_id,텔레메트리수신:s.telemetry_fresh,상태:t.flight_state,사유:t.flight_reason,시동:t.fc_armed,PX4모드:t.fc_mode,UWB_XYZ:[t.x,t.y,t.current_z_m],Z출처:t.current_z_source,Z지상기준추정:t.current_z_estimated,Z실측유효:t.current_z_trusted,XYZ실측유효:t.xyz_valid,PX4_ENU:t.px4_position_enu_m,자동출발점_창고XY:s.automatic_start_xy_m,고정복귀점_창고XY:t.home_xy_m,착륙확인:t.landing_verified,출발점복귀확인:t.home_verified,비행결과:t.flight_outcome,작업결과:t.work_outcome,스캔결과:t.scan_results,요청검사:t.target_validation,웹저장:s.storage,실행기저장:t.storage},null,2);
+by('state').textContent=JSON.stringify({기체:s.assignment.drone_id,배치:s.assignment.anchor_layout_id,텔레메트리수신:s.telemetry_fresh,상태:t.flight_state,사유:t.flight_reason,시동:t.fc_armed,PX4모드:t.fc_mode,UWB_XYZ:[t.x,t.y,t.current_z_m],Z출처:t.current_z_source,Z지상기준추정:t.current_z_estimated,Z실측유효:t.current_z_trusted,XYZ실측유효:t.xyz_valid,PX4_ENU:t.px4_position_enu_m,자동출발점_창고XY:s.automatic_start_xy_m,확정미션시작점_창고XY:t.mission_start_xy_m,POSITION유지초:t.native_takeoff?.position_hold_elapsed_s,시작점확정근거:t.mission_start_capture,고정복귀점_창고XY:t.home_xy_m,착륙확인:t.landing_verified,출발점복귀확인:t.home_verified,비행결과:t.flight_outcome,작업결과:t.work_outcome,스캔결과:t.scan_results,요청검사:t.target_validation,웹저장:s.storage,실행기저장:t.storage},null,2);
 if(++polls%6===0)await refreshCatalog();
 }catch(e){by('takeoff').disabled=true;by('uwbpolicy').textContent='연결 끊김 · 적용 상태 확인 대기';by('start').disabled=true;by('arm').disabled=true;by('land').disabled=true;by('home').disabled=true;by('runstate').textContent='연결 대기 · 이전 미션을 자동 실행하지 않습니다.';by('readiness').textContent='웹 연결 끊김 · START 대기';}setTimeout(update,500);}
 refreshCatalog().catch(e=>{notice.textContent=e.message;});update();

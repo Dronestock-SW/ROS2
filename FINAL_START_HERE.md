@@ -1,6 +1,9 @@
 # FINAL 연구 시작점
 
 2026-10-13 후속 기준은 `이번에-상원-한거-통합-브랜치`다.
+[POSITION 5초·미션 시작점·원래 이륙점 복귀](docs/report/position_origin_after_hold_20261013.md)가 최신 기준이다.
+이륙 목표는 유지한다. 미션 시작점만 POSITION 뒤 확정한다.
+아래 12일 고정 출발점 설명은 당시 정책이다.
 [웹·기록 지연 분리](docs/report/web_record_latency_20261013.md)를 먼저 확인한다.
 [C++ 이륙·POSITION·별도 START](docs/report/cpp_position_handoff_20261013.md)를 먼저 확인한다.
 [현재 보고 지연·기록 보완](docs/report/fc_owned_runtime_20261013.md)을 먼저 읽는다.

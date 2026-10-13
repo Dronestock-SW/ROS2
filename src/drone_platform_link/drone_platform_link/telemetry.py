@@ -129,7 +129,7 @@ class Observations:
                 for key in ('mission_db_id', 'mission_code', 'route_revision',
                             'active_waypoint_index', 'active_waypoint_id', 'flight_control_enabled',
                             'mission_complete', 'landing_verified', 'control_ack', 'target_applied',
-                            'px4_map_xy_m', 'home_verified', 'home_xy_m', 'flight_outcome', 'work_outcome',
+                            'px4_map_xy_m', 'home_verified', 'home_xy_m', 'mission_start_xy_m', 'mission_start_capture', 'flight_outcome', 'work_outcome',
                             'scan_results', 'scan_window', 'scan_failure_policy',
                             'attempted_task_ids', 'remaining_task_ids', 'failed_scan_task_ids', 'route_complete', 'preflight', 'fc_landed',
                             'native_takeoff', 'operator_session_id', 'arm_request_available', 'arm_request_blocker', 'operator_arm_result', 'mission_ai', 'horizontal_observation',

@@ -1,0 +1,31 @@
+{
+  "checked_at_utc": "2026-10-13T07:24:35.480640+00:00",
+  "fc_readbacks": 41,
+  "prompts_seen": 41,
+  "flight_commands": false,
+  "fc_parameter_writes": false,
+  "initial_armed": false,
+  "mode": "AUTO.LOITER",
+  "battery_connected": "False",
+  "rc_lost": "True",
+  "range_m": "0.00000",
+  "range_signal_quality": "0",
+  "optical_flow_quality": "40",
+  "cs_ev_pos": "False",
+  "cs_opt_flow": "False",
+  "cs_valid_fake_pos": "True",
+  "heading_good_for_control": "False",
+  "sample_seconds": 10,
+  "uwb_pose_count": 0,
+  "uwb_raw_count": 2,
+  "uwb_raw_last_type": "heartbeat",
+  "current_storage_available_bytes": 5952307200,
+  "source_commit": "82e3bf171eef51bb1707c7331c20dbd40a1ec0a3",
+  "native_binary_sha256": "4e1d77b517fb06b66d7688301a9e53891c29d8181ea89851cf2d231a7f843d4c",
+  "manual_capture_active": false,
+  "originals": {
+    "ci-closeout-fc.json": "b6eb089f71f6950217b61e94ce467052b924ac663839882dc4acad85d8972748",
+    "ci-closeout-observations.json": "9e5e26a5a0277738611058194f672299f5abee476af5fdb754888ac607595b89",
+    "ci-closeout-runtime.txt": "b8e3b66589618a36fe351be7f74cc603730c0fd6f00e85514c3ec7be5155d667"
+  }
+}
