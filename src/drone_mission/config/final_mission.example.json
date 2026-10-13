@@ -1,5 +1,7 @@
 {
   "mission_ai": "cpp_bt",
+  "start_mode": "takeoff_hold",
+  "takeoff_backend": "local_position",
   "alignment_confirmed": false,
   "fusion_confirmed": false,
   "timing_confirmed": false,

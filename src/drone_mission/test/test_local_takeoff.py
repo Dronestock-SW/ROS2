@@ -33,6 +33,7 @@ def reach_position(m):
     assert m.phase=='HOLD_READY' and m.native_ready
     assert commands==['offboard_mode','arm','position_mode']
     assert m.local_setpoint() is None and m.assignment is None
+    assert m.status()['home_xy_m'] == list(m.native_home)
     return now,alt
 
 

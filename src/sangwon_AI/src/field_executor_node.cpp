@@ -36,7 +36,21 @@ struct Sample {
   std::array<bool,9> estimator_flags{};std::array<int64_t,8> source_ns{},received_ns{};int64_t uwb_ns{};std::vector<uint16_t> rc;
   int64_t remote_ns{},offset_ns{},timesync_received_ns{};double rtt_ms{};
 };
-struct View { bool stream{},pending{};unsigned token{};std::string phase;double x{},y{},z{},yaw{},expires{};std::vector<uint16_t> baseline;std::vector<int> switches; };
+// 1 = neutral, 0 = pilot input, -1 = calibration unavailable. RC is read
+// directly here so a paused Python observer cannot hide a stick movement.
+int neutral_rc(const std::vector<uint16_t>& channels,const Json& calibration) {
+  try {bool centered=true;
+    for(const auto* axis:{"ROLL","PITCH","YAW","THROTTLE"}) {
+      const int ch=calibration.at(std::string("RC_MAP_")+axis).get<int>();if(ch<1||size_t(ch)>channels.size())return -1;
+      const std::string key="RC"+std::to_string(ch);
+      const double lo=number(calibration.at(key+"_MIN"),500,2500),hi=number(calibration.at(key+"_MAX"),500,2500),trim=number(calibration.at(key+"_TRIM"),500,2500);
+      if(hi-lo<400||hi-lo>1600)return -1;
+      const double center=std::string(axis)=="THROTTLE"?(lo+hi)/2:trim;
+      centered=centered&&std::abs(channels[ch-1]-center)<=.07*(hi-lo);
+    }return centered?1:0;
+  }catch(const std::exception&){return -1;}
+}
+struct View { bool stream{},pending{},rc_required{};unsigned token{};std::string phase;double x{},y{},z{},yaw{},expires{};std::vector<uint16_t> baseline;std::vector<int> switches;Json calibration; };
 class ExecutorNode final:public rclcpp::Node {
  public:
   explicit ExecutorNode(Json config):Node("sangwon_field_executor"),outer_(std::move(config)),cfg_(outer_.at("mission")),core_(cfg_) {
@@ -144,6 +158,8 @@ class ExecutorNode final:public rclcpp::Node {
     bool rc=s.rc.size()>=4;for(size_t i=0;i<std::min<size_t>(4,s.rc.size());++i)rc=rc&&s.rc[i]>=800&&s.rc[i]<=2200;out["rc_valid"]=rc;
     bool changed=false;for(int ch:view.switches)if(ch>0&&size_t(ch)<=s.rc.size()&&size_t(ch)<=view.baseline.size()&&std::abs(int(s.rc[ch-1])-int(view.baseline[ch-1]))>=100)changed=true;
     out["rc_switch_changed"]=t-s.rc_at<=1&&changed;
+    const int neutral=neutral_rc(s.rc,out.value("rc_calibration",Json::object()));
+    out["rc_neutral_valid"]=neutral>=0;out["rc_sticks_centered"]=neutral==1&&t-s.rc_at<=1;
     out["estimator_flags"]=Json(s.estimator_flags);out["estimator_flag_order"]=Json::array({"attitude","velocity_horizontal","velocity_vertical","position_horizontal_relative","position_vertical_absolute","constant_position","predicted_position_horizontal_relative","gps_glitch","accel_error"});
     out["timesync"]=Json{{"remote_timestamp_ns",s.remote_ns},{"estimated_offset_ns",s.offset_ns},{"round_trip_time_ms",s.rtt_ms},{"received_monotonic_ns",s.timesync_received_ns}};
     if(!bridge_state_.empty()){out.update(bridge_state_);out["bridge_age_s"]=t-bridge_at_;if(bridge_state_.contains("bridge_stamp_ns"))out["bridge_observation_age_s"]=now().seconds()-bridge_state_.at("bridge_stamp_ns").get<double>()/1e9;}
@@ -161,18 +177,30 @@ class ExecutorNode final:public rclcpp::Node {
     try {
       Json request=input_.is_object()?input_.value("request",Json()):Json();
       if(!request.is_null()&&request.at("executor_session")!=session_)request=Json();
-      // A consumed request may remain in metadata; only START is idempotent.
-      if(!request.is_null()&&request.value("action",std::string())!="start"&&request.at("request_id")==last_control_)request=Json();
-      if(!request.is_null()&&request.value("action",std::string())!="start")last_control_=request.at("request_id").get<std::string>();
+      // START/TAKEOFF may remain as heartbeats; the core accepts each only
+      // in its entry phase. Other controls are delivered once.
+      const bool entry=!request.is_null()&&(request.value("action",std::string())=="start"||request.value("action",std::string())=="takeoff");
+      if(!request.is_null()&&!entry&&request.at("request_id")==last_control_)request=Json();
+      if(!request.is_null()&&!entry)last_control_=request.at("request_id").get<std::string>();
       if(!fault.empty())core_.interrupt(fault,pilot,t,s);
       else core_.tick(s,t,request,wall_s());
     }catch(const std::exception& e){core_.interrupt(std::string("native_input_invalid:")+e.what(),false,t,s);}
     View v;v.stream=core_.streaming()&&flag(cfg_,"execute");v.pending=core_.pending();v.token=core_.pending_token();v.phase=core_.phase;v.expires=t+.15;
+    v.rc_required=flag(s,"rc_required");v.calibration=s.value("rc_calibration",Json::object());
     double angle=cfg_.at("enu_yaw_deg").get<double>()*M_PI/180;auto xy=core_.target();const double y=cfg_.at("map_y_axis_sign").get<int>()*xy.y;
     v.x=std::cos(angle)*xy.x-std::sin(angle)*y+cfg_.at("enu_offset_x_m").get<double>();v.y=std::sin(angle)*xy.x+std::cos(angle)*y+cfg_.at("enu_offset_y_m").get<double>();v.z=core_.height();v.yaw=(cfg_.at("enu_yaw_deg").get<double>()+cfg_.at("map_y_axis_sign").get<int>()*core_.yaw())*M_PI/180;
     double gap;unsigned sent;
     {std::lock_guard<std::mutex> g(fast_mutex_);if(view_.baseline.empty()&&v.stream){v.baseline=sample_.rc;if(s.contains("rc_switch_channels"))v.switches=s.at("rc_switch_channels").get<std::vector<int>>();}else{v.baseline=view_.baseline;v.switches=view_.switches;}view_=std::move(v);gap=max_send_gap_;sent=sent_;}
     auto out=core_.status();out.update({{"executor_session",session_},{"test_mode",flag(outer_,"test_mode")},{"physical_flight",!flag(outer_,"test_mode")&&flag(cfg_,"execute")},{"output_enabled",flag(cfg_,"execute")},{"input_error",last_input_error_},{"input_age_s",t-input_at_},{"max_sender_gap_s",gap},{"setpoints_sent",sent},{"fc_connected",s.value("connected",false)},{"fc_armed",s.value("armed",false)},{"fc_mode",s.value("mode",std::string())},{"fc_landed",s.value("landed",0)}});
+    out["operator_session_id"]=session_;
+    if(s.at("xy").size()==2&&out.at("home_xy_m").is_array()) {
+      const double a=s.at("yaw_deg").get<double>()*M_PI/180,sign=cfg_.at("map_y_axis_sign").get<int>();
+      const auto body=[&](Vec3 d){return Json::array({std::cos(a)*d.x+std::sin(a)*d.y,sign*(-std::sin(a)*d.x+std::cos(a)*d.y)});};
+      out["position_tracking"]={{"source","px4_estimate_not_independent_motion"},{"pose_fresh",age(s,"pose_age_s",cfg_.value("pose_timeout_s",.2))},
+        {"launch_displacement_body_flu_m",body(point(s.at("xy"))-point(out.at("home_xy_m")))},
+        {"target_error_body_flu_m",body(core_.target()-point(s.at("xy")))},{"velocity_body_flu_m_s",body(point(s.at("velocity_xy")))},
+        {"position_control_enabled",true},{"coordinate_frame",1},{"type_mask",2552}};
+    }
     out["px4_map_xy_m"]=s.at("xy");
     out["bridge_observation_age_s"]=s.value("bridge_observation_age_s",Json());
     out["raw_uwb_age_s"]=s.value("uwb_age_s",Json());
@@ -260,13 +288,14 @@ class ExecutorNode final:public rclcpp::Node {
   std::string last_control_;
   void send() {
     const double t=steady_s();View v;Sample s;{std::lock_guard<std::mutex> g(fast_mutex_);v=view_;s=sample_;}
-    if(!v.stream)return;
+    if(!v.stream){std::lock_guard<std::mutex> g(fast_mutex_);last_send_=-1;return;}
     // Continue the approved hold until PX4 actually enters AUTO.LAND.
     // The landing request/ACK alone is not a flight-mode transition.
-    if(v.phase=="LANDING"&&s.mode=="AUTO.LAND")return;
-    const bool mode=v.phase=="PREPARING"?(s.mode=="POSCTL"||s.mode=="AUTO.LOITER"||s.mode=="OFFBOARD"):s.mode=="OFFBOARD";
+    if((v.phase=="LANDING"&&(s.mode=="AUTO.LAND"||s.mode=="POSCTL"))||(v.phase=="POSITION_HANDOFF"&&s.mode=="POSCTL")){std::lock_guard<std::mutex> g(fast_mutex_);last_send_=-1;return;}
+    const bool mode=field_mode_allowed(v.phase,s.mode);
     bool rc=false;for(int ch:v.switches)if(ch>0&&size_t(ch)<=s.rc.size()&&size_t(ch)<=v.baseline.size()&&std::abs(int(s.rc[ch-1])-int(v.baseline[ch-1]))>=100)rc=true;
-    const bool pilot=(s.connected&&t-s.state_at<=cfg_.value("state_timeout_s",2.5)&&!mode)||(t-s.rc_at<=1&&rc);
+    const bool moving_sticks=v.rc_required&&(v.phase=="POSITION_HANDOFF"||v.phase=="RESUME_PREPARING")&&neutral_rc(s.rc,v.calibration)==0;
+    const bool pilot=(s.connected&&t-s.state_at<=cfg_.value("state_timeout_s",2.5)&&!mode)||(t-s.rc_at<=1&&(rc||moving_sticks));
     // A stale planner cannot advance the target. This immutable View remains
     // an approved position hold while direct FC health and pilot authority
     // remain valid; output cadence is independent of planner/report cadence.
@@ -286,14 +315,17 @@ class ExecutorNode final:public rclcpp::Node {
     Sample live;View view;{std::lock_guard<std::mutex> g(fast_mutex_);live=sample_;view=view_;}
     if(!view.pending||view.token!=token)return;
     {std::lock_guard<std::mutex> g(io_mutex_);events_.push_back(Json{{"type","command_dispatch_attempt"},{"token",token},{"kind",kind},{"sample_monotonic_ns",int64_t(steady_s()*1e9)},{"queue_age_s",steady_s()-action.at("sent_s").get<double>()}});}io_cv_.notify_all();
-    const bool mode_ok=kind=="arm"?live.mode=="OFFBOARD":kind=="land"?live.mode=="OFFBOARD"||live.mode=="AUTO.LAND":live.mode=="POSCTL"||live.mode=="AUTO.LOITER"||live.mode=="OFFBOARD";
+    const bool mode_ok=kind=="arm"?live.mode=="OFFBOARD":kind=="land"?live.mode=="OFFBOARD"||live.mode=="POSCTL"||live.mode=="AUTO.LAND":live.mode=="POSCTL"||live.mode=="AUTO.LOITER"||live.mode=="OFFBOARD";
     bool rc_changed=false;for(int ch:view.switches)if(ch>0&&size_t(ch)<=live.rc.size()&&size_t(ch)<=view.baseline.size()&&std::abs(int(live.rc[ch-1])-int(view.baseline[ch-1]))>=100)rc_changed=true;
-    if(!mode_ok||rc_changed){std::lock_guard<std::mutex> g(fast_mutex_);fault_="pilot_priority_before_native_command";pilot_fault_=true;acks_.emplace_back(token,false,steady_s());return;}
+    const bool moving_sticks=view.rc_required&&(view.phase=="POSITION_HANDOFF"||view.phase=="RESUME_PREPARING")&&neutral_rc(live.rc,view.calibration)==0;
+    if(!mode_ok||rc_changed||moving_sticks){std::lock_guard<std::mutex> g(fast_mutex_);fault_="pilot_priority_before_native_command";pilot_fault_=true;acks_.emplace_back(token,false,steady_s());return;}
     if(!live.connected||steady_s()-live.state_at>cfg_.value("state_timeout_s",2.5)){ack(token,false);return;}
     // Dispatch authority comes from current FC/RC/observation data, not a
     // duplicate 150 ms planner-view lease. Ground entry still needs fresh
     // independent observations even when durable recording was slow.
-    if((kind=="arm"||kind=="offboard_mode")&&(!live.estimator||!live.vertical||!live.pose_ok||steady_s()-live.pose_at>.2||steady_s()-live.uwb_at>.25||live.armed)){ack(token,false);return;}
+    const bool resume=kind=="offboard_mode"&&view.phase=="RESUME_PREPARING";
+    if((kind=="arm"||kind=="offboard_mode")&&(!live.estimator||!live.vertical||!live.pose_ok||steady_s()-live.pose_at>.2||steady_s()-live.uwb_at>.25||(resume?(!live.armed||live.landed!=2):live.armed))){ack(token,false);return;}
+    if((resume||(kind=="position_mode"&&view.phase=="POSITION_HANDOFF"))&&view.rc_required&&(steady_s()-live.rc_at>1||neutral_rc(live.rc,view.calibration)!=1)){ack(token,false);return;}
     if(kind=="offboard_mode"||kind=="position_mode") {if(!mode_->service_is_ready()){ack(token,false);return;}auto req=std::make_shared<mavros_msgs::srv::SetMode::Request>();req->custom_mode=kind=="offboard_mode"?"OFFBOARD":"POSCTL";mode_->async_send_request(req,[this,token](rclcpp::Client<mavros_msgs::srv::SetMode>::SharedFuture f){try{ack(token,f.get()->mode_sent);}catch(...){/* Unknown effect: command timeout latches UNCONFIRMED. */}});}
     else if(kind=="arm") {if(!arm_->service_is_ready()){ack(token,false);return;}auto req=std::make_shared<mavros_msgs::srv::CommandBool::Request>();req->value=true;arm_->async_send_request(req,[this,token](rclcpp::Client<mavros_msgs::srv::CommandBool>::SharedFuture f){try{auto r=f.get();ack(token,r->success&&r->result==0);}catch(...){}});}
     else if(kind=="land") {if(!land_->service_is_ready()){ack(token,false);return;}auto req=std::make_shared<mavros_msgs::srv::CommandTOL::Request>();req->yaw=req->latitude=req->longitude=req->altitude=std::numeric_limits<double>::quiet_NaN();land_->async_send_request(req,[this,token](rclcpp::Client<mavros_msgs::srv::CommandTOL>::SharedFuture f){try{auto r=f.get();ack(token,r->success&&r->result==0);}catch(...){}});}

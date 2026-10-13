@@ -13,6 +13,19 @@ from drone_mission.local_web import LocalPlatform
 from drone_mission.contracts import Settings, parse_request
 
 
+def test_separate_start_uses_original_launch_xy_not_position_drift():
+    settings=Settings(command_frame='local_xy',execution_profile='anchor_trial',full_mission=True,
+        start_mode='takeoff_hold',takeoff_backend='local_position',mission_ai='cpp_bt',speed_m_s=.25)
+    p=LocalPlatform(settings=settings)
+    p.telemetry=dict(fc_connected=True,fc_armed=True,fc_landed=2,fc_mode='POSCTL',flight_state='HOLD_READY',
+        native_takeoff={'can_start':True},px4_map_xy_m=[2.,2.08],home_xy_m=[2.,2.],
+        preflight={'checks':[dict(code=k,passed=True) for k in ('layout_confirmed','transform','pose','estimator')]})
+    p.telemetry_received_s=time.monotonic()
+    assert p.automatic_start()==(2.,2.)
+    del p.telemetry['home_xy_m']
+    with pytest.raises(ValueError):p.automatic_start()
+
+
 @pytest.fixture
 def local_http():
     platform = LocalPlatform()

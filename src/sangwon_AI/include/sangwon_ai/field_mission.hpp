@@ -157,7 +157,9 @@ class MissionAI {
     if(flag(s, "connected") && age(s, "state_age_s", 1)) {
       const auto mode = s.at("mode").get<std::string>();
       const bool allowed = executor == "PREPARING" ? (mode == "POSCTL" || mode == "AUTO.LOITER" || mode == "OFFBOARD")
-          : executor == "LANDING" ? (mode == "OFFBOARD" || mode == "AUTO.LAND")
+          : executor == "HOLD_READY" ? mode == "POSCTL"
+          : executor == "POSITION_HANDOFF" || executor == "RESUME_PREPARING" ? (mode == "POSCTL" || mode == "OFFBOARD")
+          : executor == "LANDING" ? (mode == "OFFBOARD" || mode == "POSCTL" || mode == "AUTO.LAND")
           : executor == "GROUND_RECOVERY" ? (mode == "POSCTL" || mode == "AUTO.LOITER" || mode == "OFFBOARD")
           : mode == "OFFBOARD";
       if(!allowed) yielding_ = true;
@@ -219,6 +221,7 @@ class MissionAI {
   void advance() {
     const auto executor = input_.at("executor_phase").get<std::string>();
     const auto& s = input_.at("state");
+    if(!input_.value("mission_authorized",true))return;
     if(phase_ == "WAIT_TAKEOFF" && executor != "TAKING_OFF" && executor != "HANDOFF") return;
     if(!flag(s,"armed")) { request_land("AIRBORNE_STATE_LOST");return; }
     const bool pose_current=flag(observation_status_,"position_feedback_fresh");

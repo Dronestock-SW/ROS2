@@ -187,7 +187,7 @@ class LocalPlatform:
     def automatic_start(self):
         t = self.telemetry
         checks = {c['code']:c['passed'] for c in t.get('preflight',{}).get('checks',[])}
-        xy = t.get('px4_map_xy_m')
+        xy = t.get('home_xy_m') if self.settings.start_mode == 'takeoff_hold' else t.get('px4_map_xy_m')
         required = ('layout_confirmed', 'transform', 'pose', 'estimator')
         if not self.settings.anchor_trial:
             required += ('alignment_confirmed',)

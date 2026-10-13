@@ -4,6 +4,7 @@ No ARM, mode, LAND or setpoint writes exist in this node. PX4 message interval
 requests and parameter reads retain the existing sensor transport setup.
 """
 from dataclasses import asdict, replace
+import copy
 import hashlib
 import json
 import math
@@ -32,6 +33,8 @@ from .preflight import field_preflight
 from mavros_msgs.msg import TimesyncStatus
 from .recording import flight_sample, sensor_sources
 from .observation_policy import observation_status
+from .operator_arm import arm_request
+from datetime import datetime
 
 
 def clean(value):
@@ -147,7 +150,7 @@ class CppObserver(Node):
         self.native_session = value['executor_session']
         self.last_native_status = value
         phase = value['phase']
-        if self.session.assignment: self.session.phase = phase
+        self.session.phase = phase
         if phase != self.previous_phase:
             self.record(dict(type='native_transition', value=value)); self.previous_phase = phase
 
@@ -177,8 +180,28 @@ class CppObserver(Node):
             if len(msg.data) > 65536: raise ValueError('assignment_too_large')
             payload = json.loads(msg.data)
             if payload.get('control_action') == 'arm': raise ValueError('native_trial_requires_combined_start')
+            if payload.get('control_action') in ('takeoff','takeoff_land') or (payload.get('control_action') == 'land' and not self.session.assignment and self.settings.start_mode == 'takeoff_hold'):
+                wire_action = payload['control_action']
+                action = 'land' if wire_action == 'takeoff_land' else wire_action
+                key = payload.get('control_request_id')
+                if key in self.session.consumed:
+                    self.session.last_web_s = time.monotonic()
+                    return
+                key = arm_request(payload,self.settings,self.native_session,time.time(),action=wire_action)
+                if self.settings.start_mode != 'takeoff_hold':raise ValueError('separate_takeoff_disabled')
+                native = getattr(self,'last_native_status',{}).get('native_takeoff',{})
+                if not native.get('can_takeoff' if action == 'takeoff' else 'can_land'):raise ValueError('native_takeoff_or_land_not_ready')
+                ceiling = payload.get('ceiling_height_m')
+                if action == 'takeoff' and (type(ceiling) not in (float,int) or not math.isfinite(ceiling) or ceiling < self.settings.expected_mis_takeoff_alt_m+.25):raise ValueError('takeoff_ceiling_clearance_required')
+                self.session.intent = dict(action=action,request_id=key,requested_at=payload['control_requested_at'],
+                    requested_s=datetime.fromisoformat(payload['control_requested_at'].replace('Z','+00:00')).timestamp())
+                self.session.cpp_ceiling = ceiling
+                self.session.last_web_s = time.monotonic()
+                self.session.validation = dict(accepted=True,reason='request_valid',request_id=key)
+                return
             if payload.get('control_action') == 'start' and not self.session.assignment:
-                validate_anchor_trial(payload, self.snapshot().xy, self.settings, time.time())
+                launch = getattr(self,'last_native_status',{}).get('home_xy_m') if self.settings.start_mode == 'takeoff_hold' else self.snapshot().xy
+                validate_anchor_trial(payload, launch, self.settings, time.time())
             self.session.submit(payload, time.monotonic(), time.time())
         except (ValueError, TypeError, KeyError) as error:
             self.session.validation = dict(accepted=False, reason=str(error))
@@ -193,7 +216,13 @@ class CppObserver(Node):
             self.record(flight_sample(s,phase=native.get('phase','IDLE'),
                 target=native.get('sender_target_enu'),feedback=getattr(self,'target_feedback',None),
                 observation=observation_status(self.settings,s),sources=sensor_sources(self.samples),owner='cpp_observer'))
-        reason = MissionChain.ready(self.session, s, now, ground=True)
+        native = getattr(self,'last_native_status',{})
+        airborne_start = self.settings.start_mode == 'takeoff_hold' and s.armed
+        # Readiness exists before an operator command. Request age/persistence
+        # is checked independently when the native executor accepts it.
+        readiness = copy.copy(self.session);readiness.last_web_s = now
+        reason = MissionChain.ready(readiness, s, now, ground=not airborne_start)
+        if airborne_start and not native.get('native_takeoff',{}).get('can_start'):reason = 'position_hold_not_ready'
         if not s.local_setpoint_ready: reason = 'local_transport_unavailable'
         if type(s.rc_override) is not int or not s.rc_override & 2: reason = 'px4_offboard_rc_override_required'
         r = self.session.intent
@@ -207,7 +236,8 @@ class CppObserver(Node):
         state = asdict(s); state.pop('origin')
         state.update(web_age_s=now-self.session.last_web_s if self.session.last_web_s is not None else None,
                      ground_gate_ready=reason == 'ready', request_persisted=self.forwarded is not None,
-                     max_up_m_s=self.up_limit,max_up_age_s=now-self.up_limit_received)
+                     max_up_m_s=self.up_limit,max_up_age_s=now-self.up_limit_received,
+                     rc_calibration=getattr(self,'rc_calibration',{}))
         envelope = dict(schema='sangwon-cpp-observer/1', executor_session=self.native_session,
                         settings=asdict(self.settings), sample_time_s=now,
                         state=clean(state), request=self.forwarded,
@@ -215,7 +245,19 @@ class CppObserver(Node):
                             recording_ok=self.log is not None,cpp_ai_ready=self.native_session is not None))
         up_ok = type(self.up_limit) in (float,int) and 0 < self.up_limit <= .5 and now-self.up_limit_received <= 5
         envelope['preflight']['checks'].append(dict(code='native_up_limit',title='PX4 상승 제한 0.5m/s 이하',passed=up_ok,required=True))
-        envelope['preflight']['checked_inputs_passed'] &= up_ok
+        if airborne_start:
+            for check in envelope['preflight']['checks']:
+                if check['code'] == 'ground':
+                    check.update(code='airborne_position_hold',title='POSITION 안정 확인·별도 START 대기',
+                        passed=native.get('native_takeoff',{}).get('can_start') is True)
+                # A delayed status report is diagnostic once airborne. The
+                # native gate still requires real fresh XY/UWB and stability.
+                if check['code'] in ('estimator','vertical_estimator','bridge'):
+                    check['passed'] = {'estimator':s.estimator_valid,'vertical_estimator':s.vertical_estimator_valid,
+                        'bridge':not observation_status(self.settings,s)['contract_error']}[check['code']]
+        checks = envelope['preflight']['checks']
+        envelope['preflight']['checked_inputs_passed'] = all(c['passed'] for c in checks if c['required'])
+        envelope['preflight']['blockers'] = [c['code'] for c in checks if c['required'] and not c['passed']]
         self.output.publish(String(data=json.dumps(envelope, allow_nan=False, separators=(',', ':'))))
 
     def destroy_node(self):

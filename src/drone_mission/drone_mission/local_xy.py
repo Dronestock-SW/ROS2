@@ -440,6 +440,8 @@ class LocalXYMission(NativeTakeoff, MissionChain):
 
     def status(self):
         out = super().status()
+        if self.settings.start_mode == 'takeoff_hold' and self.native_home is not None:
+            out['home_xy_m'] = list(self.native_home)
         out['observation_status'] = getattr(self,'observation_status',{})
         out['native_takeoff'] = dict(enabled=self.settings.start_mode == 'takeoff_hold',
             hold_ready=self.native_ready, phase=self.phase,

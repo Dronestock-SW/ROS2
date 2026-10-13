@@ -49,8 +49,8 @@ def main():
         cpp_binary, cpp_sha256 = inspect_binary(a.cpp_ai_binary)
         executor_binary = None
         if a.cpp_executor_binary:
-            if mission_settings.start_mode != 'ground_takeoff':
-                raise ValueError('cpp_executor_requires_ground_takeoff; use Python executor for separate TAKEOFF/HOLD/START')
+            if mission_settings.start_mode == 'takeoff_hold' and mission_settings.takeoff_backend != 'local_position':
+                raise ValueError('cpp_separate_takeoff_requires_local_position_backend')
             executor_binary, executor_sha256 = inspect_binary(a.cpp_executor_binary)
     except (ValueError, RuntimeError, OSError) as exc:
         p.error(str(exc))

@@ -178,4 +178,83 @@ class Contracts(unittest.TestCase):
         p=self.peer();p.s.update(state_age_s=1.2,landed_age_s=1.2);p.until('TAKING_OFF')
         self.assertIn('arm',p.commands)
 
+    def separate(self):
+        p=self.peer(cfg=dict(CFG,start_mode='takeoff_hold',takeoff_backend='local_position'))
+        p.request=dict(REQUEST,action='takeoff',request_id='separate-takeoff')
+        return p
+
+    def hold_ready(self,p):
+        p.until('HOLD_READY')
+        for _ in range(80):
+            p.tick()
+            if p.out['native_takeoff']['can_start']:return
+        self.fail(p.out)
+
+    def test_separate_takeoff_waits_without_stream_then_web_start_reenters_offboard(self):
+        p=self.separate();self.hold_ready(p)
+        self.assertEqual(p.commands,['offboard_mode','arm','position_mode'])
+        for _ in range(100):
+            p.tick();self.assertEqual(p.out['phase'],'HOLD_READY');self.assertFalse(p.out['streaming'])
+            self.assertEqual(p.out['completed_waypoints'],0)
+        p.s.update(xy=[2.06,2.],uwb_xy=[2.06,2.]);p.request=copy.deepcopy(REQUEST)
+        p.until('RESUME_PREPARING');self.assertEqual(p.out['home_xy_m'],[2.,2.]);self.assertEqual(p.out['goal_xy_m'],[2.,2.])
+        p.until('END');self.assertEqual(p.commands,['offboard_mode','arm','position_mode','offboard_mode','land'])
+        self.assertTrue(p.out['landing_verified']);self.assertTrue(p.out['mission_complete'])
+
+    def test_separate_start_cannot_arm_from_ground(self):
+        p=self.separate();p.request=copy.deepcopy(REQUEST)
+        for _ in range(100):p.tick()
+        self.assertEqual(p.out['phase'],'IDLE');self.assertFalse(p.commands)
+
+    def test_takeoff_report_delay_does_not_land_or_block_position_handoff(self):
+        p=self.separate();p.until('TAKING_OFF');p.s.update(bridge_age_s=9.,bridge_observation_age_s=8.,estimator_age_s=3.)
+        self.hold_ready(p);self.assertNotIn('land',p.commands)
+
+    def test_takeoff_actual_observation_gap_holds_original_goal_until_recovery(self):
+        for key in ('uwb_age_s','pose_age_s'):
+            p=self.separate();p.until('TAKING_OFF');p.s[key]=2.
+            for _ in range(160):
+                p.tick();self.assertEqual(p.out['phase'],'TAKING_OFF');self.assertEqual(p.out['goal_xy_m'],[2.,2.])
+            self.assertNotIn('land',p.commands);p.s[key]=0.;self.hold_ready(p)
+
+    def test_position_gap_revokes_start_and_requires_new_stability_window(self):
+        p=self.separate();self.hold_ready(p);p.s['uwb_age_s']=2.
+        for _ in range(80):p.tick();self.assertFalse(p.out['native_takeoff']['can_start']);self.assertFalse(p.out['streaming'])
+        p.s['uwb_age_s']=0.;p.tick();self.assertFalse(p.out['native_takeoff']['can_start'])
+        for _ in range(62):p.tick()
+        self.assertTrue(p.out['native_takeoff']['can_start']);self.assertNotIn('land',p.commands)
+
+    def test_position_land_without_mission_confirms_disarm_without_offboard_reentry(self):
+        p=self.separate();self.hold_ready(p);p.request=dict(action='land',request_id='land-in-position')
+        p.until('FAILED');self.assertTrue(p.out['landing_verified']);self.assertFalse(p.out['mission_complete'])
+        self.assertEqual(p.commands,['offboard_mode','arm','position_mode','land'])
+
+    def test_position_stick_movement_latches_pilot_and_blocks_later_start(self):
+        p=self.separate();self.hold_ready(p)
+        p.s.update(rc_required=True,rc_valid=True,rc_age_s=0.,rc_neutral_valid=True,rc_sticks_centered=False)
+        p.tick();self.assertEqual(p.out['phase'],'PILOT_OVERRIDE');p.request=copy.deepcopy(REQUEST)
+        p.s['rc_sticks_centered']=True;p.tick();self.assertEqual(p.out['phase'],'PILOT_OVERRIDE');self.assertNotIn('land',p.commands)
+
+    def test_resume_gap_waits_with_fixed_target_without_second_arm(self):
+        p=self.separate();self.hold_ready(p);p.request=copy.deepcopy(REQUEST);p.until('RESUME_PREPARING')
+        p.s['uwb_age_s']=2.
+        for _ in range(120):p.tick();self.assertEqual(p.out['phase'],'RESUME_PREPARING');self.assertEqual(p.out['goal_xy_m'],[2.,2.])
+        self.assertEqual(p.commands.count('offboard_mode'),1);p.s['uwb_age_s']=0.;p.until('END');self.assertEqual(p.commands.count('arm'),1)
+
+    def test_takeoff_hold_keeps_drift_and_estimator_fault_protection(self):
+        for change in (dict(xy=[2.,2.7]),dict(estimator_valid=False)):
+            p=self.separate();self.hold_ready(p);p.s.update(change);p.until('FAILED');self.assertTrue(p.out['landing_verified'])
+
+    def test_position_ack_is_not_mode_confirmation_and_hold_stream_continues(self):
+        p=self.separate();p.until('POSITION_HANDOFF');p.s['mode']='OFFBOARD'
+        for _ in range(30):p.tick();self.assertEqual(p.out['phase'],'POSITION_HANDOFF');self.assertTrue(p.out['streaming'])
+        p.s['mode']='POSCTL';self.hold_ready(p)
+
+    def test_reentry_ack_is_not_mode_confirmation_and_never_rearms(self):
+        p=self.separate();self.hold_ready(p);p.request=copy.deepcopy(REQUEST);p.until('RESUME_PREPARING')
+        while p.commands.count('offboard_mode')<2:p.tick()
+        p.s['mode']='POSCTL'
+        for _ in range(30):p.tick();self.assertEqual(p.out['phase'],'RESUME_PREPARING')
+        p.s['mode']='OFFBOARD';p.until('END');self.assertEqual(p.commands.count('arm'),1)
+
 if __name__=='__main__':unittest.main()
