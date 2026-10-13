@@ -1,0 +1,608 @@
+{
+  "id": 38361790833,
+  "status": "completed",
+  "conclusion": "success",
+  "head_sha": "b7961c8f28676ee4c6bee1425bce5cf8015b7ff1",
+  "html_url": "https://github.com/Dronestock-SW/ROS2/actions/runs/38361790833",
+  "created_at": "2026-10-13T07:18:02Z",
+  "updated_at": "2026-10-13T07:38:59Z",
+  "artifact_id": 11795987504,
+  "artifact_sha256": "9d0fe0ca880c6f1f05aa9c9f744ab307d3a0384249ffc3b8c10d1bf578f79891",
+  "physical_flight": false,
+  "jobs": [
+    {
+      "id": 115177463180,
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Initialize containers",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "conclusion": "success"
+        },
+        {
+          "name": "Prepare ROS Humble build and test dependencies",
+          "conclusion": "success"
+        },
+        {
+          "name": "Build ROS packages and actual C++ executor",
+          "conclusion": "success"
+        },
+        {
+          "name": "Python and C++ contracts",
+          "conclusion": "success"
+        },
+        {
+          "name": "HTTP ROS C++ synthetic FC and platform flow",
+          "conclusion": "success"
+        },
+        {
+          "name": "Preserve logs and original outcomes",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "conclusion": "success"
+        },
+        {
+          "name": "Stop containers",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ],
+  "suites": {
+    "cpp-python.xml": [
+      {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "0",
+        "tests": "9",
+        "time": "68.361",
+        "timestamp": "2026-10-13T07:21:23.427260",
+        "hostname": "8a09c3ecb622"
+      }
+    ],
+    "python.xml": [
+      {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "0",
+        "tests": "296",
+        "time": "4.534",
+        "timestamp": "2026-10-13T07:21:13.903266",
+        "hostname": "8a09c3ecb622"
+      }
+    ]
+  },
+  "scenarios": [
+    {
+      "scenario": "bridge_delay",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "state": "END",
+      "landing_verified": true,
+      "record_pending": null,
+      "max_received_setpoint_gap_s": 0.051602505000005294,
+      "max_sender_gap_s": 0.05027419599997529,
+      "storage_land_s": null,
+      "command_http_timeouts": []
+    },
+    {
+      "scenario": "fc_estimator_loss",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "state": "FAILED",
+      "landing_verified": true,
+      "record_pending": true,
+      "max_received_setpoint_gap_s": 0.051881920000028,
+      "max_sender_gap_s": 0.05027426499998455,
+      "storage_land_s": null,
+      "command_http_timeouts": []
+    },
+    {
+      "scenario": "fc_estimator_silence",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "state": "END",
+      "landing_verified": true,
+      "record_pending": null,
+      "max_received_setpoint_gap_s": 0.05206881300000532,
+      "max_sender_gap_s": 0.05031360600003154,
+      "storage_land_s": null,
+      "command_http_timeouts": []
+    },
+    {
+      "scenario": "fc_pose_loss",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "state": "FAILED",
+      "landing_verified": true,
+      "record_pending": true,
+      "max_received_setpoint_gap_s": 0.051390093000009074,
+      "max_sender_gap_s": 0.05014918199992735,
+      "storage_land_s": null,
+      "command_http_timeouts": []
+    },
+    {
+      "scenario": "land_mode_delay",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "state": "END",
+      "landing_verified": true,
+      "record_pending": null,
+      "max_received_setpoint_gap_s": 0.0508383110000068,
+      "max_sender_gap_s": 0.050376492000054895,
+      "storage_land_s": null,
+      "command_http_timeouts": []
+    },
+    {
+      "scenario": "mission_x",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "state": "END",
+      "landing_verified": true,
+      "record_pending": null,
+      "max_received_setpoint_gap_s": 0.052889716999970915,
+      "max_sender_gap_s": 0.051274273999979414,
+      "storage_land_s": null,
+      "command_http_timeouts": []
+    },
+    {
+      "scenario": "mission_xy",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "state": "END",
+      "landing_verified": true,
+      "record_pending": null,
+      "max_received_setpoint_gap_s": 0.05283708000001752,
+      "max_sender_gap_s": 0.0504570870000407,
+      "storage_land_s": null,
+      "command_http_timeouts": []
+    },
+    {
+      "scenario": "mission_y",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "state": "END",
+      "landing_verified": true,
+      "record_pending": null,
+      "max_received_setpoint_gap_s": 0.05266660300003423,
+      "max_sender_gap_s": 0.05019696700003351,
+      "storage_land_s": null,
+      "command_http_timeouts": []
+    },
+    {
+      "scenario": "nominal",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "state": "END",
+      "landing_verified": true,
+      "record_pending": null,
+      "max_received_setpoint_gap_s": 0.051246533999972144,
+      "max_sender_gap_s": 0.05029221900002767,
+      "storage_land_s": null,
+      "command_http_timeouts": []
+    },
+    {
+      "scenario": "passive_recorder",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "state": "END",
+      "landing_verified": true,
+      "record_pending": null,
+      "max_received_setpoint_gap_s": 0.05162991399993189,
+      "max_sender_gap_s": 0.050404419000074085,
+      "storage_land_s": null,
+      "command_http_timeouts": []
+    },
+    {
+      "scenario": "pilot",
+      "commands": [
+        "OFFBOARD",
+        "ARM"
+      ],
+      "state": "PILOT_OVERRIDE",
+      "landing_verified": false,
+      "record_pending": null,
+      "max_received_setpoint_gap_s": 0.050940971000045465,
+      "max_sender_gap_s": 0.05053938800006108,
+      "storage_land_s": null,
+      "command_http_timeouts": []
+    },
+    {
+      "scenario": "platform_link",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "state": "END",
+      "landing_verified": true,
+      "record_pending": null,
+      "max_received_setpoint_gap_s": 0.05321017000005668,
+      "max_sender_gap_s": 0.050773167999977886,
+      "storage_land_s": null,
+      "command_http_timeouts": []
+    },
+    {
+      "scenario": "pose_gap",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "state": "END",
+      "landing_verified": true,
+      "record_pending": null,
+      "max_received_setpoint_gap_s": 0.05186938200000668,
+      "max_sender_gap_s": 0.05025359699999399,
+      "storage_land_s": null,
+      "command_http_timeouts": []
+    },
+    {
+      "scenario": "python_pause",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "state": "END",
+      "landing_verified": true,
+      "record_pending": null,
+      "max_received_setpoint_gap_s": 0.05217321599997149,
+      "max_sender_gap_s": 0.05026344700002028,
+      "storage_land_s": null,
+      "command_http_timeouts": []
+    },
+    {
+      "scenario": "report_delay",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "state": "END",
+      "landing_verified": true,
+      "record_pending": null,
+      "max_received_setpoint_gap_s": 0.051160826999989695,
+      "max_sender_gap_s": 0.0503116770000247,
+      "storage_land_s": null,
+      "command_http_timeouts": []
+    },
+    {
+      "scenario": "report_malformed",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "state": "END",
+      "landing_verified": true,
+      "record_pending": null,
+      "max_received_setpoint_gap_s": 0.05125794700001052,
+      "max_sender_gap_s": 0.05022071999997024,
+      "storage_land_s": null,
+      "command_http_timeouts": []
+    },
+    {
+      "scenario": "report_silence",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "state": "END",
+      "landing_verified": true,
+      "record_pending": null,
+      "max_received_setpoint_gap_s": 0.05334414599997217,
+      "max_sender_gap_s": 0.053950740999994196,
+      "storage_land_s": null,
+      "command_http_timeouts": []
+    },
+    {
+      "scenario": "separate_hold_gap",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "POSCTL",
+        "OFFBOARD",
+        "LAND"
+      ],
+      "state": "END",
+      "landing_verified": true,
+      "record_pending": null,
+      "max_received_setpoint_gap_s": 0.0516796899999008,
+      "max_sender_gap_s": 0.050559749999933956,
+      "storage_land_s": null,
+      "command_http_timeouts": []
+    },
+    {
+      "scenario": "separate_hold_land",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "POSCTL",
+        "LAND"
+      ],
+      "state": "FAILED",
+      "landing_verified": true,
+      "record_pending": true,
+      "max_received_setpoint_gap_s": 0.05102495400001317,
+      "max_sender_gap_s": 0.05016800999987936,
+      "storage_land_s": null,
+      "command_http_timeouts": []
+    },
+    {
+      "scenario": "separate_left_error",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "POSCTL",
+        "OFFBOARD",
+        "LAND"
+      ],
+      "state": "END",
+      "landing_verified": true,
+      "record_pending": null,
+      "max_received_setpoint_gap_s": 0.052526704999991125,
+      "max_sender_gap_s": 0.05023930200013638,
+      "storage_land_s": null,
+      "command_http_timeouts": []
+    },
+    {
+      "scenario": "separate_mission_x",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "POSCTL",
+        "OFFBOARD",
+        "LAND"
+      ],
+      "state": "END",
+      "landing_verified": true,
+      "record_pending": null,
+      "max_received_setpoint_gap_s": 0.05188626799986196,
+      "max_sender_gap_s": 0.05114698799980033,
+      "storage_land_s": null,
+      "command_http_timeouts": []
+    },
+    {
+      "scenario": "separate_nominal",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "POSCTL",
+        "OFFBOARD",
+        "LAND"
+      ],
+      "state": "END",
+      "landing_verified": true,
+      "record_pending": null,
+      "max_received_setpoint_gap_s": 0.05239709700003914,
+      "max_sender_gap_s": 0.050494330999981685,
+      "storage_land_s": null,
+      "command_http_timeouts": []
+    },
+    {
+      "scenario": "separate_pilot",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "POSCTL"
+      ],
+      "state": "PILOT_OVERRIDE",
+      "landing_verified": false,
+      "record_pending": true,
+      "max_received_setpoint_gap_s": 0.05224763699993673,
+      "max_sender_gap_s": 0.05020221300014782,
+      "storage_land_s": null,
+      "command_http_timeouts": []
+    },
+    {
+      "scenario": "separate_report_delay",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "POSCTL",
+        "OFFBOARD",
+        "LAND"
+      ],
+      "state": "END",
+      "landing_verified": true,
+      "record_pending": null,
+      "max_received_setpoint_gap_s": 0.052025927999920896,
+      "max_sender_gap_s": 0.05049906700003248,
+      "storage_land_s": null,
+      "command_http_timeouts": []
+    },
+    {
+      "scenario": "separate_resume_gap",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "POSCTL",
+        "OFFBOARD",
+        "LAND"
+      ],
+      "state": "END",
+      "landing_verified": true,
+      "record_pending": null,
+      "max_received_setpoint_gap_s": 0.052422250000063286,
+      "max_sender_gap_s": 0.05032281299986607,
+      "storage_land_s": null,
+      "command_http_timeouts": []
+    },
+    {
+      "scenario": "separate_storage_land",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "state": "FAILED",
+      "landing_verified": true,
+      "record_pending": null,
+      "max_received_setpoint_gap_s": 0.053618694000078904,
+      "max_sender_gap_s": 0.05020060900005774,
+      "storage_land_s": 0.5505967200001578,
+      "command_http_timeouts": []
+    },
+    {
+      "scenario": "separate_storage_wait",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "POSCTL",
+        "OFFBOARD",
+        "LAND"
+      ],
+      "state": "END",
+      "landing_verified": true,
+      "record_pending": null,
+      "max_received_setpoint_gap_s": 0.05219347000002017,
+      "max_sender_gap_s": 0.051417609000054654,
+      "storage_land_s": null,
+      "command_http_timeouts": []
+    },
+    {
+      "scenario": "separate_takeoff_gap",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "POSCTL",
+        "OFFBOARD",
+        "LAND"
+      ],
+      "state": "END",
+      "landing_verified": true,
+      "record_pending": null,
+      "max_received_setpoint_gap_s": 0.05242378400009784,
+      "max_sender_gap_s": 0.050582047000034436,
+      "storage_land_s": null,
+      "command_http_timeouts": []
+    },
+    {
+      "scenario": "separate_takeoff_pose_gap",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "POSCTL",
+        "OFFBOARD",
+        "LAND"
+      ],
+      "state": "END",
+      "landing_verified": true,
+      "record_pending": null,
+      "max_received_setpoint_gap_s": 0.05182887399996616,
+      "max_sender_gap_s": 0.05031662400006098,
+      "storage_land_s": null,
+      "command_http_timeouts": []
+    },
+    {
+      "scenario": "state_1hz",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "state": "END",
+      "landing_verified": true,
+      "record_pending": null,
+      "max_received_setpoint_gap_s": 0.05805370699999912,
+      "max_sender_gap_s": 0.050301386000001,
+      "storage_land_s": null,
+      "command_http_timeouts": []
+    },
+    {
+      "scenario": "takeoff_pose_gap",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "state": "END",
+      "landing_verified": true,
+      "record_pending": null,
+      "max_received_setpoint_gap_s": 0.05119777599998088,
+      "max_sender_gap_s": 0.05032407599992439,
+      "storage_land_s": null,
+      "command_http_timeouts": []
+    },
+    {
+      "scenario": "target_silence",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "state": "END",
+      "landing_verified": true,
+      "record_pending": null,
+      "max_received_setpoint_gap_s": 0.05282840400002442,
+      "max_sender_gap_s": 0.050216141999953834,
+      "storage_land_s": null,
+      "command_http_timeouts": []
+    },
+    {
+      "scenario": "uwb_gap",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "state": "END",
+      "landing_verified": true,
+      "record_pending": null,
+      "max_received_setpoint_gap_s": 0.05120019999998249,
+      "max_sender_gap_s": 0.05038754499997822,
+      "storage_land_s": null,
+      "command_http_timeouts": []
+    }
+  ],
+  "browser-command.log": "2 browser command concurrency cases passed\n",
+  "contracts.log": "Internal ctest changing into directory: /__w/ROS2/ROS2/.review/integrated-build\nTest project /__w/ROS2/ROS2/.review/integrated-build\n    Start 15: field_executor_contracts\n1/3 Test #15: field_executor_contracts .........   Passed    2.26 sec\n    Start 16: field_mission_ai_contracts\n2/3 Test #16: field_mission_ai_contracts .......   Passed    2.04 sec\n    Start 17: lidar_relative_contracts\n3/3 Test #17: lidar_relative_contracts .........   Passed    0.36 sec\n\n100% tests passed, 0 tests failed out of 3\n\nTotal Test time (real) =   4.66 sec\n",
+  "scenario_count": 33
+}

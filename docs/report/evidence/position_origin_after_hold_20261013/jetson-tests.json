@@ -1,0 +1,233 @@
+{
+  "source_commit": "b5ea7a46d6106fdd86d211ee016d537366542a7c",
+  "physical_flight": false,
+  "cases": [
+    {
+      "scenario": "separate_position_origin",
+      "result": "pass",
+      "state": "END",
+      "landing_verified": true,
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "POSCTL",
+        "OFFBOARD",
+        "LAND"
+      ],
+      "home_xy_m": [
+        2.0,
+        2.0
+      ],
+      "mission_start_xy_m": [
+        2.24,
+        2.12
+      ],
+      "capture": {
+        "captured_monotonic_s": 23222.085887838,
+        "method": "position_five_seconds_then_fc_xy",
+        "pose_age_s": 0.01738889539774391,
+        "position_hold_s": 5.0513677789967915,
+        "return_home_xy_m": [
+          2.0,
+          2.0
+        ],
+        "source_stamp_ns": [
+          1791877981689160519,
+          1791877981689160519,
+          1791877981689160519,
+          1791877981689160519,
+          1791877981689160519,
+          1791877981689160519,
+          1791877981689160519,
+          1791877976555932468
+        ],
+        "uwb_age_s": 0.017389597192959627,
+        "uwb_xy_m": [
+          2.24,
+          2.12
+        ],
+        "xy_m": [
+          2.24,
+          2.12
+        ]
+      },
+      "final_xy_m": [
+        2.0,
+        2.0
+      ],
+      "max_received_setpoint_gap_s": 0.06097548199977609,
+      "max_sender_gap_s": 0.054156490998138906,
+      "max_mock_fc_source_gap_s": 0.04119577500023297,
+      "storage_land_s": null,
+      "evidence_sha256": "cdbe9458a69970d2dc59d261b730eebfbf95a557c1f7bbd22717fd712be93731",
+      "binary_sha256": "48477b3a28ff20c7ae98f6bd44e7630e89503dc99f21ba92563ddf72951bc0a1"
+    },
+    {
+      "scenario": "separate_position_origin_gap",
+      "result": "pass",
+      "state": "END",
+      "landing_verified": true,
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "POSCTL",
+        "OFFBOARD",
+        "LAND"
+      ],
+      "home_xy_m": [
+        2.0,
+        2.0
+      ],
+      "mission_start_xy_m": [
+        2.24,
+        2.12
+      ],
+      "capture": {
+        "captured_monotonic_s": 23421.523883461,
+        "method": "position_five_seconds_then_fc_xy",
+        "pose_age_s": 0.02709544650861062,
+        "position_hold_s": 5.051049667999905,
+        "return_home_xy_m": [
+          2.0,
+          2.0
+        ],
+        "source_stamp_ns": [
+          1791878181117447211,
+          1791878181117447211,
+          1791878181117447211,
+          1791878181117447211,
+          1791878181117447211,
+          1791878181117447211,
+          1791878181117447211,
+          1791878170495646763
+        ],
+        "uwb_age_s": 0.027096983994852053,
+        "uwb_xy_m": [
+          2.24,
+          2.12
+        ],
+        "xy_m": [
+          2.24,
+          2.12
+        ]
+      },
+      "final_xy_m": [
+        2.0,
+        2.0
+      ],
+      "max_received_setpoint_gap_s": 0.07265065400133608,
+      "max_sender_gap_s": 0.05577460099812015,
+      "max_mock_fc_source_gap_s": 0.06473742099842639,
+      "storage_land_s": null,
+      "evidence_sha256": "80a223448f91041479828b730ea145398a0270252618804ee53b1a26921156cd",
+      "binary_sha256": "48477b3a28ff20c7ae98f6bd44e7630e89503dc99f21ba92563ddf72951bc0a1"
+    },
+    {
+      "scenario": "separate_resume_gap",
+      "result": "pass",
+      "state": "END",
+      "landing_verified": true,
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "POSCTL",
+        "OFFBOARD",
+        "LAND"
+      ],
+      "home_xy_m": [
+        2.0,
+        2.0
+      ],
+      "mission_start_xy_m": [
+        2.0,
+        2.0
+      ],
+      "capture": {
+        "captured_monotonic_s": 23623.673609971,
+        "method": "position_five_seconds_then_fc_xy",
+        "pose_age_s": 0.00731143849043292,
+        "position_hold_s": 5.000043731000915,
+        "return_home_xy_m": [
+          2.0,
+          2.0
+        ],
+        "source_stamp_ns": [
+          1791878383286959305,
+          1791878383286959305,
+          1791878383286959305,
+          1791878383286959305,
+          1791878383286959305,
+          1791878383286959305,
+          1791878383286959305,
+          1791878378195449325
+        ],
+        "uwb_age_s": 0.007311326633498538,
+        "uwb_xy_m": [
+          2.0,
+          2.0
+        ],
+        "xy_m": [
+          2.0,
+          2.0
+        ]
+      },
+      "final_xy_m": [
+        2.0,
+        2.0
+      ],
+      "max_received_setpoint_gap_s": 0.09056420200067805,
+      "max_sender_gap_s": 0.05260975299825077,
+      "max_mock_fc_source_gap_s": 0.04712501999892993,
+      "storage_land_s": null,
+      "evidence_sha256": "20826339100563cfc21040e33aa8df12d594fbefb0911ee13a942bf2c97cc06d",
+      "binary_sha256": "48477b3a28ff20c7ae98f6bd44e7630e89503dc99f21ba92563ddf72951bc0a1"
+    },
+    {
+      "scenario": "separate_storage_land",
+      "result": "pass",
+      "state": "FAILED",
+      "landing_verified": true,
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "home_xy_m": [
+        2.0,
+        2.0
+      ],
+      "mission_start_xy_m": null,
+      "capture": null,
+      "final_xy_m": [
+        2.0,
+        2.0
+      ],
+      "max_received_setpoint_gap_s": 0.05948836700190441,
+      "max_sender_gap_s": 0.0567493779999495,
+      "max_mock_fc_source_gap_s": 0.3834597800014308,
+      "storage_land_s": 0.13633657899845275,
+      "evidence_sha256": "07d886a1dd52130cacf1bc9017ba5f6e4844665906515c3c37e9db1fdcfac592",
+      "binary_sha256": "48477b3a28ff20c7ae98f6bd44e7630e89503dc99f21ba92563ddf72951bc0a1"
+    }
+  ],
+  "first_failures": [
+    {
+      "scenario": "separate_position_origin_gap",
+      "result": "failed_received_gap_check",
+      "threshold_s": 0.2,
+      "max_received_setpoint_gap_s": 0.22197608799979207,
+      "max_sender_gap_s": 0.05249587299840641,
+      "state": "END",
+      "evidence_sha256": "8c565acffe08d6f858537cc1677123aa3107e589a68eaef860c9e03769362f19"
+    },
+    {
+      "scenario": "separate_resume_gap",
+      "result": "failed_received_gap_check",
+      "threshold_s": 0.2,
+      "max_received_setpoint_gap_s": 0.26997789300003205,
+      "max_sender_gap_s": 0.05546856100045261,
+      "state": "END",
+      "evidence_sha256": "3f79dd394481af17aec23298a59f1128e60fcf1a67663f8fcb9d498241337337"
+    }
+  ]
+}
