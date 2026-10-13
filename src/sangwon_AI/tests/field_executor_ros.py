@@ -143,6 +143,7 @@ class FC:
                 pos_horiz_rel_status_flag=True,pos_vert_abs_status_flag=True,pred_pos_horiz_rel_status_flag=True)
             if self.scenario=='fc_estimator_loss' and self.gap_start is not None:est.pos_horiz_rel_status_flag=False
             rc=RCIn(channels=[1500]*8,rssi=255);battery=BatteryState(present=True,voltage=24.,percentage=.9)
+            rc.channels[4]=getattr(self,'mode_switch',1500)
             for key,m in [('state',state),('landed',landed),('odom',odom),('est',est),('rc',rc),('battery',battery)]:
                 if key=='odom' and t<self.mute_pose_until:continue
                 if key=='state' and self.scenario=='state_1hz':
@@ -264,10 +265,29 @@ def run(scenario):
             first=dict(action='takeoff',client_request_id='takeoff-'+scenario,operator_session_id=p.telemetry['operator_session_id'])
             accepted=post(first);assert post(first)==accepted,'HTTP retry duplicated TAKEOFF'
         else:assignment=post(dict(action='start',trial_case=trial_case,client_request_id='native-'+scenario))
-        start=time.monotonic();end=start+(110 if fc.moving else 65 if separate else 35)
+        recovery_case=scenario=='separate_pilot_recovery';recovered=False;override_at=None;ground_at=None
+        start=time.monotonic();end=start+(130 if recovery_case else 110 if fc.moving else 65 if separate else 35)
         while time.monotonic()<end:
             assert native_proc.poll() is None and observer.poll() is None,(scenario,(root/'process.log').read_text())
             phase=fc.status.get('state')
+            if recovery_case and not recovered and phase=='PILOT_OVERRIDE':
+                if override_at is None:override_at=time.monotonic();override_sent=len(fc.setpoint_times)
+                assert len(fc.setpoint_times)<=override_sent+1,'reclaimed pilot flight'
+                assert fc.calls==['OFFBOARD','ARM','POSCTL'],'command after override'
+                if time.monotonic()-override_at>=12. and ground_at is None:
+                    fc.armed=False;fc.z=.1;fc.mode='POSCTL';fc.target=None;ground_at=time.monotonic()
+                time.sleep(.025);continue
+            if recovery_case and not recovered and phase=='IDLE' and ground_at is not None:
+                assert time.monotonic()-ground_at>=10.,'reset without ten seconds ground neutrality'
+                assert fc.status['previous_flight']['state']=='PILOT_OVERRIDE'
+                assert fc.status['ground_reset_count']==1
+                assert fc.calls==['OFFBOARD','ARM','POSCTL']
+                if not p.can_takeoff():time.sleep(.025);continue
+                # A retry of the old web receipt cannot become a new flight.
+                assert post(first)==accepted
+                time.sleep(.3);assert fc.status['state']=='IDLE'
+                post(dict(first,client_request_id='fresh-after-pilot'))
+                recovered=True;start_sent=False;hold_window=None
             if scenario=='separate_storage_land' and not explicit_cancel and phase=='POSITION_HANDOFF':
                 marker=root/'storage-marker'
                 if marker.exists() and marker.read_text()=='3':
@@ -291,10 +311,11 @@ def run(scenario):
                     fc.mute_uwb_until=time.monotonic()+2.5;pre_start_injected=True
                 if time.monotonic()-hold_window>2.:
                     assert len(fc.setpoint_times)<=hold_sent+1,'POSITION wait must stop setpoint stream'
-                    assert fc.calls==['OFFBOARD','ARM','POSCTL'],'mission started without web START'
+                    assert fc.calls==(['OFFBOARD','ARM','POSCTL']*(2 if recovered else 1)),'mission started without web START'
                     if scenario=='separate_hold_land':
                         post(dict(action='takeoff_land',client_request_id='land-before-start',operator_session_id=p.telemetry['operator_session_id']));start_sent=True
-                    elif scenario=='separate_pilot':fc.mode='ALTCTL';start_sent=True
+                    elif scenario=='separate_pilot' or (recovery_case and not recovered):
+                        fc.mode='ALTCTL';fc.mode_switch=1700;start_sent=True
                     elif p.can_start():
                         start_request=dict(action='start',trial_case=trial_case,client_request_id='native-'+scenario)
                         assignment=post(start_request);assert post(start_request)==assignment,'HTTP retry duplicated START';start_sent=True
@@ -319,6 +340,7 @@ def run(scenario):
         assert fc.status.get('state')==expected,(scenario,fc.status,fc.calls,(root/'process.log').read_text())
         expected_calls=(['OFFBOARD','ARM','POSCTL']+([] if scenario=='separate_pilot' else ['LAND'] if scenario=='separate_hold_land' else ['OFFBOARD','LAND'])) if separate else (['OFFBOARD','ARM'] if scenario=='pilot' else ['OFFBOARD','ARM','LAND'])
         if scenario=='separate_storage_land':expected_calls=['OFFBOARD','ARM','LAND']
+        if recovery_case:expected_calls=['OFFBOARD','ARM','POSCTL','OFFBOARD','ARM','POSCTL','OFFBOARD','LAND']
         assert fc.calls==expected_calls,fc.calls
         if storage_test:
             deadline=time.monotonic()+15
@@ -372,6 +394,10 @@ def run(scenario):
         assert any(x['input_snapshot']['source_stamp_ns'][6]>0 for x in samples),'original UWB source stamp missing'
         assert any(x.get('type')=='command_ack' for x in recorded),'native ACK evidence missing'
         if expected=='END':assert any(x.get('type')=='transition' and x.get('state')=='END' for x in recorded)
+        if recovery_case:
+            assert recovered and fc.status['ground_reset_count']==1
+            assert any(x.get('type')=='transition' and x.get('state')=='PILOT_OVERRIDE' for x in recorded)
+            assert any(x.get('type')=='transition' and x.get('state')=='IDLE' and x.get('ground_reset_count')==1 for x in recorded)
         # This measures received actual C++ setpoints. It does not certify an OS.
         # A deliberately silent POSCTL interval is not a sender outage.
         gaps=[b[0]-a[0] for a,b in zip(fc.setpoint_rows,fc.setpoint_rows[1:]) if not separate or (a[4]=='OFFBOARD' and b[4]=='OFFBOARD')]

@@ -29,7 +29,7 @@ def state(**changes):
 class Peer:
     def __init__(self,cfg=None):
         self.p=subprocess.Popen([BINARY],stdin=subprocess.PIPE,stdout=subprocess.PIPE)
-        self.t=10.;self.s=state();self.request=copy.deepcopy(REQUEST)
+        self.t=10.;self.wall=10.;self.s=state();self.request=copy.deepcopy(REQUEST)
         self.call(dict(method='configure',settings=cfg or CFG))
         self.commands=[];self.out={};self.trace=[]
     def call(self,value):
@@ -42,7 +42,7 @@ class Peer:
         if self.s['armed'] and self.out.get('height_reference_m') is not None:
             target=self.out['height_reference_m'];step=max(-.5*dt,min(.5*dt,target-self.s['altitude_enu_m']));self.s['altitude_enu_m']+=step;self.s['vertical_speed_m_s']=step/dt
             if self.s['altitude_enu_m']>.15:self.s['landed']=2
-        self.out=self.call(dict(method='tick',state=self.s,request=self.request,now_s=self.t,wall_s=10.))
+        self.out=self.call(dict(method='tick',state=self.s,request=self.request,now_s=self.t,wall_s=self.wall))
         for a in self.out['actions']:
             self.commands.append(a['kind'])
             if ack:self.ack(a['token'],True)
@@ -65,6 +65,67 @@ class Contracts(unittest.TestCase):
     def tearDown(self):
         for p in self.peers:p.close()
     def peer(self,**kw):p=Peer(**kw);self.peers.append(p);return p
+    def recovered_peer(self):
+        p=self.separate();p.until('TAKING_OFF');p.s['mode']='ALTCTL';p.tick()
+        self.assertEqual(p.out['phase'],'PILOT_OVERRIDE')
+        p.s.update(armed=False,landed=1,mode='POSCTL',vertical_speed_m_s=0.,altitude_enu_m=.1,
+            rc_valid=True,rc_mapping_valid=True,rc_neutral_valid=True,rc_sticks_centered=True,rc_age_s=0.,
+            terminal_record_persisted=True,recording_ok=True)
+        return p
+
+    def test_pilot_ground_reset_requires_new_request_and_preserves_old_home(self):
+        p=self.recovered_peer();old_request=copy.deepcopy(p.request);calls=list(p.commands)
+        for _ in range(200):p.tick()
+        self.assertEqual(p.out['phase'],'PILOT_OVERRIDE')
+        for _ in range(4):p.tick()
+        self.assertEqual(p.out['phase'],'IDLE');self.assertEqual(p.commands,calls)
+        self.assertTrue(p.out['native_takeoff']['can_takeoff'])
+        self.assertEqual(p.out['previous_flight']['home_xy_m'],[2.,2.])
+        self.assertIsNone(p.out['home_xy_m']);self.assertFalse(p.out['flight_control_enabled'])
+        p.wall=11.;p.request=dict(old_request,requested_s=11.);p.tick()
+        self.assertEqual(p.out['phase'],'IDLE')
+        p.request=dict(old_request,request_id='queued-before-reset',requested_s=10.);p.tick()
+        self.assertEqual(p.out['phase'],'IDLE')
+        p.request=dict(old_request,request_id='fresh-takeoff',requested_s=11.);p.tick()
+        self.assertEqual(p.out['phase'],'PREPARING')
+        self.assertEqual(p.out['home_xy_m'],[2.,2.]);self.assertIsNone(p.out['mission_start_xy_m'])
+        p.until('TAKING_OFF');self.assertEqual(p.commands,calls+['offboard_mode','arm'])
+
+    def test_pilot_recovery_never_reclaims_armed_or_unknown_ground(self):
+        for change in (dict(armed=True,landed=2),dict(armed=True,landed=1),dict(landed=0),dict(connected=False),dict(state_age_s=3.),dict(landed_age_s=3.),dict(mode='ALTCTL')):
+            p=self.recovered_peer();p.s.update(change);calls=list(p.commands)
+            for _ in range(230):p.tick()
+            self.assertEqual(p.out['phase'],'PILOT_OVERRIDE');self.assertEqual(p.commands,calls)
+
+    def test_pilot_neutral_timer_restarts_for_sticks_rc_loss_or_record_failure(self):
+        for change in (dict(rc_sticks_centered=False),dict(rc_age_s=1.1),dict(rc_valid=False),dict(rc_mapping_valid=False),dict(rc_neutral_valid=False),dict(terminal_record_persisted=False),dict(recording_ok=False),dict(pose_age_s=.3)):
+            p=self.recovered_peer()
+            for _ in range(180):p.tick()
+            before=copy.deepcopy(p.s);p.s.update(change);p.tick();p.s=before
+            self.assertEqual(p.out['pilot_recovery']['elapsed_s'],0.)
+            for _ in range(180):p.tick()
+            self.assertEqual(p.out['phase'],'PILOT_OVERRIDE')
+            for _ in range(24):p.tick()
+            self.assertEqual(p.out['phase'],'IDLE')
+
+    def test_pilot_scheduler_gap_resets_neutral_timer(self):
+        p=self.recovered_peer()
+        for _ in range(180):p.tick()
+        p.tick(dt=2.)
+        self.assertEqual(p.out['pilot_recovery']['elapsed_s'],0.)
+        for _ in range(180):p.tick()
+        self.assertEqual(p.out['phase'],'PILOT_OVERRIDE')
+
+    def test_pilot_reset_keeps_command_tokens_unique_and_second_result(self):
+        p=self.recovered_peer();p.wall=20.
+        for _ in range(204):p.tick()
+        p.wall=21.;p.request=dict(p.request,request_id='second-takeoff',requested_s=21.)
+        p.until('PREPARING')
+        while not p.out['actions']:p.tick(ack=False)
+        token=p.out['actions'][0]['token'];self.assertGreater(token,2)
+        p.ack(1,True);p.tick(ack=False);self.assertEqual(p.out['phase'],'PREPARING')
+        p.ack(token,True);p.until('TAKING_OFF');p.s['mode']='ALTCTL';p.tick()
+        self.assertEqual(p.out['phase'],'PILOT_OVERRIDE');self.assertEqual(p.out['ground_reset_count'],1)
     def test_unsent_journal_wait_does_not_consume_fc_ack_deadline(self):
         p=self.peer();p.until('PREPARING')
         while not p.out['actions']:p.tick(ack=False)

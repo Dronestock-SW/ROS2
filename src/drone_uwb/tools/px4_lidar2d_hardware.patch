@@ -3,7 +3,7 @@ new file mode 100644
 index 0000000000..63e0f2c909
 --- /dev/null
 +++ b/boards/px4/fmu-v6c/lidar2d.px4board
-@@ -0,0 +1,95 @@
+@@ -0,0 +1,96 @@
 +CONFIG_BOARD_TOOLCHAIN="arm-none-eabi"
 +CONFIG_BOARD_ARCHITECTURE="cortex-m7"
 +CONFIG_BOARD_SERIAL_GPS1="/dev/ttyS0"
@@ -36,6 +36,7 @@ index 0000000000..63e0f2c909
 +CONFIG_DRIVERS_POWER_MONITOR_INA238=y
 +CONFIG_DRIVERS_PWM_OUT=y
 +CONFIG_DRIVERS_PX4IO=y
++CONFIG_DRIVERS_RC_CRSF_RC=y
 +CONFIG_COMMON_TELEMETRY=y
 +CONFIG_DRIVERS_TONE_ALARM=y
 +CONFIG_DRIVERS_UAVCAN=y
@@ -269,10 +270,11 @@ index c95e3c3623..805408dd6d 100644
  	uORB::PublicationMulti<estimator_aid_source2d_s> _estimator_aid_src_aux_vel_pub{ORB_ID(estimator_aid_src_aux_vel)};
  	hrt_abstime _status_aux_vel_pub_last{0};
  #endif // CONFIG_EKF2_AUXVEL
-@@ -491,6 +504,8 @@ private:
+@@ -491,6 +504,9 @@ private:
  		(ParamExtFloat<px4::params::EKF2_VEL_LIM>) _param_ekf2_vel_lim,
  
  #if defined(CONFIG_EKF2_AUXVEL)
++		(ParamInt<px4::params::EKF2_LID2_VER>) _param_ekf2_lid2_ver,
 +		(ParamBool<px4::params::EKF2_LID2_EN>) _param_ekf2_lid2_en,
 +		(ParamFloat<px4::params::EKF2_LID2_AGE>) _param_ekf2_lid2_age,
  		(ParamExtFloat<px4::params::EKF2_AVEL_DELAY>)

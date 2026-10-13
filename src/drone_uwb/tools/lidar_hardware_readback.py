@@ -6,7 +6,7 @@ import sys
 import time
 
 
-QUERIES = ('ver all', 'param show EKF2_LID2_VER', 'param show EKF2_LID2_EN',
+QUERIES = ('ver all', 'param show -q EKF2_LID2_VER', 'param show EKF2_LID2_EN',
     'param show EKF2_LID2_AGE', 'param show EKF2_AVEL_DELAY',
     'param show EKF2_EV_POS_X', 'param show EKF2_EV_POS_Y', 'param show EKF2_EV_POS_Z',
     'listener lidar_velocity2d_status -n 1', 'listener estimator_aid_src_aux_vel -n 1',

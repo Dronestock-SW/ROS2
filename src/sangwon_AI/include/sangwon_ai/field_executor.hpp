@@ -1,6 +1,7 @@
 #pragma once
 // PX4 requests only. The fixed height reference is controlled by PX4.
 #include "sangwon_ai/field_mission.hpp"
+#include <set>
 
 namespace sangwon::field {
 inline bool field_mode_allowed(const std::string& phase,const std::string& mode) {
@@ -26,12 +27,15 @@ class FieldExecutor {
   double height() const { return height_; }
   double yaw() const { return yaw_; }
   Vec3 target() const { return target_; }
+  unsigned ground_reset_count() const { return ground_reset_count_; }
   Json status() const {
     Json out={{"phase",phase},{"state",phase},{"reason",reason},{"failure",failure.empty()?Json():Json(failure)},
       {"executor_backend","sangwon_cpp_executor"},{"executor_fc_transport",true},{"mission_ai",{{"backend","sangwon_cpp_bt"},{"connected",true},{"prepared",bool(ai_)},{"fc_transport",false}}},
       {"home_xy_m",ai_?xy_json(home_):Json()}, {"goal_xy_m",streaming()?xy_json(target_):Json()},
       {"mission_start_xy_m",ai_&&(!separate()||mission_start_captured_)?xy_json(mission_start_):Json()},
       {"mission_start_capture",mission_start_capture_},
+      {"ground_reset_count",ground_reset_count_},{"previous_flight",previous_flight_},
+      {"pilot_recovery",{{"required_s",10.},{"elapsed_s",recovery_elapsed_},{"blocker",recovery_blocker_}}},
       {"command_record_pending",pending()&&waiting_journal_},{"height_reference_m",ai_?Json(height_):Json()}, {"control_ack",ack_},
       {"flight_control_enabled",flag(cfg_,"execute")&&bool(ai_)&&!terminal()},
       {"bridge_observation_timeout_s",cfg_.value("bridge_observation_timeout_s",.35)},{"landing_verified",landing_verified_},{"completed_waypoints",decision.value("completed_waypoints",0)},
@@ -61,7 +65,7 @@ class FieldExecutor {
   }
   void tick(Json s,double now,const Json& request=Json(),double wall=0) {
     actions=Json::array();
-    if(terminal())return;
+    if(terminal()) { if(phase=="PILOT_OVERRIDE"&&separate())tick_pilot_recovery(s,now,wall,request);return; }
     last_armed_=flag(s,"armed");can_takeoff_=false;can_start_=false;
     const double dt=last_>=0?now-last_:.05; last_=now;
     if(dt>.2&&phase=="HOLD_READY"){hold_since_=-1;if(!mission_start_captured_)hold_candidate_.reset();}
@@ -84,6 +88,7 @@ class FieldExecutor {
       hold_blocker_=ground_gate(s,false);
       can_takeoff_=separate()&&hold_blocker_=="ready"&&ground_since_>=0&&now-ground_since_>=3&&flag(cfg_,"execute");
       if(request.is_null() || request.value("action",std::string())!=(separate()?"takeoff":"start")) return;
+      if(ground_reset_count_&&(request.at("requested_s").get<double>()<=new_request_after_wall_||used_requests_.count(request.at("request_id").get<std::string>())))return;
       reason=ground_gate(s);
       if(reason!="ready")return;
       if(ground_since_<0 || now-ground_since_<3) { reason="wait_stationary_three_seconds"; return; }
@@ -92,6 +97,7 @@ class FieldExecutor {
       require(flag(s,"request_persisted"),"REQUEST_PERSISTENCE_REQUIRED");
       home_=mission_start_=target_=point(s.at("xy")); ground_height_=height_=number(s.at("altitude_enu_m"),-100,100); yaw_=number(s.at("yaw_deg"),-360,360);
       execution_=request.at("request_id").get<std::string>();
+      used_requests_.insert(execution_);
       assignment_=request;mission_started_=!separate();
       if(separate()){takeoff_request_id_=execution_;assignment_["waypoints"]=Json::array({Json{{"xy",xy_json(home_)},{"dwell_s",10.},{"type","hover"}}});}
       prepare_ai(assignment_);
@@ -163,7 +169,36 @@ class FieldExecutor {
   bool mission_started_{},can_takeoff_{},can_start_{},last_armed_{};
   bool mission_start_captured_{};double hold_elapsed_{};Json mission_start_capture_;
   double hold_since_{-1};std::string takeoff_request_id_,hold_blocker_="waiting_for_ground_inputs";
+  unsigned ground_reset_count_{};double recovery_since_{-1},recovery_last_{-1},recovery_elapsed_{},new_request_after_wall_{};
+  Vec3 recovery_ground_{};Json previous_flight_;std::set<std::string> used_requests_;
+  std::string recovery_blocker_="not_in_pilot_override";
   bool separate()const{return cfg_.value("start_mode",std::string("ground_takeoff"))=="takeoff_hold";}
+  void tick_pilot_recovery(const Json& s,double now,double wall,const Json& request) {
+    // Silence is not neutrality. Require fresh physical RC and confirmed
+    // ground state; never recover authority during the overridden flight.
+    if(!request.is_null())used_requests_.insert(request.at("request_id").get<std::string>());
+    const double dt=recovery_last_>=0?now-recovery_last_:0.;recovery_last_=now;
+    recovery_blocker_="ready";
+    if(!flag(s,"connected")||flag(s,"armed")||s.value("landed",0)!=1||!age(s,"state_age_s",2.5)||!age(s,"landed_age_s",2.5))recovery_blocker_="fresh_landed_disarmed_required";
+    else if(s.value("mode",std::string())!="POSCTL")recovery_blocker_="pilot_select_position_required";
+    else if(!flag(s,"rc_valid")||!flag(s,"rc_mapping_valid")||!flag(s,"rc_neutral_valid")||!flag(s,"rc_sticks_centered")||!age(s,"rc_age_s",1.))recovery_blocker_="fresh_centered_rc_required";
+    else if(!flag(s,"terminal_record_persisted")||!flag(s,"recording_ok"))recovery_blocker_="previous_flight_record_required";
+    else if(!age(s,"pose_age_s",.2)||!s.contains("xy")||s.at("xy").size()!=2||!s.contains("velocity_xy")||s.at("velocity_xy").size()!=2||xy(point(s.at("velocity_xy")))>.1||std::abs(s.value("vertical_speed_m_s",1.))>.1)recovery_blocker_="stationary_ground_required";
+    if(dt<=0||dt>.2||recovery_blocker_!="ready")recovery_since_=-1;
+    if(recovery_since_>=0&&xy(point(s.at("xy"))-recovery_ground_)>.1)recovery_since_=-1;
+    if(recovery_blocker_=="ready"&&recovery_since_<0){recovery_since_=now;recovery_ground_=point(s.at("xy"));}
+    recovery_elapsed_=recovery_since_>=0?now-recovery_since_:0.;
+    hold_blocker_=recovery_blocker_=="ready"?"pilot_ground_neutral_ten_seconds":recovery_blocker_;
+    if(recovery_elapsed_<10.||!std::isfinite(wall)||wall<=0)return;
+    const Json previous={{"state",phase},{"reason",reason},{"failure",failure},{"execution_id",execution_},
+      {"takeoff_request_id",takeoff_request_id_},{"home_xy_m",ai_?xy_json(home_):Json()},
+      {"mission_start_xy_m",mission_start_captured_?xy_json(mission_start_):Json()},{"reset_monotonic_s",now}};
+    FieldExecutor next(cfg_);next.counter_=counter_;next.ground_reset_count_=ground_reset_count_+1;
+    next.used_requests_=std::move(used_requests_);next.new_request_after_wall_=wall;next.previous_flight_=previous;
+    next.ground_since_=now-3.;next.ground_=point(s.at("xy"));next.last_=now;
+    next.reason="pilot_ground_reset_waiting_for_new_takeoff";
+    *this=std::move(next);
+  }
   void prepare_ai(const Json& request) {
     Json prep={{"execution_id",execution_},{"settings",cfg_},{"home_xy",xy_json(home_)},
       {"start_xy",xy_json(mission_start_)},
@@ -221,6 +256,7 @@ class FieldExecutor {
       require(flag(s,"request_persisted")&&wall>=request.at("requested_s").get<double>()&&wall-request.at("requested_s").get<double>()<=cfg_.value("request_ttl_s",30.),"CONTROL_REQUEST_EXPIRED_OR_UNRECORDED");
       require(request.at("request_id")!=takeoff_request_id_,"NEW_MISSION_REQUEST_REQUIRED");
       execution_=request.at("request_id").get<std::string>();assignment_=request;prepare_ai(request);mission_started_=true;
+      used_requests_.insert(execution_);
       ack_={{"action","start"},{"request_id",execution_},{"requested_at",request.at("requested_at")}};
       can_start_=false;enter("RESUME_PREPARING","web_start_warmup_captured_position_reference",now);
     }

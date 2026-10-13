@@ -145,6 +145,12 @@ class CppObserver(Node):
     def native_status(self, msg):
         value = json.loads(msg.data)
         if value.get('executor_backend') != 'sangwon_cpp_executor': return
+        generation = (value['executor_session'], value.get('ground_reset_count', 0))
+        if getattr(self, 'native_generation', generation) != generation:
+            # Retain the durable consumed-request ledger, not old mission intent.
+            self.session = LocalXYMission(self.settings, self.session.consumed)
+            self.forwarded = None
+        self.native_generation = generation
         self.native_session = value['executor_session']
         self.last_native_status = value
         phase = value['phase']

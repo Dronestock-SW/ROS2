@@ -172,6 +172,8 @@ class ExecutorNode final:public rclcpp::Node {
     if(bridge && bridge_at>bridge_at_){bridge_state_=*bridge;bridge_at_=bridge_at;}
     last_input_error_=std::move(input_error);
     const double t=steady_s();Json s=snapshot(t);std::deque<std::tuple<unsigned,bool,double>> acks;std::deque<std::pair<unsigned,double>> dispatched;std::string fault;bool pilot;
+    s["terminal_record_persisted"]=completion_persisted_.load();s["recording_ok"]=!record_fault_.load();
+    const auto reset_before=core_.ground_reset_count();
     {std::lock_guard<std::mutex> g(fast_mutex_);acks.swap(acks_);dispatched.swap(dispatched_);fault.swap(fault_);pilot=pilot_fault_;pilot_fault_=false;}
     for(auto [token,at]:dispatched)core_.command_dispatched(token,at);
     for(auto [token,accepted,at]:acks){core_.command_result(token,accepted,at);std::lock_guard<std::mutex> g(io_mutex_);events_.push_back(Json{{"type","command_ack"},{"token",token},{"accepted",accepted},{"sample_monotonic_ns",int64_t(at*1e9)},{"executor_owner","cpp_executor"}});}
@@ -186,13 +188,15 @@ class ExecutorNode final:public rclcpp::Node {
       if(!fault.empty())core_.interrupt(fault,pilot,t,s);
       else core_.tick(s,t,request,wall_s());
     }catch(const std::exception& e){core_.interrupt(std::string("native_input_invalid:")+e.what(),false,t,s);}
+    const bool ground_reset=core_.ground_reset_count()!=reset_before;
+    if(ground_reset){completion_persisted_=false;last_control_.clear();}
     for(const auto& action:core_.actions)core_.command_queued(action.at("token").get<unsigned>());
     View v;v.stream=core_.streaming()&&flag(cfg_,"execute");v.pending=core_.pending();v.token=core_.pending_token();v.phase=core_.phase;v.expires=t+.15;
     v.rc_required=flag(s,"rc_required");v.calibration=s.value("rc_calibration",Json::object());
     double angle=cfg_.at("enu_yaw_deg").get<double>()*M_PI/180;auto xy=core_.target();const double y=cfg_.at("map_y_axis_sign").get<int>()*xy.y;
     v.x=std::cos(angle)*xy.x-std::sin(angle)*y+cfg_.at("enu_offset_x_m").get<double>();v.y=std::sin(angle)*xy.x+std::cos(angle)*y+cfg_.at("enu_offset_y_m").get<double>();v.z=core_.height();v.yaw=(cfg_.at("enu_yaw_deg").get<double>()+cfg_.at("map_y_axis_sign").get<int>()*core_.yaw())*M_PI/180;
     double gap;unsigned sent;
-    {std::lock_guard<std::mutex> d(dispatch_mutex_);std::lock_guard<std::mutex> g(fast_mutex_);if(view_.baseline.empty()&&v.stream){v.baseline=sample_.rc;if(s.contains("rc_switch_channels"))v.switches=s.at("rc_switch_channels").get<std::vector<int>>();}else{v.baseline=view_.baseline;v.switches=view_.switches;}view_=std::move(v);gap=max_send_gap_;sent=sent_;}
+    {std::lock_guard<std::mutex> d(dispatch_mutex_);std::lock_guard<std::mutex> g(fast_mutex_);if(ground_reset){view_.baseline.clear();view_.switches.clear();sample_.feedback_at=-1e9;max_send_gap_=0.;}if(view_.baseline.empty()&&v.stream){v.baseline=sample_.rc;if(s.contains("rc_switch_channels"))v.switches=s.at("rc_switch_channels").get<std::vector<int>>();}else{v.baseline=view_.baseline;v.switches=view_.switches;}view_=std::move(v);gap=max_send_gap_;sent=sent_;}
     auto out=core_.status();out.update({{"executor_session",session_},{"test_mode",flag(outer_,"test_mode")},{"physical_flight",!flag(outer_,"test_mode")&&flag(cfg_,"execute")},{"output_enabled",flag(cfg_,"execute")},{"input_error",last_input_error_},{"input_age_s",t-input_at_},{"max_sender_gap_s",gap},{"setpoints_sent",sent},{"fc_connected",s.value("connected",false)},{"fc_armed",s.value("armed",false)},{"fc_mode",s.value("mode",std::string())},{"fc_landed",s.value("landed",0)}});
     out["operator_session_id"]=session_;
     if(s.at("xy").size()==2&&out.at("home_xy_m").is_array()) {
