@@ -138,7 +138,7 @@ def test_http_hover_uses_cpp_bt_from_start_through_confirmed_END(tmp_path,scenar
         with urlopen(request,timeout=2) as response:assert json.load(response)==assignment
         assert mission.submit(assignment,time.monotonic(),time.time())
         armed=native;mode='AUTO.LOITER' if native else 'POSCTL';landed=2 if native else 1;alt=1.8 if native else .1;xy=(2.,2.)
-        commands=[];phases=[];trace=[];prior=time.monotonic();start=prior;injected=False
+        commands=[];phases=[];trace=[];prior=time.monotonic();start=prior;injected=False;lost_at=None;cancelled=False
         last_uwb=prior;gap_start=None;gap_seen=False;uwb_history=[]
         peer=stack.enter_context(websocket_peer(p));sender=stack.enter_context(TelemetrySender(peer))
         while time.monotonic()-start<30:
@@ -182,10 +182,18 @@ def test_http_hover_uses_cpp_bt_from_start_through_confirmed_END(tmp_path,scenar
             sender.submit(dict(status,type='telemetry',drone_id=cfg.drone_id,
                 flight_state=mission.phase,fc_connected=True,fc_armed=armed,fc_landed=landed))
             if mission.phase=='DWELL' and not injected:
-                if scenario=='cpp_loss':ai.process.kill()
+                if scenario=='cpp_loss':ai.process.kill();lost_at=now
                 elif scenario=='rc_takeover':mode='ALTCTL'
                 elif use_lidar:gap_start=now
                 injected=True
+            if lost_at is not None and now-lost_at>.5 and not cancelled:
+                assert mission.local_setpoint() is not None and 'land' not in commands
+                assert mission.completed_waypoints==0
+                request=Request('http://127.0.0.1:'+str(server.server_port)+'/local/command',
+                    data=json.dumps(dict(action='land',client_request_id='explicit-cancel')).encode(),
+                    headers={'Content-Type':'application/json'},method='POST')
+                with urlopen(request,timeout=2) as response:assignment=json.load(response)
+                cancelled=True
             if mission.phase in mission.TERMINAL:break
             time.sleep(.05)
         if scenario=='lidar_loss':
@@ -193,7 +201,7 @@ def test_http_hover_uses_cpp_bt_from_start_through_confirmed_END(tmp_path,scenar
             assert not mission.status()['mission_complete'] and not gap_seen
             return
         if scenario not in ('complete','native_takeoff','lidar_gap','lidar_sdk_gap'):
-            assert mission.phase==('UNCONFIRMED' if scenario=='cpp_loss' else 'PILOT_OVERRIDE'),(mission.phase,mission.reason)
+            assert mission.phase==('FAILED' if scenario=='cpp_loss' else 'PILOT_OVERRIDE'),(mission.phase,mission.reason)
             assert commands==(['offboard_mode','arm','land'] if scenario=='cpp_loss' else ['offboard_mode','arm'])
             assert mission.local_setpoint() is None and not mission.status()['mission_complete']
             assert not mission.submit({**assignment,'control_request_id':'new-start'},time.monotonic(),time.time())

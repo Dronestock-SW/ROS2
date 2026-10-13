@@ -31,7 +31,8 @@ def state_input(s, feedback_age_s):
              'vertical_speed_m_s', 'altitude_enu_m', 'pose_age_s', 'uwb_age_s',
              'state_age_s', 'landed_age_s', 'estimator_age_s', 'estimator_valid',
              'vertical_estimator_valid', 'bridge_ready', 'alignment_matches',
-             'bridge_observation_age_s', 'battery', 'battery_age_s', 'uwb_stamp_ns', 'lidar_scan', 'lidar_input_error')
+             'bridge_observation_age_s', 'bridge_age_s', 'bridge_contract_error', 'bridge_stamp_ns',
+             'battery', 'battery_age_s', 'uwb_stamp_ns', 'lidar_scan', 'lidar_input_error')
     def clean(v):
         if isinstance(v, (list, tuple)): return [clean(x) for x in v]
         if isinstance(v, dict): return {k:clean(x) for k,x in v.items()}

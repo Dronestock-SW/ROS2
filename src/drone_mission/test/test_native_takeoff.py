@@ -79,11 +79,11 @@ def test_no_start_before_hold_no_queued_launch_after_takeoff():
     assert m.intent is None and m.assignment is None
 
 
-def test_stale_web_or_drifting_hold_requests_land_not_offboard():
+def test_web_report_loss_preserves_fc_hold_but_actual_drift_requests_land():
     m=rig();hold(m)
     m.last_web_s=10.
     a=m.tick(sample(15.,mode='AUTO.LOITER',armed=True,landed=2,altitude_enu_m=1.4),15.,WALL,time.time_ns())
-    assert [x['kind'] for x in a]==['land']
+    assert a==[] and m.phase=='HOLD_READY'
     m=rig();hold(m)
     a=advance(m,15.,mode='AUTO.LOITER',armed=True,landed=2,altitude_enu_m=1.4,xy=(2.7,2.))
     assert [x['kind'] for x in a]==['land']

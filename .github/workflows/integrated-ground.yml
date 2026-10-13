@@ -42,15 +42,18 @@ jobs:
           source /opt/ros/humble/setup.bash
           source install/setup.bash
           export PYTHONPATH="$PWD/src/drone_mission:$PWD/src/drone_uwb:$PWD/src/drone_platform_link:$PWD/src/drone_demo:$PWD/src/sangwon_AI/tests:${PYTHONPATH:-}"
-          python3 -m pytest src/drone_mission/test/test_bridge_timeout.py src/drone_mission/test/test_native_takeoff.py src/drone_mission/test/test_local_takeoff.py src/drone_mission/test/test_local_xy.py src/drone_mission/test/test_local_web.py src/drone_mission/test/test_final_stack.py src/drone_mission/test/test_anchor_trial.py src/drone_mission/test/test_preflight.py src/drone_mission/test/test_session.py src/drone_mission/test/test_mission_chain.py src/drone_mission/test/test_operator_arm.py src/drone_mission/test/test_lidar_input.py src/drone_platform_link/test/test_observation_sources.py src/sangwon_AI/tests/test_integrated_launcher.py src/sangwon_AI/tests/test_mavros_readback.py -q --junitxml=evidence/python.xml > evidence/python.log 2>&1
+          python3 -m pytest src/drone_mission/test/test_fc_owned_runtime.py src/drone_mission/test/test_recording.py src/drone_mission/test/test_completion_record.py src/drone_mission/test/test_bridge_timeout.py src/drone_mission/test/test_native_takeoff.py src/drone_mission/test/test_local_takeoff.py src/drone_mission/test/test_local_xy.py src/drone_mission/test/test_local_web.py src/drone_mission/test/test_final_stack.py src/drone_mission/test/test_anchor_trial.py src/drone_mission/test/test_preflight.py src/drone_mission/test/test_session.py src/drone_mission/test/test_mission_chain.py src/drone_mission/test/test_operator_arm.py src/drone_mission/test/test_lidar_input.py src/drone_platform_link/test/test_observation_sources.py src/sangwon_AI/tests/test_integrated_launcher.py src/sangwon_AI/tests/test_mavros_readback.py -q --junitxml=evidence/python.xml > evidence/python.log 2>&1
           ctest --test-dir .review/integrated-build -R '^(field_executor_contracts|field_mission_ai_contracts|lidar_relative_contracts)$' --output-on-failure > evidence/contracts.log 2>&1
+          export SANGWON_CPP_AI_BINARY="$PWD/.review/integrated-build/sangwon_field_mission_ai"
+          export SANGWON_CPP_AI_EVIDENCE="$PWD/evidence/http-cpp-python.json"
+          python3 -m pytest src/drone_mission/test/test_cpp_mission_ai.py -k "not lidar" -q --junitxml=evidence/cpp-python.xml > evidence/cpp-python.log 2>&1
           sha256sum .review/integrated-build/sangwon_field_executor .review/integrated-build/sangwon_field_executor_replay .review/integrated-build/sangwon_field_mission_ai > evidence/binaries.sha256
       - name: HTTP ROS C++ synthetic FC and platform flow
         run: |
           source /opt/ros/humble/setup.bash
           source install/setup.bash
           export PYTHONPATH="$PWD/src/drone_mission:$PWD/src/drone_uwb:$PWD/src/drone_platform_link:$PWD/src/drone_demo:$PWD/src/sangwon_AI/tests:${PYTHONPATH:-}"
-          python3 src/sangwon_AI/tests/field_executor_ros.py .review/integrated-build/sangwon_field_executor "$PWD/evidence/ros-flow" nominal,python_pause,bridge_delay,pilot,platform_link > evidence/ros-flow.log 2>&1
+          python3 src/sangwon_AI/tests/field_executor_ros.py .review/integrated-build/sangwon_field_executor "$PWD/evidence/ros-flow" nominal,python_pause,bridge_delay,report_delay,report_silence,report_malformed,uwb_gap,fc_estimator_silence,fc_estimator_loss,fc_pose_loss,pilot,platform_link > evidence/ros-flow.log 2>&1
       - name: Preserve logs and original outcomes
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

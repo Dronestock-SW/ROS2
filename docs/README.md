@@ -10,6 +10,7 @@
 
 | 찾는 내용 | 위치 |
 |---|---|
+| 보고 지연 LAND 제거·FC 기준 수행·연속 기록·중복 검사 정리 | [13일 실행·기록 보완](report/fc_owned_runtime_20261013.md) |
 | 시작 검사 35개·시간 정책 22종·자동 LAND·EV 시각 보정 구분 | [13일 실행 제한 검토](report/constraint_audit_20261013.md) |
 | 상원 작업 통합·전달 관측 제한 0.7초·FC 설정 구분 | [13일 통합 기록](report/sangwon_integration_20261013.md) |
 | 새 통합 브랜치 받기·실행 경로·FC 시각 파라미터 조회 | [통합 재개 절차](runbooks/sangwon_integration.md) |

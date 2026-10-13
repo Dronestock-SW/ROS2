@@ -38,6 +38,8 @@ from .native_ai import NativePlanner
 from .preflight import field_preflight
 from .operator_arm import arm_blocker, arm_request
 from .bridge_status import normalize_bridge
+from .recording import AsyncEventRecorder, flight_sample, sensor_sources
+from .observation_policy import observation_status
 from .anchor_trial import validate_anchor_trial
 from .raw_feedback import feedback
 from drone_uwb.integration.clock_readiness import ClockReadiness
@@ -126,6 +128,7 @@ class FlightNode(Node):
             if self.native_planner is not None:
                 (root/'native-map.json').write_bytes(self.native_planner.raw_map)
             self.log = (root/'events.jsonl').open('x', encoding='utf-8')
+        self.recorder = AsyncEventRecorder(self.log) if self.log else None
         self.cpp_plan_recorded = None
         if self.settings.mission_ai == 'cpp_bt':
             from .cpp_mission_ai import CppMissionAI
@@ -209,8 +212,14 @@ class FlightNode(Node):
                 row = dict(event, logged_wall_ns=time.time_ns(),
                     logged_monotonic_ns=time.monotonic_ns(),
                     logged_ros_ns=self.get_clock().now().nanoseconds)
-                self.log.write(json.dumps(row, ensure_ascii=False, allow_nan=False)+'\n')
-                self.log.flush()
+                recorder = getattr(self,'recorder',None)
+                if recorder:
+                    if not recorder.submit(row):
+                        self.record_fault = True
+                        self.session.failure = recorder.error
+                else:
+                    self.log.write(json.dumps(row, ensure_ascii=False, allow_nan=False)+'\n')
+                    self.log.flush()
             except OSError:
                 self.record_fault = True
                 self.session.failure = 'event_log_write_failed'
@@ -343,6 +352,8 @@ class FlightNode(Node):
             self.origin = None
 
     def feedback_timesync(self, msg):
+        self.samples['timesync']=(dict(remote_timestamp_ns=msg.remote_timestamp_ns,
+            estimated_offset_ns=msg.estimated_offset_ns,round_trip_time_ms=msg.round_trip_time_ms),time.monotonic())
         if msg.remote_timestamp_ns < self.feedback_clock.remote_ns:
             self.feedback_clock.reset()
             self.origin = None
@@ -470,6 +481,7 @@ class FlightNode(Node):
             s.bridge_age_s = time.monotonic()-received
             stamp = value.get('last_observation_stamp_ns')
             if type(stamp) is int and stamp > 0:
+                s.bridge_stamp_ns = stamp
                 s.bridge_observation_age_s = (self.get_clock().now().nanoseconds-stamp)/1e9
             source = 'local_odometry' if self.settings.bridge_topic == '/uwb/local_odometry_status' else 'btf_xy'
             s.alignment_matches = (cfg.get('input_source') == source
@@ -486,6 +498,14 @@ class FlightNode(Node):
                         and abs(cfg['antenna_body_frd_'+axis+'_m']
                                 -getattr(self.settings, 'expected_ev_pos_'+axis+'_m')) < 1e-6
                         for axis in ('x', 'y', 'z')))
+            s.bridge_contract_error = value.get('bridge_contract_error', '')
+            numeric_keys=('enu_yaw_deg','enu_offset_x_m','enu_offset_y_m','expected_ev_delay_ms',
+                'antenna_body_frd_x_m','antenna_body_frd_y_m','antenna_body_frd_z_m')
+            contract_decoded = (all(isinstance(cfg.get(k),str) for k in ('input_source','tag_id','source_frame'))
+                and type(cfg.get('layout_confirmed')) is bool and type(cfg.get('map_y_axis_sign')) is int
+                and all(finite(cfg.get(k)) for k in numeric_keys))
+            if contract_decoded and not s.alignment_matches and not s.bridge_contract_error:
+                s.bridge_contract_error = 'observation_and_command_alignment_mismatch'
         s.takeoff_alt_m = self.param_value
         s.takeoff_action = getattr(self, 'takeoff_action', None)
         s.native_takeoff_speeds = getattr(self, 'native_takeoff_speeds', ())
@@ -531,6 +551,8 @@ class FlightNode(Node):
                     self.rc_calibration_names = ['RC_MAP_'+axis for axis in ('ROLL','PITCH','YAW','THROTTLE')]
                     self.rc_calibration_names += [f'RC{i}_{key}' for i in range(1,19) for key in ('MIN','MAX','TRIM')]
                     names.extend(self.rc_calibration_names)
+            names.extend(['EKF2_EV_DELAY','EKF2_EV_CTRL','EKF2_OF_CTRL','EKF2_RNG_CTRL','COM_OF_LOSS_T'])
+            self.parameter_names = names
             self.param_future = self.param_client.call_async(GetParameters.Request(names=names))
             self.param_future.add_done_callback(self.parameters_received)
         if self.stream_client.service_is_ready():
@@ -558,6 +580,9 @@ class FlightNode(Node):
             return
         self.param_future = None
         try:
+            self.parameter_snapshot = dict(zip(getattr(self,'parameter_names',[]),
+                (v.integer_value if v.type == 2 else v.double_value if v.type == 3 else None for v in future.result().values)))
+            self.record(dict(type='fc_parameter_readback',values=self.parameter_snapshot))
             value = future.result().values[0]
             self.param_value = value.double_value if value.type == 3 else value.integer_value if value.type == 2 else None
             self.param_received = time.monotonic()
@@ -700,6 +725,9 @@ class FlightNode(Node):
         future.add_done_callback(completed)
 
     def tick(self):
+        if getattr(self,'recorder',None) and self.recorder.error:
+            self.record_fault = True
+            self.session.failure = self.recorder.error
         s = self.snapshot()
         try:
             actions = self.session.tick(s, time.monotonic(), time.time(), self.get_clock().now().nanoseconds)
@@ -732,7 +760,10 @@ class FlightNode(Node):
         if ai is not None and ai.plan_ref and self.cpp_plan_recorded != ai.plan_ref:
             self.record(dict(type='cpp_ai_mission_prepared', **ai.preparation,
                 ai_session_id=ai.session_id, binary_sha256=ai.binary_sha256))
-            if self.log: os.fsync(self.log.fileno())
+            if self.log:
+                if getattr(self,'recorder',None):
+                    if not self.recorder.sync():self.record_fault = True
+                else:os.fsync(self.log.fileno())
             self.cpp_plan_recorded = ai.plan_ref
         if s.armed and 0 <= s.state_age_s <= 1.:
             self.operator_arm_pending = False
@@ -792,21 +823,20 @@ class FlightNode(Node):
             status['native_takeoff'].update(can_takeoff=takeoff_ok, can_start=hold_ok,
                 can_land=self.session.phase in self.session.NATIVE_PHASES and self.session.pending is None
                     and s.connected and s.armed and 0 <= s.state_age_s <= self.settings.state_timeout_s)
-        if (s.armed or self.session.phase in self.session.ACTIVE) and time.monotonic()-getattr(self,'last_flight_sample_s',0) >= .2:
+        if time.monotonic()-getattr(self,'last_flight_sample_s',0) >= (.2 if s.armed or self.session.phase in self.session.ACTIVE else 1.):
             self.last_flight_sample_s = time.monotonic()
-            self.record(dict(type='flight_sample', state=self.session.phase, mode=s.mode, armed=s.armed,
-                state_age_s=s.state_age_s if math.isfinite(s.state_age_s) else None,
-                landed_age_s=s.landed_age_s if math.isfinite(s.landed_age_s) else None,
-                landed=s.landed, xy=s.xy, uwb_xy=s.uwb_xy, altitude_enu_m=s.altitude_enu_m,
-                velocity_xy=s.velocity_xy, vertical_speed_m_s=s.vertical_speed_m_s, yaw_deg=s.yaw_deg,
-                target=self.session.local_setpoint() if self.settings.local_xy else None, target_feedback=self.target_feedback,
-                uwb_age_s=s.uwb_age_s if math.isfinite(s.uwb_age_s) else None))
+            self.record(flight_sample(s,phase=self.session.phase,
+                target=self.session.local_setpoint() if self.settings.local_xy else None,
+                feedback=self.target_feedback, observation=observation_status(self.settings,s),
+                sources=sensor_sources(self.samples),owner='python_executor'))
         changed = self.session.phase != self.previous_state
         if changed:
             self.record(dict(type='transition', **status))
             if self.log and self.session.phase in ('END','FAILED','UNCONFIRMED','PILOT_OVERRIDE'):
                 try:
-                    os.fsync(self.log.fileno())
+                    if getattr(self,'recorder',None):
+                        if not self.recorder.sync():raise OSError('completion_record_sync_failed')
+                    else:os.fsync(self.log.fileno())
                 except OSError:
                     self.record_fault = True
             if self.record_fault and self.session.phase == 'END':
@@ -824,7 +854,9 @@ class FlightNode(Node):
     def destroy_node(self):
         if getattr(getattr(self, 'session', None), 'mission_ai', None) is not None:
             self.session.mission_ai.close()
-        if self.log:
+        if getattr(self,'recorder',None):
+            self.recorder.close()
+        elif self.log:
             self.log.close()
         if self.writer_lock:
             self.writer_lock.close()

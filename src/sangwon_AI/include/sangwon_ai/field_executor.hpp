@@ -53,7 +53,7 @@ class FieldExecutor {
         if(!allowed || flag(s,"rc_switch_changed")) { finish("PILOT_OVERRIDE","manual_or_px4_failsafe_has_priority",now); return; }
       }
       if(pending() && now-pending_at_>cfg_.value("command_timeout_s",3.)) { finish("UNCONFIRMED","command_response_timeout_effect_unknown",now); return; }
-      if(dt<=0 || dt>.2) { abort("cpp_executor_scheduler_gap",s,now); return; }
+      if(dt<=0) { abort("cpp_executor_clock_invalid",s,now); return; }
     }
     if(!ai_) {
       bool stationary=flag(s,"connected") && !flag(s,"armed") && s.value("landed",0)==1 && age(s,"pose_age_s",.2) && s.contains("xy") && s.at("xy").size()==2 && s.contains("velocity_xy") && s.at("velocity_xy").size()==2 && xy(point(s.at("velocity_xy")))<=.1;
@@ -77,6 +77,7 @@ class FieldExecutor {
       started_=now; enter("PREPARING","local_setpoint_warmup",now); return;
     }
     if(!request.is_null() && request.value("action",std::string())=="land") { abort("operator_cancelled",s,now); return; }
+    if((phase=="PREPARING"||phase=="ARMING")&&!flag(s,"armed")&&!age(s,"uwb_age_s",.25)) { abort("prearm_uwb_unavailable",s,now);return; }
     if(!failure.empty() && !pending() && phase!="LANDING" && phase!="GROUND_RECOVERY") { abort(failure,s,now); return; }
     const bool landed=accepted_ && !pending() && confirmed_>=0 && flag(s,"connected") && !flag(s,"armed") && s.value("landed",0)==1 && age(s,"state_age_s",1) && age(s,"landed_age_s",1) && now-s.at("state_age_s").get<double>()>=confirmed_ && now-s.at("landed_age_s").get<double>()>=confirmed_;
     if(phase=="GROUND_RECOVERY") {
@@ -101,10 +102,8 @@ class FieldExecutor {
       else abort("cpp_ai:"+decision.at("reason").get<std::string>(),s,now);
       return;
     }
-    if(!age(s,"web_age_s",cfg_.value("web_timeout_s",2.))) { abort("web_assignment_stale",s,now); return; }
     const auto position=point(s.at("xy"));const auto& bounds=cfg_.at("bounds_xy_m");
     if(position.x<bounds[0].get<double>()||position.x>bounds[1].get<double>()||position.y<bounds[2].get<double>()||position.y>bounds[3].get<double>()) { abort("px4_pose_outside_bounds",s,now); return; }
-    if(!age(s,"bridge_age_s",2.5) || s.value("bridge_published",0)<=0) { abort("uwb_px4_bridge_unavailable",s,now); return; }
     if(previous_pose_ && (xy(point(s.at("xy"))-*previous_pose_)>.3+dt || std::abs(s.at("altitude_enu_m").get<double>()-previous_height_)>.3+dt)) { abort("px4_local_frame_or_pose_jump",s,now); return; }
     previous_pose_=point(s.at("xy"));previous_height_=s.at("altitude_enu_m").get<double>();
     if(now-started_>300) { abort("mission_time_limit",s,now); return; }
@@ -142,7 +141,6 @@ class FieldExecutor {
     if(!age(s,"bridge_age_s",2.5) || !age(s,"bridge_observation_age_s",cfg_.value("bridge_observation_timeout_s",.35)) || s.value("bridge_published",0)<=0)return "observation_bridge_unavailable";
     if(s.at("mode")!="POSCTL" && s.at("mode")!="AUTO.LOITER")return "px4_position_mode_required";
     if(!age(s,"web_age_s",cfg_.value("web_timeout_s",2.)))return "web_assignment_stale";
-    if(!age(s,"takeoff_param_age_s",5) || !s.at("takeoff_alt_m").is_number() || std::abs(s.at("takeoff_alt_m").get<double>()-cfg_.at("expected_mis_takeoff_alt_m").get<double>())>.01)return "takeoff_parameter_mismatch";
     if(!age(s,"max_up_age_s",5) || !s.at("max_up_m_s").is_number() || number(s.at("max_up_m_s"),0,20)<=0 || s.at("max_up_m_s").get<double>()>.5)return "px4_up_limit_0p5_required";
     if(!s.at("rc_override").is_number_integer() || !(s.at("rc_override").get<int>()&2))return "px4_offboard_rc_override_required";
     if(flag(s,"rc_required") && (!flag(s,"rc_valid") || !flag(s,"rc_mapping_valid") || !age(s,"rc_age_s",1)))return "physical_rc_required";

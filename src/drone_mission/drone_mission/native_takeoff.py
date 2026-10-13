@@ -2,6 +2,7 @@
 import math
 from .contracts import finite
 from .local_takeoff import LocalTakeoff
+from .observation_policy import observation_status
 
 
 def native_speed_ready(s):
@@ -143,7 +144,8 @@ class NativeTakeoff(LocalTakeoff):
             if math.dist(s.xy,self.native_home) > .6:
                 self.native_land('native_takeoff_horizontal_drift', s, now)
                 return self.actions
-            stable = (s.mode == 'AUTO.LOITER' and s.landed == 2 and
+            self.observation_status = observation_status(self.settings,s)
+            stable = (not self.observation_status['progress_held'] and s.mode == 'AUTO.LOITER' and s.landed == 2 and
                 abs(s.altitude_enu_m-self.native_ground-self.settings.expected_mis_takeoff_alt_m) <= .15
                 and math.hypot(*s.velocity_xy) <= .1 and abs(s.vertical_speed_m_s) <= .1
                 and math.dist(s.xy,self.native_home) <= .15)

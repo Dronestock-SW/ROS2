@@ -27,7 +27,8 @@ def test_local_preflight_has_current_xy_and_never_demands_geographic_origin():
     report=field_preflight(config(command_frame='local_xy'),sample(),map_loaded=False,recording_ok=True)
     assert report['checked_inputs_passed']
     assert 'origin' not in {x['code'] for x in report['checks']}
-    assert 'local_start' in {x['code'] for x in report['checks']}
+    assert 'pose' in {x['code'] for x in report['checks']}
+    assert 'local_start' not in {x['code'] for x in report['checks']}
     report=field_preflight(config(command_frame='local_xy'),sample(local_setpoint_ready=False),map_loaded=False,recording_ok=True)
     assert 'local_transport' in report['blockers']
 
@@ -94,7 +95,7 @@ def test_no_stream_before_start_and_no_arm_without_actual_mode():
 
 
 @pytest.mark.parametrize('changes',[
-    dict(uwb_age_s=.26),dict(bridge_observation_age_s=.36),dict(local_setpoint_ready=False),
+    dict(uwb_age_s=.26),dict(local_setpoint_ready=False),
     dict(vertical_estimator_valid=False),dict(rc_override=1),dict(pose_age_s=.3)])
 def test_stale_inputs_abort_before_arm(changes):
     m=prepared();m.last_web_s=10.05

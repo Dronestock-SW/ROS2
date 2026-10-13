@@ -134,6 +134,14 @@ class Settings:
     def local_xy(self):
         return self.command_frame == 'local_xy'
 
+    @property
+    def fc_owned_runtime(self):
+        return self.anchor_trial and self.local_xy
+
+    @property
+    def auto_takeoff_parameters_required(self):
+        return not self.local_xy or (self.start_mode == 'takeoff_hold' and self.takeoff_backend == 'native')
+
 
 def parse_request(payload, settings, wall_s):
     if (not isinstance(payload, dict) or payload.get('ok') is not True

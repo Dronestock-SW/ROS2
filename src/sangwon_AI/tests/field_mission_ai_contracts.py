@@ -17,7 +17,7 @@ def state(**changes):
         uwb_xy=[2., 2.], velocity_xy=[0., 0.], vertical_speed_m_s=0., altitude_enu_m=1.8,
         pose_age_s=0., uwb_age_s=0., state_age_s=0., landed_age_s=0., estimator_age_s=0.,
         estimator_valid=True, vertical_estimator_valid=True, bridge_ready=True,
-        alignment_matches=True, bridge_observation_age_s=0., battery=.9, battery_age_s=0., feedback_age_s=0.)
+        alignment_matches=True, bridge_age_s=0., bridge_observation_age_s=0., battery=.9, battery_age_s=0., feedback_age_s=0.)
     s.update(changes)
     return s
 
@@ -88,7 +88,7 @@ class Contracts(unittest.TestCase):
         self.assertGreaterEqual(p.t-after_gap,10.)
         self.assertTrue(r['home_verified'])
 
-    def test_lidar_loss_or_long_gap_never_bypasses_UWB_expiry(self):
+    def test_lidar_loss_or_long_gap_preserves_fc_hold_without_completion(self):
         from lidar_relative_contracts import CONFIG,scan
         for failed_sensor in (False,True):
             p=self.peer(lidar_config=CONFIG);last=p.t
@@ -99,7 +99,8 @@ class Contracts(unittest.TestCase):
                 if failed_sensor and i>=60:sc['ranges']=[None]*720
                 r=p.step(state(uwb_stamp_ns=round(last*1e9),uwb_age_s=age,bridge_observation_age_s=age,lidar_scan=sc))
                 if r['phase']=='LANDING':break
-            self.assertEqual(r['phase'],'LANDING');self.assertEqual(r['completed_waypoints'],0)
+            self.assertNotEqual(r['phase'],'LANDING');self.assertEqual(r['completed_waypoints'],0)
+            self.assertEqual(r['stream_xy'],[2.,2.]);self.assertEqual(r['stable_s'],0.)
 
     def test_all_four_web_routes_use_actual_bt_and_retrace_home(self):
         for case, offsets, length in (
@@ -127,10 +128,13 @@ class Contracts(unittest.TestCase):
                 self.assertEqual(end['phase'],'END')
 
     def test_direct_uwb_and_bridge_expiry_are_independent(self):
-        for key,value,reason in [('uwb_age_s',.251,'UWB_UNAVAILABLE'),('bridge_observation_age_s',.351,'OBSERVATION_BRIDGE_UNAVAILABLE'),('pose_age_s',.201,'PX4_POSE_UNAVAILABLE')]:
+        for key,value in [('uwb_age_s',.251),('bridge_observation_age_s',.351)]:
             with self.subTest(key=key):
                 r=self.peer().step(state(**{key:value}))
-                self.assertEqual(r['phase'],'LANDING');self.assertEqual(r['reason'],reason)
+                self.assertNotEqual(r['phase'],'LANDING');self.assertEqual(r['completed_waypoints'],0)
+                self.assertEqual(r['observation_status']['progress_held'],key=='uwb_age_s')
+        r=self.peer().step(state(pose_age_s=.201))
+        self.assertEqual(r['phase'],'LANDING');self.assertEqual(r['reason'],'PX4_POSE_UNAVAILABLE')
 
     def test_drift_resets_continuous_hover_but_never_home_or_goal(self):
         p=self.peer()
@@ -159,11 +163,19 @@ class Contracts(unittest.TestCase):
 
     def test_landing_and_disarm_without_executor_confirmation_cannot_end(self):
         p=self.peer()
-        p.step(state(uwb_age_s=.3))
+        p.step(state(estimator_valid=False))
         r=p.step(state(armed=False,landed=1,mode='AUTO.LAND'),'LANDING')
         self.assertEqual(r['phase'],'LANDING')
         r=p.step(state(armed=False,landed=1,mode='AUTO.LAND'),'LANDING',landing_confirmed=True)
         self.assertEqual(r['phase'],'FAILED')
+
+    def test_planner_gap_resets_dwell_without_large_position_step(self):
+        p=self.peer([dict(type='waypoint',xy=[2.5,2.],dwell_s=0.)])
+        for _ in range(45):r=p.step(phase='TAKING_OFF' if _<42 else 'MOVING')
+        prior=r['stream_xy'];p.t+=.8
+        r=p.step(state(xy=prior,uwb_xy=prior),'MOVING')
+        self.assertNotEqual(r['phase'],'LANDING');self.assertLessEqual(math.dist(prior,r['stream_xy']),.0250001)
+        self.assertTrue(r['planner_cycle_delayed']);self.assertEqual(r['stable_s'],0.)
 
     def test_plan_session_and_sequence_cannot_be_replayed_or_replaced(self):
         p=self.peer()

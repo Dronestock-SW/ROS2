@@ -132,7 +132,8 @@ class Observations:
                             'px4_map_xy_m', 'home_verified', 'home_xy_m', 'flight_outcome', 'work_outcome',
                             'scan_results', 'scan_window', 'scan_failure_policy',
                             'attempted_task_ids', 'remaining_task_ids', 'failed_scan_task_ids', 'route_complete', 'preflight', 'fc_landed',
-                            'native_takeoff', 'operator_session_id', 'arm_request_available', 'arm_request_blocker', 'operator_arm_result', 'mission_ai', 'horizontal_observation'):
+                            'native_takeoff', 'operator_session_id', 'arm_request_available', 'arm_request_blocker', 'operator_arm_result', 'mission_ai', 'horizontal_observation',
+                            'observation_status','recording_ok','record_pending','observer_metadata_delayed','web_report_delayed'):
                     if key in value:
                         result[key] = value[key]
                 result.update(flight_state=value.get('state'), flight_reason=value.get('reason'),

@@ -187,6 +187,12 @@ def main(args=None):
                 self.future = self.client.call_async(GetParameters.Request(names=list(PARAMETERS)))
                 self.future.add_done_callback(self.parameters_received)
             row = {'gate': self.gate(), 'last_reason': self.last_reason,
+                'status_stamp_ns':self.get_clock().now().nanoseconds,
+                'status_monotonic_ns':round(now*1e9),
+                'last_input_stamp_ns':getattr(self,'last_input_stamp_ns',0),
+                'last_input_received_monotonic_ns':getattr(self,'last_input_received_monotonic_ns',0),
+                'last_send_monotonic_ns':round(self.last_send_at*1e9) if self.last_fields else None,
+                'last_odometry_time_usec':self.last_fields['time_usec'] if self.last_fields else None,
                 'jump_guard_enabled':False,
                 'counts': dict(self.counts), 'last_sample_stamp_ns': self.last_stamp,
                 'last_send_age_s': now-self.last_send_at if self.last_fields else None,
@@ -218,6 +224,8 @@ def main(args=None):
 
         def pose(self, msg):
             stamp = msg.header.stamp.sec*1_000_000_000+msg.header.stamp.nanosec
+            self.last_input_stamp_ns=stamp
+            self.last_input_received_monotonic_ns=time.monotonic_ns()
             reason = self.gate()
             if reason == 'ready':
                 try:

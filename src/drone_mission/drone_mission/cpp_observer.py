@@ -29,6 +29,9 @@ from .local_xy import LocalXYMission
 from .mission_chain import MissionChain
 from .anchor_trial import validate_anchor_trial
 from .preflight import field_preflight
+from mavros_msgs.msg import TimesyncStatus
+from .recording import flight_sample, sensor_sources
+from .observation_policy import observation_status
 
 
 def clean(value):
@@ -96,6 +99,7 @@ class CppObserver(Node):
                 continue
             self.create_subscription(cls, topic, lambda m, k=key: self.receive(k, m), qos_profile_sensor_data)
         self.create_subscription(String, self.settings.bridge_topic, self.bridge, 10)
+        self.create_subscription(TimesyncStatus,'/mavros/timesync_status',self.timesync_received,qos_profile_sensor_data)
         self.create_subscription(String, '/mission/assignment', self.assignment, 10)
         self.create_subscription(String, '/flight_state', self.native_status, qos_profile_sensor_data)
         self.output = self.create_publisher(String, '/flight/cpp_input', 1)
@@ -141,10 +145,15 @@ class CppObserver(Node):
         value = json.loads(msg.data)
         if value.get('executor_backend') != 'sangwon_cpp_executor': return
         self.native_session = value['executor_session']
+        self.last_native_status = value
         phase = value['phase']
         if self.session.assignment: self.session.phase = phase
         if phase != self.previous_phase:
             self.record(dict(type='native_transition', value=value)); self.previous_phase = phase
+
+    def timesync_received(self,msg):
+        self.samples['timesync']=(dict(remote_timestamp_ns=msg.remote_timestamp_ns,
+            estimated_offset_ns=msg.estimated_offset_ns,round_trip_time_ms=msg.round_trip_time_ms),time.monotonic())
 
     def record(self, value):
         if self.log:
@@ -178,6 +187,12 @@ class CppObserver(Node):
     def tick(self):
         if self.record_fault:raise RuntimeError('cpp_observer_recording_unavailable')
         s = self.snapshot(); now = time.monotonic()
+        if now-getattr(self,'last_evidence_s',0) >= (.2 if s.armed else 1.):
+            self.last_evidence_s=now
+            native=getattr(self,'last_native_status',{})
+            self.record(flight_sample(s,phase=native.get('phase','IDLE'),
+                target=native.get('sender_target_enu'),feedback=getattr(self,'target_feedback',None),
+                observation=observation_status(self.settings,s),sources=sensor_sources(self.samples),owner='cpp_observer'))
         reason = MissionChain.ready(self.session, s, now, ground=True)
         if not s.local_setpoint_ready: reason = 'local_transport_not_unique'
         if type(s.rc_override) is not int or not s.rc_override & 2: reason = 'px4_offboard_rc_override_required'

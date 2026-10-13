@@ -89,6 +89,17 @@ def test_partial_scan_progress_reaches_web_and_expires_with_mission_state():
         assert 'preflight' not in o.fields()
 
 
+def test_report_delay_summary_reaches_web_without_bulk_record_payload():
+    o=Observations('btf_xy')
+    policy=dict(mode='REPORT_DELAY',progress_held=False,warnings=['bridge_report_delayed'])
+    with patch('drone_platform_link.telemetry.time.monotonic',return_value=10.):
+        o.receive_mission(dict(state='DWELL',observation_status=policy,recording_ok=True,
+            input_snapshot={'private_bulk_evidence':'record_file_only'}))
+        fields=o.fields()
+    assert fields['observation_status']==policy and fields['recording_ok'] is True
+    assert 'input_snapshot' not in fields
+
+
 @pytest.mark.parametrize('armed', [False, True])
 def test_explicit_ground_reference_is_estimated_for_armed_and_disarmed(armed):
     o = Observations('btf_xy', .15)

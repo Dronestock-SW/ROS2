@@ -73,9 +73,10 @@ class Contracts(unittest.TestCase):
     def test_drift_does_not_move_home(self):
         p=self.peer();p.until('TAKING_OFF');p.s['xy']=[2.7,2.];p.tick()
         self.assertEqual(p.out['phase'],'LANDING');self.assertEqual(p.out['home_xy_m'],[2.,2.])
-    def test_missing_uwb_requests_land(self):
+    def test_missing_uwb_holds_target_without_completion_credit(self):
         p=self.peer();p.until('DWELL');p.s['uwb_age_s']=.26;p.tick()
-        self.assertEqual(p.out['phase'],'LANDING');self.assertEqual(p.out['completed_waypoints'],0)
+        self.assertEqual(p.out['phase'],'DWELL');self.assertEqual(p.out['completed_waypoints'],0)
+        self.assertTrue(p.out['cpp_decision']['observation_status']['progress_held']);self.assertNotIn('land',p.commands)
     def test_pilot_priority_precedes_expired_observation(self):
         p=self.peer();p.until('DWELL');p.s.update(mode='ALTCTL',uwb_age_s=1.);p.tick()
         self.assertEqual(p.out['phase'],'PILOT_OVERRIDE');self.assertNotIn('land',p.commands)
@@ -88,9 +89,9 @@ class Contracts(unittest.TestCase):
         p.tick(ack=False);self.assertIn('arm',p.commands)
         p.tick(dt=3.1,ack=False);self.assertEqual(p.out['phase'],'UNCONFIRMED')
         p.ack(2,True);p.tick();self.assertEqual(p.out['phase'],'UNCONFIRMED');self.assertNotIn('land',p.commands)
-    def test_scheduler_gap_before_arm_recovers_ground_and_preserves_limit(self):
+    def test_scheduler_gap_does_not_cancel_approved_fixed_target(self):
         p=self.peer();p.until('PREPARING');p.tick(dt=.217)
-        self.assertEqual(p.out['phase'],'GROUND_RECOVERY');self.assertEqual(p.commands,['position_mode'])
+        self.assertEqual(p.out['phase'],'PREPARING');self.assertFalse(p.commands)
     def test_start_is_blocked_by_unpersisted_request(self):
         p=self.peer();p.s['request_persisted']=False
         for _ in range(60):p.tick()
@@ -125,7 +126,7 @@ class Contracts(unittest.TestCase):
         p.until('FAILED');self.assertTrue(p.out['landing_verified']);self.assertFalse(p.out['mission_complete'])
         self.assertEqual(p.out['completed_waypoints'],0)
     def test_failed_mission_still_records_confirmed_landing(self):
-        p=self.peer();p.until('DWELL');p.s['uwb_age_s']=.26;p.until('FAILED')
+        p=self.peer();p.until('DWELL');p.s['estimator_valid']=False;p.until('FAILED')
         self.assertTrue(p.out['landing_verified']);self.assertFalse(p.out['mission_complete'])
     def test_configured_bridge_delivery_tolerance_uses_original_age(self):
         p=self.peer(cfg=dict(CFG,bridge_observation_timeout_s=.7));p.until('DWELL')
@@ -133,10 +134,33 @@ class Contracts(unittest.TestCase):
         self.assertEqual(p.out['phase'],'DWELL');self.assertNotIn('land',p.commands)
         self.assertEqual(p.out['bridge_observation_timeout_s'],.7)
         p.s['bridge_observation_age_s']=.700001;p.tick()
-        self.assertEqual(p.out['phase'],'LANDING')
+        self.assertEqual(p.out['phase'],'DWELL');self.assertNotIn('land',p.commands)
     def test_bridge_delivery_tolerance_never_relaxes_raw_uwb(self):
         p=self.peer(cfg=dict(CFG,bridge_observation_timeout_s=.7));p.until('DWELL')
         p.s.update(uwb_age_s=.250001,bridge_observation_age_s=.48);p.tick()
-        self.assertEqual(p.out['phase'],'LANDING')
+        self.assertEqual(p.out['phase'],'DWELL');self.assertTrue(p.out['cpp_decision']['observation_status']['progress_held'])
+
+    def test_report_silence_and_web_loss_complete_nominal_hover(self):
+        p=self.peer();p.until('DWELL')
+        p.s.update(bridge_age_s=9.,bridge_observation_age_s=8.,bridge_ready=False,alignment_matches=False,web_age_s=9.)
+        p.until('END');self.assertTrue(p.out['mission_complete']);self.assertEqual(p.commands,['offboard_mode','arm','land'])
+
+    def test_raw_gap_never_rebases_target_and_restarts_ten_second_hover(self):
+        p=self.peer();p.until('DWELL');target=p.out['goal_xy_m'];p.s['uwb_age_s']=3.
+        for _ in range(80):p.tick();self.assertEqual(p.out['goal_xy_m'],target);self.assertEqual(p.out['completed_waypoints'],0)
+        p.s['uwb_age_s']=0.;resumed=p.t;p.until('END');self.assertGreaterEqual(p.t-resumed,10.)
+        self.assertEqual(p.out['home_xy_m'],[2.,2.])
+
+    def test_actual_fc_fault_and_contract_change_still_land(self):
+        for change in (dict(estimator_valid=False),dict(pose_age_s=.21),dict(bridge_contract_error='changed')):
+            p=self.peer();p.until('DWELL');p.s.update(change);p.tick();self.assertEqual(p.out['phase'],'LANDING')
+
+    def test_drift_guard_still_applies_during_observation_hold(self):
+        p=self.peer();p.until('DWELL');p.s.update(uwb_age_s=3.,xy=[2.6,2.]);p.tick()
+        self.assertEqual(p.out['phase'],'LANDING');self.assertEqual(p.out['home_xy_m'],[2.,2.])
+
+    def test_offboard_start_does_not_require_auto_takeoff_altitude(self):
+        p=self.peer();p.s.update(takeoff_alt_m=99.,takeoff_param_age_s=99.,rc_override=2)
+        p.until('END');self.assertTrue(p.out['mission_complete'])
 
 if __name__=='__main__':unittest.main()

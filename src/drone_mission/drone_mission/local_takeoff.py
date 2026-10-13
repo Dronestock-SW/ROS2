@@ -1,5 +1,6 @@
 """Separate web local-position takeoff; PX4 closes all control loops."""
 import math
+from .observation_policy import observation_status
 
 
 def sticks_centered(channels, parameters):
@@ -92,10 +93,8 @@ class LocalTakeoff:
                 self.feedback_ns = None
                 self.enter('LOCAL_TAKEOFF_CLIMB','armed_waiting_for_local_target_ascent',now)
         else:
-            if self.phase == 'LOCAL_TAKEOFF_CLIMB' and not feedback and now-self.entered_s > 6.:
-                self.native_land('local_takeoff_feedback_stale',s,now)
-                return self.actions
-            stable = (s.landed == 2 and abs(s.altitude_enu_m-self.native_ground-self.settings.expected_mis_takeoff_alt_m) <= .15
+            self.observation_status = observation_status(self.settings,s,(ros_ns-self.feedback_ns)/1e9 if self.feedback_ns is not None else math.inf)
+            stable = (not self.observation_status['progress_held'] and s.landed == 2 and abs(s.altitude_enu_m-self.native_ground-self.settings.expected_mis_takeoff_alt_m) <= .15
                 and math.hypot(*s.velocity_xy) <= .1 and abs(s.vertical_speed_m_s) <= .1
                 and math.dist(s.xy,self.native_home) <= .15)
             if self.phase == 'LOCAL_POSITION_HANDOFF':
@@ -113,6 +112,9 @@ class LocalTakeoff:
             else:
                 self.native_hold_since = None
                 self.native_ready = False
+            if self.observation_status['progress_held']:
+                self.native_armed_s = now
+                self.reason = 'fc_hold_wait_for_observation_or_target_report'
             if self.phase == 'LOCAL_TAKEOFF_CLIMB' and now-self.native_armed_s > self.settings.takeoff_timeout_s:
                 self.native_land('local_takeoff_timeout',s,now)
         if self.phase in ('LOCAL_TAKEOFF_MODE','LOCAL_TAKEOFF_ARMING','LOCAL_POSITION_HANDOFF') and now-self.entered_s > 6:
