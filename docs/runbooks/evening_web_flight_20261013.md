@@ -3,7 +3,8 @@
 조종기·앵커·현장 조종자가 준비된 뒤 읽는다.
 
 통합 브랜치는 `이번에-상원-한거-통합-브랜치`다.
-[검증 결과와 한계](../report/jetson_field_preparation_20261013.md)를 먼저 읽는다.
+[C++ 분리 이륙 검증](../report/cpp_position_handoff_20261013.md)을 먼저 읽는다.
+[초기 FC·기록 준비](../report/jetson_field_preparation_20261013.md)도 보존했다.
 지상 검증 성공과 실제 비행 성공은 구분한다.
 
 ## 1. 노트북에서 연결
@@ -136,6 +137,8 @@ python3 "$FLIGHT_SOURCE/src/sangwon_AI/ops/final_field_session.py" "${FLIGHT_ARG
 실행기 신원은 `sangwon_cpp_executor`여야 한다.
 미션 설정은 `start_mode=takeoff_hold`다.
 `takeoff_backend=local_position`을 함께 사용한다.
+이륙 전 조종기로 POSITION을 선택한다.
+웹의 실제 FC 모드가 `POSCTL`인지 확인한다.
 입력 차단 이유를 확인한 뒤 웹 이륙을 누른다.
 고정 출발 XY에서 1.7m까지 OFFBOARD로 오른다.
 높이·XY·속도·UWB가 3초간 안정돼야 전환한다.
@@ -147,6 +150,10 @@ START는 원래 출발 목표를 1.2초 이상 송신한다.
 OFFBOARD 재진입을 확인하고 선택 미션을 수행한다.
 공중에서 ARM을 다시 요청하지 않는다.
 요청 ACK만으로 FC 모드가 바뀌었다고 보지 않는다.
+웹 응답이 끊기면 같은 버튼으로 접수 여부를 확인한다.
+웹은 저장한 동일 요청 ID를 재사용한다.
+새로고침 뒤에도 미확인 요청 ID를 보존한다.
+응답을 기다린 시간만으로 비행 실패를 판정하지 않는다.
 
 | 순서 | 웹 미션 | 성공 확인 |
 |---|---|---|

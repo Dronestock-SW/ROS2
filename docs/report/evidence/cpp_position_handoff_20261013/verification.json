@@ -1,0 +1,874 @@
+{
+  "schema": "position-handoff-verification/1",
+  "collected_at_utc": "2026-10-13T06:16:57.763456+00:00",
+  "application_source_commit": "c7828170d3799a3413a456446c79b8ad2aeec2ec",
+  "test_harness_commit": "82a5f7234afa96b43605a09648c1a246d9a7dcfc",
+  "physical_flight": false,
+  "physical_drift_resolved": false,
+  "fc_parameter_writes": false,
+  "jetson": {
+    "physical_flight": false,
+    "source_verification": {
+      "total": 725,
+      "matched": 725,
+      "missing": [],
+      "mismatch": [],
+      "line_endings_only": [
+        "src/drone_mission/drone_mission/observation_policy.py",
+        "src/drone_mission/drone_mission/recording.py",
+        "src/drone_mission/test/test_fc_owned_runtime.py",
+        "src/drone_mission/test/test_recording.py",
+        "src/sangwon_AI/src/field_executor_replay.cpp",
+        "src/sangwon_AI/tests/test_integrated_launcher.py"
+      ],
+      "verified_symlinks": 20
+    },
+    "scenarios": [
+      {
+        "scenario": "separate_hold_gap",
+        "source_run": "position-flow-confirm",
+        "outcome": "END",
+        "commands": [
+          "OFFBOARD",
+          "ARM",
+          "POSCTL",
+          "OFFBOARD",
+          "LAND"
+        ],
+        "mission_complete": true,
+        "landing_verified": true,
+        "home_xy_m": [
+          2.0,
+          2.0
+        ],
+        "final_xy_m": [
+          2.0,
+          2.0
+        ],
+        "native_binary_sha256": "8a69a01386ec7a0919a7c8cb3c13b9d7b614d240c6c6cd07a0d08914cdbcbb08",
+        "max_received_setpoint_gap_s": 0.060878349002450705,
+        "max_native_sender_gap_s": 0.05560229099864955,
+        "max_mock_fc_source_gap_s": 0.04451486399921123,
+        "command_http_timeouts": [],
+        "command_http_durations_s": [],
+        "end_confirmation_wait_s": null,
+        "real_platform_link": true,
+        "flight_samples": 303,
+        "max_active_sample_gap_s": 0.153300464,
+        "evidence_sha256": "22c25f0380cb7fbcbc44c16f483e76608a4dd2fd0c57211ca600595ecfee721e",
+        "native_record_sha256": "89a7b94f3bd18d2632bb64d08c8450625cba8f5442f78949205afd65a1c48550"
+      },
+      {
+        "scenario": "separate_hold_land",
+        "source_run": "position-flow-remaining",
+        "outcome": "FAILED",
+        "commands": [
+          "OFFBOARD",
+          "ARM",
+          "POSCTL",
+          "LAND"
+        ],
+        "mission_complete": false,
+        "landing_verified": true,
+        "home_xy_m": [
+          2.0,
+          2.0
+        ],
+        "final_xy_m": [
+          2.0,
+          2.0
+        ],
+        "native_binary_sha256": "8a69a01386ec7a0919a7c8cb3c13b9d7b614d240c6c6cd07a0d08914cdbcbb08",
+        "max_received_setpoint_gap_s": 0.054231908001384,
+        "max_native_sender_gap_s": 0.05301331299779122,
+        "max_mock_fc_source_gap_s": 0.0480927860007796,
+        "command_http_timeouts": [],
+        "command_http_durations_s": [],
+        "end_confirmation_wait_s": null,
+        "real_platform_link": true,
+        "flight_samples": 136,
+        "max_active_sample_gap_s": 0.153051701,
+        "evidence_sha256": "8414cc148eeeada4018fefd70fe290d1a7722cc49ed619f81d2c767dcfe07738",
+        "native_record_sha256": "0ea94842452c029db302c5bb532254272d3eb85c9e73551c38a251e9f7237fcb"
+      },
+      {
+        "scenario": "separate_left_error",
+        "source_run": "position-flow-storage-confirm",
+        "outcome": "END",
+        "commands": [
+          "OFFBOARD",
+          "ARM",
+          "POSCTL",
+          "OFFBOARD",
+          "LAND"
+        ],
+        "mission_complete": true,
+        "landing_verified": true,
+        "home_xy_m": [
+          2.0,
+          2.0
+        ],
+        "final_xy_m": [
+          2.0,
+          2.0
+        ],
+        "native_binary_sha256": "8a69a01386ec7a0919a7c8cb3c13b9d7b614d240c6c6cd07a0d08914cdbcbb08",
+        "max_received_setpoint_gap_s": 0.057099539997579996,
+        "max_native_sender_gap_s": 0.054411205997894285,
+        "max_mock_fc_source_gap_s": 0.36583285400047316,
+        "command_http_timeouts": [],
+        "command_http_durations_s": [
+          0.03237069600072573,
+          0.004834667000977788,
+          0.07265426199955982,
+          0.011924632999580353
+        ],
+        "end_confirmation_wait_s": 0.05138263800108689,
+        "real_platform_link": true,
+        "flight_samples": 306,
+        "max_active_sample_gap_s": 0.153383572,
+        "evidence_sha256": "ea3f1a3422071afde04a4057c765be798c9b71f8ce38a3809b7a80c589f829c8",
+        "native_record_sha256": "338307fa247a6d2abdfb906b3e3209731ee128d4c1465eae8c6f52aefc6e1324"
+      },
+      {
+        "scenario": "separate_mission_x",
+        "source_run": "position-flow-storage-confirm",
+        "outcome": "END",
+        "commands": [
+          "OFFBOARD",
+          "ARM",
+          "POSCTL",
+          "OFFBOARD",
+          "LAND"
+        ],
+        "mission_complete": true,
+        "landing_verified": true,
+        "home_xy_m": [
+          2.0,
+          2.0
+        ],
+        "final_xy_m": [
+          2.0,
+          2.0
+        ],
+        "native_binary_sha256": "8a69a01386ec7a0919a7c8cb3c13b9d7b614d240c6c6cd07a0d08914cdbcbb08",
+        "max_received_setpoint_gap_s": 0.06276699900263338,
+        "max_native_sender_gap_s": 0.05210547399838106,
+        "max_mock_fc_source_gap_s": 0.05009341600089101,
+        "command_http_timeouts": [],
+        "command_http_durations_s": [
+          0.027365783000277588,
+          0.018237455002235947,
+          0.027763587000663392,
+          0.0045072339999023825
+        ],
+        "end_confirmation_wait_s": 0.12589640700025484,
+        "real_platform_link": true,
+        "flight_samples": 298,
+        "max_active_sample_gap_s": 0.399557053,
+        "evidence_sha256": "f962783bce797e13f7d23d65c7d3c08aeb75a059b98c5c5be9d918b8e12a924c",
+        "native_record_sha256": "be6b701bd30add79a756247d56d6ffc686fe1879ff78e8906593cbd23a7d471b"
+      },
+      {
+        "scenario": "separate_nominal",
+        "source_run": "position-flow-confirm",
+        "outcome": "END",
+        "commands": [
+          "OFFBOARD",
+          "ARM",
+          "POSCTL",
+          "OFFBOARD",
+          "LAND"
+        ],
+        "mission_complete": true,
+        "landing_verified": true,
+        "home_xy_m": [
+          2.0,
+          2.0
+        ],
+        "final_xy_m": [
+          2.0,
+          2.0
+        ],
+        "native_binary_sha256": "8a69a01386ec7a0919a7c8cb3c13b9d7b614d240c6c6cd07a0d08914cdbcbb08",
+        "max_received_setpoint_gap_s": 0.061282620998099446,
+        "max_native_sender_gap_s": 0.051213078000728274,
+        "max_mock_fc_source_gap_s": 0.3741093220014591,
+        "command_http_timeouts": [],
+        "command_http_durations_s": [],
+        "end_confirmation_wait_s": null,
+        "real_platform_link": true,
+        "flight_samples": 306,
+        "max_active_sample_gap_s": 0.152736808,
+        "evidence_sha256": "2762cf6766f8ddf905d9dd2b20c0306094e0085235f02c6f0ffae9ce1a6fbc5a",
+        "native_record_sha256": "48ee7e65f250d1c749c9c4ba2c14d557201c7fdb4d31f19be3cb13b8df942941"
+      },
+      {
+        "scenario": "separate_pilot",
+        "source_run": "position-flow-remaining",
+        "outcome": "PILOT_OVERRIDE",
+        "commands": [
+          "OFFBOARD",
+          "ARM",
+          "POSCTL"
+        ],
+        "mission_complete": false,
+        "landing_verified": false,
+        "home_xy_m": [
+          2.0,
+          2.0
+        ],
+        "final_xy_m": [
+          2.0,
+          2.0
+        ],
+        "native_binary_sha256": "8a69a01386ec7a0919a7c8cb3c13b9d7b614d240c6c6cd07a0d08914cdbcbb08",
+        "max_received_setpoint_gap_s": 0.0587565510031709,
+        "max_native_sender_gap_s": 0.051594934997410746,
+        "max_mock_fc_source_gap_s": 0.03560947999721975,
+        "command_http_timeouts": [],
+        "command_http_durations_s": [],
+        "end_confirmation_wait_s": null,
+        "real_platform_link": true,
+        "flight_samples": 110,
+        "max_active_sample_gap_s": 0.499530096,
+        "evidence_sha256": "b3737329a2c9d55368783f91744437f4b5c672029dba76a688f6b98da3de3409",
+        "native_record_sha256": "76a4f030a039d2218ae9ad1794af1126362839b53e89e798a01d325a5afed7e2"
+      },
+      {
+        "scenario": "separate_report_delay",
+        "source_run": "position-flow-confirm",
+        "outcome": "END",
+        "commands": [
+          "OFFBOARD",
+          "ARM",
+          "POSCTL",
+          "OFFBOARD",
+          "LAND"
+        ],
+        "mission_complete": true,
+        "landing_verified": true,
+        "home_xy_m": [
+          2.0,
+          2.0
+        ],
+        "final_xy_m": [
+          2.0,
+          2.0
+        ],
+        "native_binary_sha256": "8a69a01386ec7a0919a7c8cb3c13b9d7b614d240c6c6cd07a0d08914cdbcbb08",
+        "max_received_setpoint_gap_s": 0.060327674000291154,
+        "max_native_sender_gap_s": 0.05551921400183346,
+        "max_mock_fc_source_gap_s": 0.04696456499732449,
+        "command_http_timeouts": [],
+        "command_http_durations_s": [],
+        "end_confirmation_wait_s": null,
+        "real_platform_link": true,
+        "flight_samples": 278,
+        "max_active_sample_gap_s": 0.155073854,
+        "evidence_sha256": "1a236fa7888821cd96fa7b52d7dabb7ae32bc9546ce4f31211b22c290b79bbb7",
+        "native_record_sha256": "4752abf51a3c70aec4f3d7a7a2bd7bc18e9fc1a9406101818391cce1c17da836"
+      },
+      {
+        "scenario": "separate_resume_gap",
+        "source_run": "position-flow-confirm",
+        "outcome": "END",
+        "commands": [
+          "OFFBOARD",
+          "ARM",
+          "POSCTL",
+          "OFFBOARD",
+          "LAND"
+        ],
+        "mission_complete": true,
+        "landing_verified": true,
+        "home_xy_m": [
+          2.0,
+          2.0
+        ],
+        "final_xy_m": [
+          2.0,
+          2.0
+        ],
+        "native_binary_sha256": "8a69a01386ec7a0919a7c8cb3c13b9d7b614d240c6c6cd07a0d08914cdbcbb08",
+        "max_received_setpoint_gap_s": 0.064194475999102,
+        "max_native_sender_gap_s": 0.06046175899973605,
+        "max_mock_fc_source_gap_s": 0.279256092999276,
+        "command_http_timeouts": [],
+        "command_http_durations_s": [],
+        "end_confirmation_wait_s": null,
+        "real_platform_link": true,
+        "flight_samples": 288,
+        "max_active_sample_gap_s": 0.3486777,
+        "evidence_sha256": "1c897c9a469ec1b82e7e3087ddecbb1ead62402f7380bd8912ca88aebbd341cb",
+        "native_record_sha256": "b1241af87c188745b42b324ae85111b598c5fed4f2b109a7c80221d54eba2eff"
+      },
+      {
+        "scenario": "separate_takeoff_gap",
+        "source_run": "position-flow-confirm",
+        "outcome": "END",
+        "commands": [
+          "OFFBOARD",
+          "ARM",
+          "POSCTL",
+          "OFFBOARD",
+          "LAND"
+        ],
+        "mission_complete": true,
+        "landing_verified": true,
+        "home_xy_m": [
+          2.0,
+          2.0
+        ],
+        "final_xy_m": [
+          2.0,
+          2.0
+        ],
+        "native_binary_sha256": "8a69a01386ec7a0919a7c8cb3c13b9d7b614d240c6c6cd07a0d08914cdbcbb08",
+        "max_received_setpoint_gap_s": 0.06089086300198687,
+        "max_native_sender_gap_s": 0.05242684100085171,
+        "max_mock_fc_source_gap_s": 0.214348327001062,
+        "command_http_timeouts": [],
+        "command_http_durations_s": [],
+        "end_confirmation_wait_s": null,
+        "real_platform_link": true,
+        "flight_samples": 275,
+        "max_active_sample_gap_s": 0.153083503,
+        "evidence_sha256": "c6fff60c596c6df30a6b1ae049767528188a016e200c995ed1d4d4186a5a86a3",
+        "native_record_sha256": "dd094a5035aeae78210a4e5daac43eb3d406959ced6cab2611463d22b8960763"
+      },
+      {
+        "scenario": "separate_takeoff_pose_gap",
+        "source_run": "position-flow-storage-confirm",
+        "outcome": "END",
+        "commands": [
+          "OFFBOARD",
+          "ARM",
+          "POSCTL",
+          "OFFBOARD",
+          "LAND"
+        ],
+        "mission_complete": true,
+        "landing_verified": true,
+        "home_xy_m": [
+          2.0,
+          2.0
+        ],
+        "final_xy_m": [
+          2.0,
+          2.0
+        ],
+        "native_binary_sha256": "8a69a01386ec7a0919a7c8cb3c13b9d7b614d240c6c6cd07a0d08914cdbcbb08",
+        "max_received_setpoint_gap_s": 0.05957964299886953,
+        "max_native_sender_gap_s": 0.05403103500066209,
+        "max_mock_fc_source_gap_s": 0.14929913200103329,
+        "command_http_timeouts": [],
+        "command_http_durations_s": [
+          0.022695505002047867,
+          0.008674202999827685,
+          0.028684381002676673,
+          0.016865831999894
+        ],
+        "end_confirmation_wait_s": 0.10898276700027054,
+        "real_platform_link": true,
+        "flight_samples": 275,
+        "max_active_sample_gap_s": 0.152516057,
+        "evidence_sha256": "4207c7a6120a6230a8d319eaa5a6fbc406295f327b18f5e435aa7616bc8452c0",
+        "native_record_sha256": "0cc10d013287d1dae27da9c82be9256559ca2f834c738005681ddea57bb63ac8"
+      }
+    ],
+    "native_binary_sha256": "8a69a01386ec7a0919a7c8cb3c13b9d7b614d240c6c6cd07a0d08914cdbcbb08",
+    "cpp_ai_binary_sha256": "5dc0924df2fffa7f08ab1b4c6443706f7b86a3238ebc159ca01cab291026631d"
+  },
+  "ci": {
+    "run_url": "https://github.com/Dronestock-SW/ROS2/actions/runs/38353006539",
+    "commit": "c7828170d3799a3413a456446c79b8ad2aeec2ec",
+    "conclusion": "success",
+    "python_passed": 267,
+    "cpp_python_passed": 9,
+    "cpp_python_deselected": 3,
+    "ctest_groups_passed": 3,
+    "ros_flow_scenarios": [
+      {
+        "scenario": "bridge_delay",
+        "outcome": "END",
+        "commands": [
+          "OFFBOARD",
+          "ARM",
+          "LAND"
+        ],
+        "max_received_setpoint_gap_s": 0.052203833000021405,
+        "max_native_sender_gap_s": 0.05032696800003578,
+        "real_platform_link": false,
+        "sha256": "3dd291ac9df74143bd0415fe55ff595fce80441b0555117d7a3207214479c1aa"
+      },
+      {
+        "scenario": "fc_estimator_loss",
+        "outcome": "FAILED",
+        "commands": [
+          "OFFBOARD",
+          "ARM",
+          "LAND"
+        ],
+        "max_received_setpoint_gap_s": 0.050322768000000906,
+        "max_native_sender_gap_s": 0.050055837000059,
+        "real_platform_link": false,
+        "sha256": "28c8d0ff95378f2e18dd8df1f115f85c851c6d695087cf1496427dc24275db15"
+      },
+      {
+        "scenario": "fc_estimator_silence",
+        "outcome": "END",
+        "commands": [
+          "OFFBOARD",
+          "ARM",
+          "LAND"
+        ],
+        "max_received_setpoint_gap_s": 0.050919374000045536,
+        "max_native_sender_gap_s": 0.05009440399999221,
+        "real_platform_link": false,
+        "sha256": "01f219b2b9dbc5e4ee9420cf0f19d3696d2495a879807fe6c9ccba62525fba24"
+      },
+      {
+        "scenario": "fc_pose_loss",
+        "outcome": "FAILED",
+        "commands": [
+          "OFFBOARD",
+          "ARM",
+          "LAND"
+        ],
+        "max_received_setpoint_gap_s": 0.05085495200000878,
+        "max_native_sender_gap_s": 0.05008230700002514,
+        "real_platform_link": false,
+        "sha256": "ee9c19bc64c628334154f347e74b6e3f852a9b6612e5b35afecd625c07c59c16"
+      },
+      {
+        "scenario": "land_mode_delay",
+        "outcome": "END",
+        "commands": [
+          "OFFBOARD",
+          "ARM",
+          "LAND"
+        ],
+        "max_received_setpoint_gap_s": 0.05105897900011769,
+        "max_native_sender_gap_s": 0.05014244799986045,
+        "real_platform_link": false,
+        "sha256": "4ed5e762164692f38e82600f4fe481fd8a3a2caca9837e09169cfac18869109f"
+      },
+      {
+        "scenario": "mission_x",
+        "outcome": "END",
+        "commands": [
+          "OFFBOARD",
+          "ARM",
+          "LAND"
+        ],
+        "max_received_setpoint_gap_s": 0.05212345099994309,
+        "max_native_sender_gap_s": 0.050480569000001196,
+        "real_platform_link": true,
+        "sha256": "cdba6e9e0ee48a1f6c10a6bda4809819657e3e89d4cc9d0d9f8123002f9d8bf6"
+      },
+      {
+        "scenario": "mission_xy",
+        "outcome": "END",
+        "commands": [
+          "OFFBOARD",
+          "ARM",
+          "LAND"
+        ],
+        "max_received_setpoint_gap_s": 0.06030176400008713,
+        "max_native_sender_gap_s": 0.05009844800008523,
+        "real_platform_link": true,
+        "sha256": "03a444cbde1e1730126c478d233a94c7bd2e0e1b067d0d0acb07f03c6bd350bb"
+      },
+      {
+        "scenario": "mission_y",
+        "outcome": "END",
+        "commands": [
+          "OFFBOARD",
+          "ARM",
+          "LAND"
+        ],
+        "max_received_setpoint_gap_s": 0.052095108000003165,
+        "max_native_sender_gap_s": 0.05024719400000777,
+        "real_platform_link": true,
+        "sha256": "f866897b542554cb3f1df1958264e5e48bc0e6f64366f506d47d291283ed55b1"
+      },
+      {
+        "scenario": "nominal",
+        "outcome": "END",
+        "commands": [
+          "OFFBOARD",
+          "ARM",
+          "LAND"
+        ],
+        "max_received_setpoint_gap_s": 0.05242840799996884,
+        "max_native_sender_gap_s": 0.05009181900004478,
+        "real_platform_link": false,
+        "sha256": "0ebb5b5926a6ab11223a7a7f63d00a3fe3911e5b88151378a369ffb21ccf1ebb"
+      },
+      {
+        "scenario": "passive_recorder",
+        "outcome": "END",
+        "commands": [
+          "OFFBOARD",
+          "ARM",
+          "LAND"
+        ],
+        "max_received_setpoint_gap_s": 0.052692703999809964,
+        "max_native_sender_gap_s": 0.050325043000157166,
+        "real_platform_link": false,
+        "sha256": "7ab935512b1e68b39e210743368d735a94b44b1b0dfe7d4fa34cbb3177c35389"
+      },
+      {
+        "scenario": "pilot",
+        "outcome": "PILOT_OVERRIDE",
+        "commands": [
+          "OFFBOARD",
+          "ARM"
+        ],
+        "max_received_setpoint_gap_s": 0.05113118799999938,
+        "max_native_sender_gap_s": 0.050047564000010425,
+        "real_platform_link": false,
+        "sha256": "42ac72a0112ae4aacee8f85833d18eb50692d1f345c27eaaed0b2b6a6023f299"
+      },
+      {
+        "scenario": "platform_link",
+        "outcome": "END",
+        "commands": [
+          "OFFBOARD",
+          "ARM",
+          "LAND"
+        ],
+        "max_received_setpoint_gap_s": 0.05197550899993075,
+        "max_native_sender_gap_s": 0.05039468500001476,
+        "real_platform_link": true,
+        "sha256": "6be55f9366906773392217c3db7821d9032e8112e1e74057a67c50e60c38b8ad"
+      },
+      {
+        "scenario": "pose_gap",
+        "outcome": "END",
+        "commands": [
+          "OFFBOARD",
+          "ARM",
+          "LAND"
+        ],
+        "max_received_setpoint_gap_s": 0.05148200100006761,
+        "max_native_sender_gap_s": 0.05098685900009059,
+        "real_platform_link": false,
+        "sha256": "efe99a9141c4638dbfba5aeea8a33c064cd0fbf3ef127fa1bf2d157a5e47b1b9"
+      },
+      {
+        "scenario": "python_pause",
+        "outcome": "END",
+        "commands": [
+          "OFFBOARD",
+          "ARM",
+          "LAND"
+        ],
+        "max_received_setpoint_gap_s": 0.05275366900002609,
+        "max_native_sender_gap_s": 0.050085563000038746,
+        "real_platform_link": false,
+        "sha256": "e2a6d0cc2830ab381b29ce9d574c477899d4d9c929710c397d5891711b9e928c"
+      },
+      {
+        "scenario": "report_delay",
+        "outcome": "END",
+        "commands": [
+          "OFFBOARD",
+          "ARM",
+          "LAND"
+        ],
+        "max_received_setpoint_gap_s": 0.07186318599997321,
+        "max_native_sender_gap_s": 0.05009229799998138,
+        "real_platform_link": false,
+        "sha256": "4cbd4e4a733483e2f4d33b067bbbeb732738199cb7463eb0289504ed30ec3cc4"
+      },
+      {
+        "scenario": "report_malformed",
+        "outcome": "END",
+        "commands": [
+          "OFFBOARD",
+          "ARM",
+          "LAND"
+        ],
+        "max_received_setpoint_gap_s": 0.0522859589999598,
+        "max_native_sender_gap_s": 0.05007008200004748,
+        "real_platform_link": false,
+        "sha256": "aaf5f7cfb8a9a4953e607e25b1e6fc3741225444fa7fa6a510983990ca6a7bb5"
+      },
+      {
+        "scenario": "report_silence",
+        "outcome": "END",
+        "commands": [
+          "OFFBOARD",
+          "ARM",
+          "LAND"
+        ],
+        "max_received_setpoint_gap_s": 0.050961913000037384,
+        "max_native_sender_gap_s": 0.05010226199999579,
+        "real_platform_link": false,
+        "sha256": "d466d09974b22a1a5ee2f43416213f97a59786529c7599a804097d65cf88be52"
+      },
+      {
+        "scenario": "separate_hold_gap",
+        "outcome": "END",
+        "commands": [
+          "OFFBOARD",
+          "ARM",
+          "POSCTL",
+          "OFFBOARD",
+          "LAND"
+        ],
+        "max_received_setpoint_gap_s": 0.05172194299984767,
+        "max_native_sender_gap_s": 0.05050958699985131,
+        "real_platform_link": true,
+        "sha256": "e88481cc1916bc170389e838c12f1f885b891c3c749c50192aa8b8688b71db7d"
+      },
+      {
+        "scenario": "separate_hold_land",
+        "outcome": "FAILED",
+        "commands": [
+          "OFFBOARD",
+          "ARM",
+          "POSCTL",
+          "LAND"
+        ],
+        "max_received_setpoint_gap_s": 0.05119633200001772,
+        "max_native_sender_gap_s": 0.050099788999887096,
+        "real_platform_link": true,
+        "sha256": "f18a61aa0037a95031bf991072cca28a573f5caec51186d2781998f2d2eaf249"
+      },
+      {
+        "scenario": "separate_left_error",
+        "outcome": "END",
+        "commands": [
+          "OFFBOARD",
+          "ARM",
+          "POSCTL",
+          "OFFBOARD",
+          "LAND"
+        ],
+        "max_received_setpoint_gap_s": 0.05175534599993625,
+        "max_native_sender_gap_s": 0.050275941000109015,
+        "real_platform_link": true,
+        "sha256": "e68d5e6c2e57241ff56ded887edb786477c28bc84a2f17550eb17ffe2abc7e70"
+      },
+      {
+        "scenario": "separate_mission_x",
+        "outcome": "END",
+        "commands": [
+          "OFFBOARD",
+          "ARM",
+          "POSCTL",
+          "OFFBOARD",
+          "LAND"
+        ],
+        "max_received_setpoint_gap_s": 0.05186441599994396,
+        "max_native_sender_gap_s": 0.05124861199988118,
+        "real_platform_link": true,
+        "sha256": "74e4bcb6d6d9321720e2a88b992e32b5fb9468a0ce7a7ab91263963b5efe7745"
+      },
+      {
+        "scenario": "separate_nominal",
+        "outcome": "END",
+        "commands": [
+          "OFFBOARD",
+          "ARM",
+          "POSCTL",
+          "OFFBOARD",
+          "LAND"
+        ],
+        "max_received_setpoint_gap_s": 0.09043703199995434,
+        "max_native_sender_gap_s": 0.05042616199989425,
+        "real_platform_link": true,
+        "sha256": "3a47ffc6aa0412a9d2359deda76a9e601eabe2dcced8900c23d67ce5f636a504"
+      },
+      {
+        "scenario": "separate_pilot",
+        "outcome": "PILOT_OVERRIDE",
+        "commands": [
+          "OFFBOARD",
+          "ARM",
+          "POSCTL"
+        ],
+        "max_received_setpoint_gap_s": 0.05055398799981958,
+        "max_native_sender_gap_s": 0.05010543699995651,
+        "real_platform_link": true,
+        "sha256": "0e717ea6d868efb431fad868a56462dac447f2cadf1861000f594d13a1b21955"
+      },
+      {
+        "scenario": "separate_report_delay",
+        "outcome": "END",
+        "commands": [
+          "OFFBOARD",
+          "ARM",
+          "POSCTL",
+          "OFFBOARD",
+          "LAND"
+        ],
+        "max_received_setpoint_gap_s": 0.05210173099999338,
+        "max_native_sender_gap_s": 0.050241878999941036,
+        "real_platform_link": true,
+        "sha256": "c7d03a9182dde8d96efc2b3914d4b48592f64006865a8d450159ab3b9b8b6bf6"
+      },
+      {
+        "scenario": "separate_resume_gap",
+        "outcome": "END",
+        "commands": [
+          "OFFBOARD",
+          "ARM",
+          "POSCTL",
+          "OFFBOARD",
+          "LAND"
+        ],
+        "max_received_setpoint_gap_s": 0.05183221600009347,
+        "max_native_sender_gap_s": 0.051105950999954075,
+        "real_platform_link": true,
+        "sha256": "4f9c69d31620181f0d1b5fc26cc64471bd21b7a716a8e375b3995753605917e0"
+      },
+      {
+        "scenario": "separate_takeoff_gap",
+        "outcome": "END",
+        "commands": [
+          "OFFBOARD",
+          "ARM",
+          "POSCTL",
+          "OFFBOARD",
+          "LAND"
+        ],
+        "max_received_setpoint_gap_s": 0.05270591799990143,
+        "max_native_sender_gap_s": 0.0504835969998112,
+        "real_platform_link": true,
+        "sha256": "55fb36f04e5a51e1b06ddfc5e534b8bb51efbb5d7db560b43f2688f1c2b5b661"
+      },
+      {
+        "scenario": "separate_takeoff_pose_gap",
+        "outcome": "END",
+        "commands": [
+          "OFFBOARD",
+          "ARM",
+          "POSCTL",
+          "OFFBOARD",
+          "LAND"
+        ],
+        "max_received_setpoint_gap_s": 0.05149125599996296,
+        "max_native_sender_gap_s": 0.05035732300007112,
+        "real_platform_link": true,
+        "sha256": "6eda331a0a9871793a804dcfb7aa119248738132c2e3f12425282e67a8c4e740"
+      },
+      {
+        "scenario": "state_1hz",
+        "outcome": "END",
+        "commands": [
+          "OFFBOARD",
+          "ARM",
+          "LAND"
+        ],
+        "max_received_setpoint_gap_s": 0.05132961100002831,
+        "max_native_sender_gap_s": 0.0500872629999094,
+        "real_platform_link": false,
+        "sha256": "9d469c3a86fa4f13baa01da6172144af3ebca0a155577bfc95a511832a232ac2"
+      },
+      {
+        "scenario": "takeoff_pose_gap",
+        "outcome": "END",
+        "commands": [
+          "OFFBOARD",
+          "ARM",
+          "LAND"
+        ],
+        "max_received_setpoint_gap_s": 0.05149182799993923,
+        "max_native_sender_gap_s": 0.050176005000025725,
+        "real_platform_link": false,
+        "sha256": "3164e4bdb6b6c348bac1cb0e1f1f780d1b5ee4de912408e903a2a7bdb5722fd1"
+      },
+      {
+        "scenario": "target_silence",
+        "outcome": "END",
+        "commands": [
+          "OFFBOARD",
+          "ARM",
+          "LAND"
+        ],
+        "max_received_setpoint_gap_s": 0.05155063600000176,
+        "max_native_sender_gap_s": 0.05145157200001904,
+        "real_platform_link": false,
+        "sha256": "7903f0266930ceb1e88a2bd8ab455c267b2bde45e6dc2c4397bcf6b91e8f7c1a"
+      },
+      {
+        "scenario": "uwb_gap",
+        "outcome": "END",
+        "commands": [
+          "OFFBOARD",
+          "ARM",
+          "LAND"
+        ],
+        "max_received_setpoint_gap_s": 0.05103376500005652,
+        "max_native_sender_gap_s": 0.050103476000003866,
+        "real_platform_link": false,
+        "sha256": "81b340fcff4cf26074fdc81b53346aeea91a7948f5a8cf06ee3bd44f65016dd0"
+      }
+    ],
+    "physical_flight": false
+  },
+  "ground_check": {
+    "physical_flight": false,
+    "output_enabled": false,
+    "web_status_received": true,
+    "can_start": false,
+    "can_takeoff": false,
+    "start_mode": "takeoff_hold",
+    "takeoff_backend": "local_position",
+    "received_setpoints": 0,
+    "fc_state": {
+      "armed": false,
+      "connected": true,
+      "mode": "AUTO.LOITER",
+      "received": 17354.973311115
+    },
+    "commands_record_bytes": 0,
+    "private_mission_store_untouched": true,
+    "native_binary_sha256": "8a69a01386ec7a0919a7c8cb3c13b9d7b614d240c6c6cd07a0d08914cdbcbb08"
+  },
+  "ground_preflight_blockers": [
+    "execution",
+    "estimator",
+    "pose",
+    "uwb",
+    "bridge",
+    "transform",
+    "position_sticks",
+    "rc",
+    "rc_switches",
+    "battery"
+  ],
+  "preserved_failures": [
+    {
+      "file": "flow-2.log",
+      "reason": "Mission X reached END but receiver gap 354 ms failed the unchanged 200 ms assertion.",
+      "sha256": "c164477a1f6b98ac0ed47f5a56e117aa9e04e3c414728e8a691badcc8800bf97"
+    },
+    {
+      "file": "position-flow-final.log",
+      "reason": "HTTP command response exceeded two seconds; suite stopped.",
+      "sha256": "b4c0ccbe9096b045e4649ff2418bcadcfc84490f16dab6062ee07eb39c82de03"
+    },
+    {
+      "file": "position-flow-confirm.log",
+      "reason": "Three two-second request confirmation attempts timed out before any FC command.",
+      "sha256": "79c8d67443ade6ed9365f48e3897eec7fc23c691bacd76fc07c4bd35fe59d4ad"
+    },
+    {
+      "file": "position-flow-remaining.log",
+      "reason": "Landing was verified, but web completion remained record_pending beyond the old three-second test wait.",
+      "sha256": "4fa3a132bad69efe0d6fe791451342ae2256fbfeb979e872bbbf608458d23fed"
+    }
+  ],
+  "limitations": [
+    "Synthetic FC does not model PX4 estimation or vehicle dynamics.",
+    "The ten Jetson passes are separate scenario confirmations across three batches, not a clean repeated ten-case batch.",
+    "Intermittent Jetson HTTP and durable recording response delays remain unresolved.",
+    "Native latest-value samples are best effort, not lossless 10 Hz recording.",
+    "The latest CI source check rerun is pending; c782817 production sources passed 31 scenarios."
+  ]
+}
