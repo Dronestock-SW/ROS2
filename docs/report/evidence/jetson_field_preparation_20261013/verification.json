@@ -1,0 +1,1318 @@
+{
+  "source_commit": "11486af97d4c56edd01e81c1ae7b33cd74bed1c4",
+  "physical_flight": false,
+  "ci_url": "https://github.com/Dronestock-SW/ROS2/actions/runs/38345833605",
+  "ci_python": {
+    "tests": 266,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "ci_cpp_python": {
+    "tests": 9,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "ci_native_contract_groups": 3,
+  "ci_cases": [
+    {
+      "scenario": "bridge_delay",
+      "terminal": "END",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "binary_sha256": "320b9521cc837acf363d013d278444dc4a4e0844ee0cd686e2757b4a942267fd",
+      "max_received_setpoint_gap_s": 0.0523570479999762,
+      "native_samples": 202,
+      "max_native_sample_gap_s": 0.150396623000006,
+      "command_record_persistence": [
+        {
+          "kind": "offboard_mode",
+          "token": 1,
+          "journal_elapsed_s": 0.0007593560000032085,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "arm",
+          "token": 2,
+          "journal_elapsed_s": 0.0006296760000168433,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "land",
+          "token": 3,
+          "journal_elapsed_s": 0.0010183939999706126,
+          "durable_before_dispatch": false
+        }
+      ],
+      "final_xy_m": [
+        2.0,
+        2.0
+      ],
+      "real_platform_link": false
+    },
+    {
+      "scenario": "fc_estimator_loss",
+      "terminal": "FAILED",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "binary_sha256": "320b9521cc837acf363d013d278444dc4a4e0844ee0cd686e2757b4a942267fd",
+      "max_received_setpoint_gap_s": 0.05087000000003172,
+      "native_samples": 117,
+      "max_native_sample_gap_s": 0.15048224999998183,
+      "command_record_persistence": [
+        {
+          "kind": "offboard_mode",
+          "token": 1,
+          "journal_elapsed_s": 0.0008949939999638445,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "arm",
+          "token": 2,
+          "journal_elapsed_s": 0.000746958000036102,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "land",
+          "token": 3,
+          "journal_elapsed_s": 0.001001031999976476,
+          "durable_before_dispatch": false
+        }
+      ],
+      "final_xy_m": [
+        2.0,
+        2.0
+      ],
+      "real_platform_link": false
+    },
+    {
+      "scenario": "fc_estimator_silence",
+      "terminal": "END",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "binary_sha256": "320b9521cc837acf363d013d278444dc4a4e0844ee0cd686e2757b4a942267fd",
+      "max_received_setpoint_gap_s": 0.05113548199994966,
+      "native_samples": 212,
+      "max_native_sample_gap_s": 0.15039026800002375,
+      "command_record_persistence": [
+        {
+          "kind": "offboard_mode",
+          "token": 1,
+          "journal_elapsed_s": 0.0008053720000589237,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "arm",
+          "token": 2,
+          "journal_elapsed_s": 0.0008768909999616881,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "land",
+          "token": 3,
+          "journal_elapsed_s": 0.0009773660000291784,
+          "durable_before_dispatch": false
+        }
+      ],
+      "final_xy_m": [
+        2.0,
+        2.0
+      ],
+      "real_platform_link": false
+    },
+    {
+      "scenario": "fc_pose_loss",
+      "terminal": "FAILED",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "binary_sha256": "320b9521cc837acf363d013d278444dc4a4e0844ee0cd686e2757b4a942267fd",
+      "max_received_setpoint_gap_s": 0.05216433399994003,
+      "native_samples": 133,
+      "max_native_sample_gap_s": 0.15033136199997443,
+      "command_record_persistence": [
+        {
+          "kind": "offboard_mode",
+          "token": 1,
+          "journal_elapsed_s": 0.0011147619999292147,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "arm",
+          "token": 2,
+          "journal_elapsed_s": 0.0008671849999473125,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "land",
+          "token": 3,
+          "journal_elapsed_s": 0.0009058040000127221,
+          "durable_before_dispatch": false
+        }
+      ],
+      "final_xy_m": [
+        2.0,
+        2.0
+      ],
+      "real_platform_link": false
+    },
+    {
+      "scenario": "land_mode_delay",
+      "terminal": "END",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "binary_sha256": "320b9521cc837acf363d013d278444dc4a4e0844ee0cd686e2757b4a942267fd",
+      "max_received_setpoint_gap_s": 0.05124786600003972,
+      "native_samples": 210,
+      "max_native_sample_gap_s": 0.1501847419999649,
+      "command_record_persistence": [
+        {
+          "kind": "offboard_mode",
+          "token": 1,
+          "journal_elapsed_s": 0.0015795010000374532,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "arm",
+          "token": 2,
+          "journal_elapsed_s": 0.0008648259999972652,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "land",
+          "token": 3,
+          "journal_elapsed_s": 0.0008149480000838594,
+          "durable_before_dispatch": false
+        }
+      ],
+      "final_xy_m": [
+        2.0,
+        2.0
+      ],
+      "real_platform_link": false
+    },
+    {
+      "scenario": "mission_x",
+      "terminal": "END",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "binary_sha256": "320b9521cc837acf363d013d278444dc4a4e0844ee0cd686e2757b4a942267fd",
+      "max_received_setpoint_gap_s": 0.05230532499990659,
+      "native_samples": 238,
+      "max_native_sample_gap_s": 0.15165966199992909,
+      "command_record_persistence": [
+        {
+          "kind": "offboard_mode",
+          "token": 1,
+          "journal_elapsed_s": 0.0018515130000196223,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "arm",
+          "token": 2,
+          "journal_elapsed_s": 0.000931852999997318,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "land",
+          "token": 3,
+          "journal_elapsed_s": 0.001242129999923236,
+          "durable_before_dispatch": false
+        }
+      ],
+      "final_xy_m": [
+        2.0,
+        2.0
+      ],
+      "real_platform_link": true
+    },
+    {
+      "scenario": "mission_xy",
+      "terminal": "END",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "binary_sha256": "320b9521cc837acf363d013d278444dc4a4e0844ee0cd686e2757b4a942267fd",
+      "max_received_setpoint_gap_s": 0.05228332599995156,
+      "native_samples": 338,
+      "max_native_sample_gap_s": 0.15195891999997002,
+      "command_record_persistence": [
+        {
+          "kind": "offboard_mode",
+          "token": 1,
+          "journal_elapsed_s": 0.0028060829999958514,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "arm",
+          "token": 2,
+          "journal_elapsed_s": 0.0014667890000055195,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "land",
+          "token": 3,
+          "journal_elapsed_s": 0.0011027739999462938,
+          "durable_before_dispatch": false
+        }
+      ],
+      "final_xy_m": [
+        2.0,
+        2.0
+      ],
+      "real_platform_link": true
+    },
+    {
+      "scenario": "mission_y",
+      "terminal": "END",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "binary_sha256": "320b9521cc837acf363d013d278444dc4a4e0844ee0cd686e2757b4a942267fd",
+      "max_received_setpoint_gap_s": 0.05295594400001846,
+      "native_samples": 242,
+      "max_native_sample_gap_s": 0.15112049300000763,
+      "command_record_persistence": [
+        {
+          "kind": "offboard_mode",
+          "token": 1,
+          "journal_elapsed_s": 0.0009425140000303145,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "arm",
+          "token": 2,
+          "journal_elapsed_s": 0.0013561499999923399,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "land",
+          "token": 3,
+          "journal_elapsed_s": 0.0008416140000235828,
+          "durable_before_dispatch": false
+        }
+      ],
+      "final_xy_m": [
+        2.0,
+        2.0
+      ],
+      "real_platform_link": true
+    },
+    {
+      "scenario": "nominal",
+      "terminal": "END",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "binary_sha256": "320b9521cc837acf363d013d278444dc4a4e0844ee0cd686e2757b4a942267fd",
+      "max_received_setpoint_gap_s": 0.05110919999998487,
+      "native_samples": 202,
+      "max_native_sample_gap_s": 0.15075506099998393,
+      "command_record_persistence": [
+        {
+          "kind": "offboard_mode",
+          "token": 1,
+          "journal_elapsed_s": 0.0009646440000210532,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "arm",
+          "token": 2,
+          "journal_elapsed_s": 0.000727537000045686,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "land",
+          "token": 3,
+          "journal_elapsed_s": 0.0009188029999904757,
+          "durable_before_dispatch": false
+        }
+      ],
+      "final_xy_m": [
+        2.0,
+        2.0
+      ],
+      "real_platform_link": false
+    },
+    {
+      "scenario": "passive_recorder",
+      "terminal": "END",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "binary_sha256": "320b9521cc837acf363d013d278444dc4a4e0844ee0cd686e2757b4a942267fd",
+      "max_received_setpoint_gap_s": 0.05165234399999008,
+      "native_samples": 203,
+      "max_native_sample_gap_s": 0.15059626399988701,
+      "command_record_persistence": [
+        {
+          "kind": "offboard_mode",
+          "token": 1,
+          "journal_elapsed_s": 0.0010128239999858124,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "arm",
+          "token": 2,
+          "journal_elapsed_s": 0.001159649999976864,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "land",
+          "token": 3,
+          "journal_elapsed_s": 0.0010107279999829188,
+          "durable_before_dispatch": false
+        }
+      ],
+      "final_xy_m": [
+        2.0,
+        2.0
+      ],
+      "real_platform_link": false
+    },
+    {
+      "scenario": "pilot",
+      "terminal": "PILOT_OVERRIDE",
+      "commands": [
+        "OFFBOARD",
+        "ARM"
+      ],
+      "binary_sha256": "320b9521cc837acf363d013d278444dc4a4e0844ee0cd686e2757b4a942267fd",
+      "max_received_setpoint_gap_s": 0.050924300000019684,
+      "native_samples": 87,
+      "max_native_sample_gap_s": 0.15018977499994435,
+      "command_record_persistence": [
+        {
+          "kind": "offboard_mode",
+          "token": 1,
+          "journal_elapsed_s": 0.0008843849999493614,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "arm",
+          "token": 2,
+          "journal_elapsed_s": 0.0006890109999631022,
+          "durable_before_dispatch": true
+        }
+      ],
+      "final_xy_m": [
+        2.0,
+        2.0
+      ],
+      "real_platform_link": false
+    },
+    {
+      "scenario": "platform_link",
+      "terminal": "END",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "binary_sha256": "320b9521cc837acf363d013d278444dc4a4e0844ee0cd686e2757b4a942267fd",
+      "max_received_setpoint_gap_s": 0.05287428799999816,
+      "native_samples": 203,
+      "max_native_sample_gap_s": 0.15105664199995772,
+      "command_record_persistence": [
+        {
+          "kind": "offboard_mode",
+          "token": 1,
+          "journal_elapsed_s": 0.0009582640000189713,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "arm",
+          "token": 2,
+          "journal_elapsed_s": 0.001001703000042653,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "land",
+          "token": 3,
+          "journal_elapsed_s": 0.0009237179999672662,
+          "durable_before_dispatch": false
+        }
+      ],
+      "final_xy_m": [
+        2.0,
+        2.0
+      ],
+      "real_platform_link": true
+    },
+    {
+      "scenario": "pose_gap",
+      "terminal": "END",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "binary_sha256": "320b9521cc837acf363d013d278444dc4a4e0844ee0cd686e2757b4a942267fd",
+      "max_received_setpoint_gap_s": 0.0519747879999386,
+      "native_samples": 217,
+      "max_native_sample_gap_s": 0.1501738709999927,
+      "command_record_persistence": [
+        {
+          "kind": "offboard_mode",
+          "token": 1,
+          "journal_elapsed_s": 0.0012282530000220504,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "arm",
+          "token": 2,
+          "journal_elapsed_s": 0.0005999889999657171,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "land",
+          "token": 3,
+          "journal_elapsed_s": 0.0008215729999392352,
+          "durable_before_dispatch": false
+        }
+      ],
+      "final_xy_m": [
+        2.0,
+        2.0
+      ],
+      "real_platform_link": false
+    },
+    {
+      "scenario": "python_pause",
+      "terminal": "END",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "binary_sha256": "320b9521cc837acf363d013d278444dc4a4e0844ee0cd686e2757b4a942267fd",
+      "max_received_setpoint_gap_s": 0.05205804699994587,
+      "native_samples": 200,
+      "max_native_sample_gap_s": 0.15015759599998546,
+      "command_record_persistence": [
+        {
+          "kind": "offboard_mode",
+          "token": 1,
+          "journal_elapsed_s": 0.0008974539999826447,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "arm",
+          "token": 2,
+          "journal_elapsed_s": 0.0009478279999939332,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "land",
+          "token": 3,
+          "journal_elapsed_s": 0.0010175119999757953,
+          "durable_before_dispatch": false
+        }
+      ],
+      "final_xy_m": [
+        2.0,
+        2.0
+      ],
+      "real_platform_link": false
+    },
+    {
+      "scenario": "report_delay",
+      "terminal": "END",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "binary_sha256": "320b9521cc837acf363d013d278444dc4a4e0844ee0cd686e2757b4a942267fd",
+      "max_received_setpoint_gap_s": 0.05115328799990948,
+      "native_samples": 201,
+      "max_native_sample_gap_s": 0.15031127199995353,
+      "command_record_persistence": [
+        {
+          "kind": "offboard_mode",
+          "token": 1,
+          "journal_elapsed_s": 0.0009194600000910214,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "arm",
+          "token": 2,
+          "journal_elapsed_s": 0.0008895820000134336,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "land",
+          "token": 3,
+          "journal_elapsed_s": 0.000875031999953535,
+          "durable_before_dispatch": false
+        }
+      ],
+      "final_xy_m": [
+        2.0,
+        2.0
+      ],
+      "real_platform_link": false
+    },
+    {
+      "scenario": "report_malformed",
+      "terminal": "END",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "binary_sha256": "320b9521cc837acf363d013d278444dc4a4e0844ee0cd686e2757b4a942267fd",
+      "max_received_setpoint_gap_s": 0.051067106999994394,
+      "native_samples": 206,
+      "max_native_sample_gap_s": 0.15044223899997178,
+      "command_record_persistence": [
+        {
+          "kind": "offboard_mode",
+          "token": 1,
+          "journal_elapsed_s": 0.0007371770000190736,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "arm",
+          "token": 2,
+          "journal_elapsed_s": 0.0007874709999668994,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "land",
+          "token": 3,
+          "journal_elapsed_s": 0.0009887539999908768,
+          "durable_before_dispatch": false
+        }
+      ],
+      "final_xy_m": [
+        2.0,
+        2.0
+      ],
+      "real_platform_link": false
+    },
+    {
+      "scenario": "report_silence",
+      "terminal": "END",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "binary_sha256": "320b9521cc837acf363d013d278444dc4a4e0844ee0cd686e2757b4a942267fd",
+      "max_received_setpoint_gap_s": 0.0514428169999519,
+      "native_samples": 205,
+      "max_native_sample_gap_s": 0.15024813599995923,
+      "command_record_persistence": [
+        {
+          "kind": "offboard_mode",
+          "token": 1,
+          "journal_elapsed_s": 0.0011321619999762333,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "arm",
+          "token": 2,
+          "journal_elapsed_s": 0.0006678350000584032,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "land",
+          "token": 3,
+          "journal_elapsed_s": 0.0008832349999465805,
+          "durable_before_dispatch": false
+        }
+      ],
+      "final_xy_m": [
+        2.0,
+        2.0
+      ],
+      "real_platform_link": false
+    },
+    {
+      "scenario": "state_1hz",
+      "terminal": "END",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "binary_sha256": "320b9521cc837acf363d013d278444dc4a4e0844ee0cd686e2757b4a942267fd",
+      "max_received_setpoint_gap_s": 0.05128943599993363,
+      "native_samples": 232,
+      "max_native_sample_gap_s": 0.15034988800005067,
+      "command_record_persistence": [
+        {
+          "kind": "offboard_mode",
+          "token": 1,
+          "journal_elapsed_s": 0.0009524970000711619,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "arm",
+          "token": 2,
+          "journal_elapsed_s": 0.0008483429999159853,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "land",
+          "token": 3,
+          "journal_elapsed_s": 0.000893830999984857,
+          "durable_before_dispatch": false
+        }
+      ],
+      "final_xy_m": [
+        2.0,
+        2.0
+      ],
+      "real_platform_link": false
+    },
+    {
+      "scenario": "takeoff_pose_gap",
+      "terminal": "END",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "binary_sha256": "320b9521cc837acf363d013d278444dc4a4e0844ee0cd686e2757b4a942267fd",
+      "max_received_setpoint_gap_s": 0.05122185899995202,
+      "native_samples": 201,
+      "max_native_sample_gap_s": 0.15052040000000488,
+      "command_record_persistence": [
+        {
+          "kind": "offboard_mode",
+          "token": 1,
+          "journal_elapsed_s": 0.0008740770000486009,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "arm",
+          "token": 2,
+          "journal_elapsed_s": 0.0009733150000101887,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "land",
+          "token": 3,
+          "journal_elapsed_s": 0.0009350259999791888,
+          "durable_before_dispatch": false
+        }
+      ],
+      "final_xy_m": [
+        2.0,
+        2.0
+      ],
+      "real_platform_link": false
+    },
+    {
+      "scenario": "target_silence",
+      "terminal": "END",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "binary_sha256": "320b9521cc837acf363d013d278444dc4a4e0844ee0cd686e2757b4a942267fd",
+      "max_received_setpoint_gap_s": 0.05153563600003963,
+      "native_samples": 207,
+      "max_native_sample_gap_s": 0.15018047400008072,
+      "command_record_persistence": [
+        {
+          "kind": "offboard_mode",
+          "token": 1,
+          "journal_elapsed_s": 0.000990627000078348,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "arm",
+          "token": 2,
+          "journal_elapsed_s": 0.0020759499999485342,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "land",
+          "token": 3,
+          "journal_elapsed_s": 0.0010088170000699392,
+          "durable_before_dispatch": false
+        }
+      ],
+      "final_xy_m": [
+        2.0,
+        2.0
+      ],
+      "real_platform_link": false
+    },
+    {
+      "scenario": "uwb_gap",
+      "terminal": "END",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "binary_sha256": "320b9521cc837acf363d013d278444dc4a4e0844ee0cd686e2757b4a942267fd",
+      "max_received_setpoint_gap_s": 0.05118865700001152,
+      "native_samples": 219,
+      "max_native_sample_gap_s": 0.15018551899993327,
+      "command_record_persistence": [
+        {
+          "kind": "offboard_mode",
+          "token": 1,
+          "journal_elapsed_s": 0.0010171379999519559,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "arm",
+          "token": 2,
+          "journal_elapsed_s": 0.0006985999999642445,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "land",
+          "token": 3,
+          "journal_elapsed_s": 0.000789241999996193,
+          "durable_before_dispatch": false
+        }
+      ],
+      "final_xy_m": [
+        2.0,
+        2.0
+      ],
+      "real_platform_link": false
+    }
+  ],
+  "jetson_cases_6e4a02f": [
+    {
+      "scenario": "land_mode_delay",
+      "terminal": "END",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "binary_sha256": "42ef52b6cac8ee0a08eff2f78d9dc20462761921e7ca55ea146878987b687e99",
+      "max_received_setpoint_gap_s": 0.0570396740004071,
+      "native_samples": 209,
+      "max_native_sample_gap_s": 0.5000655490002828,
+      "command_record_persistence": [
+        {
+          "kind": "offboard_mode",
+          "token": 1,
+          "journal_elapsed_s": 0.009423533998415223,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "arm",
+          "token": 2,
+          "journal_elapsed_s": 0.009973272999559413,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "land",
+          "token": 3,
+          "journal_elapsed_s": 0.015937787999064312,
+          "durable_before_dispatch": false
+        }
+      ],
+      "final_xy_m": [
+        2.0,
+        2.0
+      ],
+      "real_platform_link": false
+    },
+    {
+      "scenario": "mission_x",
+      "terminal": "END",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "binary_sha256": "42ef52b6cac8ee0a08eff2f78d9dc20462761921e7ca55ea146878987b687e99",
+      "max_received_setpoint_gap_s": 0.05920778600011545,
+      "native_samples": 225,
+      "max_native_sample_gap_s": 1.1000891700005013,
+      "command_record_persistence": [
+        {
+          "kind": "offboard_mode",
+          "token": 1,
+          "journal_elapsed_s": 0.009922135999659076,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "arm",
+          "token": 2,
+          "journal_elapsed_s": 0.017831139999543666,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "land",
+          "token": 3,
+          "journal_elapsed_s": 0.012924153001222294,
+          "durable_before_dispatch": false
+        }
+      ],
+      "final_xy_m": [
+        2.0,
+        2.0
+      ],
+      "real_platform_link": true
+    },
+    {
+      "scenario": "mission_xy",
+      "terminal": "END",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "binary_sha256": "42ef52b6cac8ee0a08eff2f78d9dc20462761921e7ca55ea146878987b687e99",
+      "max_received_setpoint_gap_s": 0.05800116600039473,
+      "native_samples": 252,
+      "max_native_sample_gap_s": 5.650006623000081,
+      "command_record_persistence": [
+        {
+          "kind": "offboard_mode",
+          "token": 1,
+          "journal_elapsed_s": 2.5954203059991414,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "arm",
+          "token": 2,
+          "journal_elapsed_s": 0.016983281000648276,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "land",
+          "token": 3,
+          "journal_elapsed_s": 3.2311071260010067,
+          "durable_before_dispatch": false
+        }
+      ],
+      "final_xy_m": [
+        2.0,
+        2.0
+      ],
+      "real_platform_link": true
+    },
+    {
+      "scenario": "mission_y",
+      "terminal": "END",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "binary_sha256": "42ef52b6cac8ee0a08eff2f78d9dc20462761921e7ca55ea146878987b687e99",
+      "max_received_setpoint_gap_s": 0.059607090001009055,
+      "native_samples": 242,
+      "max_native_sample_gap_s": 0.6495533089982928,
+      "command_record_persistence": [
+        {
+          "kind": "offboard_mode",
+          "token": 1,
+          "journal_elapsed_s": 0.006352458000037586,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "arm",
+          "token": 2,
+          "journal_elapsed_s": 0.010534981000091648,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "land",
+          "token": 3,
+          "journal_elapsed_s": 0.011942532000830397,
+          "durable_before_dispatch": false
+        }
+      ],
+      "final_xy_m": [
+        2.0,
+        2.0
+      ],
+      "real_platform_link": true
+    },
+    {
+      "scenario": "pose_gap",
+      "terminal": "END",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "binary_sha256": "42ef52b6cac8ee0a08eff2f78d9dc20462761921e7ca55ea146878987b687e99",
+      "max_received_setpoint_gap_s": 0.05508423900027992,
+      "native_samples": 185,
+      "max_native_sample_gap_s": 1.2504272289988876,
+      "command_record_persistence": [
+        {
+          "kind": "offboard_mode",
+          "token": 1,
+          "journal_elapsed_s": 0.010948910001388867,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "arm",
+          "token": 2,
+          "journal_elapsed_s": 0.009967576999770245,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "land",
+          "token": 3,
+          "journal_elapsed_s": 3.6694675529997767,
+          "durable_before_dispatch": false
+        }
+      ],
+      "final_xy_m": [
+        2.0,
+        2.0
+      ],
+      "real_platform_link": false
+    },
+    {
+      "scenario": "python_pause",
+      "terminal": "END",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "binary_sha256": "42ef52b6cac8ee0a08eff2f78d9dc20462761921e7ca55ea146878987b687e99",
+      "max_received_setpoint_gap_s": 0.0561023739992379,
+      "native_samples": 180,
+      "max_native_sample_gap_s": 1.5499712109995016,
+      "command_record_persistence": [
+        {
+          "kind": "offboard_mode",
+          "token": 1,
+          "journal_elapsed_s": 0.010607014999550302,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "arm",
+          "token": 2,
+          "journal_elapsed_s": 0.006932631000381662,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "land",
+          "token": 3,
+          "journal_elapsed_s": 0.03789804200096114,
+          "durable_before_dispatch": false
+        }
+      ],
+      "final_xy_m": [
+        2.0,
+        2.0
+      ],
+      "real_platform_link": false
+    },
+    {
+      "scenario": "report_delay",
+      "terminal": "END",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "binary_sha256": "42ef52b6cac8ee0a08eff2f78d9dc20462761921e7ca55ea146878987b687e99",
+      "max_received_setpoint_gap_s": 0.05645783799991477,
+      "native_samples": 184,
+      "max_native_sample_gap_s": 2.299766568999985,
+      "command_record_persistence": [
+        {
+          "kind": "offboard_mode",
+          "token": 1,
+          "journal_elapsed_s": 0.012127624999266118,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "arm",
+          "token": 2,
+          "journal_elapsed_s": 0.009645138001360465,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "land",
+          "token": 3,
+          "journal_elapsed_s": 3.275047746999917,
+          "durable_before_dispatch": false
+        }
+      ],
+      "final_xy_m": [
+        2.0,
+        2.0
+      ],
+      "real_platform_link": false
+    }
+  ],
+  "jetson_cases_11486af": [
+    {
+      "scenario": "passive_recorder",
+      "terminal": "END",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "binary_sha256": "68ade8702c0d5896662c1fd073f7c21dd7a33832cd69334537b49dbf06069e92",
+      "max_received_setpoint_gap_s": 0.055670714000370936,
+      "native_samples": 212,
+      "max_native_sample_gap_s": 1.6999150280007598,
+      "command_record_persistence": [
+        {
+          "kind": "offboard_mode",
+          "token": 1,
+          "journal_elapsed_s": 0.01075101700007508,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "arm",
+          "token": 2,
+          "journal_elapsed_s": 0.01442543399934948,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "land",
+          "token": 3,
+          "journal_elapsed_s": 5.108843138001248,
+          "durable_before_dispatch": false
+        }
+      ],
+      "final_xy_m": [
+        2.0,
+        2.0
+      ],
+      "real_platform_link": false
+    },
+    {
+      "scenario": "python_pause",
+      "terminal": "END",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "binary_sha256": "68ade8702c0d5896662c1fd073f7c21dd7a33832cd69334537b49dbf06069e92",
+      "max_received_setpoint_gap_s": 0.06103089499993075,
+      "native_samples": 210,
+      "max_native_sample_gap_s": 0.15211994700075593,
+      "command_record_persistence": [
+        {
+          "kind": "offboard_mode",
+          "token": 1,
+          "journal_elapsed_s": 0.013699273000383982,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "arm",
+          "token": 2,
+          "journal_elapsed_s": 0.012436718001481495,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "land",
+          "token": 3,
+          "journal_elapsed_s": 0.011175922998518217,
+          "durable_before_dispatch": false
+        }
+      ],
+      "final_xy_m": [
+        2.0,
+        2.0
+      ],
+      "real_platform_link": false
+    },
+    {
+      "scenario": "python_pause",
+      "terminal": "END",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "binary_sha256": "68ade8702c0d5896662c1fd073f7c21dd7a33832cd69334537b49dbf06069e92",
+      "max_received_setpoint_gap_s": 0.057169882999005495,
+      "native_samples": 219,
+      "max_native_sample_gap_s": 0.15216029899966088,
+      "command_record_persistence": [
+        {
+          "kind": "offboard_mode",
+          "token": 1,
+          "journal_elapsed_s": 0.01349283699892112,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "arm",
+          "token": 2,
+          "journal_elapsed_s": 0.036656700998719316,
+          "durable_before_dispatch": true
+        },
+        {
+          "kind": "land",
+          "token": 3,
+          "journal_elapsed_s": 0.009649937999711256,
+          "durable_before_dispatch": false
+        }
+      ],
+      "final_xy_m": [
+        2.0,
+        2.0
+      ],
+      "real_platform_link": false
+    }
+  ],
+  "jetson_binary_sha256": "68ade8702c0d5896662c1fd073f7c21dd7a33832cd69334537b49dbf06069e92",
+  "jetson_evidence_archive_sha256": "e6972f7170534ab1f0b8ee930cdce37968ec59480a01c948f8571c8234175b6a",
+  "actual_ground": {
+    "physical_flight": false,
+    "output_enabled": false,
+    "web_status_received": true,
+    "can_start": false,
+    "received_setpoints": 0,
+    "fc_state": {
+      "armed": false,
+      "connected": true,
+      "mode": "AUTO.LOITER",
+      "received": 11159.685456494
+    },
+    "commands_record_bytes": 0,
+    "telemetry_fresh": true,
+    "telemetry_age_ms": 69,
+    "executor_backend": "sangwon_cpp_executor",
+    "start_blockers": [
+      "execution",
+      "estimator",
+      "pose",
+      "uwb",
+      "bridge",
+      "transform",
+      "rc",
+      "rc_switches",
+      "battery"
+    ]
+  },
+  "logging_setup": {
+    "utc": "2026-10-13T04:44:24.026651+00:00",
+    "flight_commands": false,
+    "parameter_writes": [
+      {
+        "name": "SDLOG_PROFILE",
+        "before": 1,
+        "after": 129
+      }
+    ],
+    "ev_delay_changed": false,
+    "sd_free_bytes": 1664352256,
+    "before_profile": 1.0,
+    "ev_delay_before_ms": 0.0,
+    "logger_before": {
+      "logging": true,
+      "path": "/fs/microsd/log/2026-10-11/19_23_45.ulg",
+      "written_bytes_approx": 472970690.56
+    },
+    "after_profile": 129.0,
+    "saved_marker_seen": true,
+    "logger_first": {
+      "logging": true,
+      "path": "/fs/microsd/log/2026-10-11/22_42_14.ulg",
+      "written_bytes_approx": 241172.48
+    },
+    "logger_last": {
+      "logging": true,
+      "path": "/fs/microsd/log/2026-10-11/22_42_14.ulg",
+      "written_bytes_approx": 440401.92
+    },
+    "growth_verified": true,
+    "ev_delay_after_ms": 0.0
+  },
+  "limitations": [
+    "synthetic FC is not PX4 flight physics",
+    "UWB anchors and RC were off",
+    "horizontal EV and optical flow fusion inactive during readback",
+    "physical drift root cause not established",
+    "EKF2_EV_DELAY remains 0 ms pending dynamic timing evidence"
+  ],
+  "post_test_cleanup": {
+    "backup_created": false,
+    "free_before": 1210974208,
+    "yesterday_count": 29,
+    "idle_retained": [
+      "capture-1791865083175849295-308a7d4f",
+      "capture-1791865265868063043-7bfe1252",
+      "capture-1791865447566904306-20d38317"
+    ],
+    "capture_service": "inactive_until_evening_session",
+    "sensor_services_unchanged": true,
+    "yesterday_unchanged": true,
+    "free_after": 2686615552,
+    "deleted_directories": 13,
+    "deleted_bytes": 1475023556
+  },
+  "capture_preparation": {
+    "capture_root": "/home/arialhanho/.local/share/dronestock/manual-captures-20261013",
+    "capture": "/home/arialhanho/.local/share/dronestock/manual-captures-20261013/capture-1791867197383709526-cbe42efd",
+    "source_revision": "11486af97d4c56edd01e81c1ae7b33cd74bed1c4",
+    "writer_drained": true,
+    "bytes": 8995887,
+    "received": {
+      "/mavros/setpoint_raw/target_local": 95,
+      "/mavros/extended_state": 48,
+      "/mavros/rc/in": 91,
+      "/mavros/imu/data": 947,
+      "/mavros/imu/data_raw": 947,
+      "/mavros/local_position/odom": 284,
+      "/uas1/mavlink_source": 4519,
+      "/mavros/downward_0": 93,
+      "/mavros/estimator_status": 94,
+      "/scan": 94,
+      "/point_cloud": 94,
+      "/uwb/btf_status": 10,
+      "/mavros/timesync_status": 94,
+      "/uwb/status": 10,
+      "/mavros/state": 10,
+      "/uwb/received": 2
+    },
+    "physical_flight": false,
+    "fc_commands": false,
+    "service_left": "inactive",
+    "initial_yesterday_record_missing_before_post_cleanup": [
+      {
+        "path": "/home/arialhanho/.local/share/dronestock/manual-captures/capture-1791773190541956032-67a147ca",
+        "day": "2026-10-12",
+        "bytes": 92573947
+      }
+    ],
+    "free_bytes": 2679373824
+  }
+}

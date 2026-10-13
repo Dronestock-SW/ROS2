@@ -4,6 +4,7 @@
 
 브랜치는 `이번에-상원-한거-통합-브랜치`다.
 [현재 실행 정책·연속 기록](../report/fc_owned_runtime_20261013.md)을 먼저 읽는다.
+[오늘 준비된 Jetson 실행 절차](evening_web_flight_20261013.md)를 따른다.
 [이전 통합 범위](../report/sangwon_integration_20261013.md)는 당시 근거다.
 main·FINAL은 작업 대상으로 사용하지 않는다.
 

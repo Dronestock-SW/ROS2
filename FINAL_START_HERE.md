@@ -4,6 +4,7 @@
 [현재 보고 지연·기록 보완](docs/report/fc_owned_runtime_20261013.md)을 먼저 읽는다.
 [이전 통합 범위](docs/report/sangwon_integration_20261013.md)는 당시 근거다.
 [새 세션 절차](docs/runbooks/sangwon_integration.md)를 따른다.
+[13일 저녁 웹 실행](docs/runbooks/evening_web_flight_20261013.md)에 준비된 경로가 있다.
 아래 12일 기록은 당시 근거로 보존한다.
 
 2026-10-11 현장 시험과 12일 코드 정리를 이어받는 문서다.

@@ -239,3 +239,4 @@ Windows에서는 심볼릭 링크를 지원하는 WSL 체크아웃을 쓴다.
 - [측정 및 검증 기록](report/lidar_physical_20261012.md)
 
 - [13일 Jetson 현장 준비](report/jetson_field_preparation_20261013.md)
+- [13일 저녁 웹 비행 세션](runbooks/evening_web_flight_20261013.md)
