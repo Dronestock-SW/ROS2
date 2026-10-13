@@ -240,3 +240,8 @@ Windows에서는 심볼릭 링크를 지원하는 WSL 체크아웃을 쓴다.
 
 - [13일 Jetson 현장 준비](report/jetson_field_preparation_20261013.md)
 - [13일 저녁 웹 비행 세션](runbooks/evening_web_flight_20261013.md)
+## Companion과 PX4 API
+
+- [로직 분석·수정 지점 API 명세](reference/companion_px4_api.md): 입력 → 계산 → 반환값 → 다음 소비자, 목적별 코드·파라미터 수정 위치.
+- [wire 상세 사전](reference/companion_px4_wire_reference.md): 필드·좌표·상태 코드의 최초 조사 기록.
+- [2026-10-13 실물 연결 확인](report/companion_px4_audit_20261013.md): 설치·융합 상태와 조회 한계.
