@@ -47,7 +47,7 @@ class FieldExecutor {
     const double dt=last_>=0?now-last_:.05; last_=now;
     if(ai_) {
       // Pilot selections win over every decision, timeout and recovery action.
-      if(flag(s,"connected") && age(s,"state_age_s",1)) {
+      if(flag(s,"connected") && age(s,"state_age_s",cfg_.value("state_timeout_s",2.5))) {
         const auto mode=s.value("mode",std::string());
         const bool allowed=phase=="PREPARING"||phase=="GROUND_RECOVERY" ? mode=="POSCTL"||mode=="AUTO.LOITER"||mode=="OFFBOARD" : phase=="LANDING" ? mode=="OFFBOARD"||mode=="AUTO.LAND" : mode=="OFFBOARD";
         if(!allowed || flag(s,"rc_switch_changed")) { finish("PILOT_OVERRIDE","manual_or_px4_failsafe_has_priority",now); return; }
@@ -137,7 +137,7 @@ class FieldExecutor {
   std::string ground_gate(const Json& s) const {
     for(const auto* key:{"layout_confirmed","sensor_mount_confirmed","takeoff_settings_confirmed"})if(!flag(cfg_,key))return std::string(key)+"_required";
     for(const auto* key:{"command_services_ready","local_setpoint_ready","estimator_valid","vertical_estimator_valid","bridge_ready","alignment_matches","ground_gate_ready"})if(!flag(s,key))return std::string(key)+"_required";
-    if(!flag(s,"connected") || flag(s,"armed") || s.value("landed",0)!=1 || !age(s,"state_age_s",1) || !age(s,"landed_age_s",1) || !age(s,"estimator_age_s",.5) || !age(s,"uwb_age_s",.25))return "fresh_disarmed_ground_inputs_required";
+    if(!flag(s,"connected") || flag(s,"armed") || s.value("landed",0)!=1 || !age(s,"state_age_s",cfg_.value("state_timeout_s",2.5)) || !age(s,"landed_age_s",cfg_.value("state_timeout_s",2.5)) || !age(s,"estimator_age_s",.5) || !age(s,"uwb_age_s",.25))return "fresh_disarmed_ground_inputs_required";
     if(!age(s,"bridge_age_s",2.5) || !age(s,"bridge_observation_age_s",cfg_.value("bridge_observation_timeout_s",.35)) || s.value("bridge_published",0)<=0)return "observation_bridge_unavailable";
     if(s.at("mode")!="POSCTL" && s.at("mode")!="AUTO.LOITER")return "px4_position_mode_required";
     if(!age(s,"web_age_s",cfg_.value("web_timeout_s",2.)))return "web_assignment_stale";

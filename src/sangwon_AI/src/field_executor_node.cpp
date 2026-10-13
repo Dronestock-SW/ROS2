@@ -255,7 +255,7 @@ class ExecutorNode final:public rclcpp::Node {
     if(!v.stream)return;
     const bool mode=v.phase=="PREPARING"?(s.mode=="POSCTL"||s.mode=="AUTO.LOITER"||s.mode=="OFFBOARD"):s.mode=="OFFBOARD";
     bool rc=false;for(int ch:v.switches)if(ch>0&&size_t(ch)<=s.rc.size()&&size_t(ch)<=v.baseline.size()&&std::abs(int(s.rc[ch-1])-int(v.baseline[ch-1]))>=100)rc=true;
-    const bool pilot=(s.connected&&t-s.state_at<=1&&!mode)||(t-s.rc_at<=1&&rc);
+    const bool pilot=(s.connected&&t-s.state_at<=cfg_.value("state_timeout_s",2.5)&&!mode)||(t-s.rc_at<=1&&rc);
     // A stale planner cannot advance the target. This immutable View remains
     // an approved position hold while direct FC health and pilot authority
     // remain valid; output cadence is independent of planner/report cadence.
@@ -276,7 +276,7 @@ class ExecutorNode final:public rclcpp::Node {
     const bool mode_ok=kind=="arm"?live.mode=="OFFBOARD":kind=="land"?live.mode=="OFFBOARD"||live.mode=="AUTO.LAND":live.mode=="POSCTL"||live.mode=="AUTO.LOITER"||live.mode=="OFFBOARD";
     bool rc_changed=false;for(int ch:view.switches)if(ch>0&&size_t(ch)<=live.rc.size()&&size_t(ch)<=view.baseline.size()&&std::abs(int(live.rc[ch-1])-int(view.baseline[ch-1]))>=100)rc_changed=true;
     if(!mode_ok||rc_changed){std::lock_guard<std::mutex> g(fast_mutex_);fault_="pilot_priority_before_native_command";pilot_fault_=true;acks_.emplace_back(token,false,steady_s());return;}
-    if(!live.connected||steady_s()-live.state_at>1){ack(token,false);return;}
+    if(!live.connected||steady_s()-live.state_at>cfg_.value("state_timeout_s",2.5)){ack(token,false);return;}
     if(kind=="offboard_mode"||kind=="position_mode") {if(!mode_->service_is_ready()){ack(token,false);return;}auto req=std::make_shared<mavros_msgs::srv::SetMode::Request>();req->custom_mode=kind=="offboard_mode"?"OFFBOARD":"POSCTL";mode_->async_send_request(req,[this,token](rclcpp::Client<mavros_msgs::srv::SetMode>::SharedFuture f){try{ack(token,f.get()->mode_sent);}catch(...){/* Unknown effect: command timeout latches UNCONFIRMED. */}});}
     else if(kind=="arm") {if(!arm_->service_is_ready()){ack(token,false);return;}auto req=std::make_shared<mavros_msgs::srv::CommandBool::Request>();req->value=true;arm_->async_send_request(req,[this,token](rclcpp::Client<mavros_msgs::srv::CommandBool>::SharedFuture f){try{auto r=f.get();ack(token,r->success&&r->result==0);}catch(...){}});}
     else if(kind=="land") {if(!land_->service_is_ready()){ack(token,false);return;}auto req=std::make_shared<mavros_msgs::srv::CommandTOL::Request>();req->yaw=req->latitude=req->longitude=req->altitude=std::numeric_limits<double>::quiet_NaN();land_->async_send_request(req,[this,token](rclcpp::Client<mavros_msgs::srv::CommandTOL>::SharedFuture f){try{auto r=f.get();ack(token,r->success&&r->result==0);}catch(...){}});}

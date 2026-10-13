@@ -204,7 +204,7 @@ def test_http_hover_uses_cpp_bt_from_start_through_confirmed_END(tmp_path,scenar
             assert mission.phase==('FAILED' if scenario=='cpp_loss' else 'PILOT_OVERRIDE'),(mission.phase,mission.reason)
             assert commands==(['offboard_mode','arm','land'] if scenario=='cpp_loss' else ['offboard_mode','arm'])
             assert mission.local_setpoint() is None and not mission.status()['mission_complete']
-            assert not mission.submit({**assignment,'control_request_id':'new-start'},time.monotonic(),time.time())
+            assert not mission.submit({**assignment,'control_action':'start','control_request_id':'new-start'},time.monotonic(),time.time())
             return
         assert mission.phase=='END',(mission.reason,ai.status(),phases)
         if use_lidar:assert gap_seen,'a fresh independent LiDAR must support the injected 0.6s gap'

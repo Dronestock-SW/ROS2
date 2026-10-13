@@ -154,7 +154,7 @@ def run(scenario):
     observer=subprocess.Popen([sys.executable,'-c','from drone_mission.cpp_observer import main; main()',
         '--ros-args','-p','config_file:='+str(mission),'-p','execute:=true','-p','test_mode:=true',
         '-p','record_directory:='+str(root/'observer'),'-p','ledger_file:='+str(root/'ledger.json')],stdout=log,stderr=log)
-    paused=False;pause_end=None;injected=False;link=None;ws_context={};ws_thread=None
+    paused=False;pause_end=None;injected=False;explicit_cancel=False;link=None;ws_context={};ws_thread=None
     try:
         if scenario=='platform_link':
             from websockets.asyncio.server import serve
@@ -188,6 +188,11 @@ def run(scenario):
                 elif scenario.startswith('lidar_'):fc.gap_start=time.monotonic()
                 elif scenario in ('uwb_gap','fc_estimator_loss','fc_estimator_silence','fc_pose_loss'):fc.gap_start=time.monotonic()
                 elif scenario=='pilot':fc.mode='ALTCTL'
+            if scenario=='lidar_loss' and fc.gap_start is not None and time.monotonic()-fc.gap_start>2. and not explicit_cancel:
+                assert 'LAND' not in fc.calls and fc.status['completed_waypoints']==0
+                cancel=Request(url,data=json.dumps(dict(action='land',client_request_id='explicit-lidar-cancel')).encode(),headers={'Content-Type':'application/json'},method='POST')
+                with urlopen(cancel,timeout=2):pass
+                explicit_cancel=True
             if paused and time.monotonic()>=pause_end:os.kill(observer.pid,signal.SIGCONT);paused=False
             if phase in ('END','FAILED','UNCONFIRMED','PILOT_OVERRIDE'):break
             time.sleep(.025)
