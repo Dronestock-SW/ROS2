@@ -1,7 +1,8 @@
 # FINAL 연구 시작점
 
 2026-10-13 후속 기준은 `이번에-상원-한거-통합-브랜치`다.
-[통합 범위·전달 관측 0.7초](docs/report/sangwon_integration_20261013.md)를 먼저 읽는다.
+[현재 보고 지연·기록 보완](docs/report/fc_owned_runtime_20261013.md)을 먼저 읽는다.
+[이전 통합 범위](docs/report/sangwon_integration_20261013.md)는 당시 근거다.
 [새 세션 절차](docs/runbooks/sangwon_integration.md)를 따른다.
 아래 12일 기록은 당시 근거로 보존한다.
 

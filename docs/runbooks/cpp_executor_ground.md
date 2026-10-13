@@ -3,7 +3,8 @@
 웹 명령을 C++ 실행기로 연결하는 절차다.
 지상 시험과 후속 현장 인계에서 읽는다.
 
-13일 통합은 비LiDAR 5개 시나리오를 명시해 실행한다.
+13일 보완은 비LiDAR 16개 시나리오로 검증한다.
+[현재 실행 정책·기록](../report/fc_owned_runtime_20261013.md)을 읽는다.
 별도 LiDAR 연구는 보류했다.
 선택 LiDAR 공백 시험의 실패는 [통합 기록](../report/sangwon_integration_20261013.md)에 있다.
 
@@ -33,7 +34,7 @@ export PYTHONPATH="$PWD/src/drone_mission:$PWD/src/drone_uwb:$PWD/src/drone_plat
 python3 src/sangwon_AI/tests/field_executor_ros.py \
   "$PWD/.review/cpp-executor-build/sangwon_field_executor" \
   "$PWD/.review/cpp-executor-evidence-$(date +%s)" \
-  nominal,python_pause,bridge_delay,pilot,platform_link
+  nominal,python_pause,bridge_delay,report_delay,report_silence,report_malformed,uwb_gap,pose_gap,takeoff_pose_gap,target_silence,state_1hz,fc_estimator_silence,fc_estimator_loss,fc_pose_loss,pilot,platform_link
 ```
 
 기존 requirements-field.txt의 라이브러리를 준비한다.

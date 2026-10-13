@@ -1,0 +1,285 @@
+{
+  "source_commit": "654bc6b2a49f8380ddf4465a386ef56ba2d1ad13",
+  "ci_run": "https://github.com/Dronestock-SW/ROS2/actions/runs/38340165422",
+  "windows": {
+    "passed": 398,
+    "skipped": 18,
+    "ros_collection_excluded": "test_local_flight_ros.py"
+  },
+  "linux": {
+    "python_contracts_passed": 266,
+    "actual_cpp_ai_python_passed": 9,
+    "lidar_http_cases_deselected": 3,
+    "ros_packages_built": 4,
+    "cpp_contract_groups_passed": 3,
+    "cpp_unittest_methods": {
+      "field_executor_contracts.py": 24,
+      "field_mission_ai_contracts.py": 12,
+      "lidar_relative_contracts.py": 13
+    }
+  },
+  "ros_cases": [
+    {
+      "case": "bridge_delay",
+      "outcome": "END",
+      "failure": null,
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "setpoint_gap_ms": 51.935,
+      "continuous_samples": 201,
+      "source_stamps_recorded": true,
+      "sample_max_gap_ms": 150.517,
+      "binary_sha256": "a0dd65b183e178089daebcc24fe60d066ac1af14ab752b9b07f18a56adf51618",
+      "events_sha256": "0e69f193b409c2d15a1fb541870c7a40d2696225fe690787656c2bde987d7d2a"
+    },
+    {
+      "case": "fc_estimator_loss",
+      "outcome": "FAILED",
+      "failure": "native_sender_fc_estimator_invalid",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "setpoint_gap_ms": 50.931,
+      "continuous_samples": 113,
+      "source_stamps_recorded": true,
+      "sample_max_gap_ms": 150.446,
+      "binary_sha256": "a0dd65b183e178089daebcc24fe60d066ac1af14ab752b9b07f18a56adf51618",
+      "events_sha256": "24b1dcd78a472376f64dc477943bb33db5470436611348cd5c5d765ff5b39b1f"
+    },
+    {
+      "case": "fc_estimator_silence",
+      "outcome": "END",
+      "failure": null,
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "setpoint_gap_ms": 52.113,
+      "continuous_samples": 208,
+      "source_stamps_recorded": true,
+      "sample_max_gap_ms": 150.566,
+      "binary_sha256": "a0dd65b183e178089daebcc24fe60d066ac1af14ab752b9b07f18a56adf51618",
+      "events_sha256": "330f1a61c4aa5f0f5404879af374b82eed305abfee2605328df5b43642df34c5"
+    },
+    {
+      "case": "fc_pose_loss",
+      "outcome": "FAILED",
+      "failure": "operator_cancelled",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "setpoint_gap_ms": 52.538,
+      "continuous_samples": 130,
+      "source_stamps_recorded": true,
+      "sample_max_gap_ms": 150.202,
+      "binary_sha256": "a0dd65b183e178089daebcc24fe60d066ac1af14ab752b9b07f18a56adf51618",
+      "events_sha256": "bdfdc4d56efe8ba2668492f9877c4c3cdec7fcc12f1c05a87e1b244d6bef3957"
+    },
+    {
+      "case": "nominal",
+      "outcome": "END",
+      "failure": null,
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "setpoint_gap_ms": 52.101,
+      "continuous_samples": 203,
+      "source_stamps_recorded": true,
+      "sample_max_gap_ms": 150.193,
+      "binary_sha256": "a0dd65b183e178089daebcc24fe60d066ac1af14ab752b9b07f18a56adf51618",
+      "events_sha256": "aaef9ca8b6a0dee40891df0253fcf39ab7bac481bc4e8110537ac345431befa4"
+    },
+    {
+      "case": "pilot",
+      "outcome": "PILOT_OVERRIDE",
+      "failure": null,
+      "commands": [
+        "OFFBOARD",
+        "ARM"
+      ],
+      "setpoint_gap_ms": 51.701,
+      "continuous_samples": 86,
+      "source_stamps_recorded": true,
+      "sample_max_gap_ms": 150.302,
+      "binary_sha256": "a0dd65b183e178089daebcc24fe60d066ac1af14ab752b9b07f18a56adf51618",
+      "events_sha256": "2cfe490c161dee80aa5397b08ae128607969b57ce549ce53c7570c72ca50a1ca"
+    },
+    {
+      "case": "platform_link",
+      "outcome": "END",
+      "failure": null,
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "setpoint_gap_ms": 52.228,
+      "continuous_samples": 207,
+      "source_stamps_recorded": true,
+      "sample_max_gap_ms": 150.17,
+      "binary_sha256": "a0dd65b183e178089daebcc24fe60d066ac1af14ab752b9b07f18a56adf51618",
+      "events_sha256": "15cb3e6b1a2e6a0a0faa912a6aea05afb45bcbfbf578ba6305e3beca0643c384"
+    },
+    {
+      "case": "pose_gap",
+      "outcome": "END",
+      "failure": null,
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "setpoint_gap_ms": 53.003,
+      "continuous_samples": 211,
+      "source_stamps_recorded": true,
+      "sample_max_gap_ms": 150.492,
+      "binary_sha256": "a0dd65b183e178089daebcc24fe60d066ac1af14ab752b9b07f18a56adf51618",
+      "events_sha256": "69db57602d00a651f14a9f4e1b1645cd512cb1537c4019faae8cadf7aa46f5c9"
+    },
+    {
+      "case": "python_pause",
+      "outcome": "END",
+      "failure": null,
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "setpoint_gap_ms": 52.384,
+      "continuous_samples": 204,
+      "source_stamps_recorded": true,
+      "sample_max_gap_ms": 150.662,
+      "binary_sha256": "a0dd65b183e178089daebcc24fe60d066ac1af14ab752b9b07f18a56adf51618",
+      "events_sha256": "cb18058234a62da01ac64e0c11097ea8b6fabc03f5b11ec2fab2625e1be9c544"
+    },
+    {
+      "case": "report_delay",
+      "outcome": "END",
+      "failure": null,
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "setpoint_gap_ms": 52.319,
+      "continuous_samples": 201,
+      "source_stamps_recorded": true,
+      "sample_max_gap_ms": 150.297,
+      "binary_sha256": "a0dd65b183e178089daebcc24fe60d066ac1af14ab752b9b07f18a56adf51618",
+      "events_sha256": "a079604fd1fddfcc1bf327d90dbf40e34be45be7479c9ae91b708d4ea3e45d77"
+    },
+    {
+      "case": "report_malformed",
+      "outcome": "END",
+      "failure": null,
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "setpoint_gap_ms": 51.296,
+      "continuous_samples": 196,
+      "source_stamps_recorded": true,
+      "sample_max_gap_ms": 150.385,
+      "binary_sha256": "a0dd65b183e178089daebcc24fe60d066ac1af14ab752b9b07f18a56adf51618",
+      "events_sha256": "a9b4782b0d32bc709441570d04fe78c49df549fff80ced221b65c1c0bfa84ad1"
+    },
+    {
+      "case": "report_silence",
+      "outcome": "END",
+      "failure": null,
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "setpoint_gap_ms": 51.366,
+      "continuous_samples": 199,
+      "source_stamps_recorded": true,
+      "sample_max_gap_ms": 151.094,
+      "binary_sha256": "a0dd65b183e178089daebcc24fe60d066ac1af14ab752b9b07f18a56adf51618",
+      "events_sha256": "1f5fa83728b599e0c1a3a32481826b2eda37485f8e1f4ff1e8aca4c1a761db9d"
+    },
+    {
+      "case": "state_1hz",
+      "outcome": "END",
+      "failure": null,
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "setpoint_gap_ms": 51.839,
+      "continuous_samples": 220,
+      "source_stamps_recorded": true,
+      "sample_max_gap_ms": 150.797,
+      "binary_sha256": "a0dd65b183e178089daebcc24fe60d066ac1af14ab752b9b07f18a56adf51618",
+      "events_sha256": "4a68a4681a0c80d3f8160ffca5b011073841c59b582482e8aa32ed95eaa9f265"
+    },
+    {
+      "case": "takeoff_pose_gap",
+      "outcome": "END",
+      "failure": null,
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "setpoint_gap_ms": 51.892,
+      "continuous_samples": 198,
+      "source_stamps_recorded": true,
+      "sample_max_gap_ms": 151.17,
+      "binary_sha256": "a0dd65b183e178089daebcc24fe60d066ac1af14ab752b9b07f18a56adf51618",
+      "events_sha256": "c86b7e8d98ff74a3e007cb6fd78a53d2f0360a5a1e2927fd7d66f85fa6599d7d"
+    },
+    {
+      "case": "target_silence",
+      "outcome": "END",
+      "failure": null,
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "setpoint_gap_ms": 53.248,
+      "continuous_samples": 205,
+      "source_stamps_recorded": true,
+      "sample_max_gap_ms": 150.17,
+      "binary_sha256": "a0dd65b183e178089daebcc24fe60d066ac1af14ab752b9b07f18a56adf51618",
+      "events_sha256": "bf651985f64f9aa3b9ab85a52cd42fae703ae70c96adb36e434504647a927617"
+    },
+    {
+      "case": "uwb_gap",
+      "outcome": "END",
+      "failure": null,
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "setpoint_gap_ms": 52.35,
+      "continuous_samples": 216,
+      "source_stamps_recorded": true,
+      "sample_max_gap_ms": 150.612,
+      "binary_sha256": "a0dd65b183e178089daebcc24fe60d066ac1af14ab752b9b07f18a56adf51618",
+      "events_sha256": "0bdbf9a627080c24990b45cf94b47804fa7dd9105a44281507e0e06e960587f0"
+    }
+  ],
+  "physical_flight": false,
+  "jetson_deployed": false,
+  "fc_parameters_written": false,
+  "prior_failed_runs": [
+    "https://github.com/Dronestock-SW/ROS2/actions/runs/38336713604",
+    "https://github.com/Dronestock-SW/ROS2/actions/runs/38337751202"
+  ]
+}
