@@ -168,9 +168,13 @@ class FieldExecutor {
       &&age(s,"landed_age_s",cfg_.value("state_timeout_s",2.5))&&xy(point(s.at("xy"))-home_)<=.15&&xy(point(s.at("uwb_xy"))-home_)<=.25
       &&xy(point(s.at("velocity_xy")))<=.1&&std::abs(s.at("vertical_speed_m_s").get<double>())<=.1&&std::abs(s.at("altitude_enu_m").get<double>()-height_)<=.15;
   }
-  std::string resume_gate(const Json& s)const {
+  std::string stability_gate(const Json& s)const {
     if(!position_stable(s))return "hold_position_or_observation_not_stable";
     if(flag(s,"rc_required")&&(!flag(s,"rc_valid")||!age(s,"rc_age_s",1)||!flag(s,"rc_neutral_valid")||!flag(s,"rc_sticks_centered")))return "position_requires_fresh_centered_sticks";
+    return "ready";
+  }
+  std::string resume_gate(const Json& s)const {
+    const auto stable=stability_gate(s);if(stable!="ready")return stable;
     if(!flag(s,"estimator_valid")||!flag(s,"vertical_estimator_valid"))return "px4_estimator_invalid";
     if(!flag(s,"command_services_ready")||!flag(s,"local_setpoint_ready"))return "local_transport_unavailable";
     if(!age(s,"battery_age_s",3)||number(s.at("battery"),0,1)<.3)return "battery_start_reserve_required";
@@ -178,7 +182,7 @@ class FieldExecutor {
   }
   void tick_takeoff_hold(const Json& s,double now,const Json& request,double wall) {
     if(!flag(s,"armed")){finish("UNCONFIRMED","unexpected_disarm",now);return;}
-    hold_blocker_=resume_gate(s);
+    hold_blocker_=stability_gate(s);
     if(hold_blocker_=="ready"){if(hold_since_<0)hold_since_=now;}else hold_since_=-1;
     const bool stable=hold_since_>=0&&now-hold_since_>=3;
     if(phase=="TAKING_OFF") {
@@ -189,7 +193,8 @@ class FieldExecutor {
       if(!pending()&&accepted_&&mode_confirmed(s,"POSCTL",now)){enter("HOLD_READY","position_confirmed_wait_for_web_start",now);hold_since_=-1;}
       else if(now-entered_>6)abort("position_mode_not_confirmed",s,now);
     } else if(phase=="HOLD_READY") {
-      can_start_=stable;reason=stable?"position_stable_wait_for_web_start":"position_wait_for_stability_or_observation";
+      hold_blocker_=resume_gate(s);can_start_=stable&&hold_blocker_=="ready";
+      reason=can_start_?"position_stable_wait_for_web_start":"position_wait_for_stability_or_observation";
       if(request.is_null()||request.value("action",std::string())!="start"||!can_start_)return;
       require(flag(s,"request_persisted")&&wall>=request.at("requested_s").get<double>()&&wall-request.at("requested_s").get<double>()<=cfg_.value("request_ttl_s",30.),"CONTROL_REQUEST_EXPIRED_OR_UNRECORDED");
       require(request.at("request_id")!=takeoff_request_id_,"NEW_MISSION_REQUEST_REQUIRED");

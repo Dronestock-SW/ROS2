@@ -257,4 +257,10 @@ class Contracts(unittest.TestCase):
         for _ in range(30):p.tick();self.assertEqual(p.out['phase'],'RESUME_PREPARING')
         p.s['mode']='OFFBOARD';p.until('END');self.assertEqual(p.commands.count('arm'),1)
 
+    def test_new_mission_battery_reserve_does_not_block_position_handoff(self):
+        p=self.separate();p.until('TAKING_OFF');p.s['battery']=.29;p.until('HOLD_READY')
+        for _ in range(100):p.tick();self.assertFalse(p.out['native_takeoff']['can_start'])
+        self.assertNotIn('land',p.commands);self.assertFalse(p.out['streaming'])
+        p.s['battery']=.9;p.tick();self.assertTrue(p.out['native_takeoff']['can_start'])
+
 if __name__=='__main__':unittest.main()
