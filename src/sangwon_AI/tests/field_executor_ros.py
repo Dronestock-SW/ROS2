@@ -208,9 +208,22 @@ def run(scenario):
                 DRONESTOCK_DEVICE_AUTH_ID='',DRONESTOCK_DEVICE_AUTH_SECRET='',DRONESTOCK_STATE_DIR=str(root/'platform'))
             link=subprocess.Popen([sys.executable,'-m','drone_platform_link.runtime'],env=env,stdout=log,stderr=log)
         url=f'http://127.0.0.1:{server.server_port}/local/command'
+        command_http_timeouts=[];command_http_durations_s=[];end_confirmation_wait_s=0.
         def post(value):
-            req=Request(url,data=json.dumps(value).encode(),headers={'Content-Type':'application/json'},method='POST')
-            with urlopen(req,timeout=2) as response:return json.load(response)
+            # The real page keeps an uncertain request ID for confirmation.
+            # Slow durable storage must exercise that receipt, not create a
+            # second command or relax any flight/observation timing limit.
+            for attempt in range(3):
+                req=Request(url,data=json.dumps(value).encode(),headers={'Content-Type':'application/json'},method='POST')
+                began=time.monotonic()
+                try:
+                    # Request receipts include fsync. The browser awaits this
+                    # response; it has no two-second command admission rule.
+                    with urlopen(req,timeout=10) as response:return json.load(response)
+                except TimeoutError:
+                    command_http_timeouts.append(dict(action=value['action'],client_request_id=value['client_request_id'],attempt=attempt+1))
+                    if attempt==2:raise
+                finally:command_http_durations_s.append(time.monotonic()-began)
         end=time.monotonic()+16
         ready=p.can_takeoff if separate else p.can_start
         while not ready() and time.monotonic()<end:
@@ -267,8 +280,11 @@ def run(scenario):
         assert fc.calls==expected_calls,fc.calls
         if expected=='END':assert fc.status['mission_complete'] and fc.status['landing_verified']
         if fc.real_link and expected=='END':
-            deadline=time.monotonic()+3
+            # END is only exposed after durable completion recording. This
+            # wait is after verified landing, outside all flight deadlines.
+            confirmation_started=time.monotonic();deadline=confirmation_started+15
             while p.telemetry.get('flight_state')!='END' and time.monotonic()<deadline:time.sleep(.025)
+            end_confirmation_wait_s=time.monotonic()-confirmation_started
             assert p.telemetry.get('flight_state')=='END' and p.telemetry.get('mission_complete') is True,p.telemetry
             assert p.telemetry['mission_db_id']==assignment['mission_db_id']
         if fc.moving:
@@ -310,7 +326,8 @@ def run(scenario):
         assert fc.status['max_sender_gap_s']<.2,(scenario,'native sender',fc.status['max_sender_gap_s'])
         out=dict(scenario=scenario,physical_flight=False,actual_cpp_executor=True,commands=fc.calls,
             binary_sha256=hashlib.sha256(Path(BINARY).read_bytes()).hexdigest(),
-            state=fc.status,trace=fc.rows,setpoints=fc.setpoint_rows,trial_case=trial_case,
+            state=fc.status,trace=fc.rows,setpoints=fc.setpoint_rows,trial_case=trial_case,command_http_timeouts=command_http_timeouts,
+            command_http_durations_s=command_http_durations_s,end_confirmation_wait_s=end_confirmation_wait_s,
             final_xy_m=fc.xy,real_platform_link=fc.real_link,max_received_setpoint_gap_s=max(gaps),
             max_mock_fc_source_gap_s=max(b-a for a,b in zip(fc.source_times,fc.source_times[1:])),source='HTTP/ROS/C++/mock-FC')
         (root/'evidence.json').write_text(json.dumps(out,indent=2),encoding='utf-8')
