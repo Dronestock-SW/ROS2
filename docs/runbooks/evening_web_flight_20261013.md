@@ -35,6 +35,9 @@ mkdir -p "$FLIGHT_RUN"
 ```
 
 소스·실행 파일 신원은 slot의 배포 기록과 대조한다.
+`latency-release.json`의 소스 커밋은 `82e3bf1`이다.
+실행기 SHA256도 [배포 대조 결과](../report/evidence/web_record_latency_20261013/deployment.json)와 확인한다.
+이후 문서 전용 커밋은 실행기 재빌드가 필요 없다.
 센서 서비스는 별도 체크아웃에서 계속 실행 중이다.
 해당 체크아웃의 변경을 이 실행본으로 덮어쓰지 않는다.
 오늘은 LiDAR 보완을 활성화하지 않는다.

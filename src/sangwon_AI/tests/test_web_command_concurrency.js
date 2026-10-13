@@ -1,7 +1,7 @@
 // Execute the actual page handler with two independently delayed HTTP replies.
 const fs = require('fs');
 const vm = require('vm');
-const assert = require('assert/strict');
+const assert = require('assert').strict;
 const path = require('path');
 const page = fs.readFileSync(path.join(__dirname,'../../drone_mission/drone_mission/web_page.py'),'utf8');
 const handler = page.slice(page.indexOf('async function command(action)'),page.indexOf("try{pending=JSON.parse"));
