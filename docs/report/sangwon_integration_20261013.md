@@ -99,6 +99,20 @@ Linux C++ 빌드와 ROS 종단 시험은 CI에서 이어서 확인한다.
 전용 CI는 이 통합 브랜치의 소스 push로 실행한다.
 main·FINAL push에는 이 작업을 실행하지 않는다.
 
+첫 CI에서 ROS 4개 패키지와 C++ 실행기 빌드는 통과했다.
+Linux Python은 246 passed였다.
+C++ 계약은 실행기 16·AI 11·기존 LiDAR 13개다.
+CTest 3개 묶음은 모두 통과했다.
+정상·Python 중단·0.48초 전달은 모사 FC에서 END였다.
+이후 기존 선택 LiDAR 공백 시험에서 FAILED·보호 LAND가 발생했다.
+이 실패를 정상 완료로 계산하지 않았다.
+[첫 실행](https://github.com/Dronestock-SW/ROS2/actions/runs/38325619173)의
+로그와 실패 trace를 Git 밖에 보존했다.
+요청 범위에 따라 LiDAR 추가 조사·활성화는 진행하지 않는다.
+후속 종단 CI의 범위는 비LiDAR 5개로 명시했다.
+정상·Python 중단·전달 지연·RC 인계·플랫폼 완료를 확인한다.
+전체 선택 기능이나 실비행 안정성이 확인됐다는 뜻은 아니다.
+
 이번 접속에서 Tailscale은 peer를 Online으로 표시했다.
 하지만 실제 ping과 SSH는 시간 초과였다.
 따라서 현재 FC 파라미터·착륙 상태를 확정하지 않았다.

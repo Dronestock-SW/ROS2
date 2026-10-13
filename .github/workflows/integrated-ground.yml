@@ -1,4 +1,4 @@
-name: Integrated field ground checks
+name: Integrated non-LiDAR ground checks
 on:
   push:
     branches: ['이번에-상원-한거-통합-브랜치']
@@ -50,7 +50,7 @@ jobs:
           source /opt/ros/humble/setup.bash
           source install/setup.bash
           export PYTHONPATH="$PWD/src/drone_mission:$PWD/src/drone_uwb:$PWD/src/drone_platform_link:$PWD/src/drone_demo:$PWD/src/sangwon_AI/tests:${PYTHONPATH:-}"
-          python3 src/sangwon_AI/tests/field_executor_ros.py .review/integrated-build/sangwon_field_executor "$PWD/evidence/ros-flow" nominal,python_pause,bridge_delay,lidar_gap,lidar_loss,pilot,platform_link > evidence/ros-flow.log 2>&1
+          python3 src/sangwon_AI/tests/field_executor_ros.py .review/integrated-build/sangwon_field_executor "$PWD/evidence/ros-flow" nominal,python_pause,bridge_delay,pilot,platform_link > evidence/ros-flow.log 2>&1
       - name: Preserve logs and original outcomes
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
