@@ -231,3 +231,8 @@ Windows에서는 심볼릭 링크를 지원하는 WSL 체크아웃을 쓴다.
 - [구조](architecture/lidar_physical_velocity.md)
 - [배포 절차](runbooks/lidar_physical_velocity.md)
 - [측정 및 검증 기록](report/lidar_physical_20261012.md)
+
+## Companion과 PX4 API
+
+- [출력과 입력 API 명세](reference/companion_px4_api.md): 관측·명령·제어 단계별 연결.
+- [2026-10-13 실물 연결 확인](report/companion_px4_audit_20261013.md): 설치·융합 상태와 조회 한계.
