@@ -3,6 +3,10 @@
 웹 명령을 C++ 실행기로 연결하는 절차다.
 지상 시험과 후속 현장 인계에서 읽는다.
 
+13일 통합은 비LiDAR 5개 시나리오를 명시해 실행한다.
+별도 LiDAR 연구는 보류했다.
+선택 LiDAR 공백 시험의 실패는 [통합 기록](../report/sangwon_integration_20261013.md)에 있다.
+
 **실비행 성공과 초기 밀림 해결은 아직 미확인이다.**
 설정·보정·RC 기준은 기존 FINAL과 같다.
 시험용 승인 값은 실물 설정으로 복사하지 않는다.
@@ -28,10 +32,8 @@ ctest --test-dir .review/cpp-executor-build \
 export PYTHONPATH="$PWD/src/drone_mission:$PWD/src/drone_uwb:$PWD/src/drone_platform_link:$PWD/src/drone_demo:$PWD/src/sangwon_AI/tests:$PYTHONPATH"
 python3 src/sangwon_AI/tests/field_executor_ros.py \
   "$PWD/.review/cpp-executor-build/sangwon_field_executor" \
-  "$PWD/.review/cpp-executor-evidence-$(date +%s)"
-python3 src/sangwon_AI/tests/field_executor_ros.py \
-  "$PWD/.review/cpp-executor-build/sangwon_field_executor" \
-  "$PWD/.review/cpp-platform-evidence-$(date +%s)" platform_link
+  "$PWD/.review/cpp-executor-evidence-$(date +%s)" \
+  nominal,python_pause,bridge_delay,pilot,platform_link
 ```
 
 기존 requirements-field.txt의 라이브러리를 준비한다.
@@ -49,16 +51,18 @@ Python CppObserver와 C++ 송신기를 실행한다.
 C++ 실행기는 공통 AI 코드를 직접 사용한다.
 별도의 Python↔AI stdio 왕복은 이 경로에 없다.
 새 실행기 프로세스의 nonce가 바뀌면 자동 재개하지 않는다.
+이 선택 경로는 start_mode=ground_takeoff다.
+TAKEOFF→HOLD→START는 기존 Python 실행기+C++ AI를 사용한다.
 
 ## 현장 전 필요한 대조
 
 1. RC·앵커를 켠 지상에서 START 검사 결과를 확인한다.
-2. LiDAR X·Y·yaw와 정확한 기준점 Z를 측정한다.
-3. 통제된 이동으로 LiDAR 방향·크기·시각을 대조한다.
-4. FC 속도와 실측 이동을 같은 시각에 기록한다.
-5. 장시간 실제 부하에서 송신 간격을 기록한다.
+2. 현재 FC 파라미터·높이·축·광류 융합을 읽는다.
+3. FC 속도와 실측 이동을 같은 시각에 기록한다.
+4. 장시간 실제 부하에서 송신 간격을 기록한다.
 
-실물 이동 대조는 [LiDAR 지상 절차](lidar_ground_qualification.md)를 따른다.
+LiDAR 활성화는 별도 연구다. 현재 설정은 비활성으로 유지한다.
+향후 실물 이동 대조는 [LiDAR 지상 절차](lidar_ground_qualification.md)를 따른다.
 원본 UWB/B_TF·ULog·영상도 같은 시험에 보존한다.
 지상 실패 원인을 숨기고 START 기준을 완화하지 않는다.
 좌표·시각 오류가 비행 중 자세 보정으로 이어지기 때문이다.
