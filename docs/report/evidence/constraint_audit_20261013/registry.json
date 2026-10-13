@@ -1,0 +1,1024 @@
+{
+  "schema": "constraint-audit/1",
+  "audit_date": "2026-10-13",
+  "source_commit": "901394cddcdef83ce24e4cb8e7c1bcd0ffd5f08e",
+  "source_branch": "이번에-상원-한거-통합-브랜치",
+  "scope": "anchor_trial + cpp_bt; Python staged takeoff and native C++ combined START; selected local UWB sender; LiDAR disabled",
+  "count_rule": "checklist rows, time-policy categories, and literal runtime reason codes are separate counts; do not add them. Not a whole-repository or PX4-native safety count.",
+  "preflight_profiles": [
+    {
+      "executor": "cpp_executor",
+      "start_mode": "ground_takeoff",
+      "takeoff_backend": "native",
+      "check_count": 35,
+      "required_count": 29,
+      "optional_count": 6,
+      "checks": [
+        {
+          "code": "execution",
+          "title": "실기 명령 출력 활성",
+          "required": true
+        },
+        {
+          "code": "mission_ai",
+          "title": "C++ 미션 AI 연결",
+          "required": true
+        },
+        {
+          "code": "layout_confirmed",
+          "title": "앵커 배치 실측",
+          "required": true
+        },
+        {
+          "code": "alignment_confirmed",
+          "title": "창고·PX4 좌표 방향 검증",
+          "required": false
+        },
+        {
+          "code": "sensor_mount_confirmed",
+          "title": "센서 장착 실측",
+          "required": true
+        },
+        {
+          "code": "timing_confirmed",
+          "title": "관측 시각 정렬 검증",
+          "required": false
+        },
+        {
+          "code": "fusion_confirmed",
+          "title": "ULog 센서 융합 검증",
+          "required": false
+        },
+        {
+          "code": "takeoff_settings_confirmed",
+          "title": "이륙 설정 실측 검증",
+          "required": true
+        },
+        {
+          "code": "heading_control_confirmed",
+          "title": "방위 제어 실측 검증",
+          "required": false
+        },
+        {
+          "code": "map",
+          "title": "실측 지도·SHA 연결",
+          "required": false
+        },
+        {
+          "code": "recording",
+          "title": "현장 기록 파일 사용 가능",
+          "required": true
+        },
+        {
+          "code": "fc",
+          "title": "FC 연결·최신 상태",
+          "required": true
+        },
+        {
+          "code": "ground",
+          "title": "DISARM·지상 상태",
+          "required": true
+        },
+        {
+          "code": "mode",
+          "title": "Position 또는 Hold 모드",
+          "required": true
+        },
+        {
+          "code": "services",
+          "title": "MAVROS 명령 서비스",
+          "required": true
+        },
+        {
+          "code": "estimator",
+          "title": "PX4 수평 위치 추정 유효",
+          "required": true
+        },
+        {
+          "code": "pose",
+          "title": "PX4 위치·현장 경계",
+          "required": true
+        },
+        {
+          "code": "uwb",
+          "title": "최근 B_TF 수평 관측",
+          "required": true
+        },
+        {
+          "code": "height",
+          "title": "최근 장착 보정 높이 관측",
+          "required": false
+        },
+        {
+          "code": "vertical_estimator",
+          "title": "PX4 수직 위치·속도 추정 유효",
+          "required": true
+        },
+        {
+          "code": "bridge",
+          "title": "UWB→PX4 실제 발행",
+          "required": true
+        },
+        {
+          "code": "transform",
+          "title": "관측·명령 좌표 변환 일치",
+          "required": true
+        },
+        {
+          "code": "local_start",
+          "title": "현재 앵커 XY · 출발점·복귀점",
+          "required": true
+        },
+        {
+          "code": "local_transport",
+          "title": "PX4 로컬 위치 명령 연결",
+          "required": true
+        },
+        {
+          "code": "local_height",
+          "title": "PX4 이륙 높이 기준 수신",
+          "required": true
+        },
+        {
+          "code": "height_parameter",
+          "title": "FC 이륙 높이 일치",
+          "required": true
+        },
+        {
+          "code": "takeoff_action",
+          "title": "이륙 후 Hold 설정",
+          "required": true
+        },
+        {
+          "code": "heading_policy",
+          "title": "방위·높이 정책 일치",
+          "required": true
+        },
+        {
+          "code": "rc",
+          "title": "실제 RC 입력 (SITL 제외)",
+          "required": true
+        },
+        {
+          "code": "rc_switches",
+          "title": "RC 모드·시동·킬 매핑과 유효 입력",
+          "required": true
+        },
+        {
+          "code": "rc_auto_override",
+          "title": "AUTO 스틱 인계 허용",
+          "required": true
+        },
+        {
+          "code": "rc_offboard_override",
+          "title": "로컬 이동 중 RC 스틱 인계",
+          "required": true
+        },
+        {
+          "code": "battery",
+          "title": "배터리 연결·시작 잔량",
+          "required": true
+        },
+        {
+          "code": "motion",
+          "title": "PX4 속도·방위 수신",
+          "required": true
+        },
+        {
+          "code": "native_up_limit",
+          "title": "PX4 상승 제한 0.5m/s 이하",
+          "required": true
+        }
+      ]
+    },
+    {
+      "executor": "python_executor_cpp_ai",
+      "start_mode": "takeoff_hold",
+      "takeoff_backend": "native",
+      "check_count": 35,
+      "required_count": 29,
+      "optional_count": 6,
+      "checks": [
+        {
+          "code": "execution",
+          "title": "실기 명령 출력 활성",
+          "required": true
+        },
+        {
+          "code": "mission_ai",
+          "title": "C++ 미션 AI 연결",
+          "required": true
+        },
+        {
+          "code": "layout_confirmed",
+          "title": "앵커 배치 실측",
+          "required": true
+        },
+        {
+          "code": "alignment_confirmed",
+          "title": "창고·PX4 좌표 방향 검증",
+          "required": false
+        },
+        {
+          "code": "sensor_mount_confirmed",
+          "title": "센서 장착 실측",
+          "required": true
+        },
+        {
+          "code": "timing_confirmed",
+          "title": "관측 시각 정렬 검증",
+          "required": false
+        },
+        {
+          "code": "fusion_confirmed",
+          "title": "ULog 센서 융합 검증",
+          "required": false
+        },
+        {
+          "code": "takeoff_settings_confirmed",
+          "title": "이륙 설정 실측 검증",
+          "required": true
+        },
+        {
+          "code": "heading_control_confirmed",
+          "title": "방위 제어 실측 검증",
+          "required": false
+        },
+        {
+          "code": "map",
+          "title": "실측 지도·SHA 연결",
+          "required": false
+        },
+        {
+          "code": "recording",
+          "title": "현장 기록 파일 사용 가능",
+          "required": true
+        },
+        {
+          "code": "fc",
+          "title": "FC 연결·최신 상태",
+          "required": true
+        },
+        {
+          "code": "ground",
+          "title": "DISARM·지상 상태",
+          "required": true
+        },
+        {
+          "code": "mode",
+          "title": "Position 또는 Hold 모드",
+          "required": true
+        },
+        {
+          "code": "services",
+          "title": "MAVROS 명령 서비스",
+          "required": true
+        },
+        {
+          "code": "estimator",
+          "title": "PX4 수평 위치 추정 유효",
+          "required": true
+        },
+        {
+          "code": "pose",
+          "title": "PX4 위치·현장 경계",
+          "required": true
+        },
+        {
+          "code": "uwb",
+          "title": "최근 B_TF 수평 관측",
+          "required": true
+        },
+        {
+          "code": "height",
+          "title": "최근 장착 보정 높이 관측",
+          "required": false
+        },
+        {
+          "code": "vertical_estimator",
+          "title": "PX4 수직 위치·속도 추정 유효",
+          "required": true
+        },
+        {
+          "code": "bridge",
+          "title": "UWB→PX4 실제 발행",
+          "required": true
+        },
+        {
+          "code": "transform",
+          "title": "관측·명령 좌표 변환 일치",
+          "required": true
+        },
+        {
+          "code": "local_start",
+          "title": "현재 앵커 XY · 출발점·복귀점",
+          "required": true
+        },
+        {
+          "code": "local_transport",
+          "title": "PX4 로컬 위치 명령 연결",
+          "required": true
+        },
+        {
+          "code": "local_height",
+          "title": "PX4 이륙 높이 기준 수신",
+          "required": true
+        },
+        {
+          "code": "height_parameter",
+          "title": "FC 이륙 높이 일치",
+          "required": true
+        },
+        {
+          "code": "takeoff_action",
+          "title": "이륙 후 Hold 설정",
+          "required": true
+        },
+        {
+          "code": "native_takeoff_speed",
+          "title": "PX4 자동 이륙 속도 호환",
+          "required": true
+        },
+        {
+          "code": "heading_policy",
+          "title": "방위·높이 정책 일치",
+          "required": true
+        },
+        {
+          "code": "rc",
+          "title": "실제 RC 입력 (SITL 제외)",
+          "required": true
+        },
+        {
+          "code": "rc_switches",
+          "title": "RC 모드·시동·킬 매핑과 유효 입력",
+          "required": true
+        },
+        {
+          "code": "rc_auto_override",
+          "title": "AUTO 스틱 인계 허용",
+          "required": true
+        },
+        {
+          "code": "rc_offboard_override",
+          "title": "로컬 이동 중 RC 스틱 인계",
+          "required": true
+        },
+        {
+          "code": "battery",
+          "title": "배터리 연결·시작 잔량",
+          "required": true
+        },
+        {
+          "code": "motion",
+          "title": "PX4 속도·방위 수신",
+          "required": true
+        }
+      ]
+    },
+    {
+      "executor": "python_executor_cpp_ai",
+      "start_mode": "takeoff_hold",
+      "takeoff_backend": "local_position",
+      "check_count": 35,
+      "required_count": 29,
+      "optional_count": 6,
+      "checks": [
+        {
+          "code": "execution",
+          "title": "실기 명령 출력 활성",
+          "required": true
+        },
+        {
+          "code": "mission_ai",
+          "title": "C++ 미션 AI 연결",
+          "required": true
+        },
+        {
+          "code": "layout_confirmed",
+          "title": "앵커 배치 실측",
+          "required": true
+        },
+        {
+          "code": "alignment_confirmed",
+          "title": "창고·PX4 좌표 방향 검증",
+          "required": false
+        },
+        {
+          "code": "sensor_mount_confirmed",
+          "title": "센서 장착 실측",
+          "required": true
+        },
+        {
+          "code": "timing_confirmed",
+          "title": "관측 시각 정렬 검증",
+          "required": false
+        },
+        {
+          "code": "fusion_confirmed",
+          "title": "ULog 센서 융합 검증",
+          "required": false
+        },
+        {
+          "code": "takeoff_settings_confirmed",
+          "title": "이륙 설정 실측 검증",
+          "required": true
+        },
+        {
+          "code": "heading_control_confirmed",
+          "title": "방위 제어 실측 검증",
+          "required": false
+        },
+        {
+          "code": "map",
+          "title": "실측 지도·SHA 연결",
+          "required": false
+        },
+        {
+          "code": "recording",
+          "title": "현장 기록 파일 사용 가능",
+          "required": true
+        },
+        {
+          "code": "fc",
+          "title": "FC 연결·최신 상태",
+          "required": true
+        },
+        {
+          "code": "ground",
+          "title": "DISARM·지상 상태",
+          "required": true
+        },
+        {
+          "code": "mode",
+          "title": "Position 또는 Hold 모드",
+          "required": true
+        },
+        {
+          "code": "services",
+          "title": "MAVROS 명령 서비스",
+          "required": true
+        },
+        {
+          "code": "estimator",
+          "title": "PX4 수평 위치 추정 유효",
+          "required": true
+        },
+        {
+          "code": "pose",
+          "title": "PX4 위치·현장 경계",
+          "required": true
+        },
+        {
+          "code": "uwb",
+          "title": "최근 B_TF 수평 관측",
+          "required": true
+        },
+        {
+          "code": "height",
+          "title": "최근 장착 보정 높이 관측",
+          "required": false
+        },
+        {
+          "code": "vertical_estimator",
+          "title": "PX4 수직 위치·속도 추정 유효",
+          "required": true
+        },
+        {
+          "code": "bridge",
+          "title": "UWB→PX4 실제 발행",
+          "required": true
+        },
+        {
+          "code": "transform",
+          "title": "관측·명령 좌표 변환 일치",
+          "required": true
+        },
+        {
+          "code": "local_start",
+          "title": "현재 앵커 XY · 출발점·복귀점",
+          "required": true
+        },
+        {
+          "code": "local_transport",
+          "title": "PX4 로컬 위치 명령 연결",
+          "required": true
+        },
+        {
+          "code": "local_height",
+          "title": "PX4 이륙 높이 기준 수신",
+          "required": true
+        },
+        {
+          "code": "height_parameter",
+          "title": "FC 이륙 높이 일치",
+          "required": true
+        },
+        {
+          "code": "takeoff_action",
+          "title": "이륙 후 Hold 설정",
+          "required": true
+        },
+        {
+          "code": "position_sticks",
+          "title": "POSITION 전환용 RC 스틱 중립",
+          "required": true
+        },
+        {
+          "code": "heading_policy",
+          "title": "방위·높이 정책 일치",
+          "required": true
+        },
+        {
+          "code": "rc",
+          "title": "실제 RC 입력 (SITL 제외)",
+          "required": true
+        },
+        {
+          "code": "rc_switches",
+          "title": "RC 모드·시동·킬 매핑과 유효 입력",
+          "required": true
+        },
+        {
+          "code": "rc_auto_override",
+          "title": "AUTO 스틱 인계 허용",
+          "required": true
+        },
+        {
+          "code": "rc_offboard_override",
+          "title": "로컬 이동 중 RC 스틱 인계",
+          "required": true
+        },
+        {
+          "code": "battery",
+          "title": "배터리 연결·시작 잔량",
+          "required": true
+        },
+        {
+          "code": "motion",
+          "title": "PX4 속도·방위 수신",
+          "required": true
+        }
+      ]
+    }
+  ],
+  "time_policy_count": 22,
+  "time_policies": [
+    {
+      "id": "bridge_input_age",
+      "label": "UWB 송신 전 입력 나이",
+      "limit": "기본 0.15s, 설정 상한 0.2s",
+      "effect": "FC 관측 송신 거부",
+      "source": {
+        "path": "src/drone_uwb/drone_uwb/integration/local_odometry.py",
+        "line": 28,
+        "anchor": "max_age_s: float = .15"
+      }
+    },
+    {
+      "id": "raw_uwb_age",
+      "label": "미션의 원시 UWB 나이",
+      "limit": "0.25s",
+      "effect": "시작 거부 / 비행 중 LAND",
+      "source": {
+        "path": "src/sangwon_ai/include/sangwon_ai/field_mission.hpp",
+        "line": 149,
+        "anchor": "\"UWB_UNAVAILABLE\""
+      }
+    },
+    {
+      "id": "bridge_status_age",
+      "label": "UWB 송신 상태 수신 나이",
+      "limit": "2.5s",
+      "effect": "시작 거부 / LAND",
+      "source": {
+        "path": "src/sangwon_ai/include/sangwon_ai/field_executor.hpp",
+        "line": 107,
+        "anchor": "abort(\"uwb_px4_bridge_unavailable\""
+      }
+    },
+    {
+      "id": "bridge_observation_age",
+      "label": "상태 보고에 적힌 마지막 발행 관측 시각의 나이",
+      "limit": "기본 0.35s, 예제 0.7s",
+      "effect": "시작 거부 / LAND",
+      "source": {
+        "path": "src/sangwon_ai/include/sangwon_ai/field_mission.hpp",
+        "line": 150,
+        "anchor": "\"OBSERVATION_BRIDGE_UNAVAILABLE\""
+      }
+    },
+    {
+      "id": "bridge_send_age",
+      "label": "송신기가 보고한 마지막 송신 이후 시간",
+      "limit": "기본 0.35s, 예제 0.7s",
+      "effect": "bridge_ready=false / 시작 거부 / LAND",
+      "source": {
+        "path": "src/drone_mission/drone_mission/bridge_status.py",
+        "line": 22,
+        "anchor": "not 0 <= age <= settings.bridge_observation_timeout_s"
+      }
+    },
+    {
+      "id": "timesync_probe_age",
+      "label": "FC 시각 동기화 표본 나이",
+      "limit": "0.5s 미만; RTT 20ms 이하, offset 점프 5ms, 연속 30표본",
+      "effect": "FC 관측 송신 거부",
+      "source": {
+        "path": "src/drone_uwb/drone_uwb/integration/clock_readiness.py",
+        "line": 22,
+        "anchor": "return self.qualified"
+      }
+    },
+    {
+      "id": "btf_status_age",
+      "label": "B_TF 세션 상태 수신 나이",
+      "limit": "1.5s",
+      "effect": "FC 관측 송신 거부",
+      "source": {
+        "path": "src/drone_uwb/drone_uwb/integration/ros/local_odometry_bridge.py",
+        "line": 161,
+        "anchor": "now-self.btf_at <= 1.5"
+      }
+    },
+    {
+      "id": "fc_state_age",
+      "label": "FC 연결·모드·ARM 상태 나이",
+      "limit": "일반 2.5s, C++ 지상·인계·완료 확인 1s",
+      "effect": "시작 거부 / LAND / 인계·완료 확인 보류",
+      "source": {
+        "path": "src/sangwon_ai/include/sangwon_ai/field_executor.hpp",
+        "line": 141,
+        "anchor": "fresh_disarmed_ground_inputs_required"
+      }
+    },
+    {
+      "id": "fc_landed_age",
+      "label": "FC 지상·공중 상태 나이",
+      "limit": "Python 일반 2.5s, C++ 지상·완료 확인 1s; 송신기 최초 승인 0.5s",
+      "effect": "시작 거부 / Python LAND / 완료 확인 보류",
+      "source": {
+        "path": "src/drone_uwb/drone_uwb/integration/local_odometry.py",
+        "line": 94,
+        "anchor": "0 <= landed_age_s <= .5"
+      }
+    },
+    {
+      "id": "estimator_age",
+      "label": "FC 추정기 상태 보고 나이",
+      "limit": "0.5s",
+      "effect": "시작 거부 / LAND / 송신 중지",
+      "source": {
+        "path": "src/sangwon_ai/include/sangwon_ai/field_mission.hpp",
+        "line": 146,
+        "anchor": "\"ESTIMATOR_UNAVAILABLE\""
+      }
+    },
+    {
+      "id": "fc_pose_age",
+      "label": "FC 위치 입력 나이",
+      "limit": "0.2s",
+      "effect": "시작 거부 / LAND / 송신 중지",
+      "source": {
+        "path": "src/sangwon_ai/include/sangwon_ai/field_mission.hpp",
+        "line": 147,
+        "anchor": "\"PX4_POSE_UNAVAILABLE\""
+      }
+    },
+    {
+      "id": "target_feedback_age",
+      "label": "FC 적용 목표 회신 나이",
+      "limit": "0.5s; 별도 이륙은 ARM 후 6s부터 만료로 중단",
+      "effect": "이륙 완료 보류 / LAND",
+      "source": {
+        "path": "src/sangwon_ai/include/sangwon_ai/field_mission.hpp",
+        "line": 213,
+        "anchor": "\"AIRBORNE_OR_TARGET_FEEDBACK_LOST\""
+      }
+    },
+    {
+      "id": "rc_age",
+      "label": "RC 입력 나이",
+      "limit": "1s",
+      "effect": "시작 거부 / 별도 이륙 LAND / 인계 판정",
+      "source": {
+        "path": "src/drone_mission/drone_mission/local_takeoff.py",
+        "line": 67,
+        "anchor": "fresh_rc_required"
+      }
+    },
+    {
+      "id": "battery_age",
+      "label": "FC 배터리 상태 나이",
+      "limit": "3s",
+      "effect": "시작 거부 / LAND",
+      "source": {
+        "path": "src/sangwon_ai/include/sangwon_ai/field_mission.hpp",
+        "line": 151,
+        "anchor": "\"BATTERY_UNAVAILABLE_OR_LOW\""
+      }
+    },
+    {
+      "id": "fc_parameter_age",
+      "label": "FC 파라미터 수신 나이",
+      "limit": "5s (이륙·방위·RC·상승 속도·관측 설정)",
+      "effect": "시작 거부 / 관측 송신 거부",
+      "source": {
+        "path": "src/sangwon_ai/include/sangwon_ai/field_executor.hpp",
+        "line": 146,
+        "anchor": "\"px4_up_limit_0p5_required\""
+      }
+    },
+    {
+      "id": "web_assignment_age",
+      "label": "웹 미션 heartbeat 수신 나이",
+      "limit": "2s",
+      "effect": "시작 거부 / LAND",
+      "source": {
+        "path": "src/sangwon_ai/include/sangwon_ai/field_executor.hpp",
+        "line": 104,
+        "anchor": "\"web_assignment_stale\""
+      }
+    },
+    {
+      "id": "web_telemetry_age",
+      "label": "로컬 웹이 받은 기체 상태 나이",
+      "limit": "1s",
+      "effect": "웹 START·TAKEOFF 거부",
+      "source": {
+        "path": "src/drone_mission/drone_mission/local_web.py",
+        "line": 56,
+        "anchor": "time.monotonic()-self.telemetry_received_s <= 1"
+      }
+    },
+    {
+      "id": "web_request_ttl",
+      "label": "웹 명령 자체의 생성 시각",
+      "limit": "30s, 미래 명령도 거부",
+      "effect": "명령 거부",
+      "source": {
+        "path": "src/drone_mission/drone_mission/contracts.py",
+        "line": 160,
+        "anchor": "expired_or_future_control_request"
+      }
+    },
+    {
+      "id": "ai_cycle_gap",
+      "label": "실행·AI 갱신 간격",
+      "limit": "0.2s",
+      "effect": "LAND",
+      "source": {
+        "path": "src/sangwon_ai/include/sangwon_ai/field_executor.hpp",
+        "line": 56,
+        "anchor": "\"cpp_executor_scheduler_gap\""
+      }
+    },
+    {
+      "id": "decision_lease",
+      "label": "C++ 판단 또는 송신 View 유효 시간",
+      "limit": "0.15s",
+      "effect": "Python AI 응답 미채택 / C++ 송신 중지 후 중단",
+      "source": {
+        "path": "src/sangwon_ai/src/field_executor_node.cpp",
+        "line": 209,
+        "anchor": "\"native_sender_decision_lease_expired\""
+      }
+    },
+    {
+      "id": "python_cpp_ipc_timeout",
+      "label": "별도 C++ AI 프로세스 응답 기한",
+      "limit": "기본 0.1s; hello 2s",
+      "effect": "Python 실행 경로의 AI 오류 / LAND·UNCONFIRMED",
+      "source": {
+        "path": "src/drone_mission/drone_mission/cpp_mission_ai.py",
+        "line": 76,
+        "anchor": "def _exchange(self, method, payload, timeout=.1)"
+      }
+    },
+    {
+      "id": "observer_metadata_age",
+      "label": "C++ 실행기가 받은 Python 메타데이터 나이",
+      "limit": "0.2s 넘으면 웹 preflight 무효; 2.5s 넘으면 실행 중단",
+      "effect": "웹 START 보류 / LAND·UNCONFIRMED",
+      "source": {
+        "path": "src/sangwon_ai/src/field_executor_node.cpp",
+        "line": 152,
+        "anchor": "\"python_observer_metadata_expired\""
+      }
+    }
+  ],
+  "cpp_ai_automatic_land_reasons": [
+    {
+      "code": "AIRBORNE_OR_TARGET_FEEDBACK_LOST",
+      "source": {
+        "path": "src/sangwon_ai/include/sangwon_ai/field_mission.hpp",
+        "line": 213,
+        "anchor": "request_land(\"AIRBORNE_OR_TARGET_FEEDBACK_LOST\""
+      }
+    },
+    {
+      "code": "AI_SAMPLE_GAP",
+      "source": {
+        "path": "src/sangwon_ai/include/sangwon_ai/field_mission.hpp",
+        "line": 145,
+        "anchor": "request_land(\"AI_SAMPLE_GAP\""
+      }
+    },
+    {
+      "code": "BATTERY_UNAVAILABLE_OR_LOW",
+      "source": {
+        "path": "src/sangwon_ai/include/sangwon_ai/field_mission.hpp",
+        "line": 151,
+        "anchor": "request_land(\"BATTERY_UNAVAILABLE_OR_LOW\""
+      }
+    },
+    {
+      "code": "ESTIMATOR_UNAVAILABLE",
+      "source": {
+        "path": "src/sangwon_ai/include/sangwon_ai/field_mission.hpp",
+        "line": 146,
+        "anchor": "request_land(\"ESTIMATOR_UNAVAILABLE\""
+      }
+    },
+    {
+      "code": "FC_STATE_UNAVAILABLE",
+      "source": {
+        "path": "src/sangwon_ai/include/sangwon_ai/field_mission.hpp",
+        "line": 144,
+        "anchor": "request_land(\"FC_STATE_UNAVAILABLE\""
+      }
+    },
+    {
+      "code": "HOVER_HORIZONTAL_DRIFT",
+      "source": {
+        "path": "src/sangwon_ai/include/sangwon_ai/field_mission.hpp",
+        "line": 234,
+        "anchor": "request_land(\"HOVER_HORIZONTAL_DRIFT\""
+      }
+    },
+    {
+      "code": "HOVER_STABILITY_TIMEOUT",
+      "source": {
+        "path": "src/sangwon_ai/include/sangwon_ai/field_mission.hpp",
+        "line": 235,
+        "anchor": "request_land(\"HOVER_STABILITY_TIMEOUT\""
+      }
+    },
+    {
+      "code": "LOCAL_LEG_TIMEOUT",
+      "source": {
+        "path": "src/sangwon_ai/include/sangwon_ai/field_mission.hpp",
+        "line": 226,
+        "anchor": "request_land(\"LOCAL_LEG_TIMEOUT\""
+      }
+    },
+    {
+      "code": "LOCAL_PATH_TRACKING_ERROR",
+      "source": {
+        "path": "src/sangwon_ai/include/sangwon_ai/field_mission.hpp",
+        "line": 225,
+        "anchor": "request_land(\"LOCAL_PATH_TRACKING_ERROR\""
+      }
+    },
+    {
+      "code": "OBSERVATION_BRIDGE_UNAVAILABLE",
+      "source": {
+        "path": "src/sangwon_ai/include/sangwon_ai/field_mission.hpp",
+        "line": 150,
+        "anchor": "request_land(\"OBSERVATION_BRIDGE_UNAVAILABLE\""
+      }
+    },
+    {
+      "code": "PX4_POSE_UNAVAILABLE",
+      "source": {
+        "path": "src/sangwon_ai/include/sangwon_ai/field_mission.hpp",
+        "line": 147,
+        "anchor": "request_land(\"PX4_POSE_UNAVAILABLE\""
+      }
+    },
+    {
+      "code": "TAKEOFF_HORIZONTAL_DRIFT",
+      "source": {
+        "path": "src/sangwon_ai/include/sangwon_ai/field_mission.hpp",
+        "line": 206,
+        "anchor": "request_land(\"TAKEOFF_HORIZONTAL_DRIFT\""
+      }
+    },
+    {
+      "code": "TAKEOFF_TIMEOUT",
+      "source": {
+        "path": "src/sangwon_ai/include/sangwon_ai/field_mission.hpp",
+        "line": 207,
+        "anchor": "request_land(\"TAKEOFF_TIMEOUT\""
+      }
+    },
+    {
+      "code": "UWB_UNAVAILABLE",
+      "source": {
+        "path": "src/sangwon_ai/include/sangwon_ai/field_mission.hpp",
+        "line": 149,
+        "anchor": "request_land(\"UWB_UNAVAILABLE\""
+      }
+    }
+  ],
+  "cpp_executor_additional_abort_reasons": [
+    {
+      "code": "arm_state_not_confirmed",
+      "source": {
+        "path": "src/sangwon_ai/include/sangwon_ai/field_executor.hpp",
+        "line": 117,
+        "anchor": "abort(\"arm_state_not_confirmed\""
+      }
+    },
+    {
+      "code": "cpp_executor_scheduler_gap",
+      "source": {
+        "path": "src/sangwon_ai/include/sangwon_ai/field_executor.hpp",
+        "line": 56,
+        "anchor": "abort(\"cpp_executor_scheduler_gap\""
+      }
+    },
+    {
+      "code": "local_mode_not_confirmed",
+      "source": {
+        "path": "src/sangwon_ai/include/sangwon_ai/field_executor.hpp",
+        "line": 114,
+        "anchor": "abort(\"local_mode_not_confirmed\""
+      }
+    },
+    {
+      "code": "mission_time_limit",
+      "source": {
+        "path": "src/sangwon_ai/include/sangwon_ai/field_executor.hpp",
+        "line": 110,
+        "anchor": "abort(\"mission_time_limit\""
+      }
+    },
+    {
+      "code": "px4_local_frame_or_pose_jump",
+      "source": {
+        "path": "src/sangwon_ai/include/sangwon_ai/field_executor.hpp",
+        "line": 108,
+        "anchor": "abort(\"px4_local_frame_or_pose_jump\""
+      }
+    },
+    {
+      "code": "px4_pose_outside_bounds",
+      "source": {
+        "path": "src/sangwon_ai/include/sangwon_ai/field_executor.hpp",
+        "line": 106,
+        "anchor": "abort(\"px4_pose_outside_bounds\""
+      }
+    },
+    {
+      "code": "uwb_px4_bridge_unavailable",
+      "source": {
+        "path": "src/sangwon_ai/include/sangwon_ai/field_executor.hpp",
+        "line": 107,
+        "anchor": "abort(\"uwb_px4_bridge_unavailable\""
+      }
+    },
+    {
+      "code": "web_assignment_stale",
+      "source": {
+        "path": "src/sangwon_ai/include/sangwon_ai/field_executor.hpp",
+        "line": 104,
+        "anchor": "abort(\"web_assignment_stale\""
+      }
+    }
+  ],
+  "excluded_literal_reasons": {
+    "ai": [
+      "UWB_LIDAR_RECOVERY_DISAGREEMENT",
+      "OBSERVATION_RECOVERY_TIMEOUT",
+      "OPERATOR_LAND"
+    ],
+    "executor": [
+      "operator_cancelled",
+      "cpp_ai:"
+    ]
+  },
+  "source_hashes": {
+    "src/drone_mission/drone_mission/bridge_status.py": "513a4bb021aee5a401d1998c81b50a1bf6ee92b386f3b3f2d40cc30fa0e4d3c8",
+    "src/drone_mission/drone_mission/contracts.py": "10702d0a7ac374d443a8cc34c45f2f70a67befc5aa4877bfb30fda04ad21fdf4",
+    "src/drone_mission/drone_mission/cpp_mission_ai.py": "085ee537c44f88b589e16deda82c106f8623e31340b68a55df9c5cd89def6c37",
+    "src/drone_mission/drone_mission/cpp_observer.py": "25b55f6a062fe754932a6a74b9939f7e3b34bd4e2bddd021bd0c55c6f5ce5234",
+    "src/drone_mission/drone_mission/local_takeoff.py": "35b890054945b4224b541d8949b7620ebd4af017735791c159c9e973dbacd49f",
+    "src/drone_mission/drone_mission/local_web.py": "4023d57df8caf3dd1aaec114a6876c6b72bc7fef0fabdaca4ab24b8831a001ee",
+    "src/drone_mission/drone_mission/node.py": "c51f03771fbf8160e80fe2ff01d215b46f1d117e1bfe20576bf36937fbea7f20",
+    "src/drone_mission/drone_mission/preflight.py": "3b11b67e26d9ee0f54f5b02fbd5259fa62dbe32a8197d8a728704f8ce12dd8b4",
+    "src/drone_uwb/drone_uwb/integration/clock_readiness.py": "fdb8440406e6c2ba7d7450e1a615c49ba9adf5b5cc1fdfb66a1c1fdfaed83b06",
+    "src/drone_uwb/drone_uwb/integration/local_odometry.py": "68a6093400c55a2f1362e605eee1d92166264ee02c66df921a46e4b43e2492e6",
+    "src/drone_uwb/drone_uwb/integration/ros/local_odometry_bridge.py": "bad3ec2011391890df0720eea082757f119f8c197921b402dfbbd84d26b6eaa4",
+    "src/sangwon_ai/include/sangwon_ai/field_executor.hpp": "6eb837257464516d0327b2b5e73afe3b370e8f1c6c95b052d71d6bc1143cac47",
+    "src/sangwon_ai/include/sangwon_ai/field_mission.hpp": "d5b2fbd736196d4a19b461e7d24658f6a384337949f7cf17f09ad3ea727cf2ab",
+    "src/sangwon_ai/src/field_executor_node.cpp": "490e9651feca6b7069450270fc5d1eaaab9862f55a68a48f90e36469054521db"
+  },
+  "limitations": [
+    "No FC live readback in this audit.",
+    "No physical command or parameter writes.",
+    "Does not count every Settings/schema-validation predicate, web-library rule, upstream UWB solver rejection, optional LiDAR rule, or PX4 built-in arming/failsafe check.",
+    "The auto-abort list excludes forwarded AI reasons, operator commands, dynamic I/O error strings, and transport exceptions.",
+    "Some failed conditions reset dwell or suppress output instead of directly issuing LAND; pending command effects can yield UNCONFIRMED."
+  ]
+}

@@ -10,6 +10,7 @@
 
 | 찾는 내용 | 위치 |
 |---|---|
+| 시작 검사 35개·시간 정책 22종·자동 LAND·EV 시각 보정 구분 | [13일 실행 제한 검토](report/constraint_audit_20261013.md) |
 | 상원 작업 통합·전달 관측 제한 0.7초·FC 설정 구분 | [13일 통합 기록](report/sangwon_integration_20261013.md) |
 | 새 통합 브랜치 받기·실행 경로·FC 시각 파라미터 조회 | [통합 재개 절차](runbooks/sangwon_integration.md) |
 | 다른 채팅의 2D LiDAR 구현·높이 센서 실제 공백·45조합 검증 | [2D 높이 공백 결과](report/lidar2d_height_outage_20261012.md) |
