@@ -238,13 +238,21 @@ class ExecutorNode final:public rclcpp::Node {
       {std::unique_lock<std::mutex> g(io_mutex_);io_cv_.wait(g,[this]{return stop_.load()||!commands_.empty();});if(stop_.load())break;action=std::move(commands_.front());commands_.pop_front();}
       try {
         std::shared_ptr<const Json> evidence;{std::lock_guard<std::mutex> g(io_mutex_);evidence=last_evidence_;}
-        auto raw=Json({{"type","command_before_dispatch"},{"action",action},{"steady_s",steady_s()},{"executor_owner","cpp_executor"},{"trigger",evidence?*evidence:Json()}}).dump()+"\n";
+        const double queued=steady_s();const bool landing=action.at("kind")=="land";
+        auto intent=Json({{"type","command_before_dispatch"},{"action",action},{"steady_s",queued},{"executor_owner","cpp_executor"},{"durable_before_dispatch",!landing},{"trigger",evidence?*evidence:Json()}});
+        // An already requested landing must not wait for storage. Keep its
+        // intent in the asynchronous evidence stream, dispatch with current
+        // FC/pilot authority, then persist the dedicated command journal.
+        if(landing){{std::lock_guard<std::mutex> g(io_mutex_);events_.push_back(intent);}io_cv_.notify_all();dispatch(action);}
+        auto raw=intent.dump()+"\n";
         size_t offset=0;while(offset<raw.size()){auto n=write(command_fd_,raw.data()+offset,raw.size()-offset);require(n>0,"COMMAND_RECORD_WRITE_FAILED");offset+=size_t(n);}
         require(fsync(command_fd_)==0,"COMMAND_RECORD_SYNC_FAILED");
+        {std::lock_guard<std::mutex> g(io_mutex_);events_.push_back(Json{{"type","command_record_persisted"},{"token",action.at("token")},{"kind",action.at("kind")},{"sample_monotonic_ns",int64_t(steady_s()*1e9)},{"journal_elapsed_s",steady_s()-queued},{"durable_before_dispatch",!landing}});}io_cv_.notify_all();
+        if(landing)continue;
         // A slow fsync cannot dispatch a command from an expired/cancelled
         // execution. The core keeps updating while this worker waits.
         View v;{std::lock_guard<std::mutex> g(fast_mutex_);v=view_;}
-        if(!v.pending||v.token!=action.at("token").get<unsigned>()||steady_s()>v.expires)continue;
+        if(!v.pending||v.token!=action.at("token").get<unsigned>())continue;
         dispatch(action);
       }catch(const std::exception& e){if(rclcpp::ok())io_fault(std::string("native_command_transport_failed:")+e.what());}
     }
@@ -253,6 +261,9 @@ class ExecutorNode final:public rclcpp::Node {
   void send() {
     const double t=steady_s();View v;Sample s;{std::lock_guard<std::mutex> g(fast_mutex_);v=view_;s=sample_;}
     if(!v.stream)return;
+    // Continue the approved hold until PX4 actually enters AUTO.LAND.
+    // The landing request/ACK alone is not a flight-mode transition.
+    if(v.phase=="LANDING"&&s.mode=="AUTO.LAND")return;
     const bool mode=v.phase=="PREPARING"?(s.mode=="POSCTL"||s.mode=="AUTO.LOITER"||s.mode=="OFFBOARD"):s.mode=="OFFBOARD";
     bool rc=false;for(int ch:v.switches)if(ch>0&&size_t(ch)<=s.rc.size()&&size_t(ch)<=v.baseline.size()&&std::abs(int(s.rc[ch-1])-int(v.baseline[ch-1]))>=100)rc=true;
     const bool pilot=(s.connected&&t-s.state_at<=cfg_.value("state_timeout_s",2.5)&&!mode)||(t-s.rc_at<=1&&rc);
@@ -273,10 +284,16 @@ class ExecutorNode final:public rclcpp::Node {
     // Recheck live authority after durable recording and immediately before
     // handing a command to MAVROS; callbacks may run during fsync/BT work.
     Sample live;View view;{std::lock_guard<std::mutex> g(fast_mutex_);live=sample_;view=view_;}
+    if(!view.pending||view.token!=token)return;
+    {std::lock_guard<std::mutex> g(io_mutex_);events_.push_back(Json{{"type","command_dispatch_attempt"},{"token",token},{"kind",kind},{"sample_monotonic_ns",int64_t(steady_s()*1e9)},{"queue_age_s",steady_s()-action.at("sent_s").get<double>()}});}io_cv_.notify_all();
     const bool mode_ok=kind=="arm"?live.mode=="OFFBOARD":kind=="land"?live.mode=="OFFBOARD"||live.mode=="AUTO.LAND":live.mode=="POSCTL"||live.mode=="AUTO.LOITER"||live.mode=="OFFBOARD";
     bool rc_changed=false;for(int ch:view.switches)if(ch>0&&size_t(ch)<=live.rc.size()&&size_t(ch)<=view.baseline.size()&&std::abs(int(live.rc[ch-1])-int(view.baseline[ch-1]))>=100)rc_changed=true;
     if(!mode_ok||rc_changed){std::lock_guard<std::mutex> g(fast_mutex_);fault_="pilot_priority_before_native_command";pilot_fault_=true;acks_.emplace_back(token,false,steady_s());return;}
     if(!live.connected||steady_s()-live.state_at>cfg_.value("state_timeout_s",2.5)){ack(token,false);return;}
+    // Dispatch authority comes from current FC/RC/observation data, not a
+    // duplicate 150 ms planner-view lease. Ground entry still needs fresh
+    // independent observations even when durable recording was slow.
+    if((kind=="arm"||kind=="offboard_mode")&&(!live.estimator||!live.vertical||!live.pose_ok||steady_s()-live.pose_at>.2||steady_s()-live.uwb_at>.25||live.armed)){ack(token,false);return;}
     if(kind=="offboard_mode"||kind=="position_mode") {if(!mode_->service_is_ready()){ack(token,false);return;}auto req=std::make_shared<mavros_msgs::srv::SetMode::Request>();req->custom_mode=kind=="offboard_mode"?"OFFBOARD":"POSCTL";mode_->async_send_request(req,[this,token](rclcpp::Client<mavros_msgs::srv::SetMode>::SharedFuture f){try{ack(token,f.get()->mode_sent);}catch(...){/* Unknown effect: command timeout latches UNCONFIRMED. */}});}
     else if(kind=="arm") {if(!arm_->service_is_ready()){ack(token,false);return;}auto req=std::make_shared<mavros_msgs::srv::CommandBool::Request>();req->value=true;arm_->async_send_request(req,[this,token](rclcpp::Client<mavros_msgs::srv::CommandBool>::SharedFuture f){try{auto r=f.get();ack(token,r->success&&r->result==0);}catch(...){}});}
     else if(kind=="land") {if(!land_->service_is_ready()){ack(token,false);return;}auto req=std::make_shared<mavros_msgs::srv::CommandTOL::Request>();req->yaw=req->latitude=req->longitude=req->altitude=std::numeric_limits<double>::quiet_NaN();land_->async_send_request(req,[this,token](rclcpp::Client<mavros_msgs::srv::CommandTOL>::SharedFuture f){try{auto r=f.get();ack(token,r->success&&r->result==0);}catch(...){}});}

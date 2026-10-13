@@ -133,7 +133,8 @@ class Observations:
                             'scan_results', 'scan_window', 'scan_failure_policy',
                             'attempted_task_ids', 'remaining_task_ids', 'failed_scan_task_ids', 'route_complete', 'preflight', 'fc_landed',
                             'native_takeoff', 'operator_session_id', 'arm_request_available', 'arm_request_blocker', 'operator_arm_result', 'mission_ai', 'horizontal_observation',
-                            'observation_status','recording_ok','record_pending','observer_metadata_delayed','web_report_delayed'):
+                            'observation_status','recording_ok','record_pending','observer_metadata_delayed','web_report_delayed',
+                            'executor_backend','executor_owner','executor_session','setpoints_sent','max_sender_gap_s'):
                     if key in value:
                         result[key] = value[key]
                 result.update(flight_state=value.get('state'), flight_reason=value.get('reason'),

@@ -57,11 +57,11 @@ def main():
             if not math.isfinite(values.get('speed', 0)) or values.get('speed', 0) > .1:
                 raise RuntimeError('Stationary estimate required')
             if time.monotonic()-start > 1.5 and any(
-                    time.monotonic()-stamps.get(k, -1e9) > 1
+                    time.monotonic()-stamps.get(k, -1e9) > (2.5 if k == 'state' else 1.)
                     for k in ('state','landed','remote','pose','speed')):
                 raise RuntimeError('Continuous fresh FC observations required')
         now = time.monotonic()
-        if any(now-stamps.get(k, -1e9) > 1 for k in ('state','landed','remote','pose','speed')):
+        if any(now-stamps.get(k, -1e9) > (2.5 if k == 'state' else 1.) for k in ('state','landed','remote','pose','speed')):
             raise RuntimeError('Fresh FC observations required')
         yaw, span = stationary_yaw_mean(yaws)
         boot = Path('/proc/sys/kernel/random/boot_id').read_text().strip()

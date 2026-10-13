@@ -94,9 +94,11 @@ def test_report_delay_summary_reaches_web_without_bulk_record_payload():
     policy=dict(mode='REPORT_DELAY',progress_held=False,warnings=['bridge_report_delayed'])
     with patch('drone_platform_link.telemetry.time.monotonic',return_value=10.):
         o.receive_mission(dict(state='DWELL',observation_status=policy,recording_ok=True,
+            executor_backend='sangwon_cpp_executor',executor_owner='cpp_executor',executor_session='session',
             input_snapshot={'private_bulk_evidence':'record_file_only'}))
         fields=o.fields()
     assert fields['observation_status']==policy and fields['recording_ok'] is True
+    assert fields['executor_backend']=='sangwon_cpp_executor' and fields['executor_session']=='session'
     assert 'input_snapshot' not in fields
 
 

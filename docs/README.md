@@ -237,3 +237,5 @@ Windows에서는 심볼릭 링크를 지원하는 WSL 체크아웃을 쓴다.
 - [구조](architecture/lidar_physical_velocity.md)
 - [배포 절차](runbooks/lidar_physical_velocity.md)
 - [측정 및 검증 기록](report/lidar_physical_20261012.md)
+
+- [13일 Jetson 현장 준비](report/jetson_field_preparation_20261013.md)

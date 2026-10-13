@@ -121,6 +121,7 @@ class Contracts(unittest.TestCase):
         p.tick(ack=False);a=p.out['actions'][0];p.ack(a['token'],True)
         p.request=None;p.s.update(armed=True,landed=2,mode='AUTO.LAND');p.tick()
         self.assertEqual(p.out['phase'],'LANDING');self.assertFalse(p.out['landing_verified'])
+        self.assertEqual(p.out['goal_xy_m'],[2.,2.])
     def test_early_return_never_claims_completed_mission(self):
         p=self.peer();p.until('DWELL');p.request=dict(action='return_to_home',request_id='early-return')
         p.until('FAILED');self.assertTrue(p.out['landing_verified']);self.assertFalse(p.out['mission_complete'])

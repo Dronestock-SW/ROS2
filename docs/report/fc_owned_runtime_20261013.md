@@ -169,3 +169,5 @@ UWB 송신·FC 추정 위치·목표·영상·ULog를 동기화한다.
 실제 밀림과 위치 추정 변화를 먼저 구분한다.
 그 뒤 측정된 잔여 시차로 EV_DELAY를 정한다.
 FC 값과 송신기·미션의 expected_ev_delay_ms를 함께 맞춘다.
+
+13일 이후 실물 확인은 [Jetson 현장 준비](jetson_field_preparation_20261013.md)에 기록했다.

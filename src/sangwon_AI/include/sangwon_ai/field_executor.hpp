@@ -8,7 +8,7 @@ class FieldExecutor {
   explicit FieldExecutor(Json settings):cfg_(std::move(settings)) {}
   std::string phase{"IDLE"}, reason{"waiting_for_web_start"}, failure;
   Json decision=Json::object(), actions=Json::array();
-  bool streaming() const { return phase=="PREPARING" || phase=="ARMING" || phase=="TAKING_OFF" || phase=="MOVING" || phase=="DWELL" || phase=="RETURNING"; }
+  bool streaming() const { return phase=="PREPARING" || phase=="ARMING" || phase=="TAKING_OFF" || phase=="MOVING" || phase=="DWELL" || phase=="RETURNING" || phase=="LANDING"; }
   bool terminal() const { return phase=="END" || phase=="FAILED" || phase=="PILOT_OVERRIDE" || phase=="UNCONFIRMED"; }
   bool pending() const { return pending_token_!=0; }
   unsigned pending_token() const { return pending_token_; }
