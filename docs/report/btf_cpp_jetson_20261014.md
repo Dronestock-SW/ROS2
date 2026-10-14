@@ -175,6 +175,10 @@ PC·Jetson CTest는 각각 3개 묶음이 통과했다.
 
 ## ToF 100/50/50Hz 반영 범위
 
+이 절은 당시 `-P` 후보 준비 기록이다.
+후속 [운영 기준본 r1](tof_operational_baseline_20261014.md)은 `-T` 패치를 채택했다.
+두 패치를 겹쳐 적용하지 않는다. 실기 배포는 별도다.
+
 companion의 DISTANCE_SENSOR 요청을 40→50Hz로 바꿨다.
 센서 서비스와 미션 노드의 요청값을 맞췄다.
 ToF 100ms·IMU 20ms 제한을 유지했다.

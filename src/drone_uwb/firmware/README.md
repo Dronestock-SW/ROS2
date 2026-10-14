@@ -2,6 +2,16 @@
 This index identifies firmware artifacts saved for field-work recovery.
 Read the linked field report before selecting or installing an image.
 
+## Confirmed ToF Source Baseline, 2026-10-14
+
+The [ToF r1 baseline](../../../docs/report/tof_operational_baseline_20261014.md)
+pins the built R2 + TFmini Plus `-T` patch and the 50Hz companion request.
+Its firmware SHA256 is `a8e1cb208c2314503383cdcb0accf2cb38ab8b629b7d9581987b927fe6df2a9b`.
+The binary is preserved outside Git; the report links its hash manifest.
+It has not been installed. Physical rates and timing remain unverified.
+R3 below is a separate candidate; no combined R3 + ToF build is claimed.
+The older `tfmini_plus_50hz/-P` patch is historical, not an additional patch to apply.
+
 ## Prepared R3 Candidate, 2026-10-14
 
 R3 adds independent horizontal LiDAR velocity aiding, protocol marker 2.

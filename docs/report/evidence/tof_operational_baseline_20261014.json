@@ -1,0 +1,128 @@
+{
+  "release_id": "tof-100-50-50-20261014-r1",
+  "confirmed_date_kst": "2026-10-14",
+  "status": "user_confirmed_operational_baseline",
+  "deployed": false,
+  "source_changes_in_this_confirmation": false,
+  "scope": "Freeze the built ToF revision as the operational source/artifact baseline. Does not establish runtime timing or flight acceptance.",
+  "ros_base_commit": "d586e836402066269b1d7e85d4c803f2f748a724",
+  "ros_overlay_file_count": 25,
+  "ros_overlay_files": {
+    "docs/README.md": "c1acac689915d58087c90167202e2e10ea7078fd7eb55f6f8d0529f19eeab481",
+    "docs/altitude_policy.md": "3c10c465322c974d49242caabea71f68dce8fc9019f00f05a4644b6f9dc55042",
+    "docs/architecture/tof_100_50_50.md": "80bb0043f58b081a1848ad12fa260d2b30f3739d6c193145c528fc3e4beecae1",
+    "docs/architecture/tof_rate_scenarios_20261014.md": "b56bb6c042f80074765fde9e24d8414add02e17006732357e93c62fc7e07f6c7",
+    "docs/glossary.md": "7925a4ac04e5626e4c344992813afc8a9e855b3f023e7cc7c67fc091298d3af3",
+    "docs/report/btf_replay_harness_20261014.md": "49fc6f06f72642c3589654eeba1bd0fa5335e0dc1576fa640aeff5a6d800566a",
+    "docs/report/btf_replay_identity_20261014.md": "74fc78b3ba4d6c9a6c54982a9bd0c8738d884a0f90289edce38264732c523a08",
+    "docs/report/evidence/btf_replay_identity_20261014.json": "633ffa4a266301d99662fa44ca6291d0d063e80615b1f1bf1fb296ee8e54621d",
+    "docs/report/evidence/tof_100_50_50_20261014.json": "85676a0d4ec7edd04f86c9b3d2227ae206401c0fe1e28f3b054f9b1c2a7bee98",
+    "docs/report/tof_100_50_50_20261014.md": "7802eadffded4666902e6a98e2518f9bcbcc2488b299109b042fab80963af080",
+    "docs/roadmap.md": "63db54649d32e83dace42eb48a1492a98bd17f17f358bd0a982ec1800c094721",
+    "docs/runbooks/btf_isolated_replay_20261014.md": "346aa359c40c5ac948bf3f6fec7f2dce18b22257756bb85ad59ebf5694cc937b",
+    "src/drone_uwb/drone_uwb/integration/ros/manual_streams.py": "9b8b9decd23d01fd50a82ab0a01eb8a19a7c06c0473f5e9ad28de82ff9ce1308",
+    "src/drone_uwb/test/firmware/px4_test.hpp": "c670f6d0837b790bdd7a405466f9590e068adfed0bbde6418cdc934a6147b0e5",
+    "src/drone_uwb/test/firmware/test_tfmini_plus.cpp": "97b37502cf89da897c5549604111862c5b406ea90e1e16a9ee0a1f6c55d2dc98",
+    "src/drone_uwb/test/integration/test_manual_streams.py": "8adbf37c3d0f87726ae2db588a1df43509fb94a01a6a8666d6d9d2595a6bf815",
+    "src/drone_uwb/test/test_replay_isolated_contract.py": "5b6d686ef7f8cc4dc6ff55f2745b316ea6fdbcc436a59f52ec77532b1b407704",
+    "src/drone_uwb/test/test_replay_measurements.py": "3eff0d5bbf59931eb34692d921a8ce76c2167651bbaef568fd836e61c738169d",
+    "src/drone_uwb/test/test_replay_ros_harness.py": "2e6b5e02325bf32076e54b4861b418ec4295e162c40683a57427ae978a9899c6",
+    "src/drone_uwb/tools/analyze_btf_replay_run.py": "1fbf52d5c8d48ed0f172f4bcc4de7d62835e6fdfe692f989aac545f67c8e6233",
+    "src/drone_uwb/tools/audit_btf_capture_links.py": "f469dddf88d2603ac9a139defc1ef4dd794cccef42b694f5b0e058781d59fb96",
+    "src/drone_uwb/tools/btf_replay_measurements.py": "676327a391a5f012b253753895bf0cb24406f1a13c8bc9a04befd5f7fb88d841",
+    "src/drone_uwb/tools/check_tfmini_plus_driver.py": "31a50ccd86db71644a9750e9c597265c9c399107897e59889f4f3472c210d5c4",
+    "src/drone_uwb/tools/px4_tfmini_plus.patch": "3df45b0bdb6e5d47a4086bb79e25b3713f8d360c0190d4c8210287c23ebc3f38",
+    "src/drone_uwb/tools/replay_btf_isolated.py": "22e7b120cd0be1fe25a4a71d1e3ce6f8869f258409222b7539a6777baa5d215d"
+  },
+  "ros_reconstruction": "ros-source.tar.gz plus ros-overlay.tar; external dependencies use pinned commits below",
+  "ydlidar_commit": "4ef70d3f32a85704ade0be54b214f3763b1ab3e8",
+  "behaviortree_commit": "2a8a226fbbd99f524f0796e0d8a3145773c61c06",
+  "px4_base_commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+  "px4_target": "px4_fmu-v6c_lidar2d",
+  "px4_patch_order": [
+    "px4_lidar2d_hardware.patch",
+    "px4_tfmini_plus.patch"
+  ],
+  "build_passed": {
+    "ros_packages": 7,
+    "px4_full_target": true
+  },
+  "test_files": "Included in the frozen build source for provenance; not an operational launch or replay authorization.",
+  "unresolved": [
+    "B1 processing delay increase; trace contribution unmeasured",
+    "Physical 100/50/50Hz and delay budget unverified",
+    "Deployment configuration identity and runtime heap/stack peak unverified"
+  ],
+  "imu_trace_ab": "User authorized isolated comparison, then directed skipping and closing it when the full original was absent. No new replay or instrumentation was executed.",
+  "claude_review_round": 17,
+  "files": {
+    "px4-candidate-NOT-DEPLOYED.px4": {
+      "bytes": 1812720,
+      "sha256": "a8e1cb208c2314503383cdcb0accf2cb38ab8b629b7d9581987b927fe6df2a9b"
+    },
+    "ros-source.tar.gz": {
+      "bytes": 3976486,
+      "sha256": "396a34b7006a10589cba9f2a47d48ab8e9d63bb0b4f9d4b20a1fb9f4a836530e"
+    },
+    "ros-overlay.tar": {
+      "bytes": 409600,
+      "sha256": "fdff1d81307c8c134aebb0b6b38539c81e35988978e469c50e440aabc3810c22"
+    },
+    "overlay-manifest.json": {
+      "bytes": 2906,
+      "sha256": "33bd5f4308fc24c245cae5dd036fb83e52d6859ec9b91eb2e9938c11a587434a"
+    },
+    "px4-build-evidence.json": {
+      "bytes": 7938,
+      "sha256": "a715907d5788786e19431e7598d3850d3d3ff20f9e3ec8912b2b708860b98242"
+    },
+    "ros-static.json": {
+      "bytes": 28475,
+      "sha256": "caa41d49feadba5f6fbd9724737f352f31141c119a4f78f87df9904d1d8a63b7"
+    },
+    "ros-build-01.log": {
+      "bytes": 74621,
+      "sha256": "5467989e661ce5f227ee37a08fc7d788be52432e14b5e253388e4261b7fdf018"
+    },
+    "px4-build-02.log": {
+      "bytes": 140719,
+      "sha256": "7c00b7afa87967effa04435b1d7eafa35c46e82794a5c149349105d8af662d85"
+    },
+    "px4-build-03.log": {
+      "bytes": 636,
+      "sha256": "d077a5511f12c32ea7057f2054ffaf61917a73d966a35481d46c6f5503629e86"
+    },
+    "px4-baseline-build.log": {
+      "bytes": 2346,
+      "sha256": "26a12e6094984dbeb6c567e09e78b89efd7b8a906231d79667c3f68dc45f3059"
+    },
+    "px4-candidate-restore-build.log": {
+      "bytes": 2346,
+      "sha256": "7fc064347b73647a4a169e47c0d6584149a4d398b6bd8685e829cd98d62fc92e"
+    },
+    "px4-python-freeze.txt": {
+      "bytes": 3508,
+      "sha256": "f3c6d6ec7431aa14215b530e2969d7ebe5c8826b1c2471b6029a1f46ab6b8e97"
+    },
+    "host-tools-sha256.txt": {
+      "bytes": 191,
+      "sha256": "41246f4eeecc4a61dd00c38cf31cc3b3ba380da069cb7f4c1c29b0b77a1e9474"
+    },
+    "px4_lidar2d_hardware.patch": {
+      "bytes": 15041,
+      "sha256": "249a64e692d42e65a698eef9f34471b91d9651e88d90196512f933c75ab7e7e5"
+    },
+    "px4_tfmini_plus.patch": {
+      "bytes": 16197,
+      "sha256": "3df45b0bdb6e5d47a4086bb79e25b3713f8d360c0190d4c8210287c23ebc3f38"
+    },
+    "tof_full_build_20261014.json": {
+      "bytes": 15382,
+      "sha256": "ddf9d7b16bcb177a927d87eea917c6cfc1d2e866082fd708a958a659795cf6e0"
+    },
+    "replay-plan-response-17.txt": {
+      "bytes": 4373,
+      "sha256": "02379d5d16ad54b5e2cfd18dfdbc3728ee7271fc21680126eec3487e7994ac36"
+    }
+  }
+}

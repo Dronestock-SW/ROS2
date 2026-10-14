@@ -10,6 +10,15 @@
 
 | 찾는 내용 | 위치 |
 |---|---|
+| C++ B_TF 부분 자료 ON/OFF 실측·지연 경량화·남은 공백 | [기록 ON/OFF 비교](report/btf_recording_ab_20261014.md) |
+| 최신 상원 통합·native B_TF/LiDAR 보존·ToF 충돌 해결 | [ToF 통합 병합 기록](report/tof_integration_merge_20261014.md) |
+| ToF 운영 기준본 r1·해시 고정·ON/OFF 원본 부재·시험 생략 | [운영 기준본 확정 기록](report/tof_operational_baseline_20261014.md) |
+| ToF 변경 전후·PX4/ROS 전체 빌드·크기·오류 처리 | [ToF 전체 빌드 기록](report/tof_full_build_20261014.md) |
+| TFmini Plus 100/50/50Hz·100ms 상한·시간차 오차40ms 목표 | [ToF 수집·지연 기준](architecture/tof_100_50_50.md) |
+| PX4 소스 패치·50Hz 전달 요청·로컬 검사·실기 보류 | [ToF 코드 수정 기록](report/tof_100_50_50_20261014.md) |
+| 외부 시험기 합성 확인·소스 고정·ABBA 진행 결과 | [B_TF 시험기 확인](report/btf_replay_harness_20261014.md) |
+| 외부 시험기·지연 정의·A–B–B–A 실행 순서 | [B_TF 독립 재생 절차](runbooks/btf_isolated_replay_20261014.md) |
+| 독립 재생 전 RAW·판정·pose 대응과 시각 경로 정정 | [B_TF 입력·출력 감사](report/btf_replay_identity_20261014.md) |
 | IMU 큐·전용 실행기·내부 기록·13일 원본 재생 | [B_TF 수신 수정 검증](report/btf_sensor_timing_20261014.md) |
 | TFmini Plus 실제 지원 주기·50Hz·10Hz·단절별 설계 | [ToF 주기 시나리오](architecture/tof_rate_scenarios_20261014.md) |
 | 같은 비행 RAW·B_TF 27회 거부·브리지 대기·PX4 리셋 | [14일 자동 이륙 공백 분석](report/takeoff_gap_root_cause_20261014.md) |

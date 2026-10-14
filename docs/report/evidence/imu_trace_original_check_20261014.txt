@@ -1,0 +1,6 @@
+FULL_EVENTS_ABSENT
+72a60e7b19c1e67d144224c233446872e348ac35924a61f80dd2649edddbf053  /home/arialhanho/.local/share/dronestock/manual-captures-20261013/capture-1791884513951202644-a5b6e3e7/events.recovered-lidar-excerpt.jsonl
+6cb34fc5ccee92084d81d20bfaac106650e4004a3bafbbc106b572ea7a34e289  /home/arialhanho/.local/share/dronestock/manual-captures-20261013/capture-1791884513951202644-a5b6e3e7/events.recovered-uwb-imu-excerpt.jsonl
+50c6df05e6e3385ce2ab444399867b2bffd63f2894c7466753e0fdc1f94e6f36  /home/arialhanho/.local/share/dronestock/manual-captures-20261013/capture-1791884513951202644-a5b6e3e7/manifest.json
+26282da0108978c7460c1e717effe91bcd04e160ac16253a935af0e001f6f5f5  /home/arialhanho/.local/share/dronestock/manual-captures-20261013/capture-1791884513951202644-a5b6e3e7/RESTORATION_PARTIAL.json
+0bea26e50ee8f7ee55c24c76fafd7d96e13257936f5f456ed5a3b82a000a5da4  /home/arialhanho/.local/share/dronestock/manual-captures-20261013/capture-1791884513951202644-a5b6e3e7/summary.json
