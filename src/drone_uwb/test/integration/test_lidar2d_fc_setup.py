@@ -3,6 +3,9 @@ import importlib.util
 from pathlib import Path
 
 import pytest
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[3] / 'sangwon_AI' / 'ops'))
 
 
 TOOLS = Path(__file__).resolve().parents[2] / 'tools'
@@ -17,6 +20,19 @@ def number(value):
 
 def test_only_two_lidar_settings_are_written():
     assert setup.TARGET == {'EKF2_LID2_AGE': 180., 'EKF2_LID2_EN': 1}
+
+
+@pytest.mark.parametrize('version', [1, 2])
+def test_readback_accepts_both_deployed_contracts(version):
+    query = 'param show -q EKF2_LID2_VER'
+    assert setup.parse_version(f'{query}\n{version}\nnsh> \x1b[K', query) == version
+
+
+@pytest.mark.parametrize('answer', ['3\nnsh>', '2\n', '1\n2\nnsh>', '3\n2\nnsh>', 'unknown\nnsh>'])
+def test_unknown_ambiguous_or_incomplete_contract_rejected(answer):
+    query = 'param show -q EKF2_LID2_VER'
+    with pytest.raises(RuntimeError):
+        setup.parse_version(query+'\n'+answer, query)
 
 
 @pytest.mark.parametrize('name', ['COM_RC_OVERRIDE', 'MPC_TKO_SPEED', 'EKF2_EV_CTRL', 'CAL_MAG0_XOFF'])

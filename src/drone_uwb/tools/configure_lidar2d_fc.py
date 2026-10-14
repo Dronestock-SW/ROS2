@@ -2,6 +2,7 @@
 import argparse
 import json
 import math
+import re
 from pathlib import Path
 import time
 
@@ -21,6 +22,15 @@ def differences(before, after):
             for k, v in before.items() if value(v) is not None and k not in IGNORED
             and (value(after.get(k, {'type': 0})) is None
                  or not math.isclose(value(v), value(after[k]), rel_tol=1e-6, abs_tol=1e-6))}
+
+
+def parse_version(response, query):
+    from px4_sensor_readback import completed
+    clean = re.sub(r'\x1b\[[0-?]*[ -/]*[@-~]', '', response)
+    values = [line.strip() for line in clean.splitlines() if re.fullmatch(r'[+-]?\d+', line.strip())]
+    if not completed(response, query) or len(values) != 1 or values[0] not in ('1', '2'):
+        raise RuntimeError('dedicated_lidar2d_firmware_missing')
+    return int(values[0])
 
 
 def read_version():
@@ -44,9 +54,8 @@ def read_version():
                 response += bytes(packet.data[:packet.count]).decode('utf-8', errors='replace')
                 if completed(response, query):
                     break
-        if not completed(response, query) or '1' not in response.splitlines():
-            raise RuntimeError('dedicated_lidar2d_firmware_missing')
-        return {'command': query, 'response': response, 'value': 1}
+        version = parse_version(response, query)
+        return {'command': query, 'response': response, 'value': version}
     finally:
         connection.serial_control_send(10, 0, 0, 0, 0, [0]*70)
         connection.close()

@@ -38,6 +38,8 @@ def main():
     parser.add_argument('--donor', type=Path, required=True)
     parser.add_argument('--destination', type=Path, required=True)
     parser.add_argument('--resume', action='store_true')
+    parser.add_argument('--with-tof', action='store_true',
+                        help='Include the TFmini Plus 50Hz read profile alongside R3; does not configure a sensor')
     parser.add_argument('--with-tests', action='store_true',
                         help='Install the isolated SIH board and deterministic EKF tests')
     args = parser.parse_args()
@@ -50,6 +52,10 @@ def main():
     patch = Path(__file__).with_name('px4_lidar2d_independent_hardware.patch')
     subprocess.run(['git', '-C', str(destination), 'apply', '--check', str(patch)], check=True)
     subprocess.run(['git', '-C', str(destination), 'apply', str(patch)], check=True)
+    if args.with_tof:
+        tof_patch = Path(__file__).with_name('px4_tfmini_plus.patch')
+        subprocess.run(['git', '-C', str(destination), 'apply', '--check', str(tof_patch)], check=True)
+        subprocess.run(['git', '-C', str(destination), 'apply', str(tof_patch)], check=True)
     if args.with_tests:
         board = Path(__file__).with_name('lidar_independent_sitl.px4board').read_text(encoding='utf-8')
         (destination/'boards/px4/sitl/lidar2d.px4board').write_text(board, encoding='utf-8', newline='\n')

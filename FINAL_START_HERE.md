@@ -1,5 +1,9 @@
 # FINAL 연구 시작점
 
+2026-10-14 [R3·ToF 결합 펌웨어 적용](docs/report/r3_tof_deployment_20261014.md)을 수행했다.
+실제 FC의 VER=2·ToF 설정 ACK와 파라미터 보존을 확인했다.
+유효 하방거리·LiDAR 동적 융합·실제 비행은 후속 검증이다.
+
 노트북 재개는 [14일 저녁 인계문](docs/runbooks/notebook_evening_20261014.md)을 따른다.
 LiDAR 코드 통합과 실제 FC 설치·융합 상태를 구분한다.
 
