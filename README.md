@@ -22,6 +22,11 @@
 
 ## 현재 작업 상태
 
+- [LiDAR 제자리 이륙·UWB 복구 대기](docs/report/lidar_takeoff_hover_20261014.md):
+  최초 XY로 상승한 뒤 POSITION 호버링을 유지한다.
+  UWB가 안정되면 별도 임무 START를 허용한다.
+  ToF 차단 분리·12m scan 범위는 재생으로 확인했다.
+  실기 시간 보정·융합·제자리 이륙 검증은 남았다.
 - [13일 자동 이륙 공백 원인](docs/report/takeoff_gap_root_cause_20261014.md):
   원시 수신 중 B_TF 27회 거부를 확인했다.
   0.700초 공백과 0.150초 재개 대기가 FC 공백으로 이어졌다.

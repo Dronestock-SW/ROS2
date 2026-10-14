@@ -136,12 +136,19 @@ FC 상태·관측의 현장 대조는 별도로 수행한다.
 python3 src/sangwon_AI/ops/final_field_session.py \
   --cpp-ai-binary "$CPP_AI_BINARY" \
   --cpp-executor-binary "$CPP_EXECUTOR_BINARY" \
+  --lidar-config "$LIDAR_CONFIG" \
   --config "$NEW_DIR/mission.json" --alignment "$NEW_DIR/alignment.json" \
   --site-config "$SITE" --mission-store "$STORE" \
   --ledger "$LEDGER" --state-dir "$STATE_DIR"
 ```
 
 기존 프로세스·사용 중 포트·이전 부팅 보정이면 중단한다.
+14일 이후 예제는 LiDAR 이륙 지원을 요구한다.
+`LIDAR_CONFIG`는 검증한 실측 설정의 절대 경로다.
+[LiDAR 절차](lidar_physical_velocity.md)의 근거 항목을 먼저 채운다.
+이미 송신 중이면 `--external-lidar-bridge`도 사용한다.
+미확인 값을 임의로 참으로 바꾸지 않는다.
+송신·FC 융합·비행은 각각 검증해야 하기 때문이다.
 이 도구는 START·ARM을 제출하지 않는다.
 PC에서 다음 터널을 열고 웹을 새로고침한다.
 
@@ -150,8 +157,10 @@ ssh -N -L 8001:127.0.0.1:8001 -L 8002:127.0.0.1:8002 arialhanho@100.110.163.94
 ```
 
 `http://127.0.0.1:8001/local/status`에서 최신 상태를 확인한다.
-DISARM·착륙·IDLE·blockers=[]·can_start=true가 필요하다.
-실제 위치·방위 대조 후 사람이 새 START를 누른다.
+새 예제는 DISARM·착륙·IDLE·can_takeoff=true가 필요하다.
+실제 위치·방위 대조 후 사람이 새 TAKEOFF를 누른다.
+제자리 상승 뒤 POSITION 호버링에서 UWB 복구를 기다린다.
+5초 안정 확인으로 can_start=true가 되면 새 START를 누른다.
 START 활성화는 안정적인 비행의 증거가 아니다.
 
 현재 요청 상승 속도는 0.5m/s다. XY는 0.25m/s다.

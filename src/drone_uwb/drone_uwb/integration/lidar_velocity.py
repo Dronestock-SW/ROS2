@@ -1,5 +1,6 @@
 """Dedicated horizontal LiDAR MAVLink contract, independent of flight mode."""
 import math
+from collections import deque
 import numpy as np
 
 SOURCE_SYSTEM = 255
@@ -7,6 +8,43 @@ SOURCE_COMPONENT = 198
 NODE_NAME = 'lidar_velocity_bridge'
 RAW_WRITERS = {'mavros', 'uwb_local_odometry_bridge', 'px4_fixed_sensor_readback', NODE_NAME}
 PARAMETERS = ('EKF2_LID2_VER', 'EKF2_LID2_EN', 'EKF2_LID2_AGE', 'EKF2_AVEL_DELAY')
+
+
+class VelocityReadinessWindow:
+    """One-second measured-interval mean for admission, never an FC input.
+
+    Missing intervals add neither zero velocity nor observed duration. Segment
+    changes, overlapping intervals and gaps break this diagnostic window.
+    """
+    def __init__(self):
+        self.rows=deque()
+        self.reset=None
+
+    def observe(self, observation):
+        row=observation
+        start,end,stamp=(row[k] for k in ('interval_start_ns','interval_end_ns','representative_stamp_ns'))
+        if self.rows and stamp<=self.rows[-1]['representative_stamp_ns']:
+            return
+        if self.rows and (row['reset_counter']!=self.reset
+                or (start-self.rows[-1]['interval_end_ns'])/1e9>.25
+                or start<self.rows[-1]['interval_end_ns']):
+            self.rows.clear()
+        self.reset=row['reset_counter']
+        self.rows.append(row)
+        while self.rows and self.rows[0]['interval_end_ns']<=end-1_000_000_000:
+            self.rows.popleft()
+
+    def status(self):
+        if not self.rows:return dict(ready=False,samples=0)
+        weights=np.array([(r['interval_end_ns']-r['interval_start_ns'])/1e9 for r in self.rows])
+        observed=float(weights.sum())
+        span=(self.rows[-1]['interval_end_ns']-self.rows[0]['interval_start_ns'])/1e9
+        velocity=np.average([r['velocity_ne_m_s'] for r in self.rows],axis=0,weights=weights)
+        return dict(ready=len(self.rows)>=8 and span>=.9 and observed>=.75,
+            samples=len(self.rows),span_s=span,observed_s=observed,
+            velocity_ne_m_s=velocity.tolist(),speed_m_s=float(np.linalg.norm(velocity)),
+            last_stamp_ns=self.rows[-1]['representative_stamp_ns'],reset_counter=self.reset,
+            purpose='stationary_readiness_only',fc_input_filtered=False)
 
 
 def parameter_gate(settings, parameters):

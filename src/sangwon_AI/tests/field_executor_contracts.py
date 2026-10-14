@@ -270,9 +270,96 @@ class Contracts(unittest.TestCase):
         p.request=dict(REQUEST,action='takeoff',request_id='separate-takeoff')
         return p
 
-    def hold_ready(self,p):
+    def lidar_takeoff(self):
+        p=self.peer(cfg=dict(CFG,start_mode='takeoff_hold',takeoff_backend='local_position',
+            takeoff_lidar_required=True,takeoff_lidar_fusion_ref='synthetic-fusion-qualification'))
+        p.request=dict(REQUEST,action='takeoff',request_id='lidar-takeoff')
+        p.s.update(lidar_ready=True,lidar_gate='ready',lidar_observation_age_s=.1,
+            lidar_status_age_s=.01,lidar_speed_m_s=0.,lidar_stationary_window_ready=True)
+        return p
+
+    def test_lidar_takeoff_requires_continuous_fresh_stationary_sender_before_arm(self):
+        for change in (dict(lidar_ready=False),dict(lidar_observation_age_s=.36),
+                       dict(lidar_status_age_s=.51),dict(lidar_speed_m_s=.11),dict(lidar_stationary_window_ready=False)):
+            p=self.lidar_takeoff();p.s.update(change)
+            for _ in range(90):p.tick()
+            self.assertFalse(p.commands);self.assertFalse(p.out['native_takeoff']['can_takeoff'])
+        p=self.lidar_takeoff()
+        for _ in range(50):p.tick()
+        p.s['lidar_ready']=False;p.tick();p.s['lidar_ready']=True
+        for _ in range(50):p.tick()
+        self.assertFalse(p.commands);p.until('TAKING_OFF')
+
+    def test_lidar_takeoff_uwb_gap_keeps_original_xy_and_recovers_without_rearm(self):
+        p=self.lidar_takeoff();p.until('TAKING_OFF');p.s['uwb_age_s']=2.
         p.until('HOLD_READY')
         for _ in range(130):
+            p.tick();self.assertEqual(p.out['phase'],'HOLD_READY');self.assertFalse(p.out['native_takeoff']['can_start'])
+            self.assertEqual(p.out['home_xy_m'],[2.,2.]);self.assertFalse(p.out['streaming'])
+        self.assertEqual(p.out['native_takeoff']['blocker'],'position_hover_wait_for_uwb_recovery')
+        p.s['uwb_age_s']=0.
+        for _ in range(90):p.tick();self.assertFalse(p.out['native_takeoff']['can_start'])
+        for _ in range(15):p.tick()
+        self.assertTrue(p.out['native_takeoff']['can_start'])
+        self.assertEqual(p.commands,['offboard_mode','arm','position_mode'])
+        self.assertEqual(p.out['mission_start_xy_m'],[2.,2.])
+
+    def test_lidar_takeoff_does_not_recapture_drifted_position(self):
+        p=self.lidar_takeoff();p.until('HOLD_READY');p.s.update(xy=[2.2,2.],uwb_xy=[2.2,2.])
+        for _ in range(110):p.tick()
+        self.assertIsNone(p.out['mission_start_xy_m']);self.assertFalse(p.out['native_takeoff']['can_start'])
+        p.s.update(xy=[2.08,2.],uwb_xy=[2.08,2.]);self.hold_ready(p)
+        self.assertEqual(p.out['mission_start_xy_m'],[2.,2.]);self.assertEqual(p.out['home_xy_m'],[2.,2.])
+
+    def test_position_hover_waits_for_uwb_scatter_to_settle(self):
+        p=self.lidar_takeoff();p.until('HOLD_READY')
+        for i in range(150):
+            p.s['uwb_xy']=[2.15 if i%2 else 1.85,2.];p.tick()
+            self.assertEqual(p.out['phase'],'HOLD_READY');self.assertFalse(p.out['native_takeoff']['can_start'])
+        p.s['uwb_xy']=[2.,2.]
+        for _ in range(90):p.tick();self.assertFalse(p.out['native_takeoff']['can_start'])
+        for _ in range(15):p.tick()
+        self.assertTrue(p.out['native_takeoff']['can_start']);self.assertNotIn('land',p.commands)
+
+    def test_lidar_loss_lands_after_grace_without_changing_xy_and_pilot_wins(self):
+        p=self.lidar_takeoff();p.until('TAKING_OFF');p.s.update(lidar_ready=False,lidar_gate='lidar_observation_stale')
+        for _ in range(9):p.tick();self.assertEqual(p.out['phase'],'TAKING_OFF');self.assertEqual(p.out['goal_xy_m'],[2.,2.])
+        p.until('LANDING');self.assertIn('takeoff_lidar_lost',p.out['failure'])
+        p=self.lidar_takeoff();p.until('TAKING_OFF');p.s.update(lidar_ready=False,mode='ALTCTL');p.tick()
+        self.assertEqual(p.out['phase'],'PILOT_OVERRIDE');self.assertNotIn('land',p.commands)
+
+    def test_lidar_drift_limit_and_short_gap_recovery(self):
+        p=self.lidar_takeoff();p.until('TAKING_OFF');p.s['xy']=[2.26,2.];p.tick()
+        self.assertEqual(p.out['failure'],'takeoff_hold_horizontal_drift')
+        p=self.lidar_takeoff();p.until('TAKING_OFF');p.s['lidar_ready']=False
+        for _ in range(5):p.tick()
+        p.s['lidar_ready']=True;self.hold_ready(p);self.assertNotIn('land',p.commands)
+
+    def test_lidar_status_rejects_stale_wrong_source_and_unpublished_rows(self):
+        p=self.lidar_takeoff()
+        report=dict(status_stamp_ns=10_000_000_000,last_sent_stamp_ns=9_900_000_000,
+            gate='ready',geometry_gate='ready',mode_independent=True,z_observed=False,flight_commands_enabled=False,
+            settings=dict(enabled=True,tag_id='6',floor_policy='metric_scan',vertical_structure_ref='synthetic-walls'),
+            parameters=dict(EKF2_LID2_VER=1,EKF2_LID2_EN=1),
+            last_published_observation=dict(accepted=True,published=True,z_observed=False,observed_axes=['x','y'],
+                reference_point='fc_imu',frame_id='local_ned',representative_stamp_ns=9_900_000_000,reset_counter=0,velocity_ne_m_s=[0.,.01]),
+            stationary_window=dict(ready=True,last_stamp_ns=9_900_000_000,reset_counter=0,samples=10,span_s=1.,observed_s=1.,
+                purpose='stationary_readiness_only',fc_input_filtered=False,speed_m_s=.01))
+        query=dict(method='lidar_status',report=report,ros_s=10.01,receipt_age_s=.01,publishers=1,tag='6')
+        good=p.call(query);self.assertTrue(good['lidar_ready']);self.assertFalse(good['lidar_fusion_verified'])
+        for change in (dict(ros_s=10.5),dict(ros_s=9.),dict(receipt_age_s=.6),dict(publishers=2),dict(tag='5')):
+            self.assertFalse(p.call({**query,**change})['lidar_ready'])
+        for change in (dict(published=False),dict(z_observed=True),dict(representative_stamp_ns=9_800_000_000)):
+            bad=copy.deepcopy(report);bad['last_published_observation'].update(change)
+            self.assertFalse(p.call(dict(query,report=bad))['lidar_ready'])
+        bad=copy.deepcopy(report);bad['last_observation']=dict(accepted=False,reasons=['insufficient_points'])
+        self.assertTrue(p.call(dict(query,report=bad))['lidar_ready'])
+        bad=copy.deepcopy(report);bad['stationary_window']['ready']=False
+        out=p.call(dict(query,report=bad));self.assertTrue(out['lidar_ready']);self.assertFalse(out['lidar_stationary_window_ready'])
+
+    def hold_ready(self,p):
+        p.until('HOLD_READY')
+        for _ in range(240):
             p.tick()
             if p.out['native_takeoff']['can_start']:return
         self.fail(p.out)

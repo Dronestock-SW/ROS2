@@ -38,12 +38,15 @@ from lidar_relative_contracts import CONFIG,sdk_state
 BINARY=sys.argv[1]
 DIRECTORY=Path(sys.argv[2]) if len(sys.argv)>2 else Path(tempfile.mkdtemp(prefix='cpp-executor-'))
 DIRECTORY.mkdir(parents=True,exist_ok=True)
+LIDAR_SETTINGS=dict(enabled=True,tag_id='6',floor_policy='metric_scan',vertical_structure_ref='synthetic-walls')
 
 class FC:
     def __init__(self,node,platform,cfg,scenario):
         self.n=node;self.p=platform;self.cfg=cfg;self.scenario=scenario
         self.mode='POSCTL';self.armed=False;self.z=.1;self.target=None;self.calls=[];self.rows=[]
         self.separate=scenario.startswith('separate_')
+        self.lidar_takeoff=scenario.startswith('separate_lidar_')
+        self.lidar_stopped=False
         self.position_origin=scenario in ('separate_position_origin','separate_position_origin_gap')
         self.xy=[2.,2.];self.moving=scenario in ('mission_x','mission_y','mission_xy','separate_mission_x')
         self.real_link=scenario=='platform_link' or self.moving or self.separate
@@ -57,6 +60,7 @@ class FC:
             ('rc',RCIn,'/mavros/rc/in'),('battery',BatteryState,'/mavros/battery'),
             ('uwb',PoseWithCovarianceStamped,'/uwb/btf_pose'),('lidar',PointCloud,'/point_cloud'))}
         self.bridge=node.create_publisher(String,cfg.bridge_topic,10)
+        self.lidar_status=node.create_publisher(String,'/lidar/velocity_status',10) if self.lidar_takeoff else None
         self.assignment=node.create_publisher(String,'/mission/assignment',10)
         self.services=[node.create_service(cls,topic,callback) for cls,topic,callback in (
             (SetMode,'/mavros/set_mode',self.mode_call),(CommandBool,'/mavros/cmd/arming',self.arm_call),
@@ -162,6 +166,16 @@ class FC:
                 last_observation_stamp_ns=ns-1_200_000_000 if self.scenario in ('report_delay','separate_report_delay') and self.armed else ns-480_000_000 if self.scenario=='bridge_delay' else self.last_uwb_ns)
             if not (self.scenario=='report_silence' and self.armed):
                 self.bridge.publish(String(data='{malformed' if self.scenario=='report_malformed' and self.armed else json.dumps(report)))
+            if self.lidar_status and not self.lidar_stopped:
+                lidar=dict(status_stamp_ns=ns,last_sent_stamp_ns=ns-100_000_000,gate='ready',geometry_gate='ready',
+                    mode_independent=True,z_observed=False,flight_commands_enabled=False,
+                    settings=LIDAR_SETTINGS,
+                    parameters=dict(EKF2_LID2_VER=1,EKF2_LID2_EN=1),
+                    last_published_observation=dict(accepted=True,published=True,z_observed=False,observed_axes=['x','y'],
+                        reference_point='fc_imu',frame_id='local_ned',representative_stamp_ns=ns-100_000_000,reset_counter=0,velocity_ne_m_s=[0.,0.]),
+                    stationary_window=dict(ready=True,last_stamp_ns=ns-100_000_000,reset_counter=0,samples=10,span_s=1.,observed_s=1.,
+                        purpose='stationary_readiness_only',fc_input_filtered=False,speed_m_s=0.))
+                self.lidar_status.publish(String(data=json.dumps([] if getattr(self,'lidar_malformed',False) else lidar)))
             if not self.real_link:self.assignment.publish(String(data=json.dumps(self.p.assignment)))
             self.stop.wait(.02)
     def lidar_loop(self):
@@ -184,10 +198,12 @@ def run(scenario):
         execute=True,layout_confirmed=True,sensor_mount_confirmed=True,takeoff_settings_confirmed=True,
         speed_m_s=.25,max_leg_m=1.,expected_mis_takeoff_alt_m=1.7,drone_id='6',
         start_mode='takeoff_hold' if separate else 'ground_takeoff',takeoff_backend='local_position' if separate else 'native',
+        takeoff_lidar_required=scenario.startswith('separate_lidar_'),
+        takeoff_lidar_fusion_ref='synthetic-fusion-qualification' if scenario.startswith('separate_lidar_') else '',
         bridge_observation_timeout_s=.7 if scenario=='bridge_delay' else .35,
         lidar_gap=dict(CONFIG,input_source='sdk_pointcloud') if scenario.startswith('lidar_') else {})
     mission=root/'mission.json';mission.write_text(json.dumps(asdict(cfg)),encoding='utf-8')
-    native=root/'native.json';native.write_text(json.dumps(dict(mission=asdict(cfg),output_enabled=True,test_mode=True,record_file=str(root/'native-events.jsonl'))),encoding='utf-8')
+    native=root/'native.json';native.write_text(json.dumps(dict(mission=asdict(cfg),output_enabled=True,test_mode=True,lidar_settings=LIDAR_SETTINGS,record_file=str(root/'native-events.jsonl'))),encoding='utf-8')
     p=LocalPlatform('6',cfg.layout_id,settings=cfg,mission_file=root/'missions.sqlite3');p.site['ceiling_height_m']=3.
     server=ThreadingHTTPServer(('127.0.0.1',0),p.http_handler());threading.Thread(target=server.serve_forever,daemon=True).start()
     node=rclpy.create_node('synthetic_fc');fc=FC(node,p,cfg,scenario)
@@ -303,6 +319,11 @@ def run(scenario):
                 pre_start_injected=True
                 if scenario=='separate_takeoff_gap':fc.mute_uwb_until=time.monotonic()+2.5
                 else:fc.mute_pose_until=time.monotonic()+2.5
+            if phase=='TAKING_OFF' and not pre_start_injected and fc.lidar_takeoff:
+                pre_start_injected=True
+                if scenario=='separate_lidar_uwb_recovery':fc.mute_uwb_until=time.monotonic()+12.
+                elif scenario=='separate_lidar_loss':fc.lidar_stopped=True
+                elif scenario=='separate_lidar_malformed':fc.lidar_malformed=True
             if separate and phase=='HOLD_READY' and not start_sent:
                 if hold_window is None:hold_window=time.monotonic();hold_sent=len(fc.setpoint_times)
                 if scenario=='separate_position_origin_gap' and not pre_start_injected and time.monotonic()-hold_window>3.:
@@ -336,10 +357,10 @@ def run(scenario):
             if paused and time.monotonic()>=pause_end:os.kill(observer.pid,signal.SIGCONT);paused=False
             if phase in ('END','FAILED','UNCONFIRMED','PILOT_OVERRIDE'):break
             time.sleep(.025)
-        expected='PILOT_OVERRIDE' if scenario in ('pilot','separate_pilot') else 'FAILED' if scenario in ('lidar_loss','fc_estimator_loss','fc_pose_loss','separate_hold_land','separate_storage_land') else 'END'
+        expected='PILOT_OVERRIDE' if scenario in ('pilot','separate_pilot') else 'FAILED' if scenario in ('lidar_loss','fc_estimator_loss','fc_pose_loss','separate_hold_land','separate_storage_land','separate_lidar_loss','separate_lidar_malformed') else 'END'
         assert fc.status.get('state')==expected,(scenario,fc.status,fc.calls,(root/'process.log').read_text())
         expected_calls=(['OFFBOARD','ARM','POSCTL']+([] if scenario=='separate_pilot' else ['LAND'] if scenario=='separate_hold_land' else ['OFFBOARD','LAND'])) if separate else (['OFFBOARD','ARM'] if scenario=='pilot' else ['OFFBOARD','ARM','LAND'])
-        if scenario=='separate_storage_land':expected_calls=['OFFBOARD','ARM','LAND']
+        if scenario in ('separate_storage_land','separate_lidar_loss','separate_lidar_malformed'):expected_calls=['OFFBOARD','ARM','LAND']
         if recovery_case:expected_calls=['OFFBOARD','ARM','POSCTL','OFFBOARD','ARM','POSCTL','OFFBOARD','LAND']
         assert fc.calls==expected_calls,fc.calls
         if storage_test:
@@ -368,8 +389,13 @@ def run(scenario):
             assert any(t.get('launch_displacement_body_flu_m',[0,0])[1]>.10 and t.get('target_error_body_flu_m',[0,0])[1]<-.10 for t in tracks)
             assert math.dist(fc.xy,[2.,2.])<.05
         if separate:
-            if scenario!='separate_storage_land':assert any(r['state']=='HOLD_READY' for r in fc.rows)
+            if scenario not in ('separate_storage_land','separate_lidar_loss','separate_lidar_malformed'):assert any(r['state']=='HOLD_READY' for r in fc.rows)
             assert fc.status['home_xy_m']==[2.,2.]
+            if scenario=='separate_lidar_uwb_recovery':
+                assert any(r['state']=='HOLD_READY' and r['uwb_age_s']>2. for r in fc.rows),'POSITION waited for UWB instead of hovering during recovery'
+                assert fc.status['mission_start_xy_m']==[2.,2.]
+                assert fc.status['takeoff_lidar']['fusion_verified'] is False
+            if scenario in ('separate_lidar_loss','separate_lidar_malformed'):assert fc.status['failure'].startswith('takeoff_lidar_lost:')
             if fc.position_origin:
                 assert fc.status['mission_start_xy_m']==[2.24,2.12]
                 capture=fc.status['mission_start_capture']

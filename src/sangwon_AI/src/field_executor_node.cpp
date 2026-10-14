@@ -59,6 +59,7 @@ class ExecutorNode final:public rclcpp::Node {
     const bool test=flag(outer_,"test_mode");const auto local=std::getenv("ROS_LOCALHOST_ONLY");
     require(test ? domain==99 && local && std::string(local)=="1" : domain==(cfg_.at("drone_id")=="5"?1:2),"DOMAIN_OR_TEST_ISOLATION_MISMATCH");
     require(cfg_.at("command_frame")=="local_xy" && cfg_.at("mission_ai")=="cpp_bt","CPP_LOCAL_XY_REQUIRED");
+    if(flag(cfg_,"takeoff_lidar_required"))require(outer_.contains("lidar_settings")&&outer_.at("lidar_settings").is_object()&&!outer_.at("lidar_settings").empty(),"QUALIFIED_LIDAR_SETTINGS_REQUIRED");
     unsigned char nonce[16];require(RAND_bytes(nonce,16)==1,"RANDOM_FAILED");for(auto b:nonce){std::ostringstream o;o<<std::hex<<std::setw(2)<<std::setfill('0')<<unsigned(b);session_+=o.str();}
     if(flag(cfg_,"execute")) lock_=std::make_unique<sangwon::WriterLock>(domain);
     const auto record=outer_.at("record_file").get<std::string>();require(!record.empty() && record.front()=='/',"ABSOLUTE_RECORD_FILE_REQUIRED");
@@ -72,6 +73,9 @@ class ExecutorNode final:public rclcpp::Node {
     work_=create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
     rclcpp::SubscriptionOptions f;f.callback_group=fast_;rclcpp::SubscriptionOptions w;w.callback_group=work_;
     const auto qos=rclcpp::SensorDataQoS();
+    lidar_sub_=create_subscription<std_msgs::msg::String>("/lidar/velocity_status",rclcpp::QoS(1),[this](std_msgs::msg::String::ConstSharedPtr m){
+      Json report=Json::object();try{if(m->data.size()<=65536)report=Json::parse(m->data);}catch(const std::exception&){}
+      auto value=std::make_shared<const Json>(std::move(report));std::lock_guard<std::mutex> g(input_mutex_);incoming_lidar_=std::move(value);incoming_lidar_at_=steady_s();},w);
     timesync_sub_=create_subscription<mavros_msgs::msg::TimesyncStatus>("/mavros/timesync_status",qos,[this](mavros_msgs::msg::TimesyncStatus::ConstSharedPtr m){std::lock_guard<std::mutex> g(fast_mutex_);sample_.remote_ns=m->remote_timestamp_ns;sample_.offset_ns=m->estimated_offset_ns;sample_.rtt_ms=m->round_trip_time_ms;sample_.timesync_received_ns=int64_t(steady_s()*1e9);},f);
     state_sub_=create_subscription<mavros_msgs::msg::State>("/mavros/state",qos,[this](mavros_msgs::msg::State::ConstSharedPtr m){const auto t=source(m->header.stamp);std::lock_guard<std::mutex> g(fast_mutex_);if(t<=sample_.state_at)return;sample_.state_at=t;sample_.source_ns[0]=int64_t(m->header.stamp.sec)*1000000000+m->header.stamp.nanosec;sample_.received_ns[0]=int64_t(steady_s()*1e9);sample_.connected=m->connected;sample_.armed=m->armed;sample_.mode=m->mode;},f);
     landed_sub_=create_subscription<mavros_msgs::msg::ExtendedState>("/mavros/extended_state",qos,[this](mavros_msgs::msg::ExtendedState::ConstSharedPtr m){const auto t=source(m->header.stamp);std::lock_guard<std::mutex> g(fast_mutex_);if(t<=sample_.landed_at)return;sample_.landed_at=t;sample_.source_ns[1]=int64_t(m->header.stamp.sec)*1000000000+m->header.stamp.nanosec;sample_.received_ns[1]=int64_t(steady_s()*1e9);sample_.landed=m->landed_state;},f);
@@ -101,7 +105,8 @@ class ExecutorNode final:public rclcpp::Node {
   std::thread status_worker_,record_worker_,command_worker_,urgent_worker_;std::mutex io_mutex_,dispatch_mutex_;std::condition_variable io_cv_;
   std::shared_ptr<const Json> outgoing_;std::deque<Json> events_,commands_,urgent_commands_;
   std::shared_ptr<const Json> last_evidence_,record_out_;double last_recorded_{-1e9};unsigned sample_sequence_{};std::atomic<double> journal_last_s_{0},journal_max_s_{0},completion_sync_s_{0};std::atomic<bool> record_fault_{false},completion_persisted_{false};
-  std::shared_ptr<const Json> incoming_,incoming_bridge_;double incoming_at_{-1e9},incoming_bridge_at_{-1e9};std::string incoming_error_;
+  std::shared_ptr<const Json> incoming_,incoming_bridge_,incoming_lidar_;double incoming_at_{-1e9},incoming_bridge_at_{-1e9},incoming_lidar_at_{-1e9};std::string incoming_error_;
+  Json lidar_report_=Json::object();double lidar_at_{-1e9};
   std::deque<std::pair<unsigned,double>> dispatched_;std::deque<std::tuple<unsigned,bool,double>> acks_;std::string fault_;bool pilot_fault_{};double input_at_{-1e9},bridge_at_{-1e9},last_send_{-1},max_send_gap_{};unsigned sent_{};
   rclcpp::CallbackGroup::SharedPtr fast_,work_;rclcpp::TimerBase::SharedPtr send_timer_,work_timer_;
   rclcpp::Publisher<mavros_msgs::msg::PositionTarget>::SharedPtr pub_;
@@ -115,7 +120,7 @@ class ExecutorNode final:public rclcpp::Node {
   rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odom_sub_;
   rclcpp::Subscription<geometry_msgs::msg::PoseWithCovarianceStamped>::SharedPtr uwb_sub_;
   rclcpp::Subscription<mavros_msgs::msg::PositionTarget>::SharedPtr feedback_sub_;
-  rclcpp::Subscription<std_msgs::msg::String>::SharedPtr input_sub_,bridge_sub_;
+  rclcpp::Subscription<std_msgs::msg::String>::SharedPtr input_sub_,bridge_sub_,lidar_sub_;
   rclcpp::Client<mavros_msgs::srv::SetMode>::SharedPtr mode_;rclcpp::Client<mavros_msgs::srv::CommandBool>::SharedPtr arm_;rclcpp::Client<mavros_msgs::srv::CommandTOL>::SharedPtr land_;
   double source(const builtin_interfaces::msg::Time& t)const {const double a=now().seconds()-(t.sec+1e-9*t.nanosec);return t.sec>0&&a>=0&&a<=3?steady_s()-a:-1e9;}
   std::array<double,2> map(double x,double y,bool vector=false) const {if(!vector){x-=cfg_.at("enu_offset_x_m").get<double>();y-=cfg_.at("enu_offset_y_m").get<double>();}double a=cfg_.at("enu_yaw_deg").get<double>()*M_PI/180;return {std::cos(a)*x+std::sin(a)*y,cfg_.at("map_y_axis_sign").get<int>()*(-std::sin(a)*x+std::cos(a)*y)};}
@@ -163,13 +168,16 @@ class ExecutorNode final:public rclcpp::Node {
     out["estimator_flags"]=Json(s.estimator_flags);out["estimator_flag_order"]=Json::array({"attitude","velocity_horizontal","velocity_vertical","position_horizontal_relative","position_vertical_absolute","constant_position","predicted_position_horizontal_relative","gps_glitch","accel_error"});
     out["timesync"]=Json{{"remote_timestamp_ns",s.remote_ns},{"estimated_offset_ns",s.offset_ns},{"round_trip_time_ms",s.rtt_ms},{"received_monotonic_ns",s.timesync_received_ns}};
     if(!bridge_state_.empty()){out.update(bridge_state_);out["bridge_age_s"]=t-bridge_at_;if(bridge_state_.contains("bridge_stamp_ns"))out["bridge_observation_age_s"]=now().seconds()-bridge_state_.at("bridge_stamp_ns").get<double>()/1e9;}
+    out.update(lidar_sender_state(lidar_report_,now().seconds(),t-lidar_at_,count_publishers("/lidar/velocity_status"),cfg_.at("drone_id").get<std::string>()));
+    if(flag(cfg_,"takeoff_lidar_required")&&(!lidar_report_.is_object()||lidar_report_.value("settings",Json())!=outer_.at("lidar_settings")))out.update({{"lidar_ready",false},{"lidar_gate","lidar_configuration_mismatch"}});
     return out;
   }
   void tick() {
-    std::shared_ptr<const Json> input,bridge;double at,bridge_at;std::string input_error;
-    {std::lock_guard<std::mutex> g(input_mutex_);input=incoming_;at=incoming_at_;bridge=incoming_bridge_;bridge_at=incoming_bridge_at_;input_error=incoming_error_;}
+    std::shared_ptr<const Json> input,bridge,lidar;double at,bridge_at,lidar_at;std::string input_error;
+    {std::lock_guard<std::mutex> g(input_mutex_);input=incoming_;at=incoming_at_;bridge=incoming_bridge_;bridge_at=incoming_bridge_at_;lidar=incoming_lidar_;lidar_at=incoming_lidar_at_;input_error=incoming_error_;}
     if(input && at>input_at_){input_=*input;input_at_=at;}
     if(bridge && bridge_at>bridge_at_){bridge_state_=*bridge;bridge_at_=bridge_at;}
+    if(lidar && lidar_at>lidar_at_){lidar_report_=*lidar;lidar_at_=lidar_at;}
     last_input_error_=std::move(input_error);
     const double t=steady_s();Json s=snapshot(t);std::deque<std::tuple<unsigned,bool,double>> acks;std::deque<std::pair<unsigned,double>> dispatched;std::string fault;bool pilot;
     s["terminal_record_persisted"]=completion_persisted_.load();s["recording_ok"]=!record_fault_.load();
@@ -224,6 +232,16 @@ class ExecutorNode final:public rclcpp::Node {
     out["sender_target_enu"]=Json{{"x",std::cos(angle)*xy.x-std::sin(angle)*y+cfg_.at("enu_offset_x_m").get<double>()},
       {"y",std::sin(angle)*xy.x+std::cos(angle)*y+cfg_.at("enu_offset_y_m").get<double>()},{"z",core_.height()},{"yaw_rad",(cfg_.at("enu_yaw_deg").get<double>()+cfg_.at("map_y_axis_sign").get<int>()*core_.yaw())*M_PI/180}};
     out["preflight"]=input_.is_object()?input_.value("preflight",Json::object()):Json::object();
+    if(flag(cfg_,"takeoff_lidar_required")) {
+      out["takeoff_lidar"]={{"sender_ready",flag(s,"lidar_ready")},{"gate",s.at("lidar_gate")},
+        {"observation_age_s",s.value("lidar_observation_age_s",Json())},{"fusion_verified",false},
+        {"fusion_qualification_ref",cfg_.value("takeoff_lidar_fusion_ref",std::string())},
+        {"fixed_takeoff_xy",true},{"max_drift_m",.25}};
+      const bool ready=flag(s,"lidar_ready")&&!cfg_.value("takeoff_lidar_fusion_ref",std::string()).empty();
+      if(!out["preflight"].contains("checks"))out["preflight"]["checks"]=Json::array();
+      out["preflight"]["checks"].push_back({{"code","takeoff_lidar"},{"title","Scan LiDAR XY takeoff support"},{"passed",ready},{"required",true}});
+      if(!ready){out["preflight"]["checked_inputs_passed"]=false;if(!out["preflight"].contains("blockers"))out["preflight"]["blockers"]=Json::array();out["preflight"]["blockers"].push_back("takeoff_lidar");}
+    }
     if(t-input_at_>2.5)out["preflight"]["checked_inputs_passed"]=false;
     auto value=std::make_shared<const Json>(std::move(out));
     {std::lock_guard<std::mutex> g(io_mutex_);outgoing_=value;record_out_=value;last_evidence_=value;for(const auto& a:core_.actions)(a.at("kind")=="land"?urgent_commands_:commands_).push_back(a);if(previous_phase_!=core_.phase){auto transition=*value;transition["type"]="transition";events_.push_back(std::move(transition));previous_phase_=core_.phase;}}

@@ -3,6 +3,12 @@
 현재 상태에서 다음 실측을 준비할 때 읽는다.
 
 현재 저장 설정은 `enabled=false`다.
+14일 [제자리 이륙 경로](../report/lidar_takeoff_hover_20261014.md)를 추가했다.
+`metric_scan`은 하향 ToF와 XY 유효성을 분리한다.
+지상부터 이륙 높이까지 수직 구조물을 확인한다.
+그 근거를 `vertical_structure_ref`에 기록한다.
+예제 범위는 기존 드라이버와 같은 12m다.
+시간 보정·FC 융합 검증이 끝나기 전에는 비활성 상태를 유지한다.
 10월 13일 CRSF 유지 펌웨어를 FC에 설치했다.
 [설치·파라미터 검증 결과](../report/lidar2d_crsf_flash_20261013.md)를 먼저 읽는다.
 수평면은 사용자가 확인했다. 동적 시각 검증은 미완료다.
@@ -61,6 +67,15 @@ OFFBOARD의 `final_field_session.py`에는
 `--external-observation-bridge`를 추가했다.
 공통 UWB 송신기가 이미 실행 중일 때 사용한다.
 기존 readiness 검사와 임무 인자는 유지한다.
+
+14일 이륙 예제에는 `--lidar-config`도 필요하다.
+검증한 LiDAR 설정 파일의 절대 경로를 넣는다.
+이 도구가 LiDAR 송신 노드를 하나 시작한다.
+이미 실행 중이면 `--external-lidar-bridge`도 넣는다.
+검증 설정과 실제 송신 설정의 일치도 확인한다.
+mission의 `takeoff_lidar_fusion_ref`는 융합 근거다.
+송신 횟수만으로 이 값을 채우지 않는다.
+FC 수신과 EKF 융합은 서로 다른 단계이기 때문이다.
 
 `/lidar/velocity_status`와 관측 기록을 확인한다.
 FC의 `lidar_velocity2d_status`도 함께 확인한다.

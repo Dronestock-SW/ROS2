@@ -19,7 +19,7 @@ from drone_uwb.processing.lidar_motion import LidarMotionSettings, MeasuredLidar
 from drone_uwb.integration.clock_readiness import ClockReadiness
 from drone_uwb.integration.local_odometry import SenderStartGate
 from drone_uwb.integration.lidar_velocity import (NODE_NAME, SOURCE_SYSTEM,
-    SOURCE_COMPONENT, RAW_WRITERS, PARAMETERS, parameter_gate, velocity_fields)
+    SOURCE_COMPONENT, RAW_WRITERS, PARAMETERS, parameter_gate, velocity_fields, VelocityReadinessWindow)
 
 
 def main(args=None):
@@ -64,6 +64,8 @@ def main(args=None):
             self.queue = deque(maxlen=2)
             self.counts = Counter()
             self.last = {}
+            self.last_published = {}
+            self.readiness = VelocityReadinessWindow()
             self.started = time.monotonic()
             self.output = self.create_publisher(Mavlink, '/uas1/mavlink_sink', qos)
             self.status = self.create_publisher(String, '/lidar/velocity_status', 10)
@@ -83,7 +85,7 @@ def main(args=None):
             self.create_subscription(ExtendedState, '/mavros/extended_state', self.receive_landed, qos)
             self.create_subscription(TimesyncStatus, '/mavros/timesync_status', self.sync, qos)
             self.create_timer(.02, self.process)
-            self.create_timer(.2, self.monitor)
+            self.create_timer(.1, self.monitor)
 
         @staticmethod
         def stamp(msg):
@@ -114,15 +116,22 @@ def main(args=None):
         def height(self, msg):
             if self.fresh(msg,.15) and msg.min_range <= msg.range <= msg.max_range:
                 self.floor = (msg.range, self.stamp(msg))
+            else:
+                self.floor = None
 
         def receive_state(self, msg):
             if not self.fresh(msg,2.5):
                 return
             if self.state is None or self.state.connected != msg.connected:
                 self.clock.reset()
-                self.motion.reset_clock()
+                self.reset_motion()
                 self.params.clear()
             self.state, self.state_at = msg, time.monotonic()
+
+        def reset_motion(self):
+            self.motion.reset_clock()
+            self.readiness = VelocityReadinessWindow()
+            self.last_published = {}
 
         def receive_landed(self, msg):
             if self.fresh(msg,.5):
@@ -131,13 +140,13 @@ def main(args=None):
         def sync(self, msg):
             if self.clock.remote_ns and msg.remote_timestamp_ns < self.clock.remote_ns-1_000_000_000:
                 self.frozen = 'fc_reboot_restart_disarmed_required'
-                self.motion.reset_clock()
+                self.reset_motion()
                 self.queue.clear()
                 return
             _, changed = self.clock.observe(now=time.monotonic(), remote_ns=msg.remote_timestamp_ns,
                 offset_ns=msg.estimated_offset_ns, rtt_ms=msg.round_trip_time_ms)
             if changed:
-                self.motion.reset_clock()
+                self.reset_motion()
                 self.queue.clear()
                 self.counts['clock_step'] += 1
 
@@ -178,7 +187,7 @@ def main(args=None):
         def process(self):
             ns = self.get_clock().now().nanoseconds
             if self.last_ros_ns is not None and (ns < self.last_ros_ns or ns-self.last_ros_ns > 1_000_000_000):
-                self.motion.reset_clock()
+                self.reset_motion()
                 self.clock.reset()
                 self.queue.clear()
                 self.counts['ros_clock_or_processing_gap'] += 1
@@ -223,6 +232,8 @@ def main(args=None):
                     self.last_sent_ns, self.last_send_at = row['representative_stamp_ns'], time.monotonic()
                     self.counts['published'] += 1
                     row['published'] = True
+                    self.last_published = dict(row)
+                    self.readiness.observe(self.last_published)
                 except ValueError as error:
                     row['gate'] = str(error)
             reason = 'accepted' if row['accepted'] else row['reasons'][0]
@@ -249,6 +260,10 @@ def main(args=None):
                 self.pending = self.client.call_async(GetParameters.Request(names=list(PARAMETERS)))
                 self.request_at = now
             row = dict(gate=self.gate(), geometry_gate=settings.geometry_gate(), counts=dict(self.counts),
+                status_stamp_ns=self.get_clock().now().nanoseconds,
+                last_sent_stamp_ns=self.last_sent_ns,
+                last_published_observation=self.last_published,
+                stationary_window=self.readiness.status(),
                 parameters=self.params, settings=asdict(settings), last_observation=self.last,
                 last_send_age_s=None if self.last_send_at is None else now-self.last_send_at,
                 mode=None if self.state is None else self.state.mode,
