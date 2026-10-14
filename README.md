@@ -22,6 +22,11 @@
 
 ## 현재 작업 상태
 
+- [B_TF IMU 수신 분리·원본 재생](docs/report/btf_sensor_timing_20261014.md):
+  IMU·ToF 큐 100개와 전용 실행기·내부 기록을 추가했다.
+  13일 원본에서 ToF 100·120·150ms를 비교했다.
+  0.700초 공백은 남았으며 실기 배포는 보류한다.
+  [ToF 주기별 수정 설계](docs/architecture/tof_rate_scenarios_20261014.md)를 따른다.
 - [LiDAR 제자리 이륙·UWB 복구 대기](docs/report/lidar_takeoff_hover_20261014.md):
   최초 XY로 상승한 뒤 POSITION 호버링을 유지한다.
   UWB가 안정되면 별도 임무 START를 허용한다.

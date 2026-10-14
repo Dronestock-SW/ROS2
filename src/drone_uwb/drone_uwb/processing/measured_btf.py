@@ -57,6 +57,17 @@ class MeasuredHeight:
         self.samples = {'tof': deque(maxlen=1000), 'imu': deque(maxlen=2000)}
         self.ground_reference = None
 
+    def snapshot(self):
+        """Copy buffer membership under the caller's ingress lock.
+
+        Samples are append-only dictionaries. The solver owns this snapshot;
+        new callbacks, eviction and clock resets cannot change a running fit.
+        """
+        result = MeasuredHeight(self.config)
+        result.samples = {k: deque(v, maxlen=v.maxlen) for k, v in self.samples.items()}
+        result.ground_reference = self.ground_reference
+        return result
+
     def add(self, kind, sample):
         target = self.samples[kind]
         if type(sample['stamp_ns']) is not int or sample['stamp_ns'] <= 0:
@@ -94,6 +105,8 @@ class MeasuredHeight:
             return None, {'reason': 'tof_unavailable'}
         meta = {'tof_stamp_ns': tof['stamp_ns'], 'range_m': tof.get('range_m'),
                 'tof_age_s': (stamp_ns-tof['stamp_ns'])/1e9}
+        meta.update(tof_receive_id=tof.get('receive_id'),
+                    tof_received_monotonic_ns=tof.get('received_monotonic_ns'))
         if meta['tof_age_s'] > c['max_tof_age_s']:
             return None, dict(meta, reason='tof_stale')
         if not tof['valid']:
@@ -102,6 +115,8 @@ class MeasuredHeight:
         if imu is None:
             return None, dict(meta, reason='attitude_unavailable')
         meta.update(imu_stamp_ns=imu['stamp_ns'], attitude_skew_s=(tof['stamp_ns']-imu['stamp_ns'])/1e9)
+        meta.update(imu_receive_id=imu.get('receive_id'),
+                    imu_received_monotonic_ns=imu.get('received_monotonic_ns'))
         if meta['attitude_skew_s'] > c['max_attitude_skew_s']:
             return None, dict(meta, reason='attitude_stale')
         if not imu['valid']:

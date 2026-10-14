@@ -10,6 +10,8 @@
 
 | 찾는 내용 | 위치 |
 |---|---|
+| IMU 큐·전용 실행기·내부 기록·13일 원본 재생 | [B_TF 수신 수정 검증](report/btf_sensor_timing_20261014.md) |
+| TFmini Plus 실제 지원 주기·50Hz·10Hz·단절별 설계 | [ToF 주기 시나리오](architecture/tof_rate_scenarios_20261014.md) |
 | 같은 비행 RAW·B_TF 27회 거부·브리지 대기·PX4 리셋 | [14일 자동 이륙 공백 분석](report/takeoff_gap_root_cause_20261014.md) |
 | 보고 지연 LAND 제거·FC 기준 수행·연속 기록·중복 검사 정리 | [13일 실행·기록 보완](report/fc_owned_runtime_20261013.md) |
 | 시작 검사 35개·시간 정책 22종·자동 LAND·EV 시각 보정 구분 | [13일 실행 제한 검토](report/constraint_audit_20261013.md) |

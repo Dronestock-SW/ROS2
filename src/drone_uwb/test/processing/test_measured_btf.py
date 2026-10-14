@@ -104,6 +104,27 @@ def test_duplicate_sensor_preserves_history_but_backward_stamp_invalidates(kind)
     assert not h.samples[kind]
 
 
+def test_frozen_height_selects_latest_past_imu_and_survives_ingress_reset():
+    h = MeasuredHeight(config()['height'])
+    stamp = 2_000_000_000
+    h.add('tof', dict(stamp_ns=stamp, valid=True, range_m=.5, receive_id=1))
+    h.add('imu', dict(stamp_ns=stamp-22_000_000, valid=True, quaternion_wxyz=[1,0,0,0], receive_id=2))
+    old = h.snapshot()
+    for receive_id, offset in enumerate((-12, -2, 8, 18), 3):
+        h.add('imu', dict(stamp_ns=stamp+offset*1_000_000, valid=True,
+                         quaternion_wxyz=[1,0,0,0], receive_id=receive_id))
+    new = h.snapshot()
+    assert old.at(stamp)[1]['reason'] == 'attitude_stale'
+    _, meta = new.at(stamp)
+    assert meta['reason'] == 'ok' and meta['attitude_skew_s'] == .002
+    assert meta['imu_receive_id'] == 4 and meta['tof_receive_id'] == 1
+    # A reset/overflow during a fit must not mutate any anchor's snapshot.
+    h.add('imu', dict(stamp_ns=1, valid=False))
+    assert not h.samples['imu']
+    assert new.at(stamp)[1] == meta
+    assert new.at(stamp+100_000_001)[1]['reason'] == 'tof_stale'
+
+
 def event(msg, source_us):
     mono = 20_000_000_000+source_us*1000+2_000_000
     return dict(message=msg,host_received_monotonic_ns=mono,
