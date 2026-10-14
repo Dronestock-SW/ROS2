@@ -234,7 +234,17 @@ class MeasuredBtf:
         self.clock = self.clock_recovery.expire(self.clock, self._steady_ns())
         self.reset_models()
 
-    def process(self, event):
+    def needs_sensor_snapshot(self, event):
+        """Only strict TDMA RAW is guaranteed to await a diagnostic or reject.
+
+        Use the effective gate, not the configured 'auto' string. Legacy RAW
+        can calculate immediately and must retain its current snapshot point.
+        """
+        msg = event.get('message')
+        return not (self.tdma.required and isinstance(msg, dict)
+                    and msg.get('type') == 'uwb_raw_cycle')
+
+    def process(self, event, *, height_available=True):
         out = {'schema': 1, 'source': 'measured_uwb_btf', 'truth_used': False,
                'external_output_allowed': False, 'flight_valid': False,
                'timestamp_calibrated': False, 'jump_guard_enabled': False, 'ok': False}
@@ -321,6 +331,11 @@ class MeasuredBtf:
                 return dict(out, reason='invalid_or_nonincreasing_stamp')
             self.clock_recovery.qualified(self.clock, out['source_cycle_end_us'], mono, offset,
                 cycle.seq, identity, self._steady_ns())
+            if not height_available:
+                # Fail closed if a future dispatch change unexpectedly lets a
+                # copy-free RAW calculate. Never query the preceding snapshot.
+                self.reset_models()
+                raise InvalidInput('sensor_snapshot_not_available')
             heights, selections = [], []
             for sample in cycle.sample_us:
                 height, selection = self.height.at(round(self.clock.host_s(sample)*1e9)+offset)

@@ -84,6 +84,7 @@ def test_btf_storage_failure_does_not_override_observation_validity(case):
         freeze_sensors=lambda:dict(clock_sync_ready=True, receive_id=0),
         fc_state_at=float('-inf'), landed_at=float('-inf'),
         processor=NS(height=NS(ground_reference=None), process=lambda event: result,
+                     needs_sensor_snapshot=lambda event: True,
                      reject_queued_input=lambda: rejected.append(True), observation_session=0),
         require_height=case == 'height_missing' or case.startswith(('b4_','b3_')),
         config={'max_output_age_s': .2, 'xy_stddev_m': .3, 'allow_b4_xy_without_tof':case!='b4_disabled'},

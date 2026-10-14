@@ -191,13 +191,19 @@ class BtfNode(Node):
         self.record('inputs', dict(type='sensor_reset', reason=reason,
             sensor_epoch=self.sensor_epoch, received_monotonic_ns=time.monotonic_ns()))
 
-    def freeze_sensors(self):
+    def freeze_sensors(self, *, copy_samples=True):
         with self.sensor_lock:
             ready = self.sync_ready()
             if not ready:
                 self.clear_sensors('clock_not_ready_at_snapshot')
+            if not copy_samples:
+                # Still evaluate readiness and clear invalid ingress history.
+                # This event cannot use the old solver snapshot.
+                return dict(used=False, skip_reason='raw_waiting_for_tdma',
+                    receive_id=self.sensor_receive_id, epoch=self.sensor_epoch,
+                    checked_monotonic_ns=time.monotonic_ns(), clock_sync_ready=ready)
             self.processor.height = self.sensor_height.snapshot()
-            meta = dict(receive_id=self.sensor_receive_id, epoch=self.sensor_epoch,
+            meta = dict(used=True, receive_id=self.sensor_receive_id, epoch=self.sensor_epoch,
                         frozen_monotonic_ns=time.monotonic_ns(), clock_sync_ready=ready)
             for kind, samples in self.processor.height.samples.items():
                 meta[kind] = dict(count=len(samples),
@@ -264,17 +270,22 @@ class BtfNode(Node):
                     decision_stamp_ns=now_ns,input_received_ros_ns=event['host_received_ros_ns'],
                     receiver_age_ns=age_ns,observation_session=self.processor.observation_session))))
                 return
-            snapshot = self.freeze_sensors()
+            snapshot_needed = self.processor.needs_sensor_snapshot(event)
+            snapshot = (self.freeze_sensors() if snapshot_needed
+                        else self.freeze_sensors(copy_samples=False))
             sync_ready = snapshot['clock_sync_ready']
             self.record('inputs',dict(type='uwb',event=event,clock_sync_ready=sync_ready,
                                      sensor_snapshot=snapshot, callback_ros_ns=now_ns))
-            ground = (self.ground_height is not None and sync_ready and (self.fc_state or {}).get('connected') is True
-                and self.landed==1 and time.monotonic()-self.fc_state_at<=1.5
-                and time.monotonic()-self.landed_at<=1.5 and self.ground_velocity_ok
-                and time.monotonic()-self.ground_velocity_at<=.2)
-            self.processor.height.ground_reference = (dict(height_m=self.ground_height,
-                selection_stamp_ns=now_ns,ground_state_stamp_ns=self.landed_stamp_ns) if ground else None)
-            result = self.processor.process(event)
+            if snapshot_needed:
+                ground = (self.ground_height is not None and sync_ready and (self.fc_state or {}).get('connected') is True
+                    and self.landed==1 and time.monotonic()-self.fc_state_at<=1.5
+                    and time.monotonic()-self.landed_at<=1.5 and self.ground_velocity_ok
+                    and time.monotonic()-self.ground_velocity_at<=.2)
+                self.processor.height.ground_reference = (dict(height_m=self.ground_height,
+                    selection_stamp_ns=now_ns,ground_state_stamp_ns=self.landed_stamp_ns) if ground else None)
+                result = self.processor.process(event)
+            else:
+                result = self.processor.process(event, height_available=False)
             result['sensor_snapshot'] = snapshot
             result['callback_ros_ns'] = now_ns
             result['callback_started_monotonic_ns'] = callback_started_ns
