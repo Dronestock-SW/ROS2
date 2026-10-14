@@ -1,5 +1,8 @@
 # FINAL 연구 시작점
 
+노트북 재개는 [14일 저녁 인계문](docs/runbooks/notebook_evening_20261014.md)을 따른다.
+LiDAR 코드 통합과 실제 FC 설치·융합 상태를 구분한다.
+
 2026-10-14 [C++ B_TF 기록 ON/OFF 비교](docs/report/btf_recording_ab_20261014.md)를 수행했다.
 기록 ON 콜백 p95를 약 16.3ms로 줄였다.
 관측 공백은 남아 있다. 운영 서비스 반영은 미실시다.
