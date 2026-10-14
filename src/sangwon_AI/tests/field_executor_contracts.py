@@ -178,6 +178,17 @@ class Contracts(unittest.TestCase):
         p.s['uwb_age_s']=0.;resumed=p.t;p.until('END');self.assertGreaterEqual(p.t-resumed,10.)
         self.assertEqual(p.out['home_xy_m'],[2.,2.])
 
+    def test_candidate_rejection_freezes_before_old_pose_expires(self):
+        p=self.peer();p.until('DWELL');target=p.out['goal_xy_m']
+        p.s.update(uwb_age_s=.02,uwb_decision_rejected=True)
+        for _ in range(40):
+            p.tick();self.assertEqual(p.out['goal_xy_m'],target)
+            self.assertEqual(p.out['completed_waypoints'],0)
+            self.assertTrue(p.out['cpp_decision']['observation_status']['progress_held'])
+        self.assertNotIn('land',p.commands)
+        p.s['uwb_decision_rejected']=False;resumed=p.t;p.until('END')
+        self.assertGreaterEqual(p.t-resumed,10.)
+
     def test_actual_fc_fault_and_contract_change_still_land(self):
         for change in (dict(estimator_valid=False),dict(bridge_contract_error='changed')):
             p=self.peer();p.until('DWELL');p.s.update(change);p.tick();self.assertEqual(p.out['phase'],'LANDING')

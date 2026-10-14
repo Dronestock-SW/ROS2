@@ -1,6 +1,7 @@
 // Sole FC writer. Heavy scan/JSON/BT work runs outside the 20 Hz sender group.
 #include "sangwon_ai/field_executor.hpp"
 #include "sangwon_ai/writer_lock.hpp"
+#include "sangwon_ai/btf_rejection.hpp"
 #include <rclcpp/rclcpp.hpp>
 #include <mavros_msgs/msg/state.hpp>
 #include <mavros_msgs/msg/extended_state.hpp>
@@ -30,6 +31,7 @@ using namespace sangwon::field;
 double steady_s() { return std::chrono::duration<double>(std::chrono::steady_clock::now().time_since_epoch()).count(); }
 double wall_s() { return std::chrono::duration<double>(std::chrono::system_clock::now().time_since_epoch()).count(); }
 struct Sample {
+  BtfRejection btf_rejection;
   bool connected{},armed{},estimator{},vertical{},battery_ok{},pose_ok{};
   int landed{};std::string mode;std::array<double,2> xy{},velocity{},uwb{};
   double z{},vz{},yaw{},battery{},state_at{-1e9},landed_at{-1e9},pose_at{-1e9},est_at{-1e9},battery_at{-1e9},rc_at{-1e9},uwb_at{-1e9},feedback_at{-1e9};
@@ -80,6 +82,11 @@ class ExecutorNode final:public rclcpp::Node {
     battery_sub_=create_subscription<sensor_msgs::msg::BatteryState>("/mavros/battery",qos,[this](sensor_msgs::msg::BatteryState::ConstSharedPtr m){const auto t=source(m->header.stamp);std::lock_guard<std::mutex> g(fast_mutex_);if(t<=sample_.battery_at)return;sample_.battery_at=t;sample_.source_ns[3]=int64_t(m->header.stamp.sec)*1000000000+m->header.stamp.nanosec;sample_.received_ns[3]=int64_t(steady_s()*1e9);sample_.battery=m->percentage;sample_.battery_ok=m->present&&std::isfinite(m->voltage)&&m->voltage>0&&std::isfinite(m->percentage)&&m->percentage>=0&&m->percentage<=1;},f);
     odom_sub_=create_subscription<nav_msgs::msg::Odometry>("/mavros/local_position/odom",qos,[this](nav_msgs::msg::Odometry::ConstSharedPtr m){odom(*m);},f);
     uwb_sub_=create_subscription<geometry_msgs::msg::PoseWithCovarianceStamped>("/uwb/btf_pose",qos,[this](geometry_msgs::msg::PoseWithCovarianceStamped::ConstSharedPtr m){const auto t=source(m->header.stamp);auto p=m->pose.pose.position;if(m->header.frame_id!="uwb_map"||!std::isfinite(p.x)||!std::isfinite(p.y))return;std::lock_guard<std::mutex> g(fast_mutex_);if(t<=sample_.uwb_at)return;sample_.uwb_at=t;sample_.source_ns[6]=int64_t(m->header.stamp.sec)*1000000000+m->header.stamp.nanosec;sample_.received_ns[6]=int64_t(steady_s()*1e9);sample_.uwb={p.x,p.y};sample_.uwb_ns=int64_t(m->header.stamp.sec)*1000000000+m->header.stamp.nanosec;},f);
+    btf_decision_sub_=create_subscription<std_msgs::msg::String>("/uwb/btf_decision",rclcpp::SensorDataQoS().keep_last(1),[this](std_msgs::msg::String::ConstSharedPtr m){
+      if(m->data.size()>65536)return;
+      try {const auto j=Json::parse(m->data);const auto t=now().nanoseconds();
+        std::lock_guard<std::mutex> g(fast_mutex_);sample_.btf_rejection.update(j,t);
+      }catch(const std::exception&){}},w);
     feedback_sub_=create_subscription<mavros_msgs::msg::PositionTarget>("/mavros/setpoint_raw/target_local",qos,[this](mavros_msgs::msg::PositionTarget::ConstSharedPtr m){const auto t=source(m->header.stamp);std::lock_guard<std::mutex> g(fast_mutex_);if(!view_.stream||m->coordinate_frame!=1||(m->type_mask&7)||std::hypot(m->position.x-view_.x,m->position.y-view_.y)>.08||std::abs(m->position.z-view_.z)>.02)return;if(t>sample_.feedback_at){sample_.feedback_at=t;sample_.source_ns[7]=int64_t(m->header.stamp.sec)*1000000000+m->header.stamp.nanosec;sample_.received_ns[7]=int64_t(steady_s()*1e9);}},f);
     input_sub_=create_subscription<std_msgs::msg::String>("/flight/cpp_input",rclcpp::QoS(1),[this](std_msgs::msg::String::ConstSharedPtr m){try{require(m->data.size()<=262144,"OBSERVER_INPUT_TOO_LARGE");auto j=Json::parse(m->data);require(j.at("schema")=="sangwon-cpp-observer/1"&&j.at("executor_session")==session_&&j.at("settings")==cfg_,"OBSERVER_CONTEXT_MISMATCH");double t=number(j.at("sample_time_s"),0,1e12);require(steady_s()-t>=0&&steady_s()-t<=.2,"OBSERVER_TIME_INVALID");auto value=std::make_shared<const Json>(std::move(j));std::lock_guard<std::mutex> g(input_mutex_);require(t>incoming_at_,"BACKWARD_OBSERVER_INPUT");incoming_=std::move(value);incoming_at_=t;incoming_error_.clear();}catch(const std::exception& e){std::lock_guard<std::mutex> g(input_mutex_);incoming_error_=e.what();}},w);
     bridge_sub_=create_subscription<std_msgs::msg::String>(cfg_.at("bridge_topic").get<std::string>(),10,[this](std_msgs::msg::String::ConstSharedPtr m){bridge(*m);},w);
@@ -115,7 +122,7 @@ class ExecutorNode final:public rclcpp::Node {
   rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odom_sub_;
   rclcpp::Subscription<geometry_msgs::msg::PoseWithCovarianceStamped>::SharedPtr uwb_sub_;
   rclcpp::Subscription<mavros_msgs::msg::PositionTarget>::SharedPtr feedback_sub_;
-  rclcpp::Subscription<std_msgs::msg::String>::SharedPtr input_sub_,bridge_sub_;
+  rclcpp::Subscription<std_msgs::msg::String>::SharedPtr input_sub_,bridge_sub_,btf_decision_sub_;
   rclcpp::Client<mavros_msgs::srv::SetMode>::SharedPtr mode_;rclcpp::Client<mavros_msgs::srv::CommandBool>::SharedPtr arm_;rclcpp::Client<mavros_msgs::srv::CommandTOL>::SharedPtr land_;
   double source(const builtin_interfaces::msg::Time& t)const {const double a=now().seconds()-(t.sec+1e-9*t.nanosec);return t.sec>0&&a>=0&&a<=3?steady_s()-a:-1e9;}
   std::array<double,2> map(double x,double y,bool vector=false) const {if(!vector){x-=cfg_.at("enu_offset_x_m").get<double>();y-=cfg_.at("enu_offset_y_m").get<double>();}double a=cfg_.at("enu_yaw_deg").get<double>()*M_PI/180;return {std::cos(a)*x+std::sin(a)*y,cfg_.at("map_y_axis_sign").get<int>()*(-std::sin(a)*x+std::cos(a)*y)};}
@@ -162,6 +169,9 @@ class ExecutorNode final:public rclcpp::Node {
     out["rc_neutral_valid"]=neutral>=0;out["rc_sticks_centered"]=neutral==1&&t-s.rc_at<=1;
     out["estimator_flags"]=Json(s.estimator_flags);out["estimator_flag_order"]=Json::array({"attitude","velocity_horizontal","velocity_vertical","position_horizontal_relative","position_vertical_absolute","constant_position","predicted_position_horizontal_relative","gps_glitch","accel_error"});
     out["timesync"]=Json{{"remote_timestamp_ns",s.remote_ns},{"estimated_offset_ns",s.offset_ns},{"round_trip_time_ms",s.rtt_ms},{"received_monotonic_ns",s.timesync_received_ns}};
+    out["uwb_decision_rejected"]=s.btf_rejection.blocked(s.uwb_ns);
+    out["uwb_rejected_sample_ns"]=s.btf_rejection.rejected_ns;
+    out["uwb_rejection_reason"]=s.btf_rejection.reason;
     if(!bridge_state_.empty()){out.update(bridge_state_);out["bridge_age_s"]=t-bridge_at_;if(bridge_state_.contains("bridge_stamp_ns"))out["bridge_observation_age_s"]=now().seconds()-bridge_state_.at("bridge_stamp_ns").get<double>()/1e9;}
     return out;
   }

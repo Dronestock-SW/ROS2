@@ -34,12 +34,13 @@ inline bool age(const Json& s, const char* key, double max) {
   return std::isfinite(n) && n >= 0 && n <= max;
 }
 inline Json observation_status(const Json& s, double bridge_limit, double pose_limit=.2) {
-  const bool raw=age(s,"uwb_age_s",.25)&&s.contains("uwb_xy")&&s.at("uwb_xy").is_array()&&s.at("uwb_xy").size()==2;
+  const bool raw=!flag(s,"uwb_decision_rejected")&&age(s,"uwb_age_s",.25)&&s.contains("uwb_xy")&&s.at("uwb_xy").is_array()&&s.at("uwb_xy").size()==2;
   const bool pose=age(s,"pose_age_s",pose_limit)&&s.contains("xy")&&s.at("xy").is_array()&&s.at("xy").size()==2;
   Json warnings=Json::array();
   if(!age(s,"estimator_age_s",.5))warnings.push_back("fc_estimator_report_delayed");
   if(!pose)warnings.push_back("fc_position_feedback_missing");
   if(!raw)warnings.push_back("uwb_observation_missing");
+  if(flag(s,"uwb_decision_rejected"))warnings.push_back("uwb_candidate_rejected_freeze");
   if(!age(s,"bridge_age_s",2.5))warnings.push_back("bridge_report_delayed");
   if(!age(s,"bridge_observation_age_s",bridge_limit))warnings.push_back("bridge_delivery_report_delayed");
   if(!flag(s,"bridge_ready"))warnings.push_back("bridge_report_not_ready");

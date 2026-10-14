@@ -1,0 +1,16 @@
+{
+  "repository": "Dronestock-SW/ROS2",
+  "branch": "이번에-상원-한거-통합-브랜치",
+  "commit": "5db9c0ddf7be164b03e097acffac0440256994c8",
+  "scope": "H80Window + ToFTrackedSubsetCandidate numerical core; normalized four-anchor frames",
+  "sources": {
+    "processing/solvers/h80.py": "e60c28bf54514fd9c8cd35bdfaf483b3ef391cf85a4020d756f68c6dcea57b74",
+    "processing/experiments/h80_b.py": "8cb54c244b7da88cc1d0426efd3f9947c1cc1d1fcd08bc80ada868eefd53bf1f",
+    "processing/experiments/tof_subset.py": "8e786b124bed3e4efe57b401192330ac9fb772d543116d2998a1045a767e41fd",
+    "processing/motion_reacquisition.py": "868c271e4fe6095419367d1a503921fa33f394f89640ce3bbd20b252f03ced37",
+    "processing/b4_integrity.py": "2bc20dea073a811e56262e43941d5384744e298b6b45f2ed7cd348d9ee5aa6ae",
+    "processing/measured_btf.py": "14f7e3ae90fd9eca87717d70762272459b8f09348f801282039f6eb548f15d9d"
+  },
+  "hash_normalization": "LF",
+  "operational_deployment": false
+}

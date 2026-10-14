@@ -193,6 +193,7 @@ class BtfNode(Node):
                     reset_scope='all' if age_ns<0 else 'queued_models', age_ns=age_ns))
                 self.decision_pub.publish(String(data=json.dumps(dict(
                     schema=1,ok=False,published=False,reason='receiver_queue_expired',
+                    decision_stamp_ns=now_ns,input_received_ros_ns=event['host_received_ros_ns'],
                     receiver_age_ns=age_ns,observation_session=self.processor.observation_session))))
                 return
             sync_ready = self.sync_ready()
@@ -220,6 +221,8 @@ class BtfNode(Node):
             self.height_counts[selection['reason']] += 1
         result['processing_ms'] = (time.perf_counter()-started)*1000
         result['published'] = False
+        result['decision_stamp_ns'] = self.get_clock().now().nanoseconds
+        result['input_received_ros_ns'] = event['host_received_ros_ns']
         if result['ok']:
             age = (self.get_clock().now().nanoseconds-result['stamp_ns'])/1e9
             result['publish_age_s'] = age
@@ -269,7 +272,8 @@ class BtfNode(Node):
                'last_xyz_m':self.last.get('xyz_m') if self.last else None,
                'require_height_for_pose':self.require_height,
                'allow_b4_xy_without_tof':self.config.get('allow_b4_xy_without_tof', True),
-               'enforce_b4_height_integrity':self.processor.candidate.enforce_b4_height_integrity,
+               'enforce_b4_height_integrity':self.config.get('enforce_b4_height_integrity', False),
+               'numerical_backend':self.processor.native.identity if self.processor.native is not None else {'backend':'python'},
                'input_age_s':(now_ns-self.last_source_ns)/1e9 if self.last_source_ns else None,
                'fc_output_enabled':False,'timestamp_calibrated':False,'timesync_ready':self.sync_ready(),
                'recording_error':self.recorder.error if self.recorder else None,

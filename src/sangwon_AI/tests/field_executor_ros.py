@@ -57,6 +57,7 @@ class FC:
             ('rc',RCIn,'/mavros/rc/in'),('battery',BatteryState,'/mavros/battery'),
             ('uwb',PoseWithCovarianceStamped,'/uwb/btf_pose'),('lidar',PointCloud,'/point_cloud'))}
         self.bridge=node.create_publisher(String,cfg.bridge_topic,10)
+        self.btf_decision=node.create_publisher(String,'/uwb/btf_decision',10)
         self.assignment=node.create_publisher(String,'/mission/assignment',10)
         self.services=[node.create_service(cls,topic,callback) for cls,topic,callback in (
             (SetMode,'/mavros/set_mode',self.mode_call),(CommandBool,'/mavros/cmd/arming',self.arm_call),
@@ -151,9 +152,12 @@ class FC:
                 if key=='odom' and self.gap_start is not None and (self.scenario=='fc_pose_loss' or self.scenario=='pose_gap' and t-self.gap_start<2. or self.scenario=='takeoff_pose_gap' and t-self.gap_start<2.5):continue
                 if key=='est' and self.scenario=='fc_estimator_silence' and self.gap_start is not None:continue
                 m.header.stamp=stamp;self.pubs[key].publish(m)
-            gap=self.gap_start is not None and (self.scenario=='lidar_loss' or t-self.gap_start<(2. if self.scenario=='uwb_gap' else .6))
+            gap=self.gap_start is not None and (self.scenario=='lidar_loss' or t-self.gap_start<(2. if self.scenario in ('uwb_gap','separate_btf_rejection') else .6))
             if not gap and t>=self.mute_uwb_until:
                 uwb=PoseWithCovarianceStamped();uwb.header.stamp=Time(sec=(ns-130_000_000)//1_000_000_000,nanosec=(ns-130_000_000)%1_000_000_000) if self.scenario in ('bridge_delay','report_delay') else stamp;uwb.header.frame_id='uwb_map';uwb.pose.pose.position.x,uwb.pose.pose.position.y=self.xy;self.pubs['uwb'].publish(uwb);self.last_uwb_ns=int(uwb.header.stamp.sec)*1_000_000_000+uwb.header.stamp.nanosec
+            if self.scenario=='separate_btf_rejection' and self.gap_start is not None and t-self.gap_start<2.:
+                self.btf_decision.publish(String(data=json.dumps(dict(schema=1,ok=False,published=False,
+                    decision_stamp_ns=ns,stamp_ns=ns,reason='no_height_consistent_subset'))))
             c=dict(input_source='btf_xy',tag_id='6',layout_confirmed=True,source_frame='uwb_map',ground_only=False,
                 map_y_axis_sign=1,enu_yaw_deg=0.,enu_offset_x_m=0.,enu_offset_y_m=0.,expected_ev_delay_ms=0.,
                 antenna_body_frd_x_m=0.,antenna_body_frd_y_m=0.,antenna_body_frd_z_m=0.)
@@ -305,7 +309,7 @@ def run(scenario):
                 injected=True
                 if scenario=='python_pause':os.kill(observer.pid,signal.SIGSTOP);paused=True;pause_end=time.monotonic()+5.
                 elif scenario.startswith('lidar_'):fc.gap_start=time.monotonic()
-                elif scenario in ('uwb_gap','pose_gap','fc_estimator_loss','fc_estimator_silence','fc_pose_loss'):fc.gap_start=time.monotonic()
+                elif scenario in ('uwb_gap','pose_gap','fc_estimator_loss','fc_estimator_silence','fc_pose_loss','separate_btf_rejection'):fc.gap_start=time.monotonic()
                 elif scenario=='pilot':fc.mode='ALTCTL'
             if scenario in ('lidar_loss','fc_pose_loss') and fc.gap_start is not None and time.monotonic()-fc.gap_start>2. and not explicit_cancel:
                 assert 'LAND' not in fc.calls and fc.status['completed_waypoints']==0
@@ -368,6 +372,13 @@ def run(scenario):
         recorded=[json.loads(x) for x in (root/'native-events.jsonl').read_text(encoding='utf-8').splitlines()]
         samples=[x for x in recorded if x.get('type')=='flight_sample']
         assert len(samples)>20,'continuous native evidence missing'
+        if scenario=='separate_btf_rejection':
+            frozen=[x for x in samples if x['input_snapshot'].get('uwb_decision_rejected')]
+            assert frozen,'native decision subscriber did not latch rejection'
+            assert any(x['input_snapshot']['uwb_age_s']<.25 for x in frozen),'hold waited for old pose expiry'
+            assert all(x['input_snapshot']['uwb_stamp_ns']<=x['input_snapshot']['uwb_rejected_sample_ns'] for x in frozen)
+            assert any(r['cpp_decision'].get('observation_status',{}).get('progress_held') for r in fc.rows if r['state']=='DWELL')
+
         assert all('input_snapshot' in x and 'sample_monotonic_ns' in x and 'sample_ros_ns' in x for x in samples)
         assert any(x['input_snapshot']['source_stamp_ns'][6]>0 for x in samples),'original UWB source stamp missing'
         assert any(x.get('type')=='command_ack' for x in recorded),'native ACK evidence missing'

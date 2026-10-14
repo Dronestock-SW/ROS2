@@ -1,5 +1,8 @@
 # FINAL 연구 시작점
 
+2026-10-14 [로컬 B_TF C++·목표 FREEZE](docs/report/btf_cpp_local_20261014.md)를 추가했다.
+Jetson 독립 빌드용이다. 운영 관측 연결은 아직 하지 않았다.
+
 2026-10-13 후속 기준은 `이번에-상원-한거-통합-브랜치`다.
 [POSITION 5초·미션 시작점·원래 이륙점 복귀](docs/report/position_origin_after_hold_20261013.md)가 최신 기준이다.
 이륙 목표는 유지한다. 미션 시작점만 POSITION 뒤 확정한다.

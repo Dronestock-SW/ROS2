@@ -1,0 +1,323 @@
+{
+  "date": "2026-10-14",
+  "platform": "Windows x64",
+  "compiler": "Clang 18.1.6 (Zig 0.13.0)",
+  "cmake": "3.31.6",
+  "eigen": "3.4.0",
+  "nlohmann_json": "3.11.3",
+  "ctest": {
+    "passed": 2,
+    "failed": 0,
+    "jsonl_cases": 5
+  },
+  "synthetic_parity": {
+    "cases": [
+      {
+        "name": "stationary",
+        "rows": 160,
+        "accepted": 158,
+        "reasons": {
+          "B_not_fresh_valid": 2,
+          "original_fit_consistent": 158
+        },
+        "input_sha256": "51fcf4327680221ab7b3b91445c87325a35fa158a4706f8944a6f21a7c9cdbf9"
+      },
+      {
+        "name": "moving",
+        "rows": 160,
+        "accepted": 158,
+        "reasons": {
+          "B_not_fresh_valid": 2,
+          "original_fit_consistent": 158
+        },
+        "input_sha256": "68b4c9f6cd12773c04124f4c5badfdea9ee98b2034eef78f433d3977e7f2bf15"
+      },
+      {
+        "name": "noisy",
+        "rows": 160,
+        "accepted": 158,
+        "reasons": {
+          "B_not_fresh_valid": 2,
+          "original_fit_consistent": 158
+        },
+        "input_sha256": "2dafa78eebded15429e02d070f37b03f813f557c4ffe22e78fe8ce1a9f22f6ab"
+      },
+      {
+        "name": "one_spike",
+        "rows": 160,
+        "accepted": 158,
+        "reasons": {
+          "B_not_fresh_valid": 2,
+          "original_fit_consistent": 126,
+          "unique_height_consistent_subset": 32
+        },
+        "input_sha256": "68b7d4ee48700ba535ab7de5f5f782fa5088f40bafb2051345897c51fdcc4b5a"
+      },
+      {
+        "name": "persistent_a3",
+        "rows": 160,
+        "accepted": 158,
+        "reasons": {
+          "B_not_fresh_valid": 2,
+          "original_fit_consistent": 44,
+          "unique_height_consistent_subset": 114
+        },
+        "input_sha256": "2b163892b471cf5dbe1b3444de48b5e4df9dfa25774c95c1579e20a165a0edc7"
+      },
+      {
+        "name": "two_bad_anchors",
+        "rows": 160,
+        "accepted": 63,
+        "reasons": {
+          "B_not_fresh_valid": 2,
+          "original_fit_consistent": 62,
+          "unique_height_consistent_subset": 1,
+          "no_height_consistent_subset": 60,
+          "no_fresh_continuity_prior": 35
+        },
+        "input_sha256": "475dc76deadf8cf1e5c3dc06ceca7800368e375c924b28ea54411f046d794baa"
+      },
+      {
+        "name": "b4_without_tof",
+        "rows": 160,
+        "accepted": 158,
+        "reasons": {
+          "B_not_fresh_valid": 2,
+          "original_fit_consistent": 158
+        },
+        "input_sha256": "58c62dfc2eaa0d0c05c32a32ff0e8426d85f74cbf8add490a0fad82206b3c771"
+      },
+      {
+        "name": "b3_without_tof",
+        "rows": 160,
+        "accepted": 44,
+        "reasons": {
+          "B_not_fresh_valid": 2,
+          "original_fit_consistent": 44,
+          "measured_height_unavailable": 114
+        },
+        "input_sha256": "d965fc5da9e4570c900cbcae522cf18badf7c853f92b635b56658cac0b20adcc"
+      },
+      {
+        "name": "height_conflict",
+        "rows": 160,
+        "accepted": 158,
+        "reasons": {
+          "B_not_fresh_valid": 2,
+          "original_fit_consistent": 158
+        },
+        "input_sha256": "8e958598ddcd297c1d19e7dca22a385e8bd33fb4f15634c6157b898179e884ca"
+      },
+      {
+        "name": "height_veto",
+        "rows": 160,
+        "accepted": 0,
+        "reasons": {
+          "B_not_fresh_valid": 2,
+          "insufficient_subset_hypotheses": 1,
+          "no_height_consistent_subset": 157
+        },
+        "input_sha256": "8e958598ddcd297c1d19e7dca22a385e8bd33fb4f15634c6157b898179e884ca"
+      },
+      {
+        "name": "height_veto_recovery",
+        "rows": 160,
+        "accepted": 112,
+        "reasons": {
+          "B_not_fresh_valid": 2,
+          "original_fit_consistent": 112,
+          "ambiguous_subset": 6,
+          "no_height_consistent_subset": 34,
+          "b4_height_recovery_pending": 6
+        },
+        "input_sha256": "be234eb1a60d5003e22f702b11eb46d3894c348dcb991ecfeb3137741f36048d"
+      },
+      {
+        "name": "ground_acquisition",
+        "rows": 160,
+        "accepted": 77,
+        "reasons": {
+          "B_not_fresh_valid": 2,
+          "insufficient_subset_hypotheses": 1,
+          "no_fresh_continuity_prior": 80,
+          "unique_height_consistent_subset": 77
+        },
+        "input_sha256": "d2c397c84d66f094601fd1a7e3ca66d6d344be01df0e3d1318b217ef058a0960"
+      },
+      {
+        "name": "packet_gap",
+        "rows": 160,
+        "accepted": 156,
+        "reasons": {
+          "B_not_fresh_valid": 4,
+          "original_fit_consistent": 156
+        },
+        "input_sha256": "05ab1c1d6d6d66e2c68b56059550327d8e35db72f637cd435ea0e0bd34498a43"
+      },
+      {
+        "name": "clock_restart",
+        "rows": 160,
+        "accepted": 156,
+        "reasons": {
+          "B_not_fresh_valid": 4,
+          "original_fit_consistent": 156
+        },
+        "input_sha256": "28d6502c33f9eeb5b828a06c8372265bdc3623083023fc22c8d86c33a05d23db"
+      },
+      {
+        "name": "coherent_step",
+        "rows": 160,
+        "accepted": 97,
+        "reasons": {
+          "B_not_fresh_valid": 2,
+          "original_fit_consistent": 97,
+          "ambiguous_subset": 1,
+          "no_height_consistent_subset": 60
+        },
+        "input_sha256": "00f09fbf5a46a1e7ce5db5906b258294016f4bd7a9fd8e0d92be88539a858bcb"
+      },
+      {
+        "name": "large_source_clock",
+        "rows": 160,
+        "accepted": 158,
+        "reasons": {
+          "B_not_fresh_valid": 2,
+          "original_fit_consistent": 158
+        },
+        "input_sha256": "b48a25dbc38af91e2d86094dd08adedd7c2ef0f6f98491bf17d3754c60267d97"
+      },
+      {
+        "name": "accelerating",
+        "rows": 160,
+        "accepted": 158,
+        "reasons": {
+          "B_not_fresh_valid": 2,
+          "original_fit_consistent": 158
+        },
+        "input_sha256": "ce3f28d873ea677f6451d7476fc5f084af09623ba86910c8f2fecdf2dc869858"
+      },
+      {
+        "name": "partial_height",
+        "rows": 160,
+        "accepted": 134,
+        "reasons": {
+          "B_not_fresh_valid": 2,
+          "original_fit_consistent": 84,
+          "unique_height_consistent_subset": 49,
+          "insufficient_subset_hypotheses": 18,
+          "no_fresh_continuity_prior": 6,
+          "near_prior_subset_reacquired": 1
+        },
+        "input_sha256": "bdd055e2ac5a8fb4136ad3cf72065eaa21c54f4a2e41be804ae1bf12b34cbd64"
+      },
+      {
+        "name": "near_reacquisition",
+        "rows": 220,
+        "accepted": 192,
+        "reasons": {
+          "B_not_fresh_valid": 2,
+          "original_fit_consistent": 60,
+          "unique_height_consistent_subset": 131,
+          "measured_height_unavailable": 20,
+          "no_fresh_continuity_prior": 6,
+          "near_prior_subset_reacquired": 1
+        },
+        "input_sha256": "98c2b8a676c0db211b2c2a2e988aff94ee749a1e8c9583c4b24f427b5e34cfbb"
+      },
+      {
+        "name": "moving_reacquisition",
+        "rows": 220,
+        "accepted": 192,
+        "reasons": {
+          "B_not_fresh_valid": 2,
+          "original_fit_consistent": 60,
+          "unique_height_consistent_subset": 131,
+          "measured_height_unavailable": 20,
+          "no_fresh_continuity_prior": 6,
+          "moving_subset_reacquired": 1
+        },
+        "input_sha256": "54e778ae5d087bf5328e9856a458dabe51d09bd5a9281952df3e967d5c33a646"
+      },
+      {
+        "name": "moving_input_gap",
+        "rows": 220,
+        "accepted": 209,
+        "reasons": {
+          "B_not_fresh_valid": 4,
+          "original_fit_consistent": 60,
+          "unique_height_consistent_subset": 148,
+          "insufficient_subset_hypotheses": 1,
+          "no_fresh_continuity_prior": 6,
+          "moving_subset_reacquired": 1
+        },
+        "input_sha256": "d1e267a199fcfa6b43a82d7913e23000a7a2929673ede57a71e02731f4abe66e"
+      },
+      {
+        "name": "far_rejection",
+        "rows": 220,
+        "accepted": 138,
+        "reasons": {
+          "B_not_fresh_valid": 2,
+          "original_fit_consistent": 60,
+          "unique_height_consistent_subset": 78,
+          "measured_height_unavailable": 20,
+          "no_height_consistent_subset": 27,
+          "ambiguous_subset": 5,
+          "no_fresh_continuity_prior": 28
+        },
+        "input_sha256": "e885f43cd691c2b50fcfa025e6ce5b719e3978fb0209384e0fa2be8abc5fa3a3"
+      }
+    ],
+    "max_xy_difference_m": 2.930988785010413e-14,
+    "max_score_difference_m": 1.8715564153190075e-14,
+    "failures": [],
+    "timing": {
+      "python": {
+        "median_ms": 0.8165,
+        "p95_ms": 5.169985,
+        "max_ms": 21.7957
+      },
+      "cpp": {
+        "median_ms": 0.0482,
+        "p95_ms": 0.7450149999999999,
+        "max_ms": 2.3325
+      }
+    },
+    "timing_scope": "local PC synthetic kernel only; excludes acquisition/ROS/FC; not Jetson speed",
+    "rows": 3760,
+    "passed": true
+  },
+  "recorded_input_parity": {
+    "passed": true,
+    "rows": 113,
+    "skipped_decisions": 0,
+    "max_xy_difference_m": 5.329070518200751e-15,
+    "failures": [],
+    "source_sha256": "755ba4899718f95c1941c7540024112c4973e822086cf09b62e631dd58e690a9",
+    "normalized_sha256": "aae93580d274a446a85fcf17505c78b9fd282f85fc7d89611a15343a02455806",
+    "python_reasons": {
+      "B_not_fresh_valid": 2,
+      "original_fit_consistent": 79,
+      "no_height_consistent_subset": 32
+    },
+    "scope": "Recorded normalized inputs, empty initial histories; not original live output or physical accuracy"
+  },
+  "recorded_rejections_freeze": {
+    "passed": true,
+    "rejected_frames_held": 32,
+    "target_xy_m": [
+      3,
+      1
+    ],
+    "rejected_requested_target_xy_m": [
+      9,
+      9
+    ],
+    "final_state": "RUNNING",
+    "timing_scope": "synthetic affine host clock; recorded UWB input; no FC connected"
+  },
+  "jetson_build": "not_run",
+  "ros_fc_integration": "not_run",
+  "physical_flight": "not_run",
+  "history_admission_changed": false
+}
