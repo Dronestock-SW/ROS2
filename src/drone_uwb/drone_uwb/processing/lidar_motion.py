@@ -48,7 +48,7 @@ class LidarMotionSettings:
     expected_avel_delay_ms: float = 5.
 
     def __post_init__(self):
-        if self.floor_policy not in ('required', 'metric_scan'):
+        if self.floor_policy not in ('required', 'metric_scan', 'ground_static'):
             raise ValueError('unsupported_lidar_floor_policy')
         if not isinstance(self.vertical_structure_ref, str):
             raise ValueError('invalid_vertical_structure_reference')
@@ -174,6 +174,8 @@ class MeasuredLidarMotion:
             sensor_height = (floor_range_m*middle_rotation[2,2]+float((middle_rotation@arm)[2])) if floor_valid else None
             # Metric scan matching has no optical-flow height scale. In the
             # explicitly qualified vertical-wall scene, ToF is diagnostic only.
+            # ground_static is a bounded DISARM bench at one scan height;
+            # its sender must never continue into an armed/airborne state.
             # Missing height remains unknown; never substitute a ground height.
             if cfg.floor_policy == 'required' and not cfg.min_sensor_height_m <= sensor_height <= cfg.max_sensor_height_m:
                 raise TimingError('sensor_floor_clearance_unavailable')

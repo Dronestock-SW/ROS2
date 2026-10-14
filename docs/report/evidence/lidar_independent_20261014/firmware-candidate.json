@@ -1,0 +1,13 @@
+{
+  "file": "PX4_v1.17.0_Pixhawk6C_CRSF_LIDAR2D_INDEPENDENT_R3.px4",
+  "sha256": "d3be11c1ba53243d283784dfe0a0348146f434a090bd878312a66e326f86d075",
+  "board_id": 56,
+  "image_bytes": 1957756,
+  "flash_limit_bytes": 1966080,
+  "headroom_bytes": 8324,
+  "base_commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+  "hardware_patch_sha256": "3fd115f2c7795f41105cbfa2f206f01f0f7bafa7a88228a74f32f585037cf2f6",
+  "protocol_version": 2,
+  "flashed": false,
+  "firmware_git_identity": "v1.17.0"
+}

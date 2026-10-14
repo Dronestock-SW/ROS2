@@ -10,6 +10,7 @@
 
 | 찾는 내용 | 위치 |
 |---|---|
+| 최신 상원 통합·native B_TF/LiDAR 보존·ToF 충돌 해결 | [ToF 통합 병합 기록](report/tof_integration_merge_20261014.md) |
 | ToF 운영 기준본 r1·해시 고정·ON/OFF 원본 부재·시험 생략 | [운영 기준본 확정 기록](report/tof_operational_baseline_20261014.md) |
 | ToF 변경 전후·PX4/ROS 전체 빌드·크기·오류 처리 | [ToF 전체 빌드 기록](report/tof_full_build_20261014.md) |
 | TFmini Plus 100/50/50Hz·100ms 상한·시간차 오차40ms 목표 | [ToF 수집·지연 기준](architecture/tof_100_50_50.md) |

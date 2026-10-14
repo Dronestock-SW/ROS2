@@ -236,6 +236,10 @@ def test_height_independent_b4_never_qualifies_invalid_partial_or_subset_results
         'B':dict(ok=True,fresh_observation_count=4,newest_sample_us=100,fit=dict(mask=15)),
         'B_TF':dict(source='unchanged_B4')})
     assert height_independent_b4(good)
+    recovered=copy.deepcopy(good);recovered['models']['B_TF']['source']='fresh_B4_recovery'
+    assert height_independent_b4(recovered)
+    recovered['models']['B']['fresh_observation_count']=3
+    assert not height_independent_b4(recovered)
     assert not height_independent_b4(good,enabled=False)
     for source in ('ToF_validated_B3','ToF_tracked_B3','ground_reference_B3','rejected'):
         d=copy.deepcopy(good);d['models']['B_TF']['source']=source

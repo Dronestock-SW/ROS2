@@ -1,5 +1,9 @@
 # FINAL 연구 시작점
 
+2026-10-14 [B_TF C++·FREEZE 연결](docs/report/btf_cpp_jetson_20261014.md)이 이 세션의 최신 기록이다.
+[Jetson 실행 절차](docs/runbooks/btf_cpp_jetson_20261014.md)를 먼저 읽는다.
+센서 수신 분리와 LiDAR R3 코드를 보존했다.
+LiDAR 보완·FC 펌웨어·파라미터는 이번 작업에서 활성화하거나 바꾸지 않았다.
 2026-10-13 작업 종료 상태를 이어받는 문서다.
 [14일 재개 인계](docs/report/day_end_handoff_20261013.md)부터 읽는다.
 R2 FC 펌웨어는 설치했다. LiDAR 실제 융합은 미검증이다.

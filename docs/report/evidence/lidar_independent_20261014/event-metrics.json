@@ -1,0 +1,20 @@
+{
+  "records": 428,
+  "valid": 380,
+  "published": 364,
+  "held_valid": 16,
+  "processing_ms": {
+    "p50": 39.38121549799689,
+    "p95": 47.427207154396456
+  },
+  "received_age_ms": {
+    "p50": 11.383363002096303,
+    "p95": 18.590220751866582
+  },
+  "speed_m_s": {
+    "p50": 0.007669632053993085,
+    "p95": 0.016867287654913004
+  },
+  "scope": "physical_stationary_disarmed_R2_no_actual_fusion",
+  "actual_fusion_verified": false
+}

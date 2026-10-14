@@ -1,0 +1,33 @@
+{
+  "anchors_xyz_m": [
+    [
+      0,
+      0,
+      2.2
+    ],
+    [
+      6.3,
+      0,
+      2.2
+    ],
+    [
+      0,
+      4.6,
+      2.2
+    ],
+    [
+      6.3,
+      4.6,
+      2.2
+    ]
+  ],
+  "bias_m": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "enforce_b4_height_integrity": false,
+  "external_output_allowed": false,
+  "fixture_only": true
+}

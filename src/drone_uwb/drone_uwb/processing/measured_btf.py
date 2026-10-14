@@ -30,7 +30,7 @@ def height_independent_b4(result, *, enabled=True):
     b = result.get('models', {}).get('B', {})
     xy = result.get('xy_m')
     return (enabled is True and result.get('ok') is True
-        and result.get('models', {}).get('B_TF', {}).get('source') == 'unchanged_B4'
+        and result.get('models', {}).get('B_TF', {}).get('source') in ('unchanged_B4', 'fresh_B4_recovery')
         and b.get('ok') is True and b.get('fresh_observation_count') == 4
         and b.get('newest_sample_us') == result.get('time_us')
         and type(result.get('time_us')) is int
@@ -43,12 +43,12 @@ def ground_xy_without_height(result, *, enabled, connected, landed, state_age_s,
     """Allow the already accepted four-anchor XY solution on a fresh ground state.
 
     No height is inserted into B_TF. The three-anchor ToF selection remains
-    unavailable without a measurement; only unchanged_B4 can pass this gate.
+    unavailable without a measurement; only qualified four-anchor B4 passes.
     """
     return (enabled is True and connected is True and type(landed) is int and landed == 1
             and 0 <= state_age_s <= 1.5 and 0 <= landed_age_s <= 1.5
             and result.get('ok') is True and result.get('xyz_m') is None
-            and result.get('models', {}).get('B_TF', {}).get('source') == 'unchanged_B4')
+            and result.get('models', {}).get('B_TF', {}).get('source') in ('unchanged_B4', 'fresh_B4_recovery'))
 
 
 class MeasuredHeight:
@@ -157,6 +157,13 @@ class MeasuredBtf:
         self.last_output_stamp_ns = None
         self.raw_guard = ObservationGuard(motion_recovery=True)
         self.observation_session = 0
+        self.backend = config.get('numerical_backend', 'python')
+        if self.backend not in ('python', 'cpp'):
+            raise ValueError('unknown_btf_numerical_backend')
+        self.native = None
+        if self.backend == 'cpp':
+            from .native_btf import NativeBtf
+            self.native = NativeBtf(config)
         self.reset_models()
 
     def start_ground_session(self, *, connected, armed, landed, state_age_s,
@@ -173,11 +180,20 @@ class MeasuredBtf:
             return False, 'fresh_disarmed_stationary_ground_required'
         self.reset_models()
         self.raw_guard = ObservationGuard(motion_recovery=True)
-        self.candidate.b4_integrity.blocked = False
+        if self.native is not None:
+            self.native.reset(preserve_height_conflict=False)
+        else:
+            self.candidate.b4_integrity.blocked = False
         self.observation_session += 1
         return True, 'ground_observation_history_reset'
 
     def reset_models(self, *, preserve_motion=False):
+        if self.native is not None:
+            self.native.reset(preserve_motion=preserve_motion)
+            if not preserve_motion and self.raw_guard.motion is not None:
+                self.raw_guard.motion.clear()
+            self.last_output_stamp_ns = None
+            return
         c = self.config
         old_candidate = getattr(self, 'candidate', None)
         self.window = H80Window(c['anchors_xyz_m'], c['bias_m'], BSettings(**c['B']))
@@ -218,6 +234,7 @@ class MeasuredBtf:
                'external_output_allowed': False, 'flight_valid': False,
                'timestamp_calibrated': False, 'jump_guard_enabled': False, 'ok': False}
         out['observation_session'] = self.observation_session
+        out['numerical_backend'] = self.native.identity if self.native is not None else {'backend': 'python'}
         try:
             msg = event['message']
             mono, ros = event['host_received_monotonic_ns'], event['host_received_ros_ns']
@@ -327,12 +344,15 @@ class MeasuredBtf:
                         and out.get('raw_height_rms_m', float('inf')) < .06))
                 if self.raw_guard.motion_evidence is not None:
                     out['raw_motion_reacquisition'] = self.raw_guard.motion_evidence
-            b = self.window.process(cycle, cycle.seq)
+            b = self.window.process(cycle, cycle.seq) if self.native is None else None
             candidate_input = {'time_us': stamp, 'sample_time_us': cycle.sample_us,
                  'cal_slant_m': corrected.tolist(), 'height_m': height,
                  'sample_height_m': heights, 'height_source': height_source,
                  'models': {'B': b}}
-            btf = self.candidate.process(candidate_input)
+            if self.native is not None:
+                b, btf = self.native.process(cycle, heights, height_source)
+            else:
+                btf = self.candidate.process(candidate_input)
             self.last_output_stamp_ns = stamp_ns
             return dict(out, ok=btf['ok'], reason=btf['reason'], xy_m=btf['xy_m'],
                 xyz_m=([*btf['xy_m'], height] if btf['ok'] and height is not None

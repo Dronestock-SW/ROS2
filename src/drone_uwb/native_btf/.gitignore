@@ -1,0 +1,5 @@
+/build*/
+/parity-*/
+__pycache__/
+*.pyc
+/freeze-result.jsonl

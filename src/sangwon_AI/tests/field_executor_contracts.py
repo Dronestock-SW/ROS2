@@ -239,6 +239,17 @@ class Contracts(unittest.TestCase):
         p.s['uwb_age_s']=0.;resumed=p.t;p.until('END');self.assertGreaterEqual(p.t-resumed,10.)
         self.assertEqual(p.out['home_xy_m'],[2.,2.])
 
+    def test_candidate_rejection_freezes_before_old_pose_expires(self):
+        p=self.peer();p.until('DWELL');target=p.out['goal_xy_m']
+        p.s.update(uwb_age_s=.02,uwb_decision_rejected=True)
+        for _ in range(40):
+            p.tick();self.assertEqual(p.out['goal_xy_m'],target)
+            self.assertEqual(p.out['completed_waypoints'],0)
+            self.assertTrue(p.out['cpp_decision']['observation_status']['progress_held'])
+        self.assertNotIn('land',p.commands)
+        p.s['uwb_decision_rejected']=False;resumed=p.t;p.until('END')
+        self.assertGreaterEqual(p.t-resumed,10.)
+
     def test_actual_fc_fault_and_contract_change_still_land(self):
         for change in (dict(estimator_valid=False),dict(bridge_contract_error='changed')):
             p=self.peer();p.until('DWELL');p.s.update(change);p.tick();self.assertEqual(p.out['phase'],'LANDING')
@@ -304,6 +315,16 @@ class Contracts(unittest.TestCase):
         self.assertEqual(p.commands,['offboard_mode','arm','position_mode'])
         self.assertEqual(p.out['mission_start_xy_m'],[2.,2.])
 
+    def test_lidar_takeoff_uwb_gap_cannot_extend_unstable_ascent_deadline(self):
+        p=self.lidar_takeoff();p.until('TAKING_OFF');began=p.t
+        p.s.update(uwb_age_s=2.,velocity_xy=[.11,0.])
+        p.until('LANDING')
+        self.assertEqual(p.out['failure'],'takeoff_stability_timeout')
+        self.assertGreaterEqual(p.t-began,30.)
+        self.assertLess(p.t-began,30.2)
+        self.assertEqual(p.out['home_xy_m'],[2.,2.])
+        self.assertEqual(p.commands,['offboard_mode','arm','land'])
+
     def test_lidar_takeoff_does_not_recapture_drifted_position(self):
         p=self.lidar_takeoff();p.until('HOLD_READY');p.s.update(xy=[2.2,2.],uwb_xy=[2.2,2.])
         for _ in range(110):p.tick()
@@ -340,13 +361,15 @@ class Contracts(unittest.TestCase):
         report=dict(status_stamp_ns=10_000_000_000,last_sent_stamp_ns=9_900_000_000,
             gate='ready',geometry_gate='ready',mode_independent=True,z_observed=False,flight_commands_enabled=False,
             settings=dict(enabled=True,tag_id='6',floor_policy='metric_scan',vertical_structure_ref='synthetic-walls'),
-            parameters=dict(EKF2_LID2_VER=1,EKF2_LID2_EN=1),
+            parameters=dict(EKF2_LID2_VER=2,EKF2_LID2_EN=1),
             last_published_observation=dict(accepted=True,published=True,z_observed=False,observed_axes=['x','y'],
                 reference_point='fc_imu',frame_id='local_ned',representative_stamp_ns=9_900_000_000,reset_counter=0,velocity_ne_m_s=[0.,.01]),
             stationary_window=dict(ready=True,last_stamp_ns=9_900_000_000,reset_counter=0,samples=10,span_s=1.,observed_s=1.,
                 purpose='stationary_readiness_only',fc_input_filtered=False,speed_m_s=.01))
         query=dict(method='lidar_status',report=report,ros_s=10.01,receipt_age_s=.01,publishers=1,tag='6')
         good=p.call(query);self.assertTrue(good['lidar_ready']);self.assertFalse(good['lidar_fusion_verified'])
+        bad=copy.deepcopy(report);bad['parameters']['EKF2_LID2_VER']=1
+        self.assertFalse(p.call(dict(query,report=bad))['lidar_ready'])
         for change in (dict(ros_s=10.5),dict(ros_s=9.),dict(receipt_age_s=.6),dict(publishers=2),dict(tag='5')):
             self.assertFalse(p.call({**query,**change})['lidar_ready'])
         for change in (dict(published=False),dict(z_observed=True),dict(representative_stamp_ns=9_800_000_000)):

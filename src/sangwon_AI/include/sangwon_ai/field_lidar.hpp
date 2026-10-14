@@ -22,7 +22,7 @@ inline Json lidar_sender_state(const Json& report,double ros_s,double receipt_ag
       &&obs.at("observed_axes")==Json::array({"x","y"})&&obs.at("reference_point")=="fc_imu"
       &&obs.at("frame_id")=="local_ned"&&obs.at("representative_stamp_ns")==report.at("last_sent_stamp_ns"),"lidar_latest_observation_rejected");
     const auto& params=report.at("parameters");
-    require(params.at("EKF2_LID2_VER")==1&&params.at("EKF2_LID2_EN")==1,"lidar2d_firmware_required");
+    require(params.at("EKF2_LID2_VER")==2&&params.at("EKF2_LID2_EN")==1,"independent_lidar2d_firmware_required");
     const auto velocity=point(obs.at("velocity_ne_m_s"));const auto& window=report.at("stationary_window");
     const bool stationary_ready=flag(window,"ready")&&window.at("last_stamp_ns")==report.at("last_sent_stamp_ns")
       &&window.at("reset_counter")==obs.at("reset_counter")&&number(window.at("samples"),0,100)>=8

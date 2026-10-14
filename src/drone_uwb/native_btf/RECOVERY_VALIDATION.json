@@ -1,0 +1,84 @@
+{
+  "scope": "997 frames from partial 20261013 recording; kernel replay, not flight",
+  "window_seq": [
+    17475,
+    17520
+  ],
+  "results": {
+    "baseline": {
+      "total": 997,
+      "window_accepted": 19,
+      "max_gap_s": 0.7,
+      "recoveries": []
+    },
+    "recovery": {
+      "total": 997,
+      "window_accepted": 37,
+      "max_gap_s": 0.249691,
+      "recoveries": [
+        {
+          "seq": 17493,
+          "time_us": 438783492,
+          "frames": 7,
+          "xy": [
+            1.9497532531820247,
+            2.647359671484941
+          ],
+          "rms": 0.054646112418855086
+        },
+        {
+          "seq": 17546,
+          "time_us": 440108877,
+          "frames": 6,
+          "xy": [
+            1.4946101453381055,
+            2.140705055014186
+          ],
+          "rms": 0.026704486015134154
+        },
+        {
+          "seq": 17571,
+          "time_us": 440733605,
+          "frames": 7,
+          "xy": [
+            1.2735574360426112,
+            2.09897981307711
+          ],
+          "rms": 0.017413243415331535
+        },
+        {
+          "seq": 17625,
+          "time_us": 442083619,
+          "frames": 6,
+          "xy": [
+            0.9383094607020089,
+            1.8850178359358702
+          ],
+          "rms": 0.04943301683181961
+        }
+      ]
+    }
+  },
+  "normalized_input_sha256": "10eca197815ac7ac8f09237c52d15a7ac37df7c8852e56e13943b2b593368aba",
+  "raw_decision_gzip_sha256": "be0f1db3ca8f49f538acb70a744b730b760a6e18760fbea36be1b60a3c070400",
+  "recording_scope": "Partial recovered UWB/IMU excerpt; original full capture unavailable",
+  "fresh_recovery_enabled": true,
+  "limits_unchanged": {
+    "rms_m": 0.06,
+    "max_speed_m_s": 1.0,
+    "continuity_margin_m": 0.1,
+    "tof_max_age_s": 0.1,
+    "imu_max_skew_s": 0.02
+  },
+  "bridge_added_recovery_wait_s": {
+    "before": 0.15,
+    "after": 0.0
+  },
+  "physical_xy_accuracy": "No independent truth; unverified",
+  "physical_fc_gap": "Not measured; results are C++ kernel output gaps",
+  "focused_checks": {
+    "windows_ctest_groups": 3,
+    "python_passed": 49,
+    "python_skipped": 1
+  }
+}

@@ -6,6 +6,7 @@ from dataclasses import asdict
 from http.server import ThreadingHTTPServer
 import json
 import hashlib
+import faulthandler
 import asyncio
 import math
 import os
@@ -60,6 +61,7 @@ class FC:
             ('rc',RCIn,'/mavros/rc/in'),('battery',BatteryState,'/mavros/battery'),
             ('uwb',PoseWithCovarianceStamped,'/uwb/btf_pose'),('lidar',PointCloud,'/point_cloud'))}
         self.bridge=node.create_publisher(String,cfg.bridge_topic,10)
+        self.btf_decision=node.create_publisher(String,'/uwb/btf_decision',10)
         self.lidar_status=node.create_publisher(String,'/lidar/velocity_status',10) if self.lidar_takeoff else None
         self.assignment=node.create_publisher(String,'/mission/assignment',10)
         self.services=[node.create_service(cls,topic,callback) for cls,topic,callback in (
@@ -76,6 +78,9 @@ class FC:
         self.cloud.points=[Point32(x=r*math.cos(a),y=r*math.sin(a),z=0.) for r,a in zip(sc['ranges'],sc['point_angles_rad'])]
         self.cloud.channels=[ChannelFloat32(name='stamps',values=sc['point_times_s'])]
         self.empty_cloud=PointCloud();self.empty_cloud.header.frame_id='laser_frame'
+        # Optional diagnostic only: Python stacks if this synthetic producer
+        # cannot run for 150 ms. Does not touch the physical FC or its domain.
+        self.watchdog=(DIRECTORY/scenario/'mock-watchdog.log').open('w') if os.environ.get('SANGWON_MOCK_WATCHDOG')=='1' else None
         self.thread=threading.Thread(target=self.loop,daemon=True);self.thread.start()
         self.lidar_thread=threading.Thread(target=self.lidar_loop,daemon=True);self.lidar_thread.start()
     def nop(self,req,res):res.success=True;res.result=0;return res
@@ -119,6 +124,7 @@ class FC:
     def loop(self):
         self.started=time.monotonic()
         while not self.stop.is_set():
+            if self.watchdog:faulthandler.dump_traceback_later(.15,file=self.watchdog)
             t=time.monotonic();self.source_times.append(t);dt=min(.1,t-self.last);self.last=t;prev=self.z;previous_xy=list(self.xy)
             if self.scenario=='land_mode_delay' and hasattr(self,'land_requested_at') and t-self.land_requested_at>=1.:
                 if self.mode=='OFFBOARD':
@@ -156,9 +162,12 @@ class FC:
                 if key=='odom' and self.gap_start is not None and (self.scenario=='fc_pose_loss' or self.scenario=='pose_gap' and t-self.gap_start<2. or self.scenario=='takeoff_pose_gap' and t-self.gap_start<2.5):continue
                 if key=='est' and self.scenario=='fc_estimator_silence' and self.gap_start is not None:continue
                 m.header.stamp=stamp;self.pubs[key].publish(m)
-            gap=self.gap_start is not None and (self.scenario=='lidar_loss' or t-self.gap_start<(2. if self.scenario=='uwb_gap' else .6))
+            gap=self.gap_start is not None and (self.scenario=='lidar_loss' or t-self.gap_start<(2. if self.scenario in ('uwb_gap','separate_btf_rejection') else .6))
             if not gap and t>=self.mute_uwb_until:
                 uwb=PoseWithCovarianceStamped();uwb.header.stamp=Time(sec=(ns-130_000_000)//1_000_000_000,nanosec=(ns-130_000_000)%1_000_000_000) if self.scenario in ('bridge_delay','report_delay') else stamp;uwb.header.frame_id='uwb_map';uwb.pose.pose.position.x,uwb.pose.pose.position.y=self.xy;self.pubs['uwb'].publish(uwb);self.last_uwb_ns=int(uwb.header.stamp.sec)*1_000_000_000+uwb.header.stamp.nanosec
+            if self.scenario=='separate_btf_rejection' and self.gap_start is not None and t-self.gap_start<2.:
+                self.btf_decision.publish(String(data=json.dumps(dict(schema=1,ok=False,published=False,
+                    decision_stamp_ns=ns,stamp_ns=ns,reason='no_height_consistent_subset'))))
             c=dict(input_source='btf_xy',tag_id='6',layout_confirmed=True,source_frame='uwb_map',ground_only=False,
                 map_y_axis_sign=1,enu_yaw_deg=0.,enu_offset_x_m=0.,enu_offset_y_m=0.,expected_ev_delay_ms=0.,
                 antenna_body_frd_x_m=0.,antenna_body_frd_y_m=0.,antenna_body_frd_z_m=0.)
@@ -170,7 +179,7 @@ class FC:
                 lidar=dict(status_stamp_ns=ns,last_sent_stamp_ns=ns-100_000_000,gate='ready',geometry_gate='ready',
                     mode_independent=True,z_observed=False,flight_commands_enabled=False,
                     settings=LIDAR_SETTINGS,
-                    parameters=dict(EKF2_LID2_VER=1,EKF2_LID2_EN=1),
+                    parameters=dict(EKF2_LID2_VER=2,EKF2_LID2_EN=1),
                     last_published_observation=dict(accepted=True,published=True,z_observed=False,observed_axes=['x','y'],
                         reference_point='fc_imu',frame_id='local_ned',representative_stamp_ns=ns-100_000_000,reset_counter=0,velocity_ne_m_s=[0.,0.]),
                     stationary_window=dict(ready=True,last_stamp_ns=ns-100_000_000,reset_counter=0,samples=10,span_s=1.,observed_s=1.,
@@ -189,7 +198,10 @@ class FC:
                 cloud.header.stamp=Time(sec=first//1_000_000_000,nanosec=first%1_000_000_000)
                 self.pubs['lidar'].publish(cloud)
             self.stop.wait(.1)
-    def close(self):self.stop.set();self.thread.join(3);self.lidar_thread.join(3)
+    def close(self):
+        self.stop.set();self.thread.join(3);self.lidar_thread.join(3)
+        if self.watchdog:
+            faulthandler.cancel_dump_traceback_later();self.watchdog.close()
 
 def run(scenario):
     root=DIRECTORY/scenario;root.mkdir()
@@ -347,7 +359,7 @@ def run(scenario):
                 injected=True
                 if scenario=='python_pause':os.kill(observer.pid,signal.SIGSTOP);paused=True;pause_end=time.monotonic()+5.
                 elif scenario.startswith('lidar_'):fc.gap_start=time.monotonic()
-                elif scenario in ('uwb_gap','pose_gap','fc_estimator_loss','fc_estimator_silence','fc_pose_loss'):fc.gap_start=time.monotonic()
+                elif scenario in ('uwb_gap','pose_gap','fc_estimator_loss','fc_estimator_silence','fc_pose_loss','separate_btf_rejection'):fc.gap_start=time.monotonic()
                 elif scenario=='pilot':fc.mode='ALTCTL'
             if scenario in ('lidar_loss','fc_pose_loss') and fc.gap_start is not None and time.monotonic()-fc.gap_start>2. and not explicit_cancel:
                 assert 'LAND' not in fc.calls and fc.status['completed_waypoints']==0
@@ -416,6 +428,19 @@ def run(scenario):
         recorded=[json.loads(x) for x in (root/'native-events.jsonl').read_text(encoding='utf-8').splitlines()]
         samples=[x for x in recorded if x.get('type')=='flight_sample']
         assert len(samples)>20,'continuous native evidence missing'
+        if scenario=='separate_btf_rejection':
+            frozen=[x for x in samples if x['input_snapshot'].get('uwb_decision_rejected')]
+            assert frozen,'native decision subscriber did not latch rejection'
+            # Evidence samples are coalesced while the independent writer is
+            # syncing. Measure the reaction on live telemetry, not the first
+            # retained disk sample after that sync finishes.
+            assert any(r['uwb_age_s']<.25 and
+                       'uwb_candidate_rejected_freeze' in (r.get('observation_status') or {}).get('warnings',[]) and
+                       r['observation_status']['progress_held']
+                       for r in fc.rows),'hold waited for old pose expiry'
+            assert all(x['input_snapshot']['uwb_stamp_ns']<=x['input_snapshot']['uwb_rejected_sample_ns'] for x in frozen)
+            assert any(r['cpp_decision'].get('observation_status',{}).get('progress_held') for r in fc.rows if r['state']=='DWELL')
+
         assert all('input_snapshot' in x and 'sample_monotonic_ns' in x and 'sample_ros_ns' in x for x in samples)
         assert any(x['input_snapshot']['source_stamp_ns'][6]>0 for x in samples),'original UWB source stamp missing'
         assert any(x.get('type')=='command_ack' for x in recorded),'native ACK evidence missing'
@@ -451,7 +476,7 @@ def run(scenario):
         if storage_thread:storage_thread.join(2)
         if fc.rows:
             (root/'trace.json').write_text(json.dumps(dict(status=fc.status,commands=fc.calls,trace=fc.rows,
-                setpoints=fc.setpoint_rows,
+                setpoints=fc.setpoint_rows,mock_fc_source_times=fc.source_times,
                 max_mock_fc_source_gap_s=max(b-a for a,b in zip(fc.source_times,fc.source_times[1:]))),indent=2),encoding='utf-8')
         if paused:os.kill(observer.pid,signal.SIGCONT)
         children=[observer,native_proc]+([link] if link else [])

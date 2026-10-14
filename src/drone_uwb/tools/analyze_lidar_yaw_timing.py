@@ -63,7 +63,7 @@ def read_capture(path):
     return counts, imus, scans, ranges, states, landed
 
 
-def deskew_profile(scans, origin, gt, integral, pairs, config):
+def deskew_profile(scans, origin, gt, integral, pairs, config, *, range_max_m=4.):
     """Yaw-only ground diagnostic; use common pairs across the full profile."""
     offsets = np.arange(-.075, .0751, .005)
     mids = np.array([s[0] - origin + (s[2][0] + s[2][-1]) / 2 for s in scans])
@@ -79,7 +79,7 @@ def deskew_profile(scans, origin, gt, integral, pairs, config):
             p = points[:, :2]
             projected = np.column_stack((c * p[:, 0] - s * p[:, 1], s * p[:, 0] + c * p[:, 1]))
             ranges = np.linalg.norm(p, axis=1)
-            clouds[index] = ordered_cloud(projected, (ranges >= .2) & (ranges <= 4.), config)
+            clouds[index] = ordered_cloud(projected, (ranges >= .2) & (ranges <= range_max_m), config)
         for pi, (before, after) in enumerate(indices):
             forward = match(clouds[before], clouds[after], config=config)
             backward = match(clouds[after], clouds[before], config=config)
@@ -113,7 +113,9 @@ def deskew_profile(scans, origin, gt, integral, pairs, config):
     return result
 
 
-def analyze(path, *, deskew=False):
+def analyze(path, *, deskew=False, range_max_m=4.):
+    if not np.isfinite(range_max_m) or not .2 < range_max_m <= 12.:
+        raise ValueError('diagnostic_range_max_m_must_be_in_0p2_12')
     counts, imus, scans, ranges, states, landed = read_capture(path)
     if len(imus) < 20 or len(scans) < 5:
         raise ValueError('insufficient_capture')
@@ -132,7 +134,7 @@ def analyze(path, *, deskew=False):
     for first, points, offsets, received, dropped in scans:
         mid = first - origin + (offsets[0] + offsets[-1]) / 2
         ranges_xy = np.linalg.norm(points[:, :2], axis=1)
-        cloud = ordered_cloud(points[:, :2], (ranges_xy >= .2) & (ranges_xy <= 4.), config)
+        cloud = ordered_cloud(points[:, :2], (ranges_xy >= .2) & (ranges_xy <= range_max_m), config)
         if previous is not None:
             pmid, pc = previous
             # Keep only excited pairs bracketed for every candidate offset.
@@ -158,6 +160,7 @@ def analyze(path, *, deskew=False):
                             reverse_yaw_deg=float(np.rad2deg(reverse[2]))))
         previous = mid, cloud
     result = dict(scope='GROUND_YAW_TIMING_DIAGNOSTIC_NOT_FLIGHT_APPROVAL',
+        range_max_m=float(range_max_m),
         source_sha256=hashlib.sha256(path.read_bytes()).hexdigest(), topic_counts=dict(counts),
         all_states_disarmed=bool(states) and all(not x['armed'] for x in states),
         all_states_connected=bool(states) and all(x['connected'] for x in states),
@@ -188,7 +191,8 @@ def analyze(path, *, deskew=False):
                 splits.append(fit_offsets(start[indices], end[indices], yaw[indices], gt, integral)[0])
         result['temporal_third_best_offsets'] = splits
         if deskew:
-            result['deskew_diagnostic'] = deskew_profile(scans, origin, gt, integral, pairs, config)
+            result['deskew_diagnostic'] = deskew_profile(scans, origin, gt, integral, pairs, config,
+                range_max_m=range_max_m)
     return result
 
 
@@ -197,8 +201,10 @@ def main():
     parser.add_argument('--capture', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--deskew', action='store_true')
+    parser.add_argument('--range-max-m', type=float, default=4.,
+        help='Diagnostic range bound; 4m reproduces the original analysis, up to the 12m driver bound.')
     args = parser.parse_args()
-    result = analyze(args.capture / 'topics.jsonl', deskew=args.deskew)
+    result = analyze(args.capture / 'topics.jsonl', deskew=args.deskew, range_max_m=args.range_max_m)
     args.output.write_text(json.dumps(result, indent=2, allow_nan=False) + '\n', encoding='utf-8')
     print(json.dumps({k: v for k, v in result.items() if k not in ('pairs', 'offset_profile')}, allow_nan=False))
 

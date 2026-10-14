@@ -1,0 +1,16 @@
+{
+  "base_commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+  "protocol_version": 2,
+  "physical_deployment": false,
+  "build_command": "make px4_sitl_lidar2d -j3",
+  "binary_sha256": "7c5df65cc6342042dfea507fa62bf79b2683ceebe72052a9fa24117d01403679",
+  "patch_sha256": "2e3421b7df6af4ceced0bebc28a5ae3c5e1a9777e309ea5ee9d3f1e6dc9cdfdd",
+  "board_sha256": "0c45ba70ae14ca6e46538e98f013ce060055cea3082b162664728da2675ccdcd",
+  "hardware_patch_sha256": "3fd115f2c7795f41105cbfa2f206f01f0f7bafa7a88228a74f32f585037cf2f6",
+  "observed_axes": [
+    "north",
+    "east"
+  ],
+  "vertical_velocity_observed": false,
+  "controller_changes": false
+}

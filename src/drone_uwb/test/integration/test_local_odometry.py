@@ -9,6 +9,16 @@ from drone_uwb.integration.local_odometry import (
     LocalObservationSettings, horizontal_odometry, parameter_gate, alignment_yaw_deg,
     trial_start_allowed, guarded_horizontal_odometry, SenderStartGate)
 from drone_uwb.processing.observation_guard import ObservationGuard
+from drone_uwb.integration.local_odometry import fresh_bridge_guard
+
+
+def test_validated_bridge_recovers_on_first_fresh_pose_without_extra_wait():
+    guard = fresh_bridge_guard()
+    assert guard.check((2., 2.), 1_000_000_000) == 'observation_acquiring'
+    assert guard.check((2., 2.), 1_250_000_000) == 'ready'
+    assert guard.check((2.01, 2.), 1_950_000_000) == 'ready'
+    assert guard.check((2.01, 2.), 1_950_000_000) == 'duplicate_or_backward_observation'
+    assert guard.check((float('nan'), 2.), 1_975_000_000) == 'invalid_observation'
 from drone_uwb.integration.planar import map_yaw_to_enu
 
 

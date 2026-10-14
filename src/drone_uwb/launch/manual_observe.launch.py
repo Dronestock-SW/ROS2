@@ -38,9 +38,13 @@ def components(context):
                          {'port':value('uwb_port'), 'anchor_file':str(anchors),
                           'record_directory':'', 'stop_after_s':0.0}]),
         Node(package='drone_uwb', executable='uwb_btf_node', output='screen',
+             additional_env=({'PYTHONPATH':value('btf_python_path')+os.pathsep+os.environ.get('PYTHONPATH','')}
+                             if value('btf_python_path') else {}),
              parameters=[{'config_file':str(config), 'record_directory':'',
                           'require_height_for_pose':True}]),
-        Node(package='drone_uwb', executable='manual_observation_streams', output='screen'),
+        Node(package='drone_uwb', executable='manual_observation_streams', output='screen',
+             additional_env=({'PYTHONPATH':value('btf_python_path')+os.pathsep+os.environ.get('PYTHONPATH','')}
+                             if value('btf_python_path') else {})),
     ]
     essential = list(children)
     lidar_config = value('lidar_velocity_config')
@@ -59,6 +63,7 @@ def generate_launch_description():
     return LaunchDescription([
         DeclareLaunchArgument('tag', default_value='B', choices=['A','B']),
         DeclareLaunchArgument('btf_config'), DeclareLaunchArgument('anchor_file', default_value=''),
+        DeclareLaunchArgument('btf_python_path', default_value=''),
         DeclareLaunchArgument('uwb_port', default_value='/dev/uwb'),
         DeclareLaunchArgument('fcu_url', default_value='/dev/pixhawk:921600'),
         DeclareLaunchArgument('lidar_velocity_config', default_value=os.environ.get('LIDAR_VELOCITY_CONFIG', '')),

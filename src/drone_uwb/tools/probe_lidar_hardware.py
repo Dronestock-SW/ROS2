@@ -10,10 +10,13 @@ def main():
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--seconds', type=float, default=25.)
     parser.add_argument('--all-parameters', action='store_true')
+    parser.add_argument('--same-user-dds', action='store_true',
+        help='Use the existing DDS transport when running as the MAVROS service user.')
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=False)
     from drone_uwb.integration.ros.local_transport import configure_local_dds
-    configure_local_dds()
+    if not args.same_user_dds:
+        configure_local_dds()
     import rclpy
     from rclpy.node import Node
     from rclpy.qos import qos_profile_sensor_data as qos

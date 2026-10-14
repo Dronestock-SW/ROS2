@@ -2,6 +2,12 @@
 
 드론 자율이동 저장소의 설치·실행 안내다. 작업을 시작할 때 읽는다.
 
+## 웹 제자리 이륙 검증 상태
+
+2026-10-14 [웹 수직 이륙·POSITION 호버링 진단](docs/report/web_vertical_takeoff_20261014.md).
+실제 PX4 SIH에서 웹 이륙·POSITION·웹 착륙 흐름을 확인했다.
+유지 중 이동량·속도 기준은 실패했다. 실기 비행 검증은 미실시다.
+
 ## 코드와 자료 찾기
 
 [단계별 위치표](docs/reference/repository_layout.md)에서 수정할 파일과 검증 방법을 찾는다.
@@ -22,6 +28,15 @@
 
 ## 현재 작업 상태
 
+- [LiDAR 독립 수평속도 융합 후보](docs/report/lidar_independent_aiding_20261014.md):
+  다른 수평 보조 없이 시작하는 R3 펌웨어를 준비했다.
+  어제 설치한 R2는 그대로이며 실제 R3 융합·이륙은 미실시다.
+  [재현·실기 확인 순서](docs/runbooks/lidar_independent_aiding.md)를 따른다.
+- [LiDAR 통합본 배치·실제 FC 지상 확인](docs/report/lidar_ground_deployment_20261014.md):
+  Jetson 새 작업 경로에 통합본과 빌드를 배치했다.
+  실제 FC 수용 카운터 56, EKF 융합 시각 0을 확인했다.
+  실제 설치된 R2 보조 속도는 다른 수평 보조를 먼저 요구한다.
+  LiDAR 단독 시작·UWB 복구 전 호버의 실기 조건은 미충족이다.
 - [B_TF IMU 수신 분리·원본 재생](docs/report/btf_sensor_timing_20261014.md):
   IMU·ToF 큐 100개와 전용 실행기·내부 기록을 추가했다.
   13일 원본에서 ToF 100·120·150ms를 비교했다.

@@ -1,0 +1,223 @@
+{
+  "date": "2026-10-14",
+  "platform": "Jetson aarch64 / Ubuntu 22.04 / ROS Humble",
+  "compiler": "GCC 11.4",
+  "merged_upstream": "6e2d5c9",
+  "ctest_btf": {
+    "passed": 3,
+    "failed": 0
+  },
+  "adapter_tests_passed": 4,
+  "focused_python_tests_passed": 96,
+  "synthetic_parity": {
+    "cases": 22,
+    "rows": 3760,
+    "failures": [],
+    "max_xy_difference_m": 2.731148640577885e-14,
+    "timing": {
+      "python": {
+        "median_ms": 2.0127755,
+        "p95_ms": 12.945106449999997,
+        "max_ms": 19.494585
+      },
+      "cpp": {
+        "median_ms": 0.132787,
+        "p95_ms": 1.9775445999999979,
+        "max_ms": 4.998954
+      }
+    },
+    "scope": "Jetson synthetic kernel with other compilation active; not end-to-end latency"
+  },
+  "recorded_input_parity": {
+    "passed": true,
+    "rows": 113,
+    "skipped_decisions": 0,
+    "max_xy_difference_m": 5.995204332975845e-15,
+    "failures": [],
+    "source_sha256": "755ba4899718f95c1941c7540024112c4973e822086cf09b62e631dd58e690a9",
+    "normalized_sha256": "e9eeb85e191d5668346e2f48e783db8a8f3f1ae55c0d6777c13c72b7879bec36",
+    "python_reasons": {
+      "B_not_fresh_valid": 2,
+      "original_fit_consistent": 79,
+      "no_height_consistent_subset": 32
+    },
+    "scope": "Recorded normalized inputs, empty initial histories; not original live output or physical accuracy"
+  },
+  "ros_adapter": {
+    "accepted_poses": 104,
+    "rejected_frames": 47,
+    "original_timestamps_preserved": true,
+    "domain": 99
+  },
+  "web_attempts": [
+    {
+      "run": "web-native",
+      "case": "separate_btf_rejection",
+      "state": "END",
+      "receiver_gap_s": 0.07112162999692373,
+      "sender_gap_s": 0.05316449199744966,
+      "mock_source_gap_s": 0.0506816080014687,
+      "completed_waypoints": 1,
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "POSCTL",
+        "OFFBOARD",
+        "LAND"
+      ],
+      "passed": true
+    },
+    {
+      "run": "web-native",
+      "case": "separate_position_origin_gap",
+      "state": "END",
+      "receiver_gap_s": 0.21009990199672757,
+      "sender_gap_s": 0.055023617002007086,
+      "mock_source_gap_s": 0.15358149500389118,
+      "completed_waypoints": 1,
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "POSCTL",
+        "OFFBOARD",
+        "LAND"
+      ],
+      "passed": false
+    },
+    {
+      "run": "web-native-isolated",
+      "case": "separate_position_origin_gap",
+      "state": "END",
+      "receiver_gap_s": 0.0626127590003307,
+      "sender_gap_s": 0.05447638499754248,
+      "mock_source_gap_s": 0.06579767699440708,
+      "completed_waypoints": 1,
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "POSCTL",
+        "OFFBOARD",
+        "LAND"
+      ],
+      "passed": true
+    },
+    {
+      "run": "web-native-isolated",
+      "case": "separate_resume_gap",
+      "state": "END",
+      "receiver_gap_s": 0.22863287400105037,
+      "sender_gap_s": 0.05400901300163241,
+      "mock_source_gap_s": 0.24025004699797137,
+      "completed_waypoints": 1,
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "POSCTL",
+        "OFFBOARD",
+        "LAND"
+      ],
+      "passed": false
+    },
+    {
+      "run": "web-native-remaining",
+      "case": "separate_mission_x",
+      "state": "END",
+      "receiver_gap_s": 0.08143833599751815,
+      "sender_gap_s": 0.05247436199715594,
+      "mock_source_gap_s": 0.17684478999581188,
+      "completed_waypoints": 5,
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "POSCTL",
+        "OFFBOARD",
+        "LAND"
+      ],
+      "passed": true
+    },
+    {
+      "run": "web-native-remaining",
+      "case": "separate_report_delay",
+      "state": "END",
+      "receiver_gap_s": 0.06357145500078332,
+      "sender_gap_s": 0.055696941999485716,
+      "mock_source_gap_s": 0.052748606001841836,
+      "completed_waypoints": 1,
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "POSCTL",
+        "OFFBOARD",
+        "LAND"
+      ],
+      "passed": true
+    },
+    {
+      "run": "web-native-final",
+      "case": "separate_btf_rejection",
+      "passed": false,
+      "state": "START_HTTP_timeout_before_mission",
+      "detail": "10s timeout, no final pass claimed; broad reruns stopped per user"
+    }
+  ],
+  "sensor_backend_deployed": "cpp",
+  "deployment_source_original_unchanged": true,
+  "fc_parameter_writes": false,
+  "lidar_aiding_enabled_by_this_change": false,
+  "physical_flight": "not_run",
+  "candidate_admission_algorithm_changed": true,
+  "unresolved": [
+    "Intermittent synthetic Python FC receive gap above 200ms; sender remained below 56ms in these runs",
+    "13Oct kernel gap reduced from 700ms to 249.691ms; physical gap and accuracy unverified",
+    "Current real UWB XY unavailable; ToF 0.02m below reported 0.10m minimum; field fusion not verified",
+    "TFmini Plus driver patch not built/flashed; real 50Hz acquisition pending"
+  ],
+  "ctest_ai": {
+    "passed": 3,
+    "failed": 0,
+    "scope": "sangwon_core_tests, field_executor_contracts, field_mission_ai_contracts; after strict newer source timestamp fix"
+  },
+  "diagnostic_followup": {
+    "resume_gap": {
+      "state": "END",
+      "passed": true,
+      "receiver_gap_s": 0.06009666000318248,
+      "sender_gap_s": 0.05274577499949373
+    },
+    "rejection_sampling_failure": {
+      "state": "END",
+      "first_live_freeze_uwb_age_s": 0.048485404,
+      "first_retained_disk_sample_uwb_age_s": 0.3434199009934673,
+      "cause": "async writer coalesces periodic samples during sync; test now checks live telemetry reaction",
+      "receiver_gap_s": 0.06555594500241568,
+      "sender_gap_s": 0.05434172300010687
+    },
+    "watchdog": "150ms stalls did not reproduce; no stack captured"
+  },
+  "candidate_recovery": "RECOVERY_VALIDATION.json; optional fresh measured B4 history replacement",
+  "recovery_deployment": {
+    "utc": "2026-10-14T06:22:27.566832+00:00",
+    "ground_gate": true,
+    "backend": {
+      "backend": "cpp",
+      "abi": 1,
+      "library": "/home/arialhanho/ROS2-review-20261008-codex/.review/btf-native-20261014/btf-recovery-build/libbtf_native.so",
+      "fresh_b4_recovery_enabled": true,
+      "sha256": "e33e76d62e85ca707c7632a993825f9b359661e15924a18a7f17091edc3b266f"
+    },
+    "fc": {
+      "connected": true,
+      "armed": false,
+      "mode": "AUTO.LOITER"
+    },
+    "landed": 1,
+    "publisher_counts": {
+      "/uwb/received": 1,
+      "/uwb/btf_pose": 1,
+      "/mavros/state": 1,
+      "/mavros/setpoint_raw/local": 0
+    },
+    "real_xy_available": false,
+    "ctest_groups": 3
+  }
+}

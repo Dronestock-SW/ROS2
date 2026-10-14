@@ -2,6 +2,7 @@
 #include "sangwon_ai/guard.hpp"
 #include "sangwon_ai/fake_px4.hpp"
 #include "sangwon_ai/frames.hpp"
+#include "sangwon_ai/btf_rejection.hpp"
 #include <functional>
 #include <iostream>
 #include <limits>
@@ -206,9 +207,29 @@ void reject_unowned_start() {
   testing::FakePx4 p; p.state.armed=true; p.state.landed=false;
   Runtime r; CHECK(!r.start(testing::example_mission(),p.state,0));
 }
+void btf_rejection_ordering() {
+  field::BtfRejection guard;
+  CHECK(!guard.blocked(0));
+  using service::Json;
+  Json bad={{"schema",1},{"published",false},{"decision_stamp_ns",1000000000LL},
+    {"stamp_ns",990000000LL},{"reason","no_height_consistent_subset"}};
+  guard.update(bad,1000000000LL);
+  CHECK(guard.blocked(980000000LL));
+  CHECK(guard.blocked(990000000LL));  // Equal source time cannot prove recovery.
+  CHECK(!guard.blocked(1000000000LL));
+  auto delayed=bad;delayed["decision_stamp_ns"]=1300000000LL;delayed["stamp_ns"]=980000000LL;
+  guard.update(delayed,1300000000LL);CHECK(!guard.blocked(1000000000LL));
+  auto expired=bad;expired["decision_stamp_ns"]=1400000000LL;expired["stamp_ns"]=1390000000LL;
+  guard.update(expired,1800000000LL);CHECK(!guard.blocked(1000000000LL));
+  auto future=bad;future["decision_stamp_ns"]=2000000000LL;
+  guard.update(future,1800000000LL);CHECK(!guard.blocked(1000000000LL));
+  auto good=bad;good["published"]=true;good["decision_stamp_ns"]=2000000000LL;
+  guard.update(good,2000000000LL);CHECK(guard.blocked(980000000LL));
+  guard.update(Json::object(),2000000000LL);CHECK(guard.blocked(980000000LL));
+}
 int main() {
   const std::vector<std::pair<const char*,void(*)()>> tests={
-    {"trajectory_limits",trajectory_limits},{"yaw_short_path",yaw_short_path},
+    {"btf_rejection_ordering",btf_rejection_ordering},{"trajectory_limits",trajectory_limits},{"yaw_short_path",yaw_short_path},
     {"coordinate_transform",coordinate_transform},
     {"profile_isolation",profile_isolation},{"input_validation",input_validation},
     {"guard_metadata",guard_metadata},{"guard_expiry",guard_expiry},

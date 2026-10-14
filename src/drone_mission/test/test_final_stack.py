@@ -89,7 +89,8 @@ def test_takeoff_lidar_configuration_requires_real_qualification():
     validate_takeoff_lidar(mission,lidar,native_executor=True)
     for changes,reason in ((dict(enabled=False),'enabled_required'),(dict(timing_ref=''),'acquisition_timing'),
                           (dict(vertical_structure_ref=''),'vertical_structure'),(dict(tag_id='5'),'tag_mismatch'),
-                          (dict(floor_policy='required'),'metric_scan'),(dict(interval_count=2),'nonoverlapping')):
+                          (dict(floor_policy='required'),'metric_scan'),
+                          (dict(floor_policy='ground_static'),'metric_scan'),(dict(interval_count=2),'nonoverlapping')):
         with pytest.raises(ValueError,match=reason):
             validate_takeoff_lidar(mission,dict(settings={**lidar['settings'],**changes}),native_executor=True)
     with pytest.raises(ValueError,match='fusion_qualification'):

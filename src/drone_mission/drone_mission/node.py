@@ -568,7 +568,7 @@ class FlightNode(Node):
                 # boundary and intermittently starve valid UWB observations.
                 rates = [(230, 10.), (245, 5.), (87, 10.)]
                 if self.settings.full_mission:
-                    rates += [(31, 100.), (105, 100.), (132, 40.), (32, 30.), (65, 10.)]
+                    rates += [(31, 100.), (105, 100.), (132, 50.), (32, 30.), (65, 10.)]
                 for message, rate in rates:
                     request = CommandLong.Request(command=511, param1=float(message), param2=1e6/rate)
                     self.stream_client.call_async(request)

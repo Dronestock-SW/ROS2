@@ -3,6 +3,11 @@
 현재 상태에서 다음 실측을 준비할 때 읽는다.
 
 현재 저장 설정은 `enabled=false`다.
+14일 [실제 FC 지상 확인](../report/lidar_ground_deployment_20261014.md)에서
+현재 펌웨어의 선행 수평 보조 요구를 확인했다.
+FC 수신 카운터 증가만으로 실제 융합을 판정하지 않는다.
+`estimator_aid_src_aux_vel.time_last_fuse` 증가가 필요하다.
+현재 설치본의 LiDAR 단독 시작은 미지원이다.
 14일 [제자리 이륙 경로](../report/lidar_takeoff_hover_20261014.md)를 추가했다.
 `metric_scan`은 하향 ToF와 XY 유효성을 분리한다.
 지상부터 이륙 높이까지 수직 구조물을 확인한다.
@@ -81,3 +86,28 @@ FC 수신과 EKF 융합은 서로 다른 단계이기 때문이다.
 FC의 `lidar_velocity2d_status`도 함께 확인한다.
 송신과 융합, 정확도, 비행 검증을 각각 기록한다.
 관측 중지 시 재개 여부는 DISARM 지상에서 먼저 확인한다.
+
+## 높이 미관측 상태의 지상 전용 확인
+
+`ground_static`은 이륙 설정으로 사용할 수 없다.
+DISARM·지상 상태에서 최대 60초만 허용한다.
+장착·수평면·시각 근거와 모든 관측 검사는 유지한다.
+현재 높이의 정지 장면만 검사한다.
+상승 구간의 수직 구조물 검증을 대신하지 않는다.
+매 송신의 지상 확인과 ARM 뒤 재개 금지를 적용한다.
+
+실행 계정은 MAVROS와 같은 계정을 사용한다.
+해당 계정의 pymavlink 의존 환경을 먼저 읽는다.
+다음 도구는 45초 입력과 FC 조회를 기록한다.
+새 증거 디렉토리만 허용한다.
+
+```bash
+bash src/drone_uwb/tools/run_lidar_ground_check.sh \
+  /absolute/path/lidar-ground-only.json \
+  /absolute/path/new-ground-evidence
+```
+
+조회 도구의 `--same-user-dds`는 같은 계정용이다.
+다른 계정에서는 기존 loopback UDP 분리를 유지한다.
+관측값을 새 시각으로 바꾸거나 나이를 축소하지 않는다.
+지연 원인을 숨기면 FC의 지연 검사가 무효화되기 때문이다.
