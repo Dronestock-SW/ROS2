@@ -28,6 +28,13 @@ R3 실기 설치·융합·제자리 이륙은 미실시다.
 실제 FC 융합 시각은 계속 0이었다.
 제자리 이륙의 현장 서비스 전환은 보류한다.
 
+2026-10-14 [B_TF 센서 수신](report/btf_sensor_timing_20261014.md)을 분리했다.
+DDS 큐 100개·전용 실행기·내부 기록을 추가했다.
+원본 재생의 약 0.700초 공백은 남았다.
+ToF 120·150ms 완화만으로도 해당 공백은 사라지지 않았다.
+[TFmini Plus 50Hz 설계](architecture/tof_rate_scenarios_20261014.md)를 검토한다.
+FC·센서 설정 변경과 실기 배포는 결과 검토 뒤 진행한다.
+
 2026-10-14 [LiDAR 제자리 이륙](report/lidar_takeoff_hover_20261014.md)을 연결했다.
 최초 XY를 유지하며 상승한 뒤 POSITION에서 기다린다.
 UWB 복구는 POSITION 이후 임무 START 조건이다.
