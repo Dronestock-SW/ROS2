@@ -9,7 +9,14 @@
 DDS 큐 100개·전용 실행기·내부 기록을 추가했다.
 원본 재생의 약 0.700초 공백은 남았다.
 ToF 120·150ms 완화만으로도 해당 공백은 사라지지 않았다.
-[TFmini Plus 50Hz 설계](architecture/tof_rate_scenarios_20261014.md)를 검토한다.
+[TFmini Plus 100/50/50Hz 기준](architecture/tof_100_50_50.md)을 채택했다.
+문서·코드 수정과 로컬 단위 검사를 승인받았다.
+[전체 PX4·ROS 빌드](report/tof_full_build_20261014.md)도 추가 승인받았다.
+ROS7개·PX4 FMUv6C 빌드와 Claude14~16차 검토를 마쳤다.
+같은 도구 기준 이미지+2,920B·플래시 여유28,068B다.
+사용자가 [운영 기준본 r1](report/tof_operational_baseline_20261014.md)으로 확정했다.
+기록 ON/OFF 비교는 원본 부재로 생략했다.
+사용자 지시로 마무리했다. B1 지연 원인은 미해결이다.
 FC·센서 설정 변경과 실기 배포는 결과 검토 뒤 진행한다.
 
 2026-10-14 [LiDAR 제자리 이륙](report/lidar_takeoff_hover_20261014.md)을 연결했다.

@@ -1,0 +1,233 @@
+{
+  "date_kst": "2026-10-14",
+  "scope": "ROS seven packages and PX4 px4_fmu-v6c_lidar2d complete build/link only; no replay or deployment",
+  "ros2_base_commit": "d586e836402066269b1d7e85d4c803f2f748a724",
+  "ydlidar_submodule_commit": "4ef70d3f32a85704ade0be54b214f3763b1ab3e8",
+  "behaviortree_commit": "2a8a226fbbd99f524f0796e0d8a3145773c61c06",
+  "remote_workspace": "/home/bluewak/tof-full-build-20261014",
+  "overlay_files": {
+    "docs/README.md": "c1acac689915d58087c90167202e2e10ea7078fd7eb55f6f8d0529f19eeab481",
+    "docs/altitude_policy.md": "3c10c465322c974d49242caabea71f68dce8fc9019f00f05a4644b6f9dc55042",
+    "docs/architecture/tof_100_50_50.md": "80bb0043f58b081a1848ad12fa260d2b30f3739d6c193145c528fc3e4beecae1",
+    "docs/architecture/tof_rate_scenarios_20261014.md": "b56bb6c042f80074765fde9e24d8414add02e17006732357e93c62fc7e07f6c7",
+    "docs/glossary.md": "7925a4ac04e5626e4c344992813afc8a9e855b3f023e7cc7c67fc091298d3af3",
+    "docs/report/btf_replay_harness_20261014.md": "49fc6f06f72642c3589654eeba1bd0fa5335e0dc1576fa640aeff5a6d800566a",
+    "docs/report/btf_replay_identity_20261014.md": "74fc78b3ba4d6c9a6c54982a9bd0c8738d884a0f90289edce38264732c523a08",
+    "docs/report/evidence/btf_replay_identity_20261014.json": "633ffa4a266301d99662fa44ca6291d0d063e80615b1f1bf1fb296ee8e54621d",
+    "docs/report/evidence/tof_100_50_50_20261014.json": "85676a0d4ec7edd04f86c9b3d2227ae206401c0fe1e28f3b054f9b1c2a7bee98",
+    "docs/report/tof_100_50_50_20261014.md": "7802eadffded4666902e6a98e2518f9bcbcc2488b299109b042fab80963af080",
+    "docs/roadmap.md": "63db54649d32e83dace42eb48a1492a98bd17f17f358bd0a982ec1800c094721",
+    "docs/runbooks/btf_isolated_replay_20261014.md": "346aa359c40c5ac948bf3f6fec7f2dce18b22257756bb85ad59ebf5694cc937b",
+    "src/drone_uwb/drone_uwb/integration/ros/manual_streams.py": "9b8b9decd23d01fd50a82ab0a01eb8a19a7c06c0473f5e9ad28de82ff9ce1308",
+    "src/drone_uwb/test/firmware/px4_test.hpp": "c670f6d0837b790bdd7a405466f9590e068adfed0bbde6418cdc934a6147b0e5",
+    "src/drone_uwb/test/firmware/test_tfmini_plus.cpp": "97b37502cf89da897c5549604111862c5b406ea90e1e16a9ee0a1f6c55d2dc98",
+    "src/drone_uwb/test/integration/test_manual_streams.py": "8adbf37c3d0f87726ae2db588a1df43509fb94a01a6a8666d6d9d2595a6bf815",
+    "src/drone_uwb/test/test_replay_isolated_contract.py": "5b6d686ef7f8cc4dc6ff55f2745b316ea6fdbcc436a59f52ec77532b1b407704",
+    "src/drone_uwb/test/test_replay_measurements.py": "3eff0d5bbf59931eb34692d921a8ce76c2167651bbaef568fd836e61c738169d",
+    "src/drone_uwb/test/test_replay_ros_harness.py": "2e6b5e02325bf32076e54b4861b418ec4295e162c40683a57427ae978a9899c6",
+    "src/drone_uwb/tools/analyze_btf_replay_run.py": "1fbf52d5c8d48ed0f172f4bcc4de7d62835e6fdfe692f989aac545f67c8e6233",
+    "src/drone_uwb/tools/audit_btf_capture_links.py": "f469dddf88d2603ac9a139defc1ef4dd794cccef42b694f5b0e058781d59fb96",
+    "src/drone_uwb/tools/btf_replay_measurements.py": "676327a391a5f012b253753895bf0cb24406f1a13c8bc9a04befd5f7fb88d841",
+    "src/drone_uwb/tools/check_tfmini_plus_driver.py": "31a50ccd86db71644a9750e9c597265c9c399107897e59889f4f3472c210d5c4",
+    "src/drone_uwb/tools/px4_tfmini_plus.patch": "3df45b0bdb6e5d47a4086bb79e25b3713f8d360c0190d4c8210287c23ebc3f38",
+    "src/drone_uwb/tools/replay_btf_isolated.py": "22e7b120cd0be1fe25a4a71d1e3ce6f8869f258409222b7539a6777baa5d215d"
+  },
+  "ros": {
+    "command": "colcon build --symlink-install --executor sequential --event-handlers console_direct+",
+    "parallel_build_jobs": 2,
+    "exit_code": 0,
+    "packages_passed": [
+      "drone_platform_link",
+      "drone_uwb",
+      "sangwon_ai_replay",
+      "ydlidar_ros2_driver",
+      "drone_bringup",
+      "drone_demo",
+      "drone_mission"
+    ],
+    "colcon_elapsed": "21min 16s",
+    "compiler": "GCC 11.4.0 aarch64",
+    "static_checks": {
+      "python_sources_compiled": 505,
+      "overlay_hashes_verified": 25,
+      "nodes_started": false,
+      "installed_module": "/home/bluewak/tof-full-build-20261014/ros/src/drone_uwb/drone_uwb/integration/ros/manual_streams.py",
+      "mavros_response_fields": {
+        "success": "boolean",
+        "result": "uint8"
+      }
+    },
+    "unique_warnings": 6,
+    "warnings": "unchanged external YDLIDAR Empty service unused parameters; colcon repeats six warnings in summary"
+  },
+  "px4": {
+    "px4_base_commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+    "target": "px4_fmu-v6c_lidar2d",
+    "board_id": 56,
+    "flash_limit_bytes": 1966080,
+    "patch_order": [
+      "px4_lidar2d_hardware.patch",
+      "px4_tfmini_plus.patch"
+    ],
+    "patch_sha256": {
+      "px4_lidar2d_hardware.patch": "249a64e692d42e65a698eef9f34471b91d9651e88d90196512f933c75ab7e7e5",
+      "px4_tfmini_plus.patch": "3df45b0bdb6e5d47a4086bb79e25b3713f8d360c0190d4c8210287c23ebc3f38"
+    },
+    "source_sha256": {
+      "TF02PRO.cpp": "6b1948eeb8b77fd35e6f39eef951f91e6ba71219a718852355cf106faf98a0ba",
+      "TF02PRO.hpp": "7777d899a50b81f8ceae044db2199397700dd93f7d3b650b1b2b5397ce255ff1",
+      "TFMiniPlus.hpp": "ca792236a7339dc6b08898599e66cf42464fef2111b16a56cf6508cace18509d",
+      "tf02pro_main.cpp": "b40cd910c51ba5056a49c1cae0e776b801026fb9a6ffcdd2011319a63a72cee7"
+    },
+    "submodule_status": [
+      "f47ce7b5fbbb3aa43d33d2be1f6cd3746b13d5bf Tools/simulation/flightgear/flightgear_bridge (heads/master)",
+      "-6697ab169ceab512dc706acea63df4c882662c60 Tools/simulation/gazebo-classic/sitl_gazebo-classic",
+      "-b6127f4ec20de867e215fb5f78ae88b80f371909 Tools/simulation/gz",
+      "-66b764ada522893c05224950aa6268c809f8e48a Tools/simulation/jmavsim/jMAVSim",
+      "-f37ec259bd7a43565fe0ff4722465b7a303200f6 Tools/simulation/jsbsim/jsbsim_bridge",
+      "-85151aaf6ba8b24ce82b387e088452c63f7e2096 boards/modalai/voxl2/libfc-sensor-api",
+      " e37940d8535f603a16b8f6f21c21edaf584218aa platforms/nuttx/NuttX/apps (heads/px4_firmware_nuttx-10.3.0+)",
+      " fb2fadf6f599c1406f052db013efd00a2518e72c platforms/nuttx/NuttX/nuttx (fb2fadf6)",
+      " c488af4e8807de80739aa48efd2ea51614dd8195 src/drivers/actuators/vertiq_io/iq-module-communication-cpp (c488af4)",
+      "-36a01e428b110ff84c8babe5b65667b5e3037d5e src/drivers/cyphal/legacy_data_types",
+      "-5c69d451ab0787a81dcb615692d707f2a286f5e5 src/drivers/cyphal/libcanard",
+      "-d0bd6516dac8ff61287fe49a9f2c75e7d4dc1b8e src/drivers/cyphal/public_regulated_data_types",
+      " 0b9695881bd1e8f830ab4538ab3acc0050019eba src/drivers/gps/devices (0b96958)",
+      "-35596994b60ba89fe02f71ce5127baa5e7ff2bbf src/drivers/ins/microstrain/mip_sdk",
+      "-80b121c7714083cc4868c0fdb8c41623c7ef9c93 src/drivers/ins/sbgecom/sbgECom",
+      " 993be80a62ec957c01fb41115b83663959a49f46 src/drivers/uavcan/libdronecan/dsdl (heads/master)",
+      " 19fdf2e5b383243ccdb1094edae0603cf11469e8 src/drivers/uavcan/libdronecan/libuavcan/dsdl_compiler/pydronecan (1.0.16-2-g19fdf2e)",
+      "-314887ca403c2fb0a0316add22672102936ed36c src/lib/cdrstream/cyclonedds",
+      "-bf5682e4747843d1d5133b9a2b54ce6f12f166c7 src/lib/cdrstream/rosidl",
+      "-673f5ce29015a9bba3c96792920a10601b5b0718 src/lib/crypto/libtomcrypt",
+      "-fd73d7630b9d3ed5a79d613ff680a549e9780de7 src/lib/crypto/libtommath",
+      "-baca5d31259c598540e4d1284bc8d8f793abf83a src/lib/crypto/monocypher",
+      " 9ef591c447fe0386d698bf6fb9a6d27e43988ee4 src/lib/events/libevents (9ef591c)",
+      " 052e6de72f67f1777198bce98f3de62f7f3c16a0 src/lib/heatshrink/heatshrink (heads/main)",
+      "-3c0b1e3091e4ea423e1bf9da89d41d09517eb0c9 src/lib/tensorflow_lite_micro/tflite_micro",
+      " 33af200d25ec6f0925b49b1ba82bbf1294ea5f72 src/modules/mavlink/mavlink (33af200)",
+      " fcaa2c7d25e3169dc66155929c338487941555e9 src/modules/mavlink/mavlink/pymavlink (fcaa2c7)",
+      " 711aef423edd1820347b866d1e4164832df35d04 src/modules/uxrce_dds_client/Micro-XRCE-DDS-Client (711aef4)",
+      "-6ec4dc1995f185330e4f6faa8c719eb86f180deb src/modules/zenoh/zenoh-pico",
+      "-1e47f9d7437de5c3ee4cb0ac860d5ec875478059 test/fuzztest"
+    ],
+    "artifacts": {
+      "baseline": {
+        "px4_sha256": "9ee73caa19119fd01fe9985577987038ebdc69f8cdcae355af7f155114a8b2fc",
+        "elf_sha256": "cec89afa0a9c54a2b3f84d7f66424cd9742acf1df82d6cdd440a299a21254dd7",
+        "image_size_bytes": 1935092,
+        "flash_free_bytes": 30988,
+        "size_output": "text\t   data\t    bss\t    dec\t    hex\tfilename\n1930624\t   4468\t  58444\t1993536\t 1e6b40\tbuild/px4_fmu-v6c_lidar2d/px4_fmu-v6c_lidar2d.elf"
+      },
+      "candidate": {
+        "px4_sha256": "a8e1cb208c2314503383cdcb0accf2cb38ab8b629b7d9581987b927fe6df2a9b",
+        "elf_sha256": "2aead45ff26fbb0227549c2bd0345d96cca2e2ee08bf3deffcdfaf4e5bd03d6e",
+        "image_size_bytes": 1938012,
+        "flash_free_bytes": 28068,
+        "size_output": "text\t   data\t    bss\t    dec\t    hex\tfilename\n1933544\t   4468\t  58444\t1996456\t 1e76a8\tbuild/px4_fmu-v6c_lidar2d/px4_fmu-v6c_lidar2d.elf"
+      }
+    },
+    "runtime_executed": false,
+    "replay_executed": false,
+    "deployed": false,
+    "enabled_config": [
+      "CONFIG_DRIVERS_DISTANCE_SENSOR_TF02PRO=y",
+      "CONFIG_DRIVERS_RC_CRSF_RC=y",
+      "CONFIG_EKF2_AUXVEL=y"
+    ],
+    "driver_objects": [
+      "src/drivers/distance_sensor/tf02pro/CMakeFiles/drivers__distance_sensor__tf02pro.dir/TF02PRO.cpp.obj"
+    ],
+    "candidate_driver_symbols": [
+      "080430e4 T TF02PRO::print_status()",
+      "080438b8 T TF02PRO::run_tfmini_plus()",
+      "080437c8 T TF02PRO::run_configuration()",
+      "08043a40 T TF02PRO::init()",
+      "08043ae8 T non-virtual thunk to TF02PRO::init()",
+      "08043220 T non-virtual thunk to TF02PRO::print_status()"
+    ],
+    "image_increase_bytes": 2920,
+    "patch_reverse_check": 0,
+    "build_log_warnings": {
+      "px4-build-02.log": [
+        "warning: ARCH_CHIP_UNSET (defined at platforms/nuttx/Kconfig:5) was assigned the value 'y' but got the value 'n' -- check dependencies",
+        "make[1]: warning: jobserver unavailable: using -j1.  Add '+' to parent make rule.",
+        "make[1]: warning: jobserver unavailable: using -j1.  Add '+' to parent make rule.",
+        "make[1]: warning: jobserver unavailable: using -j1.  Add '+' to parent make rule.",
+        "make[1]: warning: jobserver unavailable: using -j1.  Add '+' to parent make rule.",
+        "make[1]: warning: jobserver unavailable: using -j1.  Add '+' to parent make rule.",
+        "make[1]: warning: jobserver unavailable: using -j1.  Add '+' to parent make rule.",
+        "make[1]: warning: jobserver unavailable: using -j1.  Add '+' to parent make rule.",
+        "make[1]: warning: jobserver unavailable: using -j1.  Add '+' to parent make rule.",
+        "make[1]: warning: jobserver unavailable: using -j1.  Add '+' to parent make rule.",
+        "make[1]: warning: jobserver unavailable: using -j1.  Add '+' to parent make rule.",
+        "make[1]: warning: jobserver unavailable: using -j1.  Add '+' to parent make rule.",
+        "make[1]: warning: jobserver unavailable: using -j1.  Add '+' to parent make rule.",
+        "make[1]: warning: jobserver unavailable: using -j1.  Add '+' to parent make rule.",
+        "make[1]: warning: jobserver unavailable: using -j1.  Add '+' to parent make rule.",
+        "make[1]: warning: jobserver unavailable: using -j1.  Add '+' to parent make rule.",
+        "make[1]: warning: jobserver unavailable: using -j1.  Add '+' to parent make rule.",
+        "make[1]: warning: jobserver unavailable: using -j1.  Add '+' to parent make rule.",
+        "make[1]: warning: jobserver unavailable: using -j1.  Add '+' to parent make rule.",
+        "make[1]: warning: jobserver unavailable: using -j1.  Add '+' to parent make rule.",
+        "/home/bluewak/tof-full-build-20261014/tools/arm-gnu-toolchain-13.2.Rel1-aarch64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.2.1/../../../../arm-none-eabi/bin/ld: warning: px4_fmu-v6c_lidar2d.elf has a LOAD segment with RWX permissions"
+      ],
+      "px4-baseline-build.log": [
+        "/home/bluewak/tof-full-build-20261014/tools/arm-gnu-toolchain-13.2.Rel1-aarch64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.2.1/../../../../arm-none-eabi/bin/ld: warning: px4_fmu-v6c_lidar2d.elf has a LOAD segment with RWX permissions"
+      ],
+      "px4-candidate-restore-build.log": [
+        "/home/bluewak/tof-full-build-20261014/tools/arm-gnu-toolchain-13.2.Rel1-aarch64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.2.1/../../../../arm-none-eabi/bin/ld: warning: px4_fmu-v6c_lidar2d.elf has a LOAD segment with RWX permissions"
+      ]
+    }
+  },
+  "px4_toolchain": {
+    "compiler": "Arm GNU 13.2.Rel1, arm-none-eabi-gcc 13.2.1",
+    "host": "aarch64 Ubuntu 22.04.5",
+    "archive_sha256_verified": "8fd8b4a0a8d44ab2e195ccfbeef42223dfb3ede29d80f14dcf2183c34b8d199a",
+    "source": "https://developer.arm.com/-/media/Files/downloads/gnu/13.2.rel1/binrel/arm-gnu-toolchain-13.2.rel1-aarch64-arm-none-eabi.tar.xz",
+    "cmake": "3.22.1",
+    "ninja_reported_version": "1.11.1.git.kitware.jobserver-1",
+    "build_type": "MinSizeRel",
+    "nuttx_chip": "CONFIG_ARCH_CHIP_STM32H7=y; CONFIG_ARCH_CHIP_STM32H743VI=y"
+  },
+  "exit_codes": {
+    "ros_full_build": 0,
+    "px4_initial_full_make": 0,
+    "px4_initial_wrapper_after_image_creation": 1,
+    "px4_stable_wrapper_rerun": 0,
+    "px4_baseline_then_candidate_rebuild": 0,
+    "ros_static_check": 0,
+    "px4_artifact_check": 0
+  },
+  "environment_fixes": [
+    "preserved shallow metadata and restored pinned files only in this task new PX4 checkout",
+    "corrected archive rel1 versus extracted folder Rel1 compiler path",
+    "stopped editing active shell scripts; reran stable script after post-build wrapper failure",
+    "stopped this task unneeded simulator-source preparation; kept firmware and ROS builds sequential"
+  ],
+  "warning_scope": "21 lines in first candidate full build: Kconfig 1, NuttX jobserver 19, ELF RWX 1. Only RWX directly reproduced in both incremental baseline/candidate builds. New ToF C++ warning/error none.",
+  "claude_review_rounds": [
+    14,
+    15,
+    16
+  ],
+  "claude_review_status": "completed within supplied source/build/link evidence; Claude did not execute builds or inspect devices",
+  "not_performed": [
+    "log replay",
+    "ROS/SITL execution",
+    "sensor configuration",
+    "FC parameter changes",
+    "deployment",
+    "flight",
+    "runtime heap/stack peak measurement"
+  ],
+  "before_deployment": "13 October deployed image differs from this baseline by 21232 bytes; verify actual deployed boardconfig, patch set and toolchain. Cause unconfirmed, not attributable to ToF patch.",
+  "local_log_sha256": {
+    "px4-baseline-build.log": "26a12e6094984dbeb6c567e09e78b89efd7b8a906231d79667c3f68dc45f3059",
+    "px4-build-02.log": "7c00b7afa87967effa04435b1d7eafa35c46e82794a5c149349105d8af662d85",
+    "px4-build-03.log": "d077a5511f12c32ea7057f2054ffaf61917a73d966a35481d46c6f5503629e86",
+    "px4-candidate-restore-build.log": "7fc064347b73647a4a169e47c0d6584149a4d398b6bd8685e829cd98d62fc92e",
+    "px4-size-comparison.log": "ca9a96da8e8f065129a1186856aff8c60660dc698882b47983535f63a1ccc9b3",
+    "ros-build-01.log": "5467989e661ce5f227ee37a08fc7d788be52432e14b5e253388e4261b7fdf018"
+  }
+}
