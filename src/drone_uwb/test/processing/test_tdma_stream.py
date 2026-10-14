@@ -59,7 +59,7 @@ def warmed_measured_processor(tag):
 
 
 @pytest.mark.parametrize('tag',['5','6'])
-def test_local_queue_expiry_preserves_status_deadline_and_requires_new_clock_warmup(tag):
+def test_local_queue_expiry_preserves_deadline_and_revalidates_clock(tag):
     p,mono=warmed_measured_processor(tag)
     status_ns=p.validator.status_ns
     raw,diag=pair(81,tag)
@@ -76,8 +76,9 @@ def test_local_queue_expiry_preserves_status_deadline_and_requires_new_clock_war
         now=10_000_000_000+raw['cycle_end_us']*1000
         p.process(event(raw,now))
         results.append(p.process(event(diag,now+5_000_000)))
-    assert all(not r['ok'] for r in results[:29])
-    assert any(r['ok'] for r in results[29:])
+    assert [r['reason'] for r in results[:2]] == ['clock_unsynced']*2
+    assert results[2]['clock_recovery']['reason'] == 'retained_map_requalified'
+    assert any(r['ok'] for r in results[2:])
     assert p.validator.status_ns==status_ns
     # Queue rejection cannot extend the original heartbeat deadline.
     raw,diag=pair(125,tag)

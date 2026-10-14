@@ -78,7 +78,7 @@ def test_btf_storage_failure_does_not_override_observation_validity(case):
             'B_TF':dict(source='ToF_validated_B3' if case.startswith('b3_') else 'unchanged_B4')})
     rejected = []
     obj = NS(recorder=failed_recorder(), files={'inputs': True, 'decisions': True},
-        counts=Counter(), height_counts=Counter(),
+        counts=Counter(), height_counts=Counter(), last_published_stamp_ns=None,
         get_clock=lambda: NS(now=lambda: NS(nanoseconds=now_ns)),
         sync_ready=lambda: True, ground_height=None, fc_state=None, landed=None,
         freeze_sensors=lambda:dict(clock_sync_ready=True, receive_id=0),

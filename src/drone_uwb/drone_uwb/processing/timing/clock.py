@@ -5,6 +5,7 @@ the lower envelope of (esp32, host) pairs. The unknown constant transport delay 
 is not corrected here.
 """
 from collections import deque
+import copy
 import math
 
 import numpy as np
@@ -61,8 +62,20 @@ class ClockMap:
         return self.slope / 1000.0
 
     def update(self, esp_us, host_ns):
+        self.update_many(((esp_us, host_ns),))
+
+    def updated_copy(self, points):
+        """Fit a candidate once without mutating a retained, qualified map."""
+        candidate = copy.copy(self)
+        candidate.points = deque(self.points)
+        candidate.update_many(points)
+        return candidate
+
+    def update_many(self, points):
+        """Append already validated points and perform one fit."""
         s = self.settings
-        self.points.append((esp_us, host_ns))
+        self.points.extend(points)
+        host_ns = self.points[-1][1]
         while len(self.points) > 1 and (host_ns - self.points[0][1]) / 1e9 > s.clock_window_s:
             self.points.popleft()
         self.base = self.points[0]

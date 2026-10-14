@@ -10,6 +10,7 @@
 
 | 찾는 내용 | 위치 |
 |---|---|
+| 시험본 ClockMap 보존·RAW 복사 제거·검증·배포 보류 | [B_TF 시계·복사 시험본](report/btf_clock_snapshot_trial_20261014.md) |
 | C++ B_TF 부분 자료 ON/OFF 실측·지연 경량화·남은 공백 | [기록 ON/OFF 비교](report/btf_recording_ab_20261014.md) |
 | 최신 상원 통합·native B_TF/LiDAR 보존·ToF 충돌 해결 | [ToF 통합 병합 기록](report/tof_integration_merge_20261014.md) |
 | ToF 운영 기준본 r1·해시 고정·ON/OFF 원본 부재·시험 생략 | [운영 기준본 확정 기록](report/tof_operational_baseline_20261014.md) |

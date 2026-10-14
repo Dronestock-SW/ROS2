@@ -80,6 +80,9 @@ class BtfNode(Node):
         self.height_counts = Counter()
         self.last = None
         self.last_source_ns = None
+        # Publication history belongs to the adapter, not resettable solver
+        # state. ROS reversal blocks publishing, without blocking relearning.
+        self.last_published_stamp_ns = None
         self.clock_readiness = ClockReadiness()
         self.fc_state = None
         self.fc_state_at = self.landed_at = float('-inf')
@@ -309,6 +312,10 @@ class BtfNode(Node):
             if self.require_height and result.get('xyz_m') is None and not (ground_xy or b4_xy):
                 result['pose_blocked_reason'] = 'measured_height_required'
                 self.counts['measured_height_required'] += 1
+            elif (self.last_published_stamp_ns is not None
+                    and result['stamp_ns'] <= self.last_published_stamp_ns):
+                result['pose_blocked_reason'] = 'nonincreasing_published_stamp'
+                self.counts['nonincreasing_published_stamp'] += 1
             elif 0 <= age <= self.config['max_output_age_s']:
                 pose = PoseWithCovarianceStamped()
                 pose.header.stamp.sec, pose.header.stamp.nanosec = divmod(result['stamp_ns'],1_000_000_000)
@@ -319,6 +326,7 @@ class BtfNode(Node):
                 for index in (14,21,28,35):
                     pose.pose.covariance[index] = 1e6
                 self.pose_pub.publish(pose)
+                self.last_published_stamp_ns = result['stamp_ns']
                 if result.get('xyz_m') is not None and result.get('height_source')=='measured_tof_imu':
                     xyz = PoseStamped()
                     xyz.header = pose.header
