@@ -7,6 +7,16 @@ from dataclasses import dataclass
 import math
 
 from drone_uwb.integration.ros.frames import observation_xy
+from drone_uwb.processing.observation_guard import GuardConfig, ObservationGuard
+
+
+def fresh_bridge_guard():
+    """B_TF already qualifies each pose; do not hold its fresh recovery 150 ms.
+
+    Initial acquisition and timestamp/value/transport checks still apply.
+    No timer republishes an old pose and no source timestamp is changed.
+    """
+    return ObservationGuard(GuardConfig(recover_s=0.), motion_recovery=True)
 
 
 PARAMETERS = ('EKF2_GPS_CTRL', 'EKF2_EV_CTRL', 'EKF2_EV_DELAY',

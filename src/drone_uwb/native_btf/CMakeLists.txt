@@ -31,9 +31,11 @@ if(BUILD_TESTING)
       ${CMAKE_CURRENT_SOURCE_DIR}/tests/test_replay.py
       --binary $<TARGET_FILE:btf_replay>
       --examples ${CMAKE_CURRENT_SOURCE_DIR}/examples)
-    add_test(NAME btf_native_adapter COMMAND ${Python3_EXECUTABLE}
-      ${CMAKE_CURRENT_SOURCE_DIR}/tests/test_adapter.py
-      --library $<TARGET_FILE:btf_native> --package-root ${CMAKE_CURRENT_SOURCE_DIR}/..)
+    if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../test/processing/test_measured_btf.py")
+      add_test(NAME btf_native_adapter COMMAND ${Python3_EXECUTABLE}
+        ${CMAKE_CURRENT_SOURCE_DIR}/tests/test_adapter.py
+        --library $<TARGET_FILE:btf_native> --package-root ${CMAKE_CURRENT_SOURCE_DIR}/..)
+    endif()
   endif()
 endif()
 install(TARGETS btf_core btf_replay btf_native ARCHIVE DESTINATION lib LIBRARY DESTINATION lib RUNTIME DESTINATION bin)

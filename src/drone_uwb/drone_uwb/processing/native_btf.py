@@ -19,6 +19,7 @@ class NativeBtf:
         if not path.is_absolute() or not path.is_file():
             raise ValueError('absolute_native_btf_library_required')
         self.identity = dict(backend='cpp', abi=1, library=str(path.resolve()),
+                             fresh_b4_recovery_enabled=bool(config.get('fresh_b4_recovery_enabled', False)),
                              sha256=hashlib.sha256(path.read_bytes()).hexdigest())
         self._lib = ctypes.CDLL(str(path))
         self._lib.btf_abi_version.argtypes = []
@@ -43,7 +44,7 @@ class NativeBtf:
             result = json.loads(self._lib.btf_request(
                 self._handle, json.dumps(request, allow_nan=False).encode()))
             if 'error' in result:
-                raise ValueError('native_btf:' + result['error'])
+                raise RuntimeError('native_btf:' + result['error'])
             return result
 
     def reset(self, *, preserve_motion=False, preserve_height_conflict=True):

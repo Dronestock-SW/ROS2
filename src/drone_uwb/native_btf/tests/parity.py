@@ -159,7 +159,7 @@ def main():
             input_sha256=hashlib.sha256(input_path.read_bytes()).hexdigest()))
     summary["timing"] = {name: dict(median_ms=float(np.median(values)), p95_ms=float(np.percentile(values, 95)),
                                     max_ms=max(values)) for name, values in (("python", all_py_ms), ("cpp", all_cpp_ms))}
-    summary["timing_scope"] = "local PC synthetic kernel only; excludes acquisition/ROS/FC; not Jetson speed"
+    summary["timing_scope"] = "Synthetic kernel only on executing host; excludes acquisition/ROS/FC transport"
     summary["rows"] = len(all_py_ms)
     summary["passed"] = not summary["failures"]
     (args.output / "summary.json").write_text(json.dumps(summary, indent=2, ensure_ascii=False)+"\n", encoding="utf-8")

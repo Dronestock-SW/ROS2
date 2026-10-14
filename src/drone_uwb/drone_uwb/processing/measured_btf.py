@@ -30,7 +30,7 @@ def height_independent_b4(result, *, enabled=True):
     b = result.get('models', {}).get('B', {})
     xy = result.get('xy_m')
     return (enabled is True and result.get('ok') is True
-        and result.get('models', {}).get('B_TF', {}).get('source') == 'unchanged_B4'
+        and result.get('models', {}).get('B_TF', {}).get('source') in ('unchanged_B4', 'fresh_B4_recovery')
         and b.get('ok') is True and b.get('fresh_observation_count') == 4
         and b.get('newest_sample_us') == result.get('time_us')
         and type(result.get('time_us')) is int
@@ -43,12 +43,12 @@ def ground_xy_without_height(result, *, enabled, connected, landed, state_age_s,
     """Allow the already accepted four-anchor XY solution on a fresh ground state.
 
     No height is inserted into B_TF. The three-anchor ToF selection remains
-    unavailable without a measurement; only unchanged_B4 can pass this gate.
+    unavailable without a measurement; only qualified four-anchor B4 passes.
     """
     return (enabled is True and connected is True and type(landed) is int and landed == 1
             and 0 <= state_age_s <= 1.5 and 0 <= landed_age_s <= 1.5
             and result.get('ok') is True and result.get('xyz_m') is None
-            and result.get('models', {}).get('B_TF', {}).get('source') == 'unchanged_B4')
+            and result.get('models', {}).get('B_TF', {}).get('source') in ('unchanged_B4', 'fresh_B4_recovery'))
 
 
 class MeasuredHeight:

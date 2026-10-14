@@ -42,7 +42,9 @@ def components(context):
                              if value('btf_python_path') else {}),
              parameters=[{'config_file':str(config), 'record_directory':'',
                           'require_height_for_pose':True}]),
-        Node(package='drone_uwb', executable='manual_observation_streams', output='screen'),
+        Node(package='drone_uwb', executable='manual_observation_streams', output='screen',
+             additional_env=({'PYTHONPATH':value('btf_python_path')+os.pathsep+os.environ.get('PYTHONPATH','')}
+                             if value('btf_python_path') else {})),
     ]
     essential = list(children)
     lidar_config = value('lidar_velocity_config')

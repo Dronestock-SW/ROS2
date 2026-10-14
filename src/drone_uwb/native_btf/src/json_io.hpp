@@ -31,6 +31,7 @@ btf::Config config(const Json& j) {
 #undef SUBSETTING
   c.enforce_b4_height_integrity=j.value("enforce_b4_height_integrity",false);
   c.ground_subset_initialization=j.value("ground_subset_initialization",false);
+  c.fresh_b4_recovery_enabled=j.value("fresh_b4_recovery_enabled",false);
   c.validate();return c;
 }
 btf::Frame frame(const Json& j) {
@@ -70,6 +71,7 @@ Json decision(const btf::Decision& d) {
     {"tracking_prior_age_s",nullable(d.tracking_prior_age_s)},
     {"tracking_step_m",nullable(d.tracking_step_m)},{"tracking_limit_m",nullable(d.tracking_limit_m)},
     {"reset_reason",d.reset_reason},{"b4_height_reason",d.b4_height_reason},
+    {"recovery_frames",d.recovery_frames},{"recovery_raw_residual_m",nullable(d.recovery_raw_residual_m)},
     {"b4_height_blocked",d.b4_height_blocked},
     {"b4_physical_range_rms_m",nullable(d.b4_physical_range_rms_m)}};
 }

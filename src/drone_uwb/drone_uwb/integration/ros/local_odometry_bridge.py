@@ -13,9 +13,8 @@ import time
 
 from drone_uwb.integration.local_odometry import (
     LocalObservationSettings, PARAMETERS, guarded_horizontal_odometry, parameter_gate,
-    SenderStartGate)
+    SenderStartGate, fresh_bridge_guard)
 from drone_uwb.integration.clock_readiness import ClockReadiness
-from drone_uwb.processing.observation_guard import ObservationGuard
 
 
 def main(args=None):
@@ -52,7 +51,7 @@ def main(args=None):
             self.status = self.create_publisher(String, '/uwb/local_odometry_status', 10)
             self.encoder = mavutil.mavlink.MAVLink(None, srcSystem=255, srcComponent=196)
             self.clock = ClockReadiness()
-            self.guard = ObservationGuard(motion_recovery=True)
+            self.guard = fresh_bridge_guard()
             self.state = None
             self.landed = None
             self.landed_at = -float('inf')
@@ -120,7 +119,7 @@ def main(args=None):
                 if self.state is None or self.state.armed or time.monotonic()-self.state_at > 2.5:
                     self.frozen = 'btf_session_changed_requires_disarmed_review'
                 else:
-                    self.guard = ObservationGuard(motion_recovery=True)
+                    self.guard = fresh_bridge_guard()
                     self.reset_counter = (self.reset_counter+1) % 256
             self.session, self.btf, self.btf_at = session, row, time.monotonic()
 
@@ -194,6 +193,7 @@ def main(args=None):
                 'last_send_monotonic_ns':round(self.last_send_at*1e9) if self.last_fields else None,
                 'last_odometry_time_usec':self.last_fields['time_usec'] if self.last_fields else None,
                 'jump_guard_enabled':False,
+                'observation_recovery_wait_s':self.guard.config.recover_s,
                 'counts': dict(self.counts), 'last_sample_stamp_ns': self.last_stamp,
                 'last_send_age_s': now-self.last_send_at if self.last_fields else None,
                 'max_send_gap_s': self.max_send_gap_s, 'parameters': self.params,

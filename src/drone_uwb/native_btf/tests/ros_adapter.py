@@ -20,9 +20,11 @@ config=json.loads((root/'config/runtime/uwb_btf_real.json').read_text())
 config.update(numerical_backend='cpp',native_btf_library=str(Path(sys.argv[1]).resolve()),tdma_mode='auto')
 with tempfile.TemporaryDirectory(prefix='btf-ros-99-') as tmp:
     cfg=Path(tmp)/'config.json';cfg.write_text(json.dumps(config))
-    rclpy.init(args=['--ros-args','-p','config_file:='+str(cfg),'-p','require_height_for_pose:=true'])
+    rclpy.init(args=['--ros-args','-p','config_file:='+str(cfg),'-p','require_height_for_pose:=true',
+                     '-p','trace_directory:='+tmp+'/trace'])
     node=BtfNode();peer=rclpy.create_node('synthetic_ranges_no_fc');ex=SingleThreadedExecutor()
     ex.add_node(node);ex.add_node(peer)
+    if hasattr(node,'sensor_node'):ex.add_node(node.sensor_node)
     decisions=[];poses=[]
     subs=[peer.create_subscription(String,'/uwb/btf_decision',lambda m:decisions.append(json.loads(m.data)),qos_profile_sensor_data),
           peer.create_subscription(PoseWithCovarianceStamped,'/uwb/btf_pose',lambda m:poses.append(m),qos_profile_sensor_data)]

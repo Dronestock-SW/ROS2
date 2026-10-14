@@ -1,0 +1,11 @@
+{
+  "px4_commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+  "files": {
+    "TF02PRO.hpp": "fb20fa388f5edbb978430774b92224644f75a6cc6aad149b8a9f36d6d92bec5d",
+    "TF02PRO.cpp": "4617fd1a169d62664e0c553aa317a44630fd0b28952d074006acbc2d5e5b9dd2",
+    "tf02pro_main.cpp": "8af0f269ec1be47e4ebb4bbcf25197e8ac0aa22a1b5cec9544fab582c6ab0b8c"
+  },
+  "built": false,
+  "flashed": false,
+  "hardware_rate_measured": false
+}

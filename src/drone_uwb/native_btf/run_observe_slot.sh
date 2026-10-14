@@ -11,7 +11,7 @@ for device in /dev/pixhawk /dev/uwb; do
   test -e "$device" || { echo "Waiting for $device"; exit 75; }
   if fuser "$device" >/dev/null 2>&1; then echo "Port already owned: $device"; exit 75; fi
 done
-test -f "$BTF_NATIVE_SLOT/btf-build/libbtf_native.so"
+test -f "$BTF_NATIVE_SLOT/field-btf-cpp.json"
 exec ros2 launch "$BTF_NATIVE_SLOT/source/src/drone_uwb/launch/manual_observe.launch.py" \
   "tag:=$MANUAL_TAG" "btf_config:=$BTF_NATIVE_SLOT/field-btf-cpp.json" \
   "anchor_file:=$MANUAL_ANCHORS" "btf_python_path:=$BTF_NATIVE_SLOT/source/src/drone_uwb"

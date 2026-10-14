@@ -143,8 +143,8 @@ struct Processor::Impl {
   }
 
   Decision candidate(const Frame& f,Decision d) {
-    // Baseline parity: append BEFORE acceptance, as in Python. History admission
-    // improvement is deliberately not claimed by a language-only translation.
+    // Baseline candidate uses the original long history. Optional fresh B4
+    // recovery replaces that history only after qualifying new measured ranges.
     frames.push_back(f);
     while(!frames.empty()&&frames.front().end_us<f.end_us-us(cfg.solver.window_s))frames.pop_front();
     if(!d.b4.ok)return d;
@@ -200,6 +200,7 @@ struct Processor::Impl {
   }
 
   Decision track(const Frame& f,Decision d) {
+    const bool b4_source=d.source=="unchanged_B4"||d.source=="fresh_B4_recovery";
     if(prior_stamp)d.tracking_prior_age_s=(f.end_us-*prior_stamp)/1e6;
     const bool fresh=d.tracking_prior_age_s&&*d.tracking_prior_age_s>0&&*d.tracking_prior_age_s<=cfg.max_prior_age_s;
     bool initial=false,reacquired=false,moving=false;
@@ -228,7 +229,7 @@ struct Processor::Impl {
         }
       }
     }
-    if(d.ok&&d.source!="unchanged_B4") {
+    if(d.ok&&!b4_source) {
       if(!fresh&&!initial&&!reacquired&&!moving)reject(d,"no_fresh_continuity_prior");
       else if(reacquired)d.reason="near_prior_subset_reacquired";
       else if(moving)d.reason="moving_subset_reacquired";
@@ -239,7 +240,7 @@ struct Processor::Impl {
       }
     }
     if(d.ok) {
-      selected=d.source=="unchanged_B4"?0:d.best_excluded_anchor;
+      selected=b4_source?0:d.best_excluded_anchor;
       prior=d.xy;prior_stamp=f.end_us;recovery_reference=d.xy;near.clear();
       if(measured(f))motion.observe(f.end_us,*d.xy);else motion.clear();
     }
@@ -248,6 +249,45 @@ struct Processor::Impl {
   }
   static void reject(Decision& d,const std::string& reason) {
     d.ok=false;d.xy.reset();d.source="rejected";d.reason=reason;
+  }
+  void recover_fresh_b4(const Frame& f,Decision& d) {
+    // Alternative fit of NEW measured ranges, never a frozen/extrapolated pose.
+    // Preserve the baseline decision whenever it already has a valid candidate.
+    if(!cfg.fresh_b4_recovery_enabled||d.ok||d.fresh_observation_count!=4||!prior_stamp||!prior||
+       !d.b4.ok||!d.b4.rms_m||*d.b4.rms_m<cfg.rms_limit_m)return;
+    const double age=(f.end_us-*prior_stamp)/1e6;
+    if(age<=0||age>cfg.solver.window_s)return;
+    std::vector<RangeSample> clean;int count=0;Time previous=f.end_us;
+    for(auto it=frames.rbegin();it!=frames.rend();++it) {
+      if(f.end_us-it->end_us>us(cfg.solver.reset_gap_s)||previous-it->end_us>100000)break;
+      previous=it->end_us;++count;
+      for(int i=0;i<4;++i)clean.push_back({it->sample_us[i],i,it->raw_range_m[i]});
+    }
+    if(count<cfg.solver.min_samples_per_anchor)return;
+    const auto fit=fit_h80(cfg.anchors,clean,f.end_us,cfg.solver);
+    if(!fit.ok||!fit.rms_m||*fit.rms_m>=cfg.rms_limit_m||!fit.xy)return;
+    if(!fit.velocity||norm(*fit.velocity)>cfg.max_speed_m_s||
+       distance(*fit.xy,*prior)>cfg.continuity_margin_m+cfg.max_speed_m_s*age)return;
+    // Check the newest four *sequential* measurements at their own times.
+    // An instantaneous XY pair residual can misclassify actual motion.
+    double current_error=0.;
+    for(int i=0;i<4;++i) {
+      const double u=(f.sample_us[i]-f.end_us)/1e6/cfg.solver.window_s;
+      const auto& c=fit.coefficients;const auto& a=cfg.anchors[i];
+      const double rr=c[4]+c[5]*u+c[6]*u*u-2*a[0]*(c[0]+c[2]*u)-2*a[1]*(c[1]+c[3]*u)+a[0]*a[0]+a[1]*a[1];
+      if(!std::isfinite(rr)||rr<=0.)return;
+      const auto error=f.raw_range_m[i]-std::sqrt(rr);current_error+=error*error;
+    }
+    d.recovery_raw_residual_m=std::sqrt(current_error/4.);
+    if(*d.recovery_raw_residual_m>=cfg.rms_limit_m)return;
+    Decision recovered=d;recovered.b4=fit;
+    if(!b4_integrity(f,recovered)&&cfg.enforce_b4_height_integrity)return;
+    recovered.ok=true;recovered.xy=fit.xy;recovered.source="fresh_B4_recovery";
+    recovered.reason="fresh_four_anchor_history_recovered";recovered.recovery_frames=count;
+    // Drop the contaminated long history only after the replacement passes.
+    ranges.assign(clean.begin(),clean.end());
+    while(frames.size()>static_cast<std::size_t>(count))frames.pop_front();
+    recovered.history_samples=ranges.size();d=std::move(recovered);
   }
   Decision process(Frame f) {
     Decision d;d.source_stamp_us=f.end_us;
@@ -295,6 +335,7 @@ struct Processor::Impl {
     if(fresh.empty())d.b4.reason="no_fresh_observations";
     else d.b4=fit_h80(cfg.anchors,{ranges.begin(),ranges.end()},f.end_us,cfg.solver);
     d=candidate(f,std::move(d));
+    recover_fresh_b4(f,d);
     return track(f,std::move(d));
   }
 };

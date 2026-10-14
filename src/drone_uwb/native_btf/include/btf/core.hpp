@@ -25,6 +25,7 @@ struct Config {
   double rms_limit_m = .06, score_margin_m = .015;
   double max_speed_m_s = 1., continuity_margin_m = .1, max_prior_age_s = .1;
   bool enforce_b4_height_integrity = false, ground_subset_initialization = false;
+  bool fresh_b4_recovery_enabled = false;
   void validate() const;
 };
 struct RangeSample { Time stamp_us; int anchor; double range_m; };
@@ -70,6 +71,8 @@ struct Decision {
   int fresh_observation_count = 0;
   std::optional<Time> newest_sample_us;
   std::string reset_reason, b4_height_reason;
+  int recovery_frames = 0;
+  std::optional<double> recovery_raw_residual_m;
   bool b4_height_blocked = false;
 };
 class Processor {

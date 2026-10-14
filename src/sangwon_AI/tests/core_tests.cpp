@@ -209,11 +209,13 @@ void reject_unowned_start() {
 }
 void btf_rejection_ordering() {
   field::BtfRejection guard;
+  CHECK(!guard.blocked(0));
   using service::Json;
   Json bad={{"schema",1},{"published",false},{"decision_stamp_ns",1000000000LL},
     {"stamp_ns",990000000LL},{"reason","no_height_consistent_subset"}};
   guard.update(bad,1000000000LL);
   CHECK(guard.blocked(980000000LL));
+  CHECK(guard.blocked(990000000LL));  // Equal source time cannot prove recovery.
   CHECK(!guard.blocked(1000000000LL));
   auto delayed=bad;delayed["decision_stamp_ns"]=1300000000LL;delayed["stamp_ns"]=980000000LL;
   guard.update(delayed,1300000000LL);CHECK(!guard.blocked(1000000000LL));

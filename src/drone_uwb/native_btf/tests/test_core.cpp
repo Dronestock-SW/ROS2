@@ -42,6 +42,30 @@ void numerical_contract() {
   check(threw,"unequal-height geometry accepted");
 }
 btf::Decision accepted(btf::Time stamp){btf::Decision d;d.ok=true;d.source_stamp_us=stamp;d.xy=btf::XY{2.,3.};return d;}
+void fresh_recovery_contract() {
+  auto cfg=config();cfg.fresh_b4_recovery_enabled=true;
+  btf::Processor baseline(config()),recovery(cfg);int old_rejected=0,new_rejected=0,rescued=0;
+  for(int k=0;k<120;++k) {
+    auto f=frame(k,false);f.height_source=btf::HeightSource::Missing;f.height_m={};
+    if(k==50)f.raw_range_m[0]+=.8;
+    const auto a=baseline.process(f),b=recovery.process(f);
+    if(k>50){old_rejected+=!a.ok;new_rejected+=!b.ok;}
+    if(b.source=="fresh_B4_recovery") {
+      ++rescued;check(b.recovery_frames>=3,"recovery lacks actual measured history");
+      check(b.source_stamp_us==f.end_us,"recovery rewrote source timestamp");
+      check(std::hypot((*b.xy)[0]-2.,(*b.xy)[1]-2.)<.04,"recovered XY inaccurate");
+      check(b.recovery_raw_residual_m&&*b.recovery_raw_residual_m<cfg.rms_limit_m,"fresh ranges not qualified");
+    }
+  }
+  check(rescued>0&&new_rejected<old_rejected,"fresh measured recovery did not shorten contamination");
+  btf::Processor bad(cfg);
+  for(int k=0;k<100;++k) {
+    auto f=frame(k,false);f.height_source=btf::HeightSource::Missing;f.height_m={};
+    if(k>=40){f.raw_range_m[0]+=.8;f.raw_range_m[3]+=.7;}
+    const auto d=bad.process(f);
+    if(k>=40)check(d.source!="fresh_B4_recovery","incoherent ranges released FREEZE");
+  }
+}
 void freeze_contract() {
   btf::FreezePolicy p;const btf::XY goal{1.,1.},changed{9.,9.};
   p.observe(accepted(1000),1000,1000);
@@ -70,5 +94,5 @@ void freeze_contract() {
   check(!d.target_xy&&!d.stream_target&&d.pause_mission,"fabricated startup target");
 }
 }
-int main(){try{numerical_contract();freeze_contract();std::cout<<"numerical and FREEZE contracts passed\n";return 0;}
+int main(){try{numerical_contract();fresh_recovery_contract();freeze_contract();std::cout<<"numerical and FREEZE contracts passed\n";return 0;}
 catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}

@@ -18,8 +18,9 @@ class GuardConfig:
     max_gap_s: float = .25
 
     def __post_init__(self):
-        if any(type(v) not in (int, float) or not math.isfinite(v) or v <= 0
-               for v in vars(self).values()):
+        if any(type(v) not in (int, float) or not math.isfinite(v)
+               or (v < 0 if k == 'recover_s' else v <= 0)
+               for k, v in vars(self).items()):
             raise ValueError('positive_integrity_limits_required')
 
 

@@ -6,6 +6,7 @@ from dataclasses import asdict
 from http.server import ThreadingHTTPServer
 import json
 import hashlib
+import faulthandler
 import asyncio
 import math
 import os
@@ -77,6 +78,9 @@ class FC:
         self.cloud.points=[Point32(x=r*math.cos(a),y=r*math.sin(a),z=0.) for r,a in zip(sc['ranges'],sc['point_angles_rad'])]
         self.cloud.channels=[ChannelFloat32(name='stamps',values=sc['point_times_s'])]
         self.empty_cloud=PointCloud();self.empty_cloud.header.frame_id='laser_frame'
+        # Optional diagnostic only: Python stacks if this synthetic producer
+        # cannot run for 150 ms. Does not touch the physical FC or its domain.
+        self.watchdog=(DIRECTORY/scenario/'mock-watchdog.log').open('w') if os.environ.get('SANGWON_MOCK_WATCHDOG')=='1' else None
         self.thread=threading.Thread(target=self.loop,daemon=True);self.thread.start()
         self.lidar_thread=threading.Thread(target=self.lidar_loop,daemon=True);self.lidar_thread.start()
     def nop(self,req,res):res.success=True;res.result=0;return res
@@ -120,6 +124,7 @@ class FC:
     def loop(self):
         self.started=time.monotonic()
         while not self.stop.is_set():
+            if self.watchdog:faulthandler.dump_traceback_later(.15,file=self.watchdog)
             t=time.monotonic();self.source_times.append(t);dt=min(.1,t-self.last);self.last=t;prev=self.z;previous_xy=list(self.xy)
             if self.scenario=='land_mode_delay' and hasattr(self,'land_requested_at') and t-self.land_requested_at>=1.:
                 if self.mode=='OFFBOARD':
@@ -193,7 +198,10 @@ class FC:
                 cloud.header.stamp=Time(sec=first//1_000_000_000,nanosec=first%1_000_000_000)
                 self.pubs['lidar'].publish(cloud)
             self.stop.wait(.1)
-    def close(self):self.stop.set();self.thread.join(3);self.lidar_thread.join(3)
+    def close(self):
+        self.stop.set();self.thread.join(3);self.lidar_thread.join(3)
+        if self.watchdog:
+            faulthandler.cancel_dump_traceback_later();self.watchdog.close()
 
 def run(scenario):
     root=DIRECTORY/scenario;root.mkdir()
@@ -423,7 +431,13 @@ def run(scenario):
         if scenario=='separate_btf_rejection':
             frozen=[x for x in samples if x['input_snapshot'].get('uwb_decision_rejected')]
             assert frozen,'native decision subscriber did not latch rejection'
-            assert any(x['input_snapshot']['uwb_age_s']<.25 for x in frozen),'hold waited for old pose expiry'
+            # Evidence samples are coalesced while the independent writer is
+            # syncing. Measure the reaction on live telemetry, not the first
+            # retained disk sample after that sync finishes.
+            assert any(r['uwb_age_s']<.25 and
+                       'uwb_candidate_rejected_freeze' in (r.get('observation_status') or {}).get('warnings',[]) and
+                       r['observation_status']['progress_held']
+                       for r in fc.rows),'hold waited for old pose expiry'
             assert all(x['input_snapshot']['uwb_stamp_ns']<=x['input_snapshot']['uwb_rejected_sample_ns'] for x in frozen)
             assert any(r['cpp_decision'].get('observation_status',{}).get('progress_held') for r in fc.rows if r['state']=='DWELL')
 
@@ -462,7 +476,7 @@ def run(scenario):
         if storage_thread:storage_thread.join(2)
         if fc.rows:
             (root/'trace.json').write_text(json.dumps(dict(status=fc.status,commands=fc.calls,trace=fc.rows,
-                setpoints=fc.setpoint_rows,
+                setpoints=fc.setpoint_rows,mock_fc_source_times=fc.source_times,
                 max_mock_fc_source_gap_s=max(b-a for a,b in zip(fc.source_times,fc.source_times[1:]))),indent=2),encoding='utf-8')
         if paused:os.kill(observer.pid,signal.SIGCONT)
         children=[observer,native_proc]+([link] if link else [])

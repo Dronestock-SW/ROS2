@@ -20,6 +20,6 @@ struct BtfRejection {
       decision_ns=stamp;rejected_ns=sample;
     } catch(const std::exception&) { /* Malformed reports never fabricate data. */ }
   }
-  bool blocked(std::int64_t accepted_pose_ns)const {return rejected_ns>accepted_pose_ns;}
+  bool blocked(std::int64_t accepted_pose_ns)const {return rejected_ns>0&&rejected_ns>=accepted_pose_ns;}
 };
 }

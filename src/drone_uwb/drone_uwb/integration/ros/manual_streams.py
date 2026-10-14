@@ -1,9 +1,9 @@
 """Fixed telemetry interval requests, once per DISARM connection; no flight commands."""
 import time
 
-# Same measured sensor rates as the field recorder; no global-origin polling.
+# Requested transport rates; actual sensor/uORB rates must be measured separately.
 RATES = ((230, 10.), (245, 5.), (31, 100.), (105, 100.),
-         (132, 40.), (32, 30.), (65, 10.), (106, 10.), (331, 30.))
+         (132, 50.), (32, 30.), (65, 10.), (106, 10.), (331, 30.))
 
 
 def main():
