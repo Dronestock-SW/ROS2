@@ -19,7 +19,8 @@ from drone_uwb.processing.lidar_motion import LidarMotionSettings, MeasuredLidar
 from drone_uwb.integration.clock_readiness import ClockReadiness
 from drone_uwb.integration.local_odometry import SenderStartGate
 from drone_uwb.integration.lidar_velocity import (NODE_NAME, SOURCE_SYSTEM,
-    SOURCE_COMPONENT, RAW_WRITERS, PARAMETERS, parameter_gate, velocity_fields)
+    SOURCE_COMPONENT, RAW_WRITERS, PARAMETERS, parameter_gate, velocity_fields, VelocityReadinessWindow,
+    ground_test_gate, validate_ground_test_duration)
 
 
 def main(args=None):
@@ -30,6 +31,7 @@ def main(args=None):
     p.add_argument('--seconds', type=float, default=0.)
     options, ros_args = p.parse_known_args(args)
     settings = LidarMotionSettings(**json.loads(options.config.read_text(encoding='utf-8'))['settings'])
+    validate_ground_test_duration(settings, options.seconds)
     os.environ['MAVLINK20'] = '1'
     from .local_transport import configure_local_dds
     if not options.same_user_dds:
@@ -64,6 +66,8 @@ def main(args=None):
             self.queue = deque(maxlen=2)
             self.counts = Counter()
             self.last = {}
+            self.last_published = {}
+            self.readiness = VelocityReadinessWindow()
             self.started = time.monotonic()
             self.output = self.create_publisher(Mavlink, '/uas1/mavlink_sink', qos)
             self.status = self.create_publisher(String, '/lidar/velocity_status', 10)
@@ -83,7 +87,7 @@ def main(args=None):
             self.create_subscription(ExtendedState, '/mavros/extended_state', self.receive_landed, qos)
             self.create_subscription(TimesyncStatus, '/mavros/timesync_status', self.sync, qos)
             self.create_timer(.02, self.process)
-            self.create_timer(.2, self.monitor)
+            self.create_timer(.1, self.monitor)
 
         @staticmethod
         def stamp(msg):
@@ -110,19 +114,32 @@ def main(args=None):
                 self.counts['imu'] += 1
             except ValueError:
                 self.counts['imu_invalid'] += 1
+            else:
+                # Process as soon as the measured closing IMU bracket arrives.
+                # Waiting for the next timer adds up to 20 ms of avoidable age.
+                self.process()
 
         def height(self, msg):
             if self.fresh(msg,.15) and msg.min_range <= msg.range <= msg.max_range:
                 self.floor = (msg.range, self.stamp(msg))
+            else:
+                self.floor = None
 
         def receive_state(self, msg):
             if not self.fresh(msg,2.5):
                 return
+            if settings.floor_policy == 'ground_static' and msg.armed:
+                self.frozen = 'ground_test_armed_restart_required'
             if self.state is None or self.state.connected != msg.connected:
                 self.clock.reset()
-                self.motion.reset_clock()
+                self.reset_motion()
                 self.params.clear()
             self.state, self.state_at = msg, time.monotonic()
+
+        def reset_motion(self):
+            self.motion.reset_clock()
+            self.readiness = VelocityReadinessWindow()
+            self.last_published = {}
 
         def receive_landed(self, msg):
             if self.fresh(msg,.5):
@@ -131,13 +148,13 @@ def main(args=None):
         def sync(self, msg):
             if self.clock.remote_ns and msg.remote_timestamp_ns < self.clock.remote_ns-1_000_000_000:
                 self.frozen = 'fc_reboot_restart_disarmed_required'
-                self.motion.reset_clock()
+                self.reset_motion()
                 self.queue.clear()
                 return
             _, changed = self.clock.observe(now=time.monotonic(), remote_ns=msg.remote_timestamp_ns,
                 offset_ns=msg.estimated_offset_ns, rtt_ms=msg.round_trip_time_ms)
             if changed:
-                self.motion.reset_clock()
+                self.reset_motion()
                 self.queue.clear()
                 self.counts['clock_step'] += 1
 
@@ -148,11 +165,18 @@ def main(args=None):
                 self.counts['queue_dropped'] += 1
                 self.motion.break_continuity()
             self.queue.append((msg,time.monotonic()))
+            self.process()
 
         def gate(self):
             if self.frozen:
                 return self.frozen
             now = time.monotonic()
+            if settings.floor_policy == 'ground_static':
+                reason = ground_test_gate(connected=None if self.state is None else self.state.connected,
+                    armed=None if self.state is None else self.state.armed, landed_state=self.landed,
+                    state_age_s=now-self.state_at, landed_age_s=now-self.landed_at)
+                if reason != 'ready':
+                    return reason
             if self.state is None or not self.start_gate.check(connected=self.state.connected,
                     armed=self.state.armed, landed_state=self.landed,
                     state_age_s=now-self.state_at, landed_age_s=now-self.landed_at):
@@ -178,7 +202,7 @@ def main(args=None):
         def process(self):
             ns = self.get_clock().now().nanoseconds
             if self.last_ros_ns is not None and (ns < self.last_ros_ns or ns-self.last_ros_ns > 1_000_000_000):
-                self.motion.reset_clock()
+                self.reset_motion()
                 self.clock.reset()
                 self.queue.clear()
                 self.counts['ros_clock_or_processing_gap'] += 1
@@ -188,7 +212,8 @@ def main(args=None):
             msg, received = self.queue[0]
             channels = [c.values for c in msg.channels if c.name == 'stamps']
             # Wait briefly for the final IMU bracket; keep original capture times.
-            last_ns = self.stamp(msg)+round((channels[0][-1] if channels and channels[0] else 0.)*1e9)
+            last_ns = self.stamp(msg)+round((settings.sensor_time_offset_s
+                +(channels[0][-1] if channels and channels[0] else 0.))*1e9)
             if (settings.geometry_gate() == 'ready' and time.monotonic()-received < .05
                     and (self.last_imu_ns is None or self.last_imu_ns < last_ns)):
                 return
@@ -223,6 +248,8 @@ def main(args=None):
                     self.last_sent_ns, self.last_send_at = row['representative_stamp_ns'], time.monotonic()
                     self.counts['published'] += 1
                     row['published'] = True
+                    self.last_published = dict(row)
+                    self.readiness.observe(self.last_published)
                 except ValueError as error:
                     row['gate'] = str(error)
             reason = 'accepted' if row['accepted'] else row['reasons'][0]
@@ -249,10 +276,16 @@ def main(args=None):
                 self.pending = self.client.call_async(GetParameters.Request(names=list(PARAMETERS)))
                 self.request_at = now
             row = dict(gate=self.gate(), geometry_gate=settings.geometry_gate(), counts=dict(self.counts),
+                status_stamp_ns=self.get_clock().now().nanoseconds,
+                last_sent_stamp_ns=self.last_sent_ns,
+                last_published_observation=self.last_published,
+                stationary_window=self.readiness.status(),
                 parameters=self.params, settings=asdict(settings), last_observation=self.last,
                 last_send_age_s=None if self.last_send_at is None else now-self.last_send_at,
                 mode=None if self.state is None else self.state.mode,
-                mode_independent=True, z_observed=False, flight_commands_enabled=False,
+                mode_independent=settings.floor_policy != 'ground_static',
+                ground_test_only=settings.floor_policy == 'ground_static',
+                z_observed=False, flight_commands_enabled=False,
                 parameter_writes_enabled=False, fusion_verified=False, physical_accuracy_verified=False)
             self.status.publish(String(data=json.dumps(row,ensure_ascii=False,allow_nan=False)))
 

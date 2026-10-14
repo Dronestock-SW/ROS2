@@ -2,6 +2,11 @@
 
 수신·후보정·관측 연결 코드의 입구다. 기능을 수정하거나 해당 시험을 찾을 때 읽는다.
 
+[B_TF 수신 수정](../../docs/report/btf_sensor_timing_20261014.md)은
+IMU·ToF 전용 실행기·DDS 100개·기본 내부 기록을 사용한다.
+실기 배포는 원본 재생 결과 검토 뒤 진행한다.
+ToF 주기 변경은 [별도 설계](../../docs/architecture/tof_rate_scenarios_20261014.md)다.
+
 [실물 웹 비행 절차](../../docs/runbooks/web_test_flight.md)는
 `/uwb/btf_pose`를 FC 브리지에 연결한다.
 `/uwb/btf_xyz`는 측정한 태그 높이를 표시한다.

@@ -26,6 +26,10 @@ def main():
     for name in ('config', 'alignment', 'site-config', 'mission-store', 'state-dir', 'ledger'):
         p.add_argument('--' + name, type=Path, required=True)
     p.add_argument('--check-only', action='store_true')
+    p.add_argument('--lidar-config', type=Path,
+        help='Qualified metric scan configuration for the independent LiDAR2D sender')
+    p.add_argument('--external-lidar-bridge', action='store_true',
+        help='Reuse an already running LiDAR2D sender; its config and live status remain required')
     p.add_argument('--cpp-ai-binary', type=Path, required=True)
     p.add_argument('--external-observation-bridge', action='store_true',
         help='Reuse the shared manual/OFFBOARD UWB+LiDAR service; mission readiness still checks its live status')
@@ -40,10 +44,19 @@ def main():
     boot = Path('/proc/sys/kernel/random/boot_id').read_text().strip()
     if not os.environ.get('AMENT_PREFIX_PATH'):
         p.error('Source ROS and the workspace install/setup.bash first')
-    from drone_mission.final_stack import validate_field_configuration, require_field_dependencies
+    from drone_mission.final_stack import validate_field_configuration, require_field_dependencies, validate_takeoff_lidar
+    lidar_settings = None
     try:
         mission_settings, observation_settings = validate_field_configuration(
             cfg, alignment, host_boot_id=boot)
+        if mission_settings.takeoff_lidar_required or a.external_lidar_bridge:
+            if not a.lidar_config or not a.lidar_config.is_file():
+                raise ValueError('takeoff_lidar_config_required')
+        if a.lidar_config:
+            from drone_uwb.processing.lidar_motion import LidarMotionSettings
+            lidar = json.loads(a.lidar_config.read_text(encoding='utf-8'))
+            validate_takeoff_lidar(mission_settings,lidar,native_executor=bool(a.cpp_executor_binary))
+            lidar_settings = asdict(LidarMotionSettings(**lidar['settings']))
         require_field_dependencies()
         from drone_mission.cpp_mission_ai import inspect_binary
         cpp_binary, cpp_sha256 = inspect_binary(a.cpp_ai_binary)
@@ -99,7 +112,7 @@ def main():
     if executor_binary:
         native_config = a.state_dir/'cpp-executor.json'
         native_config.write_text(json.dumps(dict(mission=asdict(mission_settings), output_enabled=True, test_mode=False,
-            record_file=str(a.state_dir/'cpp-executor-events.jsonl')), indent=2), encoding='utf-8')
+            lidar_settings=lidar_settings, record_file=str(a.state_dir/'cpp-executor-events.jsonl')), indent=2), encoding='utf-8')
         observer_code = ('import rclpy\nfrom drone_mission.cpp_observer import CppObserver\n'
                          'rclpy.init()\nn=CppObserver()\nn.streams_requested=True\nrclpy.spin(n)')
         observer_command = ['-c', observer_code, '--ros-args', '-p', 'execute:=true', '-p',
@@ -107,6 +120,10 @@ def main():
             'record_directory:='+str(a.state_dir/'observer-events')]
         native_command = [str(executor_binary), str(native_config)]
     commands = select_execution_commands(commands, observer_command, a.external_observation_bridge)
+    if a.lidar_config and not a.external_lidar_bridge:
+        commands.insert(0, ('lidar_bridge', ['-m', 'drone_uwb.integration.ros.lidar_velocity_bridge',
+            '--config', str(a.lidar_config), '--same-user-dds',
+            '--record-directory', str(a.state_dir/'lidar-observations')]))
     children, rows = [], []
     try:
         if native_command:

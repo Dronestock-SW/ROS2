@@ -43,3 +43,20 @@ def test_active_callback_errors_remain_failures(lifecycle):
 def test_other_nodes_keep_their_existing_interrupt_policy(lifecycle):
     module,ros,handlers,activity=lifecycle;module.init_for_main()
     with pytest.raises(KeyboardInterrupt):handlers[signal.SIGTERM](signal.SIGTERM,None)
+
+
+def test_ingress_exception_reaches_main_and_executor_is_joined(lifecycle, monkeypatch):
+    module,ros,handlers,activity=lifecycle
+    module.init_for_main(interrupt_spin=False)
+    closed=[]
+    class Ingress:
+        def __init__(self, **kwargs): pass
+        def add_node(self,node): pass
+        def spin_once(self,**kwargs): raise RuntimeError('sensor conversion failed')
+        def wake(self): pass
+        def shutdown(self): closed.append(True)
+    monkeypatch.setitem(sys.modules,'rclpy.executors',SimpleNamespace(SingleThreadedExecutor=Ingress))
+    ros.spin_once=lambda *args,**kwargs:None
+    with pytest.raises(RuntimeError,match='sensor conversion failed'):
+        module.spin_until_stopped(SimpleNamespace(context=None),ingress_node=object())
+    assert closed == [True]

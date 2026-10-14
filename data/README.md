@@ -5,6 +5,7 @@ UWB 수신·보정과 26일 비행 분석에 쓸 자료 색인이다.
 
 | 경로 | 내용 |
 |---|---|
+| [13일 자동 이륙 공백](processed/uwb/takeoff_gap_20261014/) | 같은 비행 RAW 거부 집계·브리지 재개 대기·ULog·C++ 전환 요약 |
 | [raw/uwb](raw/uwb/) | UWB 정지 교정·평가 기록과 이전 RAW |
 | [raw/flight/20260926](raw/flight/20260926/) | 사용자 지정 26일 비행 자료 후보 |
 | [raw/flight/20260927](raw/flight/20260927/) | 27일 Position 모드 포함 비행 기록 |

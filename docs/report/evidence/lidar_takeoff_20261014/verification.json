@@ -1,0 +1,137 @@
+{
+  "schema": "lidar-takeoff-verification/1",
+  "date": "2026-10-14",
+  "scope": "isolated source build, ROS localhost domain 99, mock FC; no physical flight or FC parameter changes",
+  "python_tests": {
+    "passed": 367,
+    "skipped": 8,
+    "failed": 0,
+    "skip_reason": "optional SANGWON_CPP_AI_BINARY not supplied; native executor tested separately",
+    "log_sha256": "74b49510cabb9aa406c2c8d5d230b331f1c3195752b9ed4cea5c42ecb0615171"
+  },
+  "cpp_executor_contracts": {
+    "passed": 53,
+    "failed": 0,
+    "log_sha256": "10d2d4833a61b0ff1ef25099ae218b22acf993804ce12a8092c803be4258ea5f"
+  },
+  "ros_scenarios": [
+    {
+      "scenario": "separate_lidar_uwb_recovery",
+      "expected_outcome": "END",
+      "actual_outcome": "END",
+      "test_passed": true,
+      "max_received_setpoint_gap_s": 0.062146929994923994,
+      "final_xy_m": [
+        2.0,
+        2.0
+      ],
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "POSCTL",
+        "OFFBOARD",
+        "LAND"
+      ],
+      "max_uwb_age_during_position_s": 12.015628597,
+      "first_position_uwb_age_s": 6.612378235,
+      "evidence_sha256": "ff6aeebab0176d7918d4e2919b1f6d4b8da2395cca26336b19edaf16d3f9be2d"
+    },
+    {
+      "scenario": "separate_lidar_loss",
+      "expected_outcome": "FAILED",
+      "actual_outcome": "FAILED",
+      "test_passed": true,
+      "max_received_setpoint_gap_s": 0.0616683410044061,
+      "final_xy_m": [
+        2.0,
+        2.0
+      ],
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "max_uwb_age_during_position_s": null,
+      "first_position_uwb_age_s": null,
+      "evidence_sha256": "71f07926f08b6a6340760b51a335677cdcb6ec64504897158751394f1a3b5c45"
+    },
+    {
+      "scenario": "separate_lidar_malformed",
+      "expected_outcome": "FAILED",
+      "actual_outcome": "FAILED",
+      "test_passed": true,
+      "max_received_setpoint_gap_s": 0.05549042500206269,
+      "final_xy_m": [
+        2.0,
+        2.0
+      ],
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "max_uwb_age_during_position_s": null,
+      "first_position_uwb_age_s": null,
+      "evidence_sha256": "8c01c38af3720c0d26ac515beeae676b8ffea17008351692a2ca5941e527480a"
+    },
+    {
+      "scenario": "separate_takeoff_gap",
+      "expected_outcome": "END",
+      "actual_outcome": "END",
+      "test_passed": true,
+      "max_received_setpoint_gap_s": 0.05760110000119312,
+      "final_xy_m": [
+        2.0,
+        2.0
+      ],
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "POSCTL",
+        "OFFBOARD",
+        "LAND"
+      ],
+      "max_uwb_age_during_position_s": 0.043504673,
+      "first_position_uwb_age_s": 0.011564855,
+      "evidence_sha256": "bc447c505d16b12367639b587429df8e54c4c3865c784547ffa7f092c5350f7d"
+    }
+  ],
+  "colcon_packages": [
+    "drone_uwb",
+    "drone_mission",
+    "drone_platform_link",
+    "drone_demo"
+  ],
+  "native_build": "CMake Release with -Wall -Wextra -Wpedantic -Werror",
+  "binaries": {
+    "sangwon_field_executor": "98edc294c09d2de6f2c1b1736ec0cff419c362cf6f4eee5f762ddeba31261780",
+    "sangwon_field_executor_replay": "8e4df9f67d0d6695381d17c81921dd0f9d142db9d72de8fdd3b87211356be2fd"
+  },
+  "source_sha256": {
+    "src/drone_mission/config/final_mission.example.json": "8db36996f9ef8445c99ee26f8d25d639ef91d7640a3ee3a398301da9715ac3bd",
+    "src/drone_mission/drone_mission/contracts.py": "6dfa5debc6e9c288103f5dc3016352c1bf29f0f33f7006e5a910376323d84d15",
+    "src/drone_mission/drone_mission/final_stack.py": "1371781d3d103211038cd81744b7b570d378679f7085a29bb2a71f6e24924266",
+    "src/drone_mission/test/test_final_stack.py": "1bbff01f75ce6b62845d533498f173020eaecfda43c6f846f9b2a6c47fa9056e",
+    "src/drone_mission/test/test_final_stack_cli.py": "5c006ce9fc8ecf491f64798c9cc98e0f133782a23a25d9cc72817cbcb1116146",
+    "src/drone_uwb/config/runtime/lidar_velocity_field.json": "449d0ad7d03f09eeecbd06f161f92c27849f0e7a6321fb76bc1fadcf56e712f4",
+    "src/drone_uwb/drone_uwb/integration/lidar_velocity.py": "eb80c3eadedc8a3cf10b660a863480eacc326d146c7b58d7e9d7528fe820e2c1",
+    "src/drone_uwb/drone_uwb/integration/ros/lidar_velocity_bridge.py": "8cc999c3427bb1a1c4deb048ac78522d6e425ec8edf1b072885adca1fa3b0943",
+    "src/drone_uwb/drone_uwb/processing/lidar_motion.py": "5db919e123497d2ea2bae4fc98822b1545efd3e99c76e3f4b801fb0b287b0985",
+    "src/drone_uwb/test/processing/test_lidar_motion.py": "8efa2185f5c79921188f1bd1ba3c7189016e114912475a26d10fc129c740e80a",
+    "src/drone_uwb/tools/replay_lidar_takeoff.py": "d5bfbb8ad32ddf67416c66a15193e3b2d126aa3cd7d7da0130c734e000bed25d",
+    "src/sangwon_AI/include/sangwon_ai/field_executor.hpp": "c7379adaf0a20b24b423ee36e1ec00873997718cf890aa41932b88cb10d93e6d",
+    "src/sangwon_AI/include/sangwon_ai/field_lidar.hpp": "5d55f313cac0c5a03995e44a3d07cee9f2f0ddb956361d7d81eae7c334474811",
+    "src/sangwon_AI/ops/final_field_session.py": "79b83312edb59411e405bd4f8f93d38ae3c44452ccc8548befc1b5ae6fc521a7",
+    "src/sangwon_AI/src/field_executor_node.cpp": "76cecb5454ec193dcbdfa8ae1cda9d9e3b868ad4ff5ec5d796ae979c00b9ed8c",
+    "src/sangwon_AI/src/field_executor_replay.cpp": "3ee6f4ff7a33d15fea93e94288c25167808f6e0ad68505ef21f0a3d4a7e871c8",
+    "src/sangwon_AI/tests/field_executor_contracts.py": "0aa44fcd87d044ba8533a40597e0b10a07b28c049e37741ec0838ec0fd1dabb0",
+    "src/sangwon_AI/tests/field_executor_ros.py": "5ce190b5f6ae4f707182a2462f2989fcc9527470a878b7452228fbb3c021b842"
+  },
+  "source_hash_mismatches": [],
+  "raw_modified": false,
+  "fc_parameter_writes": false,
+  "firmware_changed": false,
+  "physical_flight_tested": false,
+  "physical_accuracy_verified": false,
+  "real_lidar_fusion_verified": false
+}

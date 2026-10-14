@@ -7,7 +7,8 @@ import pytest
 from scipy.spatial.transform import Rotation
 
 from drone_uwb.processing.lidar_motion import LidarMotionSettings, MeasuredLidarMotion, sdk_points
-from drone_uwb.integration.lidar_velocity import parameter_gate, velocity_fields
+from drone_uwb.integration.lidar_velocity import (parameter_gate, velocity_fields, VelocityReadinessWindow,
+    ground_test_gate, validate_ground_test_duration)
 
 
 def settings(**kwargs):
@@ -131,3 +132,103 @@ def test_wire_ne_covariance_and_nan_vertical_without_mode_switch_dependency():
     assert parameter_gate(settings(),dict(params,EKF2_LID2_VER=None))=='dedicated_lidar2d_firmware_required'
     assert parameter_gate(settings(),dict(params,EKF2_LID2_EN=0))=='px4_lidar2d_not_enabled'
     assert parameter_gate(settings(),dict(params,EKF2_LID2_AGE=150.))=='px4_lidar2d_age_mismatch'
+    independent = settings(floor_policy='metric_scan',vertical_structure_ref='synthetic-walls')
+    assert parameter_gate(independent,params)=='independent_lidar2d_firmware_required'
+    assert parameter_gate(independent,dict(params,EKF2_LID2_VER=2))=='ready'
+
+
+@pytest.mark.parametrize('floor,stamp', [(math.nan,0),(.02,0),(1.,1),(-1.,1)])
+def test_metric_scan_survives_unobserved_floor_without_inventing_height(floor,stamp):
+    cfg = settings(floor_policy='metric_scan',vertical_structure_ref='synthetic-vertical-walls')
+    model = MeasuredLidarMotion(cfg)
+    rows = [model.observe(**dict(fixture(model,1.+i*.1),floor_range_m=floor,floor_stamp_ns=stamp)) for i in range(9)]
+    accepted = [r for r in rows if r['accepted']]
+    assert len(accepted) >= 6
+    assert all(r['sensor_height_m'] is None and r['floor_range_valid'] is False for r in rows)
+    assert max(np.linalg.norm(np.asarray(r['velocity_ne_m_s'])-[-.08,.12]) for r in accepted) < .025
+    assert all(r['height_used_for_xy_scale'] is False and r['z_observed'] is False for r in rows)
+
+
+def test_metric_scan_tof_loss_and_recovery_do_not_reset_horizontal_continuity():
+    model = MeasuredLidarMotion(settings(floor_policy='metric_scan',vertical_structure_ref='synthetic-vertical-walls'))
+    rows=[]
+    for i in range(12):
+        scan=fixture(model,1.+i*.1,velocity=(0.,0.),yaw_rate=0.)
+        # Ascending through a wall scene: height never supplies XY scale.
+        scan['floor_range_m']=.02+i*.15 if i not in (4,5,6) else math.nan
+        rows.append(model.observe(**scan))
+    assert all(r['accepted'] for r in rows[3:])
+    assert len({r['segment'] for r in rows[3:]})==1
+    assert max(np.linalg.norm(r['velocity_ne_m_s']) for r in rows[3:]) < .01
+    assert rows[5]['sensor_height_m'] is None and rows[10]['sensor_height_m'] > 1.
+
+
+def test_unqualified_scene_and_required_floor_still_block():
+    cfg=settings(floor_policy='metric_scan')
+    assert cfg.geometry_gate()=='vertical_structure_unconfirmed'
+    model=MeasuredLidarMotion(settings())
+    assert model.observe(**dict(fixture(model,1.),floor_range_m=math.nan))['reasons']==['measured_floor_range_unavailable']
+
+
+def test_ground_bench_observes_horizontal_motion_without_claiming_floor_height():
+    model=MeasuredLidarMotion(settings(floor_policy='ground_static'))
+    rows=[model.observe(**dict(fixture(model,1.+i*.1,velocity=(0.,0.),yaw_rate=0.),
+        floor_range_m=math.nan,floor_stamp_ns=0)) for i in range(6)]
+    assert all(r['accepted'] for r in rows[3:])
+    assert all(r['sensor_height_m'] is None and not r['z_observed'] for r in rows)
+    assert max(np.linalg.norm(r['velocity_ne_m_s']) for r in rows[3:]) < .01
+
+
+def test_ground_bench_never_latches_permission_to_continue_armed_or_airborne():
+    state=dict(connected=True,armed=False,landed_state=1,state_age_s=.1,landed_age_s=.1)
+    assert ground_test_gate(**state)=='ready'
+    for change in (dict(armed=True),dict(connected=False),dict(landed_state=2),
+                   dict(landed_state=None),dict(state_age_s=2.6),dict(landed_age_s=.51)):
+        assert ground_test_gate(**{**state,**change})!='ready'
+    cfg=settings(floor_policy='ground_static')
+    validate_ground_test_duration(cfg,30.)
+    for seconds in (0.,-1.,61.,math.nan,math.inf):
+        with pytest.raises(ValueError,match='bounded_duration'):
+            validate_ground_test_duration(cfg,seconds)
+
+
+def test_metric_scan_keeps_tilt_and_scan_support_limits():
+    cfg=settings(floor_policy='metric_scan',vertical_structure_ref='synthetic-vertical-walls')
+    model=MeasuredLidarMotion(cfg)
+    row=model.observe(**dict(fixture(model,1.,roll_rate=.2),floor_range_m=math.nan))
+    assert row['reasons']==['scan_tilt_limit']
+    model=MeasuredLidarMotion(cfg)
+    for i in range(5):model.observe(**fixture(model,1.+i*.1))
+    scan=fixture(model,1.5)
+    # Vertical plane transition into an unobservable scene must withhold XY.
+    scan['points'][:]=0.
+    row=model.observe(**dict(scan,floor_range_m=math.nan))
+    assert not row['accepted']
+
+
+def test_readiness_uses_measured_intervals_without_smoothing_fc_input():
+    window=VelocityReadinessWindow()
+    def sample(i,v,reset=0):
+        return dict(interval_start_ns=i*100_000_000,interval_end_ns=(i+1)*100_000_000,
+            representative_stamp_ns=i*100_000_000+50_000_000,reset_counter=reset,velocity_ne_m_s=[v,0.])
+    for i in range(10):window.observe(sample(i,.2 if i%2 else -.2))
+    status=window.status()
+    assert status['ready'] and status['speed_m_s']<1e-8
+    assert status['observed_s']==pytest.approx(1.) and not status['fc_input_filtered']
+    assert window.rows[-1]['velocity_ne_m_s']==[.2,0.]
+    window.observe(sample(9,0.));assert window.status()==status
+    for i in range(10,21):window.observe(sample(i,.2))
+    assert window.status()['ready'] and window.status()['speed_m_s']==pytest.approx(.2)
+    window.observe(sample(30,.2));assert not window.status()['ready']
+    for i in range(31,40):window.observe(sample(i,.2))
+    window.observe(sample(40,.2,reset=1));assert window.status()['samples']==1
+
+
+def test_readiness_does_not_count_missing_intervals_as_zero_motion():
+    window=VelocityReadinessWindow()
+    for i in (0,2,4,6,8):
+        window.observe(dict(interval_start_ns=i*100_000_000,interval_end_ns=(i+1)*100_000_000,
+            representative_stamp_ns=i*100_000_000+50_000_000,reset_counter=0,velocity_ne_m_s=[.2,0.]))
+    status=window.status()
+    assert not status['ready'] and status['observed_s']==pytest.approx(.5)
+    assert status['speed_m_s']==pytest.approx(.2)

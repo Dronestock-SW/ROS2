@@ -134,7 +134,8 @@ class Observations:
                             'attempted_task_ids', 'remaining_task_ids', 'failed_scan_task_ids', 'route_complete', 'preflight', 'fc_landed',
                             'native_takeoff', 'operator_session_id', 'arm_request_available', 'arm_request_blocker', 'operator_arm_result', 'mission_ai', 'horizontal_observation',
                             'observation_status','recording_ok','record_pending','command_record_pending','storage','observer_metadata_delayed','web_report_delayed',
-                            'executor_backend','executor_owner','executor_session','setpoints_sent','max_sender_gap_s','position_tracking'):
+                            'executor_backend','executor_owner','executor_session','setpoints_sent','max_sender_gap_s','position_tracking',
+                            'pilot_recovery','ground_reset_count','previous_flight'):
                     if key in value:
                         result[key] = value[key]
                 result.update(flight_state=value.get('state'), flight_reason=value.get('reason'),

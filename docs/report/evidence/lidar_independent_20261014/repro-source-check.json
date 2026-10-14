@@ -1,0 +1,97 @@
+[
+  {
+    "path": "boards/px4/fmu-v6c/lidar2d.px4board",
+    "equal_normalized_utf8": true,
+    "equal_bytes": true
+  },
+  {
+    "path": "msg/CMakeLists.txt",
+    "equal_normalized_utf8": true,
+    "equal_bytes": true
+  },
+  {
+    "path": "msg/LidarVelocity2d.msg",
+    "equal_normalized_utf8": true,
+    "equal_bytes": true
+  },
+  {
+    "path": "msg/LidarVelocity2dStatus.msg",
+    "equal_normalized_utf8": true,
+    "equal_bytes": false
+  },
+  {
+    "path": "src/modules/ekf2/EKF/aid_sources/auxvel/auxvel_fusion.cpp",
+    "equal_normalized_utf8": true,
+    "equal_bytes": true
+  },
+  {
+    "path": "src/modules/ekf2/EKF/common.h",
+    "equal_normalized_utf8": true,
+    "equal_bytes": true
+  },
+  {
+    "path": "src/modules/ekf2/EKF/ekf.h",
+    "equal_normalized_utf8": true,
+    "equal_bytes": true
+  },
+  {
+    "path": "src/modules/ekf2/EKF/ekf_helper.cpp",
+    "equal_normalized_utf8": true,
+    "equal_bytes": true
+  },
+  {
+    "path": "src/modules/ekf2/EKF/estimator_interface.cpp",
+    "equal_normalized_utf8": true,
+    "equal_bytes": true
+  },
+  {
+    "path": "src/modules/ekf2/EKF2.cpp",
+    "equal_normalized_utf8": true,
+    "equal_bytes": false
+  },
+  {
+    "path": "src/modules/ekf2/EKF2.hpp",
+    "equal_normalized_utf8": true,
+    "equal_bytes": true
+  },
+  {
+    "path": "src/modules/ekf2/params_aux_velocity.yaml",
+    "equal_normalized_utf8": true,
+    "equal_bytes": true
+  },
+  {
+    "path": "src/modules/logger/logged_topics.cpp",
+    "equal_normalized_utf8": true,
+    "equal_bytes": true
+  },
+  {
+    "path": "src/modules/mavlink/mavlink_receiver.cpp",
+    "equal_normalized_utf8": true,
+    "equal_bytes": true
+  },
+  {
+    "path": "src/modules/mavlink/mavlink_receiver.h",
+    "equal_normalized_utf8": true,
+    "equal_bytes": true
+  },
+  {
+    "path": "boards/px4/sitl/lidar2d.px4board",
+    "equal_normalized_utf8": true,
+    "equal_bytes": false
+  },
+  {
+    "path": "boards/px4/sitl/test.px4board",
+    "equal_normalized_utf8": true,
+    "equal_bytes": false
+  },
+  {
+    "path": "src/modules/ekf2/test/test_EKF_lidar_independent.cpp",
+    "equal_normalized_utf8": true,
+    "equal_bytes": true
+  },
+  {
+    "path": "src/modules/ekf2/test/CMakeLists.txt",
+    "equal_normalized_utf8": true,
+    "equal_bytes": false
+  }
+]

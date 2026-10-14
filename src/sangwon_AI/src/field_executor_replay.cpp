@@ -5,6 +5,7 @@ int main() {
   for(std::string line;std::getline(std::cin,line);) {
     try {
       const auto in=Json::parse(line);const auto method=in.at("method").get<std::string>();
+      if(method=="lidar_status") {auto out=lidar_sender_state(in.at("report"),in.at("ros_s"),in.at("receipt_age_s"),in.at("publishers"),in.at("tag"));std::cout<<Json({{"ok",true},{"payload",out}}).dump()<<std::endl;continue;}
       if(method=="configure")executor=std::make_unique<FieldExecutor>(in.at("settings"));
       else {
         require(bool(executor),"CONFIGURE_REQUIRED");

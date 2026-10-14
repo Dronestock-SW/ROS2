@@ -16,6 +16,8 @@ def finite(*values):
 @dataclass(frozen=True)
 class Settings:
     lidar_gap: dict = field(default_factory=dict)
+    takeoff_lidar_required: bool = False
+    takeoff_lidar_fusion_ref: str = ''
     mission_ai: str = 'python_test'
     start_mode: str = 'ground_takeoff'
     takeoff_backend: str = 'native'
@@ -63,6 +65,10 @@ class Settings:
     layout_id: str = LAYOUT
 
     def __post_init__(self):
+        if type(self.takeoff_lidar_required) is not bool or not isinstance(self.takeoff_lidar_fusion_ref, str):
+            raise ValueError('invalid_takeoff_lidar_contract')
+        if self.takeoff_lidar_required and (self.mission_ai != 'cpp_bt' or self.start_mode != 'takeoff_hold' or self.takeoff_backend != 'local_position'):
+            raise ValueError('takeoff_lidar_requires_cpp_local_takeoff_hold')
         if self.takeoff_backend not in ('native', 'local_position'):
             raise ValueError('unsupported_takeoff_backend')
         if self.takeoff_backend == 'local_position' and (self.start_mode != 'takeoff_hold' or not self.local_xy):

@@ -7,7 +7,8 @@ import pytest
 
 from drone_mission.final_stack import (
     aligned_field_configuration, stationary_yaw_mean, validate_field_configuration,
-    require_field_dependencies)
+    require_field_dependencies, validate_takeoff_lidar)
+from drone_mission.contracts import Settings
 from drone_uwb.integration.planar import map_yaw_to_enu
 
 
@@ -77,3 +78,22 @@ def test_missing_dependency_is_reported_before_starting_processes(monkeypatch):
     with pytest.raises(RuntimeError, match='field_runtime_dependency_unavailable:pymavlink'):
         require_field_dependencies()
     assert imported == ['rclpy', 'mavros.mavlink', 'pymavlink']
+
+
+def test_takeoff_lidar_configuration_requires_real_qualification():
+    mission=Settings(**dict(templates()[0],takeoff_lidar_fusion_ref='synthetic-fusion-evidence'))
+    lidar=dict(settings=dict(enabled=True,tag_id='6',sensor_to_body_flu_m=[0.,0.,.1],
+        sensor_to_body_yaw_rad=0.,mount_position_ref='synthetic',mount_yaw_ref='synthetic',
+        timing_ref='synthetic',scan_plane_parallel_confirmed=True,floor_policy='metric_scan',
+        vertical_structure_ref='synthetic-vertical-walls'))
+    validate_takeoff_lidar(mission,lidar,native_executor=True)
+    for changes,reason in ((dict(enabled=False),'enabled_required'),(dict(timing_ref=''),'acquisition_timing'),
+                          (dict(vertical_structure_ref=''),'vertical_structure'),(dict(tag_id='5'),'tag_mismatch'),
+                          (dict(floor_policy='required'),'metric_scan'),
+                          (dict(floor_policy='ground_static'),'metric_scan'),(dict(interval_count=2),'nonoverlapping')):
+        with pytest.raises(ValueError,match=reason):
+            validate_takeoff_lidar(mission,dict(settings={**lidar['settings'],**changes}),native_executor=True)
+    with pytest.raises(ValueError,match='fusion_qualification'):
+        validate_takeoff_lidar(Settings(**templates()[0]),lidar,native_executor=True)
+    with pytest.raises(ValueError,match='cpp_executor'):
+        validate_takeoff_lidar(mission,lidar,native_executor=False)

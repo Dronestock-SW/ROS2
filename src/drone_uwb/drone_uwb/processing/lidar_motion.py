@@ -27,6 +27,8 @@ class LidarMotionSettings:
     mount_yaw_ref: str = ''
     scan_plane_parallel_confirmed: bool = False
     timing_ref: str = ''
+    floor_policy: str = 'required'
+    vertical_structure_ref: str = ''
     max_observation_age_s: float = .18
     max_receipt_age_s: float = .15
     sensor_time_offset_s: float = 0.
@@ -46,6 +48,10 @@ class LidarMotionSettings:
     expected_avel_delay_ms: float = 5.
 
     def __post_init__(self):
+        if self.floor_policy not in ('required', 'metric_scan', 'ground_static'):
+            raise ValueError('unsupported_lidar_floor_policy')
+        if not isinstance(self.vertical_structure_ref, str):
+            raise ValueError('invalid_vertical_structure_reference')
         if self.tag_id not in ('5', '6') or type(self.enabled) is not bool:
             raise ValueError('invalid_lidar_identity_or_enable')
         if self.sensor_to_body_flu_m is not None:
@@ -66,6 +72,7 @@ class LidarMotionSettings:
         if (self.max_observation_age_s > .2 or self.max_receipt_age_s > .2
                 or self.max_tilt_deg > 15. or self.max_speed_m_s > 1.
                 or self.range_min_m >= self.range_max_m
+                or self.range_max_m > 12.
                 or self.min_sensor_height_m >= self.max_sensor_height_m
                 or not math.isfinite(self.sensor_time_offset_s) or abs(self.sensor_time_offset_s) > .05):
             raise ValueError('lidar_limit_outside_supported_contract')
@@ -81,6 +88,8 @@ class LidarMotionSettings:
             return 'scan_plane_unconfirmed'
         if not self.timing_ref:
             return 'acquisition_timing_unconfirmed'
+        if self.floor_policy == 'metric_scan' and not self.vertical_structure_ref.strip():
+            return 'vertical_structure_unconfirmed'
         return 'ready'
 
 
@@ -149,16 +158,26 @@ class MeasuredLidarMotion:
             if (not 0 <= receipt_age_s <= cfg.max_receipt_age_s
                     or not 0 <= now_ns/1e9-times[-1] <= cfg.max_receipt_age_s):
                 raise TimingError('lidar_scan_stale_or_future')
-            if (not math.isfinite(floor_range_m) or not isinstance(floor_stamp_ns, int)
-                    or not 0 <= (now_ns-floor_stamp_ns)/1e9 <= .15):
+            floor_valid = (math.isfinite(floor_range_m) and floor_range_m > 0
+                and type(floor_stamp_ns) is int and floor_stamp_ns > 0
+                and 0 <= (now_ns-floor_stamp_ns)/1e9 <= .15)
+            base.update(floor_policy=cfg.floor_policy, floor_range_valid=floor_valid,
+                floor_range_m=float(floor_range_m) if floor_valid else None,
+                sensor_height_m=None, height_used_for_xy_scale=False)
+            if cfg.floor_policy == 'required' and not floor_valid:
                 raise TimingError('measured_floor_range_unavailable')
             rotations, diagnostic = self.imu.rotations(times)
             middle_rotation = self.imu.rotations(np.array([mid]))[0][0]
             if rotations[:,2,2].min() < math.cos(math.radians(cfg.max_tilt_deg)):
                 raise TimingError('scan_tilt_limit')
             arm = np.asarray(cfg.sensor_to_body_flu_m)
-            sensor_height = floor_range_m*middle_rotation[2,2]+float((middle_rotation@arm)[2])
-            if not cfg.min_sensor_height_m <= sensor_height <= cfg.max_sensor_height_m:
+            sensor_height = (floor_range_m*middle_rotation[2,2]+float((middle_rotation@arm)[2])) if floor_valid else None
+            # Metric scan matching has no optical-flow height scale. In the
+            # explicitly qualified vertical-wall scene, ToF is diagnostic only.
+            # ground_static is a bounded DISARM bench at one scan height;
+            # its sender must never continue into an armed/airborne state.
+            # Missing height remains unknown; never substitute a ground height.
+            if cfg.floor_policy == 'required' and not cfg.min_sensor_height_m <= sensor_height <= cfg.max_sensor_height_m:
                 raise TimingError('sensor_floor_clearance_unavailable')
             sensor_rotation = Rotation.from_euler('z', cfg.sensor_to_body_yaw_rad).as_matrix()
             body = p@sensor_rotation.T+arm
@@ -174,9 +193,10 @@ class MeasuredLidarMotion:
             ranges = np.linalg.norm(p[:,:2], axis=1)
             valid = (ranges >= cfg.range_min_m)&(ranges <= cfg.range_max_m)
             self.last_first_ns = first_stamp_ns
-            obs = self.matcher.observe(ordered_cloud(level, valid, self.config), mid, imu_yaw_rad=yaw)
+            cloud = ordered_cloud(level, valid, self.config)
+            obs = self.matcher.observe(cloud, mid, imu_yaw_rad=yaw)
             base.update(reasons=obs.reasons, reset_counter=max(0,obs.segment)%256,
-                segment=obs.segment, valid_beams=int(valid.sum()), duplicate_points_dropped=dropped,
+                segment=obs.segment, valid_beams=int(valid.sum()), usable_points=len(cloud.points), duplicate_points_dropped=dropped,
                 scan_midpoint_ns=round(mid*1e9), timing=dict(diagnostic,
                     scan_span_s=float(times[-1]-times[0]), translation_prior_available=has_prior,
                     sensor_time_offset_s=cfg.sensor_time_offset_s,

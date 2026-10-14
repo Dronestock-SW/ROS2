@@ -10,6 +10,9 @@
 
 | 찾는 내용 | 위치 |
 |---|---|
+| IMU 큐·전용 실행기·내부 기록·13일 원본 재생 | [B_TF 수신 수정 검증](report/btf_sensor_timing_20261014.md) |
+| TFmini Plus 실제 지원 주기·50Hz·10Hz·단절별 설계 | [ToF 주기 시나리오](architecture/tof_rate_scenarios_20261014.md) |
+| 같은 비행 RAW·B_TF 27회 거부·브리지 대기·PX4 리셋 | [14일 자동 이륙 공백 분석](report/takeoff_gap_root_cause_20261014.md) |
 | 보고 지연 LAND 제거·FC 기준 수행·연속 기록·중복 검사 정리 | [13일 실행·기록 보완](report/fc_owned_runtime_20261013.md) |
 | 시작 검사 35개·시간 정책 22종·자동 LAND·EV 시각 보정 구분 | [13일 실행 제한 검토](report/constraint_audit_20261013.md) |
 | 상원 작업 통합·전달 관측 제한 0.7초·FC 설정 구분 | [13일 통합 기록](report/sangwon_integration_20261013.md) |
@@ -240,3 +243,8 @@ Windows에서는 심볼릭 링크를 지원하는 WSL 체크아웃을 쓴다.
 
 - [13일 Jetson 현장 준비](report/jetson_field_preparation_20261013.md)
 - [13일 저녁 웹 비행 세션](runbooks/evening_web_flight_20261013.md)
+## Companion과 PX4 API
+
+- [로직 분석·수정 지점 API 명세](reference/companion_px4_api.md): 입력 → 계산 → 반환값 → 다음 소비자, 목적별 코드·파라미터 수정 위치.
+- [wire 상세 사전](reference/companion_px4_wire_reference.md): 필드·좌표·상태 코드의 최초 조사 기록.
+- [2026-10-13 실물 연결 확인](report/companion_px4_audit_20261013.md): 설치·융합 상태와 조회 한계.

@@ -29,7 +29,7 @@ def state(**changes):
 class Peer:
     def __init__(self,cfg=None):
         self.p=subprocess.Popen([BINARY],stdin=subprocess.PIPE,stdout=subprocess.PIPE)
-        self.t=10.;self.s=state();self.request=copy.deepcopy(REQUEST)
+        self.t=10.;self.wall=10.;self.s=state();self.request=copy.deepcopy(REQUEST)
         self.call(dict(method='configure',settings=cfg or CFG))
         self.commands=[];self.out={};self.trace=[]
     def call(self,value):
@@ -42,7 +42,7 @@ class Peer:
         if self.s['armed'] and self.out.get('height_reference_m') is not None:
             target=self.out['height_reference_m'];step=max(-.5*dt,min(.5*dt,target-self.s['altitude_enu_m']));self.s['altitude_enu_m']+=step;self.s['vertical_speed_m_s']=step/dt
             if self.s['altitude_enu_m']>.15:self.s['landed']=2
-        self.out=self.call(dict(method='tick',state=self.s,request=self.request,now_s=self.t,wall_s=10.))
+        self.out=self.call(dict(method='tick',state=self.s,request=self.request,now_s=self.t,wall_s=self.wall))
         for a in self.out['actions']:
             self.commands.append(a['kind'])
             if ack:self.ack(a['token'],True)
@@ -65,6 +65,67 @@ class Contracts(unittest.TestCase):
     def tearDown(self):
         for p in self.peers:p.close()
     def peer(self,**kw):p=Peer(**kw);self.peers.append(p);return p
+    def recovered_peer(self):
+        p=self.separate();p.until('TAKING_OFF');p.s['mode']='ALTCTL';p.tick()
+        self.assertEqual(p.out['phase'],'PILOT_OVERRIDE')
+        p.s.update(armed=False,landed=1,mode='POSCTL',vertical_speed_m_s=0.,altitude_enu_m=.1,
+            rc_valid=True,rc_mapping_valid=True,rc_neutral_valid=True,rc_sticks_centered=True,rc_age_s=0.,
+            terminal_record_persisted=True,recording_ok=True)
+        return p
+
+    def test_pilot_ground_reset_requires_new_request_and_preserves_old_home(self):
+        p=self.recovered_peer();old_request=copy.deepcopy(p.request);calls=list(p.commands)
+        for _ in range(200):p.tick()
+        self.assertEqual(p.out['phase'],'PILOT_OVERRIDE')
+        for _ in range(4):p.tick()
+        self.assertEqual(p.out['phase'],'IDLE');self.assertEqual(p.commands,calls)
+        self.assertTrue(p.out['native_takeoff']['can_takeoff'])
+        self.assertEqual(p.out['previous_flight']['home_xy_m'],[2.,2.])
+        self.assertIsNone(p.out['home_xy_m']);self.assertFalse(p.out['flight_control_enabled'])
+        p.wall=11.;p.request=dict(old_request,requested_s=11.);p.tick()
+        self.assertEqual(p.out['phase'],'IDLE')
+        p.request=dict(old_request,request_id='queued-before-reset',requested_s=10.);p.tick()
+        self.assertEqual(p.out['phase'],'IDLE')
+        p.request=dict(old_request,request_id='fresh-takeoff',requested_s=11.);p.tick()
+        self.assertEqual(p.out['phase'],'PREPARING')
+        self.assertEqual(p.out['home_xy_m'],[2.,2.]);self.assertIsNone(p.out['mission_start_xy_m'])
+        p.until('TAKING_OFF');self.assertEqual(p.commands,calls+['offboard_mode','arm'])
+
+    def test_pilot_recovery_never_reclaims_armed_or_unknown_ground(self):
+        for change in (dict(armed=True,landed=2),dict(armed=True,landed=1),dict(landed=0),dict(connected=False),dict(state_age_s=3.),dict(landed_age_s=3.),dict(mode='ALTCTL')):
+            p=self.recovered_peer();p.s.update(change);calls=list(p.commands)
+            for _ in range(230):p.tick()
+            self.assertEqual(p.out['phase'],'PILOT_OVERRIDE');self.assertEqual(p.commands,calls)
+
+    def test_pilot_neutral_timer_restarts_for_sticks_rc_loss_or_record_failure(self):
+        for change in (dict(rc_sticks_centered=False),dict(rc_age_s=1.1),dict(rc_valid=False),dict(rc_mapping_valid=False),dict(rc_neutral_valid=False),dict(terminal_record_persisted=False),dict(recording_ok=False),dict(pose_age_s=.3)):
+            p=self.recovered_peer()
+            for _ in range(180):p.tick()
+            before=copy.deepcopy(p.s);p.s.update(change);p.tick();p.s=before
+            self.assertEqual(p.out['pilot_recovery']['elapsed_s'],0.)
+            for _ in range(180):p.tick()
+            self.assertEqual(p.out['phase'],'PILOT_OVERRIDE')
+            for _ in range(24):p.tick()
+            self.assertEqual(p.out['phase'],'IDLE')
+
+    def test_pilot_scheduler_gap_resets_neutral_timer(self):
+        p=self.recovered_peer()
+        for _ in range(180):p.tick()
+        p.tick(dt=2.)
+        self.assertEqual(p.out['pilot_recovery']['elapsed_s'],0.)
+        for _ in range(180):p.tick()
+        self.assertEqual(p.out['phase'],'PILOT_OVERRIDE')
+
+    def test_pilot_reset_keeps_command_tokens_unique_and_second_result(self):
+        p=self.recovered_peer();p.wall=20.
+        for _ in range(204):p.tick()
+        p.wall=21.;p.request=dict(p.request,request_id='second-takeoff',requested_s=21.)
+        p.until('PREPARING')
+        while not p.out['actions']:p.tick(ack=False)
+        token=p.out['actions'][0]['token'];self.assertGreater(token,2)
+        p.ack(1,True);p.tick(ack=False);self.assertEqual(p.out['phase'],'PREPARING')
+        p.ack(token,True);p.until('TAKING_OFF');p.s['mode']='ALTCTL';p.tick()
+        self.assertEqual(p.out['phase'],'PILOT_OVERRIDE');self.assertEqual(p.out['ground_reset_count'],1)
     def test_unsent_journal_wait_does_not_consume_fc_ack_deadline(self):
         p=self.peer();p.until('PREPARING')
         while not p.out['actions']:p.tick(ack=False)
@@ -220,9 +281,108 @@ class Contracts(unittest.TestCase):
         p.request=dict(REQUEST,action='takeoff',request_id='separate-takeoff')
         return p
 
-    def hold_ready(self,p):
+    def lidar_takeoff(self):
+        p=self.peer(cfg=dict(CFG,start_mode='takeoff_hold',takeoff_backend='local_position',
+            takeoff_lidar_required=True,takeoff_lidar_fusion_ref='synthetic-fusion-qualification'))
+        p.request=dict(REQUEST,action='takeoff',request_id='lidar-takeoff')
+        p.s.update(lidar_ready=True,lidar_gate='ready',lidar_observation_age_s=.1,
+            lidar_status_age_s=.01,lidar_speed_m_s=0.,lidar_stationary_window_ready=True)
+        return p
+
+    def test_lidar_takeoff_requires_continuous_fresh_stationary_sender_before_arm(self):
+        for change in (dict(lidar_ready=False),dict(lidar_observation_age_s=.36),
+                       dict(lidar_status_age_s=.51),dict(lidar_speed_m_s=.11),dict(lidar_stationary_window_ready=False)):
+            p=self.lidar_takeoff();p.s.update(change)
+            for _ in range(90):p.tick()
+            self.assertFalse(p.commands);self.assertFalse(p.out['native_takeoff']['can_takeoff'])
+        p=self.lidar_takeoff()
+        for _ in range(50):p.tick()
+        p.s['lidar_ready']=False;p.tick();p.s['lidar_ready']=True
+        for _ in range(50):p.tick()
+        self.assertFalse(p.commands);p.until('TAKING_OFF')
+
+    def test_lidar_takeoff_uwb_gap_keeps_original_xy_and_recovers_without_rearm(self):
+        p=self.lidar_takeoff();p.until('TAKING_OFF');p.s['uwb_age_s']=2.
         p.until('HOLD_READY')
         for _ in range(130):
+            p.tick();self.assertEqual(p.out['phase'],'HOLD_READY');self.assertFalse(p.out['native_takeoff']['can_start'])
+            self.assertEqual(p.out['home_xy_m'],[2.,2.]);self.assertFalse(p.out['streaming'])
+        self.assertEqual(p.out['native_takeoff']['blocker'],'position_hover_wait_for_uwb_recovery')
+        p.s['uwb_age_s']=0.
+        for _ in range(90):p.tick();self.assertFalse(p.out['native_takeoff']['can_start'])
+        for _ in range(15):p.tick()
+        self.assertTrue(p.out['native_takeoff']['can_start'])
+        self.assertEqual(p.commands,['offboard_mode','arm','position_mode'])
+        self.assertEqual(p.out['mission_start_xy_m'],[2.,2.])
+
+    def test_lidar_takeoff_uwb_gap_cannot_extend_unstable_ascent_deadline(self):
+        p=self.lidar_takeoff();p.until('TAKING_OFF');began=p.t
+        p.s.update(uwb_age_s=2.,velocity_xy=[.11,0.])
+        p.until('LANDING')
+        self.assertEqual(p.out['failure'],'takeoff_stability_timeout')
+        self.assertGreaterEqual(p.t-began,30.)
+        self.assertLess(p.t-began,30.2)
+        self.assertEqual(p.out['home_xy_m'],[2.,2.])
+        self.assertEqual(p.commands,['offboard_mode','arm','land'])
+
+    def test_lidar_takeoff_does_not_recapture_drifted_position(self):
+        p=self.lidar_takeoff();p.until('HOLD_READY');p.s.update(xy=[2.2,2.],uwb_xy=[2.2,2.])
+        for _ in range(110):p.tick()
+        self.assertIsNone(p.out['mission_start_xy_m']);self.assertFalse(p.out['native_takeoff']['can_start'])
+        p.s.update(xy=[2.08,2.],uwb_xy=[2.08,2.]);self.hold_ready(p)
+        self.assertEqual(p.out['mission_start_xy_m'],[2.,2.]);self.assertEqual(p.out['home_xy_m'],[2.,2.])
+
+    def test_position_hover_waits_for_uwb_scatter_to_settle(self):
+        p=self.lidar_takeoff();p.until('HOLD_READY')
+        for i in range(150):
+            p.s['uwb_xy']=[2.15 if i%2 else 1.85,2.];p.tick()
+            self.assertEqual(p.out['phase'],'HOLD_READY');self.assertFalse(p.out['native_takeoff']['can_start'])
+        p.s['uwb_xy']=[2.,2.]
+        for _ in range(90):p.tick();self.assertFalse(p.out['native_takeoff']['can_start'])
+        for _ in range(15):p.tick()
+        self.assertTrue(p.out['native_takeoff']['can_start']);self.assertNotIn('land',p.commands)
+
+    def test_lidar_loss_lands_after_grace_without_changing_xy_and_pilot_wins(self):
+        p=self.lidar_takeoff();p.until('TAKING_OFF');p.s.update(lidar_ready=False,lidar_gate='lidar_observation_stale')
+        for _ in range(9):p.tick();self.assertEqual(p.out['phase'],'TAKING_OFF');self.assertEqual(p.out['goal_xy_m'],[2.,2.])
+        p.until('LANDING');self.assertIn('takeoff_lidar_lost',p.out['failure'])
+        p=self.lidar_takeoff();p.until('TAKING_OFF');p.s.update(lidar_ready=False,mode='ALTCTL');p.tick()
+        self.assertEqual(p.out['phase'],'PILOT_OVERRIDE');self.assertNotIn('land',p.commands)
+
+    def test_lidar_drift_limit_and_short_gap_recovery(self):
+        p=self.lidar_takeoff();p.until('TAKING_OFF');p.s['xy']=[2.26,2.];p.tick()
+        self.assertEqual(p.out['failure'],'takeoff_hold_horizontal_drift')
+        p=self.lidar_takeoff();p.until('TAKING_OFF');p.s['lidar_ready']=False
+        for _ in range(5):p.tick()
+        p.s['lidar_ready']=True;self.hold_ready(p);self.assertNotIn('land',p.commands)
+
+    def test_lidar_status_rejects_stale_wrong_source_and_unpublished_rows(self):
+        p=self.lidar_takeoff()
+        report=dict(status_stamp_ns=10_000_000_000,last_sent_stamp_ns=9_900_000_000,
+            gate='ready',geometry_gate='ready',mode_independent=True,z_observed=False,flight_commands_enabled=False,
+            settings=dict(enabled=True,tag_id='6',floor_policy='metric_scan',vertical_structure_ref='synthetic-walls'),
+            parameters=dict(EKF2_LID2_VER=2,EKF2_LID2_EN=1),
+            last_published_observation=dict(accepted=True,published=True,z_observed=False,observed_axes=['x','y'],
+                reference_point='fc_imu',frame_id='local_ned',representative_stamp_ns=9_900_000_000,reset_counter=0,velocity_ne_m_s=[0.,.01]),
+            stationary_window=dict(ready=True,last_stamp_ns=9_900_000_000,reset_counter=0,samples=10,span_s=1.,observed_s=1.,
+                purpose='stationary_readiness_only',fc_input_filtered=False,speed_m_s=.01))
+        query=dict(method='lidar_status',report=report,ros_s=10.01,receipt_age_s=.01,publishers=1,tag='6')
+        good=p.call(query);self.assertTrue(good['lidar_ready']);self.assertFalse(good['lidar_fusion_verified'])
+        bad=copy.deepcopy(report);bad['parameters']['EKF2_LID2_VER']=1
+        self.assertFalse(p.call(dict(query,report=bad))['lidar_ready'])
+        for change in (dict(ros_s=10.5),dict(ros_s=9.),dict(receipt_age_s=.6),dict(publishers=2),dict(tag='5')):
+            self.assertFalse(p.call({**query,**change})['lidar_ready'])
+        for change in (dict(published=False),dict(z_observed=True),dict(representative_stamp_ns=9_800_000_000)):
+            bad=copy.deepcopy(report);bad['last_published_observation'].update(change)
+            self.assertFalse(p.call(dict(query,report=bad))['lidar_ready'])
+        bad=copy.deepcopy(report);bad['last_observation']=dict(accepted=False,reasons=['insufficient_points'])
+        self.assertTrue(p.call(dict(query,report=bad))['lidar_ready'])
+        bad=copy.deepcopy(report);bad['stationary_window']['ready']=False
+        out=p.call(dict(query,report=bad));self.assertTrue(out['lidar_ready']);self.assertFalse(out['lidar_stationary_window_ready'])
+
+    def hold_ready(self,p):
+        p.until('HOLD_READY')
+        for _ in range(240):
             p.tick()
             if p.out['native_takeoff']['can_start']:return
         self.fail(p.out)

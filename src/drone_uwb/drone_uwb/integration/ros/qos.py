@@ -7,3 +7,8 @@ def received_stream_qos():
     # status or one half of a RAW/TDMA pair invalidates later observations.
     # Keep bounded burst history; original timestamp/age/pair gates still apply.
     return QoSProfile(depth=64, reliability=ReliabilityPolicy.BEST_EFFORT)
+
+
+def btf_sensor_qos():
+    # DDS burst capacity, not a relaxation of sample age or attitude skew.
+    return QoSProfile(depth=100, reliability=ReliabilityPolicy.BEST_EFFORT)

@@ -5,6 +5,7 @@ import math
 
 from drone_uwb.integration.local_odometry import LocalObservationSettings, alignment_yaw_deg
 from .contracts import Settings
+from drone_uwb.processing.lidar_motion import LidarMotionSettings
 
 
 def validate_field_configuration(mission, alignment, *, host_boot_id):
@@ -75,3 +76,22 @@ def require_field_dependencies():
             importlib.import_module(module)
         except ImportError as exc:
             raise RuntimeError('field_runtime_dependency_unavailable:' + module) from exc
+
+
+def validate_takeoff_lidar(mission, lidar, *, native_executor):
+    """Static qualification only; live sender and FC readiness stay separate."""
+    if not mission.takeoff_lidar_required:
+        return
+    if not native_executor:
+        raise ValueError('takeoff_lidar_requires_cpp_executor')
+    cfg = LidarMotionSettings(**lidar['settings'])
+    if cfg.tag_id != mission.drone_id:
+        raise ValueError('takeoff_lidar_tag_mismatch')
+    if not cfg.enabled or cfg.floor_policy != 'metric_scan':
+        raise ValueError('takeoff_lidar_metric_scan_enabled_required')
+    if cfg.interval_count != 1:
+        raise ValueError('takeoff_lidar_nonoverlapping_intervals_required')
+    if cfg.geometry_gate() != 'ready':
+        raise ValueError(cfg.geometry_gate())
+    if not mission.takeoff_lidar_fusion_ref.strip():
+        raise ValueError('takeoff_lidar_fusion_qualification_required')

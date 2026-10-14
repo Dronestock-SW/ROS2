@@ -1,5 +1,6 @@
 """Dedicated horizontal LiDAR MAVLink contract, independent of flight mode."""
 import math
+from collections import deque
 import numpy as np
 
 SOURCE_SYSTEM = 255
@@ -9,14 +10,67 @@ RAW_WRITERS = {'mavros', 'uwb_local_odometry_bridge', 'px4_fixed_sensor_readback
 PARAMETERS = ('EKF2_LID2_VER', 'EKF2_LID2_EN', 'EKF2_LID2_AGE', 'EKF2_AVEL_DELAY')
 
 
+def ground_test_gate(*, connected, armed, landed_state, state_age_s, landed_age_s):
+    """Ground bench is continuously DISARM-only, unlike a flight sender start."""
+    if (connected is not True or armed is not False or type(landed_state) is not int
+            or landed_state != 1 or not 0 <= state_age_s <= 2.5
+            or not 0 <= landed_age_s <= .5):
+        return 'ground_test_requires_fresh_disarmed_landed_state'
+    return 'ready'
+
+
+def validate_ground_test_duration(settings, seconds):
+    if settings.floor_policy == 'ground_static' and not (math.isfinite(seconds) and 0 < seconds <= 60.):
+        raise ValueError('ground_test_requires_bounded_duration_at_most_60s')
+
+
+class VelocityReadinessWindow:
+    """One-second measured-interval mean for admission, never an FC input.
+
+    Missing intervals add neither zero velocity nor observed duration. Segment
+    changes, overlapping intervals and gaps break this diagnostic window.
+    """
+    def __init__(self):
+        self.rows=deque()
+        self.reset=None
+
+    def observe(self, observation):
+        row=observation
+        start,end,stamp=(row[k] for k in ('interval_start_ns','interval_end_ns','representative_stamp_ns'))
+        if self.rows and stamp<=self.rows[-1]['representative_stamp_ns']:
+            return
+        if self.rows and (row['reset_counter']!=self.reset
+                or (start-self.rows[-1]['interval_end_ns'])/1e9>.25
+                or start<self.rows[-1]['interval_end_ns']):
+            self.rows.clear()
+        self.reset=row['reset_counter']
+        self.rows.append(row)
+        while self.rows and self.rows[0]['interval_end_ns']<=end-1_000_000_000:
+            self.rows.popleft()
+
+    def status(self):
+        if not self.rows:return dict(ready=False,samples=0)
+        weights=np.array([(r['interval_end_ns']-r['interval_start_ns'])/1e9 for r in self.rows])
+        observed=float(weights.sum())
+        span=(self.rows[-1]['interval_end_ns']-self.rows[0]['interval_start_ns'])/1e9
+        velocity=np.average([r['velocity_ne_m_s'] for r in self.rows],axis=0,weights=weights)
+        return dict(ready=len(self.rows)>=8 and span>=.9 and observed>=.75,
+            samples=len(self.rows),span_s=span,observed_s=observed,
+            velocity_ne_m_s=velocity.tolist(),speed_m_s=float(np.linalg.norm(velocity)),
+            last_stamp_ns=self.rows[-1]['representative_stamp_ns'],reset_counter=self.reset,
+            purpose='stationary_readiness_only',fc_input_filtered=False)
+
+
 def parameter_gate(settings, parameters):
     if not settings.enabled:
         return 'disabled'
     geometry = settings.geometry_gate()
     if geometry != 'ready':
         return geometry
-    if parameters.get('EKF2_LID2_VER') != 1:
+    if parameters.get('EKF2_LID2_VER') not in (1, 2):
         return 'dedicated_lidar2d_firmware_required'
+    if settings.floor_policy == 'metric_scan' and parameters.get('EKF2_LID2_VER') != 2:
+        return 'independent_lidar2d_firmware_required'
     if parameters.get('EKF2_LID2_EN') != 1:
         return 'px4_lidar2d_not_enabled'
     age = parameters.get('EKF2_LID2_AGE')
