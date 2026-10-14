@@ -10,6 +10,7 @@
 
 | 찾는 내용 | 위치 |
 |---|---|
+| 14일 20:36 수동비행 원본·ULog·전송 검증 | [수동 호버링 로그 확보](report/manual_hover_capture_20261014.md) |
 | C++ B_TF 부분 자료 ON/OFF 실측·지연 경량화·남은 공백 | [기록 ON/OFF 비교](report/btf_recording_ab_20261014.md) |
 | 최신 상원 통합·native B_TF/LiDAR 보존·ToF 충돌 해결 | [ToF 통합 병합 기록](report/tof_integration_merge_20261014.md) |
 | ToF 운영 기준본 r1·해시 고정·ON/OFF 원본 부재·시험 생략 | [운영 기준본 확정 기록](report/tof_operational_baseline_20261014.md) |

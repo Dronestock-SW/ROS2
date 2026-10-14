@@ -1,0 +1,158 @@
+{
+  "blocks": [
+    {
+      "offset": 472320,
+      "matching_repeat_reads": 2
+    },
+    {
+      "offset": 698310,
+      "matching_repeat_reads": 2
+    },
+    {
+      "offset": 728550,
+      "matching_repeat_reads": 2
+    },
+    {
+      "offset": 1010430,
+      "matching_repeat_reads": 2
+    },
+    {
+      "offset": 1044450,
+      "matching_repeat_reads": 2
+    },
+    {
+      "offset": 1344960,
+      "matching_repeat_reads": 2
+    },
+    {
+      "offset": 1345050,
+      "matching_repeat_reads": 2
+    },
+    {
+      "offset": 1408950,
+      "matching_repeat_reads": 2
+    },
+    {
+      "offset": 1409040,
+      "matching_repeat_reads": 2
+    },
+    {
+      "offset": 1550790,
+      "matching_repeat_reads": 2
+    },
+    {
+      "offset": 1559250,
+      "matching_repeat_reads": 2
+    },
+    {
+      "offset": 1966590,
+      "matching_repeat_reads": 2
+    },
+    {
+      "offset": 2318760,
+      "matching_repeat_reads": 2
+    },
+    {
+      "offset": 2318850,
+      "matching_repeat_reads": 2
+    },
+    {
+      "offset": 2780820,
+      "matching_repeat_reads": 2
+    },
+    {
+      "offset": 2780910,
+      "matching_repeat_reads": 2
+    },
+    {
+      "offset": 2883060,
+      "matching_repeat_reads": 2
+    },
+    {
+      "offset": 3010050,
+      "matching_repeat_reads": 2
+    },
+    {
+      "offset": 3041280,
+      "matching_repeat_reads": 2
+    },
+    {
+      "offset": 3983310,
+      "matching_repeat_reads": 2
+    },
+    {
+      "offset": 4697100,
+      "matching_repeat_reads": 2
+    },
+    {
+      "offset": 4839480,
+      "matching_repeat_reads": 2
+    },
+    {
+      "offset": 4857840,
+      "matching_repeat_reads": 2
+    },
+    {
+      "offset": 4889790,
+      "matching_repeat_reads": 2
+    },
+    {
+      "offset": 4889880,
+      "matching_repeat_reads": 2
+    },
+    {
+      "offset": 4903920,
+      "matching_repeat_reads": 2
+    },
+    {
+      "offset": 4956930,
+      "matching_repeat_reads": 2
+    },
+    {
+      "offset": 4993200,
+      "matching_repeat_reads": 2
+    },
+    {
+      "offset": 5478390,
+      "matching_repeat_reads": 2
+    },
+    {
+      "offset": 5478480,
+      "matching_repeat_reads": 2
+    },
+    {
+      "offset": 5839290,
+      "matching_repeat_reads": 2
+    },
+    {
+      "offset": 5839380,
+      "matching_repeat_reads": 2
+    },
+    {
+      "offset": 6242490,
+      "matching_repeat_reads": 2
+    },
+    {
+      "offset": 6242580,
+      "matching_repeat_reads": 2
+    },
+    {
+      "offset": 6256800,
+      "matching_repeat_reads": 2
+    },
+    {
+      "offset": 6256890,
+      "matching_repeat_reads": 2
+    },
+    {
+      "offset": 6370380,
+      "matching_repeat_reads": 2
+    },
+    {
+      "offset": 6614730,
+      "matching_repeat_reads": 2
+    }
+  ],
+  "sha256": "2d89518830fb958c3063773feec30b5a4862d7b69c42afc43cbd78a5223731ce",
+  "bytes": 6812803
+}
