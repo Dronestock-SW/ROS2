@@ -18,6 +18,7 @@ import tempfile
 import threading
 import time
 from urllib.request import Request, urlopen
+from jsonl_snapshot import read_complete_jsonl
 
 assert os.environ.get('ROS_DOMAIN_ID')=='99' and os.environ.get('ROS_LOCALHOST_ONLY')=='1'
 import rclpy
@@ -425,7 +426,7 @@ def run(scenario):
         if scenario in ('uwb_gap','pose_gap','takeoff_pose_gap'):
             assert any(r['cpp_decision'].get('observation_status',{}).get('progress_held') for r in fc.rows if r['state'] in ('DWELL','TAKING_OFF')),'real observation hold not exercised'
             assert all(r['cpp_decision'].get('completed_waypoints',0)==0 for r in fc.rows if r['cpp_decision'].get('observation_status',{}).get('progress_held'))
-        recorded=[json.loads(x) for x in (root/'native-events.jsonl').read_text(encoding='utf-8').splitlines()]
+        recorded=read_complete_jsonl(root/'native-events.jsonl')
         samples=[x for x in recorded if x.get('type')=='flight_sample']
         assert len(samples)>20,'continuous native evidence missing'
         if scenario=='separate_btf_rejection':
