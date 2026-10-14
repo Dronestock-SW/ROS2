@@ -2,6 +2,24 @@
 This index identifies firmware artifacts saved for field-work recovery.
 Read the linked field report before selecting or installing an image.
 
+## Prepared R3 Candidate, 2026-10-14
+
+R3 adds independent horizontal LiDAR velocity aiding, protocol marker 2.
+It retains CRSF and observes only north/east velocity. It is not installed.
+The actual FC still has the R2 image below, with protocol marker 1.
+
+| Field | Value |
+|---|---|
+| Candidate | `PX4_v1.17.0_Pixhawk6C_CRSF_LIDAR2D_INDEPENDENT_R3.px4` |
+| SHA256 | `d3be11c1ba53243d283784dfe0a0348146f434a090bd878312a66e326f86d075` |
+| Image size / board limit | 1,957,756 / 1,966,080 bytes |
+| Hardware patch | [R3 source](../tools/px4_lidar2d_independent_hardware.patch) |
+| Results | [Independent aiding candidate](../../../docs/report/lidar_independent_aiding_20261014.md) |
+| Reproduction and physical checks | [Runbook](../../../docs/runbooks/lidar_independent_aiding.md) |
+
+The binary is preserved outside Git in the task's `.review` artifact directory.
+Simulation and estimator tests do not qualify physical fusion or flight.
+
 ## Installed R2 Image, 2026-10-13
 
 | Field | Value |

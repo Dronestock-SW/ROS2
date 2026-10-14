@@ -17,9 +17,12 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--ops-directory',type=Path,required=True)
     p.add_argument('--output',type=Path,required=True)
+    p.add_argument('--same-user-dds', action='store_true',
+        help='Use the existing DDS transport when running as the MAVROS service user.')
     args = p.parse_args()
     from drone_uwb.integration.ros.local_transport import configure_local_dds
-    configure_local_dds()
+    if not args.same_user_dds:
+        configure_local_dds()
     sys.path.insert(0,str(args.ops_directory.resolve()))
     from px4_mavros_readback import MavrosReadback
     from px4_sensor_readback import completed

@@ -7,7 +7,8 @@ import pytest
 from scipy.spatial.transform import Rotation
 
 from drone_uwb.processing.lidar_motion import LidarMotionSettings, MeasuredLidarMotion, sdk_points
-from drone_uwb.integration.lidar_velocity import parameter_gate, velocity_fields, VelocityReadinessWindow
+from drone_uwb.integration.lidar_velocity import (parameter_gate, velocity_fields, VelocityReadinessWindow,
+    ground_test_gate, validate_ground_test_duration)
 
 
 def settings(**kwargs):
@@ -131,6 +132,9 @@ def test_wire_ne_covariance_and_nan_vertical_without_mode_switch_dependency():
     assert parameter_gate(settings(),dict(params,EKF2_LID2_VER=None))=='dedicated_lidar2d_firmware_required'
     assert parameter_gate(settings(),dict(params,EKF2_LID2_EN=0))=='px4_lidar2d_not_enabled'
     assert parameter_gate(settings(),dict(params,EKF2_LID2_AGE=150.))=='px4_lidar2d_age_mismatch'
+    independent = settings(floor_policy='metric_scan',vertical_structure_ref='synthetic-walls')
+    assert parameter_gate(independent,params)=='independent_lidar2d_firmware_required'
+    assert parameter_gate(independent,dict(params,EKF2_LID2_VER=2))=='ready'
 
 
 @pytest.mark.parametrize('floor,stamp', [(math.nan,0),(.02,0),(1.,1),(-1.,1)])
@@ -164,6 +168,28 @@ def test_unqualified_scene_and_required_floor_still_block():
     assert cfg.geometry_gate()=='vertical_structure_unconfirmed'
     model=MeasuredLidarMotion(settings())
     assert model.observe(**dict(fixture(model,1.),floor_range_m=math.nan))['reasons']==['measured_floor_range_unavailable']
+
+
+def test_ground_bench_observes_horizontal_motion_without_claiming_floor_height():
+    model=MeasuredLidarMotion(settings(floor_policy='ground_static'))
+    rows=[model.observe(**dict(fixture(model,1.+i*.1,velocity=(0.,0.),yaw_rate=0.),
+        floor_range_m=math.nan,floor_stamp_ns=0)) for i in range(6)]
+    assert all(r['accepted'] for r in rows[3:])
+    assert all(r['sensor_height_m'] is None and not r['z_observed'] for r in rows)
+    assert max(np.linalg.norm(r['velocity_ne_m_s']) for r in rows[3:]) < .01
+
+
+def test_ground_bench_never_latches_permission_to_continue_armed_or_airborne():
+    state=dict(connected=True,armed=False,landed_state=1,state_age_s=.1,landed_age_s=.1)
+    assert ground_test_gate(**state)=='ready'
+    for change in (dict(armed=True),dict(connected=False),dict(landed_state=2),
+                   dict(landed_state=None),dict(state_age_s=2.6),dict(landed_age_s=.51)):
+        assert ground_test_gate(**{**state,**change})!='ready'
+    cfg=settings(floor_policy='ground_static')
+    validate_ground_test_duration(cfg,30.)
+    for seconds in (0.,-1.,61.,math.nan,math.inf):
+        with pytest.raises(ValueError,match='bounded_duration'):
+            validate_ground_test_duration(cfg,seconds)
 
 
 def test_metric_scan_keeps_tilt_and_scan_support_limits():

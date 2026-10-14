@@ -83,7 +83,7 @@ def test_cpp_field_web_requires_live_backend_for_START_and_ARM(tmp_path,status,a
             preflight={'checked_inputs_passed':True},arm_request_available=True,mission_ai=status)
         p.telemetry_received_s=time.monotonic();p.site['ceiling_height_m']=3.
         assert p.can_start() is allowed and p.can_arm() is allowed
-    finally:p.store.close()
+    finally:p.close()
 
 
 @pytest.mark.parametrize('scenario',['complete','native_takeoff','cpp_loss','rc_takeover','lidar_gap','lidar_loss','lidar_sdk_gap'])
@@ -141,7 +141,9 @@ def test_http_hover_uses_cpp_bt_from_start_through_confirmed_END(tmp_path,scenar
         commands=[];phases=[];trace=[];prior=time.monotonic();start=prior;injected=False;lost_at=None;cancelled=False
         last_uwb=prior;gap_start=None;gap_seen=False;uwb_history=[]
         peer=stack.enter_context(websocket_peer(p));sender=stack.enter_context(TelemetrySender(peer))
-        while time.monotonic()-start<30:
+        # Includes the real 10s dwell, ascent/landing, and asynchronous C++/WS
+        # handoffs. Keep a bound without truncating the full loaded-Jetson run.
+        while time.monotonic()-start<45:
             now=time.monotonic();dt=now-prior;prior=now;ns=time.time_ns();previous_alt=alt
             goal=mission.local_setpoint()
             if goal:
@@ -197,17 +199,17 @@ def test_http_hover_uses_cpp_bt_from_start_through_confirmed_END(tmp_path,scenar
             if mission.phase in mission.TERMINAL:break
             time.sleep(.05)
         if scenario=='lidar_loss':
-            assert mission.phase=='FAILED' and commands==['offboard_mode','arm','land'],(mission.phase,mission.reason)
-            assert not mission.status()['mission_complete'] and not gap_seen
-            return
-        if scenario not in ('complete','native_takeoff','lidar_gap','lidar_sdk_gap'):
+            # This legacy mission diagnostic is not the new required PX4 LiDAR
+            # takeoff source. A 0.6s UWB gap recovers inside the FC-owned grace.
+            assert not gap_seen
+        if scenario not in ('complete','native_takeoff','lidar_gap','lidar_sdk_gap','lidar_loss'):
             assert mission.phase==('FAILED' if scenario=='cpp_loss' else 'PILOT_OVERRIDE'),(mission.phase,mission.reason)
             assert commands==(['offboard_mode','arm','land'] if scenario=='cpp_loss' else ['offboard_mode','arm'])
             assert mission.local_setpoint() is None and not mission.status()['mission_complete']
             assert not mission.submit({**assignment,'control_action':'start','control_request_id':'new-start'},time.monotonic(),time.time())
             return
         assert mission.phase=='END',(mission.reason,ai.status(),phases)
-        if use_lidar:assert gap_seen,'a fresh independent LiDAR must support the injected 0.6s gap'
+        if use_lidar and scenario!='lidar_loss':assert gap_seen,'a fresh independent LiDAR must support the injected 0.6s gap'
         assert commands==(['offboard_mode','land'] if native else ['offboard_mode','arm','land'])
         if native:assert all(row['height_m']<=1.800001 for row in trace)
         assert mission.completed_waypoints==1 and mission.home==(2.,2.)
@@ -239,7 +241,7 @@ def test_http_hover_uses_cpp_bt_from_start_through_confirmed_END(tmp_path,scenar
             (archive/('executor-'+scenario+'.json')).write_text(evidence,encoding='utf-8')
             Path(output).with_name('executor-'+scenario+'.json').write_text(evidence,encoding='utf-8')
         stack.close()
-        server.shutdown();server.server_close();web.join(2);ai.close();p.store.close()
+        server.shutdown();server.server_close();web.join(2);ai.close();p.close()
 
 
 def test_actual_cpp_stall_stops_decisions_without_python_fallback():

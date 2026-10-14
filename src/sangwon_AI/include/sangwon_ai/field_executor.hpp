@@ -270,7 +270,9 @@ class FieldExecutor {
     const bool stable=hold_since_>=0&&hold_elapsed_>=(phase=="HOLD_READY"?5.:3.);
     if(phase=="TAKING_OFF") {
       if(stable){enter("POSITION_HANDOFF","height_and_xy_stable_request_position",now);issue("position_mode",now);hold_since_=-1;}
-      else if(flag(observation_status(s,cfg_.value("bridge_observation_timeout_s",.35)),"progress_held")){entered_=now;reason="takeoff_wait_for_observation";}
+      // Independent LiDAR takeoff must stabilize within its original deadline.
+      // UWB recovery is deferred to hover and cannot renew the ascent timeout.
+      else if(!lidar_required()&&flag(observation_status(s,cfg_.value("bridge_observation_timeout_s",.35)),"progress_held")){entered_=now;reason="takeoff_wait_for_observation";}
       else if(now-entered_>cfg_.value("takeoff_timeout_s",30.))abort("takeoff_stability_timeout",s,now);
     } else if(phase=="POSITION_HANDOFF") {
       if(!pending()&&accepted_&&mode_confirmed(s,"POSCTL",now)){enter("HOLD_READY","position_confirmed_wait_for_web_start",now);hold_since_=-1;}

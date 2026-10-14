@@ -170,7 +170,7 @@ class FC:
                 lidar=dict(status_stamp_ns=ns,last_sent_stamp_ns=ns-100_000_000,gate='ready',geometry_gate='ready',
                     mode_independent=True,z_observed=False,flight_commands_enabled=False,
                     settings=LIDAR_SETTINGS,
-                    parameters=dict(EKF2_LID2_VER=1,EKF2_LID2_EN=1),
+                    parameters=dict(EKF2_LID2_VER=2,EKF2_LID2_EN=1),
                     last_published_observation=dict(accepted=True,published=True,z_observed=False,observed_axes=['x','y'],
                         reference_point='fc_imu',frame_id='local_ned',representative_stamp_ns=ns-100_000_000,reset_counter=0,velocity_ne_m_s=[0.,0.]),
                     stationary_window=dict(ready=True,last_stamp_ns=ns-100_000_000,reset_counter=0,samples=10,span_s=1.,observed_s=1.,

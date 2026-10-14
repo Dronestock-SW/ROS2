@@ -10,6 +10,20 @@ RAW_WRITERS = {'mavros', 'uwb_local_odometry_bridge', 'px4_fixed_sensor_readback
 PARAMETERS = ('EKF2_LID2_VER', 'EKF2_LID2_EN', 'EKF2_LID2_AGE', 'EKF2_AVEL_DELAY')
 
 
+def ground_test_gate(*, connected, armed, landed_state, state_age_s, landed_age_s):
+    """Ground bench is continuously DISARM-only, unlike a flight sender start."""
+    if (connected is not True or armed is not False or type(landed_state) is not int
+            or landed_state != 1 or not 0 <= state_age_s <= 2.5
+            or not 0 <= landed_age_s <= .5):
+        return 'ground_test_requires_fresh_disarmed_landed_state'
+    return 'ready'
+
+
+def validate_ground_test_duration(settings, seconds):
+    if settings.floor_policy == 'ground_static' and not (math.isfinite(seconds) and 0 < seconds <= 60.):
+        raise ValueError('ground_test_requires_bounded_duration_at_most_60s')
+
+
 class VelocityReadinessWindow:
     """One-second measured-interval mean for admission, never an FC input.
 
@@ -53,8 +67,10 @@ def parameter_gate(settings, parameters):
     geometry = settings.geometry_gate()
     if geometry != 'ready':
         return geometry
-    if parameters.get('EKF2_LID2_VER') != 1:
+    if parameters.get('EKF2_LID2_VER') not in (1, 2):
         return 'dedicated_lidar2d_firmware_required'
+    if settings.floor_policy == 'metric_scan' and parameters.get('EKF2_LID2_VER') != 2:
+        return 'independent_lidar2d_firmware_required'
     if parameters.get('EKF2_LID2_EN') != 1:
         return 'px4_lidar2d_not_enabled'
     age = parameters.get('EKF2_LID2_AGE')
