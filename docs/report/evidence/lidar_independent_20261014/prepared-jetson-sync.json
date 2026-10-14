@@ -1,0 +1,30 @@
+{
+  "prepared_workspace": "/home/arialhanho/ROS2-integration-20261014",
+  "source_commit": "60d7eb14bd2dee6140e47adb59be5a71c3a075a7",
+  "worktree_clean": true,
+  "preserved_previous_files": {
+    "/home/arialhanho/ROS2-review-20261008-codex/src/drone_uwb/drone_uwb/integration/ros/manual_capture.py": true,
+    "/home/arialhanho/ROS2-review-20261008-codex/src/drone_uwb/launch/manual_observe.launch.py": true,
+    "/home/arialhanho/ROS2-review-20261008-codex/src/sangwon_AI/ops/px4_log_download.py": true,
+    "/home/arialhanho/lidar2d-enable-20261013/lidar_velocity_enabled.json": true,
+    "/home/arialhanho/.config/systemd/user/dronestock-manual-capture.service": true,
+    "/home/arialhanho/.config/systemd/user/dronestock-manual-observe.service": true,
+    "/home/arialhanho/.config/systemd/user/dronestock-manual-lidar.service": true
+  },
+  "prepared_edit_backup_files": 10,
+  "prepared_edit_backup_sha256": "f1e3e2466de030bfee33ce1d1a5646c63968b77983853cabdd73343feb38d086",
+  "prepared_edit_stash": "1155e7edd7096e59fc4fbb83ae1a2f9fb877c101",
+  "colcon": {
+    "packages": 4,
+    "elapsed_s": 12.5,
+    "log_sha256": "25e4dabdf87e1fc49413003636d33a9d7289d552e780e400e6a51ed27bc35cd3"
+  },
+  "post_merge_pytest": {
+    "passed": 76,
+    "elapsed_s": 13.77,
+    "log_sha256": "ef81a29dfe6850756ab7d1445dcf338f5c1524e368c34be2f9037cc46d103809"
+  },
+  "operational_services_switched": false,
+  "physical_r3_flash": false,
+  "physical_flight": false
+}
