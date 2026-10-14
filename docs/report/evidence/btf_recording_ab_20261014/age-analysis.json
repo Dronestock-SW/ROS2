@@ -1,0 +1,497 @@
+{
+  "input_collector_age_ms": {
+    "count": 2014,
+    "median": 3.720845,
+    "p95": 108.104925,
+    "p99": 642.250884,
+    "maximum": 767.830947
+  },
+  "input_already_over_150ms": 77,
+  "runs": {
+    "baseline-abba-v2/1-on": {
+      "callback_after_collector_ms": {
+        "count": 1046,
+        "median": 8.434124,
+        "p95": 58.361728,
+        "p99": 107.31369,
+        "maximum": 149.952742
+      },
+      "native_adapter_ms": {
+        "count": 754,
+        "median": 2.068409,
+        "p95": 5.634383,
+        "p99": 7.9323,
+        "maximum": 10.605952
+      },
+      "inherited_queue_expiry": 77,
+      "additional_queue_expiry": 5,
+      "focus_reasons": {
+        "clock_unsynced": 22,
+        "B_not_fresh_valid": 2,
+        "original_fit_consistent": 22
+      },
+      "focus_published": [
+        17499,
+        17500,
+        17501,
+        17502,
+        17503,
+        17504,
+        17505,
+        17506,
+        17507,
+        17508,
+        17509,
+        17510,
+        17511,
+        17512,
+        17513,
+        17514,
+        17515,
+        17516,
+        17517,
+        17518,
+        17519,
+        17520
+      ],
+      "focus_gap_boundaries_observed": true,
+      "focus_bracketing_gap_ms": 1225.557346,
+      "focus_source_gap_ms": {
+        "count": 21,
+        "median": 24.992304,
+        "p95": 25.194945,
+        "p99": 25.194945,
+        "maximum": 25.234648
+      },
+      "swap_in_pages": 4,
+      "swap_out_pages": 0,
+      "host_iowait_percent": 17.881099902708794,
+      "host_idle_percent": 40.498745455476474
+    },
+    "baseline-abba-v2/2-off": {
+      "callback_after_collector_ms": {
+        "count": 1044,
+        "median": 3.795774,
+        "p95": 22.132182,
+        "p99": 31.890378,
+        "maximum": 69.234954
+      },
+      "native_adapter_ms": {
+        "count": 786,
+        "median": 1.668957,
+        "p95": 4.894906,
+        "p99": 6.539604,
+        "maximum": 8.892117
+      },
+      "inherited_queue_expiry": 77,
+      "additional_queue_expiry": 2,
+      "focus_reasons": {
+        "clock_unsynced": 22,
+        "B_not_fresh_valid": 2,
+        "original_fit_consistent": 22
+      },
+      "focus_published": [
+        17499,
+        17500,
+        17501,
+        17502,
+        17503,
+        17504,
+        17505,
+        17506,
+        17507,
+        17508,
+        17509,
+        17510,
+        17511,
+        17512,
+        17513,
+        17514,
+        17515,
+        17516,
+        17517,
+        17518,
+        17519,
+        17520
+      ],
+      "focus_gap_boundaries_observed": true,
+      "focus_bracketing_gap_ms": 1225.557346,
+      "focus_source_gap_ms": {
+        "count": 21,
+        "median": 24.992304,
+        "p95": 25.194945,
+        "p99": 25.194945,
+        "maximum": 25.234648
+      },
+      "swap_in_pages": 19,
+      "swap_out_pages": 0,
+      "host_iowait_percent": 0.6287170773152082,
+      "host_idle_percent": 55.36108751062022
+    },
+    "baseline-abba-v2/3-off": {
+      "callback_after_collector_ms": {
+        "count": 1044,
+        "median": 4.251453,
+        "p95": 21.86332,
+        "p99": 29.660333,
+        "maximum": 67.021051
+      },
+      "native_adapter_ms": {
+        "count": 786,
+        "median": 1.710272,
+        "p95": 4.903966,
+        "p99": 6.776318,
+        "maximum": 70.721404
+      },
+      "inherited_queue_expiry": 77,
+      "additional_queue_expiry": 3,
+      "focus_reasons": {
+        "clock_unsynced": 22,
+        "B_not_fresh_valid": 2,
+        "original_fit_consistent": 22
+      },
+      "focus_published": [
+        17499,
+        17500,
+        17501,
+        17502,
+        17503,
+        17504,
+        17505,
+        17506,
+        17507,
+        17508,
+        17509,
+        17510,
+        17511,
+        17512,
+        17513,
+        17514,
+        17515,
+        17516,
+        17517,
+        17518,
+        17519,
+        17520
+      ],
+      "focus_gap_boundaries_observed": true,
+      "focus_bracketing_gap_ms": 1225.557346,
+      "focus_source_gap_ms": {
+        "count": 21,
+        "median": 24.992304,
+        "p95": 25.194945,
+        "p99": 25.194945,
+        "maximum": 25.234648
+      },
+      "swap_in_pages": 5,
+      "swap_out_pages": 0,
+      "host_iowait_percent": 1.7187417113150496,
+      "host_idle_percent": 55.721181900164446
+    },
+    "baseline-abba-v2/4-on": {
+      "callback_after_collector_ms": {
+        "count": 1046,
+        "median": 8.991967,
+        "p95": 64.967966,
+        "p99": 132.944935,
+        "maximum": 152.030659
+      },
+      "native_adapter_ms": {
+        "count": 726,
+        "median": 2.291171,
+        "p95": 5.812358,
+        "p99": 7.653863,
+        "maximum": 12.011504
+      },
+      "inherited_queue_expiry": 77,
+      "additional_queue_expiry": 6,
+      "focus_reasons": {
+        "clock_unsynced": 23,
+        "B_not_fresh_valid": 2,
+        "original_fit_consistent": 21
+      },
+      "focus_published": [
+        17500,
+        17501,
+        17502,
+        17503,
+        17504,
+        17505,
+        17506,
+        17507,
+        17508,
+        17509,
+        17510,
+        17511,
+        17512,
+        17513,
+        17514,
+        17515,
+        17516,
+        17517,
+        17518,
+        17519,
+        17520
+      ],
+      "focus_gap_boundaries_observed": true,
+      "focus_bracketing_gap_ms": 1925.100141,
+      "focus_source_gap_ms": {
+        "count": 20,
+        "median": 24.989783,
+        "p95": 25.194945,
+        "p99": 25.194945,
+        "maximum": 25.234648
+      },
+      "swap_in_pages": 5,
+      "swap_out_pages": 0,
+      "host_iowait_percent": 18.164403628373428,
+      "host_idle_percent": 38.12609161079497
+    },
+    "candidate-abba/1-on": {
+      "callback_after_collector_ms": {
+        "count": 1044,
+        "median": 6.716961,
+        "p95": 33.698343,
+        "p99": 51.6725,
+        "maximum": 109.541944
+      },
+      "native_adapter_ms": {
+        "count": 786,
+        "median": 2.005709,
+        "p95": 5.274912,
+        "p99": 8.200689,
+        "maximum": 82.573095
+      },
+      "inherited_queue_expiry": 77,
+      "additional_queue_expiry": 1,
+      "focus_reasons": {
+        "clock_unsynced": 20,
+        "B_not_fresh_valid": 2,
+        "original_fit_consistent": 24
+      },
+      "focus_published": [
+        17497,
+        17498,
+        17499,
+        17500,
+        17501,
+        17502,
+        17503,
+        17504,
+        17505,
+        17506,
+        17507,
+        17508,
+        17509,
+        17510,
+        17511,
+        17512,
+        17513,
+        17514,
+        17515,
+        17516,
+        17517,
+        17518,
+        17519,
+        17520
+      ],
+      "focus_gap_boundaries_observed": true,
+      "focus_bracketing_gap_ms": 1225.557346,
+      "focus_source_gap_ms": {
+        "count": 23,
+        "median": 24.993088,
+        "p95": 25.185417,
+        "p99": 25.194945,
+        "maximum": 25.234648
+      },
+      "swap_in_pages": 5,
+      "swap_out_pages": 0,
+      "host_iowait_percent": 0.6887052341597796,
+      "host_idle_percent": 56.42085187539733
+    },
+    "candidate-abba/2-off": {
+      "callback_after_collector_ms": {
+        "count": 1045,
+        "median": 4.814144,
+        "p95": 29.099483,
+        "p99": 45.416552,
+        "maximum": 83.958537
+      },
+      "native_adapter_ms": {
+        "count": 786,
+        "median": 1.846829,
+        "p95": 5.053507,
+        "p99": 7.105332,
+        "maximum": 8.660127
+      },
+      "inherited_queue_expiry": 77,
+      "additional_queue_expiry": 4,
+      "focus_reasons": {
+        "clock_unsynced": 20,
+        "B_not_fresh_valid": 2,
+        "original_fit_consistent": 24
+      },
+      "focus_published": [
+        17497,
+        17498,
+        17499,
+        17500,
+        17501,
+        17502,
+        17503,
+        17504,
+        17505,
+        17506,
+        17507,
+        17508,
+        17509,
+        17510,
+        17511,
+        17512,
+        17513,
+        17514,
+        17515,
+        17516,
+        17517,
+        17518,
+        17519,
+        17520
+      ],
+      "focus_gap_boundaries_observed": true,
+      "focus_bracketing_gap_ms": 1225.557346,
+      "focus_source_gap_ms": {
+        "count": 23,
+        "median": 24.993088,
+        "p95": 25.185417,
+        "p99": 25.194945,
+        "maximum": 25.234648
+      },
+      "swap_in_pages": 3,
+      "swap_out_pages": 0,
+      "host_iowait_percent": 1.294150890081944,
+      "host_idle_percent": 54.21870584910992
+    },
+    "candidate-abba/3-off": {
+      "callback_after_collector_ms": {
+        "count": 1044,
+        "median": 4.205663,
+        "p95": 24.239243,
+        "p99": 37.940516,
+        "maximum": 83.387312
+      },
+      "native_adapter_ms": {
+        "count": 786,
+        "median": 1.732525,
+        "p95": 4.73543,
+        "p99": 6.055471,
+        "maximum": 11.102937
+      },
+      "inherited_queue_expiry": 77,
+      "additional_queue_expiry": 2,
+      "focus_reasons": {
+        "clock_unsynced": 22,
+        "B_not_fresh_valid": 2,
+        "original_fit_consistent": 22
+      },
+      "focus_published": [
+        17499,
+        17500,
+        17501,
+        17502,
+        17503,
+        17504,
+        17505,
+        17506,
+        17507,
+        17508,
+        17509,
+        17510,
+        17511,
+        17512,
+        17513,
+        17514,
+        17515,
+        17516,
+        17517,
+        17518,
+        17519,
+        17520
+      ],
+      "focus_gap_boundaries_observed": true,
+      "focus_bracketing_gap_ms": 1225.557346,
+      "focus_source_gap_ms": {
+        "count": 21,
+        "median": 24.992304,
+        "p95": 25.194945,
+        "p99": 25.194945,
+        "maximum": 25.234648
+      },
+      "swap_in_pages": 3,
+      "swap_out_pages": 0,
+      "host_iowait_percent": 0.8084577114427861,
+      "host_idle_percent": 55.16734509271823
+    },
+    "candidate-abba/4-on": {
+      "callback_after_collector_ms": {
+        "count": 1044,
+        "median": 6.699991,
+        "p95": 36.545737,
+        "p99": 53.406115,
+        "maximum": 86.470109
+      },
+      "native_adapter_ms": {
+        "count": 786,
+        "median": 1.822192,
+        "p95": 5.21118,
+        "p99": 6.750683,
+        "maximum": 14.614143
+      },
+      "inherited_queue_expiry": 77,
+      "additional_queue_expiry": 2,
+      "focus_reasons": {
+        "clock_unsynced": 20,
+        "B_not_fresh_valid": 2,
+        "original_fit_consistent": 24
+      },
+      "focus_published": [
+        17497,
+        17498,
+        17499,
+        17500,
+        17501,
+        17502,
+        17503,
+        17504,
+        17505,
+        17506,
+        17507,
+        17508,
+        17509,
+        17510,
+        17511,
+        17512,
+        17513,
+        17514,
+        17515,
+        17516,
+        17517,
+        17518,
+        17519,
+        17520
+      ],
+      "focus_gap_boundaries_observed": true,
+      "focus_bracketing_gap_ms": 1225.557346,
+      "focus_source_gap_ms": {
+        "count": 23,
+        "median": 24.993088,
+        "p95": 25.185417,
+        "p99": 25.194945,
+        "maximum": 25.234648
+      },
+      "swap_in_pages": 4,
+      "swap_out_pages": 0,
+      "host_iowait_percent": 2.159383033419023,
+      "host_idle_percent": 53.64752927734933
+    }
+  }
+}

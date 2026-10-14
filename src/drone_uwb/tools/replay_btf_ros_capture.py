@@ -24,6 +24,11 @@ def main():
     p.add_argument('capture', type=Path)
     p.add_argument('--output', required=True, type=Path)
     p.add_argument('--legacy', action='store_true')
+    p.add_argument('--events-file', default='events.jsonl',
+                   help='Explicit partial capture filename; never substitutes for the full original')
+    p.add_argument('--config-file', type=Path, help='Fixed configuration for all comparison arms')
+    p.add_argument('--trace-mode', choices=('on', 'off'), default='on')
+    p.add_argument('--probe', action='store_true', help='Identical in-memory timing in both arms')
     args = p.parse_args()
     if os.environ.get('ROS_DOMAIN_ID') != '99' or os.environ.get('ROS_LOCALHOST_ONLY') != '1':
         p.error('requires ROS_DOMAIN_ID=99 and ROS_LOCALHOST_ONLY=1')
@@ -41,12 +46,14 @@ def main():
     evidence = next(r for r in manifest['config_evidence'] if r['name'] == 'field-btf.json')
     assert hashlib.sha256(evidence['content_utf8'].encode()).hexdigest() == evidence['sha256']
     config = json.loads(evidence['content_utf8'])
+    if args.config_file:
+        config = json.loads(args.config_file.read_text(encoding='utf-8'))
     kinds = {'/uwb/received':String, config['tof_topic']:Range, config['imu_topic']:Imu,
              '/mavros/state':State, '/mavros/extended_state':ExtendedState,
              '/mavros/timesync_status':TimesyncStatus, '/mavros/local_position/odom':Odometry}
     rows = []
     digest = hashlib.sha256()
-    with (args.capture/'events.jsonl').open('rb') as src:
+    with (args.capture/args.events_file).open('rb') as src:
         for line in src:
             digest.update(line)
             row = json.loads(line)
@@ -56,19 +63,26 @@ def main():
     args.output.mkdir(parents=True, exist_ok=False)
     config_path = args.output/'config.json'
     config_path.write_text(json.dumps(config), encoding='utf-8')
-    private = lambda topic: '/btf_replay'+topic
+    # Other users may also replay on domain 99. Each output directory gets a
+    # distinct topic set; no discovery or sensor data is shared with their run.
+    prefix = '/btf_replay_'+hashlib.sha256(str(args.output.resolve()).encode()).hexdigest()[:12]
+    private = lambda topic: prefix+topic
     remapped = list(kinds)+['/uwb/btf_pose','/uwb/btf_xyz','/uwb/btf_status',
                           '/uwb/btf_decision','/uwb/reset_observation_history']
+    trace_path = str(args.output/'internal-trace') if args.trace_mode == 'on' else "''"
     ros_args = ['--ros-args','-p',f'config_file:={config_path}',
                 '-p','require_height_for_pose:=true',
-                '-p',f'trace_directory:={args.output}/internal-trace']
+                '-p',f'trace_directory:={trace_path}']
     for topic in remapped:
         ros_args += ['-r', f'{topic}:={private(topic)}']
     # Match the real producer/consumer process boundary. Publishing inside the
     # Python solver process would impose its GIL delays on the recorded source.
     node_log = (args.output/'node.txt').open('w', encoding='utf-8')
-    process = subprocess.Popen([sys.executable,'-c',
-        'from drone_uwb.integration.ros.btf_node import main; main()', *ros_args],
+    entry = 'from drone_uwb.integration.ros.btf_node import main; main()'
+    if args.probe:
+        entry = (f'import sys; sys.path.insert(0, {str(Path(__file__).resolve().parent)!r}); '
+                 f'from btf_replay_probe import main; main({str(args.output/"probe.json")!r})')
+    process = subprocess.Popen([sys.executable,'-c', entry, *ros_args],
         stdout=node_log, stderr=subprocess.STDOUT)
     rclpy.init(args=[])
     feeder = Node('btf_replay_feeder', use_global_arguments=False)
@@ -157,6 +171,9 @@ def main():
     (args.output/'decisions.jsonl').write_text(''.join(json.dumps(r)+'\n' for r in decisions),encoding='utf-8')
     (args.output/'statuses.jsonl').write_text(''.join(json.dumps(r)+'\n' for r in statuses),encoding='utf-8')
     summary = dict(scope='1x collector-receipt schedule with constant ROS timestamp translation; no FC',
+        topic_prefix=prefix,
+        events_file=args.events_file, trace_mode=args.trace_mode, probe=args.probe,
+        config_sha256=hashlib.sha256(config_path.read_bytes()).hexdigest(),
         input_sha256=digest.hexdigest(), legacy=args.legacy, ros_stamp_shift_ns=shift_ns,
         source_duration_s=(rows[-1]['received_monotonic_ns']-rows[0]['received_monotonic_ns'])/1e9,
         max_feeder_lateness_ms=max_lateness_ns/1e6, sent=dict(sent), decision_count=len(decisions),

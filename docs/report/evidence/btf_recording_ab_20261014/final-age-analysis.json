@@ -1,0 +1,270 @@
+{
+  "input_collector_age_ms": {
+    "count": 2014,
+    "median": 3.720845,
+    "p95": 108.104925,
+    "p99": 642.250884,
+    "maximum": 767.830947
+  },
+  "input_already_over_150ms": 77,
+  "runs": {
+    "final-abba/1-on": {
+      "callback_after_collector_ms": {
+        "count": 1044,
+        "median": 6.501135,
+        "p95": 35.218796,
+        "p99": 76.001179,
+        "maximum": 108.730943
+      },
+      "native_adapter_ms": {
+        "count": 786,
+        "median": 2.86375,
+        "p95": 5.978191,
+        "p99": 7.935048,
+        "maximum": 89.994742
+      },
+      "inherited_queue_expiry": 77,
+      "additional_queue_expiry": 1,
+      "focus_reasons": {
+        "clock_unsynced": 20,
+        "B_not_fresh_valid": 2,
+        "original_fit_consistent": 24
+      },
+      "focus_published": [
+        17497,
+        17498,
+        17499,
+        17500,
+        17501,
+        17502,
+        17503,
+        17504,
+        17505,
+        17506,
+        17507,
+        17508,
+        17509,
+        17510,
+        17511,
+        17512,
+        17513,
+        17514,
+        17515,
+        17516,
+        17517,
+        17518,
+        17519,
+        17520
+      ],
+      "focus_gap_boundaries_observed": true,
+      "focus_bracketing_gap_ms": 1225.557346,
+      "focus_source_gap_ms": {
+        "count": 23,
+        "median": 24.993088,
+        "p95": 25.185417,
+        "p99": 25.194945,
+        "maximum": 25.234648
+      },
+      "swap_in_pages": 4,
+      "swap_out_pages": 0,
+      "host_iowait_percent": 0.6386706607132764,
+      "host_idle_percent": 54.3096139716272
+    },
+    "final-abba/2-off": {
+      "callback_after_collector_ms": {
+        "count": 1044,
+        "median": 3.553138,
+        "p95": 19.187799,
+        "p99": 26.2003,
+        "maximum": 47.889071
+      },
+      "native_adapter_ms": {
+        "count": 786,
+        "median": 2.348,
+        "p95": 5.248615,
+        "p99": 7.645417,
+        "maximum": 11.556669
+      },
+      "inherited_queue_expiry": 77,
+      "additional_queue_expiry": 3,
+      "focus_reasons": {
+        "clock_unsynced": 22,
+        "B_not_fresh_valid": 2,
+        "original_fit_consistent": 22
+      },
+      "focus_published": [
+        17499,
+        17500,
+        17501,
+        17502,
+        17503,
+        17504,
+        17505,
+        17506,
+        17507,
+        17508,
+        17509,
+        17510,
+        17511,
+        17512,
+        17513,
+        17514,
+        17515,
+        17516,
+        17517,
+        17518,
+        17519,
+        17520
+      ],
+      "focus_gap_boundaries_observed": true,
+      "focus_bracketing_gap_ms": 1225.557346,
+      "focus_source_gap_ms": {
+        "count": 21,
+        "median": 24.992304,
+        "p95": 25.194945,
+        "p99": 25.194945,
+        "maximum": 25.234648
+      },
+      "swap_in_pages": 4,
+      "swap_out_pages": 0,
+      "host_iowait_percent": 13.158193372673626,
+      "host_idle_percent": 44.27485247389923
+    },
+    "final-abba/3-off": {
+      "callback_after_collector_ms": {
+        "count": 1043,
+        "median": 4.052749,
+        "p95": 21.663516,
+        "p99": 33.417143,
+        "maximum": 59.04278
+      },
+      "native_adapter_ms": {
+        "count": 816,
+        "median": 2.323105,
+        "p95": 5.297194,
+        "p99": 6.436794,
+        "maximum": 10.727798
+      },
+      "inherited_queue_expiry": 77,
+      "additional_queue_expiry": 1,
+      "focus_reasons": {
+        "original_fit_consistent": 36,
+        "measured_height_unavailable": 8,
+        "no_height_consistent_subset": 1,
+        "fresh_four_anchor_history_recovered": 1
+      },
+      "focus_published": [
+        17475,
+        17476,
+        17477,
+        17478,
+        17479,
+        17480,
+        17481,
+        17482,
+        17483,
+        17493,
+        17494,
+        17495,
+        17496,
+        17497,
+        17498,
+        17499,
+        17500,
+        17501,
+        17502,
+        17503,
+        17504,
+        17505,
+        17506,
+        17507,
+        17508,
+        17509,
+        17510,
+        17511,
+        17512,
+        17513,
+        17514,
+        17515,
+        17516,
+        17517,
+        17518,
+        17519,
+        17520
+      ],
+      "focus_gap_boundaries_observed": true,
+      "focus_bracketing_gap_ms": 699.959277,
+      "focus_source_gap_ms": {
+        "count": 36,
+        "median": 24.991408,
+        "p95": 25.234858,
+        "p99": 25.306684,
+        "maximum": 249.69979
+      },
+      "swap_in_pages": 4,
+      "swap_out_pages": 0,
+      "host_iowait_percent": 0.8792028560771568,
+      "host_idle_percent": 57.052272606170405
+    },
+    "final-abba/4-on": {
+      "callback_after_collector_ms": {
+        "count": 1047,
+        "median": 7.331469,
+        "p95": 41.751685,
+        "p99": 60.615925,
+        "maximum": 86.954714
+      },
+      "native_adapter_ms": {
+        "count": 786,
+        "median": 2.770504,
+        "p95": 6.337436,
+        "p99": 8.280022,
+        "maximum": 10.854332
+      },
+      "inherited_queue_expiry": 77,
+      "additional_queue_expiry": 8,
+      "focus_reasons": {
+        "clock_unsynced": 22,
+        "B_not_fresh_valid": 2,
+        "original_fit_consistent": 22
+      },
+      "focus_published": [
+        17499,
+        17500,
+        17501,
+        17502,
+        17503,
+        17504,
+        17505,
+        17506,
+        17507,
+        17508,
+        17509,
+        17510,
+        17511,
+        17512,
+        17513,
+        17514,
+        17515,
+        17516,
+        17517,
+        17518,
+        17519,
+        17520
+      ],
+      "focus_gap_boundaries_observed": true,
+      "focus_bracketing_gap_ms": 1225.557346,
+      "focus_source_gap_ms": {
+        "count": 21,
+        "median": 24.992304,
+        "p95": 25.194945,
+        "p99": 25.194945,
+        "maximum": 25.234648
+      },
+      "swap_in_pages": 6,
+      "swap_out_pages": 0,
+      "host_iowait_percent": 0.6587540462263615,
+      "host_idle_percent": 54.18819921630984
+    }
+  }
+}

@@ -9,6 +9,22 @@ pytest.importorskip('fcntl')
 from drone_uwb.integration.btf_trace import BtfTrace
 
 
+def test_encoded_decision_preserves_published_json_without_walking_row(tmp_path):
+    # The diagnostic copy is exactly the published payload, even if a caller
+    # later mutates the original result. This object cannot be JSON encoded.
+    unencodable_row = {'bad':object()}
+    published = json.dumps({'reason':'판정', 'xy_m':[1.25, 2.5], 'missing':None},
+                           ensure_ascii=False, allow_nan=False)
+    writer = BtfTrace(tmp_path, {}, min_free_bytes=0)
+    assert writer.write('decisions', unencodable_row, encoded_row=published)
+    writer.close()
+    assert writer.error is None and writer.written == 1
+    row = json.loads((tmp_path/'trace.jsonl').read_text(encoding='utf-8').splitlines()[-1])
+    assert row['row'] == json.loads(published)
+    assert row['stream'] == 'decisions' and row['enqueued_monotonic_ns'] > 0
+    assert 'encoded_row' not in row
+
+
 def test_rotating_trace_is_bounded_and_preserves_session_context(tmp_path):
     recorder = BtfTrace(tmp_path, {'config':{'test':True}}, segment_bytes=1024,
                         segments=3, min_free_bytes=0)

@@ -88,7 +88,7 @@ def test_btf_storage_failure_does_not_override_observation_validity(case):
         require_height=case == 'height_missing' or case.startswith(('b4_','b3_')),
         config={'max_output_age_s': .2, 'xy_stddev_m': .3, 'allow_b4_xy_without_tof':case!='b4_disabled'},
         pose_pub=publisher(), xyz_pub=publisher(), decision_pub=publisher())
-    obj.record = lambda name, row: btf_node.BtfNode.record(obj, name, row)
+    obj.record = lambda name, row, **kwargs: btf_node.BtfNode.record(obj, name, row, **kwargs)
     event = {'host_received_ros_ns': now_ns - (200_000_000 if case == 'queued' else 0)}
     btf_node.BtfNode.raw(obj, NS(data=json.dumps(event)))
     assert obj.counts['recording_failed'] == 1

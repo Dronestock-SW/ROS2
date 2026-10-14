@@ -1,5 +1,9 @@
 # FINAL 연구 시작점
 
+2026-10-14 [C++ B_TF 기록 ON/OFF 비교](docs/report/btf_recording_ab_20261014.md)를 수행했다.
+기록 ON 콜백 p95를 약 16.3ms로 줄였다.
+관측 공백은 남아 있다. 운영 서비스 반영은 미실시다.
+
 2026-10-14 [B_TF C++·FREEZE 연결](docs/report/btf_cpp_jetson_20261014.md)이 이 세션의 최신 기록이다.
 [Jetson 실행 절차](docs/runbooks/btf_cpp_jetson_20261014.md)를 먼저 읽는다.
 센서 수신 분리와 LiDAR R3 코드를 보존했다.

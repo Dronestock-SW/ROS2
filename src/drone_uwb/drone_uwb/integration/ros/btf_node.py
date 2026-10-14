@@ -111,11 +111,13 @@ class BtfNode(Node):
         self.create_service(Trigger, '/uwb/reset_observation_history', self.reset_ground_history)
         self.get_logger().info('Measured B_TF started; output=/uwb/btf_pose; FC output disabled')
 
-    def record(self, name, row):
+    def record(self, name, row, *, encoded_row=None):
         if getattr(self, 'trace', None):
-            self.trace.write(name, row)
+            self.trace.write(name, row, encoded_row=encoded_row)
         if name in self.files:
-            self.recorder.write(name, json.dumps(safe_json(row), ensure_ascii=False, allow_nan=False)+'\n')
+            if encoded_row is None:
+                encoded_row = json.dumps(safe_json(row), ensure_ascii=False, allow_nan=False)
+            self.recorder.write(name, encoded_row+'\n')
 
     def reset_ground_history(self, request, response):
         now = time.monotonic()
@@ -329,8 +331,9 @@ class BtfNode(Node):
                 self.counts['output_expired'] += 1
                 result['pose_blocked_reason'] = 'output_expired'
         self.last = result
-        self.record('decisions',result)
-        self.decision_pub.publish(String(data=json.dumps(safe_json(result),ensure_ascii=False,allow_nan=False)))
+        encoded = json.dumps(safe_json(result),ensure_ascii=False,allow_nan=False)
+        self.record('decisions',result,encoded_row=encoded)
+        self.decision_pub.publish(String(data=encoded))
 
     def status(self):
         now_ns = self.get_clock().now().nanoseconds

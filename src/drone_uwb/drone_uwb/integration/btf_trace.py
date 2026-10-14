@@ -42,13 +42,19 @@ class BtfTrace:
         self.thread = threading.Thread(target=self._run, name='btf-trace', daemon=True)
         self.thread.start()
 
-    def write(self, stream, row):
+    def write(self, stream, row, *, encoded_row=None):
+        """Accept an optional immutable JSON row already encoded by its publisher.
+
+        encoded_row must come from the same strict safe_json/json.dumps boundary
+        as the published message. Keeping it avoids a second recursive conversion
+        on the writer thread, which shares the sensor callbacks' Python GIL.
+        """
         if self.error or self.closing.is_set():
             self.dropped += 1
             return False
         try:
-            self.pending.put_nowait(dict(stream=stream, row=row,
-                                        enqueued_monotonic_ns=time.monotonic_ns()))
+            self.pending.put_nowait(dict(stream=stream, row=row if encoded_row is None else None,
+                encoded_row=encoded_row, enqueued_monotonic_ns=time.monotonic_ns()))
             return True
         except queue.Full:
             self.dropped += 1
@@ -86,7 +92,15 @@ class BtfTrace:
                     if self.error:
                         break
                     continue
-                data = (json.dumps(safe_json(item), ensure_ascii=False, allow_nan=False)+'\n').encode('utf-8')
+                encoded = item.pop('encoded_row')
+                if encoded is None:
+                    line = json.dumps(safe_json(item), ensure_ascii=False, allow_nan=False)
+                else:
+                    # Only the small envelope is new. Do not reparse or walk
+                    # the already validated row; the on-disk schema is unchanged.
+                    item.pop('row')
+                    line = json.dumps(item, ensure_ascii=False, allow_nan=False)[:-1]+', "row": '+encoded+'}'
+                data = (line+'\n').encode('utf-8')
                 if len(data)+len(header) > self.segment_bytes:
                     raise ValueError('trace_row_exceeds_segment')
                 if checked_bytes >= 1024*1024:
