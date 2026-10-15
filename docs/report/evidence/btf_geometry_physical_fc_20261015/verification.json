@@ -1,0 +1,659 @@
+{
+  "scope": "Recorded-data diagnosis and synthetic ground injection into physical FC. No flight.",
+  "geometry": {
+    "scope": "Audit recorded ranges against anchor geometry without using FC XY as truth.\n\nTriangle deficits account for sequential measurement times at a stated speed.\nBest physical fits are diagnostics, never replacement flight observations.\n",
+    "speed_assumption_m_s": 1.0,
+    "max_gap_s": 0.526079263,
+    "gap_start_ros_ns": 1791977784084393127,
+    "gap_end_ros_ns": 1791977784610457189,
+    "full": {
+      "count": 2859,
+      "reasons": {
+        "original_fit_consistent": 2756,
+        "partial_measured_height_required": 10,
+        "fresh_four_anchor_history_recovered": 9,
+        "measured_height_unavailable": 55,
+        "partial_height_inconsistent": 21,
+        "B_not_fresh_valid": 2,
+        "no_height_consistent_subset": 6
+      },
+      "triangle_deficit_over_6cm": 1137,
+      "physical_best_rms_over_6cm": 1265,
+      "max_triangle_deficit_m": 0.6938659999999999,
+      "physical_best_rms_range_m": [
+        1.124837753273308e-09,
+        0.303275041254549
+      ]
+    },
+    "gap": {
+      "count": 20,
+      "reasons": {
+        "measured_height_unavailable": 20
+      },
+      "triangle_deficit_over_6cm": 20,
+      "physical_best_rms_over_6cm": 20,
+      "max_triangle_deficit_m": 0.27890499930255697,
+      "physical_best_rms_range_m": [
+        0.20792393126934713,
+        0.23881910875311785
+      ]
+    },
+    "gap_rows": [
+      {
+        "seq": 4571,
+        "callback_ros_ns": 1791977784109632663,
+        "reason": "measured_height_unavailable",
+        "published": false,
+        "triangle": {
+          "anchors": [
+            1,
+            2
+          ],
+          "deficit_m": 0.2332389999999998,
+          "sequential_motion_allowance_m": 0.002361
+        },
+        "physical_3d_best_rms_m": 0.22291419027652204,
+        "measured_height_available": false
+      },
+      {
+        "seq": 4572,
+        "callback_ros_ns": 1791977784134434870,
+        "reason": "measured_height_unavailable",
+        "published": false,
+        "triangle": {
+          "anchors": [
+            1,
+            2
+          ],
+          "deficit_m": 0.19467999999999988,
+          "sequential_motion_allowance_m": 0.00236
+        },
+        "physical_3d_best_rms_m": 0.20806754402413857,
+        "measured_height_available": false
+      },
+      {
+        "seq": 4573,
+        "callback_ros_ns": 1791977784178707463,
+        "reason": "measured_height_unavailable",
+        "published": false,
+        "triangle": {
+          "anchors": [
+            1,
+            2
+          ],
+          "deficit_m": 0.2331389999999996,
+          "sequential_motion_allowance_m": 0.002361
+        },
+        "physical_3d_best_rms_m": 0.2252893991944241,
+        "measured_height_available": false
+      },
+      {
+        "seq": 4574,
+        "callback_ros_ns": 1791977784202385691,
+        "reason": "measured_height_unavailable",
+        "published": false,
+        "triangle": {
+          "anchors": [
+            1,
+            2
+          ],
+          "deficit_m": 0.2554159999999998,
+          "sequential_motion_allowance_m": 0.002284
+        },
+        "physical_3d_best_rms_m": 0.23298875671712196,
+        "measured_height_available": false
+      },
+      {
+        "seq": 4575,
+        "callback_ros_ns": 1791977784224467537,
+        "reason": "measured_height_unavailable",
+        "published": false,
+        "triangle": {
+          "anchors": [
+            1,
+            4
+          ],
+          "deficit_m": 0.23945699930255668,
+          "sequential_motion_allowance_m": 0.007014
+        },
+        "physical_3d_best_rms_m": 0.22669510744486787,
+        "measured_height_available": false
+      },
+      {
+        "seq": 4576,
+        "callback_ros_ns": 1791977784249807365,
+        "reason": "measured_height_unavailable",
+        "published": false,
+        "triangle": {
+          "anchors": [
+            1,
+            2
+          ],
+          "deficit_m": 0.19714299999999957,
+          "sequential_motion_allowance_m": 0.002357
+        },
+        "physical_3d_best_rms_m": 0.20888559971590565,
+        "measured_height_available": false
+      },
+      {
+        "seq": 4577,
+        "callback_ros_ns": 1791977784272010592,
+        "reason": "measured_height_unavailable",
+        "published": false,
+        "triangle": {
+          "anchors": [
+            1,
+            2
+          ],
+          "deficit_m": 0.23057300000000006,
+          "sequential_motion_allowance_m": 0.002287
+        },
+        "physical_3d_best_rms_m": 0.22313441012494545,
+        "measured_height_available": false
+      },
+      {
+        "seq": 4578,
+        "callback_ros_ns": 1791977784290852697,
+        "reason": "measured_height_unavailable",
+        "published": false,
+        "triangle": {
+          "anchors": [
+            1,
+            2
+          ],
+          "deficit_m": 0.19126799999999966,
+          "sequential_motion_allowance_m": 0.002282
+        },
+        "physical_3d_best_rms_m": 0.20792393126934713,
+        "measured_height_available": false
+      },
+      {
+        "seq": 4579,
+        "callback_ros_ns": 1791977784311639677,
+        "reason": "measured_height_unavailable",
+        "published": false,
+        "triangle": {
+          "anchors": [
+            1,
+            2
+          ],
+          "deficit_m": 0.22419799999999965,
+          "sequential_motion_allowance_m": 0.002362
+        },
+        "physical_3d_best_rms_m": 0.22337303828032642,
+        "measured_height_available": false
+      },
+      {
+        "seq": 4580,
+        "callback_ros_ns": 1791977784339491411,
+        "reason": "measured_height_unavailable",
+        "published": false,
+        "triangle": {
+          "anchors": [
+            1,
+            2
+          ],
+          "deficit_m": 0.22361699999999976,
+          "sequential_motion_allowance_m": 0.002283
+        },
+        "physical_3d_best_rms_m": 0.22330654937304942,
+        "measured_height_available": false
+      },
+      {
+        "seq": 4581,
+        "callback_ros_ns": 1791977784363628664,
+        "reason": "measured_height_unavailable",
+        "published": false,
+        "triangle": {
+          "anchors": [
+            1,
+            4
+          ],
+          "deficit_m": 0.24043899930255735,
+          "sequential_motion_allowance_m": 0.006952
+        },
+        "physical_3d_best_rms_m": 0.2266676006235032,
+        "measured_height_available": false
+      },
+      {
+        "seq": 4582,
+        "callback_ros_ns": 1791977784387831329,
+        "reason": "measured_height_unavailable",
+        "published": false,
+        "triangle": {
+          "anchors": [
+            1,
+            2
+          ],
+          "deficit_m": 0.21052299999999965,
+          "sequential_motion_allowance_m": 0.002277
+        },
+        "physical_3d_best_rms_m": 0.21913182312784538,
+        "measured_height_available": false
+      },
+      {
+        "seq": 4583,
+        "callback_ros_ns": 1791977784413698249,
+        "reason": "measured_height_unavailable",
+        "published": false,
+        "triangle": {
+          "anchors": [
+            1,
+            2
+          ],
+          "deficit_m": 0.1937259999999999,
+          "sequential_motion_allowance_m": 0.002434
+        },
+        "physical_3d_best_rms_m": 0.2135475832635603,
+        "measured_height_available": false
+      },
+      {
+        "seq": 4584,
+        "callback_ros_ns": 1791977784437390878,
+        "reason": "measured_height_unavailable",
+        "published": false,
+        "triangle": {
+          "anchors": [
+            1,
+            4
+          ],
+          "deficit_m": 0.2208219993025562,
+          "sequential_motion_allowance_m": 0.006869
+        },
+        "physical_3d_best_rms_m": 0.22202061522440247,
+        "measured_height_available": false
+      },
+      {
+        "seq": 4585,
+        "callback_ros_ns": 1791977784466648842,
+        "reason": "measured_height_unavailable",
+        "published": false,
+        "triangle": {
+          "anchors": [
+            1,
+            2
+          ],
+          "deficit_m": 0.20502799999999974,
+          "sequential_motion_allowance_m": 0.002292
+        },
+        "physical_3d_best_rms_m": 0.2158734595028527,
+        "measured_height_available": false
+      },
+      {
+        "seq": 4586,
+        "callback_ros_ns": 1791977784486432135,
+        "reason": "measured_height_unavailable",
+        "published": false,
+        "triangle": {
+          "anchors": [
+            1,
+            4
+          ],
+          "deficit_m": 0.22899299930255654,
+          "sequential_motion_allowance_m": 0.007018
+        },
+        "physical_3d_best_rms_m": 0.22748736937914785,
+        "measured_height_available": false
+      },
+      {
+        "seq": 4587,
+        "callback_ros_ns": 1791977784510630927,
+        "reason": "measured_height_unavailable",
+        "published": false,
+        "triangle": {
+          "anchors": [
+            1,
+            4
+          ],
+          "deficit_m": 0.27890499930255697,
+          "sequential_motion_allowance_m": 0.006856
+        },
+        "physical_3d_best_rms_m": 0.23881910875311785,
+        "measured_height_available": false
+      },
+      {
+        "seq": 4588,
+        "callback_ros_ns": 1791977784538078357,
+        "reason": "measured_height_unavailable",
+        "published": false,
+        "triangle": {
+          "anchors": [
+            1,
+            2
+          ],
+          "deficit_m": 0.21389199999999997,
+          "sequential_motion_allowance_m": 0.002278
+        },
+        "physical_3d_best_rms_m": 0.22155100218111612,
+        "measured_height_available": false
+      },
+      {
+        "seq": 4589,
+        "callback_ros_ns": 1791977784562540775,
+        "reason": "measured_height_unavailable",
+        "published": false,
+        "triangle": {
+          "anchors": [
+            1,
+            2
+          ],
+          "deficit_m": 0.22847799999999976,
+          "sequential_motion_allowance_m": 0.002372
+        },
+        "physical_3d_best_rms_m": 0.2299374738165819,
+        "measured_height_available": false
+      },
+      {
+        "seq": 4590,
+        "callback_ros_ns": 1791977784585914223,
+        "reason": "measured_height_unavailable",
+        "published": false,
+        "triangle": {
+          "anchors": [
+            1,
+            2
+          ],
+          "deficit_m": 0.23437299999999964,
+          "sequential_motion_allowance_m": 0.002287
+        },
+        "physical_3d_best_rms_m": 0.23199751047407777,
+        "measured_height_available": false
+      }
+    ]
+  },
+  "physical_fc": {
+    "scope": "Summarize sparse physical FC readbacks; do not infer per-packet fusion.",
+    "result": {
+      "error": null,
+      "sent": 1024,
+      "expired": 0,
+      "sender_stopped": true,
+      "flight_commands": 0,
+      "parameter_writes": 0
+    },
+    "maximum_sender_gap_s": 0.526585907,
+    "visual_samples": [
+      {
+        "elapsed_s": 6.038774640001066,
+        "xy_max_delta_m": 4.878307957492667e-06,
+        "matched": true,
+        "fc_sample_minus_translated_capture_us": 356.75
+      },
+      {
+        "elapsed_s": 12.039046800004144,
+        "xy_max_delta_m": 8.888266280607238e-06,
+        "matched": true,
+        "fc_sample_minus_translated_capture_us": 375.75
+      },
+      {
+        "elapsed_s": 18.042063068998687,
+        "xy_max_delta_m": 9.497748798270589e-06,
+        "matched": true,
+        "fc_sample_minus_translated_capture_us": 477.0
+      },
+      {
+        "elapsed_s": 24.044014986997354,
+        "xy_max_delta_m": 9.407817619933034e-06,
+        "matched": true,
+        "fc_sample_minus_translated_capture_us": 520.75
+      }
+    ],
+    "aid_samples": [
+      {
+        "elapsed_s": 2.0779435410004226,
+        "phase": "inject",
+        "time_last_fuse_us": [
+          45017381580,
+          45017402174
+        ],
+        "fused": [
+          "True",
+          "True"
+        ],
+        "innovation_rejected": [
+          "False",
+          "False"
+        ]
+      },
+      {
+        "elapsed_s": 8.083289251000679,
+        "phase": "inject",
+        "time_last_fuse_us": [
+          45023379145,
+          45023425787
+        ],
+        "fused": [
+          "True",
+          "True"
+        ],
+        "innovation_rejected": [
+          "False",
+          "False"
+        ]
+      },
+      {
+        "elapsed_s": 14.081562860003032,
+        "phase": "inject",
+        "time_last_fuse_us": [
+          45029375207,
+          45029429521
+        ],
+        "fused": [
+          "True",
+          "True"
+        ],
+        "innovation_rejected": [
+          "False",
+          "False"
+        ]
+      },
+      {
+        "elapsed_s": 20.08159690100001,
+        "phase": "inject",
+        "time_last_fuse_us": [
+          45035398319,
+          45035423314
+        ],
+        "fused": [
+          "True",
+          "True"
+        ],
+        "innovation_rejected": [
+          "False",
+          "False"
+        ]
+      },
+      {
+        "elapsed_s": 26.08726706699963,
+        "phase": "inject",
+        "time_last_fuse_us": [
+          45041376349,
+          45041427047
+        ],
+        "fused": [
+          "True",
+          "True"
+        ],
+        "innovation_rejected": [
+          "False",
+          "False"
+        ]
+      },
+      {
+        "elapsed_s": 32.09438475900242,
+        "phase": "after",
+        "time_last_fuse_us": [
+          45045551051,
+          45045552129
+        ],
+        "fused": [
+          "True",
+          "True"
+        ],
+        "innovation_rejected": [
+          "False",
+          "False"
+        ]
+      },
+      {
+        "elapsed_s": 38.092450680000184,
+        "phase": "after",
+        "time_last_fuse_us": [
+          45045551051,
+          45045552129
+        ],
+        "fused": [
+          "True",
+          "True"
+        ],
+        "innovation_rejected": [
+          "False",
+          "False"
+        ]
+      }
+    ],
+    "flag_samples": [
+      {
+        "elapsed_s": 4.193911884001864,
+        "phase": "inject",
+        "ev_pos": [
+          "True",
+          "True"
+        ]
+      },
+      {
+        "elapsed_s": 10.199456223002926,
+        "phase": "inject",
+        "ev_pos": [
+          "True",
+          "True"
+        ]
+      },
+      {
+        "elapsed_s": 16.197506178003096,
+        "phase": "inject",
+        "ev_pos": [
+          "True",
+          "True"
+        ]
+      },
+      {
+        "elapsed_s": 22.205906882998534,
+        "phase": "inject",
+        "ev_pos": [
+          "True",
+          "True"
+        ]
+      },
+      {
+        "elapsed_s": 28.205642002998502,
+        "phase": "inject",
+        "ev_pos": [
+          "True",
+          "True"
+        ]
+      },
+      {
+        "elapsed_s": 34.21238253299816,
+        "phase": "after",
+        "ev_pos": [
+          "False",
+          "False"
+        ]
+      },
+      {
+        "elapsed_s": 40.21264707500086,
+        "phase": "after",
+        "ev_pos": [
+          "False",
+          "False"
+        ]
+      }
+    ],
+    "all_packets_received_or_fused_verified": false,
+    "physical_flight_verified": false
+  },
+  "replay": {
+    "counts": {
+      "original_fit_consistent": 2756,
+      "published": 2765,
+      "tdma_insufficient_ranges": 232,
+      "partial_measured_height_required": 10,
+      "fresh_four_anchor_history_recovered": 9,
+      "measured_height_unavailable": 55,
+      "partial_height_inconsistent": 21,
+      "B_not_fresh_valid": 2,
+      "no_height_consistent_subset": 6
+    },
+    "max_complete_gap_s": 0.526079263,
+    "scope": "internal trace callback-order numerical replay; no physical flight or position truth",
+    "legacy": false,
+    "inputs": 48932,
+    "corrupt_lines": [
+      [
+        "btf-trace/trace.3.jsonl",
+        15646
+      ]
+    ],
+    "trace_sha256": "ead1ab10f81d38a770d1a80e0ee88a4f32937511e9f8b87b2a7cd9c00d98c253",
+    "library_sha256": "c573f186cee223cfacdd6e8d3ea14ac2e11267a2c9d2c5fd2997b047654a8425",
+    "source_sha256": "10d781f9b54f7a0f4f2e7ccaab84eac45b0253e9322c181d7e8d7eaecb0f642d"
+  },
+  "mount17_replay": {
+    "counts": {
+      "original_fit_consistent": 2756,
+      "published": 2765,
+      "tdma_insufficient_ranges": 232,
+      "partial_measured_height_required": 10,
+      "fresh_four_anchor_history_recovered": 9,
+      "measured_height_unavailable": 55,
+      "partial_height_inconsistent": 21,
+      "B_not_fresh_valid": 2,
+      "no_height_consistent_subset": 6
+    },
+    "max_complete_gap_s": 0.526079263,
+    "scope": "internal trace callback-order numerical replay; no physical flight or position truth",
+    "legacy": false,
+    "inputs": 48932,
+    "corrupt_lines": [
+      [
+        "btf-trace/trace.3.jsonl",
+        15646
+      ]
+    ],
+    "mount_override_m": 0.17,
+    "recorded_mount_body_flu_m": [
+      0.0,
+      0.0,
+      0.15
+    ],
+    "trace_sha256": "ead1ab10f81d38a770d1a80e0ee88a4f32937511e9f8b87b2a7cd9c00d98c253",
+    "library_sha256": "c573f186cee223cfacdd6e8d3ea14ac2e11267a2c9d2c5fd2997b047654a8425",
+    "source_sha256": "10d781f9b54f7a0f4f2e7ccaab84eac45b0253e9322c181d7e8d7eaecb0f642d"
+  },
+  "verification": {
+    "windows_ctest": "3/3 passed",
+    "jetson_ctest": "3/3 passed",
+    "all_previous_decision_xy_time_publish_reason_preserved": true,
+    "all_20_gap_rows_have_independent_geometry_issue": true,
+    "operational_runtime_replaced": false,
+    "fc_parameters_changed": false,
+    "remaining_gap_s": 0.526079263,
+    "tdma_colleague_change_identified": false
+  },
+  "operator_confirmations": {
+    "ground_isolated": true,
+    "anchor_layout_matches": true,
+    "independent_tag_position_or_bias_records_available": false,
+    "tof_to_tag_reported_up_m": 0.17
+  },
+  "artifacts": {
+    "physical_preflight.txt": "a1c51fb580b0bf248a6586c9ade06372916e50498305ac00cb5d0ef031f99a0a",
+    "probe_cleanup.txt": "87b7c066eebf05bbb7e04892ebfc7b338de1ada3cab8586f0bfd62644eb31c40",
+    "probe1-readback.json": "a2c49e6250480ac63eeb585435e8df429d5a0264ff74c5e6de74086fe910e6dc",
+    "probe1-sent.jsonl": "338721ca844907f5ecff266638fd68f8bc7c51999c168fd973c7ff245488aa45",
+    "probe1-manifest.json": "b2f8e510e9b3d0f16408de354ca5fc97b65855a9e18973ff98e91bef872b3590",
+    "jetson_build_tests.txt": "899a6825cbc5d1b8e4a61fda863127d723bf5cf76e9f8983025e656336e73e6d",
+    "live_field_config.json": "5842a0cb3e8e48d3746e9fc18713be7847c8836ba12d49363e0e2a49a3f9f3fc"
+  }
+}

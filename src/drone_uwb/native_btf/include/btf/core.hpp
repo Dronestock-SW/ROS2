@@ -75,6 +75,11 @@ struct Decision {
   int recovery_frames = 0;
   std::optional<double> recovery_raw_residual_m;
   bool b4_height_blocked = false;
+  // Independent of ToF: triangle inequality with sequential-motion allowance.
+  // Diagnostic only; it must not silently change the existing B4 policy.
+  double max_pair_deficit_m = 0., pair_range_rms_lower_bound_m = 0.;
+  std::array<int,2> inconsistent_pair{};
+  std::string range_geometry_reason = "not_checked";
 };
 class Processor {
  public:

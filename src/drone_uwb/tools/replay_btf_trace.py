@@ -36,6 +36,11 @@ def run(args):
                     rows.append(item)
     if config is None:
         raise ValueError('trace_session_not_found')
+    original_mount = list(config['height']['tof_to_tag_body_flu_m'])
+    if args.tof_tag_up_m is not None:
+        if not 0 <= args.tof_tag_up_m <= 1:
+            raise ValueError('invalid ToF-to-tag vertical offset')
+        config['height']['tof_to_tag_body_flu_m'][2] = args.tof_tag_up_m
     config['native_btf_library'] = str(args.library.resolve())
     processor = MeasuredBtf(config)
     rows.sort(key=lambda r:r['enqueued_monotonic_ns'])
@@ -82,6 +87,7 @@ def run(args):
         ((b-a)/1e9 for a,b in zip(published,published[1:])), default=None),
         scope='internal trace callback-order numerical replay; no physical flight or position truth',
         legacy=args.legacy, inputs=len(rows), corrupt_lines=corrupt,
+        mount_override_m=args.tof_tag_up_m, recorded_mount_body_flu_m=original_mount,
         trace_sha256=hashlib.sha256(args.trace.read_bytes()).hexdigest(),
         library_sha256=hashlib.sha256(args.library.read_bytes()).hexdigest(),
         source_sha256=hashlib.sha256((args.package_root/'drone_uwb/processing/measured_btf.py').read_bytes()).hexdigest())
@@ -99,4 +105,6 @@ if __name__ == '__main__':
     p.add_argument('--start-ros-ns', type=int, required=True)
     p.add_argument('--end-ros-ns', type=int, required=True)
     p.add_argument('--legacy', action='store_true')
+    p.add_argument('--tof-tag-up-m', type=float,
+                   help='Offline sensitivity only; override lens-to-antenna vertical offset, never FC parameters')
     run(p.parse_args())

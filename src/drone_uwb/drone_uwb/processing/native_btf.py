@@ -60,6 +60,16 @@ class NativeBtf:
             raw_slant_m=[float(r) if i in cycle.indices else None for i,r in enumerate(cycle.raw)], sample_height_m=heights,
             height_source=height_source or 'missing'))
         result['native_call_ms'] = (time.perf_counter_ns()-started)/1e6
+        # Keep the old reason for compatibility, but never describe impossible
+        # measured ranges as solely a missing-height/transport problem.
+        causes = []
+        if result.get('range_geometry_reason') == 'ranges_inconsistent_independent_of_height':
+            causes.append('range_geometry_inconsistent')
+        if result['reason'] in ('measured_height_unavailable', 'partial_measured_height_required'):
+            causes.append('measured_height_unavailable')
+        if not result['ok'] and not causes:
+            causes.append(result['reason'])
+        result['observation_issues'] = causes
         b = dict(ok=result['B']['ok'], reason=result['B']['reason'],
                  xy_m=result['B']['xy_m'], velocity_m_s=result['B']['velocity_m_s'],
                  fit=result['B'], fresh_observation_count=result['fresh_observation_count'],

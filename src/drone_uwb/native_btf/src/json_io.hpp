@@ -77,6 +77,9 @@ Json decision(const btf::Decision& d) {
     {"reset_reason",d.reset_reason},{"b4_height_reason",d.b4_height_reason},
     {"recovery_frames",d.recovery_frames},{"recovery_raw_residual_m",nullable(d.recovery_raw_residual_m)},
     {"b4_height_blocked",d.b4_height_blocked},
+    {"range_geometry_reason",d.range_geometry_reason},
+    {"range_pair",d.inconsistent_pair},{"max_pair_deficit_m",d.max_pair_deficit_m},
+    {"pair_range_rms_lower_bound_m",d.pair_range_rms_lower_bound_m},
     {"b4_physical_range_rms_m",nullable(d.b4_physical_range_rms_m)}};
 }
 }

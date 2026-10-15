@@ -115,6 +115,23 @@ void partial_contract() {
     check(!q.process(bad).ok,"unmeasured/stale/inconsistent partial accepted");
   }
 }
+void range_geometry_contract() {
+  auto cfg=config();cfg.anchors={{{0,0,.15},{6.3,0,.15},{0,4.6,.15},{6.3,4.6,.15}}};
+  btf::Processor p(cfg);
+  auto f=frame(1,false);f.height_m={};f.height_source=btf::HeightSource::Missing;
+  // Recorded sequence 4572. Even without ToF, A1+A2 cannot span 6.3 m.
+  f.raw_range_m={3.08936,3.0136,4.80796,4.52676};
+  f.sample_us={115784414,115786774,115789103,115791351};
+  f.start_us=115784000;f.end_us=115791351;
+  auto d=p.process(f);
+  check(d.range_geometry_reason=="ranges_inconsistent_independent_of_height","bad ranges blamed solely on missing height");
+  check(d.pair_range_rms_lower_bound_m>.06,"physical residual bound missing");
+  check(d.inconsistent_pair==std::array<int,2>{1,2},"wrong contradictory anchor pair");
+  // Exact ranges, with unknown height, do not acquire a new rejection gate.
+  p.reset();f.raw_range_m={std::hypot(std::hypot(2.,2.),.7),std::hypot(std::hypot(4.3,2.),.7),
+                         std::hypot(std::hypot(2.,2.6),.7),std::hypot(std::hypot(4.3,2.6),.7)};
+  d=p.process(f);check(d.max_pair_deficit_m==0.,"valid geometry flagged");
 }
-int main(){try{numerical_contract();fresh_recovery_contract();partial_contract();freeze_contract();std::cout<<"numerical, partial and FREEZE contracts passed\n";return 0;}
+}
+int main(){try{numerical_contract();fresh_recovery_contract();partial_contract();freeze_contract();range_geometry_contract();std::cout<<"numerical, partial, geometry and FREEZE contracts passed\n";return 0;}
 catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}

@@ -109,6 +109,25 @@ struct Processor::Impl {
   Confirmation b4_confirm,near,ground;
   Motion motion;
 
+  void range_geometry(const Frame& f, Decision& d) const {
+    int count=0;
+    for(int i=0;i<4;++i)if(f.valid_mask&(1<<i))++count;
+    for(int i=0;i<4;++i)if(f.valid_mask&(1<<i))
+      for(int j=i+1;j<4;++j)if(f.valid_mask&(1<<j)) {
+        const auto& a=cfg.anchors[i];const auto& b=cfg.anchors[j];
+        const double separation=std::hypot(std::hypot(a[0]-b[0],a[1]-b[1]),a[2]-b[2]);
+        const double motion=cfg.max_speed_m_s*std::abs(f.sample_us[i]-f.sample_us[j])/1e6;
+        const double deficit=separation-f.raw_range_m[i]-f.raw_range_m[j]-motion;
+        if(deficit>d.max_pair_deficit_m) {
+          d.max_pair_deficit_m=deficit;d.inconsistent_pair={i+1,j+1};
+        }
+      }
+    // e_i + e_j >= deficit -> sum(e^2)/N >= deficit^2/(2*N).
+    d.pair_range_rms_lower_bound_m=d.max_pair_deficit_m/std::sqrt(2.*count);
+    d.range_geometry_reason=d.pair_range_rms_lower_bound_m>=cfg.rms_limit_m
+      ?"ranges_inconsistent_independent_of_height":"pair_bound_not_exceeded";
+  }
+
   bool b4_integrity(const Frame& f,Decision& d) {
     d.b4_height_blocked=b4_blocked;
     if(!measured(f)) {
@@ -306,6 +325,7 @@ struct Processor::Impl {
        newest-oldest>us(cfg.solver.max_extrapolation_s)||
        (last_end&&f.end_us<=*last_end)) {d.reason="invalid_anchor_times";return d;}
     last_end=f.end_us;d.fresh_observation_count=3;d.newest_sample_us=newest;
+    range_geometry(f,d);
     if(f.height_source!=HeightSource::MeasuredTofImu) {d.reason="partial_measured_height_required";return d;}
     for(int i:ids)if(!f.height_m[i]||!std::isfinite(*f.height_m[i])) {
       d.reason="partial_measured_height_required";return d;
@@ -386,6 +406,7 @@ struct Processor::Impl {
       if(f.sample_us[i]<f.start_us||f.sample_us[i]>f.end_us) {d.reason="invalid_anchor_times";return d;}
       if(f.height_m[i]&&!std::isfinite(*f.height_m[i])) {d.reason="invalid_height";return d;}
     }
+    range_geometry(f,d);
     if(last_end&&(f.end_us<=*last_end||f.end_us-*last_end>us(cfg.solver.reset_gap_s))) {
       const bool backwards=f.end_us<=*last_end;
       d.reset_reason=backwards?"source_time_backwards":"gap";
