@@ -16,7 +16,6 @@ from drone_uwb.processing.experiments.h80_b import H80Window, BSettings
 from drone_uwb.processing.experiments.tof_subset import ToFTrackedSubsetCandidate
 from drone_uwb.acquisition.tdma import TdmaGate
 from drone_uwb.contracts.protocol import InvalidSample
-from drone_uwb.processing.solvers.observations import solve_xy
 from drone_uwb.processing.observation_guard import ObservationGuard
 
 
@@ -174,6 +173,9 @@ class MeasuredBtf:
             from .native_btf import NativeBtf
             self.native = NativeBtf(config)
         self.reset_models()
+
+        from .cached_xy import CachedXY
+        self.instant_xy_cache = CachedXY(config['anchors_xyz_m'], (0, 1, 2, 3))
 
     def start_ground_session(self, *, connected, armed, landed, state_age_s,
                              landed_age_s, stationary, velocity_age_s):
@@ -343,7 +345,7 @@ class MeasuredBtf:
             # Detect coherent four-link steps before the 0.8s window can smear
             # them into a plausible slow trajectory. NLOS-inconsistent cycles
             # still go to the existing ToF/subset integrity calculation.
-            raw_xy, raw_residual = solve_xy(np.asarray(self.config['anchors_xyz_m']), corrected, list(range(4)))
+            raw_xy, raw_residual = self.instant_xy_cache.solve(corrected)
             out['raw_fit_rms_m'] = float(raw_residual)
             # Historical raw_fit_rms_m is a normalized maximum range-difference
             # residual, NOT a physical range RMS. Preserve the key for readers.

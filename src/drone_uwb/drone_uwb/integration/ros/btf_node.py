@@ -50,6 +50,8 @@ class BtfNode(Node):
         if self.config['external_output_allowed'] is not False:
             raise ValueError('real_btf_is_observation_only')
         self.processor = MeasuredBtf(self.config)
+        self.get_logger().info('A-cache initialized: ' +
+            json.dumps(self.processor.instant_xy_cache.audit(), sort_keys=True))
         # Solver state belongs only to the default mutually exclusive group.
         # Sensor ingress never calls the solver and the solver never holds this
         # lock while fitting. A single snapshot serves all four anchor queries.
@@ -408,6 +410,7 @@ class BtfNode(Node):
                'height_mount_confirmed':self.config['height']['mount_confirmed'],
                'flat_floor_confirmed':self.config['height']['flat_floor_confirmed']}
         row['sensor_qos_depth'] = 100
+        row['instant_xy_cache'] = self.processor.instant_xy_cache.audit()
         row['trace'] = self.trace.status() if self.trace else {'enabled':False}
         row['observation_session'] = self.processor.observation_session
         self.status_pub.publish(String(data=json.dumps(row,ensure_ascii=False)))
