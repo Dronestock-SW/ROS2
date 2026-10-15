@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "path": "C:\\Users\\A\\Documents\\ChatGPT\\DroneStock\\outputs\\esp32_single_tag_20261015\\esp32-single-tag-release-20261016.zip",
+  "bytes": 14986920,
+  "sha256": "299a25e8a0f18706010633951780a7b1f7679042485315b5d4cf3e6e046dcf06",
+  "files": 96,
+  "manifest_entries_verified": 95,
+  "source_commit": "b61f1b238f43fbb53f5342df4d2c9cd7eabf3dc2",
+  "capture_tool_source_commit": "d1325c9fcd33be1a984c56e36038c43f2030e568",
+  "raw_archive_is_separate": true,
+  "preflash_A3_backup_included": true,
+  "A1_restore_is_not_preflash_backup": true,
+  "raw_archive_verification": {
+    "schema": 1,
+    "verified_utc": "2026-10-15T15:57:00.516704+00:00",
+    "local_path": "C:\\Users\\A\\Documents\\ChatGPT\\DroneStock\\outputs\\esp32_single_tag_20261015\\esp32-single-tag-ground-records-20261016.tar.gz",
+    "archive_bytes": 273120601,
+    "archive_sha256": "fcba32fde7b69c0b68bec5746bfa6a9ab189b5fc43cd00831b9e3ecf07d5eeba",
+    "verified_original_files": 52,
+    "verified_original_bytes": 2078702684,
+    "archive_regular_files": 56,
+    "additional_metadata_files": [
+      "ground-records-manifest.json",
+      "final50-first600-summary.json",
+      "final50-recording-audit.json",
+      "final50-persistence.json"
+    ],
+    "missing_original_files": 0,
+    "hash_mismatches": 0,
+    "method": "17 individually verified SSH byte streams, atomic local rename, full gzip/tar stream hash validation"
+  },
+  "document_check": {
+    "utf8_files": 3,
+    "local_links_checked": 29,
+    "missing_links": 0,
+    "duplicate_level2_headers": 0,
+    "remote_release_metadata_sha256_matches": true,
+    "metadata_sha256": "e54a6aac4f94beb9a49af4b374f781306399186d5a3ac1df33ba31b6127cba14",
+    "sha256_field_formats_checked": 163
+  },
+  "local_transfer_chunks": {
+    "path": "C:\\Users\\A\\Documents\\ChatGPT\\DroneStock\\outputs\\esp32_single_tag_20261015\\raw-transfer-parts-20261016",
+    "state": "retained; deletion blocked by automatic approval policy",
+    "archive_integrity_affected": false
+  },
+  "remote_temporary_cleanup": {
+    "utc": "2026-10-15T15:59:54.794506+00:00",
+    "permanent_events": "/home/arialhanho/esp32-single-tag-20261015/final50-r3-stability/events.jsonl",
+    "permanent_events_sha256": "428dca1eed2a1339574b979f76ab72e37c173001f775b862e2c4ad9e3757296b",
+    "local_archive_verified_sha256": "fcba32fde7b69c0b68bec5746bfa6a9ab189b5fc43cd00831b9e3ecf07d5eeba",
+    "removed_temporary_paths": [
+      "/dev/shm/single-tag-final50-r3-20261016",
+      "/tmp/esp32-ground-record-chunks-20261016"
+    ],
+    "permanent_captures_removed": false
+  }
+}

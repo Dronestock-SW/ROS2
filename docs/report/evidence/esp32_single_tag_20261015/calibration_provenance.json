@@ -13,5 +13,19 @@
     }
   ],
   "new_calibration_measured": false,
-  "legacy_nvs_restored": false
+  "legacy_nvs_restored": false,
+  "original_nvs_audit": {
+    "original_flash_sha256": "ea9851c4bf1d07b659a7c59460381401916669d65423c11566e985a0e64a9a39",
+    "nvs_sha256": "fbd130186f750bde6cdc77e5a3c9fa320f766ce6dd9f52590ad3555c361cffb1",
+    "nvs_bytes": 20480,
+    "parser_url": "https://raw.githubusercontent.com/espressif/esp-idf/v5.1/components/nvs_flash/nvs_partition_tool/nvs_parser.py",
+    "parser_sha256": "76ecd26b854a20802ec93ea6613a4be5a0b582438d277d3ef4916fa34a09f0d4",
+    "format_reference": "https://docs.espressif.com/projects/esp-idf/en/v4.4.7/esp32s3/api-reference/storage/nvs_flash.html#internals",
+    "page_header_crc_errors": [],
+    "written_entry_crc_errors": [],
+    "uwb_namespace": "uwb_offline",
+    "written_uwb_entries": 0,
+    "other_nvs_blobs_interpreted_as_uwb_calibration": false,
+    "credential_values_printed_or_added_to_git": false
+  }
 }

@@ -230,7 +230,7 @@
   },
   "receiver_overlay_reproduced": true,
   "receiver_overlay_contract_tests_passed": 6,
-  "final_selection_and_full_erase": "written; post-erase verification running",
+  "final_selection_and_full_erase": "50 Hz RAW/transport selected; full erase and 1800-second post-write observation verified",
   "flight_performed": false,
   "selected_tag_package": "tag50-release-r3-final",
   "physical_power_cycle_verified": false,
@@ -240,5 +240,26 @@
     "sha256": "e33e76d62e85ca707c7632a993825f9b359661e15924a18a7f17091edc3b266f",
     "bytes": 475144,
     "scope": "unchanged preexisting A-cache native B_TF binary"
+  },
+  "capture_tool_source_commit": "d1325c9fcd33be1a984c56e36038c43f2030e568",
+  "capture_tool_sha256": "eac2b7395902355e57f258627011b5d517e49ea820d1c8aea8b65b86751d0d03",
+  "qualification": {
+    "raw_transport_50hz_30min": "verified",
+    "post_rewrite_first_10min": "verified",
+    "full_log_counts_match_callbacks": true,
+    "real_position_rate_and_accuracy": "pending confirmed physical layout",
+    "physical_tag_power_cycle": "not performed",
+    "physical_usb_reconnect": "not performed; software reopen tested",
+    "anchor_power_removal": "not performed; physical MCU halt via SWD tested",
+    "lora_ground_station_uplink_downlink": "deferred by user",
+    "px4_observation_acceptance_fusion": "not tested",
+    "flight_arming_motors": "not performed"
+  },
+  "final_recording": {
+    "seconds": 1800,
+    "raw_received": 90000,
+    "raw_sequence_missing": 0,
+    "recording_queue_dropped": 0,
+    "raw_events_sha256": "428dca1eed2a1339574b979f76ab72e37c173001f775b862e2c4ad9e3757296b"
   }
 }

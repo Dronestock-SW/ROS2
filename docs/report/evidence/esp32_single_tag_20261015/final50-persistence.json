@@ -1,0 +1,8 @@
+{
+  "source": "/dev/shm/single-tag-final50-r3-20261016",
+  "destination": "/home/arialhanho/esp32-single-tag-20261015/final50-r3-stability",
+  "events_bytes": 699604115,
+  "events_sha256": "428dca1eed2a1339574b979f76ab72e37c173001f775b862e2c4ad9e3757296b",
+  "sha256_matches_capture": true,
+  "persisted_utc": "2026-10-15T15:32:49.551354+00:00"
+}
