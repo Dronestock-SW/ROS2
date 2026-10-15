@@ -1,0 +1,43 @@
+{
+  "saved_utc": "2026-10-15T07:07:46.018655+00:00",
+  "revision": "acache-20261015",
+  "base_source_commit": "0110da8d3022df95ceb5b77178ef63d998af895b",
+  "new_git_commit": null,
+  "source_slot": "/home/arialhanho/btf-acache-release-20261015",
+  "previous_slot": "/home/arialhanho/evening-20261014-1815",
+  "source_manifest_sha256": "6136c9c460f8042361a7cd57811c7f3ca6b725edd59e4de3b6478920efbcea06",
+  "changed_files": [
+    "source/src/drone_uwb/drone_uwb/integration/ros/btf_node.py",
+    "source/src/drone_uwb/drone_uwb/processing/cached_xy.py",
+    "source/src/drone_uwb/drone_uwb/processing/measured_btf.py"
+  ],
+  "native_library": "/home/arialhanho/evening-20261014-1815/btf-build/libbtf_native.so",
+  "native_sha256": "e33e76d62e85ca707c7632a993825f9b359661e15924a18a7f17091edc3b266f",
+  "cache": {
+    "builds": 1,
+    "calls": 0,
+    "geometry_sha256": "f9611f2cfa0d5b935b13e8e3cc86fa9db2bc473aa4a75a1a03f2f7ac39ed5b59",
+    "usable": true,
+    "build_wall_ms": 2.217982,
+    "build_cpu_ms": 2.155136
+  },
+  "service_active": true,
+  "automatic_restarts": 0,
+  "physical_flight_validated": false,
+  "live_xy_validated": false,
+  "flight_commands_sent": false,
+  "fc_output_enabled": false,
+  "tests": {
+    "contract_cases": 2763,
+    "regression_passed": 111,
+    "colcon_packages": [
+      "drone_uwb"
+    ]
+  },
+  "scope": "A-cache only on captured operating release; trial clock/raw-copy changes and replay instrumentation not included",
+  "remaining": [
+    "live UWB RAW cycle and XY output confirmation",
+    "large latency cause remains unproven"
+  ],
+  "rollback_override": "/home/arialhanho/.config/systemd/user/dronestock-manual-observe.service.d/zzzz-acache-20261015.conf"
+}
