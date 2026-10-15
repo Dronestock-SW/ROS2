@@ -1,0 +1,141 @@
+{
+  "checked_at_utc": "2026-10-15T09:01:49.287309+00:00",
+  "ros_domain": 2,
+  "transport": "existing MAVROS router",
+  "writes": "fixed diagnostic SERIAL_CONTROL queries only; no parameter or flight writes",
+  "queries": [
+    {
+      "command": "ver all",
+      "response": "\nNuttShell (NSH)\nnsh> ver all\nHW arch: PX4_FMU_V6C\nHW type: V6C002002\nHW version: 0x002\nHW revision: 0x002\nPX4 git-hash: d6f12ad1c4f70ad3230afd7d86e971421e02fef4\nPX4 version: Release 1.17.0 (17891583)\nOS: NuttX\nOS version: Release 0.0.0 (255)\nOS git-hash: fb2fadf6f599c1406f052db013efd00a2518e72c\nBuild datetime: Oct 14 2026 17:29:23\nBuild uri: localhost\nBuild variant: lidar2d\nToolchain: GNU GCC, 13.2.1 20231009\nMCU: STM32H7[4|5]xxx, rev. V\nnsh> ",
+      "prompt_seen": true
+    },
+    {
+      "command": "param show MPC_XY_VEL_MAX",
+      "response": "param show MPC_XY_VEL_MAX\nSymbols: x = used, + = saved, * = unsaved\nx   MPC_XY_VEL_MAX [644,1097] : 1.0000\n\n 1095/2043 parameters used.\nnsh>",
+      "prompt_seen": true
+    },
+    {
+      "command": "param show MPC_XY_P",
+      "response": " param show MPC_XY_P\nSymbols: x = used, + = saved, * = unsaved\nx   MPC_XY_P [639,1092] : 0.9500\n\n 1095/2043 parameters used.\nnsh> ",
+      "prompt_seen": true
+    },
+    {
+      "command": "param show MPC_ACC_HOR",
+      "response": "param show MPC_ACC_HOR\nSymbols: x = used, + = saved, * = unsaved\nx   MPC_ACC_HOR [600,1053] : 1.0000\n\n 1095/2043 parameters used.\nnsh> ",
+      "prompt_seen": true
+    },
+    {
+      "command": "param show MPC_JERK_AUTO",
+      "response": "param show MPC_JERK_AUTO\nSymbols: x = used, + = saved, * = unsaved\nx   MPC_JERK_AUTO [606,1059] : 4.0000\n\n 1095/2043 parameters used.\nnsh> ",
+      "prompt_seen": true
+    },
+    {
+      "command": "param show MPC_TKO_SPEED",
+      "response": "param show MPC_TKO_SPEED\nSymbols: x = used, + = saved, * = unsaved\nx   MPC_TKO_SPEED [628,1081] : 0.5000\n\n 1095/2043 parameters used.\nnsh> ",
+      "prompt_seen": true
+    },
+    {
+      "command": "param show MPC_Z_VEL_MAX_UP",
+      "response": "param show MPC_Z_VEL_MAX_UP\nSymbols: x = used, + = saved, * = unsaved\nx   MPC_Z_VEL_MAX_UP [654,1107] : 0.5000\n\n 1095/2043 parameters used.\nnsh> ",
+      "prompt_seen": true
+    },
+    {
+      "command": "param show MPC_Z_VEL_MAX_DN",
+      "response": "param show MPC_Z_VEL_MAX_DN\nSymbols: x = used, + = saved, * = unsaved\nx   MPC_Z_VEL_MAX_DN [653,1106] : 0.2500\n\n 1095/2043 parameters used.\nnsh> ",
+      "prompt_seen": true
+    },
+    {
+      "command": "param show MPC_LAND_SPEED",
+      "response": "param show MPC_LAND_SPEED\nSymbols: x = used, + = saved, * = unsaved\nx   MPC_LAND_SPEED [614,1067] : 0.2500\n\n 1095/2043 parameters used.\nnsh>",
+      "prompt_seen": true
+    },
+    {
+      "command": "param show EKF2_EV_CTRL",
+      "response": " param show EKF2_EV_CTRL\nSymbols: x = used, + = saved, * = unsaved\nx + EKF2_EV_CTRL [342,589] : 1\n\n 1095/2043 parameters used.\nnsh> ",
+      "prompt_seen": true
+    },
+    {
+      "command": "param show EKF2_OF_CTRL",
+      "response": "param show EKF2_OF_CTRL\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_OF_CTRL [397,645] : 1\n\n 1095/2043 parameters used.\nnsh> ",
+      "prompt_seen": true
+    },
+    {
+      "command": "param show EKF2_RNG_CTRL",
+      "response": "param show EKF2_RNG_CTRL\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_RNG_CTRL [425,673] : 1\n\n 1095/2043 parameters used.\nnsh> ",
+      "prompt_seen": true
+    },
+    {
+      "command": "param show EKF2_EV_DELAY",
+      "response": "param show EKF2_EV_DELAY\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_EV_DELAY [343,590] : 0.0000\n\n 1095/2043 parameters used.\nnsh> ",
+      "prompt_seen": true
+    },
+    {
+      "command": "param show EKF2_EV_NOISE_MD",
+      "response": "param show EKF2_EV_NOISE_MD\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_EV_NOISE_MD [344,591] : 0\n\n 1095/2043 parameters used.\nnsh> ",
+      "prompt_seen": true
+    },
+    {
+      "command": "param show EKF2_EVP_NOISE",
+      "response": "param show EKF2_EVP_NOISE\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_EVP_NOISE [339,586] : 0.1000\n\n 1095/2043 parameters used.\nnsh> ",
+      "prompt_seen": true
+    },
+    {
+      "command": "param show EKF2_EV_POS_X",
+      "response": "param show EKF2_EV_POS_X\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_EV_POS_X [345,592] : -0.1000\n\n 1095/2043 parameters used.\nnsh> ",
+      "prompt_seen": true
+    },
+    {
+      "command": "param show EKF2_EV_POS_Y",
+      "response": "param show EKF2_EV_POS_Y\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_EV_POS_Y [346,593] : 0.0000\n\n 1095/2043 parameters used.\nnsh> ",
+      "prompt_seen": true
+    },
+    {
+      "command": "param show EKF2_EV_POS_Z",
+      "response": "param show EKF2_EV_POS_Z\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_EV_POS_Z [347,594] : -0.1000\n\n 1095/2043 parameters used.\nnsh> ",
+      "prompt_seen": true
+    },
+    {
+      "command": "param show EKF2_LID2_VER",
+      "response": "param show EKF2_LID2_VER\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_LID2_VER [379,626] : 2\n\n 1095/2043 parameters used.\nnsh> ",
+      "prompt_seen": true
+    },
+    {
+      "command": "param show EKF2_LID2_EN",
+      "response": "param show EKF2_LID2_EN\nSymbols: x = used, + = saved, * = unsaved\nx + EKF2_LID2_EN [378,625] : 1\n\n 1095/2043 parameters used.\nnsh> ",
+      "prompt_seen": true
+    },
+    {
+      "command": "listener estimator_selector_status -n 1",
+      "response": "listener estimator_selector_status -n 1\n\nTOPIC: estimator_selector_status\n estimator_selector_status\n    timestamp: 13981275697 (0.038642 seconds ago)\n    last_instance_change: 949070\n    instance_changed_count: 1\n    accel_device_id: 6946826 (Type: 0x6A, SPI:1 (0x00))\n    baro_device_id: 4028193 (Type: 0x3D, I2C:4 (0x77))\n    gyro_device_id: 6684682 (Type: 0x66, SPI:1 (0x00))\n    mag_device_id: 396321 (Type: 0x06, I2C:4 (0x0C))\n    combined_test_ratio: [0.50529, 0.50631, nan, nan, nan, nan, nan, nan, nan]\n    relative_test_ratio: [0.00000, 1.00000, nan, nan, nan, nan, nan, nan, nan]\n    accumulated_gyro_error: [0.00000, 0.00000, nan, nan]\n    accumulated_accel_error: [0.00000, 0.00000, nan, nan]\n    primary_instance: 0\n    instances_available: 2\n    healthy: [True, True, False, False, False, False, False, False, False]\n    gyro_fault_detected: False\n    accel_fault_detected: False\n\nnsh> ",
+      "prompt_seen": true
+    },
+    {
+      "command": "listener estimator_aid_src_ev_pos -n 1",
+      "response": "listener estimator_aid_src_ev_pos -n 1\n\nTOPIC: estimator_aid_src_ev_pos 2 instances\n\nInstance 0:\n\nInstance 1:\nnsh> ",
+      "prompt_seen": true
+    },
+    {
+      "command": "listener estimator_aid_src_optical_flow -n 1",
+      "response": "listener estimator_aid_src_optical_flow -n 1\n\nTOPIC: estimator_aid_src_optical_flow 2 instances\n\nInstance 0:\n estimator_aid_src_optical_flow\n    timestamp: 13981355260 (0.021499 seconds ago)\n    timestamp_sample: 13981163910 (191350 us before timestamp)\n    time_last_fuse: 13981166684\n    observation: [0.000350, 0.000942]\n    device_id: 0 (Type: 0x00, UNKNOWN:0 (0x00))\n    observation_variance: [0.16173, 0.16173]\n    innovation: [0.00173, -0.00481]\n    innovation_filtered: [0.00339, 0.00023]\n    innovation_variance: [0.16908, 0.16908]\n    test_ratio: [0.00000, 0.00001]\n    test_ratio_filtered: [0.00006, 0.00009]\n    estimator_instance: 0\n    innovation_rejected: False\n    fused: True\n\n\nInstance 1:\n estimator_aid_src_optical_flow\n    timestamp: 13981399052 (0.007890 seconds ago)\n    timestamp_sample: 13981206334 (192718 us before timestamp)\n    time_last_fuse: 13981209475\n    observation: [-0.000471, -0.001932]\n    device_id: 0 (Type: 0x00, UNKNOWN:0 (0x00))\n    observation_variance: [0.15515, 0.15515]\n    innovation: [0.00198, 0.00265]\n    innovation_filtered: [-0.00342, 0.00353]\n    innovation_variance: [0.16237, 0.16237]\n    test_ratio: [0.00000, 0.00000]\n    test_ratio_filtered: [-0.00014, 0.00012]\n    estimator_instance: 1\n    innovation_rejected: False\n    fused: True\n\nnsh> ",
+      "prompt_seen": true
+    },
+    {
+      "command": "listener vehicle_local_position -n 1",
+      "response": "listener vehicle_local_position -n 1\n\nTOPIC: vehicle_local_position\n vehicle_local_position\n    timestamp: 13981437631 (0.008195 seconds ago)\n    timestamp_sample: 13981437184 (447 us before timestamp)\n    ref_timestamp: 0\n    ref_lat: nan\n    ref_lon: nan\n    x: 0.02671\n    y: -0.04814\n    z: -0.33782\n    delta_xy: [0.00000, 0.00000]\n    delta_z: -31.17921\n    vx: 0.00085\n    vy: -0.00140\n    vz: -0.00174\n    z_deriv: -0.00196\n    delta_vxy: [-0.00105, 0.00056]\n    delta_vz: 0.00023\n    ax: 0.01389\n    ay: 0.00372\n    az: 0.00658\n    heading: -1.66953\n    heading_var: 0.00958\n    unaided_heading: -0.01245\n    delta_heading: -1.63312\n    tilt_var: 0.00007\n    ref_alt: nan\n    dist_bottom: 0.34449\n    dist_bottom_var: 0.00005\n    delta_dist_bottom: -31.17921\n    eph: 2.71492\n    epv: 0.02236\n    evh: 0.04158\n    evv: 0.03343\n    vxy_max: 1.27461\n    vz_max: inf\n    hagl_min: 0.10000\n    hagl_max_z: inf\n    hagl_max_xy: 9.80000\n    xy_valid: True\n    z_valid: True\n    v_xy_valid: True\n    v_z_valid: True\n    xy_reset_counter: 2\n    z_reset_counter: 2\n    vxy_reset_counter: 3\n    vz_reset_counter: 1\n    heading_reset_counter: 1\n    heading_good_for_control: False\n    xy_global: False\n    z_global: False\n    dist_bottom_valid: True\n    dist_bottom_reset_counter: 2\n    dist_bottom_sensor_bitfield: 1\n    dead_reckoning: False\nnsh> ",
+      "prompt_seen": true
+    }
+  ],
+  "initial_armed": false,
+  "followup": {
+    "checked_at_utc": "2026-10-15T09:04:05.106720+00:00",
+    "queries": [
+      {
+        "command": "listener sensor_optical_flow -n 1",
+        "response": "",
+        "prompt_seen": false
+      }
+    ],
+    "error": "Query incomplete",
+    "operating_to_integration_executor_diff": "--- operating-slot/field_executor.hpp\n+++ integration-92ee698/field_executor.hpp\n@@ -279,8 +279,8 @@\n       else if(!waiting_journal_&&now-entered_>6)abort(\"position_mode_not_confirmed\",s,now);\n     } else if(phase==\"HOLD_READY\") {\n       if(stable&&!mission_start_captured_){\n-        mission_start_=target_=point(s.at(\"xy\"));mission_start_captured_=true;\n-        mission_start_capture_={{\"method\",\"position_five_seconds_then_fc_xy\"},{\"captured_monotonic_s\",now},\n+        mission_start_=target_=lidar_required()?home_:point(s.at(\"xy\"));mission_start_captured_=true;\n+        mission_start_capture_={{\"method\",lidar_required()?\"position_five_seconds_preserve_takeoff_xy\":\"position_five_seconds_then_fc_xy\"},{\"captured_monotonic_s\",now},\n           {\"position_hold_s\",hold_elapsed_},{\"xy_m\",xy_json(mission_start_)},{\"return_home_xy_m\",xy_json(home_)},\n           {\"uwb_xy_m\",s.at(\"uwb_xy\")},{\"pose_age_s\",s.at(\"pose_age_s\")},{\"uwb_age_s\",s.at(\"uwb_age_s\")},\n           {\"source_stamp_ns\",s.value(\"source_stamp_ns\",Json())}};\n"
+  }
+}

@@ -13,6 +13,8 @@ UWB·FREEZE·복구·속도 설정 작업은 [필수 설계 검토](architecture
 
 | 찾는 내용 | 위치 |
 |---|---|
+| 실제 FC 1.0m/s 상한·flow 융합·운영 소스·미측정 항목 | [복구 개선 1단계 대조](reference/uwb_recovery_baseline_20261015.md) |
+| FC 입력 보강부터 감속·재출발까지 수정 위치와 완료 조건 | [복구 구현 단계](runbooks/uwb_recovery_stages_20261015.md) |
 | UWB 공백·감속·재출발·설정 변경 전 필수 참조 | [구조·설정 개선안](architecture/uwb_gap_recovery_20261015.md) |
 | 전체 하드웨어·운영 판본·Claude 3차 검토 | [상세 근거](reference/uwb_gap_review_basis_20261015.md) |
 | GC 직접 계측 두 사건과 발행 영향 | [GC 원인 확인 범위](report/btf_gc_latency_20261015.md) |
