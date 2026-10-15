@@ -13,6 +13,10 @@ UWB·FREEZE·복구·속도 설정 작업은 [필수 설계 검토](architecture
 
 | 찾는 내용 | 위치 |
 |---|---|
+| 멀티태그 제거·RAW 50Hz 목표·독립 LoRa 1Hz | [ESP32 재설계 기준](architecture/esp32_raw_rebuild_20261015.md) |
+| 기존 앵커 유지 조건의 40Hz 조사·RAW 39.98Hz 실측 | [이전 Tag B 주기 조사](report/esp32_tag_b_rate_audit_20261015.md) |
+| 태그·앵커·companion의 단일 태그 재작성 계획 | [최신 계획 프롬프트](runbooks/esp32_tag_b_rewrite_plan_prompt_20261015.md) |
+| 중단 상태·다른 PC 재개·실기기 재설정·보류한 LoRa 시험 안내 | [최신 실행 프롬프트](runbooks/esp32_tag_b_rebuild_execution_prompt_20261015.md) |
 | 실제 FC 1.0m/s 상한·flow 융합·운영 소스·미측정 항목 | [복구 개선 1단계 대조](reference/uwb_recovery_baseline_20261015.md) |
 | FC 입력 보강부터 감속·재출발까지 수정 위치와 완료 조건 | [복구 구현 단계](runbooks/uwb_recovery_stages_20261015.md) |
 | UWB 공백·감속·재출발·설정 변경 전 필수 참조 | [구조·설정 개선안](architecture/uwb_gap_recovery_20261015.md) |

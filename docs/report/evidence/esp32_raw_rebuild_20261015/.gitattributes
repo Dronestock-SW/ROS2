@@ -1,0 +1,4 @@
+# Preserve evidence bytes and SHA-256 across Windows/Linux checkouts.
+* -text
+# The original upload manifest uses CRLF; retain it as evidence.
+radiofix3_historical_build_and_upload.json whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
