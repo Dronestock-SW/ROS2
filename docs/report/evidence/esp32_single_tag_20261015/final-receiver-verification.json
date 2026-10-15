@@ -1,0 +1,24 @@
+{
+  "verified_utc": "2026-10-15T15:04:26.977733+00:00",
+  "slot": "/home/arialhanho/esp32-single-tag-20261015/candidate-v4",
+  "files": {
+    "acquisition/single_tag.py": "df9a1ac4258672b477a92abee68f4a18df1d61ed3a76447bb085a183b66e24f5",
+    "acquisition/serial_io.py": "7da1aa8080341d5da1d22a65d8c37b9d958e5471cf56860a244d9890765b0acc",
+    "contracts/protocol.py": "a26920769a9df5ffc76df7192ffb1a5afe10a5bd846add7804b0b21eaceace11",
+    "integration/ros/node.py": "bcafeb99de98fab46bcafa3b27bd7c5fb98a12eb14deef9826b2310e2fee43db",
+    "processing/measured_btf.py": "54d8ef74aec3dcb219ab6b5f0d23e0bd6469e3ab3d7f5812255ea21b18c8b3bd",
+    "integration/ros/btf_node.py": "4bda7f4f8ae574b19767bbdf44e718e3d0df43d68df1ec60d9714a26c57a83bd"
+  },
+  "all_overlay_files_match": true,
+  "layout_confirmed": false,
+  "config_sha256": "212700702fe941100810acc90d490faeca544d3c8fbe8b04136ee46c348baa5c",
+  "service": {
+    "NRestarts": "0",
+    "ActiveState": "active",
+    "SubState": "running"
+  },
+  "port_realpath": "/dev/ttyUSB1",
+  "port_owner_pids": [
+    "37771"
+  ]
+}

@@ -1,0 +1,244 @@
+{
+  "schema": 1,
+  "source_commit": "b61f1b238f43fbb53f5342df4d2c9cd7eabf3dc2",
+  "baseline_commit": "73b63eb",
+  "firmware_source_tree": "ad76d37799ae15b7ab16db7bbd8dd3dde56724d9",
+  "tag_version": "uwb-single-tag-v2.0-r3",
+  "anchor_version": "SINGLE2-R2",
+  "build_environment": {
+    "platformio": "6.1.19",
+    "espressif32": "7.0.1",
+    "arduino": "3.20017.241212+sha.dcc1105b",
+    "xtensa": "8.4.0+2021r2-patch5",
+    "nordicnrf52": "10.12.0",
+    "zephyr": "2.7.1",
+    "gcc_arm": "8.2.1",
+    "flashing_esptool": "4.8.1",
+    "jlink": "9.20"
+  },
+  "tag_candidates": {
+    "tag40-r3-final": {
+      "environment": "tag_b_40",
+      "board": "heltec_wifi_lora_32_V3",
+      "chip": "esp32s3",
+      "flash_mode": "dio",
+      "flash_frequency": "80m",
+      "flash_size": "8MB",
+      "application_offset": "0x10000",
+      "images": [
+        {
+          "offset": "0x0000",
+          "path": "bootloader.bin",
+          "sha256": "1776e4dd896a69d0a5c2e79957b0e2a88aa4129b1381d6478683515a1f6af343",
+          "bytes": 15104
+        },
+        {
+          "offset": "0x8000",
+          "path": "partitions.bin",
+          "sha256": "1d9cca96de0fe07ad7fc0648b9878ddecd9ce565e38b589ad20fea698ed4c80c",
+          "bytes": 3072
+        },
+        {
+          "offset": "0xe000",
+          "path": "boot_app0.bin",
+          "sha256": "f94c5d786a7a8fab06ac5d10e33bf37711a6697636dc037559ea19cc410a17f0",
+          "bytes": 8192
+        },
+        {
+          "offset": "0x10000",
+          "path": "firmware.bin",
+          "sha256": "e7227ace9eaf3a537f01d50308cb9013c14e1fb1fedcb66401d4f62c2d458d02",
+          "bytes": 364512
+        }
+      ],
+      "expected_mac": "e8:3d:c1:e3:48:2c"
+    },
+    "tag50-r3-final": {
+      "environment": "tag_b_50",
+      "board": "heltec_wifi_lora_32_V3",
+      "chip": "esp32s3",
+      "flash_mode": "dio",
+      "flash_frequency": "80m",
+      "flash_size": "8MB",
+      "application_offset": "0x10000",
+      "images": [
+        {
+          "offset": "0x0000",
+          "path": "bootloader.bin",
+          "sha256": "1776e4dd896a69d0a5c2e79957b0e2a88aa4129b1381d6478683515a1f6af343",
+          "bytes": 15104
+        },
+        {
+          "offset": "0x8000",
+          "path": "partitions.bin",
+          "sha256": "1d9cca96de0fe07ad7fc0648b9878ddecd9ce565e38b589ad20fea698ed4c80c",
+          "bytes": 3072
+        },
+        {
+          "offset": "0xe000",
+          "path": "boot_app0.bin",
+          "sha256": "f94c5d786a7a8fab06ac5d10e33bf37711a6697636dc037559ea19cc410a17f0",
+          "bytes": 8192
+        },
+        {
+          "offset": "0x10000",
+          "path": "firmware.bin",
+          "sha256": "40d87276231ad173573c800ecac0789d168bd1186af69558c5ac308afca0815f",
+          "bytes": 364512
+        }
+      ],
+      "expected_mac": "e8:3d:c1:e3:48:2c"
+    },
+    "tag40-release-r3-final": {
+      "environment": "tag_b_release_40",
+      "board": "heltec_wifi_lora_32_V3",
+      "chip": "esp32s3",
+      "flash_mode": "dio",
+      "flash_frequency": "80m",
+      "flash_size": "8MB",
+      "application_offset": "0x10000",
+      "images": [
+        {
+          "offset": "0x0000",
+          "path": "bootloader.bin",
+          "sha256": "1776e4dd896a69d0a5c2e79957b0e2a88aa4129b1381d6478683515a1f6af343",
+          "bytes": 15104
+        },
+        {
+          "offset": "0x8000",
+          "path": "partitions.bin",
+          "sha256": "1d9cca96de0fe07ad7fc0648b9878ddecd9ce565e38b589ad20fea698ed4c80c",
+          "bytes": 3072
+        },
+        {
+          "offset": "0xe000",
+          "path": "boot_app0.bin",
+          "sha256": "f94c5d786a7a8fab06ac5d10e33bf37711a6697636dc037559ea19cc410a17f0",
+          "bytes": 8192
+        },
+        {
+          "offset": "0x10000",
+          "path": "firmware.bin",
+          "sha256": "47b7c79a77bb9a0807eef31b397f6877c764a9b3d55e73861ce9c313d8ed5eb1",
+          "bytes": 364176
+        }
+      ],
+      "expected_mac": "e8:3d:c1:e3:48:2c"
+    },
+    "tag50-release-r3-final": {
+      "environment": "tag_b_release",
+      "board": "heltec_wifi_lora_32_V3",
+      "chip": "esp32s3",
+      "flash_mode": "dio",
+      "flash_frequency": "80m",
+      "flash_size": "8MB",
+      "application_offset": "0x10000",
+      "images": [
+        {
+          "offset": "0x0000",
+          "path": "bootloader.bin",
+          "sha256": "1776e4dd896a69d0a5c2e79957b0e2a88aa4129b1381d6478683515a1f6af343",
+          "bytes": 15104
+        },
+        {
+          "offset": "0x8000",
+          "path": "partitions.bin",
+          "sha256": "1d9cca96de0fe07ad7fc0648b9878ddecd9ce565e38b589ad20fea698ed4c80c",
+          "bytes": 3072
+        },
+        {
+          "offset": "0xe000",
+          "path": "boot_app0.bin",
+          "sha256": "f94c5d786a7a8fab06ac5d10e33bf37711a6697636dc037559ea19cc410a17f0",
+          "bytes": 8192
+        },
+        {
+          "offset": "0x10000",
+          "path": "firmware.bin",
+          "sha256": "4f90ddf758d86b750d7057a6030dcee86a3f4f84f0d0e184be6fb352f7b52df8",
+          "bytes": 364160
+        }
+      ],
+      "expected_mac": "e8:3d:c1:e3:48:2c"
+    }
+  },
+  "anchor_verified_images": [
+    {
+      "anchor": "A1",
+      "image_sha256": "61f721a62cefcc62ae2614affd3bb17be0599ea8ceded99fbfb01a9518b4f32d",
+      "flash_readback_sha256": "c32dea79a308ae4b9fb43744134a220ab8b008b6abf38cecf03e6554bed67eb0",
+      "compared_image_bytes": 49664,
+      "other_segments": [],
+      "verified": true
+    },
+    {
+      "anchor": "A2",
+      "image_sha256": "69d6751f49880e5a9581ce9455a329360652be0c185657aa8c77bc08e0d48c04",
+      "flash_readback_sha256": "eefd441eaa8a3835c9633da6686b69ec65138b3ced3f3bf3bc42a0f54d758368",
+      "compared_image_bytes": 49664,
+      "other_segments": [],
+      "verified": true
+    },
+    {
+      "anchor": "A3",
+      "image_sha256": "b87e18ae4d8df009ddb9733bb96bdf7b520751efa77e07ef085a5677fa2bae92",
+      "flash_readback_sha256": "d2d922160bf5ca013f2aa5b4e84eec7b350aae9ad511bc77bdca94b38738914a",
+      "compared_image_bytes": 49664,
+      "other_segments": [],
+      "verified": true
+    },
+    {
+      "anchor": "A4",
+      "image_sha256": "693aad2c5628d0c74589a1b3d3a391d4708513e0942853aa4ac24cc46b3ee688",
+      "flash_readback_sha256": "9a011ef78e691c3b87483cb469e2bac54d594db177e6d372c6fdd6f924cd9dee",
+      "compared_image_bytes": 49664,
+      "other_segments": [],
+      "verified": true
+    }
+  ],
+  "receiver_overlay": {
+    "schema": 1,
+    "source_backup_sha256": "93721d06b0be36320fc95e96882f410ba4f610373daf001e8130b91df825b2a8",
+    "files": {
+      "acquisition/single_tag.py": {
+        "before": null,
+        "after": "df9a1ac4258672b477a92abee68f4a18df1d61ed3a76447bb085a183b66e24f5"
+      },
+      "acquisition/serial_io.py": {
+        "before": "9ca796d47cdf22bfb1e49860aa99c01c8e69b868bbb3ee07a246c1d91a6e8793",
+        "after": "7da1aa8080341d5da1d22a65d8c37b9d958e5471cf56860a244d9890765b0acc"
+      },
+      "contracts/protocol.py": {
+        "before": "20df6a4998d083136c6cdc2dd29db83236a921c2d1c42f9946f3ed4df203fe2e",
+        "after": "a26920769a9df5ffc76df7192ffb1a5afe10a5bd846add7804b0b21eaceace11"
+      },
+      "integration/ros/node.py": {
+        "before": "a4e58d0fd29782f51b1fbc2f584616cf545efcdfa111681ffe1bfbbb7581cc37",
+        "after": "bcafeb99de98fab46bcafa3b27bd7c5fb98a12eb14deef9826b2310e2fee43db"
+      },
+      "processing/measured_btf.py": {
+        "before": "4f3814660a540b612e01751205e659fc0468a283d9ec6f09de5d1e36de17117f",
+        "after": "54d8ef74aec3dcb219ab6b5f0d23e0bd6469e3ab3d7f5812255ea21b18c8b3bd"
+      },
+      "integration/ros/btf_node.py": {
+        "before": "fd52db4e1cf26528ec11cdc75d0c532cf0fc8c99f73255043c88c814755823dd",
+        "after": "4bda7f4f8ae574b19767bbdf44e718e3d0df43d68df1ec60d9714a26c57a83bd"
+      }
+    },
+    "scope": "single_tag_receiver_only",
+    "numerical_backend": "preserved deployed A-cache/native B_TF"
+  },
+  "receiver_overlay_reproduced": true,
+  "receiver_overlay_contract_tests_passed": 6,
+  "final_selection_and_full_erase": "written; post-erase verification running",
+  "flight_performed": false,
+  "selected_tag_package": "tag50-release-r3-final",
+  "physical_power_cycle_verified": false,
+  "position_qualification": "pending physical anchor layout",
+  "native_backend": {
+    "source_path": "/home/arialhanho/evening-20261014-1815/btf-build/libbtf_native.so",
+    "sha256": "e33e76d62e85ca707c7632a993825f9b359661e15924a18a7f17091edc3b266f",
+    "bytes": 475144,
+    "scope": "unchanged preexisting A-cache native B_TF binary"
+  }
+}

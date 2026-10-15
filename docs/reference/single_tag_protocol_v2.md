@@ -195,6 +195,8 @@ quality는 해당 RAW의 유효 앵커 수 × 25다.
 만료 시 fix=false와 null 좌표를 보낸다.
 앵커 배치가 확인되지 않은 시험은 발행을 차단한다.
 `single_tag_layout_confirmed=true`는 실제 배치 확인 뒤 설정한다.
+heartbeat의 `anchor_layout_id`는 빌드 설정의 이름이다.
+현재 앵커가 해당 좌표에 놓였다는 측정 증거가 아니다.
 
 LoRa TX-done은 지상국 수신 증거가 아니다.
 실제 지상국 시험은 [별도 절차](../runbooks/esp32_tag_b_rebuild_execution_prompt_20261015.md#10-다른-장소에서-진행할-lora-시험-안내)를 따른다.

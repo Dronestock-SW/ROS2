@@ -14,6 +14,7 @@ UWB·FREEZE·복구·속도 설정 작업은 [필수 설계 검토](architecture
 | 찾는 내용 | 위치 |
 |---|---|
 | 새 단일 태그 기록·실물 시험·백업·남은 검증 | [2026-10-15 실행 기록](report/esp32_single_tag_execution_20261015.md) |
+| 단일 태그 전체 기록·호환 조합·원본 복구 | [릴리스·복구 절차](runbooks/single_tag_release_and_recovery_20261015.md) |
 | schema 2 RAW·왕복 시각 교환·무선 v2 계약 | [단일 태그 통신 계약](reference/single_tag_protocol_v2.md) |
 | 멀티태그 제거·RAW 50Hz 목표·독립 LoRa 1Hz | [ESP32 재설계 기준](architecture/esp32_raw_rebuild_20261015.md) |
 | 기존 앵커 유지 조건의 40Hz 조사·RAW 39.98Hz 실측 | [이전 Tag B 주기 조사](report/esp32_tag_b_rate_audit_20261015.md) |

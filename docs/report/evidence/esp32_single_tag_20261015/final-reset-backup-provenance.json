@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "ground": {
+    "connected": true,
+    "armed": false,
+    "mode": "POSCTL",
+    "landed_state": 1,
+    "checked_at_utc": "2026-10-15T14:54:28.843332+00:00"
+  },
+  "pre_erase_flash_bytes": 8388608,
+  "pre_erase_flash_sha256": "c3a5b4d1cb56f2eb4b8b0e25ea7e6cddfb20212e48599a2a35e42bde53a77b7a",
+  "local_archive": "final-reset-backup.tar.gz",
+  "archive_sha256": "a490f641024f644219a73325bf976f12190b2bba4be62e21112bbd5277b9782b",
+  "local_archive_and_extracted_flash_hashes_verified": true,
+  "efuses_changed": false,
+  "old_multitag_nvs_restored": false,
+  "physical_power_cycle_verified": false
+}

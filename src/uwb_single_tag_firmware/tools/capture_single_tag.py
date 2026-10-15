@@ -4,12 +4,45 @@ from collections import Counter
 import json
 from pathlib import Path
 import time
+import queue
+import threading
 
 from drone_uwb.acquisition.serial_io import SerialInput
 from drone_uwb.acquisition.framing import LineFramer
 from drone_uwb.acquisition.single_tag import SingleTagLink
 from drone_uwb.acquisition.validation import InvalidInput
 from drone_uwb.contracts.protocol import decode_line, InvalidSample
+
+
+class AsyncCaptureWriter:
+    """Keep SD-card and JSON serialization delays out of the UART read loop."""
+    def __init__(self,raw,events):
+        self.raw=raw;self.events=events;self.queue=queue.Queue(maxsize=1024)
+        self.dropped=0;self.errors=[];self.error_count=0;self.max_write_us=0
+        self.worker=threading.Thread(target=self.run,daemon=True)
+
+    def __enter__(self):
+        self.worker.start();return self
+
+    def __exit__(self,*unused):
+        self.queue.put(None);self.worker.join()
+
+    def put(self,kind,value):
+        try:self.queue.put_nowait((kind,value))
+        except queue.Full:self.dropped+=1
+
+    def run(self):
+        while True:
+            item=self.queue.get()
+            if item is None:return
+            kind,value=item;started=time.monotonic_ns()
+            try:
+                if kind=='raw':self.raw.write(value)
+                else:self.events.write(json.dumps(value,separators=(',',':'),allow_nan=False)+'\n')
+            except (OSError,ValueError) as exc:
+                self.error_count+=1
+                if len(self.errors)<10:self.errors.append(str(exc))
+            self.max_write_us=max(self.max_write_us,(time.monotonic_ns()-started)//1000)
 
 
 def main():
@@ -19,6 +52,7 @@ def main():
     p.add_argument('--output',type=Path,required=True)
     p.add_argument('--probe',action='store_true',help='Explicit synthetic pose/parser/recovery bench profile; no FC I/O')
     p.add_argument('--transport-probe',action='store_true',help='Pause host reads for 600ms and reopen the software port; no cable removal')
+    p.add_argument('--lora-maxlen-probe',action='store_true',help='Send one 255-byte bench packet for a separately connected ground station')
     args=p.parse_args()
     args.output.mkdir(parents=True,exist_ok=False)
     counts=Counter(); link=SingleTagLink(); framer=LineFramer(); pending=b''
@@ -26,12 +60,23 @@ def main():
     latest=None;probe_start=None;stages=set();probe_pose=None;flood_until=0;next_flood=0;last_pose_refresh=0
     serial=SerialInput(args.port,921600,writable=True)
     deadline=time.monotonic()+args.seconds
+    previous_loop=None;max_loop_us=0
     try:
-        with (args.output/'raw.bin').open('wb') as raw, (args.output/'events.jsonl').open('w',encoding='utf-8') as events:
+        with (args.output/'raw.bin').open('wb') as raw, (args.output/'events.jsonl').open('w',encoding='utf-8') as events, AsyncCaptureWriter(raw,events) as storage:
             def record(row):
-                events.write(json.dumps(row,separators=(',',':'),allow_nan=False)+'\n')
+                storage.put('event',row)
             while time.monotonic()<deadline:
                 now=time.monotonic()
+                if previous_loop is not None:max_loop_us=max(max_loop_us,round((now-previous_loop)*1e6))
+                previous_loop=now
+                if args.lora_maxlen_probe and latest is not None and last_status is not None and link.clock.ready(time.monotonic_ns()//1000):
+                    if last_status.get('bench_controls') is not True:
+                        raise RuntimeError('Maximum-length probe requires the explicit bench firmware')
+                    if 'lora_255' not in stages:
+                        stages.add('lora_255')
+                        commands.append(link.command('bench',action='lora_255'))
+                        record(dict(probe_stage='lora_255',host_monotonic_ns=time.monotonic_ns(),
+                                    synthetic_bench=True,fc_output=False,ground_station_reception_verified=False))
                 if args.transport_probe and latest is not None and link.clock.ready(time.monotonic_ns()//1000):
                     if probe_start is None:probe_start=now
                     elapsed=now-probe_start
@@ -103,7 +148,7 @@ def main():
                 chunk=serial.read()
                 if chunk:
                     mono,ros=time.monotonic_ns(),time.time_ns()
-                    raw.write(chunk)
+                    storage.put('raw',chunk)
                     for line in framer.feed(chunk):
                         try:
                             msg=decode_line(line)
@@ -127,7 +172,12 @@ def main():
     finally:
         serial.close()
         result=dict(seconds=args.seconds,counts=dict(counts),status=last_status,
-                    synthetic_bench_probe=args.probe,transport_probe=args.transport_probe,probe_stages=sorted(stages),
+                    synthetic_bench_probe=args.probe or args.lora_maxlen_probe,
+                    synthetic_pose_probe=args.probe,lora_maxlen_probe=args.lora_maxlen_probe,
+                    transport_probe=args.transport_probe,probe_stages=sorted(stages),
+                    recording_queue_dropped=storage.dropped,recording_errors=storage.errors,
+                    recording_error_count=storage.error_count,storage_max_write_us=storage.max_write_us,
+                    host_loop_max_interval_us=max_loop_us,
                     clock=link.clock.diagnostics(time.monotonic_ns()//1000),
                     raw_rate_hz=(counts['uwb_raw_cycle']-1)/((last-first)/1e9) if first and last>first else None)
         (args.output/'summary.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
