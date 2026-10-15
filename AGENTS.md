@@ -9,6 +9,7 @@ Claude Code용 `CLAUDE.md`에도 같은 규칙을 유지한다.
 2. docs/altitude_policy.md — z(고도) 처리 원칙. companion에서 z 제어 코드 작성 절대 금지
 3. docs/glossary.md — 용어 정의. 문서/주석 작성 시 이 용어 체계를 따른다
 4. docs/equipment_inventory.md — 1호기 조립 BOM과 정확한 모델명 (예: TFmini가 아니라 TFmini Plus)
+5. docs/architecture/uwb_gap_recovery_20261015.md — UWB·IMU·optical flow·FREEZE·복구·속도/오차 설정을 다루기 전에 반드시 읽는다. 현재 구현과 설계 제안을 혼동하지 않기 위한 기준이다. 하드웨어·판본은 docs/reference/uwb_gap_review_basis_20261015.md도 함께 대조한다. 새 근거로 결론이 바뀌면 해당 문서를 갱신하고 차이를 남긴다.
 
 ## 개발 규칙
 - 빌드: colcon build --symlink-install (workspace 루트에서), 빌드 후 source install/setup.bash

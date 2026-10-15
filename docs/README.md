@@ -3,6 +3,9 @@
 작업에 필요한 기준·절차·확인 기록을 찾는 색인이다.
 작업을 시작하거나 다른 채팅에 인계할 때 읽는다.
 
+UWB·FREEZE·복구·속도 설정 작업은 [필수 설계 검토](architecture/uwb_gap_recovery_20261015.md)부터 읽는다.
+[전체 하드웨어와 판본 근거](reference/uwb_gap_review_basis_20261015.md)를 함께 확인한다.
+
 ## 먼저 찾을 위치
 
 단계별 수정 위치는 저장소 안내에서 찾는다.
@@ -10,6 +13,9 @@
 
 | 찾는 내용 | 위치 |
 |---|---|
+| UWB 공백·감속·재출발·설정 변경 전 필수 참조 | [구조·설정 개선안](architecture/uwb_gap_recovery_20261015.md) |
+| 전체 하드웨어·운영 판본·Claude 3차 검토 | [상세 근거](reference/uwb_gap_review_basis_20261015.md) |
+| GC 직접 계측 두 사건과 발행 영향 | [GC 원인 확인 범위](report/btf_gc_latency_20261015.md) |
 | A-cache 실제 운영 조합·기동·센서 수신·남은 XY 확인 | [운영 적용 기록](report/btf_acache_deployment_20261015.md) |
 | 앵커 변경 뒤 캐시 재생성·슬롯 복귀 | [A-cache 재시작 절차](runbooks/btf_acache_restart.md) |
 | A-cache 후 남은 지연 7건·정상 대조·출력 공백 | [기존 기록 지연 분석](report/btf_acache_latency_20261015.md) |

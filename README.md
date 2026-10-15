@@ -2,6 +2,13 @@
 
 드론 자율이동 저장소의 설치·실행 안내다. 작업을 시작할 때 읽는다.
 
+## UWB 공백·복구 작업 전 필수 참조
+
+[공백 대응과 구조·설정 개선안](docs/architecture/uwb_gap_recovery_20261015.md)을 반드시 먼저 읽는다.
+현재 FREEZE, 실제 감속, 좌표 복구와 재출발을 구분한다.
+[하드웨어·운영 판본·Claude 검토 근거](docs/reference/uwb_gap_review_basis_20261015.md)를 함께 대조한다.
+이 문서의 제안은 배포·비행 검증 완료를 뜻하지 않는다.
+
 ## 웹 제자리 이륙 검증 상태
 
 2026-10-14 [웹 수직 이륙·POSITION 호버링 진단](docs/report/web_vertical_takeoff_20261014.md).

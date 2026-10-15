@@ -1,0 +1,11 @@
+첫 요청 이후 최신 문서와 실제 통합 소스에서 확인한 정정. 앞선 기준과 충돌하면 이 파일이 우선한다.
+
+1. 10/14 수동log49의 앵커 높이는 사용자가 확인한0.15m이며 예전BOM2.2m와다르다. 세션별config/geometryhash를고정해야한다. 당시ToF→tag FLU(0,0,.15)m,사용자근사.17m. FC→tag(-.10,0,.07)과다른기준점. +15→17cm감도재생은2765승인,최대526.079ms동일.
+2. log49 3091RAW/2765승인,최대RAW수신간격75.056ms. 원본발행528.322ms/재생526.079ms공백. 해당20묶음모두거리기하모순. seq4572 A1=3.08936,A2=3.01360,sum6.10296<실간격6.3m,측정차2.360ms,1m/s이동허용후도19.468cm부족.20묶음RMS하한6.762~9.861cm>6cm. NLOS확정아님. 거리편향/배치/전처리/단위/ID/펌웨어원인확인필요. 거부기준완화로해결X. 13일700ms및다른부분입력364~384ms사건과혼합금지.
+3. 실제FC지상DISARM가상ODOMETRY1024개주입기록존재. 기록을파일재생한XY를최초원점/시각만이동해전송. 두EKF융합시각2/8/14/20/26초증가,4샘플좌표대조,시각잔차356~521μs. 526ms모든순간융합/무reset/실시간RAW→운영bridge/실비행10cm보장X. 입력중지후과거fused=True남으나time_last_fuse정지,cs_ev_pos=False. 신선한상태+실제융합시간증가+현재융합활성함께판정.
+4. 10/15새후보53bc070/a029476는 센서동기응답만료때buffer보존,단일역순무시,가장가까운이미수신IMU(과거only아님),syncresponse센서실행기,시계generation최종재검사,TDMA슬롯위반과거리부족분리,3거리+실측높이+100msprior C++부분프레임(과거거리복사X,B4이력혼합X).21부분프레임모두실잔차7.56~23.29cm로거부. 이수정들은별도후보이며운영tdma는이전. 현재통합a029476+cache116Python검사,운영0110da8+cache111검사,시험563960e+계측은서로다름.
+5. 실제현재통합코드: field_mission.hpp observation_statusUWB.25s/거절→hold; stepdt=min(interval,.1); advance에서stream+=direction*min(distance,speed*dt),가속도/jerk구현없음. 도착판정FC15cm/UWB25cm로사용자10cm희망과다름. field_executor.hpp tick에서연속pose변화>.3+pose_dt면framejump abort; reset_counter를원인별분류하는구현아님. field_executor_node.cpp 50ms송신PositionTargetmask2552는XYZ+yaw만활성,velocity/acceleration무시.
+6. PX4공식동일commit소스는MPC_ACC_HOR/MPC_JERK_AUTO를goto생성기로전달. rawOffboardtrajectorysetpoint가들어오면이생성기를거치지않으므로이파라미터만으로외부XYZ의제동/재개부드러움보장못함. MPC_XY_VEL_MAX는PositionControlvelocity목표를제한하지만실제기체속도의하드물리상계보장아님. 0.25경로속도만으로실속도정지거리계산안됨.
+7. 원문논문확인: Higashi/Yamazaki2023,RPi4의9stateEKF에UWB4거리,flowvxvy,dh,Navio2IMU,Pixracer yaw. TeensyLC PMW3901/VL53L0X속도,RPi높이자세보정. RPi위치PID→Pixracer자세제어. 우리는PX4위치+자세제어유지. 논문hover평균9.59cm,추정평균12.92cm이지max10cm아님. CPU/공백복구비교없음. PX4flow는원시영상아닌각도흐름/적분시간/품질등. 외부UWBXY계산은이미FC측위풀이부하를분담하나총CPU비교불가.
+8. 현센서service재시작MAVROS/UWB/BTF/stream요청동시재시작. 추후서비스수명분리로BTF갱신이FC연결재시작을유발안하게. 비행중hot-swap권장아님. 현릴리스는이전slotnative.so참조하므로이전슬롯삭제금지,최종릴리스자급화후보.
+9. 정지거리예시는현재.25초관측기준을고려해총반응시간가정.25s,실속도.25,최소감속.5~1일때12.5~9.375cm+추정/추종10cm=22.5~19.375cm. .25timeout은실제총반응.25보증아님. 같은조건실속도.5m/s,감속.5면47.5cm. jerk/외란/추정상계/실기제동검증미포함. 30cm조건을확정판정하는식이아닌설계비교.
