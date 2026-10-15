@@ -10,6 +10,7 @@
 
 | 찾는 내용 | 위치 |
 |---|---|
+| A-cache 후 남은 지연 7건·정상 대조·출력 공백 | [기존 기록 지연 분석](report/btf_acache_latency_20261015.md) |
 | A-cache 계약·재시작·국소 효과·기준별 검증 | [순간 XY 기하 캐시](architecture/btf_acache.md) |
 | 14일 20:36 수동비행 원본·ULog·전송 검증 | [수동 호버링 로그 확보](report/manual_hover_capture_20261014.md) |
 | C++ B_TF 부분 자료 ON/OFF 실측·지연 경량화·남은 공백 | [기록 ON/OFF 비교](report/btf_recording_ab_20261014.md) |
