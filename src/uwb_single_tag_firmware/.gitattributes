@@ -1,0 +1,3 @@
+# Preserve the imported archive bytes and reproducible source hashes on Windows.
+# Vendor whitespace and line endings are intentionally kept as supplied.
+* -text

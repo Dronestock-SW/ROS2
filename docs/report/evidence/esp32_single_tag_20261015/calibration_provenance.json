@@ -1,0 +1,17 @@
+{
+  "archive_sha256": "6d75f7254644409913ac1b6f1075f51e5ee8ff77a9c27f8c257ee7383b71e112",
+  "source_member": "uwb-multitag-research-main/experiments/tdma40-radiofix3/projects/tag/include/JetsonTagConfig.h",
+  "source_sha256": "752adc0b22ae0af8de821b6e0dfa61a72556d2ffb36ecec343057b747f25305d",
+  "selected_lines": [
+    {
+      "line": 70,
+      "text": "static constexpr uint16_t kTagTxAntennaDelay = 16385;"
+    },
+    {
+      "line": 71,
+      "text": "static constexpr uint16_t kTagRxAntennaDelay = 16385;"
+    }
+  ],
+  "new_calibration_measured": false,
+  "legacy_nvs_restored": false
+}

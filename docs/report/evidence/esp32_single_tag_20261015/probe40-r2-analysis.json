@@ -1,0 +1,170 @@
+{
+  "pose_acks": [
+    {
+      "accepted": true,
+      "reason": "bench_probe",
+      "count": 10
+    },
+    {
+      "accepted": false,
+      "reason": "stale_or_duplicate",
+      "count": 2
+    }
+  ],
+  "lora_fix_true_heartbeats": 2,
+  "lora_last_fix": false,
+  "stages": [
+    {
+      "probe_stage": "fresh_pose",
+      "host_monotonic_ns": 4803428271766,
+      "synthetic_bench": true,
+      "fc_output": false
+    },
+    {
+      "probe_stage": "duplicate_expired_pose",
+      "host_monotonic_ns": 4805428243092,
+      "synthetic_bench": true,
+      "fc_output": false
+    },
+    {
+      "probe_stage": "reordered_pose",
+      "host_monotonic_ns": 4806428503871,
+      "synthetic_bench": true,
+      "fc_output": false
+    },
+    {
+      "probe_stage": "old_session_pose",
+      "host_monotonic_ns": 4807428737206,
+      "synthetic_bench": true,
+      "fc_output": false
+    },
+    {
+      "probe_stage": "malformed_flood",
+      "host_monotonic_ns": 4808427850482,
+      "synthetic_bench": true,
+      "fc_output": false
+    },
+    {
+      "probe_stage": "uwb_pause",
+      "host_monotonic_ns": 4812428156712,
+      "synthetic_bench": true,
+      "fc_output": false
+    },
+    {
+      "probe_stage": "uwb_recover",
+      "host_monotonic_ns": 4817428672288,
+      "synthetic_bench": true,
+      "fc_output": false
+    },
+    {
+      "probe_stage": "lora_recover",
+      "host_monotonic_ns": 4823428492449,
+      "synthetic_bench": true,
+      "fc_output": false
+    }
+  ],
+  "first_heartbeat": {
+    "type": "uwb_raw_status",
+    "schema": 2,
+    "tag_id": "6",
+    "firmware": "uwb-single-tag-v2.0-r2-bench-20261015",
+    "boot_id": 553836303,
+    "session": 1893294159,
+    "period_us": 25000,
+    "uwb_ready": true,
+    "serial_baud": 921600,
+    "anchor_layout_id": "warehouse-rectangle-6p3x4p6-z0p15-20261007",
+    "clock_domain": "esp32_monotonic_boot_us",
+    "anchor_count": 4,
+    "anchor_order": [
+      "A1",
+      "A2",
+      "A3",
+      "A4"
+    ],
+    "range_bias_applied": false,
+    "temporal_filter_applied": false,
+    "timestamp_method": "rf_poll_final_midpoint",
+    "rf_protocol": 2,
+    "clock_sync_valid": false,
+    "clock_generation": 0,
+    "lora_schedule": "independent_monotonic_1hz",
+    "lora_ready": true,
+    "lora_tx_busy": false,
+    "lora_tx_attempts": 103,
+    "lora_tx_done": 103,
+    "lora_tx_timeouts": 0,
+    "lora_watchdog_timeouts": 0,
+    "lora_recoveries": 0,
+    "lora_rx_packets": 0,
+    "lora_rx_errors": 0,
+    "lora_service_max_us": 6596,
+    "uwb_recoveries": 0,
+    "input_invalid": 0,
+    "input_overflow": 0,
+    "aux_dropped": 0,
+    "raw_stale_dropped": 0,
+    "free_heap": 335220,
+    "min_free_heap": 334096,
+    "reset_reason": 1,
+    "display_ready": true,
+    "bench_controls": true,
+    "pose_received": false,
+    "pose_age_us": null,
+    "pose_seq": 0,
+    "lora_last_tx_fix": false,
+    "lora_last_tx_length": 147
+  },
+  "last_heartbeat": {
+    "type": "uwb_raw_status",
+    "schema": 2,
+    "tag_id": "6",
+    "firmware": "uwb-single-tag-v2.0-r2-bench-20261015",
+    "boot_id": 553836303,
+    "session": 3778012840,
+    "period_us": 25000,
+    "uwb_ready": true,
+    "serial_baud": 921600,
+    "anchor_layout_id": "warehouse-rectangle-6p3x4p6-z0p15-20261007",
+    "clock_domain": "esp32_monotonic_boot_us",
+    "anchor_count": 4,
+    "anchor_order": [
+      "A1",
+      "A2",
+      "A3",
+      "A4"
+    ],
+    "range_bias_applied": false,
+    "temporal_filter_applied": false,
+    "timestamp_method": "rf_poll_final_midpoint",
+    "rf_protocol": 2,
+    "clock_sync_valid": true,
+    "clock_generation": 2363758103,
+    "lora_schedule": "independent_monotonic_1hz",
+    "lora_ready": true,
+    "lora_tx_busy": false,
+    "lora_tx_attempts": 140,
+    "lora_tx_done": 140,
+    "lora_tx_timeouts": 0,
+    "lora_watchdog_timeouts": 0,
+    "lora_recoveries": 1,
+    "lora_rx_packets": 0,
+    "lora_rx_errors": 0,
+    "lora_service_max_us": 186900,
+    "uwb_recoveries": 1,
+    "input_invalid": 86,
+    "input_overflow": 1,
+    "aux_dropped": 0,
+    "raw_stale_dropped": 0,
+    "free_heap": 334956,
+    "min_free_heap": 333540,
+    "reset_reason": 1,
+    "display_ready": true,
+    "bench_controls": true,
+    "pose_received": false,
+    "pose_age_us": null,
+    "pose_seq": 0,
+    "lora_last_tx_fix": false,
+    "lora_last_tx_length": 147
+  }
+}

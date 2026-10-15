@@ -1,0 +1,11 @@
+{
+  "layout_version": "UNSET",
+  "coordinate_unit": "m",
+  "coordinate_frame": "UNSET",
+  "anchors": [
+    {"id": "A1", "short_address": 161, "x_m": null, "y_m": null, "z_m": null, "range_bias_m": null},
+    {"id": "A2", "short_address": 162, "x_m": null, "y_m": null, "z_m": null, "range_bias_m": null},
+    {"id": "A3", "short_address": 163, "x_m": null, "y_m": null, "z_m": null, "range_bias_m": null},
+    {"id": "A4", "short_address": 164, "x_m": null, "y_m": null, "z_m": null, "range_bias_m": null}
+  ]
+}

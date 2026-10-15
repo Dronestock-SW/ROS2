@@ -102,6 +102,7 @@ class BtfNode(Node):
         self.started = time.monotonic()
         self.status_pub = self.create_publisher(String, '/uwb/btf_status', 10)
         self.decision_pub = self.create_publisher(String, '/uwb/btf_decision', qos_profile_sensor_data)
+        self.tag_feedback_pub = self.create_publisher(String, '/uwb/tag_pose_feedback', qos_profile_sensor_data)
         self.pose_pub = self.create_publisher(PoseWithCovarianceStamped, '/uwb/btf_pose', qos_profile_sensor_data)
         self.xyz_pub = self.create_publisher(PoseStamped, '/uwb/btf_xyz', qos_profile_sensor_data)
         self.subs = [
@@ -316,7 +317,11 @@ class BtfNode(Node):
         result['published'] = False
         result['decision_stamp_ns'] = self.get_clock().now().nanoseconds
         result['input_received_ros_ns'] = event['host_received_ros_ns']
-        if result['ok']:
+        layout_ready = (event.get('message', {}).get('schema') != 2
+                        or self.config.get('single_tag_layout_confirmed') is True)
+        if result['ok'] and not layout_ready:
+            result['pose_blocked_reason'] = 'single_tag_layout_unconfirmed'
+        if result['ok'] and layout_ready:
             age = (self.get_clock().now().nanoseconds-result['stamp_ns'])/1e9
             result['publish_age_s'] = age
             ground_xy = ground_xy_without_height(result,
@@ -358,6 +363,9 @@ class BtfNode(Node):
                             xyz.pose.orientation.w = 1.
                             self.xyz_pub.publish(xyz)
                         result['published'] = True
+                        if result.get('protocol') == 'single_tag_schema_2':
+                            keys = ('published','ok','source_identity','host_session','seq','time_us','xy_m')
+                            self.tag_feedback_pub.publish(String(data=json.dumps({k:result[k] for k in keys})))
                         self.counts['published'] += 1
             else:
                 self.counts['output_expired'] += 1

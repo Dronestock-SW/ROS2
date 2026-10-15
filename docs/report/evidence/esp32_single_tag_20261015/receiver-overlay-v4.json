@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "source_backup_sha256": "93721d06b0be36320fc95e96882f410ba4f610373daf001e8130b91df825b2a8",
+  "files": {
+    "acquisition/single_tag.py": {
+      "before": null,
+      "after": "df9a1ac4258672b477a92abee68f4a18df1d61ed3a76447bb085a183b66e24f5"
+    },
+    "acquisition/serial_io.py": {
+      "before": "9ca796d47cdf22bfb1e49860aa99c01c8e69b868bbb3ee07a246c1d91a6e8793",
+      "after": "7da1aa8080341d5da1d22a65d8c37b9d958e5471cf56860a244d9890765b0acc"
+    },
+    "contracts/protocol.py": {
+      "before": "20df6a4998d083136c6cdc2dd29db83236a921c2d1c42f9946f3ed4df203fe2e",
+      "after": "a26920769a9df5ffc76df7192ffb1a5afe10a5bd846add7804b0b21eaceace11"
+    },
+    "integration/ros/node.py": {
+      "before": "a4e58d0fd29782f51b1fbc2f584616cf545efcdfa111681ffe1bfbbb7581cc37",
+      "after": "bcafeb99de98fab46bcafa3b27bd7c5fb98a12eb14deef9826b2310e2fee43db"
+    },
+    "processing/measured_btf.py": {
+      "before": "4f3814660a540b612e01751205e659fc0468a283d9ec6f09de5d1e36de17117f",
+      "after": "54d8ef74aec3dcb219ab6b5f0d23e0bd6469e3ab3d7f5812255ea21b18c8b3bd"
+    },
+    "integration/ros/btf_node.py": {
+      "before": "fd52db4e1cf26528ec11cdc75d0c532cf0fc8c99f73255043c88c814755823dd",
+      "after": "4bda7f4f8ae574b19767bbdf44e718e3d0df43d68df1ec60d9714a26c57a83bd"
+    }
+  },
+  "scope": "single_tag_receiver_only",
+  "numerical_backend": "preserved deployed A-cache/native B_TF"
+}

@@ -17,8 +17,15 @@ def integer(value):
 def decode_line(line):
     def invalid_constant(value):
         raise InvalidSample('nonfinite_json')
+    def unique_keys(pairs):
+        obj = {}
+        for key, value in pairs:
+            if key in obj:
+                raise InvalidSample('duplicate_json_key')
+            obj[key] = value
+        return obj
     try:
-        obj = json.loads(line, parse_constant=invalid_constant)
+        obj = json.loads(line, parse_constant=invalid_constant, object_pairs_hook=unique_keys)
     except (ValueError, UnicodeError) as exc:
         raise InvalidSample('invalid_json') from exc
     if not isinstance(obj, dict):

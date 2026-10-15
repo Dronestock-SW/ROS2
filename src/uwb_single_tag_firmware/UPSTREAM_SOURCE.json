@@ -1,0 +1,2958 @@
+{
+  "archive_sha256": "6d75f7254644409913ac1b6f1075f51e5ee8ff77a9c27f8c257ee7383b71e112",
+  "archive_prefix": "uwb-multitag-research-main/experiments/tdma40-radiofix3/projects/",
+  "files": [
+    {
+      "path": "anchor/.gitignore",
+      "bytes": 15,
+      "sha256": "5c1f1a54f51eea19bfc76d12d705d1773464a84e4933a3262531cde41a2f30e7"
+    },
+    {
+      "path": "anchor/NOTICE.txt",
+      "bytes": 622,
+      "sha256": "ee5d8006ec12f75006b8f91987789ca79060abe18365ff433020d3fc2358725b"
+    },
+    {
+      "path": "anchor/include/zephyr/device.h",
+      "bytes": 34,
+      "sha256": "f39b46c4eed9796fdf6f91bc229c373ab5c934973ae062a797807575260c28d7"
+    },
+    {
+      "path": "anchor/include/zephyr/drivers/gpio.h",
+      "bytes": 40,
+      "sha256": "e985666887b74198b896648dc9afc5f16292c75e61ae847aeb248f19dbfd33a6"
+    },
+    {
+      "path": "anchor/include/zephyr/drivers/spi.h",
+      "bytes": 39,
+      "sha256": "6b817ad4bfab96c7a5552dab5b1f0b8dbdf60fbaa3672f0f0316ced9913f9792"
+    },
+    {
+      "path": "anchor/include/zephyr/kernel.h",
+      "bytes": 34,
+      "sha256": "f94eb94fb26f703fd3ffe715ddb3942c02da0aceb21fe35eb6b3205093aa877a"
+    },
+    {
+      "path": "anchor/include/zephyr/logging/log.h",
+      "bytes": 39,
+      "sha256": "f84b638bb70cc3fe0114457ce515613c2eaad16eb0fc33bbdce1b23b72b6af17"
+    },
+    {
+      "path": "anchor/include/zephyr/pm/device.h",
+      "bytes": 37,
+      "sha256": "6bcb4067d47893dc7662252e9dce43d90d084ea4aad0e098526f432e82bd395b"
+    },
+    {
+      "path": "anchor/include/zephyr/sys/printk.h",
+      "bytes": 38,
+      "sha256": "54f099d38e988c4886521071608b4a64b4a42288d5ead7e3e3bb12ff015af0dc"
+    },
+    {
+      "path": "anchor/platformio.ini",
+      "bytes": 651,
+      "sha256": "9c3c4c8bc0a31f7bec07599cd45acbe2bb93485b5c4b0e462c705f1663062bfa"
+    },
+    {
+      "path": "anchor/src/anchor_nrf52dk_ref_1to1.c",
+      "bytes": 13858,
+      "sha256": "4a3b286faa4b5e6e7a40673c4d9f0419183138a6de3226845ed9551c892ffb14"
+    },
+    {
+      "path": "anchor/src/nrf52dk_ref_vendor/wrap_deca_device.c",
+      "bytes": 76,
+      "sha256": "6147c1bda455b6ae121bd9d61a51db1694159534a18ce18a3eba03739b7b40d8"
+    },
+    {
+      "path": "anchor/src/nrf52dk_ref_vendor/wrap_deca_sleep.c",
+      "bytes": 73,
+      "sha256": "275da382f4f1613c55a5b874ee372c9cb0f0470b9ed984eaf254667b231eef92"
+    },
+    {
+      "path": "anchor/src/nrf52dk_ref_vendor/wrap_deca_spi.c",
+      "bytes": 71,
+      "sha256": "b85ad309b2cca05df07ffd1372362eda9ee4a4dc4cb6aadad74e20c81b95ff81"
+    },
+    {
+      "path": "anchor/src/nrf52dk_ref_vendor/wrap_port.c",
+      "bytes": 67,
+      "sha256": "b68db217a67937cbf7203f753ff768e2aea5be21df59510c447cd9da068a695b"
+    },
+    {
+      "path": "anchor/vendor/nrf52_dk_dwm3000_reference/compiler/compiler.h",
+      "bytes": 1013,
+      "sha256": "a04bb1da5f6d3fc35a9c89418e63d4a830ca70105e96c03390ec9a78593ebcf5"
+    },
+    {
+      "path": "anchor/vendor/nrf52_dk_dwm3000_reference/decadriver/deca_device.c",
+      "bytes": 201379,
+      "sha256": "e30c5a5b40db7fdd09b113aa0cf8d2c01f9839c964ab9ec58230712d270ec068"
+    },
+    {
+      "path": "anchor/vendor/nrf52_dk_dwm3000_reference/decadriver/deca_device_api.h",
+      "bytes": 112263,
+      "sha256": "a1246b665412cc4c0aa993d134016181ea598fbe1b6e821c17c4257de761172e"
+    },
+    {
+      "path": "anchor/vendor/nrf52_dk_dwm3000_reference/decadriver/deca_regs.h",
+      "bytes": 128093,
+      "sha256": "9e1ad6969528ddf67eca2c01462d844ed088ffba3b17f1349fb73223920b615e"
+    },
+    {
+      "path": "anchor/vendor/nrf52_dk_dwm3000_reference/decadriver/deca_types.h",
+      "bytes": 532,
+      "sha256": "075e2bc56983f824d76d8ae80203aa4c5724a9fcfb0d90cfa6d35ea7cc7da53d"
+    },
+    {
+      "path": "anchor/vendor/nrf52_dk_dwm3000_reference/decadriver/deca_vals.h",
+      "bytes": 12621,
+      "sha256": "6aa6a4f70f8ae90b5423abca80b688657005b24365f02ec0ec0cd69644a29a48"
+    },
+    {
+      "path": "anchor/vendor/nrf52_dk_dwm3000_reference/decadriver/deca_version.h",
+      "bytes": 1190,
+      "sha256": "eb80816424f7294d24630281c1fdf46040efd4c559a9ae4a4f8966774757e103"
+    },
+    {
+      "path": "anchor/vendor/nrf52_dk_dwm3000_reference/platform/deca_sleep.c",
+      "bytes": 748,
+      "sha256": "3babf5ba7a2442d6e3688dd350ed91a8054c4b02915df0c0db8af2402fc065d1"
+    },
+    {
+      "path": "anchor/vendor/nrf52_dk_dwm3000_reference/platform/deca_spi.c",
+      "bytes": 9429,
+      "sha256": "9d27212b4ed6c9aa242acaad05ff76a36b894e150c0580a6ece822c638389eed"
+    },
+    {
+      "path": "anchor/vendor/nrf52_dk_dwm3000_reference/platform/deca_spi.h",
+      "bytes": 1221,
+      "sha256": "ca1c10b35aaf97f9a79b57b6489325c68821ea6385e3d69ab0215c8523aae009"
+    },
+    {
+      "path": "anchor/vendor/nrf52_dk_dwm3000_reference/platform/port.c",
+      "bytes": 14144,
+      "sha256": "da7ab8e04a93d9a75be6ef95b901cf2735670bca97e80e3aca4bfcab512df0ed"
+    },
+    {
+      "path": "anchor/vendor/nrf52_dk_dwm3000_reference/platform/port.h",
+      "bytes": 3225,
+      "sha256": "16eee79ffd361f2032f278391d1748898057e6568fb18f12be443a2acf32c675"
+    },
+    {
+      "path": "anchor/vendor/nrf52_dk_dwm3000_reference/platform/sleep.h",
+      "bytes": 814,
+      "sha256": "83861c39d32dcde371d68b304f3258b7452d3130e3b89e0d222ce88b1da91e66"
+    },
+    {
+      "path": "anchor/zephyr/CMakeLists.txt",
+      "bytes": 1092,
+      "sha256": "55817556d2ecae54c90080a3d87465aa1890eff49789034f9f9d7592a05f0b4e"
+    },
+    {
+      "path": "anchor/zephyr/app.overlay",
+      "bytes": 1162,
+      "sha256": "a8c2d165ef5611cae48d40b9ef6f4a00e5daf711f8e5ba66d31595b1dcbdd054"
+    },
+    {
+      "path": "anchor/zephyr/dts/bindings/qorvo,dwm3000/qorvo,dwm3000.yaml",
+      "bytes": 1217,
+      "sha256": "113368e72a87981cc0c38fddf6083c7cf6b4b964eadae65cf16cfbeeeafb358d"
+    },
+    {
+      "path": "anchor/zephyr/dts/bindings/uwb/decawave,dw3000.yaml",
+      "bytes": 1480,
+      "sha256": "c27c3cde4c252d2b1f3d5adb1202eb1e4b0a28735e6958f1c9ba28c54b3ce8c4"
+    },
+    {
+      "path": "anchor/zephyr/prj.conf",
+      "bytes": 481,
+      "sha256": "41223ce0404308e64517af2aa490c2aa2a5a3720060178cbd1797fba8a0ebaee"
+    },
+    {
+      "path": "common/UwbTdma40.h",
+      "bytes": 4494,
+      "sha256": "306714b4861f3edc85b264e575fd62b5a0725ebbaba11ad37e47abfbcce067a3"
+    },
+    {
+      "path": "common/UwbXyQuality.h",
+      "bytes": 1933,
+      "sha256": "edbbd597ee3fd84db21d11e3ebeacd1892b1616d6f0389ada9409ded0ddc8ca3"
+    },
+    {
+      "path": "tag/.gitignore",
+      "bytes": 28,
+      "sha256": "93c35dd6ce550ecad2ae4a68089e4d3c3df85b4e65369a0bea6da8b29b680868"
+    },
+    {
+      "path": "tag/PACKET_CONTRACT.md",
+      "bytes": 11892,
+      "sha256": "005ba2ca5365103d47a9f577a0db568b6a48e1963be99fe51d6a21cb6ca57d6b"
+    },
+    {
+      "path": "tag/README.md",
+      "bytes": 710,
+      "sha256": "bfe6461dc8386ebdc0250317900d29621e3ee6bb53b95397337c6cf0ae084e1b"
+    },
+    {
+      "path": "tag/config/jetson_layout.example.json",
+      "bytes": 512,
+      "sha256": "2bb2c34e1056b07d33cd5b83eca3dbe92acac16751c2101078d1defeddb0ed41"
+    },
+    {
+      "path": "tag/config/jetson_layout.json",
+      "bytes": 1097,
+      "sha256": "f1e051896ab81d09652176d4f9d8289152504fd2a68d8d402f682d799b913a77"
+    },
+    {
+      "path": "tag/include/JetsonLoRaBridge.h",
+      "bytes": 919,
+      "sha256": "b4bfd8a63e153b3f1596f9dbc6f107912e776e759657a2c1f23271b25600b304"
+    },
+    {
+      "path": "tag/include/JetsonTagConfig.h",
+      "bytes": 3418,
+      "sha256": "752adc0b22ae0af8de821b6e0dfa61a72556d2ffb36ecec343057b747f25305d"
+    },
+    {
+      "path": "tag/include/JetsonTagDisplay.h",
+      "bytes": 499,
+      "sha256": "2e7b049be61502cc95747f46527de4797d0d9fe67c781c3670e95f5ed113112b"
+    },
+    {
+      "path": "tag/include/LoRaRecoveryPolicy.h",
+      "bytes": 670,
+      "sha256": "5a675217d4f58f8502d2decabb6db542c20f058e45070214981c245ede75a963"
+    },
+    {
+      "path": "tag/jetson/uwb_serial_receiver.py",
+      "bytes": 14518,
+      "sha256": "41648bba3211dbfddbeb5ecfe5e5f671929af17bac79153d056a7e001004dfb7"
+    },
+    {
+      "path": "tag/lib/Adafruit BusIO/.clang-format",
+      "bytes": 6815,
+      "sha256": "2f94fd8d9bfa98f3c75a1ee6d7ae4e30eec3c179502c6ba2ba9f05af22b68bbe"
+    },
+    {
+      "path": "tag/lib/Adafruit BusIO/.github/ISSUE_TEMPLATE.md",
+      "bytes": 2624,
+      "sha256": "60387287586189ad227cf94cea78ae09939007ad7cb01572b8ebcd148cb86aee"
+    },
+    {
+      "path": "tag/lib/Adafruit BusIO/.github/PULL_REQUEST_TEMPLATE.md",
+      "bytes": 1415,
+      "sha256": "750454b578623fc9db1fb59060c702a1eb1fe0bc9b12153d79b9dd48dd530596"
+    },
+    {
+      "path": "tag/lib/Adafruit BusIO/.github/workflows/githubci.yml",
+      "bytes": 887,
+      "sha256": "cacc78cfe9b34227cbadd29b5c5e8fe5e6a1d2c105f33aa7790a3c8e70a29f8e"
+    },
+    {
+      "path": "tag/lib/Adafruit BusIO/Adafruit_BusIO_Register.cpp",
+      "bytes": 12495,
+      "sha256": "9a0af578ea07956296834f4505e5b134ad7e1cc22ac9c9d84a640a07a94f870b"
+    },
+    {
+      "path": "tag/lib/Adafruit BusIO/Adafruit_BusIO_Register.h",
+      "bytes": 3802,
+      "sha256": "91560f9fc1b8cda42ab039ccdfe0abf92bf09c425a6142ff54af099809b9d47a"
+    },
+    {
+      "path": "tag/lib/Adafruit BusIO/Adafruit_GenericDevice.cpp",
+      "bytes": 3301,
+      "sha256": "c26d9c1207c3626fb95884f01cc1f8179fcd7c2c6b0583fff25187c4f2c814d2"
+    },
+    {
+      "path": "tag/lib/Adafruit BusIO/Adafruit_GenericDevice.h",
+      "bytes": 2268,
+      "sha256": "b12c364e359a0aba6aabc440bc64e375b825214a2835fa1bf38ac709f9e25546"
+    },
+    {
+      "path": "tag/lib/Adafruit BusIO/Adafruit_I2CDevice.cpp",
+      "bytes": 9404,
+      "sha256": "317c342821f1df676a0e034f65685b4d6bf240d2ab8dcea91d18f1e063326d37"
+    },
+    {
+      "path": "tag/lib/Adafruit BusIO/Adafruit_I2CDevice.h",
+      "bytes": 1139,
+      "sha256": "88b843d7a44e3f974950d883649e5682f21d9f8ce135daff3a42d015f7cd27e7"
+    },
+    {
+      "path": "tag/lib/Adafruit BusIO/Adafruit_I2CRegister.h",
+      "bytes": 252,
+      "sha256": "8318d1f65d5468742c0aa48bd50a7e3bd4ddf02e3eba11bc01ad50cf9c20bc67"
+    },
+    {
+      "path": "tag/lib/Adafruit BusIO/Adafruit_SPIDevice.cpp",
+      "bytes": 14297,
+      "sha256": "f846ee438eee41bef174c6dbe1f689f7ccbbd732ca4261c7b9e9337b1e5d08b5"
+    },
+    {
+      "path": "tag/lib/Adafruit BusIO/Adafruit_SPIDevice.h",
+      "bytes": 5515,
+      "sha256": "58ff1433718cef7317638403160d5dd918d92c0f7b4204fb08ad401751d74508"
+    },
+    {
+      "path": "tag/lib/Adafruit BusIO/CMakeLists.txt",
+      "bytes": 383,
+      "sha256": "388cb8134d21bca989fa8efc48f6e8f7960805a14bfef75ae0d23ee8dcef97cd"
+    },
+    {
+      "path": "tag/lib/Adafruit BusIO/LICENSE",
+      "bytes": 1085,
+      "sha256": "86e9fafdb50d2a85d8fef369b4635b5a1b89160603e5b1f95484df0804b49508"
+    },
+    {
+      "path": "tag/lib/Adafruit BusIO/README.md",
+      "bytes": 525,
+      "sha256": "7857d55466e3f419a4f99829968fb94ef270b816152592eb6c561e880daa6e3e"
+    },
+    {
+      "path": "tag/lib/Adafruit BusIO/component.mk",
+      "bytes": 31,
+      "sha256": "65a8bc94954334982bc226826da72647027c1bcc85447804e1fbab7f23228ab7"
+    },
+    {
+      "path": "tag/lib/Adafruit BusIO/examples/genericdevice_uartregtest/.uno.test.skip",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "tag/lib/Adafruit BusIO/examples/genericdevice_uartregtest/genericdevice_uartregtest.ino",
+      "bytes": 6283,
+      "sha256": "fd481a405762d0126b24e43e7bd4a325d0b2d872e135b517a9b5066b740fa85a"
+    },
+    {
+      "path": "tag/lib/Adafruit BusIO/examples/genericdevice_uarttest/.uno.test.skip",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "tag/lib/Adafruit BusIO/examples/genericdevice_uarttest/genericdevice_uarttest.ino",
+      "bytes": 2676,
+      "sha256": "86e41d2c599b41c7fd211020bc9a6ee253a6d903af0a6ab029c84e6d351c44eb"
+    },
+    {
+      "path": "tag/lib/Adafruit BusIO/examples/i2c_address_detect/i2c_address_detect.ino",
+      "bytes": 465,
+      "sha256": "89cf0ee48c931364bea41cf3dab036342ae4c835d02626f7635b576c130a4c12"
+    },
+    {
+      "path": "tag/lib/Adafruit BusIO/examples/i2c_readwrite/i2c_readwrite.ino",
+      "bytes": 1086,
+      "sha256": "1cc8df8ea7c9c27c3d337b3d84993af3b1463699bc5fd198a81a6a869fff3a39"
+    },
+    {
+      "path": "tag/lib/Adafruit BusIO/examples/i2c_registers/i2c_registers.ino",
+      "bytes": 1075,
+      "sha256": "a49021363dd14caed7250bd37414062614a22819364ae2cd2e4a5fb7ee7f29c9"
+    },
+    {
+      "path": "tag/lib/Adafruit BusIO/examples/i2corspi_register/i2corspi_register.ino",
+      "bytes": 1039,
+      "sha256": "2f6f8a11ecb2cd0bda15aafe93a91ca92814fc4b3693d5978255b1c45d5c6912"
+    },
+    {
+      "path": "tag/lib/Adafruit BusIO/examples/spi_modetest/spi_modetest.ino",
+      "bytes": 805,
+      "sha256": "acd3f3fe9c85a8cb022230e8cc1c3b66e7d363a9a0a456dc176adedf7c548c22"
+    },
+    {
+      "path": "tag/lib/Adafruit BusIO/examples/spi_readwrite/spi_readwrite.ino",
+      "bytes": 963,
+      "sha256": "3a0955fa5c28452ecfe51fcb699ce15667b9556e32426cfe120d02ae1ea6aad1"
+    },
+    {
+      "path": "tag/lib/Adafruit BusIO/examples/spi_register_bits/spi_register_bits.ino",
+      "bytes": 9090,
+      "sha256": "9149aa505c8b3239d27d7bb9fae6f50a86956234e8b6e10c49bedb823c6332d6"
+    },
+    {
+      "path": "tag/lib/Adafruit BusIO/examples/spi_registers/spi_registers.ino",
+      "bytes": 991,
+      "sha256": "8b65414c766bf25a7b7aeda67f5bc00fe09c18bb443828068e2ad7a96931457a"
+    },
+    {
+      "path": "tag/lib/Adafruit BusIO/library.properties",
+      "bytes": 340,
+      "sha256": "1f1c13c18d84a15f71e8e833aeaf1ada2d505cc915485174167ea661ed085194"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/.clang-format",
+      "bytes": 6692,
+      "sha256": "2cabe8f1e6ad606c466800e23977fb90f778bfaaaf6ee86371cc34e8806f1da1"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/.github/ISSUE_TEMPLATE.md",
+      "bytes": 2624,
+      "sha256": "60387287586189ad227cf94cea78ae09939007ad7cb01572b8ebcd148cb86aee"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/.github/PULL_REQUEST_TEMPLATE.md",
+      "bytes": 1415,
+      "sha256": "750454b578623fc9db1fb59060c702a1eb1fe0bc9b12153d79b9dd48dd530596"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/.github/workflows/githubci.yml",
+      "bytes": 913,
+      "sha256": "92753d4fae2229da28f6e35ba92963efe541a42245d1239572fa1df849841461"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/.gitignore",
+      "bytes": 112,
+      "sha256": "4f4379e5842048665af5783c81921085a19017e95ecc7361c3f53cc9bd179f1b"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Adafruit_GFX.cpp",
+      "bytes": 102797,
+      "sha256": "5afa8ca16241a9a0cb354012dd00780c6c00620c345b810a9504cb77bfc698d5"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Adafruit_GFX.h",
+      "bytes": 18022,
+      "sha256": "e4ace04cbed4499c0e2a80df33b381c87ce98689d98da82712f0748bf7359171"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Adafruit_GrayOLED.cpp",
+      "bytes": 15424,
+      "sha256": "03ea5c79bf86d8c7a7118dee264341fac0ecc0c5ecdc57eee47dea1981f9edd6"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Adafruit_GrayOLED.h",
+      "bytes": 3920,
+      "sha256": "27c451c21b6d16bef0fb6b94527dfe1d738a9445de4b351f75f24cc360c4e0ad"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Adafruit_SPITFT.cpp",
+      "bytes": 99447,
+      "sha256": "b5982e2ebb558b29a9c76a9bb694193208b46fdafa7d8ea105eb168b0fe9dcb5"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Adafruit_SPITFT.h",
+      "bytes": 25059,
+      "sha256": "23901ed7ab3953816d13471c4016763b25983fa0400448589f06376d53be1b10"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Adafruit_SPITFT_Macros.h",
+      "bytes": 329,
+      "sha256": "c6f1e4e0cc97b98e85bb0c863954d41f72d3bd31874b03a57faa9ae4f8984f6d"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/CMakeLists.txt",
+      "bytes": 370,
+      "sha256": "719d4bf7cc03c5e1c3227d6786980ac2e2491f8dd98baa055bf3e55820f80e35"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeMono12pt7b.h",
+      "bytes": 13799,
+      "sha256": "21f369cca12e929a6cc26c740b64d2e9bb40ebf8f20c5b878f064d4ebb3d36de"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeMono18pt7b.h",
+      "bytes": 24117,
+      "sha256": "f09df516cb487de3d2e0f36d9c45ffe4ea4bfc938735d10b47ff641842618688"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeMono24pt7b.h",
+      "bytes": 40387,
+      "sha256": "c9a03fb1fad357e68f7487da819b083711d7c3d11201635da5ed12a6a83821a2"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeMono9pt7b.h",
+      "bytes": 9702,
+      "sha256": "6bef1a38a049113ee9f4c7874ba3a164631e74d608df117491bcfb60fec56ec3"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeMonoBold12pt7b.h",
+      "bytes": 15460,
+      "sha256": "0739083a428d8120ac0818e0585717f46b2183f08530f9b83813f1447febc611"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeMonoBold18pt7b.h",
+      "bytes": 28745,
+      "sha256": "0c89a48671074e834b9c00d2347cb4e433799b8bfcde9eade8979a07d5bedda4"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeMonoBold24pt7b.h",
+      "bytes": 47645,
+      "sha256": "660733c0f5bdf2afc72472af94404bc59dc2eebe7e9787f064ba7756a594ce38"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeMonoBold9pt7b.h",
+      "bytes": 10813,
+      "sha256": "8cfea064cff367cf3e6a89cd2400ffdb731271f88a5016fb619dcd79b7dad733"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeMonoBoldOblique12pt7b.h",
+      "bytes": 17082,
+      "sha256": "e7d8dc059aca726294f1dbc6eb4826e13261059434d426bc717cba629cd4b61a"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeMonoBoldOblique18pt7b.h",
+      "bytes": 31586,
+      "sha256": "97083aec2726a168deafb4766377187dceb8fe6e52382b242730c3ec34cc8f8f"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeMonoBoldOblique24pt7b.h",
+      "bytes": 52988,
+      "sha256": "b30c44c9aa6edc573c1b587ac0dc56388c62d05114cb76510a0f78e4ded86d18"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeMonoBoldOblique9pt7b.h",
+      "bytes": 11829,
+      "sha256": "77e4c898599042277d04d3004feffd39b18c89d1a93f5cba65ff7506e25dd6ea"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeMonoOblique12pt7b.h",
+      "bytes": 15329,
+      "sha256": "cd07c68d1dd9ecb2654a66fbb1aeb0117f779844cc079f99678cf9c3dabf04fe"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeMonoOblique18pt7b.h",
+      "bytes": 26771,
+      "sha256": "d80a751b9b2a60178699602ee042006b944263175494d53d1a404d2968a1a508"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeMonoOblique24pt7b.h",
+      "bytes": 45474,
+      "sha256": "f7f878d3b47231b43c9dd07d57100dd0364abfdb8953a25fd85b107da7ab0d1f"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeMonoOblique9pt7b.h",
+      "bytes": 10635,
+      "sha256": "8bbee06061722f180fe53e8813857dfd00cf404630c60283c4407f6f7700ac89"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeSans12pt7b.h",
+      "bytes": 17025,
+      "sha256": "0e15e376ec314ac1399613e2466288d795501a467d4e7860e852976997cd7850"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeSans18pt7b.h",
+      "bytes": 30893,
+      "sha256": "b6cc5607b838fcb422ef5c5925439b54061ab63eda1e00767d0c0bf3ee0b429f"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeSans24pt7b.h",
+      "bytes": 51823,
+      "sha256": "e3cde750f607f1db3bd6c6d2d92e5cfd36a9a20d49df90d6a13b6eee7a490747"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeSans9pt7b.h",
+      "bytes": 11733,
+      "sha256": "feacaaf7df57be67d483ed35a7aeb59402ad8c9736e456e3f044e62eaf3a9314"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeSansBold12pt7b.h",
+      "bytes": 18348,
+      "sha256": "50b008dd06cf02fc3e46d872781f3bebb2009f09f80ca791e67138ef51d58630"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeSansBold18pt7b.h",
+      "bytes": 33022,
+      "sha256": "4b3a67ee0d2fd5bce431a256cc77c0acd53f8cce4e0d0619a7a2695a7fbee970"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeSansBold24pt7b.h",
+      "bytes": 56169,
+      "sha256": "ce00fb926f7d718b253dde1cbdd2f18c509c748ecec608c0ddc639ce188e9a54"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeSansBold9pt7b.h",
+      "bytes": 12269,
+      "sha256": "a833751a8153c442afaadc16de2699e9a0163264c1df2ef30f3b5bbdba2b93ed"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeSansBoldOblique12pt7b.h",
+      "bytes": 20593,
+      "sha256": "6cf7dc07ecc478acb2822e067b05be5834331f0751bd2aba030a3d38e001a6de"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeSansBoldOblique18pt7b.h",
+      "bytes": 38016,
+      "sha256": "b6cd1ab0683ca218a93b22c499e750300c1d4c101ac4566db84a6fa28d236f30"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeSansBoldOblique24pt7b.h",
+      "bytes": 64465,
+      "sha256": "4fed61aa9cd99eb0a492f10e8aa01287db136e24235fb195f75412ae2e1db0ab"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeSansBoldOblique9pt7b.h",
+      "bytes": 13802,
+      "sha256": "399a69c387df1a8cd84987f9d2b9a015443e18bf1d819b74b5bf66af6aed3ebc"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeSansOblique12pt7b.h",
+      "bytes": 19475,
+      "sha256": "c3ae703940f3f08bf4ccbcbb24cae7771720ab8b9b8ca74d390edd99a9659688"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeSansOblique18pt7b.h",
+      "bytes": 35968,
+      "sha256": "9d03873e93cc61fcbed21128c22c37e2d93a470165280a0822dbbf331eefa122"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeSansOblique24pt7b.h",
+      "bytes": 60416,
+      "sha256": "d41e526b2d677bc32edcc5e5b674a07be7a08048375ad69d3651717de3cb7753"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeSansOblique9pt7b.h",
+      "bytes": 13184,
+      "sha256": "1ddc19a4b495408ba0d0c7efb48904d9c3459c62ab722aa54b99d283fa5cd0d4"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeSerif12pt7b.h",
+      "bytes": 16208,
+      "sha256": "d9e664a614eeda7ea7942b0fd85e2715d28747a712f346377c47efcbab99aed9"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeSerif18pt7b.h",
+      "bytes": 29170,
+      "sha256": "498cd6591b04cc27c0306979016a059ed284f44338375143e99a0c6fa1000171"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeSerif24pt7b.h",
+      "bytes": 48958,
+      "sha256": "c6cbb427f51e1ffe1f4cfe89e1f2c2317edbe0a5a8c3b517eb02719721e27c57"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeSerif9pt7b.h",
+      "bytes": 11296,
+      "sha256": "330670dc6c05b39915dc47bd5b1e272a44f2bf18108eca799649d2ac7368839a"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeSerifBold12pt7b.h",
+      "bytes": 17115,
+      "sha256": "e1aa2959eb408b289cff144996efd7bf2d6b08e5eebde8dbb80792aaee8dbfeb"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeSerifBold18pt7b.h",
+      "bytes": 31666,
+      "sha256": "4fbfb1faa143e09b570e95c434c0821a07994529bec579fd22bfd9f9baad3780"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeSerifBold24pt7b.h",
+      "bytes": 54298,
+      "sha256": "e66cb62a26127b5776848167c9cb406ebc51c480123eb313e6fc9f2e38c62460"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeSerifBold9pt7b.h",
+      "bytes": 11765,
+      "sha256": "61ebd809fca54d93b4195289be5f4e837cfe41f7998cff66b5fa2c09c5916b3f"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeSerifBoldItalic12pt7b.h",
+      "bytes": 18806,
+      "sha256": "c4587d3d064b6ee43cdc27c4fbe1828cf0bf531dc19ff692d177f71b358d2277"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeSerifBoldItalic18pt7b.h",
+      "bytes": 34638,
+      "sha256": "ec0ca5a439493bded92a41534644c9db51298bcda976362880ae6ee933aea0a5"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeSerifBoldItalic24pt7b.h",
+      "bytes": 56852,
+      "sha256": "98cc662d98016e0e69125f4e0da5bce9a364490eccb008c73bf9ed313df9831a"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeSerifBoldItalic9pt7b.h",
+      "bytes": 12830,
+      "sha256": "96aec072db8f36a223d055521f1f04f6c9a1aa64395a974464d00e80e5ed67ea"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeSerifItalic12pt7b.h",
+      "bytes": 17178,
+      "sha256": "587bc04736886112a06d1bc4fbafc242c4a24de032acb42d9fda43596e2dcbcd"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeSerifItalic18pt7b.h",
+      "bytes": 30788,
+      "sha256": "86cdd8f59ca0b47508a6e858f84e796adf735c0a8355e2f52784ad526033cdff"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeSerifItalic24pt7b.h",
+      "bytes": 52612,
+      "sha256": "3af05ccf96780dc26b9154b7871528e3c8c7e09f82b6b00e17d9dfb5020478f8"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/FreeSerifItalic9pt7b.h",
+      "bytes": 11781,
+      "sha256": "ee4f79365a5ec0dcac844c497cbb484cc6d46d6c2391b3ebad58eec8e4ea0620"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/Org_01.h",
+      "bytes": 9394,
+      "sha256": "6366cd58da1ab53f7b27d68f85463d3db207c88b7a01f97132f8c6a8c3be4451"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/Picopixel.h",
+      "bytes": 9089,
+      "sha256": "035c01e6d48efdfef1e4de6152d0d03910210e449236506ec7c8f71799073363"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/Tiny3x3a2pt7b.h",
+      "bytes": 5684,
+      "sha256": "96fe2267efcd0f9086c735ad594fe9798b868b9198720af9bf18cc929d96f474"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/Fonts/TomThumb.h",
+      "bytes": 20296,
+      "sha256": "a2b89525189e738feb2eba5288f9f6c7ece0b171d603468c4c585372a3342723"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/README.md",
+      "bytes": 4772,
+      "sha256": "6890f42a55c06828629738cb9b015f813a108a85d30013a3b1a77c4a7d0140a1"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/component.mk",
+      "bytes": 31,
+      "sha256": "65a8bc94954334982bc226826da72647027c1bcc85447804e1fbab7f23228ab7"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/examples/GFXcanvas/GFXcanvas.ino",
+      "bytes": 3671,
+      "sha256": "8bc2d443ee94aea3b445e293da18093859e88024d94dfcf8fb33d9c668e3db64"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/examples/GFXcanvas/GFXcanvasSerialDemo.cpp",
+      "bytes": 2094,
+      "sha256": "9cd57fa49ed5a66e1227e729fd2848e5e519cd86e1563efbb907e7b3aaa4af09"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/examples/GFXcanvas/GFXcanvasSerialDemo.h",
+      "bytes": 2408,
+      "sha256": "c1bfa43f9e35f3488c091734eefd8c6994db9445488e5e3c035a983f31423221"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/examples/mock_ili9341/mock_ili9341.ino",
+      "bytes": 9790,
+      "sha256": "552db5228c974f0c7b2c48d9502ddfa109ede4fe46a91539b38fbe8c16236455"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/fontconvert/Makefile",
+      "bytes": 236,
+      "sha256": "a39d6a4413c7d8d5c394cd9e52c8ad8553a8afc71be3fd426e496a77ec88c17a"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/fontconvert/bdf2adafruit.py",
+      "bytes": 4487,
+      "sha256": "eb03983ee15e821888ad4c8f321ffaba8b9346f3d09f6624ab4597d200dcc9ce"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/fontconvert/fontconvert.c",
+      "bytes": 10270,
+      "sha256": "42e70906d68e4a7bced1c47a7bb12d2a86c29484eeb564f76449ea7a9b6c3ba1"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/fontconvert/fontconvert_win.md",
+      "bytes": 3831,
+      "sha256": "76bf8de4bfb5f86fff8d2f80b0f32bcbf401642430b00a6c121112d270e598f1"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/fontconvert/makefonts.sh",
+      "bytes": 1221,
+      "sha256": "ccc786b8fb5077bd6d1948778620469cbbfa83f3f3b17cef1436cd22c71cf662"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/gfxfont.h",
+      "bytes": 1108,
+      "sha256": "4e1b06371217d63102bac242d4a3ec8dcaff93cd34b4241bbc39eda521a1be11"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/glcdfont.c",
+      "bytes": 9064,
+      "sha256": "bd6d60ecb9cc350a83f209d7c62de2fe5f6ce3402d5598cde2988b5b44e83e02"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/library.properties",
+      "bytes": 412,
+      "sha256": "e6b702f2d0463216bf4b89d10c1701ae0de2aabbee42f7088054e9e21949cc31"
+    },
+    {
+      "path": "tag/lib/Adafruit GFX Library/license.txt",
+      "bytes": 1344,
+      "sha256": "3e7bede50526352926c2283e640f2823d9f9f2165d1852044c4fb1bbac283106"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/.gitignore",
+      "bytes": 787,
+      "sha256": "3560886d81900ff6f473692395f680aafd21c26a567897e18145d87f614d4d88"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/CMakeLists.txt",
+      "bytes": 822,
+      "sha256": "7d057776817b9ab3798853020673855b560c0df78dfc738a07d53186734d8378"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/LICENSE",
+      "bytes": 1145,
+      "sha256": "dccf22761187141f8c78245c4cd583ec24b2b98f6c384df5141fc8a4f40ccb85"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/README.md",
+      "bytes": 6931,
+      "sha256": "b86f795b3d92788b310eb8f1b5a5def645c89e124528511e55647f497be27666"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/2.4G_RF/BLE_WiFi/BLE_WiFi.ino",
+      "bytes": 9244,
+      "sha256": "1cefe98586dade44542a4c4f7ada0c978167725d1c85044b4fee2e05e6af018e"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/2.4G_RF/TimeNTP_ESP32WiFi/TimeNTP_ESP32WiFi.ino",
+      "bytes": 4525,
+      "sha256": "721a483e06c3bfc5ac809bad47c1bf16b31d168cc14ee8a352387e73c18c7b17"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/2.4G_RF/WiFi_Test/WiFi_Test.ino",
+      "bytes": 1625,
+      "sha256": "8779d292c010088ad86a92e4ca1d7a37b240d882beac9a4390291a9a3a616f19"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/ESP32/ADC_Read_Voltage/ADC_Read_Accurate/ADC_Read_Accurate.ino",
+      "bytes": 1344,
+      "sha256": "7b83fdb25082c52e0c2d53aa96fd68d3a29cbae708ea324d69808355c77a6b2a"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/ESP32/ADC_Read_Voltage/ADC_Read_Simple/ADC_Read_Simple.ino",
+      "bytes": 3036,
+      "sha256": "961b06fd05d07a64ce3120892bebb205160948f8f8e46bd707d15de454ece821"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/ESP32/ADC_Read_Voltage/Battery_power/Battery_power.ino",
+      "bytes": 4649,
+      "sha256": "463a131bd030527ef04ad484339019afa419da38a30b3494bcda25d8936afc35"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/ESP32/ADC_Read_Voltage/README.md",
+      "bytes": 164,
+      "sha256": "9647daccaece88c7335d087e8583091ae3d9c1acdaa42539ea1d9c57ace49f21"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/ESP32/ESP32_Dual_Core/README.md",
+      "bytes": 3019,
+      "sha256": "434b4888250f271930eb48dd88ea5c4ab5af5778842ce1ff507ba1233688f772"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/ESP32/ESP32_Dual_Core/examples/Movecore/Movecore.ino",
+      "bytes": 861,
+      "sha256": "9a4edcbc3b48ead200a6c794a5d70480853a4e2d5e8a9d9b694f4a1cec33d056"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/ESP32/ESP32_Dual_Core/examples/Showcore/Showcore.ino",
+      "bytes": 339,
+      "sha256": "cb47ac9983d22c456142542a1197f8e0a82f7cf2a2c93031bb90b2e1868a8c7f"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/ESP32/ESP32_Dual_Core/examples/SpeedTest/SpeedTest.ino",
+      "bytes": 1796,
+      "sha256": "596c1d10d7db914538c485a5aba7b6299117f51cae624f1e71fe8846c2128462"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/ESP32/ESP32_Dual_Core/resources/MoveCore.png",
+      "bytes": 70612,
+      "sha256": "b1af121f1e2c2177f133ac4d8395bdd06bb8e58c2eff9bde12b6ba76205b4629"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/ESP32/ESP32_Dual_Core/resources/Result.png",
+      "bytes": 49669,
+      "sha256": "e87c1f883f1038cf3f1528e00b179d0fb51f76cec405bfb8c34f2a54890c3d86"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/ESP32/ESP32_Dual_Core/resources/SpeedTest.png",
+      "bytes": 78942,
+      "sha256": "ee1f7b1d0e1371950eaf512f08f9a2ec011d5590b7cc9b07a9c0ff72c75e19ae"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/ESP32/ESP32_Dual_Core/resources/Task_Synchronization.png",
+      "bytes": 67165,
+      "sha256": "9fa70a2306f209cf0de1a8332bade4d8d74d0bb1342bed16cccb023982d46ac2"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/ESP32/ESP32_Dual_Core/resources/print_core.png",
+      "bytes": 74377,
+      "sha256": "b0bfde076cc3791ba3d2b5bf0e6565441aa774284d2dff671d1ae7c89244a7a3"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/ESP32/ExternalWakeUp/ExternalWakeUp.ino",
+      "bytes": 2763,
+      "sha256": "6a81760c2ad1bbed690fa93cf85f522defbd275ebef01df75c07a7eed15c1136"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/ESP32/GetChipID/GetChipID.ino",
+      "bytes": 505,
+      "sha256": "6ede558938c29705b98a84e53529a040fecae3023d7317c05891bf3d58161fe3"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/ESP32/I2C_Scanner/I2C_Scanner.ino",
+      "bytes": 1859,
+      "sha256": "eedefe419da49a1f3fd34569e5f6fccc8e80ddc501932537cdb5d0cbea87807e"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/ESP32/PSRAM_Test/PSRAM_Test.ino",
+      "bytes": 705,
+      "sha256": "5c6f8e7659c7da72de5e2e00020ae567fcebe756a93afae728085735ec6c5659"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/ESP32/RTC_counter/RTC_counter.ino",
+      "bytes": 426,
+      "sha256": "79251c786c7098c008753cc2eaa4c199b8a48702754ee82269593e79406ed6eb"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/ESP32/Serial2/Serial2.ino",
+      "bytes": 998,
+      "sha256": "855984f780d93accd2cc5d33ffdaceeb0cea62357e5dc5a4a6a750fa1793d00a"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/ESP32/ULP/HoldPinStatus/HoldPinStatus.ino",
+      "bytes": 1499,
+      "sha256": "43be68d8b98763326bd8f23ff8c335dca1903286622fa7bbbec5edda25b13e67"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/ESP32/VextControl/VextControl.ino",
+      "bytes": 1273,
+      "sha256": "eb937353d8e974c2a49c6c4d947753f2e76e9dc578cdbc57b5a6a5b87d24fa19"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/ESP32/WiFiLoRa32_battery_read/WiFiLoRa32_battery_read.ino",
+      "bytes": 1216,
+      "sha256": "b68d91408346b4f82a71ff7458c49e961b6a259b3fad953f85ac8c6c49e963da"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/Vision_Master_E290V0.4.1_FactoryTest/Vision_Master_E290V0.4.1_FactoryTest.ino",
+      "bytes": 15452,
+      "sha256": "2bc317224d2c1bcceca06e74a808d2aa95b7ab09a915d5a3da63559a0d8fcd7e"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/Vision_Master_E290V0.4.1_FactoryTest/checklicense.cpp",
+      "bytes": 1686,
+      "sha256": "2e71840dbe9106c4a9bb521296016b7a64789693a136ac3090a8394831454e0a"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/Vision_Master_E290V0.4.1_FactoryTest/images.h",
+      "bytes": 5786,
+      "sha256": "3238363ec67e0edaf343b8975180df49f572221f258bc419bae69bd5e966d542"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/Vision_Master_E290_FactoryTest/Vision_Master_E290_FactoryTest.ino",
+      "bytes": 12443,
+      "sha256": "a59dfed733fc722438d51b7259c4f66174a0f13a04aaed61b31e533fa1039b8c"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/Vision_Master_E290_FactoryTest/checklicense.cpp",
+      "bytes": 1686,
+      "sha256": "2e71840dbe9106c4a9bb521296016b7a64789693a136ac3090a8394831454e0a"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/Vision_Master_E290_FactoryTest/images.h",
+      "bytes": 5786,
+      "sha256": "3238363ec67e0edaf343b8975180df49f572221f258bc419bae69bd5e966d542"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/Vision_Master_T190V1.4.1_FactoryTest/Vision_Master_T190V1.4.1_FactoryTest.ino",
+      "bytes": 17866,
+      "sha256": "82d5d8010bf370df35350d5da0e4728f9c054f4989d8130363efd355cbd1d998"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/Vision_Master_T190V1.4.1_FactoryTest/checklicense.cpp",
+      "bytes": 1683,
+      "sha256": "27bc31939a257d72a3144898b228f4f777a372318c99ff6eeed359754039322c"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/Vision_Master_T190V1.4.1_FactoryTest/images.h",
+      "bytes": 354119,
+      "sha256": "8921723df333d989114d37c3f905447442db22d5ac8585e40f6fcc9ead047511"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/Vision_Master_T190_FactoryTest/Vision_Master_T190_FactoryTest.ino",
+      "bytes": 14205,
+      "sha256": "779d633b8c388fc069d9263c525dc46e48cf78037dade3be2b24ee387c95378f"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/Vision_Master_T190_FactoryTest/checklicense.cpp",
+      "bytes": 1683,
+      "sha256": "27bc31939a257d72a3144898b228f4f777a372318c99ff6eeed359754039322c"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/Vision_Master_T190_FactoryTest/images.h",
+      "bytes": 354119,
+      "sha256": "8921723df333d989114d37c3f905447442db22d5ac8585e40f6fcc9ead047511"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/Vsion_Master_E0213A367_FactoryTest/Vsion_Master_E0213A367_FactoryTest.ino",
+      "bytes": 15797,
+      "sha256": "952f926c1685bbfe912ff20a581e70381582efff2d2a55a163d6a259946d5c44"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/Vsion_Master_E0213A367_FactoryTest/checklicense.cpp",
+      "bytes": 1683,
+      "sha256": "27bc31939a257d72a3144898b228f4f777a372318c99ff6eeed359754039322c"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/Vsion_Master_E0213A367_FactoryTest/images.h",
+      "bytes": 5786,
+      "sha256": "3238363ec67e0edaf343b8975180df49f572221f258bc419bae69bd5e966d542"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/Vsion_Master_E213_FactoryTest/Vsion_Master_E213_FactoryTest.ino",
+      "bytes": 13904,
+      "sha256": "6cfd1f342b4ddc6c17ceb3d09d2450ff59c69fce7c15343fc0672ff91351787b"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/Vsion_Master_E213_FactoryTest/checklicense.cpp",
+      "bytes": 1683,
+      "sha256": "27bc31939a257d72a3144898b228f4f777a372318c99ff6eeed359754039322c"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/Vsion_Master_E213_FactoryTest/images.h",
+      "bytes": 5786,
+      "sha256": "3238363ec67e0edaf343b8975180df49f572221f258bc419bae69bd5e966d542"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/WIFI_Kit_32_FactoryTest/WIFI_Kit_32_FactoryTest.ino",
+      "bytes": 4531,
+      "sha256": "b4648b1c3a52c83d93c3a8d66cb8001c76edfe742fcc5069c872242738d78d1f"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/WIFI_Kit_32_FactoryTest/images.h",
+      "bytes": 5783,
+      "sha256": "4aea88ac41289ea7fe4f5708ee5a44273285c890dcfa6b12fc2df052e2bcad45"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/WIRELESS_MINI_SHELL_FactoryTest/WIRELESS_MINI_SHELL_FactoryTest.ino",
+      "bytes": 13283,
+      "sha256": "15371781e670f398ce22a2059b705095d48d0aae9461c3e478c69cc45a9e989e"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/WIRELESS_MINI_SHELL_FactoryTest/images.h",
+      "bytes": 5783,
+      "sha256": "4aea88ac41289ea7fe4f5708ee5a44273285c890dcfa6b12fc2df052e2bcad45"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/WiFi_Kit_32_V3_FactoryTest/WiFi_Kit_32_V3_FactoryTest.ino",
+      "bytes": 4531,
+      "sha256": "b4648b1c3a52c83d93c3a8d66cb8001c76edfe742fcc5069c872242738d78d1f"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/WiFi_Kit_32_V3_FactoryTest/images.h",
+      "bytes": 5783,
+      "sha256": "4aea88ac41289ea7fe4f5708ee5a44273285c890dcfa6b12fc2df052e2bcad45"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/WiFi_LoRa_32_V2_FactoryTest/WiFi_LoRa_32_V2_FactoryTest.ino",
+      "bytes": 10143,
+      "sha256": "3ce23edb2f408a7190686d64811dbabf284ba793ec2fef44466ae667e5942d45"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/WiFi_LoRa_32_V2_FactoryTest/images.h",
+      "bytes": 5783,
+      "sha256": "4aea88ac41289ea7fe4f5708ee5a44273285c890dcfa6b12fc2df052e2bcad45"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/WiFi_LoRa_32_V3/WiFi_LoRa_32_V3_FactoryTest_V1/WiFi_LoRa_32_V3_FactoryTest_V1.ino",
+      "bytes": 10135,
+      "sha256": "2f75a4eb8fd4ad9ef87da7765d9b6ec04d952a63c30c41505981d9cf6e2564a1"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/WiFi_LoRa_32_V3/WiFi_LoRa_32_V3_FactoryTest_V1/images.h",
+      "bytes": 5783,
+      "sha256": "4aea88ac41289ea7fe4f5708ee5a44273285c890dcfa6b12fc2df052e2bcad45"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/WiFi_LoRa_32_V4_FactoryTest/WiFi_LoRa_32_V4_FactoryTest.ino",
+      "bytes": 13877,
+      "sha256": "510b266fb8dafdf9135a9c01d7ae0a1afe17708f7939ef749e80b23e9d2b6972"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/WiFi_LoRa_32_V4_FactoryTest/images.h",
+      "bytes": 5783,
+      "sha256": "4aea88ac41289ea7fe4f5708ee5a44273285c890dcfa6b12fc2df052e2bcad45"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/WiFi_LoRa_32_V4_R8_FactoryTest/WiFi_LoRa_32_V4_R8_FactoryTest.ino",
+      "bytes": 13876,
+      "sha256": "6785ee39689b2da4606ee11bd335bca1322c14d2c06d701c3c6fd08ad386c4d2"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/WiFi_LoRa_32_V4_R8_FactoryTest/images.h",
+      "bytes": 5783,
+      "sha256": "4aea88ac41289ea7fe4f5708ee5a44273285c890dcfa6b12fc2df052e2bcad45"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/Wireless_Paper_E0213A367_FactoryTest/Wireless_Paper_E0213A367_FactoryTest.ino",
+      "bytes": 13283,
+      "sha256": "c75d969983168e3edb812817d43bae2776388772051a82ec125d46b168ec9450"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/Wireless_Paper_E0213A367_FactoryTest/images.h",
+      "bytes": 5786,
+      "sha256": "3238363ec67e0edaf343b8975180df49f572221f258bc419bae69bd5e966d542"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/Wireless_Paper_V1.0_FactoryTest/Wireless_Paper_V1.0_FactoryTest.ino",
+      "bytes": 11127,
+      "sha256": "4974a1a9b34de3ab383a3c15bb5359b0d9e5c5f9d279d7969c142e3a03308b28"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/Wireless_Paper_V1.0_FactoryTest/images.h",
+      "bytes": 10672,
+      "sha256": "e3a42d149f42efcff1990ab166dd9db21ad214bf5e9077148a9d06f4ec808491"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/Wireless_Paper_V1.1_FactoryTest/Wireless_Paper_V1.1_FactoryTest.ino",
+      "bytes": 11563,
+      "sha256": "9b255f1a597e7e5acb5fc4be7b8c55303bcc597169883e038bb56d6a63a1ace1"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/Wireless_Paper_V1.1_FactoryTest/images.h",
+      "bytes": 2276,
+      "sha256": "61744dce123ef877c0745deac9c05d4cc5734cdf5fe136a95c86dbe804dacefc"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/Wireless_Shell_FactoryTest/Wireless_Shell_FactoryTest.ino",
+      "bytes": 8170,
+      "sha256": "1766a3038723e13b93710b95679c7f442def8945115d307046ff7babf6195788"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/Wireless_Shell_FactoryTest/images.h",
+      "bytes": 5783,
+      "sha256": "4aea88ac41289ea7fe4f5708ee5a44273285c890dcfa6b12fc2df052e2bcad45"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/Wireless_Shell_V3_FactoryTest/Wireless_Shell_V3_FactoryTest.ino",
+      "bytes": 8169,
+      "sha256": "c57707ead1fee98d28d99677eb5f0e7d77b50056c77629bfbf8542145f97c9d3"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/Wireless_Shell_V3_FactoryTest/images.h",
+      "bytes": 5783,
+      "sha256": "4aea88ac41289ea7fe4f5708ee5a44273285c890dcfa6b12fc2df052e2bcad45"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/Wireless_Stick_Lite_FactoryTest/Wireless_Stick_Lite_FactoryTest.ino",
+      "bytes": 8170,
+      "sha256": "1766a3038723e13b93710b95679c7f442def8945115d307046ff7babf6195788"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/Wireless_Stick_Lite_FactoryTest/images.h",
+      "bytes": 5783,
+      "sha256": "4aea88ac41289ea7fe4f5708ee5a44273285c890dcfa6b12fc2df052e2bcad45"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/Wireless_Stick_Lite_V3_FactoryTest/Wireless_Stick_Lite_V3_FactoryTest.ino",
+      "bytes": 8169,
+      "sha256": "c57707ead1fee98d28d99677eb5f0e7d77b50056c77629bfbf8542145f97c9d3"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/Wireless_Stick_Lite_V3_FactoryTest/images.h",
+      "bytes": 5783,
+      "sha256": "4aea88ac41289ea7fe4f5708ee5a44273285c890dcfa6b12fc2df052e2bcad45"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/Wireless_Stick_V3_FactoryTest/Wireless_Stick_V3_FactoryTest.ino",
+      "bytes": 9995,
+      "sha256": "99ae3dabd41865711a7de12ffb6f4c693e97a896e268c003210ad839ffe25f5c"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/Wireless_Tracker_V1.0_FactoryTest/Wireless_Tracker_V1.0_FactoryTest.ino",
+      "bytes": 11908,
+      "sha256": "1b4ba837a560089c1ee557082831be7a9c55fe5b1343c5029bc683aa60fbb116"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/Wireless_Tracker_V1.1_FactoryTest/Wireless_Tracker_V1.1_FactoryTest.ino",
+      "bytes": 11927,
+      "sha256": "f29093011aa03d830de73f8a10a2f17a63041475d8603df3a2bfbe48c462e2b6"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Factory_Test/Wireless_Tracker_V2_FactoryTest/Wireless_Tracker_V2_FactoryTest.ino",
+      "bytes": 12453,
+      "sha256": "4a054df11cb9f3388bc14b85fa92ab15cd4075a52f17b4786a6306ee73920466"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/GPS/GPSDisplayOnTFT/GPSDisplayOnTFT.ino",
+      "bytes": 1341,
+      "sha256": "8d67ea45a9cf4f18acc85b198fa050798a5437a18f8e4efdd8cd34884c416ddb"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/GPS/GPSToUart/GPSToUart.ino",
+      "bytes": 1025,
+      "sha256": "ffe91d1750d051440b3f4e3e231118b2c531bd289d1aff5ba4a99880c4b3a598"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/LoRaBasic/DeepSleepWakeUpByLora/DeepSleepWakeUpByLora.ino",
+      "bytes": 4623,
+      "sha256": "d8a42fa4aac3a42e6aeb06e42d967ae1e4b04d420c6276c5e5b595ec7610bfd5"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/LoRaBasic/LoRaPowerTest/LoRaPowerTest.ino",
+      "bytes": 5794,
+      "sha256": "76b1b0d04f7692c203c8a5995a58bc3ca1cc388dec9d135dc53c82bd43237fa5"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/LoRaBasic/LoRaReceiver/LoRaReceiver.ino",
+      "bytes": 2888,
+      "sha256": "dfb85502b51db93b3e051f0288788f882a958151afb7e4d6197177f35967fc6f"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/LoRaBasic/LoRaReceiverShow/LoRaReceiverShow.ino",
+      "bytes": 4599,
+      "sha256": "619d14f694134f10231a95593c6ca3d1aa44977b9fdcf626e7c65a54322114ec"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/LoRaBasic/LoRaSender/LoRaSender.ino",
+      "bytes": 3061,
+      "sha256": "a3725a4d9a8e5d7ea9964e93799de2327756935d6a7964780a66d159c8ff5432"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/LoRaBasic/LoRaSenderShow/LoRaSenderShow.ino",
+      "bytes": 4527,
+      "sha256": "104795f66e00aa14981ddf70874f18c217b624181779d7442dcf7282e438bc4e"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/LoRaBasic/README.md",
+      "bytes": 174,
+      "sha256": "e02bbf5647c2c5df0afcfa6e08daa2f1448e6f2244b27574fbaf6f6606489c13"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/LoRaBasic/TxPowerTest/TxPowerTest.ino",
+      "bytes": 1086,
+      "sha256": "35a5a166d7fd0d343596464834298e7dfea0f416d19e4af2384d82f9cf29fb01"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/LoRaBasic/pingpong/pingpong.ino",
+      "bytes": 4412,
+      "sha256": "dd6d47d1521738cb642b3f01db6561ccd7ee8c17eac94ad1f0ca8d6c12874015"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/LoRaWAN/LoRaWAN_GHTV3_Battery/LoRaWAN_GHTV3_Battery.ino",
+      "bytes": 6558,
+      "sha256": "4e6a2e3f9280953c03cf9663287e5f0930ac7518f345456f648bb7cd7bcea76a"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/LoRaWAN/LoRaWAN_GHTV3_Uplink/LoRaWAN_GHTV3_Uplink.ino",
+      "bytes": 5065,
+      "sha256": "777049eac7b1436d52d3f7f8cda04e3f775ac44c1705b1e4cacef392b24f64b5"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/LoRaWAN/LoRaWAN_Hallsensor_Door_Detection/LoRaWAN_Hallsensor_Door_Detection.ino",
+      "bytes": 5631,
+      "sha256": "04e388220750d0a4669ce302ef28ff1d7b7ff445536dc5054afbbeb50b5f0dcc"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/LoRaWAN/LoRaWan/LoRaWan.ino",
+      "bytes": 4272,
+      "sha256": "e4abf744d22573d9f230b45a7fb36062ae1c7b6aa5eb4809a6e67c48cae03854"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/LoRaWAN/LoRaWanDownlinkDatahandle/LoRaWanDownlinkDatahandle.ino",
+      "bytes": 4976,
+      "sha256": "8a3a73b6118fcfcab0088a6e2304e584ded1afdcb8bcc8eadbdb3336cff8bdd4"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/LoRaWAN/LoRaWanGPSLocation/LoRaWanGPSLocation.ino",
+      "bytes": 6610,
+      "sha256": "85a2ba1a1baa32286c157c5a15673b78648e0ad4347fa2aba3677ace1b13079c"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/LoRaWAN/LoRaWanGPSLocation/TTNDecoder.js",
+      "bytes": 921,
+      "sha256": "e42e856a20cecd1c1dd9f9b6687bb118f527d48d8504b51a24e4d24f08e76ea8"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/LoRaWAN/LoRaWanGPSTime/LoRaWanGPSTime.ino",
+      "bytes": 6604,
+      "sha256": "8674d2681c928d42acd55901b46e02bd1862910be70d840c1ee003b793867cf6"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/LoRaWAN/LoRaWanGPSTime/TTNDecoder.js",
+      "bytes": 789,
+      "sha256": "9f7ddae4d613cb64b1bd95febd6c5a573f8c783e8e748dd1f84e005f556335ef"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/LoRaWAN/LoRaWanGPSTime_lora_v4/LoRaWanGPSTime_lora_v4.ino",
+      "bytes": 6109,
+      "sha256": "206f1795c95519b43fd8a4f7c49d8345e08d0adaf35b38f50b43733b7c593252"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/LoRaWAN/LoRaWanInterrupt/LoRaWanInterrupt.ino",
+      "bytes": 4308,
+      "sha256": "9e571f2e94c98f50484950e54c6a81ac51e5a9440bca0fc0e4dc557ace27f791"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/LoRaWAN/LoRaWanMulticast/LoRaWanMulticast.ino",
+      "bytes": 4890,
+      "sha256": "d133a21df3e8574ff1417a16b8210a5cb638fce72d3de989bbb3f80d67f1c49d"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/LoRaWAN/LoRaWanOLED/LoRaWanOLED.ino",
+      "bytes": 4861,
+      "sha256": "7163cb57f660749d1ed14b9017e64c5d7a9b0174e90e1993757862b4547f6fef"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/LoRaWAN/LoRaWanTimeReq/LoRaWanTimeReq.ino",
+      "bytes": 4952,
+      "sha256": "b30e5bd13ea26d5c75a34fd53d77628e20aca4cf3190d9496fb052e126bd0820"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/LoRaWAN/LoRaWanWiFi/LoRaWanWiFi.ino",
+      "bytes": 10033,
+      "sha256": "d028beae6b73f2b28861b003d8f2e2029826cc17a79e582df2c9b6224158786c"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/LoRaWAN/LoRaWan_Monitor_heartrate/LoRaWan_Monitor_heartrate.ino",
+      "bytes": 4796,
+      "sha256": "846832baa9534727e81127d57dc5baeae8ee9dacc0c0c5e99c59bfe63c319473"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/OLED/DrawingDemo/DrawingDemo.ino",
+      "bytes": 5792,
+      "sha256": "5907e4e135099f6cdedd1860d5893caa45413d6884b055c8ee56b3666a62f5e1"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/OLED/OLED_rotate/OLED_rotate.ino",
+      "bytes": 1468,
+      "sha256": "605df294c6870b072e0c338a06f4933c188188318745ca4bb997051788f6059b"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/OLED/OTA_OLED/OTA_OLED.ino",
+      "bytes": 10345,
+      "sha256": "4a555d3fbd7cab4e128c88c5d34cf534a5ad67a568144c4c997a8c21cd13a6b2"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/OLED/SimpleDemo/SimpleDemo.ino",
+      "bytes": 4176,
+      "sha256": "d3e6a13941e367836a9464165fca2839640c97ddb4eecacf93330bffd1c23897"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/OLED/SimpleDemo/images.h",
+      "bytes": 1907,
+      "sha256": "0a9bce9dd8b6019d7b375a59ec3e3bc97e7414853ca80270ccffd7490080adab"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/OLED/UiDemo/UiDemo.ino",
+      "bytes": 4669,
+      "sha256": "1480340c1d45fffbca81d014a181bb8b309abdd70f54c570af7669b1a2223c89"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/OLED/UiDemo/images.h",
+      "bytes": 2273,
+      "sha256": "3eab16c81688a576718814bc3f9e2b37ffa8c2b7fa521268ca5436d9bf8616be"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/SD/SD.JPG",
+      "bytes": 1959768,
+      "sha256": "521f12c16fcb90b2d65b4c6c3d01732b2842e2c93c65507545832fa48f207b12"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/SD/SD_Time/SD_Time.ino",
+      "bytes": 6188,
+      "sha256": "e027a4abf49f0be0470d41a201a9875d5da2a2e31868aa50d0fa5949f644d916"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/SD/SD_Time/TestInfo.png",
+      "bytes": 45979,
+      "sha256": "3247dc52c62ce4db9877ba2b84395d2f54badd6e00166db8b45c16e3a1844a12"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Sensor/BH1750_test/BH1750_test.ino",
+      "bytes": 603,
+      "sha256": "76bd1f8448a2932f1ddd95ca59937c955fe7adc125031b21c61fdb4eff219d14"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Sensor/BME280_OLED/BME280_OLED.ino",
+      "bytes": 2710,
+      "sha256": "f85884f89bf09af73b113beaa1f401509cb6621fe9e8328cb9f19d4d720f1fef"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Sensor/BME280basic/BME280basic.ino",
+      "bytes": 2915,
+      "sha256": "a811be691e0624e23fac71a0ac721cc24db537d7fe2552e4a1479e9aa2162f11"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Sensor/BMP180basic/BMP180basic.ino",
+      "bytes": 2794,
+      "sha256": "c5cfeff4bdee37fa60f58506fec7e543178ead6e186f246fccc90ceeb92f10b0"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Sensor/BMP180basic/images.h",
+      "bytes": 5783,
+      "sha256": "4aea88ac41289ea7fe4f5708ee5a44273285c890dcfa6b12fc2df052e2bcad45"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Sensor/DHT11_LoRa_sender/DHT11_LoRa_sender.ino",
+      "bytes": 2791,
+      "sha256": "245b997f9eea47aea8dd443b70066379ab6ac77792201e5612102ebc9ff38f68"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Sensor/GXHTC_read/GXHTC_read.ino",
+      "bytes": 640,
+      "sha256": "630f7741e2a676d6611634adae1bbf343a9376edc139d935fbee6a69cc1f2ccd"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Sensor/Sensor_OLED/Sensor_OLED.ino",
+      "bytes": 2102,
+      "sha256": "1a29c559d361db361aa6ae73c19efe557c7125712e0d8e430fee8e096a7b639f"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Sensor/bmp280/bmp280.ino",
+      "bytes": 798,
+      "sha256": "91a2aa92fe9d4c50c596ce617560cc4787c1d1082945add62f60e544337b965d"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Sensor/da217_read_xyz/da217_read_xyz.ino",
+      "bytes": 718,
+      "sha256": "9f9cb5fb3ca57cb9b3dea37324701ccaa17998842116dac5c8f182f3b2c25e59"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/TFT/ST7735_SPI/ST7735_SPI.ino",
+      "bytes": 2271,
+      "sha256": "f5a917873321458465d65cbebd3ffc7cbd3f19b42dcc7ef194ba85b149c463a9"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/TFT/V4_Touch_TFT/V4_Touch_TFT.ino",
+      "bytes": 6500,
+      "sha256": "5c4e34a9df6f519ec44ccd2951b9b2e2b0111ca0325c45b07427c5f296278bd6"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/VME213/Deepsleep/Deepsleep.ino",
+      "bytes": 1116,
+      "sha256": "53518127ba25f01d9ecb00c910a99b71576221fa68b8ad4877e11813d3e10e40"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/VME213/Global_Simple/Global_Simple.ino",
+      "bytes": 6797,
+      "sha256": "6dba1e6dcf7006f271cef739622561d2c7df3903869f6787afc8b0e3cde465c8"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/VME213/Global_Simple/images.h",
+      "bytes": 1907,
+      "sha256": "0a9bce9dd8b6019d7b375a59ec3e3bc97e7414853ca80270ccffd7490080adab"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/VME213/HT_lCMEN2R13EFC1/HT_lCMEN2R13EFC1.ino",
+      "bytes": 4760,
+      "sha256": "7b548918b7568f41510398f8396d9193976d04d742a475b98a4dc5ed2353b06a"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/VME213/HT_lCMEN2R13EFC1/images.h",
+      "bytes": 1907,
+      "sha256": "0a9bce9dd8b6019d7b375a59ec3e3bc97e7414853ca80270ccffd7490080adab"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/VME213/LorawanEink/LorawanEink.ino",
+      "bytes": 9058,
+      "sha256": "acc9916f1554beddc2edca70cfcaf2d16a4ff3883b02da296a4dafa5cc15b215"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/VME213/LorawanEink/img.h",
+      "bytes": 475,
+      "sha256": "d6cabf82ca95d072a06ad63a327f90424eb7209a8c689e81bd47e8f681aaf30d"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/VME213/Part_Simple/Part_Simple.ino",
+      "bytes": 2782,
+      "sha256": "a17e45b906b2a987f10c271e737c06d9610e57426a49c2918deccd66e3d7d1c2"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/VME213/Part_Simple/images.h",
+      "bytes": 4328,
+      "sha256": "d8fe280da2676cbc159c00500bc4c902e3c69552fb368db7d5d11373d354b56e"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/VME213/sensor_th/img.h",
+      "bytes": 475,
+      "sha256": "d6cabf82ca95d072a06ad63a327f90424eb7209a8c689e81bd47e8f681aaf30d"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/VME213/sensor_th/sensor_th.ino",
+      "bytes": 3858,
+      "sha256": "d3c335d66711f47b4e78a0c35e2803a2c7d40d67467bff0fd6d1c6bfef049d04"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/VME213/weather_station/images.h",
+      "bytes": 44922,
+      "sha256": "b9018fe27d49e55db2322837fddb187e2408918c2e716faf0d9efb67d18e51b8"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/VME213/weather_station/readme.md",
+      "bytes": 2554,
+      "sha256": "2cbb400c390ec91468d07a7bf16b777b9774a201cef8aa47d43f5f3507192fde"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/VME213/weather_station/weather_station.ino",
+      "bytes": 30196,
+      "sha256": "81893d64fa279898f37b1be0886c5c72339ef89caada8d30a85ac53263be880a"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/VME290/DEPG0290BxS800FxX_BW/DEPG0290BxS800FxX_BW.ino",
+      "bytes": 4190,
+      "sha256": "a2c82743adee98e06bcbf8233a6f4615981f833f91907312df6df299f87c88d0"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/VME290/DEPG0290BxS800FxX_BW/images.h",
+      "bytes": 1907,
+      "sha256": "0a9bce9dd8b6019d7b375a59ec3e3bc97e7414853ca80270ccffd7490080adab"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/VME290/GHXTC_Sensor_Display/images.h",
+      "bytes": 2412,
+      "sha256": "c5f8afffc5ec5815904195aa9085bbeb333101fbc1f74a86ed2057ae6b1cdd68"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/VME290/GHXTC_Sensor_Display/sensor_th.ino",
+      "bytes": 3771,
+      "sha256": "f4f1d39ff19fd8b88872e676a20f3c665adde04e1ae8e7db73cc5e4506ddf633"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/VME290/deepsleep/deepsleep.ino",
+      "bytes": 1378,
+      "sha256": "4843874a1e0d66423eec2b01ad7797fa6131079d6ff9fea1b714934f588b7375"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/VME290/lorawaneink_GHXTC/img.h",
+      "bytes": 475,
+      "sha256": "d6cabf82ca95d072a06ad63a327f90424eb7209a8c689e81bd47e8f681aaf30d"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/VME290/lorawaneink_GHXTC/lorawaneink_GHXTC.ino",
+      "bytes": 8923,
+      "sha256": "2f622fc324d2a4eade8e4a6c88c48ac6a15ea22e1a7daa5d6a05474b1d226f70"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/VME290/weather_station/images.h",
+      "bytes": 30989,
+      "sha256": "156f9649ca8d3787c0c9c6d99e91d5b1dc1a46900e06ab5156c2e338a1da17e7"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/VME290/weather_station/readme.md",
+      "bytes": 2554,
+      "sha256": "2cbb400c390ec91468d07a7bf16b777b9774a201cef8aa47d43f5f3507192fde"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/VME290/weather_station/weather_station.ino",
+      "bytes": 19501,
+      "sha256": "8292d1e5fd97ef589f907d8d14a434f7be9967346c1b207790a3404a4a2fccd1"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/VMT190/Sensor_LoRaWAN/Sensor_LoRaWAN.ino",
+      "bytes": 7677,
+      "sha256": "26571597ef85efb76908926e1a06d30fd10bce8d5571d4ad3a5e3bdc4655dd23"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/VMT190/Sensor_LoRaWAN/img.h",
+      "bytes": 112472,
+      "sha256": "030611667715527fd6b728e7c11ba0b25beab7b340151bfb57daa993b35770da"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/VMT190/tft1_9/img_data.h",
+      "bytes": 1189569,
+      "sha256": "9e332e362d3a78d7aa22e02472e78a392202fc95558dfb38723b87c863b245f8"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/VMT190/tft1_9/pic.h",
+      "bytes": 889349,
+      "sha256": "dc94f8aa434e7597a5dd3c0877394f58631fdb0238c565c698ba2413012b15cb"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/VMT190/tft1_9/tft1_9.ino",
+      "bytes": 16369,
+      "sha256": "4334d0709679c61f1cbd7623567458e29dfac6d99ec55a746e95625618a6f8b7"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Wireless_paper/E-ink_Firmware_Query/E-ink_Firmware_Query.ino",
+      "bytes": 4257,
+      "sha256": "e3aafc5de634e1b37ddcb69522cf87c1db73b123afb7c2c2e2ea7b9dbbabebc2"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Wireless_paper/E-ink_Firmware_Query/images.h",
+      "bytes": 5786,
+      "sha256": "3238363ec67e0edaf343b8975180df49f572221f258bc419bae69bd5e966d542"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Wireless_paper/HT_E0213A367_test/HT_E0213A367.ino",
+      "bytes": 4752,
+      "sha256": "bd739526b4debc592240bc21bbb46768e8ed69cc3a0f050388e6f9ff15f57770"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Wireless_paper/HT_E0213A367_test/images.h",
+      "bytes": 1907,
+      "sha256": "0a9bce9dd8b6019d7b375a59ec3e3bc97e7414853ca80270ccffd7490080adab"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Wireless_paper/Wireless_Paper_V1.0/Wireless_Paper_V1.0.ino",
+      "bytes": 2819,
+      "sha256": "81f5ca52dd50dca6dbb75a73945a278f68e0cdd5538797bb24f12d7574421134"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Wireless_paper/Wireless_Paper_V1.0/html.h",
+      "bytes": 4413,
+      "sha256": "b7ebc07da650856cbd2723e1ace2dae066168d925d120b55ae6f2b78f076e41f"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Wireless_paper/Wireless_Paper_V1.0/images.h",
+      "bytes": 107,
+      "sha256": "b04786bdf2c59059a4f4cd60bb82378593e5c32f7f802ad46c7f7e436ce2e180"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Wireless_paper/Wireless_Paper_V1.1/Wireless_Paper_V1.1.ino",
+      "bytes": 3028,
+      "sha256": "25c8485c9e728507ba449f4575fa9fd10a12d3deb962763316251bec20f1027a"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Wireless_paper/Wireless_Paper_V1.1/html.h",
+      "bytes": 4267,
+      "sha256": "73ab675b8d6808b5427f624bb98c00d5947131d2fbdd3ce58708b47f9a0f1991"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Wireless_paper/Wireless_Paper_V1.1/images.h",
+      "bytes": 107,
+      "sha256": "b04786bdf2c59059a4f4cd60bb82378593e5c32f7f802ad46c7f7e436ce2e180"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Wireless_paper/Wireless_Paper_V1.1/img/image-1.png",
+      "bytes": 6104,
+      "sha256": "ae9910052e6310a1ccc32ff2e089631f263d62237c2eab3ee427c267717aaec8"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Wireless_paper/Wireless_Paper_V1.1/img/image-2.png",
+      "bytes": 13724,
+      "sha256": "7c933d171fea00dace83f143e5b98181b49c9bceb5f64387b9401d5c779a34a5"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Wireless_paper/Wireless_Paper_V1.1/img/image-3.png",
+      "bytes": 1104,
+      "sha256": "31cf405cbe221916dcb23331072b8daec79015fdceff109ecca4423d78e430b9"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Wireless_paper/Wireless_Paper_V1.1/img/image-4.png",
+      "bytes": 1878,
+      "sha256": "076afdd54e108de5e80e6d3072805c04696cccfce72c80c95148c2c0ae5336dc"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Wireless_paper/Wireless_Paper_V1.1/img/image-5.png",
+      "bytes": 17519,
+      "sha256": "7465c5da91bff6a36ce3e5ec82556183eb7f51eb4a402b0c192b464c2dc6827c"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Wireless_paper/Wireless_Paper_V1.1/img/image.png",
+      "bytes": 2994,
+      "sha256": "c2df705e88f90a753f463a4b02a515f0c8893c3b6fefe4ebc7c42042ec4cbc0d"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Wireless_paper/Wireless_Paper_V1.1/readme.md",
+      "bytes": 787,
+      "sha256": "00ce8f01821df0e0af28b49e0f2f11caf2914a0c1c02e5bc46b943d6029f3a98"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Wireless_paper/Wireless_paper_1.1_manual_flasher/Wireless_paper_1.1_manual_flasher.ino",
+      "bytes": 1257,
+      "sha256": "8c01fe8a76d305518f2a6f27a75751c032e08a82ac40265d78197a191ddb0783"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Wireless_paper/Wireless_paper_1.1_manual_flasher/images.h",
+      "bytes": 17894,
+      "sha256": "721e20383da5a8d2b87c42f9937d4e6a024aad3c3d2ce518561dae164bb5255a"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Wireless_paper/Wireless_paper_1.2_manual_flasher/Wireless_paper_1.2_manual_flasher.ino",
+      "bytes": 1249,
+      "sha256": "8ce070acb7ae4766c6590d7ce030b21c069c9095ed06f394982303b6b32e4a1f"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Wireless_paper/Wireless_paper_1.2_manual_flasher/images.h",
+      "bytes": 17893,
+      "sha256": "f1c4f66ecfb1eccdacbe36977f528d3b03ae3ba51ed77f79d761691946732265"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Wireless_paper/Wireless_paper_1.2_manual_flasher/img/01.jpg",
+      "bytes": 50008,
+      "sha256": "0861414b945b32f4dfc8c5033827bd1549cb57cc6ed54859732f373bb201bcdc"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Wireless_paper/Wireless_paper_1.2_manual_flasher/img/02.jpg",
+      "bytes": 44745,
+      "sha256": "e426aad7da9457178e5b35a2d5823cce2b06565ce9e471d789fa672df4c218ef"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/Wireless_paper/Wireless_paper_1.2_manual_flasher/readme.md",
+      "bytes": 266,
+      "sha256": "5eef9a782847098680e40e6f357b08740f5203672efd24ab68b6b7f4fb5ca45a"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/eink/e213_E0213A367_fase_mode/e213_E0213A367_fase_mode.ino",
+      "bytes": 2242,
+      "sha256": "f341eb9bc419bf3a8fa0e19e05fd0c703fc3997a574ccff46bda427a5473f4a4"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/eink/e213_E0213A367_fase_mode/hourglass_1.h",
+      "bytes": 6031,
+      "sha256": "2f54f0eab4ab6c8d0a51cede317ffc876483c2668c5d5feb8a5583c6a8ccf6b8"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/eink/e213_E0213A367_fase_mode/hourglass_2.h",
+      "bytes": 6031,
+      "sha256": "7f18c76da7359383b12d332683477165bc7b9f15ab80c626deaed510f5f8d5dc"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/eink/e213_E0213A367_fase_mode/hourglass_3.h",
+      "bytes": 6031,
+      "sha256": "8f86bfb440e4fd43c4f1dbc00aaaae47e7a034456184103deb196a2568d9e576"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/eink/wireless_paper_E0213A367_fase_mode/hourglass_1.h",
+      "bytes": 6031,
+      "sha256": "2f54f0eab4ab6c8d0a51cede317ffc876483c2668c5d5feb8a5583c6a8ccf6b8"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/eink/wireless_paper_E0213A367_fase_mode/hourglass_2.h",
+      "bytes": 6031,
+      "sha256": "7f18c76da7359383b12d332683477165bc7b9f15ab80c626deaed510f5f8d5dc"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/eink/wireless_paper_E0213A367_fase_mode/hourglass_3.h",
+      "bytes": 6031,
+      "sha256": "8f86bfb440e4fd43c4f1dbc00aaaae47e7a034456184103deb196a2568d9e576"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/examples/eink/wireless_paper_E0213A367_fase_mode/wireless_paper_E0213A367_fase_mode.ino",
+      "bytes": 2478,
+      "sha256": "6b2bd70403f60f8ba039865a8a77ec80a2a9fcafcf1bd0aed950ec2640653055"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/img/01.png",
+      "bytes": 135719,
+      "sha256": "b582337c6c950fce7f145c7ec7828bc53e7fb02421870afa79552bd314d3c1d7"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/img/02.png",
+      "bytes": 121973,
+      "sha256": "aa4bc9d10685bc9327ba7e2ab7885703e815277614a9611fd74e39933dd86983"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/img/location.png",
+      "bytes": 11623,
+      "sha256": "9c1435c43404b26a1103c295f7c572ec973815d5913e355b6ffbe5cc9916d066"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/img/location_cn.png",
+      "bytes": 15166,
+      "sha256": "dda7e6b5d875fca416658c8756c0dec6846a4805401dfca68ef45ef762170174"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/keywords.txt",
+      "bytes": 2085,
+      "sha256": "dadd2d11b77a6f5b7b1b51149f3eceb5400a85b694220896b1311d2e2a7257f4"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/library.json",
+      "bytes": 468,
+      "sha256": "6ee16765eef0980631dbba9419d3a37f51d7c8c351cd36738cecc5fb33fca8e9"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/library.properties",
+      "bytes": 605,
+      "sha256": "9570621460c9916bddd705049fd75e5b4bc8a20356d635837b6e1bc118d30599"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/BH1750.cpp",
+      "bytes": 7581,
+      "sha256": "921827f74521e30a92ae86a088e09e4ae65e1ab327597c6ee4d2025cc54220e7"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/BH1750.h",
+      "bytes": 1999,
+      "sha256": "6769807747cce5705377eef26a762dee26aa67200d6362bcf295469d82833304"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/BMP180.cpp",
+      "bytes": 6619,
+      "sha256": "be8c14260e6af80a68bc5d466ffdc205e4e2833a1366b3d1a2fae6a2ee1e44e9"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/BMP180.h",
+      "bytes": 1978,
+      "sha256": "36a9728cf6fd58b4a270235a0346961b8fb3c966adaf65a4266bc41f2bc0b063"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/BMP280.cpp",
+      "bytes": 12093,
+      "sha256": "443bd58b7d38c8987ff7458a53e5146f3e47bfe9111b48672af771317c5c465e"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/BMP280.h",
+      "bytes": 6755,
+      "sha256": "e84c0191c9427b1e8c4a6ac026d60dd02ac6555aacbcdfbc34ca76c607303d59"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/ESP32_LoRaWan_102.h",
+      "bytes": 248,
+      "sha256": "1fe00d3d3d7e4ba53e174af6a224ca7772525399d6911397e4b37fbc388cda75"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/ESP32_Mcu.h",
+      "bytes": 2309,
+      "sha256": "9be14e24e178a062c0bb3ca594af3224c4e68fcc881f5ce3d9be5af783c17b61"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/GXHTC.cpp",
+      "bytes": 1805,
+      "sha256": "02d8c7789e574bcc1c3cf431aa230e2dcfc75d4669fba67bf7932596fe785ba0"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/GXHTC.h",
+      "bytes": 559,
+      "sha256": "9466c04f0253edf5300e2a9c5ec6fafd9d279b8df951b96e1de2b59155fa97ec"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/HT_DEPG0290BxS800FxX_BW.h",
+      "bytes": 4334,
+      "sha256": "f863b501763dff0545ecbe825bdc7371377c1bd252d8b49f6badc94de0b57979"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/HT_Display.cpp",
+      "bytes": 29599,
+      "sha256": "b3dddbf48ddeec51a43fa55509b1346c4f83ad6a5af80dcf1ebc5e0ccfe00c95"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/HT_Display.h",
+      "bytes": 9582,
+      "sha256": "f44e7d6879f32d25d02f0cb9d68a7ec0baef2b9843b2c85738d22038428ef52e"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/HT_DisplayFonts.h",
+      "bytes": 107143,
+      "sha256": "92201740c1a55d4323f257c807c6f3ad5576fbd53303e00215ae79f15557c34a"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/HT_DisplayUi.cpp",
+      "bytes": 13833,
+      "sha256": "b7b5b2ccf25d2c9140b766898584a1bd00194835b0f9a2b329ee891139318fd0"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/HT_DisplayUi.h",
+      "bytes": 6623,
+      "sha256": "4711c8d134a36ea839dea94541d590d065cda0af83fd627dfa588a7d331a807a"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/HT_E0213A367.h",
+      "bytes": 7560,
+      "sha256": "04b8ceb33ca0f2f0a81b4a8817f977875966cb2eb425fc199c80dbe4686a461f"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/HT_QYEG0213RWS800_BWR.h",
+      "bytes": 6492,
+      "sha256": "c53bd31150f47dc584ad7328d9862dbb70718ebc12f58245d78909907cd43fe9"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/HT_SH1107Wire.h",
+      "bytes": 8165,
+      "sha256": "9ef20f2db8666faa5966149fccf59f084d1101ce96af6b4b5382e71d08656efc"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/HT_SSD1306Spi.h",
+      "bytes": 7982,
+      "sha256": "1b33a47deaeca8a7fcb70021244866a08a4d87a106d31c17bec91279b62bff6b"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/HT_SSD1306Wire.h",
+      "bytes": 8099,
+      "sha256": "0a95e4fa2ac0e08b48fe073f80ec9149296f1d32417aba56c1e2026e4b0beba6"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/HT_TinyGPS++.cpp",
+      "bytes": 14068,
+      "sha256": "586f41b91575d85f3c6fadb8a104356c9a5fd984893d9f14a938c5127a21a9c6"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/HT_TinyGPS++.h",
+      "bytes": 8732,
+      "sha256": "6d82e1b4349188b07e7a8747e1addce6ddd10bfb4142d4405f4b921976034ec8"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/HT_lCMEN2R13EFC1.h",
+      "bytes": 13225,
+      "sha256": "641acb4e98a2ff55e75412d08a0d88c070422a83750a41f0d4b655da15733ef2"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/HT_lCMEN2R13EFC1_LUT.h",
+      "bytes": 2616,
+      "sha256": "c89e9f9e28dc941618599ad92f0d7c451017aafc920b5b8ab522cc16b6b275bf"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/HT_st7735.cpp",
+      "bytes": 11111,
+      "sha256": "14861426587953781dc3635b061f413ea3c3ddfa13c713caeb3e2ca20ba3edf9"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/HT_st7735.h",
+      "bytes": 8301,
+      "sha256": "9f30ba213c4f24fcbb7e6f18c47dd6d4218ec39d82415d3efca657192d4d0eb2"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/HT_st7735_fonts.cpp",
+      "bytes": 41942,
+      "sha256": "8933b0bab71cd5212d02c7169b8da0bf8bb129df017769dd5f0e580c9dda4471"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/HT_st7735_fonts.h",
+      "bytes": 346,
+      "sha256": "de17a2e07b178b60d2fa83d589a62c4f536a10650e1a04fa5e333491ada7b352"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/HT_st7736.cpp",
+      "bytes": 10934,
+      "sha256": "171fe1dca8cbffc9d225c0d7fb067a155367f4c2200f20c3cad543a22f04c590"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/HT_st7736.h",
+      "bytes": 8042,
+      "sha256": "81c15178acd9521656e0ab159c19dedcc12601aea40a83fea6cfb3e784df59b7"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/HT_st7789spi.cpp",
+      "bytes": 15364,
+      "sha256": "2e445ebb94f0b0bbc26868288fd6a46258af380ef4ea50d80450215065be700b"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/HT_st7789spi.h",
+      "bytes": 4332,
+      "sha256": "87f28641eb0484d556c043a0bad9f5deb1aaa14a19e31fce7bc8d322069fddbf"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/LoRaWan_APP.cpp",
+      "bytes": 22600,
+      "sha256": "800dd8037dd8e6ccb256d3395f04de3e6da063a15d865e731217966c8a582208"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/LoRaWan_APP.h",
+      "bytes": 2884,
+      "sha256": "45385414e7c0cbcb0d70f1dfe4036a598b3f6f93cb37f6024d12886235672bfa"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/chsc6x.cpp",
+      "bytes": 3788,
+      "sha256": "ea6ea7d580b79a930878f2d65cbea2db76a6d92966658de8e917e47598e72d5f"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/chsc6x.h",
+      "bytes": 1113,
+      "sha256": "f356dd50f54e31d5af34e9206ee886e5081f2e795484d1259c1534b66ca682fb"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/chsc6x_platform.cpp",
+      "bytes": 3909,
+      "sha256": "1a89715833fc426b8ebdb7d4cdaec76314d53b70615dd2a6fd31f7672916799f"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/chsc6x_platform.h",
+      "bytes": 2478,
+      "sha256": "e46c68a91189e9a33626c9d1ce9913b145363eaf83ee0afdc3f19899fa663b00"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/clk.c",
+      "bytes": 13942,
+      "sha256": "0fad0957a554015fe9def7cd2df8659a97bfc72ec4f5b3222d206bbed76daf67"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/da217.cpp",
+      "bytes": 6801,
+      "sha256": "b6545e54fb170145d303902cb9528fb02103ebe41eeec716dc58f2fa8d2ce8b2"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/da217.h",
+      "bytes": 11010,
+      "sha256": "f92fa6e69812591f9c7fcbdd513e96ba36482d6584d7762fc6a5ffa80119550d"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/driver/board-config.h",
+      "bytes": 3870,
+      "sha256": "3850a3db65dabdb67c09f04c2de6a4a1f929f5e5c228f9c40af6cbc3a38e1f86"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/driver/board.c",
+      "bytes": 5866,
+      "sha256": "a280504a4944f462e52951f9bbbb1d02c0d07965d2588ec2063a9e705ed50a4a"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/driver/board.h",
+      "bytes": 3175,
+      "sha256": "b82ec3f2b1b7de860d313d81cd4b5497b1e30a4e7cb33544afe1e1430c79ae7c"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/driver/debug.h",
+      "bytes": 4582,
+      "sha256": "9dd4422d59b06a6f5a3722cc83a20f3785e7de296749788304c86dcc5624c2e8"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/driver/delay.c",
+      "bytes": 526,
+      "sha256": "829408afc5b38066f3fc8fbf4c29f5e73720775d481ff6c8a9cddb03a1a85801"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/driver/delay.h",
+      "bytes": 735,
+      "sha256": "46bcd60a01ff4711c56b31b72ed79baaf4e20b69af4fa9f544b5451db10fe475"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/driver/gpio-board.c",
+      "bytes": 1807,
+      "sha256": "befa60114ed25d6fbcd3fdda16546cf96e9745a34fe2d2007c25b0a030da9329"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/driver/gpio-board.h",
+      "bytes": 2747,
+      "sha256": "19040b87d95ed3be44b32c270aa25a93c3662749c65204ddef2c2281e5e6c98f"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/driver/gpio.c",
+      "bytes": 1555,
+      "sha256": "f8a44ab14529c0d5448bb2fbd4eeff6acfbe3dc39c8d43c647d2c998ee9ea85c"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/driver/gpio.h",
+      "bytes": 3973,
+      "sha256": "dac4f8d39aff4e642a94411bd6b477da3165dfd3ef723a615f3601c8d27eacc2"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/driver/lorawan_spi.h",
+      "bytes": 2289,
+      "sha256": "f8b1e9ba03def91a83270179e107a733c886f0d4cc4e46496ccdb904a53957cb"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/driver/rtc-board.h",
+      "bytes": 3139,
+      "sha256": "54628f48d947d6154408067c0041d600e1ddb16143aaa4fed2dca0b53db3c427"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/driver/sx1262-board.c",
+      "bytes": 6401,
+      "sha256": "4762da8c0531ccf668c07a0ae3eac3985c4f21a6fba76abcc19cd4b8737a54a5"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/driver/sx126x-board.h",
+      "bytes": 4180,
+      "sha256": "cf95145a6fa2f6c5174e16dcb4c9005f08ba791eaa226eac30d26593687f6ae0"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/driver/sx126x.c",
+      "bytes": 23036,
+      "sha256": "d226337f3e3d8bbdf081557e33e9577a8541bc15043e7242dc544db1ef8460e2"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/driver/sx126x.h",
+      "bytes": 40594,
+      "sha256": "28251d47257f48c68a1bd7baa584581dc16a4222947b6db7df13d8dc8991a9bc"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/driver/sx1276-board.c",
+      "bytes": 6811,
+      "sha256": "afbaf386340a80c30a3c6f43d5069e928960139f85808d6423faaafb53b3b5be"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/driver/sx1276-board.h",
+      "bytes": 4097,
+      "sha256": "83628714ee4febe7c7fa261c3580c06c6a16dbf46f702ae17b616e6eaa1d33c3"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/driver/sx1276.c",
+      "bytes": 66933,
+      "sha256": "c4dec43f05e2b2b29eb39806b67a2b6f54a832d33f781a0aa4a0815fe27b68aa"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/driver/sx1276.h",
+      "bytes": 13898,
+      "sha256": "d2e241cc18e26f748a663ced841a7ffc1e807d2c1ba910814958cd91c3118a63"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/driver/sx1276Regs-Fsk.h",
+      "bytes": 49244,
+      "sha256": "1fb57f1213cdfdb8c64ab17c2714d68496a73d285677e1d6344bc8b658f1104d"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/driver/sx1276Regs-LoRa.h",
+      "bytes": 20493,
+      "sha256": "96b5a1d499793177c6bc81dc048d013026cb0bd4b2045cc3e282ef0cff33a12d"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/driver/timer.h",
+      "bytes": 6835,
+      "sha256": "d33ad086cb89df51a1aae8c67d03818cd049ee4c4aeea32a2a22c03851d5858d"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/esp32/liblorawan.a",
+      "bytes": 144286,
+      "sha256": "b591574644da7fd8268db471aff6298f59174a976e2e0aa0b0a5b8da1619e3a0"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/esp32c3/liblorawan-espidf4.a",
+      "bytes": 328138,
+      "sha256": "db24318bafbbc26da037ce027db848f50c326fb62c267620f753a821758ba09c"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/esp32c3/liblorawan-espidf5.a",
+      "bytes": 198986,
+      "sha256": "4264b59c31f9efe636a024c47ff16aae0445c7a85cf981ac3bbc84a51949bf5d"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/esp32c3/liblorawan.a",
+      "bytes": 198986,
+      "sha256": "4264b59c31f9efe636a024c47ff16aae0445c7a85cf981ac3bbc84a51949bf5d"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/esp32c3/liblorawan2.a",
+      "bytes": 328138,
+      "sha256": "db24318bafbbc26da037ce027db848f50c326fb62c267620f753a821758ba09c"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/esp32s3/liblorawan.a",
+      "bytes": 163666,
+      "sha256": "812778ac7e1e7702b3699f5d77ff0c6faac4dde5f852b1d4ce94a4454c85d5c2"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/esp_clk_internal.h",
+      "bytes": 1415,
+      "sha256": "de70f73ae9517d41d6b97283a61ec87ff5105d8fb216b5f2af740694cfbf2b58"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/heltec.cpp",
+      "bytes": 2571,
+      "sha256": "ca264adc0b2f6d9efef4f2a54ea7a4c5311596e84b0be8d90e24b44eb550b113"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/heltec.h",
+      "bytes": 2098,
+      "sha256": "47521b24a9396d1194daf50db8f4d10ce012e6d4aaae7baa9613703e5e9f65cd"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/lora/API.md",
+      "bytes": 6884,
+      "sha256": "bf1f818309e1c4fc671584881c6cc8aa961637488ab230e06325f38e897f036e"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/lora/LoRa.cpp",
+      "bytes": 15799,
+      "sha256": "0d993edbbf5d406603848ee3ed8e52394594cf7e77467d0e8e415a7bcdf473bd"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/lora/LoRa.h",
+      "bytes": 3307,
+      "sha256": "05828a84f55c6768a823a466cfdc537b91f20ad6d097b0e77f8d80134be096a7"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/loramac/Commissioning.h",
+      "bytes": 1154,
+      "sha256": "0d0b394272bddc1160ac8250db581c28a69da9d4e1636f6146531e3f8d27b77f"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/loramac/LoRaMac.c",
+      "bytes": 150593,
+      "sha256": "85901e76d521b5959d6adb0a4c42d6b5439521cb3aa4204615f6892b4c7fd2a2"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/loramac/LoRaMac.h",
+      "bytes": 65566,
+      "sha256": "7acaba879542caf27e89dd78b3acb5221cda7c423d84b734a53209f4b80b79ae"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/loramac/LoRaMacClassB.c",
+      "bytes": 50671,
+      "sha256": "8c152bb3967bcb9a3da3b94591dc7e9d0c7d8d26c2796f907109f6a5da85d707"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/loramac/LoRaMacClassB.h",
+      "bytes": 14547,
+      "sha256": "9d5820857603e8e51d0dc593eaca11d24473d3d576d197f9b190eea16656c83c"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/loramac/LoRaMacClassBConfig.h",
+      "bytes": 3104,
+      "sha256": "de3b49e6d34414c0e6f802df34990030e139bc56dc2cf57dd14b1e6d2b749431"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/loramac/LoRaMacConfirmQueue.c",
+      "bytes": 7560,
+      "sha256": "d621ae0a883a28f690a92f2bc20d24c9a55bfbdacd8f6ee3a39508f5b3ef6062"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/loramac/LoRaMacConfirmQueue.h",
+      "bytes": 4924,
+      "sha256": "d3c270eeca55fe24a0adf3c11f7d10a9f287ea21e32c69e1e755c5dc3cf7c625"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/loramac/LoRaMacCrypto.c",
+      "bytes": 7936,
+      "sha256": "2984082941e5512ba1fa71855beb1751229591e1c23c81bf5f703750c501e595"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/loramac/LoRaMacCrypto.h",
+      "bytes": 5011,
+      "sha256": "346e7214a263ade15498c974ed846e86533c98ffbb21c37e3c523224214787df"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/loramac/LoRaMacTest.h",
+      "bytes": 2865,
+      "sha256": "f7723aca03f6f68f5e557dd3a4e4a7fc304d05ac646317f16fb03166c67ca2bb"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/loramac/aes.c",
+      "bytes": 32956,
+      "sha256": "2dcdc596e390cca1502379ab6c852b17cc78e44a516fb8108e13f062c7a82bbf"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/loramac/aes.h",
+      "bytes": 5422,
+      "sha256": "1bb39c809e5c1e4d94203cc04ffaa57a6307697b7a1b4a01291830b308c33ec2"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/loramac/cmac.c",
+      "bytes": 5770,
+      "sha256": "ff4160917c4b20eb9d4d67212c7c0c2b63732fe901b4956f1e01443b163bdfea"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/loramac/cmac.h",
+      "bytes": 2774,
+      "sha256": "c6df0e021a77d8497454743a6c8368ca88f2ccfc818c1e3f29eb07b500075687"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/loramac/region/Region.c",
+      "bytes": 57892,
+      "sha256": "c33b001246f8c7c107e2f1a2804ddd190d598e30b3f138ccbc6cabc23bba54a2"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/loramac/region/Region.h",
+      "bytes": 42539,
+      "sha256": "0f834466c6e65ad90783aa2d9b4f723b7d13a6594191c2aaa2228a98c32c34fc"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/loramac/region/RegionAS923.c",
+      "bytes": 35435,
+      "sha256": "6a1f963f2956a92eca47c6b8ffeb23a544475bf2c6f0444e28b1bb7abacc46dc"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/loramac/region/RegionAS923.h",
+      "bytes": 17190,
+      "sha256": "8604f62dd363fb6143252ecfeff8c552c448753cf145388dcec86b3397bb2e2a"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/loramac/region/RegionAU915.c",
+      "bytes": 28241,
+      "sha256": "77f870a3e92cabff2d86d1d3ebb08645ba86bbfba67e3388cc7a315c24639c26"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/loramac/region/RegionAU915.h",
+      "bytes": 14709,
+      "sha256": "b54483b1793c3436ad923154c0b253fdbac2160d18d9e8818b7080bae01bc6eb"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/loramac/region/RegionCN470.c",
+      "bytes": 27031,
+      "sha256": "f4685711798b1c36a3d7935fdf8e525d5772b031326ef0fed73c7900d58d5e9c"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/loramac/region/RegionCN470.h",
+      "bytes": 13985,
+      "sha256": "2b2a73e0991605844e7666a658a1675189e0035f2ac84deaf529016cf0fe8dd6"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/loramac/region/RegionCN779.c",
+      "bytes": 32790,
+      "sha256": "855bc75e3d5c5fd57d5f2fa6f16600fb71a09e319ca18eee9c486fe1ffbf2d5d"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/loramac/region/RegionCN779.h",
+      "bytes": 14528,
+      "sha256": "4a078949a7b545810b958ad95334713de2bc211304254c500af165155d2148af"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/loramac/region/RegionCommon.c",
+      "bytes": 9041,
+      "sha256": "c1f3db2e9956d7a544303614bd3707ebe1cd89af787aee83a6c6decb2638f8a7"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/loramac/region/RegionCommon.h",
+      "bytes": 8814,
+      "sha256": "500206f50a2beffe66e3c095ee19ac65220f2c23bf900a87277b5e85a68258c4"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/loramac/region/RegionEU433.c",
+      "bytes": 32958,
+      "sha256": "5bdad8ce2d07b371dda79b8d1068e1ced5783f5808bfab56393f9f977a00099e"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/loramac/region/RegionEU433.h",
+      "bytes": 15207,
+      "sha256": "6d3230085b2d3b337104b6574c4295dae6a428df3f43df3a8dca0b21f6572b72"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/loramac/region/RegionEU868.c",
+      "bytes": 33704,
+      "sha256": "a81713015358e011da778d16759866ce2224d196b961bdeb2dd10f8d846a371f"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/loramac/region/RegionEU868.h",
+      "bytes": 15857,
+      "sha256": "6ba0b66091b7dcafbad052bf0b9e62c903918e5557e147aac65b821a94db4aad"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/loramac/region/RegionIN865.c",
+      "bytes": 33061,
+      "sha256": "93ead78d1b17b1631674deee115be694a3cd2c099a829c904e440df1c60eee3a"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/loramac/region/RegionIN865.h",
+      "bytes": 14621,
+      "sha256": "a942d7e27ecb1829bdd1d471a34b9896e46265a2b9d4672db9a887bf206ba99b"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/loramac/region/RegionKR920.c",
+      "bytes": 33581,
+      "sha256": "6e8e70684a03622bf14135f4594a0e961ce1ca3cc1a345e738841808d01119c5"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/loramac/region/RegionKR920.h",
+      "bytes": 15353,
+      "sha256": "9563767bb0c65161d6ae21d3b81430c642e4da0744ec75853d33688c88257209"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/loramac/region/RegionRU864.c",
+      "bytes": 32692,
+      "sha256": "6ae825a7a21ecd9f1651627e69799e07395ee9e9699a964858c05cb42ed64cb4"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/loramac/region/RegionRU864.h",
+      "bytes": 14281,
+      "sha256": "b5110c97815ec4d867105802791757b66ef8acb847029da6126c8aa23f82bb2f"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/loramac/region/RegionUS915-Hybrid.c",
+      "bytes": 31544,
+      "sha256": "e0105062638dd8907f9779cf87ae4ac1dc58b478fb4d65ffb3dfb3c24fe84559"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/loramac/region/RegionUS915-Hybrid.h",
+      "bytes": 14554,
+      "sha256": "f3d9f2999a429f780b2a976918c89330e3bb80ded6fa6060126d0c633496592c"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/loramac/region/RegionUS915.c",
+      "bytes": 28575,
+      "sha256": "617e4c560d4e2704436101483aed4f0b6ef7869bf5606478d102f5a050dbf9d6"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/loramac/region/RegionUS915.h",
+      "bytes": 14408,
+      "sha256": "bc04b7882a8bf1bcea06b3b45e7e1fb2e52eb80e45f33cdd017a68c1d2f0ad41"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/loramac/utilities.c",
+      "bytes": 3209,
+      "sha256": "70483d0fac2fc0727d40c63e77a6f0be70b8480093d71defb29ecfca6a7973b2"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/loramac/utilities.h",
+      "bytes": 7980,
+      "sha256": "5f0190ff4089475760b5887229050bc35bfccb23cfaa6170c7e548cd34d6d7c9"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/radio/radio.c",
+      "bytes": 44365,
+      "sha256": "90a1f0c2adef74075da2c499fc89685b539fe528e79524601c2e692dd789a3f5"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/radio/radio.h",
+      "bytes": 15044,
+      "sha256": "2cc0a832fb8cfb963bb80d54952ecf39bd5ca2ac18ecc2ee7120ff178e489498"
+    },
+    {
+      "path": "tag/lib/Heltec ESP32 Dev-Boards/src/radio/radio_sx127x.h",
+      "bytes": 14016,
+      "sha256": "45c9b04827a0545816e4fc429ff1a7e7d582c28af08891e09b8979c566732b08"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/include/Br101Dw3000Bridge.h",
+      "bytes": 466,
+      "sha256": "08d013a0ac57089456add1ff4e9accc28942bb0cbc73bc7c641d370c185d4f50"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/include/Br101Dw3000Config.h",
+      "bytes": 2308,
+      "sha256": "461d96ea8a4a85317377f680eba29fa06ffdff5a5fd9a8bad17c330413af3727"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/include/Br101Dw3000Port.h",
+      "bytes": 1682,
+      "sha256": "d27b7b367145e6d0c8bce287b0def4ff451883ac5de6f9d3660088b44c9cb0d0"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/include/UwbDsTwrProtocol.h",
+      "bytes": 3141,
+      "sha256": "dc6679dc4e4fc2d50bc53d0868827c5f0c25a779289f27af27d05b8533188640"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/include/dw3000/dw3000_deca_regs.h",
+      "bytes": 85,
+      "sha256": "b235191ddfdb84a2b13b47d0f80b298e0631695caed1919f87af7afe8b861d25"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/include/dw3000/dw3000_deca_vals.h",
+      "bytes": 85,
+      "sha256": "b865df84c4ffdf1fe8811be5f87fd897bcf8b077d38f34daf82ed8f44b9fcad5"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/include/dw3000_shared_functions.h",
+      "bytes": 352,
+      "sha256": "42cc22b61b0726ff3401c582ab01c34d83e75a56f626c7ba8ef0b152083b4440"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/include/dw3720/df3720_deca_vals.h",
+      "bytes": 85,
+      "sha256": "c1da4961f19352ea0732eef9a55bd207b07f3114212616fe54d6ef5c7cd860e8"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/include/dw3720/dw3720_deca_regs.h",
+      "bytes": 85,
+      "sha256": "b3a42f020d6cdc04a00354a7ec89724af854a5ac6b4f88f76482a866ebac2f37"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/include/log.h",
+      "bytes": 401,
+      "sha256": "1d9c90a3925a0f8d1df474c5256b457dbbeec19c3dd5c4a7a957e267da3f55bf"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/include/sdkconfig.h",
+      "bytes": 45,
+      "sha256": "a3553d095b810d1fc919fa4dfab0326784b3cf05de340e4817c69cd62f623136"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/library.json",
+      "bytes": 227,
+      "sha256": "ff3bdb6f2dab5204b08002824c06853fa47ca2245390c29287c05d9a547a8724"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/library.properties",
+      "bytes": 390,
+      "sha256": "71883b21c19d7906d4bc7e3f99e8f07fef00f12395f515f3746f34b94d01cb0d"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/src/Br101Dw3000Bridge.h",
+      "bytes": 1690,
+      "sha256": "40b2b2a777d0118dbaffc537742ef4e8c2b4678e7229908c3427e48c3ea7a155"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/src/Br101Dw3000Config.h",
+      "bytes": 56,
+      "sha256": "068753e940677e57cdcf568ac083ca1b9dc39a32bb1e34abf995969a9bfeaf12"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/src/Br101Dw3000DecaPort.cpp",
+      "bytes": 1921,
+      "sha256": "224460021fe1f6f4b047a50626ebff38bb30d7a675cae10ba69393c8cbbd7902"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/src/Br101Dw3000Port.cpp",
+      "bytes": 9021,
+      "sha256": "26133c5e6b3ede0652f7edd4ee256506ea4bad09c8a5377a4807935bab914275"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/src/Br101Dw3000Port.h",
+      "bytes": 1682,
+      "sha256": "d27b7b367145e6d0c8bce287b0def4ff451883ac5de6f9d3660088b44c9cb0d0"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/src/UwbDsTwrProtocol.cpp",
+      "bytes": 4372,
+      "sha256": "4b68944ca32be4f9240b9eab7f89451e6a8a9ebbeff422d3a4c6c4b8d7251a90"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/src/UwbDsTwrProtocol.h",
+      "bytes": 3144,
+      "sha256": "06804d15e9fa757a8d638087b2fcaa74d6f0b90281c7547124e75e159ab7403c"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/src/deca_device_api.h",
+      "bytes": 132,
+      "sha256": "38917d9128716e8348f19e0f8e34ba4288efcdc9eca115412cef9cb44f2f85e4"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/src/deca_interface.h",
+      "bytes": 131,
+      "sha256": "c2b5bf48fb32394a565abbaa53fffc11bf19e4c3856fd526c76e62d14f313330"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/src/deca_private.h",
+      "bytes": 129,
+      "sha256": "040038fb4097cd0bb11b2c2f78057372ec310939f89c22460f449cc986c523eb"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/src/deca_probe_interface.h",
+      "bytes": 131,
+      "sha256": "e3dd598cfdba3426c0fae54150a4fe68d6ca805d0df1ed69ae27d2fdd7edce3f"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/src/deca_rsl.h",
+      "bytes": 125,
+      "sha256": "c3ba03c3951eebd3c4203a55101d3c9be1969f59265161a9fdac4b0d1897283e"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/src/deca_types.h",
+      "bytes": 127,
+      "sha256": "9b762d3f8a25410d19f6e0bbc4080116cf29c623a07a7b805620fefa09bcf562"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/src/deca_ull.h",
+      "bytes": 119,
+      "sha256": "8727ac94f7e6808298f40b7bd62f2a81560ce6539bc0576e390022240bde8f26"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/src/deca_version.h",
+      "bytes": 129,
+      "sha256": "bdc5a97bad907b4b568a536083ee79cbb072b34d67b714b6c630c0916b742a0e"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/src/dw3000.h",
+      "bytes": 117,
+      "sha256": "0a389493aa8eafd2dca1dc549f686cf87eba81eca41b54cca4a81ba1dce62af4"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/src/dw3000_deca_regs.h",
+      "bytes": 140,
+      "sha256": "f369aa1faf8c8368954591d4cb36282f1b6db10b5807aa442880447f67603feb"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/src/dw3000_deca_vals.h",
+      "bytes": 140,
+      "sha256": "6839c5f38e6e564baedc96d161a5ca40fc51123fe26cc2f3a6c4012fa2f1f5dd"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/src/dw3000_hw.h",
+      "bytes": 120,
+      "sha256": "1edf01adecc91ca783b8e5090384c43074470382f5dff4c7583223c7a4d34710"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/src/dw3000_shared_functions.cpp",
+      "bytes": 677,
+      "sha256": "01fb231f055a30cce613c0fe657b2bfea15235536a31099079ff93edf40f19f1"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/src/dw3000_shared_functions.h",
+      "bytes": 352,
+      "sha256": "42cc22b61b0726ff3401c582ab01c34d83e75a56f626c7ba8ef0b152083b4440"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/src/dw3000_spi.h",
+      "bytes": 121,
+      "sha256": "eb74ad1f531e2ab3ddad5dedebd56b180962aa2acb5067d98013183415fc6bbe"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/src/dw3720_deca_regs.h",
+      "bytes": 140,
+      "sha256": "1858393992b14a1545768a24fd4856411ef37436a8ca0e314a805135670e6b5c"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/src/dw3720_deca_vals.h",
+      "bytes": 140,
+      "sha256": "8ebbad77b29959ccf91117eb3cd2266b23e4affa28f0b6fb4f73dc938b9960dd"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/src/log.h",
+      "bytes": 401,
+      "sha256": "1d9c90a3925a0f8d1df474c5256b457dbbeec19c3dd5c4a7a957e267da3f55bf"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/src/qmath.h",
+      "bytes": 140,
+      "sha256": "a64a271ed0b031b6db5835f91f4b2adb3619b6c41a2e28c4023575ef75062aef"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/src/sdkconfig.h",
+      "bytes": 45,
+      "sha256": "a3553d095b810d1fc919fa4dfab0326784b3cf05de340e4817c69cd62f623136"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/src/vendor_wrap/br101_wrap_deca_compat.c",
+      "bytes": 77,
+      "sha256": "a3998c56ccad23429f9cabca32020d0c307e897783e6650e57a601729cee2f08"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/src/vendor_wrap/br101_wrap_deca_interface.c",
+      "bytes": 60,
+      "sha256": "58f971116ab50800e066fbfaecc1c982ffc3c44d966b2fbba28ab3d10f8c273a"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/src/vendor_wrap/br101_wrap_deca_rsl.c",
+      "bytes": 54,
+      "sha256": "36fc9ad38f1095f8c2a4303af736c24da97c074d67001024f72c2017bec032a0"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/src/vendor_wrap/br101_wrap_dw3000_device.c",
+      "bytes": 66,
+      "sha256": "31ef184702ed00d3c078b70427a4970094655dd48af2bb2ab9303f70016b67fa"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/src/vendor_wrap/br101_wrap_qmath.c",
+      "bytes": 65,
+      "sha256": "7fac339b11861b77867678bf18f123376c6201978dfaf4be4dab168bfe2f0308"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/LICENSE.txt",
+      "bytes": 766,
+      "sha256": "e34d5f9625a71037eebc66c4a10aca6e06f132b0e2d9f76843ffd4b157730c16"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/README.md",
+      "bytes": 2999,
+      "sha256": "4706176051dd8048b1a1559d06b7479e94b17e8c975dfe8fea280b075dea103d"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/dwt_uwb_driver/CMakeLists.txt",
+      "bytes": 918,
+      "sha256": "d33940cf3d0b1cb36904c03d760ddfcfa5497365aa2cd01b34ca679879326d1f"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/dwt_uwb_driver/LICENSES/LicenseRef-QORVO-2.txt",
+      "bytes": 2891,
+      "sha256": "dfd6ace947fc7c17ebcbc621cf77dd04f1c73003628eb4a400b4e0f5ef71c08a"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/dwt_uwb_driver/cmake/arm-none-eabi-gcc.cmake",
+      "bytes": 1780,
+      "sha256": "912a284457472e70fd5f6b6845f68606abef4123df318b8ee1787fec7a79d62d"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/dwt_uwb_driver/deca_compat.c",
+      "bytes": 149493,
+      "sha256": "aa24aa4b1a634f4e20428e0a0ef3a4ae4930e57a5f99d26074963cfd297ee757"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/dwt_uwb_driver/deca_device_api.h",
+      "bytes": 194736,
+      "sha256": "d1054ed5f455f853c98f030e61e562f7f04c340d01404c32a83924469e097bfb"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/dwt_uwb_driver/deca_interface.c",
+      "bytes": 6665,
+      "sha256": "cc8e32dbc8980bc5c145c535e9f6334eb7a14bab5fa90eec95e7b80f6a56cccb"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/dwt_uwb_driver/deca_interface.h",
+      "bytes": 18936,
+      "sha256": "edcdb287165664cc82b50dc921408b3ccfef059e2fa561b04b68600d17447c23"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/dwt_uwb_driver/deca_private.h",
+      "bytes": 710,
+      "sha256": "6fe2724c28ce6d105ad6a491fbf2cbe62709b11a2f0059490abe4dc1cf23ddd9"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/dwt_uwb_driver/deca_rsl.c",
+      "bytes": 4836,
+      "sha256": "9c24eb7aacbd5a5af34e426363b834697a169060e4ee3c69df9e1e0577e2e661"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/dwt_uwb_driver/deca_rsl.h",
+      "bytes": 2617,
+      "sha256": "06ba6f584f0052b714aa77c380eb20f0429f3a138cca13022dee2eede6435741"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/dwt_uwb_driver/deca_types.h",
+      "bytes": 1511,
+      "sha256": "65e43dc65f01afa476ae14843af885abc01d4885efc880191f4c31177d58c933"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/dwt_uwb_driver/deca_version.h",
+      "bytes": 1226,
+      "sha256": "d019028422d5ea69b80fec3bf01d32ff7123c3b05a29cdace5d5ccaf077a45bd"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/dwt_uwb_driver/dw3000/CMakeLists.txt",
+      "bytes": 364,
+      "sha256": "a455926e491a6120984161c5d6b01c0fc7d29e1a72604cbdf0271f0dfad75d41"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/dwt_uwb_driver/dw3000/dw3000_deca_regs.h",
+      "bytes": 134178,
+      "sha256": "3d4e9351e8cfda05eb962c1ba37724afb8985a253fa8b5587e24217c3bf893ec"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/dwt_uwb_driver/dw3000/dw3000_deca_vals.h",
+      "bytes": 14089,
+      "sha256": "3693437ab455b53556e82b9119fc3c79b2bd285fa7dd59f9f9dc62726fecfa99"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/dwt_uwb_driver/dw3000/dw3000_device.c",
+      "bytes": 390958,
+      "sha256": "103f0f4dd0a20c1ec11a3ed6c45bf4d3fd066a195c04074a07cdbc2ced182895"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/dwt_uwb_driver/dw3720/CMakeLists.txt",
+      "bytes": 352,
+      "sha256": "d530cc87db179b9b06a426808877f503b3e04dd95323b5d894c2cd864d1efb8f"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/dwt_uwb_driver/dw3720/dw3720_deca_regs.h",
+      "bytes": 161107,
+      "sha256": "b92b6f03b96eb0840b21782f1629ce8d0b2c67f1024160b1bf8a299c1a58452f"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/dwt_uwb_driver/dw3720/dw3720_deca_vals.h",
+      "bytes": 15547,
+      "sha256": "ee8e90d14642bc905064e96bad4fb9cbf5d0cb9a44b77872e44babf7fda8c4eb"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/dwt_uwb_driver/dw3720/dw3720_device.c",
+      "bytes": 442389,
+      "sha256": "fbdfa99211adbb6635bb2f63089681a56acb99ea7941e135ef8fde17e93e36fd"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/dwt_uwb_driver/lib/qmath/CMakeLists.txt",
+      "bytes": 247,
+      "sha256": "bd86ab957ba553c0e7da6cb6b0fec44e61311c6f8c7ff1e21d3ca6ded3f51aee"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/dwt_uwb_driver/lib/qmath/Recipes",
+      "bytes": 1081,
+      "sha256": "25ea8bf2ef08c3b2173a72a3088439c11964113942f1d9ddd03af7799214d06e"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/dwt_uwb_driver/lib/qmath/include/qmath.h",
+      "bytes": 1018,
+      "sha256": "2cc9003dac23366200de14337420b86a1946000fad6470173c1dbbd9237a7f53"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/dwt_uwb_driver/lib/qmath/src/qmath.c",
+      "bytes": 4911,
+      "sha256": "fc28d5af6766d3671c2e6ceadc16acea0355ae2a19c6098f79c34b2aa24de0e4"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/dwt_uwb_driver/lib/qmath/utest/CMakeLists.txt",
+      "bytes": 1064,
+      "sha256": "23e4e4c075aa9deab5d1d9fa296546569b17780c3527e31eeff192835c95d079"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/dwt_uwb_driver/lib/qmath/utest/test_qmath.cc",
+      "bytes": 1499,
+      "sha256": "88076da2cf1709027cb6f15a96cb8ce776a5649fa6e256d9935293eff138eab6"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/dwt_uwb_driver/utest/CMakeLists.txt",
+      "bytes": 1685,
+      "sha256": "e9cdf6163a287a2a6a85cb108b375d4835c16157b33d486d496f6b0e264a34ef"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/dwt_uwb_driver/utest/src/test_rsl.cc",
+      "bytes": 5774,
+      "sha256": "dc413ea714729d51fc85eec87e474daf135df67c0de0237429f90332891d93d6"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/dwt_uwb_driver/utest/src/test_tx_power.cc",
+      "bytes": 5690,
+      "sha256": "db2e53a4f8b8c6c6d6ad95b8798337fcb39da333d0e7c97e67e3992044eeb4b3"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/platform/deca_compat.c",
+      "bytes": 137367,
+      "sha256": "9b43b148fba5e046525afdf85208980500fc7432da127bc05a2a7b93a938beeb"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/platform/deca_probe_interface.h",
+      "bytes": 494,
+      "sha256": "afb9dad94f3209ce1097daea47022fa0abfbe654816c2dcd5ae35bd4eab2faf3"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/platform/deca_ull.h",
+      "bytes": 11005,
+      "sha256": "2e9d26dbbe955f73eb9e43ec86a16d5bade5ca7451f2c0c33262f28ab5513935"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/platform/dw3000.h",
+      "bytes": 232,
+      "sha256": "f86da8c51ccac58defea4cec4d12f88dad14a5c6dd2fd1461e6c8ccc6dd05b4c"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/platform/dw3000_hw.h",
+      "bytes": 392,
+      "sha256": "958a847a7aacc5a144097594bf04fb29a1e3ba6b02eb08214c8068a238f41fc7"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/platform/dw3000_spi.h",
+      "bytes": 821,
+      "sha256": "66e86e4a7cfb44cf295c4630691176ca67df880a300ab606a6687eb7c6da2e04"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/platform/dw3000_spi_trace.c",
+      "bytes": 3934,
+      "sha256": "a122ae03ba968c250c7770ab6522ca2703fb513dbff7b885f04836384448860b"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/platform/esp-idf/README.txt",
+      "bytes": 341,
+      "sha256": "15aea9f6ba67bc73794cec5adc67cc8b72ccc8b1272097720e08f409c742831c"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/platform/esp-idf/decadriver/CMakeLists.txt",
+      "bytes": 844,
+      "sha256": "d4413f34d84d0495832643fa313e3ebc5125704c9041f804918b7c5e495bb1af"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/platform/esp-idf/decadriver/Kconfig.projbuild",
+      "bytes": 1414,
+      "sha256": "d9ce10406b7423a03e84e30e48757e6bd3208b486bbcc79035225bad32138805"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/platform/esp-idf/decadriver/deca_port.c",
+      "bytes": 2542,
+      "sha256": "0cdfd577e988ba8199cfaca7cea4f8bb1712e0a158ba9c1d43fd0924e22fdcdd"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/platform/esp-idf/decadriver/dw3000_hw.c",
+      "bytes": 3726,
+      "sha256": "2d11fdec57d658b7f9141442ca4ee7cbccf83c184a1d1765c3adfb53db359106"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/platform/esp-idf/decadriver/dw3000_spi.c",
+      "bytes": 4969,
+      "sha256": "d83aca5490cac05caab8dbcbcc1aefa55befb78844af9d72827d12aeb944fb33"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/platform/esp-idf/decadriver/priv/log.h",
+      "bytes": 355,
+      "sha256": "cf9bebef160bd3d1c236d33f6112fe1f28c5c327182a565c41d81de9aeae4506"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/platform/nrf-sdk/deca_port.c",
+      "bytes": 2879,
+      "sha256": "3f8cf806585fe8235bd97cc34231a7e29bf500f45c57dec654a3dbc4c1004d14"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/platform/nrf-sdk/dw3000_hw.c",
+      "bytes": 3990,
+      "sha256": "4571274a441ed28bbe550ee0e98eac445d02ef903c2b7101c6753ec43378ebc5"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/platform/nrf-sdk/dw3000_spi.c",
+      "bytes": 4726,
+      "sha256": "5760e32ea7a1fd2618de80eb9188be20ac9e168eef96c4672d13eb9f7680df4d"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/platform/zephyr/CMakeLists.txt",
+      "bytes": 750,
+      "sha256": "4c6b49ea7217600c3f0988905eca6c230584c5e34518d6184821f895342e5335"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/platform/zephyr/Kconfig",
+      "bytes": 456,
+      "sha256": "0a2898291ba00d8e46e043b60aa28585546e263b2996851a0c6a53f754f67d6a"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/platform/zephyr/boards/shields/qorvo_dws3000/Kconfig.defconfig",
+      "bytes": 235,
+      "sha256": "9f596ec75478efd11b94c21942267cce0c9fba62b5518c6f115377d627daf767"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/platform/zephyr/boards/shields/qorvo_dws3000/Kconfig.shield",
+      "bytes": 168,
+      "sha256": "800f119dc6d11f1d02cd57413c67c92b8039b47ed90e1f10b1146574092ac9bc"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/platform/zephyr/boards/shields/qorvo_dws3000/boards/nrf52833dk_nrf52833.overlay",
+      "bytes": 208,
+      "sha256": "b44bb9f7bc56620ed30574240c35529a87d5b40faecc6da7cdc58ee1dade7091"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/platform/zephyr/boards/shields/qorvo_dws3000/boards/nrf52840dk_nrf52840.overlay",
+      "bytes": 208,
+      "sha256": "b44bb9f7bc56620ed30574240c35529a87d5b40faecc6da7cdc58ee1dade7091"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/platform/zephyr/boards/shields/qorvo_dws3000/doc/DWS3000 Schematics.pdf",
+      "bytes": 624209,
+      "sha256": "08058633f5b05e649482a3ab8340a23bccd2c540be221f55059445b5235c6999"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/platform/zephyr/boards/shields/qorvo_dws3000/doc/index.rst",
+      "bytes": 178,
+      "sha256": "76de877a011cdfabbb44dc18e30b94d07935246ace08669e1d5b0cb992bcc6f6"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/platform/zephyr/boards/shields/qorvo_dws3000/qorvo_dws3000.overlay",
+      "bytes": 700,
+      "sha256": "3fa4d511255615be25e9d3d5e3e1be884767f4bf7c5ad2cf946d715ece23a6ed"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/platform/zephyr/deca_port.c",
+      "bytes": 1302,
+      "sha256": "3e5404bce36fd6ee428f7c0f5242bb77a9fdff3739ae93054f4bd939d4bf4989"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/platform/zephyr/dts/bindings/decawave,dw3000/decawave,dw3000.yaml",
+      "bytes": 767,
+      "sha256": "b43064e0812ed5e6ccf07a9555b16237a612e312da8ac6cd4069233aadca2ccb"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/platform/zephyr/dw3000_hw.c",
+      "bytes": 4352,
+      "sha256": "ce7e7e7ebdb9323d1a1da78ca517994604ef244fe0a05f2c507b1a990efaddd8"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/platform/zephyr/dw3000_spi.c",
+      "bytes": 5435,
+      "sha256": "e2686d9c3dfd50ea39c4aed480704580b989d365e5f0823a0b2802169b79f90f"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/platform/zephyr/log.h",
+      "bytes": 14,
+      "sha256": "aecb9819eb04bf5ad6cd2535cfac9b1bed5ef7946e551eff2224759862e16294"
+    },
+    {
+      "path": "tag/lib/heltec_dw3000_br101/vendor/br101/platform/zephyr/module.yml",
+      "bytes": 219,
+      "sha256": "26c5621a49d72d24fcfc25a6021bb498c02f89300aa014e2beacaf4070ac5942"
+    },
+    {
+      "path": "tag/platformio.ini",
+      "bytes": 914,
+      "sha256": "e597619e8c8794f69b5bcb2d6b319d132abe5830d2fdfb34830700a742c91f11"
+    },
+    {
+      "path": "tag/scripts/export_flash_layout.py",
+      "bytes": 1136,
+      "sha256": "1b3007b2ed6b88178e1f57336bc9e1764b795bacf7387ea995f116ea9dd685e7"
+    },
+    {
+      "path": "tag/scripts/force_esp32_sdkconfig.py",
+      "bytes": 968,
+      "sha256": "9d7687b24137c4196594b88a019d830b9dc99bd07c8bc2c757a3c7660ae01244"
+    },
+    {
+      "path": "tag/src/JetsonLoRaBridge.cpp",
+      "bytes": 13637,
+      "sha256": "0bb4f8a9df21afb5b0c8c9d1f433b1de63dfc31033fa3c23d990554d8b905794"
+    },
+    {
+      "path": "tag/src/JetsonTagDisplay.cpp",
+      "bytes": 3487,
+      "sha256": "3f5e7e3f4b5746ad62744b75373426b013469ab808df6684f721faa6e88f4c74"
+    },
+    {
+      "path": "tag/src/main.cpp",
+      "bytes": 35588,
+      "sha256": "f4bd719e54cf382b02e01479b39caea12817c93655c607e375827b5e8a8b7e47"
+    },
+    {
+      "path": "tag/tests/test_contract.py",
+      "bytes": 7894,
+      "sha256": "a2eb8f781cd9ccaa18aa37a160b1cd1c475cc8c042b0e0a9ee7ae9ce9a3139ca"
+    },
+    {
+      "path": "tag/tests/test_layout_config.py",
+      "bytes": 1443,
+      "sha256": "f39d66527d6f2340b3cab4fe68b6563061cf839c6f535a89203f654b347a8b6b"
+    }
+  ],
+  "files_count": 590,
+  "note": "Import hashes, before single-tag changes. Preserve vendor licenses."
+}

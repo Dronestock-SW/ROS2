@@ -1,0 +1,34 @@
+[
+  {
+    "anchor": "A1",
+    "image_sha256": "61f721a62cefcc62ae2614affd3bb17be0599ea8ceded99fbfb01a9518b4f32d",
+    "flash_readback_sha256": "c32dea79a308ae4b9fb43744134a220ab8b008b6abf38cecf03e6554bed67eb0",
+    "compared_image_bytes": 49664,
+    "other_segments": [],
+    "verified": true
+  },
+  {
+    "anchor": "A2",
+    "image_sha256": "69d6751f49880e5a9581ce9455a329360652be0c185657aa8c77bc08e0d48c04",
+    "flash_readback_sha256": "eefd441eaa8a3835c9633da6686b69ec65138b3ced3f3bf3bc42a0f54d758368",
+    "compared_image_bytes": 49664,
+    "other_segments": [],
+    "verified": true
+  },
+  {
+    "anchor": "A3",
+    "image_sha256": "b87e18ae4d8df009ddb9733bb96bdf7b520751efa77e07ef085a5677fa2bae92",
+    "flash_readback_sha256": "d2d922160bf5ca013f2aa5b4e84eec7b350aae9ad511bc77bdca94b38738914a",
+    "compared_image_bytes": 49664,
+    "other_segments": [],
+    "verified": true
+  },
+  {
+    "anchor": "A4",
+    "image_sha256": "693aad2c5628d0c74589a1b3d3a391d4708513e0942853aa4ac24cc46b3ee688",
+    "flash_readback_sha256": "9a011ef78e691c3b87483cb469e2bac54d594db177e6d372c6fdd6f924cd9dee",
+    "compared_image_bytes": 49664,
+    "other_segments": [],
+    "verified": true
+  }
+]

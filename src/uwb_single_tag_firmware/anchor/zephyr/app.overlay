@@ -1,0 +1,26 @@
+&arduino_spi {
+	compatible = "nordic,nrf-spim";
+	status = "okay";
+	cs-gpios = <&arduino_header 16 GPIO_ACTIVE_LOW>; /* D10 / P0.16 */
+
+	dw3000: dw3000@0 {
+		compatible = "decawave,dw3000", "qorvo,dwm3000";
+		label = "DW3000";
+		reg = <0>;
+		spi-max-frequency = <8000000>;
+		reset-gpios = <&arduino_header 13 GPIO_ACTIVE_LOW>; /* D7 / P0.18 */
+		irq-gpios = <&arduino_header 14 GPIO_ACTIVE_HIGH>;  /* D8 / P0.19 */
+		wakeup-gpios = <&arduino_header 15 GPIO_ACTIVE_HIGH>; /* D9 / P0.20 */
+		spi-pol-gpios = <&arduino_header 7 GPIO_ACTIVE_LOW>; /* D1 / P0.12 */
+		spi-pha-gpios = <&arduino_header 6 GPIO_ACTIVE_LOW>; /* D0 / P0.11 */
+
+		/* nRF52 DK reference driver property names. */
+		dwm-reset-gpios = <&arduino_header 13 GPIO_ACTIVE_LOW>; /* D7 */
+		dwm-irq-gpios = <&arduino_header 14 GPIO_ACTIVE_HIGH>; /* D8 */
+		dwm-wakeup-gpios = <&arduino_header 15 GPIO_ACTIVE_HIGH>; /* D9 */
+		dwm-rx-led-gpios = <&arduino_header 10 GPIO_ACTIVE_LOW>; /* D4 */
+		dwm-tx-led-gpios = <&arduino_header 9 GPIO_ACTIVE_LOW>; /* D3 */
+		dwm-spi-pol_gpios = <&arduino_header 7 GPIO_ACTIVE_LOW>; /* D1 */
+		dwm-spi-pha_gpios = <&arduino_header 6 GPIO_ACTIVE_LOW>; /* D0 */
+	};
+};

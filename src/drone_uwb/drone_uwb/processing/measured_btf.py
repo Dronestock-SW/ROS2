@@ -15,6 +15,7 @@ from drone_uwb.processing.gazebo_geometry import rotation_world_body
 from drone_uwb.processing.experiments.h80_b import H80Window, BSettings
 from drone_uwb.processing.experiments.tof_subset import ToFTrackedSubsetCandidate
 from drone_uwb.acquisition.tdma import TdmaGate
+from drone_uwb.acquisition.single_tag import MappedSingleTagInput
 from drone_uwb.contracts.protocol import InvalidSample
 from drone_uwb.processing.observation_guard import ObservationGuard
 
@@ -159,6 +160,7 @@ class MeasuredBtf:
         self.tdma = TdmaGate(config['tag_id'], config.get('tdma_mode', 'auto'),
             allow_partial=config.get('allow_partial_tdma', config.get('numerical_backend') == 'cpp'))
         self.clock = ClockMap(self.input_settings)
+        self.single_input = MappedSingleTagInput()
         self.height = MeasuredHeight(config['height'])
         self.last_host_ns = None
         self.last_ros_offset = None
@@ -260,35 +262,53 @@ class MeasuredBtf:
                 self.last_host_ns, self.last_ros_offset = mono, offset
                 raise InvalidInput('host_clock_jump')
             self.last_host_ns, self.last_ros_offset = mono, offset
-            dispatch = self.tdma.ingest(msg, mono, ros)
-            if dispatch.reset_history:
-                self.validator.reset()
-                self.clock.reset()
-                self.reset_models()
-                self.raw_guard = ObservationGuard(motion_recovery=True)
-            if dispatch.clear_status:
-                self.validator.disconnect()
-            if dispatch.message is None:
-                return dict(out, reason=dispatch.reason, input_diagnostics=dispatch.diagnostics)
-            msg, mono, ros = dispatch.message, dispatch.mono_ns, dispatch.ros_ns
-            offset = ros-mono
-            out['tdma_verified'] = dispatch.tdma is not None
-            if dispatch.tdma is not None:
-                out['tdma'] = dispatch.tdma
-            self.validator.check_common(msg)
-            if msg.get('type') == 'uwb_raw_status':
-                if msg.get('event') == 'boot':
-                    self.validator.disconnect()
+            single = msg.get('schema') == 2
+            if single:
+                if msg.get('type') not in ('uwb_raw_status', 'uwb_raw_cycle'):
+                    return dict(out, reason='sideband_single_tag')
+                cycle, changed = self.single_input.accept(event)
+                if changed:
+                    self.reset_models()
+                    self.raw_guard = ObservationGuard(motion_recovery=True)
+                if cycle is None:
+                    return dict(out, reason='status', tag_layout_id=msg.get('anchor_layout_id'))
+                meta = event['single_tag']
+                out.update(source_identity=[msg['boot_id'], msg['session']],
+                           host_session=meta['host_session'], protocol='single_tag_schema_2',
+                           clock=meta['clock'], tdma_verified=False)
+                mapped = {t: n for t, n in zip(cycle.sample_us, meta['sample_host_monotonic_ns']) if t is not None}
+                mapped[cycle.end_us] = meta['cycle_end_host_monotonic_ns']
+                host_ns = mapped.__getitem__  # Already converted by the sole serial owner.
+            else:
+                dispatch = self.tdma.ingest(msg, mono, ros)
+                if dispatch.reset_history:
+                    self.validator.reset()
                     self.clock.reset()
                     self.reset_models()
                     self.raw_guard = ObservationGuard(motion_recovery=True)
-                self.validator.on_status(msg, mono)
-                if msg.get('range_bias_applied') is True:
-                    raise InvalidInput('already_bias_corrected_input', reset=True)
-                return dict(out, reason='status', tag_layout_id=msg.get('anchor_layout_id'))
-            if msg.get('type') != 'uwb_raw_cycle':
-                raise InvalidInput('unsupported_type')
-            cycle = self.validator.on_cycle(msg, mono, ros)
+                if dispatch.clear_status:
+                    self.validator.disconnect()
+                if dispatch.message is None:
+                    return dict(out, reason=dispatch.reason, input_diagnostics=dispatch.diagnostics)
+                msg, mono, ros = dispatch.message, dispatch.mono_ns, dispatch.ros_ns
+                offset = ros-mono
+                out['tdma_verified'] = dispatch.tdma is not None
+                if dispatch.tdma is not None:
+                    out['tdma'] = dispatch.tdma
+                self.validator.check_common(msg)
+                if msg.get('type') == 'uwb_raw_status':
+                    if msg.get('event') == 'boot':
+                        self.validator.disconnect()
+                        self.clock.reset()
+                        self.reset_models()
+                        self.raw_guard = ObservationGuard(motion_recovery=True)
+                    self.validator.on_status(msg, mono)
+                    if msg.get('range_bias_applied') is True:
+                        raise InvalidInput('already_bias_corrected_input', reset=True)
+                    return dict(out, reason='status', tag_layout_id=msg.get('anchor_layout_id'))
+                if msg.get('type') != 'uwb_raw_cycle':
+                    raise InvalidInput('unsupported_type')
+                cycle = self.validator.on_cycle(msg, mono, ros)
             out.update(seq=cycle.seq, seq_gap=cycle.seq_gap, source_cycle_end_us=cycle.end_us,
                        sample_time_us=cycle.sample_us, raw_slant_m=msg['raw_slant_m'])
             partial = len(cycle.indices) != 4
@@ -296,12 +316,16 @@ class MeasuredBtf:
                 # Missing ranges are not a clock/session reset. Do not erase
                 # still-fresh full-frame history while waiting for measurements.
                 raise InvalidInput('three_measured_ranges_required' if self.native else 'four_valid_ranges_required')
-            self.clock.update(cycle.end_us, mono)
-            out['clock'] = self.clock.diagnostics()
-            if not self.clock.ready:
-                self.reset_models()
-                return dict(out, reason='clock_unsynced')
-            queue_age = (mono/1e9-self.clock.host_s(cycle.end_us))
+            if not single:
+                self.clock.update(cycle.end_us, mono)
+                out['clock'] = self.clock.diagnostics()
+                if not self.clock.ready:
+                    self.reset_models()
+                    return dict(out, reason='clock_unsynced')
+                queue_age = (mono/1e9-self.clock.host_s(cycle.end_us))
+                host_ns = lambda value: round(self.clock.host_s(value)*1e9)
+            else:
+                queue_age = (mono-host_ns(cycle.end_us))/1e9
             out['queue_age_s'] = queue_age
             if not 0 <= queue_age <= self.input_settings.max_queue_s:
                 self.reset_models()
@@ -309,13 +333,13 @@ class MeasuredBtf:
             # Fit at the newest actual anchor measurement, retaining all four times.
             stamp = max(cycle.sample_us[i] for i in cycle.indices)
             cycle = replace(cycle, end_us=stamp)
-            stamp_ns = round(self.clock.host_s(stamp)*1e9)+offset
+            stamp_ns = host_ns(stamp)+offset
             if stamp_ns > ros or (self.last_output_stamp_ns is not None and stamp_ns <= self.last_output_stamp_ns):
                 self.reset_models()
                 return dict(out, reason='invalid_or_nonincreasing_stamp')
             heights, selections = [], []
             for i, sample in enumerate(cycle.sample_us):
-                height, selection = (self.height.at(round(self.clock.host_s(sample)*1e9)+offset)
+                height, selection = (self.height.at(host_ns(sample)+offset)
                     if i in cycle.indices else (None, dict(reason='anchor_range_missing')))
                 heights.append(height)
                 selections.append(selection)
@@ -386,7 +410,7 @@ class MeasuredBtf:
                 height_source=height_source,
                 stamp_ns=stamp_ns, time_us=stamp, cal_slant_m=corrected.tolist(),
                 height_m=height, height_selection=selections, height_ready=all(h is not None for h in heights),
-                models={'B': b, 'B_TF': btf}, clock_alpha=self.clock.alpha,
+                models={'B': b, 'B_TF': btf}, clock_alpha=meta['clock']['alpha'] if single else self.clock.alpha,
                 receive_age_s=(ros-stamp_ns)/1e9, queue_age_s=queue_age,
                 report_span_s=(max(cycle.sample_us)-min(cycle.sample_us))/1e6,
                 layout_id=self.config['layout_id'], position_reference='uwb_antenna')
@@ -396,6 +420,8 @@ class MeasuredBtf:
                 self.reset_models()
             return dict(out, reason=str(exc))
         except InvalidInput as exc:
+            if event.get('message', {}).get('schema') == 2 and 'clock' in exc.reason:
+                self.reset_models()
             if exc.reset:
                 self.reset()
             return dict(out, reason=exc.reason)
