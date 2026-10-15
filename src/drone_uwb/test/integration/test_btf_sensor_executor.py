@@ -12,6 +12,7 @@ import rclpy
 from rclpy.executors import SingleThreadedExecutor
 from rclpy.node import Node
 from sensor_msgs.msg import Imu, Range
+from mavros_msgs.msg import TimesyncStatus
 from std_msgs.msg import String
 from drone_uwb.integration.ros.btf_node import BtfNode
 from drone_uwb.integration.ros.qos import btf_sensor_qos, received_stream_qos
@@ -43,12 +44,13 @@ def test_sensor_callbacks_run_during_fit_and_next_snapshot_selects_2ms(tmp_path)
     imu_pub = feeder.create_publisher(Imu, node.config['imu_topic'], btf_sensor_qos())
     tof_pub = feeder.create_publisher(Range, node.config['tof_topic'], btf_sensor_qos())
     raw_pub = feeder.create_publisher(String, '/uwb/received', received_stream_qos())
+    sync_pub = feeder.create_publisher(TimesyncStatus, '/mavros/timesync_status', btf_sensor_qos())
     entered, release = threading.Event(), threading.Event()
     runner.start()
     receiver.start()
     try:
         wait_for(lambda: imu_pub.get_subscription_count() and tof_pub.get_subscription_count()
-                 and raw_pub.get_subscription_count())
+                 and raw_pub.get_subscription_count() and sync_pub.get_subscription_count())
         with node.sensor_lock:
             node.clock_readiness.qualified = True
             node.clock_readiness.last_valid_s = time.monotonic()
@@ -72,6 +74,13 @@ def test_sensor_callbacks_run_during_fit_and_next_snapshot_selects_2ms(tmp_path)
         node.processor.process = fit
         raw_pub.publish(String(data=json.dumps(dict(host_received_ros_ns=feeder.get_clock().now().nanoseconds))))
         assert entered.wait(1.)
+        sync=TimesyncStatus()
+        sync.remote_timestamp_ns=1000000000
+        sync.estimated_offset_ns=1000000000
+        sync.round_trip_time_ms=2.
+        sync_pub.publish(sync)
+        wait_for(lambda:node.counts['timesync']==1, timeout=.3)
+        assert node.sync_ready() and not release.is_set()
         for offset in (-12, -2, 8, 18, 28, 38, 48):
             send_imu(offset)
             time.sleep(.003)

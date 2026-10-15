@@ -196,6 +196,10 @@ def main(args=None):
                 'observation_recovery_wait_s':self.guard.config.recover_s,
                 'counts': dict(self.counts), 'last_sample_stamp_ns': self.last_stamp,
                 'last_send_age_s': now-self.last_send_at if self.last_fields else None,
+                'last_sent_sample_age_s': (self.get_clock().now().nanoseconds-self.last_stamp)/1e9 if self.last_stamp else None,
+                'input_receive_age_s': (round(now*1e9)-getattr(self,'last_input_received_monotonic_ns',0))/1e9
+                    if getattr(self,'last_input_received_monotonic_ns',0) else None,
+                'fusion_verified':False, 'fusion_evidence_source':'FC_estimator_required',
                 'max_send_gap_s': self.max_send_gap_s, 'parameters': self.params,
                 'settings': asdict(settings), 'observation_session': self.session,
                 'reset_counter': self.reset_counter,

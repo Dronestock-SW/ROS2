@@ -93,7 +93,7 @@ def test_mount_and_floor_must_be_confirmed():
 
 
 @pytest.mark.parametrize('kind', ['tof', 'imu'])
-def test_duplicate_sensor_preserves_history_but_backward_stamp_invalidates(kind):
+def test_duplicate_and_delayed_sensor_preserve_history(kind):
     h = MeasuredHeight(config()['height'])
     assert h.add(kind, dict(stamp_ns=100, valid=True))
     assert h.add(kind, dict(stamp_ns=200, valid=True))
@@ -101,10 +101,10 @@ def test_duplicate_sensor_preserves_history_but_backward_stamp_invalidates(kind)
     assert [r['stamp_ns'] for r in h.samples[kind]] == [100, 200]
     assert h.samples[kind][-1]['valid']
     assert not h.add(kind, dict(stamp_ns=150, valid=True))
-    assert not h.samples[kind]
+    assert [r['stamp_ns'] for r in h.samples[kind]] == [100, 200]
 
 
-def test_frozen_height_selects_latest_past_imu_and_survives_ingress_reset():
+def test_frozen_height_selects_nearest_received_imu_and_survives_ingress_reset():
     h = MeasuredHeight(config()['height'])
     stamp = 2_000_000_000
     h.add('tof', dict(stamp_ns=stamp, valid=True, range_m=.5, receive_id=1))
@@ -119,10 +119,26 @@ def test_frozen_height_selects_latest_past_imu_and_survives_ingress_reset():
     assert meta['reason'] == 'ok' and meta['attitude_skew_s'] == .002
     assert meta['imu_receive_id'] == 4 and meta['tof_receive_id'] == 1
     # A reset/overflow during a fit must not mutate any anchor's snapshot.
-    h.add('imu', dict(stamp_ns=1, valid=False))
+    h.samples['imu'].clear()  # Explicit clock epoch reset, not one delayed packet.
     assert not h.samples['imu']
     assert new.at(stamp)[1] == meta
     assert new.at(stamp+100_000_001)[1]['reason'] == 'tof_stale'
+
+
+def test_received_imu_after_tof_is_used_only_within_same_skew_limit():
+    h = MeasuredHeight(config()['height'])
+    stamp = 2_000_000_000
+    h.add('tof', dict(stamp_ns=stamp, valid=True, range_m=.5))
+    h.add('imu', dict(stamp_ns=stamp-30_000_000, valid=True, quaternion_wxyz=[1,0,0,0]))
+    assert h.at(stamp)[1]['reason'] == 'attitude_stale'
+    h.add('imu', dict(stamp_ns=stamp+10_000_000, valid=True, quaternion_wxyz=[1,0,0,0]))
+    height, meta = h.at(stamp)
+    assert height == pytest.approx(.62)
+    assert meta['attitude_signed_skew_s'] == -.01
+    assert h.at(stamp+100_000_001)[1]['reason'] == 'tof_stale'
+    h.samples['imu'].clear()
+    h.add('imu', dict(stamp_ns=stamp+20_000_001, valid=True, quaternion_wxyz=[1,0,0,0]))
+    assert h.at(stamp)[1]['reason'] == 'attitude_stale'
 
 
 def event(msg, source_us):

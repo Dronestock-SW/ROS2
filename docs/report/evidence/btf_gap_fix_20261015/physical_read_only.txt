@@ -1,0 +1,16 @@
+header:
+  stamp:
+    sec: 1792022654
+    nanosec: 165826139
+  frame_id: ''
+connected: true
+armed: false
+guided: true
+manual_input: false
+mode: AUTO.LOITER
+system_status: 0
+---
+Type: geometry_msgs/msg/PoseWithCovarianceStamped
+Publisher count: 1
+Subscription count: 0
+136481 bash -lc source /opt/ros/humble/setup.bash; export ROS_DOMAIN_ID=2 ROS_LOCALHOST_ONLY=1; timeout 10 ros2 topic echo /mavros/state --once; timeout 10 ros2 topic info /uwb/btf_pose; pgrep -af 'local_odometry_bridge|uwb_px4_bridge' || true

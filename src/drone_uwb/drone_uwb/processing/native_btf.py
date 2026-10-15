@@ -55,8 +55,9 @@ class NativeBtf:
         started = time.perf_counter_ns()
         result = self._call(action='process', frame=dict(
             cycle_start_us=int(cycle.start_us), time_us=int(cycle.end_us),
-            sample_time_us=[int(t) for t in cycle.sample_us],
-            raw_slant_m=[float(r) for r in cycle.raw], sample_height_m=heights,
+            valid_mask=sum(1 << i for i in cycle.indices),
+            sample_time_us=[int(t) if i in cycle.indices else None for i,t in enumerate(cycle.sample_us)],
+            raw_slant_m=[float(r) if i in cycle.indices else None for i,r in enumerate(cycle.raw)], sample_height_m=heights,
             height_source=height_source or 'missing'))
         result['native_call_ms'] = (time.perf_counter_ns()-started)/1e6
         b = dict(ok=result['B']['ok'], reason=result['B']['reason'],

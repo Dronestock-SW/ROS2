@@ -1,6 +1,7 @@
 """Storage fault injection at live ROS adapters; no FC output is created."""
 from collections import Counter
 import json
+import threading
 from pathlib import Path
 from types import SimpleNamespace as NS
 
@@ -66,7 +67,7 @@ def test_uwb_keeps_fresh_input_and_processor_decision_on_storage_failure(monkeyp
 
 
 @pytest.mark.parametrize('case', ['fresh', 'queued', 'expired', 'invalid', 'height_missing',
-    'b4_no_height', 'b4_expired', 'b4_disabled', 'b3_no_height'])
+    'b4_no_height', 'b4_expired', 'b4_disabled', 'b3_no_height', 'clock_changed'])
 def test_btf_storage_failure_does_not_override_observation_validity(case):
     now_ns = 10_000_000_000
     result = dict(ok=case != 'invalid', reason='accepted' if case != 'invalid' else 'range_inconsistent',
@@ -81,7 +82,8 @@ def test_btf_storage_failure_does_not_override_observation_validity(case):
         counts=Counter(), height_counts=Counter(),
         get_clock=lambda: NS(now=lambda: NS(nanoseconds=now_ns)),
         sync_ready=lambda: True, ground_height=None, fc_state=None, landed=None,
-        freeze_sensors=lambda:dict(clock_sync_ready=True, receive_id=0),
+        sensor_lock=threading.RLock(), sensor_epoch=0,
+        freeze_sensors=lambda:dict(clock_sync_ready=True, receive_id=0, epoch=0),
         fc_state_at=float('-inf'), landed_at=float('-inf'),
         processor=NS(height=NS(ground_reference=None), process=lambda event: result,
                      reject_queued_input=lambda: rejected.append(True), observation_session=0),
@@ -89,6 +91,11 @@ def test_btf_storage_failure_does_not_override_observation_validity(case):
         config={'max_output_age_s': .2, 'xy_stddev_m': .3, 'allow_b4_xy_without_tof':case!='b4_disabled'},
         pose_pub=publisher(), xyz_pub=publisher(), decision_pub=publisher())
     obj.record = lambda name, row, **kwargs: btf_node.BtfNode.record(obj, name, row, **kwargs)
+    if case == 'clock_changed':
+        def fit_while_clock_changes(event):
+            obj.sensor_epoch += 1
+            return result
+        obj.processor.process = fit_while_clock_changes
     event = {'host_received_ros_ns': now_ns - (200_000_000 if case == 'queued' else 0)}
     btf_node.BtfNode.raw(obj, NS(data=json.dumps(event)))
     assert obj.counts['recording_failed'] == 1
@@ -96,6 +103,8 @@ def test_btf_storage_failure_does_not_override_observation_validity(case):
     assert len(obj.pose_pub.messages) == int(case in ('fresh','b4_no_height'))
     assert not obj.xyz_pub.messages  # No invented height to recover logging.
     assert bool(rejected) == (case == 'queued')
+    if case == 'clock_changed':
+        assert result['pose_blocked_reason'] == 'sensor_clock_epoch_changed'
     if case == 'queued':
         d=json.loads(obj.decision_pub.messages[-1].data)
         assert d['reason']=='receiver_queue_expired' and not d['published']

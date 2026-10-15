@@ -93,6 +93,28 @@ void freeze_contract() {
   d=uninitialized.tick(1,btf::FcHealth::Healthy,std::nullopt);
   check(!d.target_xy&&!d.stream_target&&d.pause_mission,"fabricated startup target");
 }
+void partial_contract() {
+  btf::Processor p(config());
+  for(int k=0;k<10;++k)p.process(frame(k,false));
+  auto f=frame(10,false);f.valid_mask=7;f.end_us=f.sample_us[2];
+  f.sample_us[3]=0;f.raw_range_m[3]=0;f.height_m[3].reset();
+  const auto d=p.process(f);
+  check(d.ok&&d.source=="ToF_validated_partial_B3","three measured anchors not recovered");
+  check(std::hypot((*d.xy)[0]-2.,(*d.xy)[1]-2.)<1e-8,"partial XY incorrect");
+  check(d.source_stamp_us==f.sample_us[2],"partial used missing anchor timestamp");
+  check(!p.process(f).ok,"duplicate partial accepted");
+  check(p.process(frame(11,false)).ok,"partial erased four-anchor history");
+  for(int fault=0;fault<5;++fault) {
+    btf::Processor q(config());for(int k=0;k<10;++k)q.process(frame(k,false));
+    auto bad=f;
+    if(fault==0)bad.valid_mask=3;
+    if(fault==1)bad.height_source=btf::HeightSource::GroundReference;
+    if(fault==2)bad.height_m[1].reset();
+    if(fault==3)bad.raw_range_m[0]+=.8;
+    if(fault==4){bad.start_us+=200000;bad.end_us+=200000;for(auto& t:bad.sample_us)t+=200000;}
+    check(!q.process(bad).ok,"unmeasured/stale/inconsistent partial accepted");
+  }
 }
-int main(){try{numerical_contract();fresh_recovery_contract();freeze_contract();std::cout<<"numerical and FREEZE contracts passed\n";return 0;}
+}
+int main(){try{numerical_contract();fresh_recovery_contract();partial_contract();freeze_contract();std::cout<<"numerical, partial and FREEZE contracts passed\n";return 0;}
 catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}

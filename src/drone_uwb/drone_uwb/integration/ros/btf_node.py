@@ -60,6 +60,7 @@ class BtfNode(Node):
         self.sensor_counts = Counter()
         self.sensor_receive_id = 0
         self.sensor_epoch = 0
+        self.clock_reset_pending = False
         self.files = {}
         directory = self.get_parameter('record_directory').value
         if directory:
@@ -80,6 +81,11 @@ class BtfNode(Node):
         self.height_counts = Counter()
         self.last = None
         self.last_source_ns = None
+        self.raw_received_mono_ns = None
+        self.accepted_sample_ns = None
+        self.accepted_publish_mono_ns = None
+        self.max_raw_receive_gap_s = 0.
+        self.max_pose_publish_gap_s = 0.
         self.clock_readiness = ClockReadiness()
         self.fc_state = None
         self.fc_state_at = self.landed_at = float('-inf')
@@ -102,7 +108,8 @@ class BtfNode(Node):
                                      callback_group=self.sensor_group),
             self.sensor_node.create_subscription(Imu, self.config['imu_topic'], self.imu, btf_sensor_qos(),
                                      callback_group=self.sensor_group),
-            self.create_subscription(TimesyncStatus, '/mavros/timesync_status', self.sync, qos_profile_sensor_data),
+            self.sensor_node.create_subscription(TimesyncStatus, '/mavros/timesync_status', self.sync,
+                                     btf_sensor_qos(), callback_group=self.sensor_group),
             self.create_subscription(State, '/mavros/state', self.state, qos_profile_sensor_data),
             self.create_subscription(ExtendedState, '/mavros/extended_state', self.extended, qos_profile_sensor_data),
             self.create_subscription(Odometry, '/mavros/local_position/odom', self.ground_velocity, qos_profile_sensor_data),
@@ -131,6 +138,8 @@ class BtfNode(Node):
         if response.success:
             self.last = None
             self.last_source_ns = None
+            self.accepted_sample_ns = None
+            self.accepted_publish_mono_ns = None
         self.record('inputs', row)
         self.decision_pub.publish(String(data=json.dumps(row)))
         return response
@@ -165,10 +174,8 @@ class BtfNode(Node):
                 rtt_ms=msg.round_trip_time_ms)
             if changed:
                 self.clear_sensors('timesync_clock_changed')
-        if changed:
-            self.processor.height.samples['tof'].clear()
-            self.processor.height.samples['imu'].clear()
-            self.processor.reset_models()
+        # The ingress executor must never mutate a solver running on the
+        # default executor. freeze_sensors applies the epoch reset there.
         self.counts['timesync'] += 1
         self.record('inputs', {'type':'timesync','received_ros_ns':self.get_clock().now().nanoseconds,
              'remote_timestamp_ns':msg.remote_timestamp_ns,'estimated_offset_ns':msg.estimated_offset_ns,
@@ -185,14 +192,18 @@ class BtfNode(Node):
         for samples in self.sensor_height.samples.values():
             samples.clear()
         self.sensor_epoch += 1
+        self.clock_reset_pending = True
         self.record('inputs', dict(type='sensor_reset', reason=reason,
             sensor_epoch=self.sensor_epoch, received_monotonic_ns=time.monotonic_ns()))
 
     def freeze_sensors(self):
         with self.sensor_lock:
             ready = self.sync_ready()
-            if not ready:
-                self.clear_sensors('clock_not_ready_at_snapshot')
+            if self.clock_reset_pending:
+                self.processor.reset_models()
+                self.clock_reset_pending = False
+            # A late probe does not change the epoch. Preserve history; its
+            # per-sample validity/ToF age/attitude skew still govern selection.
             self.processor.height = self.sensor_height.snapshot()
             meta = dict(receive_id=self.sensor_receive_id, epoch=self.sensor_epoch,
                         frozen_monotonic_ns=time.monotonic_ns(), clock_sync_ready=ready)
@@ -217,7 +228,7 @@ class BtfNode(Node):
             previous = samples[-1]['stamp_ns'] if samples else None
             accepted = self.sensor_height.add(kind, row)
             reason = ('accepted' if accepted else 'invalid_stamp' if type(row['stamp_ns']) is not int
-                or row['stamp_ns'] <= 0 else 'duplicate' if previous == row['stamp_ns'] else 'backward_stamp_reset')
+                or row['stamp_ns'] <= 0 else 'duplicate' if previous == row['stamp_ns'] else 'out_of_order_ignored')
             self.sensor_counts[kind] += 1
             self.sensor_counts[kind+'_valid'] += int(row['valid'])
             self.sensor_counts[kind+'_'+reason] += 1
@@ -245,6 +256,14 @@ class BtfNode(Node):
         now_ns = self.get_clock().now().nanoseconds
         try:
             event = json.loads(msg.data)
+            if event.get('message', {}).get('type') == 'uwb_raw_cycle':
+                raw_mono = event.get('host_received_monotonic_ns')
+                if type(raw_mono) is int and 0 < raw_mono <= callback_started_ns:
+                    previous = self.raw_received_mono_ns
+                    if previous is None or raw_mono > previous:
+                        if previous is not None:
+                            self.max_raw_receive_gap_s = max(self.max_raw_receive_gap_s,(raw_mono-previous)/1e9)
+                        self.raw_received_mono_ns = raw_mono
             age_ns = now_ns-event['host_received_ros_ns']
             if not 0 <= age_ns <= 150_000_000:
                 self.counts['receiver_queue_expired'] += 1
@@ -318,15 +337,26 @@ class BtfNode(Node):
                 pose.pose.covariance[0] = pose.pose.covariance[7] = self.config['xy_stddev_m']**2
                 for index in (14,21,28,35):
                     pose.pose.covariance[index] = 1e6
-                self.pose_pub.publish(pose)
-                if result.get('xyz_m') is not None and result.get('height_source')=='measured_tof_imu':
-                    xyz = PoseStamped()
-                    xyz.header = pose.header
-                    xyz.pose.position.x, xyz.pose.position.y, xyz.pose.position.z = result['xyz_m']
-                    xyz.pose.orientation.w = 1.
-                    self.xyz_pub.publish(xyz)
-                result['published'] = True
-                self.counts['published'] += 1
+                with self.sensor_lock:
+                    if snapshot['epoch'] != self.sensor_epoch:
+                        result['pose_blocked_reason'] = 'sensor_clock_epoch_changed'
+                        self.counts['sensor_clock_epoch_changed'] += 1
+                    else:
+                        self.pose_pub.publish(pose)
+                        self.accepted_sample_ns = result['stamp_ns']
+                        published_at = time.monotonic_ns()
+                        previous = getattr(self, 'accepted_publish_mono_ns', None)
+                        if previous is not None:
+                            self.max_pose_publish_gap_s = max(self.max_pose_publish_gap_s,(published_at-previous)/1e9)
+                        self.accepted_publish_mono_ns = published_at
+                        if result.get('xyz_m') is not None and result.get('height_source')=='measured_tof_imu':
+                            xyz = PoseStamped()
+                            xyz.header = pose.header
+                            xyz.pose.position.x, xyz.pose.position.y, xyz.pose.position.z = result['xyz_m']
+                            xyz.pose.orientation.w = 1.
+                            self.xyz_pub.publish(xyz)
+                        result['published'] = True
+                        self.counts['published'] += 1
             else:
                 self.counts['output_expired'] += 1
                 result['pose_blocked_reason'] = 'output_expired'
@@ -337,8 +367,19 @@ class BtfNode(Node):
 
     def status(self):
         now_ns = self.get_clock().now().nanoseconds
+        mono_ns = time.monotonic_ns()
+        raw_ns = getattr(self, 'raw_received_mono_ns', None)
+        approved_ns = getattr(self, 'accepted_sample_ns', None)
+        publish_ns = getattr(self, 'accepted_publish_mono_ns', None)
         with self.sensor_lock:
             counts = dict(self.counts + self.sensor_counts)
+            sensor_timing = {}
+            for kind, samples in self.sensor_height.samples.items():
+                sample = samples[-1] if samples else None
+                sensor_timing[kind] = (dict(sample_age_s=(now_ns-sample['stamp_ns'])/1e9,
+                    receive_age_s=(mono_ns-sample['received_monotonic_ns'])/1e9,
+                    callback_header_age_s=sample['header_age_ns']/1e9, valid=sample['valid'])
+                    if sample else None)
         row = {'utc':datetime.now(timezone.utc).isoformat(),'elapsed_s':time.monotonic()-self.started,
                'counts':counts,'height_counts':dict(self.height_counts),
                'last_reason':self.last.get('reason') if self.last else None,
@@ -349,7 +390,18 @@ class BtfNode(Node):
                'allow_b4_xy_without_tof':self.config.get('allow_b4_xy_without_tof', True),
                'enforce_b4_height_integrity':self.config.get('enforce_b4_height_integrity', False),
                'numerical_backend':self.processor.native.identity if self.processor.native is not None else {'backend':'python'},
-               'input_age_s':(now_ns-self.last_source_ns)/1e9 if self.last_source_ns else None,
+               'input_age_s':(mono_ns-raw_ns)/1e9 if raw_ns else None,
+               'raw_receive_age_s':(mono_ns-raw_ns)/1e9 if raw_ns else None,
+               'processed_input_age_s':(now_ns-self.last_source_ns)/1e9 if self.last_source_ns else None,
+               'accepted_sample_age_s':(now_ns-approved_ns)/1e9 if approved_ns else None,
+               'pose_publish_age_s':(mono_ns-publish_ns)/1e9 if publish_ns else None,
+               'last_raw_received_monotonic_ns':raw_ns,
+               'last_accepted_sample_stamp_ns':approved_ns,
+               'status_stamp_ns':now_ns,'status_monotonic_ns':mono_ns,
+               'max_raw_receive_gap_s':self.max_raw_receive_gap_s,
+               'max_pose_publish_gap_s':self.max_pose_publish_gap_s,
+               'sensor_timing':sensor_timing,
+               'fc_output_scope':'this_observation_node_only',
                'fc_output_enabled':False,'timestamp_calibrated':False,'timesync_ready':self.sync_ready(),
                'recording_error':self.recorder.error if self.recorder else None,
                'fc_state':self.fc_state,

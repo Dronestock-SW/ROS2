@@ -36,10 +36,14 @@ btf::Config config(const Json& j) {
 }
 btf::Frame frame(const Json& j) {
   btf::Frame f;f.start_us=timestamp(j.at("cycle_start_us"));f.end_us=timestamp(j.at("time_us"));
+  f.valid_mask=j.value("valid_mask",15);
   const auto& t=j.at("sample_time_us");
   if(!t.is_array()||t.size()!=4)throw std::invalid_argument("four_anchor_times_required");
-  for(int i=0;i<4;++i)f.sample_us[i]=timestamp(t[i]);
-  f.raw_range_m=array<double,4>(j.at("raw_slant_m"));
+  const auto& ranges=j.at("raw_slant_m");
+  if(!ranges.is_array()||ranges.size()!=4)throw std::invalid_argument("four_range_slots_required");
+  for(int i=0;i<4;++i)if(f.valid_mask&(1<<i)) {
+    f.sample_us[i]=timestamp(t[i]);f.raw_range_m[i]=ranges[i].get<double>();
+  }
   if(j.contains("sample_height_m")) {
     const auto& h=j.at("sample_height_m");
     if(!h.is_array()||h.size()!=4)throw std::invalid_argument("four_heights_required");

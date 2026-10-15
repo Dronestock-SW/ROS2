@@ -1,0 +1,127 @@
+{
+  "baseline_commit": "2060af9",
+  "branch": "이번에-상원-한거-통합-브랜치",
+  "before": {
+    "counts": {
+      "original_fit_consistent": 2756,
+      "published": 2765,
+      "tdma_deadline_rejected": 263,
+      "fresh_four_anchor_history_recovered": 9,
+      "measured_height_unavailable": 55,
+      "B_not_fresh_valid": 2,
+      "no_height_consistent_subset": 6
+    },
+    "max_complete_gap_s": 0.526079263,
+    "scope": "internal trace callback-order numerical replay; no physical flight or position truth",
+    "legacy": true,
+    "inputs": 48932,
+    "corrupt_lines": [
+      [
+        "btf-trace/trace.3.jsonl",
+        15646
+      ]
+    ],
+    "trace_sha256": "ead1ab10f81d38a770d1a80e0ee88a4f32937511e9f8b87b2a7cd9c00d98c253",
+    "library_sha256": "f236c085ab55b13e0f2909ac9cb0eb22ce39446511d31af6aae6595decf10de6",
+    "source_sha256": "801e47deaee7556a3fd63c115fe71855138362413ef8591d3b8b469572422efc"
+  },
+  "after": {
+    "counts": {
+      "original_fit_consistent": 2756,
+      "published": 2765,
+      "tdma_insufficient_ranges": 232,
+      "partial_measured_height_required": 10,
+      "fresh_four_anchor_history_recovered": 9,
+      "measured_height_unavailable": 55,
+      "partial_height_inconsistent": 21,
+      "B_not_fresh_valid": 2,
+      "no_height_consistent_subset": 6
+    },
+    "max_complete_gap_s": 0.526079263,
+    "scope": "internal trace callback-order numerical replay; no physical flight or position truth",
+    "legacy": false,
+    "inputs": 48932,
+    "corrupt_lines": [
+      [
+        "btf-trace/trace.3.jsonl",
+        15646
+      ]
+    ],
+    "trace_sha256": "ead1ab10f81d38a770d1a80e0ee88a4f32937511e9f8b87b2a7cd9c00d98c253",
+    "library_sha256": "fbd7e86d019ca2b96758a58a6f8d90cb685a9e7e1246f3e49f3d26f746c9d37b",
+    "source_sha256": "10d781f9b54f7a0f4f2e7ccaab84eac45b0253e9322c181d7e8d7eaecb0f642d"
+  },
+  "sih": {
+    "scope": "isolated disarmed SIH, recorded UWB XY and arrival gaps; not a flight or live-FC result",
+    "ulog_sha256": "bc3c850b92f28ccf1e14361dea74066ba0a3ae7bcd95eee6e161424b8d435951",
+    "corrupted": false,
+    "dropouts": 0,
+    "sent": 2765,
+    "visual_odometry_logged": 2758,
+    "visual_xy_matched_to_wire": 2758,
+    "fc_sample_minus_source_capture_us": {
+      "min": 81.0,
+      "p50": 429.0,
+      "p95": 1236.0,
+      "max": 1303.0
+    },
+    "receipt_to_sample_age_us": {
+      "min": 17537.0,
+      "p50": 32731.5,
+      "p95": 42836.75,
+      "max": 61150.0
+    },
+    "ekf_ev_position_reports": 2763,
+    "ekf_fused_reports": 2759,
+    "ekf_rejected_reports": 0,
+    "distinct_fusion_times": 2759,
+    "max_complete_fusion_gap_s": 0.632,
+    "ev_position_active": true,
+    "armed": false,
+    "timesync_responses": 5074
+  },
+  "physical_fc": {
+    "connected": true,
+    "armed": false,
+    "mode": "AUTO.LOITER",
+    "btf_pose_publishers": 1,
+    "btf_pose_subscribers": 0,
+    "physical_fusion_verified": false
+  },
+  "tests": {
+    "pc_pytest_passed": 79,
+    "pc_ctest_suites_passed": 3,
+    "jetson_ctest_suites_passed": 3,
+    "jetson_ros_pytest_passed": 58
+  },
+  "live_deployed": false,
+  "physical_fc_writes": 0,
+  "remaining": [
+    "Recorded maximum approved-observation gap remains 526.079ms",
+    "32 late ToF rejections, 13 attitude mismatches, 10 missing ToF decisions remain in causal replay",
+    "21 partial frames fail physical range consistency; 10 lack measured height",
+    "232 TDMA frames contain at most two ranges; no XY fabricated"
+  ],
+  "artifacts": {
+    "sih-clock-evidence.tar.gz": {
+      "bytes": 778760,
+      "sha256": "2349623e2366c00ea3ee72e90e9cec399deae4d43113de5bfd1f1d190c957b13"
+    },
+    "fusion_summary.json": {
+      "bytes": 822,
+      "sha256": "aaa033970768110b5c9178a08317246a665e7267a8a87314affe5deb262288db"
+    },
+    "jetson_native_tests.txt": {
+      "bytes": 1395,
+      "sha256": "5fb12be4fb7228113200f4debb8cc680b5183d04c429b8d09046924d68660d9f"
+    },
+    "jetson_ros_tests_release.txt": {
+      "bytes": 101,
+      "sha256": "0889b45c7fef2724f8df3930b26876fb2da5cf5b87663e2b6391d5b61d041e6e"
+    },
+    "physical_read_only.txt": {
+      "bytes": 527,
+      "sha256": "59cf7cf5e27c4b8f3facfecfbd02f13001f5c80e7b9285edf5cae7cc2133fb34"
+    }
+  }
+}

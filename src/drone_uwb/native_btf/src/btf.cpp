@@ -289,7 +289,88 @@ struct Processor::Impl {
     while(frames.size()>static_cast<std::size_t>(count))frames.pop_front();
     recovered.history_samples=ranges.size();d=std::move(recovered);
   }
+  Decision partial(Frame f) {
+    Decision d;d.source_stamp_us=f.end_us;
+    std::vector<int> ids;
+    for(int i=0;i<4;++i)if(f.valid_mask&(1<<i))ids.push_back(i);
+    if(f.valid_mask<0||f.valid_mask>15||ids.size()!=3) {d.reason="three_measured_ranges_required";return d;}
+    Time newest=0,oldest=f.end_us;
+    for(int i:ids) {
+      f.raw_range_m[i]-=cfg.bias_m[i];
+      if(!std::isfinite(f.raw_range_m[i])||f.raw_range_m[i]<=0||
+         f.raw_range_m[i]>std::min(80.,cfg.solver.max_range_m)||f.sample_us[i]<f.start_us||
+         f.sample_us[i]>f.end_us) {d.reason="invalid_partial_ranges";return d;}
+      newest=std::max(newest,f.sample_us[i]);oldest=std::min(oldest,f.sample_us[i]);
+    }
+    if(f.start_us<0||f.end_us<=0||f.end_us>9000000000000000LL||newest!=f.end_us||
+       newest-oldest>us(cfg.solver.max_extrapolation_s)||
+       (last_end&&f.end_us<=*last_end)) {d.reason="invalid_anchor_times";return d;}
+    last_end=f.end_us;d.fresh_observation_count=3;d.newest_sample_us=newest;
+    if(f.height_source!=HeightSource::MeasuredTofImu) {d.reason="partial_measured_height_required";return d;}
+    for(int i:ids)if(!f.height_m[i]||!std::isfinite(*f.height_m[i])) {
+      d.reason="partial_measured_height_required";return d;
+    }
+    if(!prior_stamp||!prior) {d.reason="partial_fresh_prior_required";return d;}
+    const double age=(f.end_us-*prior_stamp)/1e6;
+    d.tracking_prior_age_s=age;
+    if(age<=0||age>cfg.max_prior_age_s) {d.reason="partial_fresh_prior_required";return d;}
+    // Three current, non-collinear ranges plus independently measured height.
+    // Missing anchors never receive copied or synthesized distances.
+    const auto horizontal_square=[&](int i) {
+      const double z=*f.height_m[i]-cfg.anchors[i][2];
+      return f.raw_range_m[i]*f.raw_range_m[i]-z*z;
+    };
+    const int a=ids[0],b=ids[1],c=ids[2];
+    for(int i:ids)if(horizontal_square(i)<0) {d.reason="partial_height_inconsistent";return d;}
+    const auto rhs=[&](int i) {
+      return horizontal_square(a)-horizontal_square(i)
+        +cfg.anchors[i][0]*cfg.anchors[i][0]+cfg.anchors[i][1]*cfg.anchors[i][1]
+        -cfg.anchors[a][0]*cfg.anchors[a][0]-cfg.anchors[a][1]*cfg.anchors[a][1];
+    };
+    const double bx=2*(cfg.anchors[b][0]-cfg.anchors[a][0]),by=2*(cfg.anchors[b][1]-cfg.anchors[a][1]);
+    const double cx=2*(cfg.anchors[c][0]-cfg.anchors[a][0]),cy=2*(cfg.anchors[c][1]-cfg.anchors[a][1]);
+    const double det=bx*cy-by*cx;
+    if(std::abs(det)<1e-6) {d.reason="partial_degenerate_geometry";return d;}
+    XY xy{(rhs(b)*cy-by*rhs(c))/det,(bx*rhs(c)-rhs(b)*cx)/det};
+    // Refine the squared-range initializer against physical range residuals.
+    // Fixed measured heights leave two unknowns and three current equations.
+    // Bounded Gauss-Newton steps do not add ranges or change their timestamps.
+    for(int iteration=0;iteration<8;++iteration) {
+      Eigen::Matrix2d normal=Eigen::Matrix2d::Zero();
+      Eigen::Vector2d gradient=Eigen::Vector2d::Zero();
+      for(int i:ids) {
+        const double dx=xy[0]-cfg.anchors[i][0],dy=xy[1]-cfg.anchors[i][1];
+        const double predicted=std::hypot(std::hypot(dx,dy),*f.height_m[i]-cfg.anchors[i][2]);
+        if(predicted<1e-6) {d.reason="partial_degenerate_geometry";return d;}
+        Eigen::Vector2d jac(dx/predicted,dy/predicted);
+        normal+=jac*jac.transpose();gradient+=jac*(predicted-f.raw_range_m[i]);
+      }
+      if(normal.determinant()<1e-8) {d.reason="partial_degenerate_geometry";return d;}
+      const Eigen::Vector2d step=normal.ldlt().solve(gradient);
+      if(!step.allFinite()||step.norm()>1.) {d.reason="partial_fit_unstable";return d;}
+      xy[0]-=step[0];xy[1]-=step[1];
+      if(step.norm()<1e-6)break;
+    }
+    double sum=0;
+    for(int i:ids) {
+      const double error=std::hypot(std::hypot(xy[0]-cfg.anchors[i][0],xy[1]-cfg.anchors[i][1]),
+                                    *f.height_m[i]-cfg.anchors[i][2])-f.raw_range_m[i];
+      sum+=error*error;
+    }
+    d.best_score_m=std::sqrt(sum/3.);
+    d.tracking_step_m=distance(xy,*prior);
+    d.tracking_limit_m=cfg.continuity_margin_m+cfg.max_speed_m_s*age;
+    if(!std::isfinite(*d.best_score_m)||*d.best_score_m>=cfg.rms_limit_m) {
+      d.reason="partial_height_inconsistent";return d;
+    }
+    if(*d.tracking_step_m>*d.tracking_limit_m) {d.reason="partial_continuity_rejected";return d;}
+    d.ok=true;d.xy=xy;d.source="ToF_validated_partial_B3";d.reason="partial_three_anchor_consistent";
+    prior=xy;prior_stamp=f.end_us;recovery_reference=xy;
+    return d;
+  }
+
   Decision process(Frame f) {
+    if(f.valid_mask!=15)return partial(std::move(f));
     Decision d;d.source_stamp_us=f.end_us;
     // This boundary accepts only already validated four-anchor cycles.
     if(f.start_us<0||f.end_us<=0||f.end_us>9000000000000000LL||f.end_us<f.start_us||

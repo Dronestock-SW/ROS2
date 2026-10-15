@@ -23,7 +23,6 @@ class Adapter(unittest.TestCase):
         try:
             for name in ('test_sequential_real_ranges_keep_sample_times_and_compute_moving_position',
                          'test_repeated_cycle_and_clock_restart_cannot_repeat_last_good_position',
-                         'test_missing_anchor_does_not_return_a_position',
                          'test_ascent_b4_xy_never_invents_z_and_step_can_refill_geometry',
                          'test_explicit_ground_session_resets_geometry_not_clock_or_source_identity'):
                 with self.subTest(name=name):getattr(baseline,name)()
@@ -41,6 +40,11 @@ class Adapter(unittest.TestCase):
         accepted=0;rejected=0
         for event in inputs:
             l,r=py.process(event),cpp.process(event)
+            if event['message'].get('valid_mask')==7:
+                self.assertEqual(l['reason'],'four_valid_ranges_required')
+                self.assertEqual(r['reason'],'partial_measured_height_required')
+                self.assertFalse(r['ok']);self.assertIsNone(r.get('xy_m'))
+                continue
             self.assertEqual((l['ok'],l['reason']),(r['ok'],r['reason']))
             if l['ok']:
                 accepted+=1
@@ -48,6 +52,28 @@ class Adapter(unittest.TestCase):
                 np.testing.assert_allclose(l['xy_m'],r['xy_m'],rtol=0,atol=1e-9)
             else:rejected+=1;self.assertFalse(r.get('xy_m'))
         self.assertGreater(accepted,50);self.assertGreater(rejected,10)
+
+    def test_partial_real_ranges_keep_original_time_and_require_height(self):
+        import numpy as np
+        c=baseline.config();anchors=np.asarray(c['anchors_xyz_m']);proc=native(c)
+        proc.process(baseline.event(baseline.status(),100000))
+        for k in range(1,81):
+            end=100000+k*22000;msg=baseline.cycle(k,end,anchors)
+            for t in msg['sample_time_us']:
+                stamp=1_790_000_020_002_000_000+t*1000
+                proc.height.add('tof',dict(stamp_ns=stamp,valid=True,range_m=1.))
+                proc.height.add('imu',dict(stamp_ns=stamp,valid=True,quaternion_wxyz=[1,0,0,0]))
+            if k==80:
+                msg.update(valid_mask=7)
+                msg['sample_time_us'][3]=None;msg['raw_slant_m'][3]=None;msg['failure'][3]='response_timeout'
+            result=proc.process(baseline.event(msg,end))
+        self.assertTrue(result['ok'],result['reason'])
+        self.assertEqual(result['reason'],'partial_three_anchor_consistent')
+        self.assertEqual(result['time_us'],msg['sample_time_us'][2])
+        self.assertIsNone(result['sample_time_us'][3])
+        self.assertEqual(result['models']['B']['fresh_observation_count'],3)
+        # 0.1 m/s across an 8 ms sequential ranging span is at most 0.8 mm.
+        self.assertAlmostEqual(result['xy_m'][0],2+.1*result['time_us']/1e6,delta=.001)
 
     def test_selection_fails_closed_and_instance_ownership(self):
         with self.assertRaises(ValueError):MeasuredBtf(dict(baseline.config(),numerical_backend='invalid'))

@@ -45,6 +45,7 @@ Fit fit_h80(const Anchors&, const std::vector<RangeSample>&, Time reference_us,
 // antenna heights. No FC XY, commanded XY, or integrated IMU positions enter.
 enum class HeightSource { Missing, MeasuredTofImu, GroundReference };
 struct Frame {
+  int valid_mask = 15;
   Time start_us = 0, end_us = 0;
   std::array<Time, 4> sample_us{};
   std::array<double, 4> raw_range_m{};

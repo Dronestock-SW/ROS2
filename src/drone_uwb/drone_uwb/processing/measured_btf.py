@@ -75,8 +75,8 @@ class MeasuredHeight:
         if target and sample['stamp_ns'] <= target[-1]['stamp_ns']:
             # A duplicate carries no new information. It must not erase all
             # earlier heights/attitudes used by asynchronous anchor samples.
-            if sample['stamp_ns'] < target[-1]['stamp_ns']:
-                target.clear()
+            # A delayed packet is not evidence of an FC reboot. The adapter
+            # clears both buffers only on an explicit clock/session change.
             return False
         target.append(dict(sample))
         return True
@@ -111,10 +111,18 @@ class MeasuredHeight:
             return None, dict(meta, reason='tof_stale')
         if not tof['valid']:
             return None, dict(meta, reason='tof_invalid')
-        imu = next((r for r in reversed(self.samples['imu']) if r['stamp_ns'] <= tof['stamp_ns']), None)
+        # Both neighbours are already received measurements. The nearest one
+        # avoids rejecting a 20 ms match merely because it follows the range.
+        imu = None
+        for candidate in reversed(self.samples['imu']):
+            if imu is None or abs(candidate['stamp_ns']-tof['stamp_ns']) <= abs(imu['stamp_ns']-tof['stamp_ns']):
+                imu = candidate
+            if candidate['stamp_ns'] <= tof['stamp_ns']:
+                break
         if imu is None:
             return None, dict(meta, reason='attitude_unavailable')
-        meta.update(imu_stamp_ns=imu['stamp_ns'], attitude_skew_s=(tof['stamp_ns']-imu['stamp_ns'])/1e9)
+        meta.update(imu_stamp_ns=imu['stamp_ns'], attitude_skew_s=abs(tof['stamp_ns']-imu['stamp_ns'])/1e9,
+                    attitude_signed_skew_s=(tof['stamp_ns']-imu['stamp_ns'])/1e9)
         meta.update(imu_receive_id=imu.get('receive_id'),
                     imu_received_monotonic_ns=imu.get('received_monotonic_ns'))
         if meta['attitude_skew_s'] > c['max_attitude_skew_s']:
@@ -149,7 +157,8 @@ class MeasuredBtf:
         self.config = config
         self.input_settings = PreimuSettings(tag_id=config['tag_id'])
         self.validator = InputValidator(self.input_settings)
-        self.tdma = TdmaGate(config['tag_id'], config.get('tdma_mode', 'auto'))
+        self.tdma = TdmaGate(config['tag_id'], config.get('tdma_mode', 'auto'),
+            allow_partial=config.get('allow_partial_tdma', config.get('numerical_backend') == 'cpp'))
         self.clock = ClockMap(self.input_settings)
         self.height = MeasuredHeight(config['height'])
         self.last_host_ns = None
@@ -258,7 +267,7 @@ class MeasuredBtf:
             if dispatch.clear_status:
                 self.validator.disconnect()
             if dispatch.message is None:
-                return dict(out, reason=dispatch.reason)
+                return dict(out, reason=dispatch.reason, input_diagnostics=dispatch.diagnostics)
             msg, mono, ros = dispatch.message, dispatch.mono_ns, dispatch.ros_ns
             offset = ros-mono
             out['tdma_verified'] = dispatch.tdma is not None
@@ -280,9 +289,11 @@ class MeasuredBtf:
             cycle = self.validator.on_cycle(msg, mono, ros)
             out.update(seq=cycle.seq, seq_gap=cycle.seq_gap, source_cycle_end_us=cycle.end_us,
                        sample_time_us=cycle.sample_us, raw_slant_m=msg['raw_slant_m'])
-            if len(cycle.indices) != 4:
-                self.reset_models(preserve_motion=True)
-                raise InvalidInput('four_valid_ranges_required')
+            partial = len(cycle.indices) != 4
+            if partial and (len(cycle.indices) != 3 or self.native is None):
+                # Missing ranges are not a clock/session reset. Do not erase
+                # still-fresh full-frame history while waiting for measurements.
+                raise InvalidInput('three_measured_ranges_required' if self.native else 'four_valid_ranges_required')
             self.clock.update(cycle.end_us, mono)
             out['clock'] = self.clock.diagnostics()
             if not self.clock.ready:
@@ -294,15 +305,16 @@ class MeasuredBtf:
                 self.reset_models()
                 return dict(out, reason='queued_sample')
             # Fit at the newest actual anchor measurement, retaining all four times.
-            stamp = max(cycle.sample_us)
+            stamp = max(cycle.sample_us[i] for i in cycle.indices)
             cycle = replace(cycle, end_us=stamp)
             stamp_ns = round(self.clock.host_s(stamp)*1e9)+offset
             if stamp_ns > ros or (self.last_output_stamp_ns is not None and stamp_ns <= self.last_output_stamp_ns):
                 self.reset_models()
                 return dict(out, reason='invalid_or_nonincreasing_stamp')
             heights, selections = [], []
-            for sample in cycle.sample_us:
-                height, selection = self.height.at(round(self.clock.host_s(sample)*1e9)+offset)
+            for i, sample in enumerate(cycle.sample_us):
+                height, selection = (self.height.at(round(self.clock.host_s(sample)*1e9)+offset)
+                    if i in cycle.indices else (None, dict(reason='anchor_range_missing')))
                 heights.append(height)
                 selections.append(selection)
             latest_index = cycle.sample_us.index(stamp)
@@ -310,6 +322,18 @@ class MeasuredBtf:
             height_source = ('ground_antenna_reference' if any(s.get('estimated') for s in selections)
                              else 'measured_tof_imu') if height is not None else None
             corrected = cycle.raw-np.asarray(self.config['bias_m'])
+            if partial:
+                b, btf = self.native.process(cycle, heights, height_source)
+                self.last_output_stamp_ns = stamp_ns
+                ready = all(heights[i] is not None for i in cycle.indices)
+                return dict(out, ok=btf['ok'], reason=btf['reason'], xy_m=btf['xy_m'],
+                    xyz_m=[*btf['xy_m'], height] if btf['ok'] and ready else None,
+                    height_source=height_source, height_m=height, height_ready=ready,
+                    height_selection=selections, sample_height_m=heights,
+                    stamp_ns=stamp_ns, time_us=stamp, valid_mask=cycle.mask,
+                    models={'B':b, 'B_TF':btf}, receive_age_s=(ros-stamp_ns)/1e9,
+                    queue_age_s=queue_age, layout_id=self.config['layout_id'],
+                    position_reference='uwb_antenna')
             # Keep the inputs even when the raw jump guard returns early.
             # Without these, a rejected cycle cannot be audited against ToF.
             out.update(stamp_ns=stamp_ns, time_us=stamp,
