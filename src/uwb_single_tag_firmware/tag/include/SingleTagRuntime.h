@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <stddef.h>
 #include "../../common/SingleTagProtocol.h"
+#include "SingleTagDiagnostics.h"
 
 #ifndef SINGLE_TAG_RATE_HZ
 #define SINGLE_TAG_RATE_HZ 50
@@ -13,9 +14,9 @@
 namespace SingleTag {
 constexpr uint32_t kPeriodUs = 1000000U/SINGLE_TAG_RATE_HZ;
 #if SINGLE_TAG_BENCH_CONTROLS
-constexpr const char* kVersion = "uwb-single-tag-v2.0-r3-bench-20261015";
+constexpr const char* kVersion = "uwb-single-tag-v2.0-r5-recovery-bench-20261016";
 #else
-constexpr const char* kVersion = "uwb-single-tag-v2.0-r3-20261015";
+constexpr const char* kVersion = "uwb-single-tag-v2.0-r5-recovery-20261016";
 #endif
 constexpr const char* kLayout = "warehouse-rectangle-6p3x4p6-z0p15-20261007";
 enum Failure : uint8_t {
@@ -27,8 +28,10 @@ struct Sample {
   float distance;
   uint64_t timeUs;
   uint32_t transaction;
+  uint32_t firstTransaction;
   uint16_t rfMapSpanUs;
   uint8_t failure, attempts;
+  uint8_t firstFailure, cause, firstCause;
 };
 struct Cycle {
   uint32_t boot, session, seq, skipped, recoveries;

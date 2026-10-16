@@ -18,6 +18,10 @@ UWB·FREEZE·복구·속도 설정 작업은 [필수 설계 검토](architecture
 | 새 단일 태그 기록·실물 시험·백업·남은 검증 | [2026-10-15 실행 기록](report/esp32_single_tag_execution_20261015.md) |
 | 단일 태그 전체 기록·호환 조합·원본 복구 | [릴리스·복구 절차](runbooks/single_tag_release_and_recovery_20261015.md) |
 | schema 2 RAW·왕복 시각 교환·무선 v2 계약 | [단일 태그 통신 계약](reference/single_tag_protocol_v2.md) |
+| 최초·최종 실패·원인 코드·진단 큐·집계 분모 | [태그 실패 진단 계약](reference/tag_failure_diagnostics_20261016.md) |
+| 진단 구현·호스트 검사 58개·50Hz 두 빌드 | [태그 실패 진단 구현 결과](report/tag_failure_diagnostics_20261016.md) |
+| A4 재시도 간격·첫 자연 복구 단축·반복 장애 간격 | [태그 재시도·복구 후속 구현](report/tag_retry_recovery_20261016.md) |
+| 합성 분석·native 모형·정상/고장 주입 검증 절차 | [태그 실패 진단 시험](runbooks/tag_failure_diagnostics_tests_20261016.md) |
 | 멀티태그 제거·RAW 50Hz 목표·독립 LoRa 1Hz | [ESP32 재설계 기준](architecture/esp32_raw_rebuild_20261015.md) |
 | 기존 앵커 유지 조건의 40Hz 조사·RAW 39.98Hz 실측 | [이전 Tag B 주기 조사](report/esp32_tag_b_rate_audit_20261015.md) |
 | 태그·앵커·companion의 단일 태그 재작성 계획 | [최신 계획 프롬프트](runbooks/esp32_tag_b_rewrite_plan_prompt_20261015.md) |

@@ -1,6 +1,7 @@
 #include "SingleTagRuntime.h"
 #include "JetsonTagDisplay.h"
 #include <Arduino.h>
+#include "SingleTagDiagnosticJson.h"
 #include <esp_timer.h>
 #include <esp_system.h>
 #include <driver/uart.h>
@@ -20,12 +21,16 @@ Cycle latest={}; Pose pose={}; RadioStatus radio={};
 uint64_t syncExpires=0,pauseUntil=0;
 uint32_t generation=0;
 std::atomic<uint32_t> rawDrops{0},auxDrops{0};
+std::atomic<uint32_t> diagnosticAttempts{0},diagnosticDrops{0},diagnosticHighWater{0};
+std::atomic<uint32_t> diagnosticFailures[kDiagnosticCauses]{};
+uint32_t diagnosticStale=0;
 bool recoverUwb=false,recoverLoRa=false,testLoRa=false;
-StaticQueue_t rawQueueData,auxQueueData;
+StaticQueue_t rawQueueData,auxQueueData,diagnosticQueueData;
 uint8_t rawStorage[sizeof(Cycle)];
 struct Aux { char line[1536]; };
 uint8_t auxStorage[4*sizeof(Aux)];
-QueueHandle_t rawQueue,auxQueue;
+uint8_t diagnosticStorage[kDiagnosticQueueDepth*sizeof(DiagnosticEvent)];
+QueueHandle_t rawQueue,auxQueue,diagnosticQueue;
 uint32_t invalidInput=0,overflowInput=0,staleRaw=0;
 uint32_t inputMaxUs=0,inputBytes=0;
 uint32_t hostSession=0,requestSeq=0,repliedSeq=0,committedSeq=0;
@@ -204,12 +209,17 @@ size_t serializeRaw(const Cycle& c,char* line,size_t cap) {
   add(line,cap,n,"],\"failure\":[%u,%u,%u,%u],\"attempts\":[%u,%u,%u,%u],"
       "\"rf_map_span_us\":[%u,%u,%u,%u],\"clock_domain\":\"esp32_monotonic_boot_us\","
       "\"clock_sync_valid\":%s,\"clock_generation\":%lu,\"deadline_missed\":%s,"
-      "\"skipped_cycles\":%lu,\"tx_dropped\":%lu,\"uwb_ready\":%s}\n",
+      "\"skipped_cycles\":%lu,\"tx_dropped\":%lu,\"uwb_ready\":%s",
       c.samples[0].failure,c.samples[1].failure,c.samples[2].failure,c.samples[3].failure,
       c.samples[0].attempts,c.samples[1].attempts,c.samples[2].attempts,c.samples[3].attempts,
       c.samples[0].rfMapSpanUs,c.samples[1].rfMapSpanUs,c.samples[2].rfMapSpanUs,c.samples[3].rfMapSpanUs,
       jb(clockSynchronized()),(unsigned long)clockGeneration(),jb(c.deadlineMissed),
       (unsigned long)c.skipped,(unsigned long)rawDrops,jb(c.ready));
+  if(n>=cap) return 0;
+  const size_t diagnosticLength=serializeRawDiagnosticFields(c,line+n,cap-n);
+  if(!diagnosticLength) return 0;
+  n+=diagnosticLength;
+  add(line,cap,n,"}\n");
   return n<cap?n:0;
 }
 size_t heartbeat(char* line,size_t cap) {
@@ -244,10 +254,19 @@ size_t heartbeat(char* line,size_t cap) {
   // Replace only the local terminator before this completed line is queued.
   const int extra=snprintf(line+n-2,cap-(n-2),",\"pose_received\":%s,\"pose_age_us\":%s,"
       "\"pose_seq\":%lu,\"lora_last_tx_fix\":%s,\"lora_last_tx_length\":%u,"
-      "\"usb_input_max_us\":%lu,\"usb_input_bytes\":%lu}\n",
+      "\"usb_input_max_us\":%lu,\"usb_input_bytes\":%lu",
       jb(p.received),poseAge,(unsigned long)p.seq,jb(r.lastTxFix),r.lastTxLength,
       (unsigned long)inputMaxUs,(unsigned long)inputBytes);
-  return extra>0 && (size_t)extra<cap-(n-2)?n-2+extra:0;
+  if(extra<=0 || (size_t)extra>=cap-(n-2)) return 0;
+  size_t used=n-2+extra;
+  add(line,cap,used,",\"diag_version\":1,\"diag_attempts\":%lu,\"diag_dropped\":%lu,"
+      "\"diag_stale\":%lu,\"diag_high_water\":%lu,\"diag_failures\":[",
+      (unsigned long)diagnosticAttempts.load(),(unsigned long)diagnosticDrops.load(),
+      (unsigned long)diagnosticStale,(unsigned long)diagnosticHighWater.load());
+  for(unsigned i=0;i<kDiagnosticCauses;i++)
+    add(line,cap,used,i?",%lu":"%lu",(unsigned long)diagnosticFailures[i].load());
+  add(line,cap,used,"]}\n");
+  return used<cap?used:0;
 }
 void ioTask(void*) {
   char active[2048]; size_t length=0,offset=0;
@@ -286,6 +305,16 @@ void ioTask(void*) {
         if(!length && xQueueReceive(auxQueue,aux,0)==pdTRUE) {
           length=strlen(aux); memcpy(active,aux,length);
         }
+        // At most one diagnostic per service pass, only after RAW and auxiliary
+        // output. Retain its original session even if RF recovered meanwhile.
+        DiagnosticEvent diagnostic;
+        if(!length && xQueueReceive(diagnosticQueue,&diagnostic,0)==pdTRUE) {
+          const uint64_t at=diagnostic.recovery?diagnostic.reset.atUs:diagnostic.attempt.endUs;
+          if(now>=at && now-at<=kDiagnosticMaxAgeUs) {
+            length=serializeDiagnostic(diagnostic,active,sizeof(active));
+            if(!length) ++diagnosticDrops;
+          } else ++diagnosticStale;
+        }
       }
       offset=0;
     }
@@ -306,6 +335,8 @@ void beginRuntime(uint32_t boot) {
   latest.boot=boot;
   rawQueue=xQueueCreateStatic(1,sizeof(Cycle),rawStorage,&rawQueueData);
   auxQueue=xQueueCreateStatic(4,sizeof(Aux),auxStorage,&auxQueueData);
+  diagnosticQueue=xQueueCreateStatic(kDiagnosticQueueDepth,sizeof(DiagnosticEvent),
+      diagnosticStorage,&diagnosticQueueData);
   Serial.setTxBufferSize(2048); Serial.setRxBufferSize(2048); Serial.begin(921600);
   xTaskCreatePinnedToCore(ioTask,"single_usb",8192,nullptr,3,nullptr,0);
   startLoRaTask();
@@ -334,5 +365,29 @@ void queueAux(const char* line) {
   if(n>=sizeof(a.line)) { ++auxDrops; return; }
   memcpy(a.line,line,n+1);
   if(xQueueSend(auxQueue,&a,0)!=pdTRUE) ++auxDrops;
+}
+namespace {
+void queueDiagnostic(const DiagnosticEvent& event) {
+  // RF task only copies a bounded POD record. It never formats or waits for USB.
+  if(!diagnosticQueue || xQueueSend(diagnosticQueue,&event,0)!=pdTRUE) {
+    ++diagnosticDrops; return;
+  }
+  const uint32_t count=uxQueueMessagesWaiting(diagnosticQueue);
+  uint32_t high=diagnosticHighWater.load();
+  while(count>high && !diagnosticHighWater.compare_exchange_weak(high,count)) {}
+}
+}
+void recordAttemptDiagnostic(const AttemptDiagnostic& diagnostic) {
+  ++diagnosticAttempts;
+  const unsigned cause=(unsigned)diagnostic.cause;
+  if(diagnostic.failure!=Ok && cause<kDiagnosticCauses) ++diagnosticFailures[cause];
+  // Normal first successes already live in RAW. Bound diagnostic bandwidth.
+  if(diagnostic.failure==Ok && diagnostic.attempt==1) return;
+  DiagnosticEvent event={}; event.attempt=diagnostic;
+  queueDiagnostic(event);
+}
+void recordRecoveryDiagnostic(const RecoveryDiagnostic& diagnostic) {
+  DiagnosticEvent event={}; event.recovery=true; event.reset=diagnostic;
+  queueDiagnostic(event);
 }
 }

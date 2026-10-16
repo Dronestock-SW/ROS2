@@ -106,6 +106,42 @@ def test_uint32_cycle_wrap_and_disconnect_invalidate_clock():
         link.ingest(raw(1,2_050_000),22_060_000_000,122_060_000_000)
 
 
+def test_additive_first_failure_diagnostics_preserve_raw_and_clock_mapping():
+    original_link, diagnostic_link = synced(), synced()
+    original = raw(end=2_010_000)
+    original['clock_generation'] = original_link.clock.generation
+    original['attempts'][3] = 2
+    diagnostic = copy.deepcopy(original)
+    diagnostic['clock_generation'] = diagnostic_link.clock.generation
+    diagnostic.update(diag_version=1, transaction=[1, 2, 3, 5],
+                      first_transaction=[1, 2, 3, 4], first_failure=[0, 0, 0, 4],
+                      cause=[14, 14, 14, 14], first_cause=[14, 14, 14, 3])
+    baseline, _ = original_link.ingest(original, 22_020_000_000, 122_020_000_000)
+    added, _ = diagnostic_link.ingest(decode_line(json.dumps(diagnostic)),
+                                      22_020_000_000, 122_020_000_000)
+    assert added['message']['raw_slant_m'] == baseline['message']['raw_slant_m']
+    assert added['message']['sample_time_us'] == baseline['message']['sample_time_us']
+    for key in ('mapped', 'sample_host_monotonic_ns', 'cycle_end_host_monotonic_ns'):
+        assert added['single_tag'][key] == baseline['single_tag'][key]
+    assert added['message']['first_failure'][3] == 4
+    assert added['message']['failure'][3] == 0
+
+
+@pytest.mark.parametrize('kind', ['uwb_rf_attempt', 'uwb_rf_recovery'])
+def test_delayed_diagnostic_is_retained_without_becoming_an_observation(kind):
+    link = synced()
+    identity_before, clock_before = link.source, link.clock
+    pending_before, recent_before = link.pending, list(link.recent)
+    # Diagnostic records deliberately retain their old session for attribution.
+    diagnostic = dict(type=kind, schema=2, diag_version=1, tag_id='6',
+                      boot_id=31, session=46, seq=1, cause=6)
+    event, command = link.ingest(diagnostic, 22_020_000_000, 122_020_000_000)
+    assert event['message'] == diagnostic
+    assert event['single_tag']['mapped'] is False and command is None
+    assert link.source == identity_before and link.clock is clock_before
+    assert link.pending == pending_before and list(link.recent) == recent_before
+
+
 def test_btf_schema2_never_updates_legacy_clock_or_waits_for_tdma(monkeypatch):
     config = json.loads((Path(__file__).parents[2]/'config/runtime/uwb_btf_real.json').read_text(encoding='utf-8'))
     config['tag_id']='6'
