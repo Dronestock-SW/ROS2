@@ -13,6 +13,7 @@ UWB·FREEZE·복구·속도 설정 작업은 [필수 설계 검토](architecture
 
 | 찾는 내용 | 위치 |
 |---|---|
+| 제약조건·설계 선택·병목 개선·평가를 잇는 심사 보고서 | [개정 보고서와 Word·PDF](report/uwb_design_review_20261016.md) |
 | 전체 통합본과 main의 충돌 해소·검증 범위 | [10월 16일 병합 검증](report/main_integration_20261016.md) |
 | 새 단일 태그 기록·실물 시험·백업·남은 검증 | [2026-10-15 실행 기록](report/esp32_single_tag_execution_20261015.md) |
 | 단일 태그 전체 기록·호환 조합·원본 복구 | [릴리스·복구 절차](runbooks/single_tag_release_and_recovery_20261015.md) |
