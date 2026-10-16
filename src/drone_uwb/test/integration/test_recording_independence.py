@@ -48,12 +48,14 @@ def test_uwb_keeps_fresh_input_and_processor_decision_on_storage_failure(monkeyp
     wire = {'type': 'uwb_raw_cycle'}
     monkeypatch.setattr(node, 'decode_line', lambda line: wire)
     obj = NS(get_parameter=lambda name: NS(value=0), started=0, serial=NS(read=lambda: b'cycle\n'),
+        single_tag_mode=False,
         get_clock=lambda: NS(now=lambda: NS(nanoseconds=10_000_000_000)),
         record_files={'raw': True, 'received': True, 'decisions': True}, recorder=failed_recorder(),
         counts=Counter(), framer=NS(feed=lambda chunk: [chunk]), parse_streak=0,
         processor=NS(process=lambda *args: decision), raw_pub=publisher(),
         received_pub=publisher(), pose_pub=publisher(), layout={'coordinate_frame': 'uwb_map'})
     obj.record = lambda name, value: node.UwbNode.record(obj, name, value)
+    obj.service_output = lambda: node.UwbNode.service_output(obj)
     node.UwbNode.poll(obj)
     assert len(obj.raw_pub.messages) == len(obj.received_pub.messages) == 1
     assert obj.last_decision == decision.reason
