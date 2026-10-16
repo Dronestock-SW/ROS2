@@ -56,6 +56,7 @@ jobs:
           source install/setup.bash
           export PYTHONPATH="$PWD/src/drone_uwb:${PYTHONPATH:-}"
           PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q src/drone_uwb/test/processing/test_single_tag.py src/drone_uwb/test/integration/test_local_odometry.py src/drone_uwb/test/processing/test_observation_guard.py src/uwb_single_tag_firmware/tag/tests --junitxml=evidence/single-tag.xml > evidence/single-tag.log 2>&1
+          PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q src/drone_uwb/test --junitxml=evidence/uwb-suite.xml > evidence/uwb-suite.log 2>&1
           g++ -std=c++17 -Wall -Wextra -Werror src/uwb_single_tag_firmware/tools/test_single_protocol.cpp -o .review/single-tag-protocol
           .review/single-tag-protocol > evidence/single-tag-protocol.log 2>&1
       - name: Python and C++ contracts
