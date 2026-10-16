@@ -6,6 +6,7 @@ Tag B ID 6과 nRF52832 앵커 A1~A4의 소스다.
 메시지는 [통신 계약](../../docs/reference/single_tag_protocol_v2.md)을 따른다.
 최초 실패 추가 필드는 [진단 계약](../../docs/reference/tag_failure_diagnostics_20261016.md)을 따른다.
 로컬 검사와 미실시 실물 항목은 [진단 시험](../../docs/runbooks/tag_failure_diagnostics_tests_20261016.md)에 있다.
+R5의 [재시도·복구 후속 구현](../../docs/report/tag_retry_recovery_20261016.md)은 실물 적용 전 코드다.
 빌드 산출물과 전체 플래시 백업은 Git 밖에 보관한다.
 
 ## 활성 소스

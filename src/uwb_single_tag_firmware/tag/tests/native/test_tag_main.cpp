@@ -21,10 +21,15 @@ enum class Fault {
   Good, PollStart, PollTxTimeout, ResponseRxTimeout, ResponseRxError,
   ResponseDeadline, ResponseClockStopped, ResponseInvalid, FinalStart,
   FinalTxTimeout, ReportRxTimeout, ReportRxError, ReportInvalid,
-  ResponseOversized, ReportRejected, TofInvalid, RangeZero, ClockMapWide
+  ResponseOversized, ReportRejected, TofInvalid, RangeZero, ClockMapWide,
+  ResponseMcuLate
 };
 struct Plan { unsigned anchor; Fault fault; };
-struct Sent { unsigned anchor; uint32_t session, transaction; uint64_t at; };
+struct Sent {
+  unsigned anchor;
+  uint32_t session, transaction;
+  uint64_t at, confirmedAt=0;
+};
 uint64_t us = 1000000;
 uint32_t status = 0, frozenRadio = 0, randomValue = 100;
 uint64_t txDue = 0, rxDue = 0;
@@ -35,6 +40,12 @@ uint64_t pausedUntil = 0;
 unsigned initCalls = 0, initFailures = 0, displayCalls = 0;
 unsigned idleCalls=0,delayOnIdle=0;
 uint32_t idleDelayUs=0,pauseJumpUs=0;
+unsigned jumpOnIdle=0;
+uint32_t nextPauseJumpUs=0;
+uint64_t initDelayUs=0, lastForcedIdleUs=0;
+bool modelAnchorBusy=false;
+uint64_t anchorBusyUntil[4]={};
+unsigned pollsRejectedBusy=0;
 bool wideMapRead=false;
 uint8_t txFrame[64] = {}, rxFrame[64] = {};
 uint16_t rxLength = 0;
@@ -88,6 +99,7 @@ uint32_t esp_random() { return ++Fake::randomValue; }
 dwt_probe_s dw3000_probe_interf;
 int dw3000_hw_init() {
   ++Fake::initCalls;
+  Fake::step(Fake::initDelayUs);
   if (Fake::initFailures) { --Fake::initFailures; return -1; }
   return 0;
 }
@@ -106,6 +118,8 @@ void dwt_setleds(int) {}
 void dwt_forcetrxoff() {
   Fake::step(); Fake::txDue = Fake::rxDue = 0;
   if(++Fake::idleCalls==Fake::delayOnIdle) Fake::step(Fake::idleDelayUs);
+  if(Fake::idleCalls==Fake::jumpOnIdle) Fake::pauseJumpUs=Fake::nextPauseJumpUs;
+  Fake::lastForcedIdleUs=Fake::us;
 }
 void dwt_write32bitreg(uint32_t reg, uint32_t value) {
   Fake::step();
@@ -155,6 +169,18 @@ int dwt_starttx(int mode) {
     }
     sent.push_back({anchor, sid, txn, us});
     if (activeFault == Fault::PollStart) return DWT_ERROR;
+    if (modelAnchorBusy) {
+      // Peer adapter models the production anchor's POLL_RX + ANCHOR_US
+      // transaction bound. It deliberately does not model RF propagation,
+      // the anchor driver, interrupts, or a measured hardware timing margin.
+      const uint64_t pollAirTime=us+100;
+      if (pollAirTime<anchorBusyUntil[anchor]) {
+        ++pollsRejectedBusy;
+        activeFault=Fault::ResponseRxTimeout;
+      } else {
+        anchorBusyUntil[anchor]=pollAirTime+ST_ANCHOR_US;
+      }
+    }
     txLow = pollTx = lowAt(us + 100); txHigh = highAt(us + 100);
     if (activeFault != Fault::PollTxTimeout) txDue = us + 100;
     responseRx = lowAt(us + 500); rxLow = responseRx;
@@ -185,7 +211,10 @@ int dwt_starttx(int mode) {
              Fault::ResponseDeadline, us + 500);
   return DWT_SUCCESS;
 }
-uint32_t dwt_readtxtimestamplo32() { Fake::step(); return Fake::txLow; }
+uint32_t dwt_readtxtimestamplo32() {
+  if(Fake::phase==ST_POLL) Fake::sent.back().confirmedAt=Fake::us;
+  Fake::step(); return Fake::txLow;
+}
 uint32_t dwt_readtxtimestamphi32() { Fake::step(); return Fake::txHigh; }
 uint32_t dwt_readrxtimestamplo32(int) { Fake::step(); return Fake::rxLow; }
 namespace Br101Dw3000 { void spiFast() {} }
@@ -197,6 +226,8 @@ void clearTxState() {
   if (Fake::phase == ST_POLL && Fake::activeFault == Fake::Fault::ResponseClockStopped) {
     Fake::radioFrozen = true; Fake::frozenRadio = Fake::highAt(Fake::us);
   }
+  if (Fake::phase == ST_POLL && Fake::activeFault == Fake::Fault::ResponseMcuLate)
+    Fake::pauseJumpUs=2000;
 }
 void clearRxState() { dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_ALL_RX_GOOD |
                                      SYS_STATUS_ALL_RX_TO | SYS_STATUS_ALL_RX_ERR); }
@@ -307,6 +338,10 @@ void retry(bool succeeds) {
   require(Fake::attempts[3].cause == SingleTag::DiagnosticCause::RxTimeout &&
           Fake::attempts[4].cause == (succeeds ? SingleTag::DiagnosticCause::Success :
                                      SingleTag::DiagnosticCause::RxError), "retry diagnostic does not overwrite first stop");
+  require(Fake::sent[4].at>=Fake::sent[3].confirmedAt+ST_ANCHOR_US+ST_CLEANUP_US,
+          "confirmed POLL retry waits through the peer transaction bound");
+  require(Fake::attempts[3].retryEligibleUs==Fake::sent[3].confirmedAt+ST_ANCHOR_US+ST_CLEANUP_US,
+          "first diagnostic retains the computed retry eligibility time");
   if (succeeds) goodSample(c.samples[3]);
   else require(c.samples[3].failure == SingleTag::ResponseTimeout, "final retry failure");
 }
@@ -318,11 +353,75 @@ void oneRetryOnly() {
   require(Fake::sent.size() == 5 && c.samples[1].attempts == 1, "two failures still get only one retry");
   require(c.mask == 13, "A2 remains invalid when A1 uses retry");
 }
+void busyPeerNegativeControl() {
+  start(); Fake::modelAnchorBusy=true;
+  auto sample=one(Fault::ResponseRxTimeout,3);
+  require(sample.failure==SingleTag::ResponseTimeout, "first response is intentionally lost");
+  const auto priorBusy=Fake::anchorBusyUntil[3];
+  delayMicroseconds(ST_CLEANUP_US);
+  Fake::enqueue(3,Fault::Good); attempt(3,sample,2);
+  require(Fake::sent[1].at+100<priorBusy && Fake::pollsRejectedBusy==1,
+          "negative control reproduces a retry arriving in the previous peer transaction");
+  require(sample.failure==SingleTag::ResponseTimeout,
+          "a nominally good reply plan cannot bypass the busy-peer adapter");
+}
+void busyPeerSafeRetry() {
+  Fake::modelAnchorBusy=true; retry(true);
+  require(Fake::pollsRejectedBusy==0, "scheduled retry never enters the previous peer transaction window");
+}
+void unconfirmedPollRetry() {
+  start(); Fake::modelAnchorBusy=true;
+  Fake::four(Fault::PollTxTimeout); Fake::enqueue(3,Fault::Good);
+  const auto c=cycle();
+  require(c.mask==15 && c.samples[3].attempts==2 && Fake::sent.size()==5,
+          "unconfirmed POLL completion can recover with one new transaction");
+  const auto& first=Fake::attempts[3];
+  require(!first.pollTxConfirmed && Fake::sent[3].confirmedAt==0,
+          "unconfirmed TX never fabricates a confirmed RF timestamp");
+  require(first.retryEligibleUs>=first.endUs+ST_ANCHOR_US+ST_CLEANUP_US,
+          "unconfirmed retry waits after failed-attempt cleanup, not just a predicted TX window");
+  require(Fake::sent[4].at>=first.retryEligibleUs && Fake::pollsRejectedBusy==0,
+          "new POLL respects the unconfirmed-TX eligibility bound");
+  require(c.samples[3].firstFailure==SingleTag::PollTimeout &&
+          c.samples[3].firstTransaction!=c.samples[3].transaction,
+          "the missing TX confirmation survives retry success");
+}
+void rejectedPollRetry() {
+  start(); Fake::four(Fault::PollStart); Fake::enqueue(3,Fault::Good);
+  const auto c=cycle();
+  require(c.mask==15 && c.samples[3].attempts==2, "rejected local TX start can retry");
+  require(Fake::attempts[3].retryEligibleUs==0 && !Fake::attempts[3].pollTxConfirmed,
+          "rejected start does not pretend that a peer transaction was sent");
+}
+void retryBudgetRejected() {
+  start(); Fake::modelAnchorBusy=true;
+  // The first three exchanges still finish early enough to start A4, but its
+  // new cooldown plus a whole exchange cannot fit before the cycle deadline.
+  Fake::delayOnIdle=7; Fake::idleDelayUs=10000;
+  Fake::four(Fault::ResponseRxTimeout);
+  const auto c=cycle();
+  require(Fake::sent.size()==4 && c.samples[3].attempts==1 && c.mask==7,
+          "insufficient cooldown-plus-exchange budget must not launch a retry");
+  require(!c.deadlineMissed && c.endUs<c.startUs+ST_CYCLE_BUDGET_US,
+          "an ineligible retry must not burn time until its future cooldown");
+  require(c.samples[3].firstFailure==SingleTag::ResponseTimeout &&
+          c.samples[3].transaction==c.samples[3].firstTransaction,
+          "skipped retry leaves the first outcome and transaction intact");
+}
+void retryCooldownPreempted() {
+  start(); Fake::modelAnchorBusy=true;
+  Fake::jumpOnIdle=9; Fake::nextPauseJumpUs=18000;
+  Fake::four(Fault::ResponseRxTimeout);
+  const auto c=cycle();
+  require(Fake::sent.size()==4 && c.samples[3].attempts==1 && c.mask==7,
+          "MCU preemption during cooldown cannot launch a now-over-budget retry");
+  require(c.deadlineMissed, "an injected CPU stall is still reported as a missed cycle deadline");
+}
 void consecutiveTx(Fault fault, uint8_t expected) {
   start();
   require(one(fault).failure == expected && ready, "first TX fault does not reinitialize");
   require(one(fault, 1).failure == expected && !ready, "second consecutive TX fault disables ready");
-  require(Fake::initCalls == 1, "attempt must not bypass natural recovery delay");
+  require(Fake::initCalls == 1, "attempt schedules recovery but does not initialize in the active cycle");
   require(Fake::recoveryEvents.back().event == SingleTag::RecoveryEvent::Scheduled &&
           Fake::recoveryEvents.back().reason == SingleTag::RecoveryReason::TxFaultStreak,
           "TX fault streak has a distinct scheduled recovery reason");
@@ -341,31 +440,71 @@ void makeNotReady() {
 }
 void naturalRecovery() {
   start(); const uint32_t oldSession = session; makeNotReady();
-  const uint64_t due = static_cast<uint64_t>(lastRecoveryMs) * 1000 + 1500000;
-  Fake::us = due - 1000; loop();
-  require(!ready && Fake::initCalls == 1, "1499 ms must not recover");
-  Fake::us = due; loop();
-  require(ready && Fake::initCalls == 2 && recoveries == 1, "1500 ms must attempt natural recovery");
+  const uint64_t detected=recoveryDetectedUs;
+  require(recoveryNotBeforeUs==detected && !hasRecoveryAttempt,
+          "first natural fault is immediately eligible without losing the detection timestamp");
+  loop();
+  require(ready && Fake::initCalls == 2 && recoveries == 1 && hasRecoveryAttempt,
+          "the next loop attempts the first natural recovery immediately");
   require(session != oldSession && transaction == 0, "successful recovery creates a new radio session");
   const auto& recovered = Fake::recoveryEvents.back();
   require(recovered.event == SingleTag::RecoveryEvent::InitSuccess &&
           recovered.nextCycleUs - recovered.atUs == 100000, "natural recovery retains 100 ms quiet period");
-  require(recovered.atUs >= recovered.detectedUs + 1500000, "natural recovery event includes actual detection-to-init latency");
+  require(recovered.atUs>=detected && recovered.atUs-detected<10000,
+          "fake initializer completes without the former 1500 ms delay");
   const auto count = Fake::published.size(); Fake::us = nextStartUs - 1; loop();
   require(Fake::published.size() == count, "quiet period must not emit a new measurement cycle");
   Fake::four(); const auto c = cycle(); require(c.mask == 15, "all links can measure after recovery");
 }
 void failedInitialization() {
   start(); makeNotReady(); Fake::initFailures = 1;
-  Fake::us = static_cast<uint64_t>(lastRecoveryMs) * 1000 + 1500000; loop();
+  Fake::initDelayUs=80000; loop();
   require(!ready && Fake::initCalls == 2 && recoveries == 1, "failed initializer must remain not ready");
   require(Fake::recoveryEvents.back().event == SingleTag::RecoveryEvent::InitFailed,
           "failed initialization is reported separately from recovery success");
-  const uint32_t failedAt = lastRecoveryMs;
-  Fake::us = static_cast<uint64_t>(failedAt) * 1000 + 1499000; loop();
-  require(Fake::initCalls == 2, "initializer failure must preserve 1500 ms retry spacing");
-  Fake::us = static_cast<uint64_t>(failedAt) * 1000 + 1500000; loop();
+  const uint64_t failedAt = lastInitEndUs;
+  require(recoveryNotBeforeUs==failedAt+1500000, "failed initialization backoff starts at initializer completion");
+  Fake::us = recoveryNotBeforeUs-1; loop();
+  require(Fake::initCalls == 2, "no retry one microsecond before failed-initializer backoff expires");
+  Fake::us = recoveryNotBeforeUs; loop();
   require(ready && Fake::initCalls == 3 && recoveries == 2, "next scheduled initialization succeeds");
+}
+void repeatedRecovery() {
+  naturalRecovery();
+  const uint64_t previousEnd=lastInitEndUs;
+  makeNotReady();
+  require(recoveryNotBeforeUs==previousEnd+1500000,
+          "successful initialization cannot replenish fast recovery inside the backoff window");
+  const uint64_t detected=recoveryDetectedUs, due=recoveryNotBeforeUs;
+  // Duplicate scheduler calls in the same failed episode do not erase its
+  // original reason/detection time or keep postponing its eligibility.
+  const auto eventCount=Fake::recoveryEvents.size();
+  Fake::step(100); scheduleRecovery(SingleTag::RecoveryReason::McuGuard);
+  require(recoveryNotBeforeUs==due && recoveryDetectedUs==detected &&
+          Fake::recoveryEvents.size()==eventCount, "duplicate natural scheduling is idempotent");
+  Fake::us=due-1; loop();
+  require(!ready && Fake::initCalls==2, "repeated fault does not reinitialize before 1500 ms");
+  Fake::us=due; loop();
+  require(ready && Fake::initCalls==3 && recoveries==2, "repeated fault retries at the backoff boundary");
+}
+void faultAfterBackoff() {
+  naturalRecovery();
+  Fake::us=lastInitEndUs+1500001;
+  makeNotReady();
+  require(recoveryNotBeforeUs==recoveryDetectedUs, "a fault after the reset-rate window is immediately eligible");
+  loop(); require(ready && Fake::initCalls==3, "late independent fault can recover on its next loop");
+}
+void startupInitializationFailure() {
+  Fake::initFailures=1; Fake::initDelayUs=80000; setup();
+  require(!ready && Fake::initCalls==1 && !hasRecoveryAttempt, "startup failure stays distinct from natural recovery");
+  const uint64_t due=lastInitEndUs+1500000;
+  require(recoveryNotBeforeUs==due, "startup initializer failure also gets 1500 ms completion-based backoff");
+  Fake::us=due-1; loop();
+  require(!ready && Fake::initCalls==1, "startup retry cannot occur before its backoff");
+  Fake::us=due; loop();
+  require(ready && Fake::initCalls==2 && recoveries==1, "startup retry succeeds at the boundary");
+  require(Fake::recoveryEvents.back().nextCycleUs-Fake::recoveryEvents.back().atUs==100000,
+          "startup retry also preserves 100 ms session quiet time");
 }
 void forcedRecovery() {
   start(); const auto before = Fake::us; Fake::recoveryRequested = true; loop();
@@ -374,6 +513,10 @@ void forcedRecovery() {
   const auto& recovered = Fake::recoveryEvents.back();
   require(recovered.reason == SingleTag::RecoveryReason::BenchRequest &&
           recovered.nextCycleUs - recovered.atUs == 100000, "forced recovery retains reason and session quiet time");
+  makeNotReady(); const uint64_t due=recoveryNotBeforeUs;
+  require(due>Fake::us, "test establishes an active natural backoff");
+  Fake::recoveryRequested=true; loop();
+  require(ready && Fake::initCalls==3 && Fake::us<due, "explicit bench request still bypasses an active backoff");
 }
 void skipPeriods() {
   start(); Fake::us = nextStartUs + 3ULL * SingleTag::kPeriodUs + 100;
@@ -397,11 +540,23 @@ void wrappingRadioTime() {
 }
 void wrappingMillisRecovery() {
   Fake::us = (static_cast<uint64_t>(UINT32_MAX) - 10) * 1000;
-  start(); makeNotReady(); const uint64_t failureUs = Fake::us;
-  Fake::us = failureUs + 1498000; loop();
-  require(!ready && Fake::initCalls == 1, "natural delay across millis wrap is not early");
-  Fake::us = failureUs + 1501000; loop();
-  require(ready && Fake::initCalls == 2, "natural recovery survives millis wrap");
+  start(); const uint32_t before=millis(); makeNotReady(); loop();
+  require(ready && Fake::initCalls==2, "first immediate recovery can straddle millis wrap");
+  makeNotReady(); const auto due=recoveryNotBeforeUs;
+  Fake::us=due-1; loop();
+  require(!ready && Fake::initCalls==2, "repeated backoff across millis wrap is not early");
+  Fake::us=due; loop();
+  require(ready && Fake::initCalls==3 && millis()<before,
+          "64-bit MCU scheduling survives the actual 32-bit millis wrap");
+}
+void wrappingMcuLow32() {
+  Fake::us=static_cast<uint64_t>(UINT32_MAX)-20000;
+  start(); makeNotReady(); loop();
+  require(ready && Fake::initCalls==2, "first recovery before MCU low32 wrap");
+  makeNotReady(); const auto due=recoveryNotBeforeUs;
+  require(due>UINT32_MAX, "backoff deadline is held beyond the 32-bit microsecond boundary");
+  Fake::us=due-1; loop(); require(Fake::initCalls==2, "64-bit backoff does not truncate to low32");
+  Fake::us=due; loop(); require(ready && Fake::initCalls==3, "recovery at full-width MCU deadline");
 }
 void invalidFrames() {
   start();
@@ -448,7 +603,9 @@ void notReadyAndPaused() {
   for(const auto& s:paused.samples)
     require(s.attempts==0 && s.firstFailure==SingleTag::NotReady &&
             s.firstCause==(uint8_t)SingleTag::DiagnosticCause::NotReady,"paused slots retain existing NotReady code");
-  Fake::pausedUntil=0; makeNotReady(); const auto unready=cycle();
+  Fake::pausedUntil=0; makeNotReady(); loop();
+  require(ready, "first fault recovers before testing the later backoff output");
+  makeNotReady(); const auto unready=cycle();
   require(unready.mask==0 && !unready.ready,"natural recovery wait still emits invalid RAW");
   for(const auto& s:unready.samples) require(s.attempts==0 && s.firstTransaction==0,"not-ready slots are not RF attempts");
 }
@@ -466,8 +623,47 @@ void mcuLateWithRfProgress() {
   start(); SingleTag::AttemptDiagnostic d={}; d.stage=SingleTag::DiagnosticStage::ResponseRx;
   Fake::pauseJumpUs=2000;
   const auto status=waitUntil(SYS_STATUS_RXFCG_BIT_MASK,Fake::highAt(Fake::us+1400),d);
-  require(status==0 && !ready && d.cause==SingleTag::DiagnosticCause::McuGuard,"MCU scheduling delay retains original guard policy");
-  require(d.wait.rfProgress,"guard event must preserve observed RF progress, not claim RF clock stopped");
+  require(status==0 && ready && d.cause==SingleTag::DiagnosticCause::RadioDeadline,
+          "late MCU resumption rejects the expired exchange without scheduling radio recovery");
+  require(d.wait.rfProgress,"fresh RF progress is captured after the MCU guard exit");
+  require(Fake::recoveryEvents.size()==2, "healthy expired RF deadline adds no recovery event");
+}
+void mcuLateResponseAttempt() {
+  start(); const auto s=one(Fault::ResponseMcuLate,3);
+  require(s.failure==SingleTag::ResponseTimeout &&
+          s.cause==(uint8_t)SingleTag::DiagnosticCause::RadioDeadline && ready,
+          "real response attempt preserves legacy timeout but avoids spurious full recovery");
+  require(Fake::attempts.back().pollTxConfirmed && Fake::recoveryEvents.size()==2,
+          "confirmed POLL followed by scheduler delay remains distinct from a stopped radio");
+}
+void mcuLateTxStreak() {
+  start();
+  Fake::pauseJumpUs=2000; const auto first=one(Fault::Good);
+  require(first.failure==SingleTag::PollTimeout && ready,
+          "late first POLL completion remains an unconfirmed TX failure");
+  const auto& d=Fake::attempts.back();
+  require(d.cause==SingleTag::DiagnosticCause::RadioDeadline && !d.pollTxConfirmed,
+          "fresh expired deadline does not manufacture POLL completion");
+  require(d.retryEligibleUs==Fake::lastForcedIdleUs+1+ST_ANCHOR_US+ST_CLEANUP_US,
+          "unconfirmed TX cooldown begins after forcetrxoff and status cleanup complete");
+  Fake::pauseJumpUs=2000; const auto second=one(Fault::Good,1);
+  require(second.failure==SingleTag::PollTimeout && !ready,
+          "two unconfirmed TX completions retain the separate TX-streak recovery policy");
+  require(Fake::recoveryEvents.back().reason==SingleTag::RecoveryReason::TxFaultStreak,
+          "the retained TX recovery is not mislabeled as an MCU guard");
+}
+void frozenRadioNaturalRecovery() {
+  start(); Fake::four(Fault::ResponseClockStopped); const auto c=cycle();
+  require(c.mask==7 && !c.ready && Fake::sent.size()==4,
+          "stopped RF timebase invalidates A4 and suppresses same-cycle retry");
+  require(c.samples[3].cause==(uint8_t)SingleTag::DiagnosticCause::McuGuard,
+          "frozen timebase still exits by MCU guard");
+  require(recoveryNotBeforeUs==recoveryDetectedUs, "first MCU-guard recovery is immediate next-loop work");
+  loop();
+  require(ready && Fake::initCalls==2 && Fake::recoveryEvents.back().reason==SingleTag::RecoveryReason::McuGuard,
+          "actual loop recovers the frozen RF adapter without waiting 1500 ms");
+  require(Fake::recoveryEvents.back().nextCycleUs-Fake::recoveryEvents.back().atUs==100000,
+          "prompt guard recovery retains the 100 ms new-session quiet period");
 }
 void serialization() {
   retry(true);
@@ -490,12 +686,21 @@ void serialization() {
   event.recovery = false; event.attempt = Fake::attempts[3];
   event.attempt.boot = event.attempt.session = event.attempt.seq = event.attempt.transaction = UINT32_MAX;
   event.attempt.startUs = event.attempt.endUs = UINT64_MAX;
+  event.attempt.retryEligibleUs=UINT64_MAX;
   event.attempt.wait.startUs = event.attempt.wait.endUs = UINT64_MAX;
   event.attempt.radioStart = event.attempt.radioEnd = UINT32_MAX;
   event.attempt.wait.radioStart = event.attempt.wait.radioEnd = event.attempt.wait.deadline = event.attempt.wait.status = UINT32_MAX;
   n = SingleTag::serializeDiagnostic(event, line, sizeof(line));
   require(n > 0 && n < sizeof(line), "maximum integer diagnostic fits bounded buffer");
   std::fputs(line, stdout);
+  // Keep the runner's four JSON-message contract while checking a fifth
+  // serializer invocation (maximum-width recovery) locally.
+  event.recovery=true;
+  event.reset.boot=event.reset.session=event.reset.seq=event.reset.recoveries=UINT32_MAX;
+  event.reset.atUs=event.reset.detectedUs=event.reset.nextCycleUs=event.reset.eligibleUs=UINT64_MAX;
+  n=SingleTag::serializeDiagnostic(event,line,sizeof(line));
+  require(n>0 && n<sizeof(line) && std::strstr(line,"18446744073709551615")!=nullptr,
+          "maximum recovery eligibility timestamp fits bounded JSON");
 }
 }
 
@@ -512,18 +717,28 @@ int main(int argc, char** argv) {
     {"first_failure_retry_success", [] { Test::retry(true); }},
     {"first_failure_retry_failure", [] { Test::retry(false); }},
     {"only_one_retry", Test::oneRetryOnly},
+    {"busy_peer_negative_control", Test::busyPeerNegativeControl},
+    {"busy_peer_safe_retry", Test::busyPeerSafeRetry},
+    {"unconfirmed_poll_safe_retry", Test::unconfirmedPollRetry},
+    {"rejected_poll_retry", Test::rejectedPollRetry},
+    {"retry_budget_rejected", Test::retryBudgetRejected},
+    {"retry_cooldown_preempted", Test::retryCooldownPreempted},
     {"poll_start_failure_twice", [] { Test::consecutiveTx(Fault::PollStart, SingleTag::PollStart); }},
     {"poll_tx_timeout_twice", [] { Test::consecutiveTx(Fault::PollTxTimeout, SingleTag::PollTimeout); }},
     {"final_start_failure_twice", [] { Test::consecutiveTx(Fault::FinalStart, SingleTag::FinalStart); }},
     {"final_tx_timeout_twice", [] { Test::consecutiveTx(Fault::FinalTxTimeout, SingleTag::FinalTimeout); }},
     {"tx_streak_reset", Test::txStreakReset},
-    {"natural_recovery_1500ms", Test::naturalRecovery},
+    {"natural_recovery_immediate", Test::naturalRecovery},
+    {"repeated_recovery_backoff", Test::repeatedRecovery},
+    {"fault_after_backoff", Test::faultAfterBackoff},
+    {"startup_initialization_failure", Test::startupInitializationFailure},
     {"natural_initialization_failure", Test::failedInitialization},
     {"forced_recovery_bypass", Test::forcedRecovery},
     {"skip_periods", Test::skipPeriods},
     {"sequence_transaction_wrap", Test::wrappingSequence},
     {"radio_time_wrap", Test::wrappingRadioTime},
     {"millis_recovery_wrap", Test::wrappingMillisRecovery},
+    {"mcu_low32_recovery_boundary", Test::wrappingMcuLow32},
     {"invalid_transaction_frames", Test::invalidFrames},
     {"frame_and_math_causes", Test::causeChecks},
     {"clock_invalid_no_retry", Test::clockInvalidNoRetry},
@@ -532,6 +747,9 @@ int main(int argc, char** argv) {
     {"wait_success_mixed_flags", [] { Test::waitBoundary(false); }},
     {"wait_deadline_precedence", [] { Test::waitBoundary(true); }},
     {"mcu_late_with_rf_progress", Test::mcuLateWithRfProgress},
+    {"mcu_late_response_attempt", Test::mcuLateResponseAttempt},
+    {"mcu_late_tx_streak", Test::mcuLateTxStreak},
+    {"frozen_radio_natural_recovery", Test::frozenRadioNaturalRecovery},
     {"diagnostic_serialization", Test::serialization},
   };
   if (argc == 2 && std::string(argv[1]) == "--list") {

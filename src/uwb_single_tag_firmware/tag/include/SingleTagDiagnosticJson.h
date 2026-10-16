@@ -27,10 +27,11 @@ inline size_t serializeDiagnostic(const DiagnosticEvent& event,char* line,size_t
     const RecoveryDiagnostic& d=event.reset;
     n=snprintf(line,cap,"{\"type\":\"uwb_rf_recovery\",\"schema\":2,\"diag_version\":1,\"tag_id\":\"6\","
         "\"boot_id\":%lu,\"session\":%lu,\"seq\":%lu,\"event\":\"%s\",\"reason\":\"%s\","
-        "\"at_us\":%llu,\"detected_us\":%llu,\"next_cycle_us\":%llu,\"recoveries\":%lu}\n",
+        "\"at_us\":%llu,\"detected_us\":%llu,\"next_cycle_us\":%llu,\"recoveries\":%lu,\"eligible_us\":%llu}\n",
         (unsigned long)d.boot,(unsigned long)d.session,(unsigned long)d.seq,
         recoveryEventName(d.event),recoveryReasonName(d.reason),(unsigned long long)d.atUs,
-        (unsigned long long)d.detectedUs,(unsigned long long)d.nextCycleUs,(unsigned long)d.recoveries);
+        (unsigned long long)d.detectedUs,(unsigned long long)d.nextCycleUs,(unsigned long)d.recoveries,
+        (unsigned long long)d.eligibleUs);
   } else {
     const AttemptDiagnostic& d=event.attempt;
     n=snprintf(line,cap,"{\"type\":\"uwb_rf_attempt\",\"schema\":2,\"diag_version\":1,\"tag_id\":\"6\","
@@ -39,13 +40,14 @@ inline size_t serializeDiagnostic(const DiagnosticEvent& event,char* line,size_t
         "\"start_us\":%llu,\"end_us\":%llu,\"radio_start\":%lu,\"radio_end\":%lu,"
         "\"status\":%lu,\"wait_stage\":%u,\"wait_start_us\":%llu,\"wait_end_us\":%llu,"
         "\"wait_radio_start\":%lu,\"wait_radio_end\":%lu,\"deadline_radio\":%lu,"
-        "\"rf_progress\":%s,\"poll_tx_confirmed\":%s}\n",
+        "\"rf_progress\":%s,\"poll_tx_confirmed\":%s,\"retry_eligible_us\":%llu}\n",
         (unsigned long)d.boot,(unsigned long)d.session,(unsigned long)d.seq,d.anchor,d.attempt,
         (unsigned long)d.transaction,d.failure,(unsigned)d.cause,(unsigned)d.stage,
         (unsigned long long)d.startUs,(unsigned long long)d.endUs,(unsigned long)d.radioStart,
         (unsigned long)d.radioEnd,(unsigned long)d.wait.status,(unsigned)d.wait.stage,(unsigned long long)d.wait.startUs,
         (unsigned long long)d.wait.endUs,(unsigned long)d.wait.radioStart,(unsigned long)d.wait.radioEnd,
-        (unsigned long)d.wait.deadline,d.wait.rfProgress?"true":"false",d.pollTxConfirmed?"true":"false");
+        (unsigned long)d.wait.deadline,d.wait.rfProgress?"true":"false",d.pollTxConfirmed?"true":"false",
+        (unsigned long long)d.retryEligibleUs);
   }
   // A truncated line is never sent as a JSON message.
   return n>0 && (size_t)n<cap?(size_t)n:0;

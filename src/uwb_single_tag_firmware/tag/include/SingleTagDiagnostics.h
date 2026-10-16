@@ -24,7 +24,7 @@ struct WaitDiagnostic {
 };
 struct AttemptDiagnostic {
   uint32_t boot, session, seq, transaction;
-  uint64_t startUs, endUs;
+  uint64_t startUs, endUs, retryEligibleUs;
   uint32_t radioStart, radioEnd;
   WaitDiagnostic wait;
   uint8_t anchor, attempt, failure;
@@ -36,7 +36,7 @@ enum class RecoveryEvent : uint8_t { Scheduled, InitStart, InitSuccess, InitFail
 enum class RecoveryReason : uint8_t { Startup, McuGuard, TxFaultStreak, BenchRequest };
 struct RecoveryDiagnostic {
   uint32_t boot, session, seq, recoveries;
-  uint64_t atUs, detectedUs, nextCycleUs;
+  uint64_t atUs, detectedUs, nextCycleUs, eligibleUs;
   RecoveryEvent event;
   RecoveryReason reason;
 };

@@ -1,0 +1,79 @@
+{
+  "date": "2026-10-16",
+  "base_branch": "이번에-상원-한거-통합-브랜치",
+  "base_sha": "70da279f7b6beb2ffabe1ac7eb5642dfaf473f72",
+  "diagnostics_parent_sha": "ea4ec5b24b2adf26e88c75753f485f4b9ffa46b8",
+  "work_branch": "codex/tag-first-failure-diagnostics-20261016",
+  "firmware_versions": [
+    "uwb-single-tag-v2.0-r5-recovery-bench-20261016",
+    "uwb-single-tag-v2.0-r5-recovery-20261016"
+  ],
+  "native_tests": {
+    "passed": 49,
+    "total": 49,
+    "production_main": 44,
+    "production_usb_runtime": 5
+  },
+  "python_tests": {
+    "passed": 22,
+    "total": 22,
+    "diagnostic_summary": 13,
+    "schema2_receiver": 9
+  },
+  "builds": [
+    {
+      "environment": "tag_b_50",
+      "rate_hz": 50,
+      "bench_controls": true,
+      "status": "success",
+      "ram_bytes": 31260,
+      "flash_bytes": 367493,
+      "firmware_bin_bytes": 368368,
+      "firmware_bin_sha256": "33c7875676e867bbe8610e21a1c52c80d2f3532b4067648c96307efdd60dfa14"
+    },
+    {
+      "environment": "tag_b_release",
+      "rate_hz": 50,
+      "bench_controls": false,
+      "status": "success",
+      "ram_bytes": 31252,
+      "flash_bytes": 367113,
+      "firmware_bin_bytes": 367984,
+      "firmware_bin_sha256": "e566c854291a4a3dd49478e1d4f4b48b5b6ce8d415fdb3b6d1167783cb95ceef"
+    }
+  ],
+  "policy": {
+    "period_us": 20000,
+    "cycle_budget_us": 18000,
+    "max_optional_retries": 1,
+    "retry_confirmed_poll": "MCU observation of POLL TX completion + 2500 us",
+    "retry_unconfirmed_poll": "forced idle completion + 2500 us",
+    "first_natural_recovery": "next loop",
+    "repeated_recovery_interval_us": 1500000,
+    "repeated_recovery_reference": "previous initializer completion",
+    "session_quiet_us": 100000,
+    "rf_protocol": 2
+  },
+  "validation_limits": [
+    "Host models only; no real RF, SPI, FreeRTOS concurrency or UART timing validation.",
+    "Busy-peer negative and positive controls do not establish the cause of actual A4 losses.",
+    "No real-board A4 rate or natural recovery measurement yet.",
+    "TX completion timeouts still trigger recovery after two consecutive failures.",
+    "50 Hz settings retained; real-board timing and diagnostic overhead remain unmeasured.",
+    "No firmware flashing, flight-control configuration changes or flight test in this implementation record."
+  ],
+  "firmware_source_sha256": {
+    "tag/src/main.cpp": "973958d8d353f4559c01bb3b0669c10bdcc13408f9c29141d9f7dbcd333c6736",
+    "tag/src/SingleTagRuntime.cpp": "8ee26e95873feace6a5e474bb9d45eb8f7ec5f1c0aed1613ef83b2a058a2ca01",
+    "tag/include/SingleTagRuntime.h": "a55d6054d971c00f83bbb5021f6783c1b1a368b3130b5ebc3434afe7095abbc0",
+    "tag/include/SingleTagDiagnostics.h": "8a1c10d9ec165b316343e0fc23b1b530968018f1a09d44f47f5cbc463b875df6",
+    "tag/include/SingleTagDiagnosticJson.h": "175c30dc26c1d27d7160d78aeaf5935d1262a352320a2669388df5a809d8cac3",
+    "common/SingleTagProtocol.h": "6d1017452b42c585c2e3563b5a35845dfb7fa48fe09196481bbe0682223bcca7",
+    "tag/platformio.ini": "6d2210baf6d775587971badec4c2b0259a7f9a0d64ba2f9ba92e16b8b737c370"
+  },
+  "evidence_sha256": {
+    "native-all-final.json": "9a0799a49a361195000d6d0ea125915bd052469057f14fc2b43e3aca021ba78c",
+    "pytest-diagnostics.xml": "c52e9b2df9417335188fcb647a3de30635673ba8a83248f26ea8a291497bc159",
+    "build-50hz-final.log": "9e449eed5b86bcb15d974808685c332a8b6d0691f3b07ea5babf8b20241f189e"
+  }
+}
