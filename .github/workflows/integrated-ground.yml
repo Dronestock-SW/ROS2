@@ -1,8 +1,10 @@
 name: Integrated non-LiDAR ground checks
 on:
   push:
-    branches: ['이번에-상원-한거-통합-브랜치']
+    branches: ['main', '이번에-상원-한거-통합-브랜치']
     paths: ['src/**', '.github/workflows/integrated-ground.yml']
+  pull_request:
+    branches: ['main']
   workflow_dispatch:
 permissions:
   contents: read
@@ -48,6 +50,14 @@ jobs:
           python3 src/drone_uwb/native_btf/tests/parity.py --binary .review/btf-native/btf_replay --python-root src/drone_uwb --output evidence/btf-parity > evidence/btf-parity.log 2>&1
           python3 src/drone_uwb/native_btf/tests/ros_adapter.py .review/btf-native/libbtf_native.so > evidence/btf-ros.log 2>&1
           PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q src/drone_uwb/test/processing/test_clock_statistics.py src/drone_uwb/test/processing/test_clock_diagnostics.py src/drone_uwb/test/processing/test_measured_btf.py src/drone_uwb/test/integration/test_btf_trace.py src/drone_uwb/test/integration/test_recording_independence.py src/drone_uwb/test/integration/test_btf_sensor_executor.py > evidence/btf-recording-clock.log 2>&1
+      - name: Single-tag receiver and wire contracts
+        run: |
+          source /opt/ros/humble/setup.bash
+          source install/setup.bash
+          export PYTHONPATH="$PWD/src/drone_uwb:${PYTHONPATH:-}"
+          PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q src/drone_uwb/test/processing/test_single_tag.py src/drone_uwb/test/integration/test_local_odometry.py src/drone_uwb/test/processing/test_observation_guard.py src/uwb_single_tag_firmware/tag/tests --junitxml=evidence/single-tag.xml > evidence/single-tag.log 2>&1
+          g++ -std=c++17 -Wall -Wextra -Werror src/uwb_single_tag_firmware/tools/test_single_protocol.cpp -o .review/single-tag-protocol
+          .review/single-tag-protocol > evidence/single-tag-protocol.log 2>&1
       - name: Python and C++ contracts
         run: |
           source /opt/ros/humble/setup.bash
