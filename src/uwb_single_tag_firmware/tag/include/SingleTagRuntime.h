@@ -13,11 +13,11 @@
 namespace SingleTag {
 constexpr uint32_t kPeriodUs = 1000000U/SINGLE_TAG_RATE_HZ;
 #if SINGLE_TAG_BENCH_CONTROLS
-constexpr const char* kVersion = "uwb-single-tag-v2.0-r3-bench-20261015";
+constexpr const char* kVersion = "uwb-single-tag-v2.0-r3-bench-z2p1-20261016";
 #else
-constexpr const char* kVersion = "uwb-single-tag-v2.0-r3-20261015";
+constexpr const char* kVersion = "uwb-single-tag-v2.0-r3-z2p1-20261016";
 #endif
-constexpr const char* kLayout = "warehouse-rectangle-6p3x4p6-z0p15-20261007";
+constexpr const char* kLayout = "warehouse-rectangle-6p3x4p6-z2p1-20261016";
 enum Failure : uint8_t {
   Ok=0, NotReady=1, PollStart=2, PollTimeout=3, ResponseTimeout=4,
   ResponseInvalid=5, FinalStart=6, FinalTimeout=7, ReportTimeout=8,

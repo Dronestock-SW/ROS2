@@ -6,6 +6,13 @@ Tag B ID 6과 nRF52832 앵커 A1~A4의 소스다.
 메시지는 [통신 계약](../../docs/reference/single_tag_protocol_v2.md)을 따른다.
 빌드 산출물과 전체 플래시 백업은 Git 밖에 보관한다.
 
+2026-10-16 소스의 다음 배치 ID는 `warehouse-rectangle-6p3x4p6-z2p1-20261016`이다.
+실제 설치와 업로드는 아직 전이다.
+태그 heartbeat의 배치 이름만 바꿨다.
+앵커 R2 응답기는 높이 좌표를 저장하지 않는다.
+따라서 높이 변경만으로 앵커를 다시 기록할 필요는 없다.
+[2.1m 준비·전환](../../docs/runbooks/anchor_height_2p1_20261016.md)을 따른다.
+
 ## 활성 소스
 
 | 경로 | 책임 |

@@ -13,6 +13,7 @@ UWB·FREEZE·복구·속도 설정 작업은 [필수 설계 검토](architecture
 
 | 찾는 내용 | 위치 |
 |---|---|
+| 앵커 2.1m 준비본·운영본 구분과 설치 후 전환 | [2.1m 배치 준비](runbooks/anchor_height_2p1_20261016.md) |
 | 제약조건·설계 선택·병목 개선·평가를 잇는 심사 보고서 | [개정 보고서와 Word·PDF](report/uwb_design_review_20261016.md) |
 | 전체 통합본과 main의 충돌 해소·검증 범위 | [10월 16일 병합 검증](report/main_integration_20261016.md) |
 | 새 단일 태그 기록·실물 시험·백업·남은 검증 | [2026-10-15 실행 기록](report/esp32_single_tag_execution_20261015.md) |

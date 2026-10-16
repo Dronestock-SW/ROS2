@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 
 LAYOUTS = {
+    'warehouse-rectangle-6p3x4p6-z2p1-20261016': 'anchors_20261016_z2p1.json',
     'warehouse-rectangle-6p3x4p6-z2p2-20261004': 'anchors_20261004.json',
     'warehouse-rectangle-6p3x4p6-z0p15-20261007': 'anchors_20261007_z015.json',
 }

@@ -15,15 +15,19 @@ from drone_uwb.integration.planar import map_yaw_to_enu
 BOOT = 'synthetic-field-boot'
 
 
-def templates():
+def templates(*, layout_confirmed=False):
     config = Path(__file__).parents[1]/'config'
     mission = json.loads((config/'final_mission.example.json').read_text(encoding='utf-8'))
     alignment = json.loads((config/'final_alignment.example.json').read_text(encoding='utf-8'))
+    if layout_confirmed:
+        # Synthetic alignment tests opt in; shipped preparation stays unconfirmed.
+        mission['layout_confirmed'] = True
+        alignment['settings']['layout_confirmed'] = True
     return mission, alignment
 
 
 def aligned():
-    return aligned_field_configuration(*templates(), body_enu_yaw_deg=-16.309430414773477,
+    return aligned_field_configuration(*templates(layout_confirmed=True), body_enu_yaw_deg=-16.309430414773477,
         host_boot_id=BOOT, fc_remote_ns=123456789)
 
 
@@ -31,10 +35,19 @@ def test_new_final_alignment_template_records_removed_jump_quarantine():
     assert templates()[1]['settings']['jump_guard_enabled'] is False
 
 
+def test_prepared_anchor_layout_cannot_be_enabled_by_heading_alignment_alone():
+    mission, alignment = templates()
+    assert mission['layout_confirmed'] is False
+    assert alignment['settings']['layout_confirmed'] is False
+    with pytest.raises(ValueError, match='layout_or_mount_unconfirmed'):
+        aligned_field_configuration(mission, alignment, body_enu_yaw_deg=15.,
+            host_boot_id=BOOT, fc_remote_ns=1)
+
+
 @pytest.mark.parametrize('sign', [-1, 1])
 @pytest.mark.parametrize('heading, yaw', [('-Y', -90.), ('+Y', 90.)])
 def test_stationary_cardinal_alignment_roundtrips_both_warehouse_charts(sign, heading, yaw):
-    mission, alignment = templates()
+    mission, alignment = templates(layout_confirmed=True)
     original = deepcopy((mission, alignment))
     mission['map_y_axis_sign'] = alignment['settings']['map_y_axis_sign'] = sign
     out_mission, out_alignment = aligned_field_configuration(mission, alignment,

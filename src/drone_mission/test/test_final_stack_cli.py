@@ -11,6 +11,15 @@ pytest.importorskip('rclpy')
 from drone_mission.final_stack import aligned_field_configuration
 
 
+def confirmed_templates(config):
+    """Synthetic launcher fixtures confirm geometry explicitly, never the example files."""
+    mission = json.loads((config/'final_mission.example.json').read_text(encoding='utf-8'))
+    alignment = json.loads((config/'final_alignment.example.json').read_text(encoding='utf-8'))
+    mission['layout_confirmed'] = True
+    alignment['settings']['layout_confirmed'] = True
+    return mission, alignment
+
+
 @pytest.mark.parametrize('change, expected', [
     (None, 'Configuration precheck passed'),
     ('old_boot', 'host_reboot_requires_new_alignment_evidence'),
@@ -21,8 +30,7 @@ def test_actual_field_launcher_check_only_starts_no_processes(tmp_path, change, 
     config = root/'src/drone_mission/config'
     boot = Path('/proc/sys/kernel/random/boot_id').read_text().strip()
     mission, alignment = aligned_field_configuration(
-        json.loads((config/'final_mission.example.json').read_text()),
-        json.loads((config/'final_alignment.example.json').read_text()),
+        *confirmed_templates(config),
         body_enu_yaw_deg=15., host_boot_id=boot, fc_remote_ns=1)
     # This test isolates the legacy launch contract. LiDAR admission has
     # independent missing/qualified-configuration tests.
@@ -50,8 +58,7 @@ def test_lidar_launcher_qualification_stays_read_only(tmp_path,case,expected):
     if sys.platform!='linux':pytest.skip('Linux field launcher')
     root=Path(__file__).parents[3];config=root/'src/drone_mission/config'
     mission,alignment=aligned_field_configuration(
-        json.loads((config/'final_mission.example.json').read_text()),
-        json.loads((config/'final_alignment.example.json').read_text()),
+        *confirmed_templates(config),
         body_enu_yaw_deg=15.,host_boot_id=Path('/proc/sys/kernel/random/boot_id').read_text().strip(),fc_remote_ns=1)
     mission['takeoff_lidar_fusion_ref']='synthetic-qualified-fusion'
     args=[sys.executable,str(root/'src/sangwon_AI/ops/final_field_session.py'),'--check-only',

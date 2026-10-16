@@ -1,0 +1,36 @@
+{
+  "layout_id": "warehouse-rectangle-6p3x4p6-z2p1-20261016",
+  "coordinate_frame": "uwb_map",
+  "units": "m",
+  "source": "Operator requested on 2026-10-16: retain A1=(0,0), A2=(6.3,0), A3=(0,4.6), A4=(6.3,4.6) m; set all anchor antenna centres to 2.1 m above the common floor. Preparation only: physical relocation not yet completed. Independent survey not completed.",
+  "independently_verified": false,
+  "anchor_order": [
+    "A1",
+    "A2",
+    "A3",
+    "A4"
+  ],
+  "anchors_xyz_m": [
+    [
+      0.0,
+      0.0,
+      2.1
+    ],
+    [
+      6.3,
+      0.0,
+      2.1
+    ],
+    [
+      0.0,
+      4.6,
+      2.1
+    ],
+    [
+      6.3,
+      4.6,
+      2.1
+    ]
+  ],
+  "installation_confirmed": false
+}

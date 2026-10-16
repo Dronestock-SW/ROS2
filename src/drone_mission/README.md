@@ -18,7 +18,7 @@ Tag A/B·TDMA·장착값 검사와 웹 요청을 함께 보존한다.
 | 로컬 웹·HTTP·WebSocket | `drone_mission/local_web.py` |
 | 실물 센서·MAVROS 통합 실행 | `launch/test_flight.launch.py` |
 | 정렬·확인값·시험 한도 | `config/flight.json` |
-| Tag B·임시 0.15m·이륙 기대값 1.3m | `config/flight_tag_b.json` |
+| Tag B·준비 배치 2.1m·이륙 기대값 1.3m | `config/flight_tag_b.json` |
 | Tag B 전체 미션·확인값 false | `config/full_mission_tag_b.json` |
 | 기체·배치 일치 검사 | `drone_mission/profiles.py` |
 | C++ hover와 공통 명령 잠금 | `drone_mission/writer_lock.py` |
