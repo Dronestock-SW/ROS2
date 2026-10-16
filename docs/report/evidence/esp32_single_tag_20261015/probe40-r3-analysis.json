@@ -1,0 +1,270 @@
+{
+  "raw_received": 1505,
+  "stages": [
+    {
+      "probe_stage": "fresh_pose",
+      "host_monotonic_ns": 5950245264672,
+      "synthetic_bench": true,
+      "fc_output": false
+    },
+    {
+      "probe_stage": "duplicate_expired_pose",
+      "host_monotonic_ns": 5952245897808,
+      "synthetic_bench": true,
+      "fc_output": false
+    },
+    {
+      "probe_stage": "reordered_pose",
+      "host_monotonic_ns": 5953245447777,
+      "synthetic_bench": true,
+      "fc_output": false
+    },
+    {
+      "probe_stage": "old_session_pose",
+      "host_monotonic_ns": 5954245025681,
+      "synthetic_bench": true,
+      "fc_output": false
+    },
+    {
+      "probe_stage": "malformed_flood",
+      "host_monotonic_ns": 5955245591960,
+      "synthetic_bench": true,
+      "fc_output": false
+    },
+    {
+      "probe_stage": "uwb_pause",
+      "host_monotonic_ns": 5959245703273,
+      "synthetic_bench": true,
+      "fc_output": false
+    },
+    {
+      "probe_stage": "uwb_recover",
+      "host_monotonic_ns": 5964245615547,
+      "synthetic_bench": true,
+      "fc_output": false
+    },
+    {
+      "probe_stage": "lora_recover",
+      "host_monotonic_ns": 5970245707065,
+      "synthetic_bench": true,
+      "fc_output": false
+    }
+  ],
+  "windows": [
+    {
+      "stage": "fresh_pose",
+      "raw_count": 80,
+      "valid_masks": {
+        "15": 80
+      },
+      "max_interval_ms": 26.762104,
+      "tx_dropped_first": 0,
+      "tx_dropped_last": 0
+    },
+    {
+      "stage": "duplicate_expired_pose",
+      "raw_count": 40,
+      "valid_masks": {
+        "15": 40
+      },
+      "max_interval_ms": 26.789208,
+      "tx_dropped_first": 0,
+      "tx_dropped_last": 0
+    },
+    {
+      "stage": "reordered_pose",
+      "raw_count": 40,
+      "valid_masks": {
+        "15": 40
+      },
+      "max_interval_ms": 26.536402,
+      "tx_dropped_first": 0,
+      "tx_dropped_last": 0
+    },
+    {
+      "stage": "old_session_pose",
+      "raw_count": 40,
+      "valid_masks": {
+        "15": 40
+      },
+      "max_interval_ms": 26.370061,
+      "tx_dropped_first": 0,
+      "tx_dropped_last": 0
+    },
+    {
+      "stage": "malformed_flood",
+      "raw_count": 159,
+      "valid_masks": {
+        "15": 158,
+        "7": 1
+      },
+      "max_interval_ms": 27.822675,
+      "tx_dropped_first": 0,
+      "tx_dropped_last": 0
+    },
+    {
+      "stage": "uwb_pause",
+      "raw_count": 201,
+      "valid_masks": {
+        "15": 81,
+        "0": 120
+      },
+      "max_interval_ms": 33.197598,
+      "tx_dropped_first": 0,
+      "tx_dropped_last": 0
+    },
+    {
+      "stage": "uwb_recover",
+      "raw_count": 232,
+      "valid_masks": {
+        "15": 232
+      },
+      "max_interval_ms": 30.684796,
+      "tx_dropped_first": 0,
+      "tx_dropped_last": 0
+    },
+    {
+      "stage": "lora_recover",
+      "raw_count": 601,
+      "valid_masks": {
+        "15": 601
+      },
+      "max_interval_ms": 38.269439,
+      "tx_dropped_first": 0,
+      "tx_dropped_last": 0
+    }
+  ],
+  "gaps": [
+    {
+      "host_interval_ms": 219.616612,
+      "seq_before": 1145,
+      "seq_after": 1147,
+      "source_interval_us": 216003,
+      "session_changed": true,
+      "tx_dropped_before": 0,
+      "tx_dropped_after": 0,
+      "host_monotonic_ns": 5964462287251
+    }
+  ],
+  "pose_acks": [
+    {
+      "accepted": true,
+      "reason": "bench_probe",
+      "count": 10
+    },
+    {
+      "accepted": false,
+      "reason": "stale_or_duplicate",
+      "count": 2
+    }
+  ],
+  "first_heartbeat": {
+    "type": "uwb_raw_status",
+    "schema": 2,
+    "tag_id": "6",
+    "firmware": "uwb-single-tag-v2.0-r3-bench-20261015",
+    "boot_id": 2230133969,
+    "session": 4294204744,
+    "period_us": 25000,
+    "uwb_ready": true,
+    "serial_baud": 921600,
+    "anchor_layout_id": "warehouse-rectangle-6p3x4p6-z0p15-20261007",
+    "clock_domain": "esp32_monotonic_boot_us",
+    "anchor_count": 4,
+    "anchor_order": [
+      "A1",
+      "A2",
+      "A3",
+      "A4"
+    ],
+    "range_bias_applied": false,
+    "temporal_filter_applied": false,
+    "timestamp_method": "rf_poll_final_midpoint",
+    "rf_protocol": 2,
+    "clock_sync_valid": false,
+    "clock_generation": 0,
+    "lora_schedule": "independent_monotonic_1hz",
+    "lora_ready": true,
+    "lora_tx_busy": false,
+    "lora_tx_attempts": 11,
+    "lora_tx_done": 11,
+    "lora_tx_timeouts": 0,
+    "lora_watchdog_timeouts": 0,
+    "lora_recoveries": 0,
+    "lora_rx_packets": 0,
+    "lora_rx_errors": 0,
+    "lora_service_max_us": 6613,
+    "uwb_recoveries": 0,
+    "input_invalid": 0,
+    "input_overflow": 0,
+    "aux_dropped": 0,
+    "raw_stale_dropped": 0,
+    "free_heap": 335212,
+    "min_free_heap": 335180,
+    "reset_reason": 1,
+    "display_ready": true,
+    "bench_controls": true,
+    "pose_received": false,
+    "pose_age_us": null,
+    "pose_seq": 0,
+    "lora_last_tx_fix": false,
+    "lora_last_tx_length": 144,
+    "usb_input_max_us": 35,
+    "usb_input_bytes": 0
+  },
+  "last_heartbeat": {
+    "type": "uwb_raw_status",
+    "schema": 2,
+    "tag_id": "6",
+    "firmware": "uwb-single-tag-v2.0-r3-bench-20261015",
+    "boot_id": 2230133969,
+    "session": 854514989,
+    "period_us": 25000,
+    "uwb_ready": true,
+    "serial_baud": 921600,
+    "anchor_layout_id": "warehouse-rectangle-6p3x4p6-z0p15-20261007",
+    "clock_domain": "esp32_monotonic_boot_us",
+    "anchor_count": 4,
+    "anchor_order": [
+      "A1",
+      "A2",
+      "A3",
+      "A4"
+    ],
+    "range_bias_applied": false,
+    "temporal_filter_applied": false,
+    "timestamp_method": "rf_poll_final_midpoint",
+    "rf_protocol": 2,
+    "clock_sync_valid": true,
+    "clock_generation": 2207449129,
+    "lora_schedule": "independent_monotonic_1hz",
+    "lora_ready": true,
+    "lora_tx_busy": false,
+    "lora_tx_attempts": 48,
+    "lora_tx_done": 48,
+    "lora_tx_timeouts": 0,
+    "lora_watchdog_timeouts": 0,
+    "lora_recoveries": 1,
+    "lora_rx_packets": 0,
+    "lora_rx_errors": 0,
+    "lora_service_max_us": 186881,
+    "uwb_recoveries": 1,
+    "input_invalid": 193,
+    "input_overflow": 1,
+    "aux_dropped": 0,
+    "raw_stale_dropped": 0,
+    "free_heap": 334948,
+    "min_free_heap": 333532,
+    "reset_reason": 1,
+    "display_ready": true,
+    "bench_controls": true,
+    "pose_received": false,
+    "pose_age_us": null,
+    "pose_seq": 0,
+    "lora_last_tx_fix": false,
+    "lora_last_tx_length": 146,
+    "usb_input_max_us": 901,
+    "usb_input_bytes": 59710
+  },
+  "lora_fix_true_heartbeats": 2
+}

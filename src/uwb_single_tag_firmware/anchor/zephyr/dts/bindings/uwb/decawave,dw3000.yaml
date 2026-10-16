@@ -1,0 +1,66 @@
+description: Qorvo/Decawave DW3000 SPI transceiver
+
+compatible: "decawave,dw3000"
+
+include: spi-device.yaml
+
+properties:
+  reset-gpios:
+    type: phandle-array
+    required: true
+    description: Reset pin, active low
+
+  irq-gpios:
+    type: phandle-array
+    required: true
+    description: Interrupt pin, active high
+
+  wakeup-gpios:
+    type: phandle-array
+    required: false
+    description: Wake pin, active high
+
+  spi-pol-gpios:
+    type: phandle-array
+    required: false
+    description: SPI polarity selection pin
+
+  spi-pha-gpios:
+    type: phandle-array
+    required: false
+    description: SPI phase selection pin
+
+  dwm-reset-gpios:
+    type: phandle-array
+    required: false
+    description: nRF52 DK reference-driver reset pin
+
+  dwm-irq-gpios:
+    type: phandle-array
+    required: false
+    description: nRF52 DK reference-driver interrupt pin
+
+  dwm-wakeup-gpios:
+    type: phandle-array
+    required: false
+    description: nRF52 DK reference-driver wake pin
+
+  dwm-rx-led-gpios:
+    type: phandle-array
+    required: false
+    description: nRF52 DK reference-driver RX indicator pin
+
+  dwm-tx-led-gpios:
+    type: phandle-array
+    required: false
+    description: nRF52 DK reference-driver TX indicator pin
+
+  dwm-spi-pol_gpios:
+    type: phandle-array
+    required: false
+    description: nRF52 DK reference-driver SPI polarity pin
+
+  dwm-spi-pha_gpios:
+    type: phandle-array
+    required: false
+    description: nRF52 DK reference-driver SPI phase pin

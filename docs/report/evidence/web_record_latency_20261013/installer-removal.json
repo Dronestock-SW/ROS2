@@ -1,0 +1,25 @@
+{
+  "removed": [
+    "cudnn-local-tegra-repo-ubuntu2204-9.3.0",
+    "l4t-cuda-tegra-repo-ubuntu2204-12-6-local",
+    "nv-tensorrt-local-tegra-repo-ubuntu2204-10.3.0-cuda-12.5"
+  ],
+  "added": [],
+  "changed": [],
+  "exit": 0,
+  "disk_before": "Filesystem       1B-blocks        Used  Available Use% Mounted on\n/dev/mmcblk0p1 61133864960 56014020608 2391896064  96% /\n",
+  "disk_after": "Filesystem       1B-blocks        Used  Available Use% Mounted on\n/dev/mmcblk0p1 61133864960 52453089280 5952827392  90% /\n",
+  "runtime_libraries_before": "{\"loaded\": [\"libcuda.so.1\", \"libcudart.so.12\", \"libcudnn.so.9\", \"libnvinfer.so.10\"]}\n",
+  "runtime_libraries_after": "{\"loaded\": [\"libcuda.so.1\", \"libcudart.so.12\", \"libcudnn.so.9\", \"libnvinfer.so.10\"]}\n",
+  "runtime_libraries_exit": 0,
+  "dpkg_audit_exit": 0,
+  "dpkg_audit": "",
+  "services_before": "MainPID=1534\nId=dronestock-manual-observe.service\nActiveState=active\n\nMainPID=1533\nId=dronestock-manual-lidar.service\nActiveState=active\n\nMainPID=1538\nId=sangwon-core.service\nActiveState=active\n",
+  "services_after": "MainPID=1534\nId=dronestock-manual-observe.service\nActiveState=active\n\nMainPID=1533\nId=dronestock-manual-lidar.service\nActiveState=active\n\nMainPID=1538\nId=sangwon-core.service\nActiveState=active\n",
+  "services_unchanged": true,
+  "integrity_before": "4e1d77b517fb06b66d7688301a9e53891c29d8181ea89851cf2d231a7f843d4c  /home/arialhanho/ROS2-review-20261008-codex/.review/fc-owned-runtime-20261013/native-build/sangwon_field_executor\n3639123968\t/home/arialhanho/.local/share/dronestock/manual-captures\n",
+  "integrity_after": "4e1d77b517fb06b66d7688301a9e53891c29d8181ea89851cf2d231a7f843d4c  /home/arialhanho/ROS2-review-20261008-codex/.review/fc-owned-runtime-20261013/native-build/sangwon_field_executor\n3639123968\t/home/arialhanho/.local/share/dronestock/manual-captures\n",
+  "integrity_unchanged": true,
+  "backups_created": false,
+  "flight_logs_deleted": false
+}

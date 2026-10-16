@@ -72,7 +72,7 @@
   },
   "provenance": {
     "algorithm": "final108 B_TF with per-anchor physical sample times",
-    "anchors_and_downward_sensor": "Temporary antenna stability test requested 2026-10-07: 6.3 x 4.6 m, anchor antenna centres 0.15 m above the common floor. Restore 2.2 m after this test. Physical layout not surveyed.",
+    "anchors_and_downward_sensor": "Current Tag B anchor layout reconfirmed by the operator on 2026-10-15: 6.3 x 4.6 m, all anchor antenna centres 0.15 m above the common floor. No automatic return to 2.2 m. This reconfirmation does not change this example's sensor mount or floor validation flags. Independent survey not completed.",
     "tof_to_tag_mount": "Tag B unmeasured; zero vector is a disabled placeholder",
     "timing": "ESP32 lower-envelope host mapping and MAVROS TIMESYNC; physical delay uncalibrated",
     "range_bias": "zero correction means uncalibrated, not zero physical bias"

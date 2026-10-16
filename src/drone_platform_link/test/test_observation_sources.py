@@ -4,6 +4,30 @@ import pytest
 from drone_platform_link.telemetry import Observations
 
 
+def test_live_jump_policy_is_per_stage_and_expires_without_mission():
+    o = Observations('btf_xy')
+    with patch('drone_platform_link.telemetry.time.monotonic', return_value=10.):
+        o.receive_uwb_pipeline('btf', {'jump_guard_enabled': False, 'last_reason': 'ready'})
+        o.receive_uwb_pipeline('sender', {'jump_guard_enabled': True, 'gate': 'ready'})
+        policy = o.fields()['uwb_pipeline']
+        assert policy['btf']['jump_guard_enabled'] is False
+        assert policy['sender']['jump_guard_enabled'] is True
+        o.receive_uwb_pipeline('sender', {'jump_guard_enabled': 'false'})
+        assert o.fields()['uwb_pipeline']['sender']['jump_guard_enabled'] is None
+    with patch('drone_platform_link.telemetry.time.monotonic', return_value=11.6):
+        assert o.fields()['uwb_pipeline'] == {}
+
+
+def test_actual_ai_identity_and_decision_state_reach_web_and_expire():
+    o=Observations('btf_xy')
+    ai=dict(backend='sangwon_cpp_bt',connected=True,phase='DWELL',plan_ref='plan',decision_sequence=12)
+    with patch('drone_platform_link.telemetry.time.monotonic',return_value=10.):
+        o.receive_mission(dict(state='DWELL',mission_ai=ai))
+        assert o.fields()['mission_ai']==ai
+    with patch('drone_platform_link.telemetry.time.monotonic',return_value=10.6):
+        assert 'mission_ai' not in o.fields()
+
+
 @pytest.mark.parametrize('source',['uwb_xy','btf_xy'])
 def test_xy_sources_never_export_pose_z_placeholder(source):
     o=Observations(source)
@@ -55,7 +79,8 @@ def test_btf_height_is_same_stamp_xyz_and_never_relabels_px4_height():
 def test_partial_scan_progress_reaches_web_and_expires_with_mission_state():
     progress=dict(scan_failure_policy='continue_remaining_tasks',attempted_task_ids=['P1','S1'],
                   remaining_task_ids=['P2','S2','P3'],failed_scan_task_ids=['S1'],route_complete=False,
-                  preflight={'checked_inputs_passed':False,'blockers':['rc']},home_xy_m=[2.,2.],fc_landed=1)
+                  preflight={'checked_inputs_passed':False,'blockers':['rc']},home_xy_m=[2.,2.],
+                  mission_start_xy_m=[2.2,2.1],mission_start_capture={'position_hold_s':5.},fc_landed=1)
     o=Observations('btf_xy')
     with patch('drone_platform_link.telemetry.time.monotonic',return_value=10.):
         o.receive_mission(dict(state='MOVING',**progress))
@@ -63,6 +88,21 @@ def test_partial_scan_progress_reaches_web_and_expires_with_mission_state():
     with patch('drone_platform_link.telemetry.time.monotonic',return_value=10.6):
         assert 'remaining_task_ids' not in o.fields()
         assert 'preflight' not in o.fields()
+        assert 'mission_start_xy_m' not in o.fields()
+        assert 'mission_start_capture' not in o.fields()
+
+
+def test_report_delay_summary_reaches_web_without_bulk_record_payload():
+    o=Observations('btf_xy')
+    policy=dict(mode='REPORT_DELAY',progress_held=False,warnings=['bridge_report_delayed'])
+    with patch('drone_platform_link.telemetry.time.monotonic',return_value=10.):
+        o.receive_mission(dict(state='DWELL',observation_status=policy,recording_ok=True,
+            executor_backend='sangwon_cpp_executor',executor_owner='cpp_executor',executor_session='session',
+            input_snapshot={'private_bulk_evidence':'record_file_only'}))
+        fields=o.fields()
+    assert fields['observation_status']==policy and fields['recording_ok'] is True
+    assert fields['executor_backend']=='sangwon_cpp_executor' and fields['executor_session']=='session'
+    assert 'input_snapshot' not in fields
 
 
 @pytest.mark.parametrize('armed', [False, True])

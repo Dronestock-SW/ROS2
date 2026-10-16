@@ -1,0 +1,15 @@
+{
+  "source_commit": "82e3bf171eef51bb1707c7331c20dbd40a1ec0a3",
+  "total": 730,
+  "missing": [],
+  "mismatch": [],
+  "line_endings_only": [
+    "src/drone_mission/drone_mission/observation_policy.py",
+    "src/drone_mission/test/test_fc_owned_runtime.py",
+    "src/drone_mission/test/test_recording.py",
+    "src/sangwon_AI/tests/test_integrated_launcher.py"
+  ],
+  "verified_symlinks": 20,
+  "native_binary_sha256": "4e1d77b517fb06b66d7688301a9e53891c29d8181ea89851cf2d231a7f843d4c",
+  "physical_flight": false
+}

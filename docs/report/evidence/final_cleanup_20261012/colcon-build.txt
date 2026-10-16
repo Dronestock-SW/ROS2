@@ -1,0 +1,10 @@
+Starting >>> drone_uwb
+Starting >>> drone_platform_link
+Finished <<< drone_platform_link [4.53s]
+Finished <<< drone_uwb [5.01s]
+Starting >>> drone_demo
+Finished <<< drone_demo [3.77s]
+Starting >>> drone_mission
+Finished <<< drone_mission [4.28s]
+
+Summary: 4 packages finished [14.1s]

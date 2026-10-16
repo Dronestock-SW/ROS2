@@ -84,31 +84,31 @@ def test_speed_requires_sufficient_consistent_accepted_history():
     assert not p.check(2_500_000_000,[4.25,2.],eligible=True,key=1)[0]
 
 
-def test_raw_guard_recovers_motion_but_default_px4_bridge_guard_is_unchanged():
+def test_raw_and_sender_guards_only_require_temporal_recovery_after_gap():
     moving=ObservationGuard(motion_recovery=True);legacy=ObservationGuard()
     for i in range(41):
         t=1.+i*.025
         for g in [moving,legacy]:g.check((t,2.),round(t*1e9))
-    old=moving.prior_xy
     reasons=[]
     for i in range(7):
         t=2.5+i*.025
         reasons.append(moving.check((t,2.),round(t*1e9)))
-        assert legacy.check((t,2.),round(t*1e9))=='observation_jump_quarantined'
-        if i<6:assert moving.prior_xy==old
-    assert reasons[-1]=='observation_motion_reacquired'
+        assert legacy.check((t,2.),round(t*1e9))==reasons[-1]
+        assert moving.prior_xy==pytest.approx((t,2.))
+    assert reasons[0]=='observation_recovering'
+    assert reasons[-1]=='ready'
     assert moving.prior_xy==pytest.approx((2.65,2.))
-    assert moving.motion_evidence['ready']
+    assert moving.motion_evidence is None
 
 
-def test_raw_continuous_jump_remains_frozen_even_if_later_model_would_match():
+def test_raw_continuous_step_no_longer_freezes_observation_origin():
     g=ObservationGuard(motion_recovery=True)
     for i in range(41):g.check((1.+i*.025,2.),1_000_000_000+i*25_000_000)
     old=g.prior_xy
     for i in range(120):
-        assert g.check((3.,2.),2_025_000_000+i*25_000_000)=='observation_jump_quarantined'
-        assert g.prior_xy==old
-    assert g.motion_evidence['reason']=='continuous_step_freeze'
+        assert g.check((3.,2.),2_025_000_000+i*25_000_000)=='ready'
+        assert g.prior_xy==(3.,2.)
+    assert g.motion_evidence is None
     assert g.check(old,6_000_000_000)=='observation_recovering'
 
 
@@ -164,7 +164,8 @@ def test_full_measured_pipeline_restores_moving_b4_after_gap(outage):
             p.height.add('imu',dict(stamp_ns=stamp,valid=True,quaternion_wxyz=[1,0,0,0]))
             p.height.add('tof',dict(stamp_ns=stamp,valid=True,range_m=1.))
         d=p.process(event(msg,end));results.append((seq,d))
-    assert any(d.get('raw_motion_reacquisition',{}).get('ready') for _,d in results)
+    assert all(d.get('jump_guard_enabled') is False for _,d in results)
+    assert any(seq >= 120 and d['ok'] for seq,d in results)
     final=results[-1][1]
     assert final['ok']
     assert final['xy_m']==pytest.approx([1.+.8*final['time_us']/1e6,2.],abs=.002)

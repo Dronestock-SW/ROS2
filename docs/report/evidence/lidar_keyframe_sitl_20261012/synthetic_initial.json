@@ -1,0 +1,2307 @@
+{
+  "schema": 1,
+  "source": "synthetic_raycast",
+  "config": {
+    "range_min_m": 0.2,
+    "edge_m": 0.3,
+    "eigen_ratio": 0.12,
+    "correspondence_m": 0.2,
+    "huber_m": 0.03,
+    "trim_quantile": 0.9,
+    "iterations": 30,
+    "min_correspondences": 60,
+    "min_overlap": 0.5,
+    "residual_p90_m": 0.05,
+    "max_condition": 1000.0,
+    "max_pair_translation_m": 0.2,
+    "max_pair_yaw_rad": 0.17453292519943295,
+    "max_gap_s": 0.25,
+    "reverse_translation_m": 0.02,
+    "reverse_yaw_rad": 0.005235987755982988,
+    "imu_yaw_tolerance_rad": 0.017453292519943295,
+    "keyframe_translation_m": 0.35,
+    "keyframe_yaw_rad": 0.20943951023931956
+  },
+  "original_baseline_reproduced": false,
+  "results": [
+    {
+      "case": "static",
+      "seed": 11,
+      "scans": 401,
+      "intervals": 400,
+      "accepted": 400,
+      "acceptance_fraction": 1.0,
+      "pair_accepted": 400,
+      "pair_unwrapped_yaw_deg": -0.01895752355692962,
+      "keyframes": 1,
+      "reasons": {
+        "new_segment": 1
+      },
+      "error": {
+        "pair": {
+          "xy": {
+            "n": 400,
+            "rms": 0.0027457433689600805,
+            "p95": 0.005597436209482873,
+            "maximum": 0.006724508226027533
+          },
+          "yaw_deg": {
+            "n": 400,
+            "rms": 0.023744954272003772,
+            "p95": 0.04457951995584952,
+            "maximum": 0.053266974860146754
+          },
+          "velocity": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          }
+        },
+        "keyframe_imu": {
+          "xy": {
+            "n": 400,
+            "rms": 0.0004090293205002792,
+            "p95": 0.0006825107739837909,
+            "maximum": 0.0011451330789430806
+          },
+          "yaw_deg": {
+            "n": 400,
+            "rms": 0.005504886673220336,
+            "p95": 0.010354255719379658,
+            "maximum": 0.020627983563975834
+          },
+          "velocity": {
+            "n": 400,
+            "rms": 0.005589682641603013,
+            "p95": 0.00982496961664141,
+            "maximum": 0.016232852728113444
+          }
+        }
+      },
+      "preprocess_bidirectional_s": {
+        "n": 401,
+        "rms": 0.006402875658311957,
+        "p95": 0.008029799908399582,
+        "maximum": 0.017046699998900294
+      },
+      "scope": "synthetic planar instantaneous rays; not original capture, driver, deskew, or flight validation"
+    },
+    {
+      "case": "static",
+      "seed": 22,
+      "scans": 401,
+      "intervals": 400,
+      "accepted": 400,
+      "acceptance_fraction": 1.0,
+      "pair_accepted": 400,
+      "pair_unwrapped_yaw_deg": -0.006493913783664888,
+      "keyframes": 1,
+      "reasons": {
+        "new_segment": 1
+      },
+      "error": {
+        "pair": {
+          "xy": {
+            "n": 400,
+            "rms": 0.0069407342236469305,
+            "p95": 0.010481716262733956,
+            "maximum": 0.012183462932981717
+          },
+          "yaw_deg": {
+            "n": 400,
+            "rms": 0.05594100917824666,
+            "p95": 0.0883288571992221,
+            "maximum": 0.10576827288011849
+          },
+          "velocity": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          }
+        },
+        "keyframe_imu": {
+          "xy": {
+            "n": 400,
+            "rms": 0.0006521564372775094,
+            "p95": 0.001107962400066222,
+            "maximum": 0.0014310408041370362
+          },
+          "yaw_deg": {
+            "n": 400,
+            "rms": 0.005219280819448581,
+            "p95": 0.009963614514358723,
+            "maximum": 0.01982973319936223
+          },
+          "velocity": {
+            "n": 400,
+            "rms": 0.0057976431851905355,
+            "p95": 0.010992375172300539,
+            "maximum": 0.01683317326163496
+          }
+        }
+      },
+      "preprocess_bidirectional_s": {
+        "n": 401,
+        "rms": 0.006906694687011977,
+        "p95": 0.00865130010060966,
+        "maximum": 0.016228499822318554
+      },
+      "scope": "synthetic planar instantaneous rays; not original capture, driver, deskew, or flight validation"
+    },
+    {
+      "case": "static",
+      "seed": 33,
+      "scans": 401,
+      "intervals": 400,
+      "accepted": 400,
+      "acceptance_fraction": 1.0,
+      "pair_accepted": 400,
+      "pair_unwrapped_yaw_deg": -0.07285620899861552,
+      "keyframes": 1,
+      "reasons": {
+        "new_segment": 1
+      },
+      "error": {
+        "pair": {
+          "xy": {
+            "n": 400,
+            "rms": 0.0020795531935959345,
+            "p95": 0.003517340284832057,
+            "maximum": 0.00419936488809772
+          },
+          "yaw_deg": {
+            "n": 400,
+            "rms": 0.03450430463444696,
+            "p95": 0.06591138272663576,
+            "maximum": 0.08381476866880913
+          },
+          "velocity": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          }
+        },
+        "keyframe_imu": {
+          "xy": {
+            "n": 400,
+            "rms": 0.0005295320985762494,
+            "p95": 0.0009176293145699671,
+            "maximum": 0.0012602692460944689
+          },
+          "yaw_deg": {
+            "n": 400,
+            "rms": 0.00681720445708692,
+            "p95": 0.013005754166529477,
+            "maximum": 0.025435573910546825
+          },
+          "velocity": {
+            "n": 400,
+            "rms": 0.006032615458843353,
+            "p95": 0.010447956578852592,
+            "maximum": 0.014342096042448729
+          }
+        }
+      },
+      "preprocess_bidirectional_s": {
+        "n": 401,
+        "rms": 0.007433767769390571,
+        "p95": 0.009695399785414338,
+        "maximum": 0.017947799991816282
+      },
+      "scope": "synthetic planar instantaneous rays; not original capture, driver, deskew, or flight validation"
+    },
+    {
+      "case": "static",
+      "seed": 44,
+      "scans": 401,
+      "intervals": 400,
+      "accepted": 400,
+      "acceptance_fraction": 1.0,
+      "pair_accepted": 400,
+      "pair_unwrapped_yaw_deg": 0.0036555289498554073,
+      "keyframes": 1,
+      "reasons": {
+        "new_segment": 1
+      },
+      "error": {
+        "pair": {
+          "xy": {
+            "n": 400,
+            "rms": 0.002681572508530449,
+            "p95": 0.0037583020857608453,
+            "maximum": 0.004837653196973728
+          },
+          "yaw_deg": {
+            "n": 400,
+            "rms": 0.0183860151222543,
+            "p95": 0.04242070425061727,
+            "maximum": 0.052722845376724135
+          },
+          "velocity": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          }
+        },
+        "keyframe_imu": {
+          "xy": {
+            "n": 400,
+            "rms": 0.00044013543664947496,
+            "p95": 0.0007631428141130195,
+            "maximum": 0.0012053618521038032
+          },
+          "yaw_deg": {
+            "n": 400,
+            "rms": 0.005810782019673326,
+            "p95": 0.011252588658052353,
+            "maximum": 0.020050837925062397
+          },
+          "velocity": {
+            "n": 400,
+            "rms": 0.005613320169985796,
+            "p95": 0.010010511766544402,
+            "maximum": 0.01617406591994853
+          }
+        }
+      },
+      "preprocess_bidirectional_s": {
+        "n": 401,
+        "rms": 0.006460426324647153,
+        "p95": 0.008223799988627434,
+        "maximum": 0.011076699942350388
+      },
+      "scope": "synthetic planar instantaneous rays; not original capture, driver, deskew, or flight validation"
+    },
+    {
+      "case": "static",
+      "seed": 55,
+      "scans": 401,
+      "intervals": 400,
+      "accepted": 400,
+      "acceptance_fraction": 1.0,
+      "pair_accepted": 400,
+      "pair_unwrapped_yaw_deg": 0.025532746207022568,
+      "keyframes": 1,
+      "reasons": {
+        "new_segment": 1
+      },
+      "error": {
+        "pair": {
+          "xy": {
+            "n": 400,
+            "rms": 0.0026546696001571394,
+            "p95": 0.0041218832018220805,
+            "maximum": 0.004867434553259456
+          },
+          "yaw_deg": {
+            "n": 400,
+            "rms": 0.023207917820535946,
+            "p95": 0.044094680446689176,
+            "maximum": 0.06001099689230706
+          },
+          "velocity": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          }
+        },
+        "keyframe_imu": {
+          "xy": {
+            "n": 400,
+            "rms": 0.0004569405370826137,
+            "p95": 0.0008312742295095966,
+            "maximum": 0.0015133514893683904
+          },
+          "yaw_deg": {
+            "n": 400,
+            "rms": 0.009362907378736964,
+            "p95": 0.01674010831726296,
+            "maximum": 0.02293973477605953
+          },
+          "velocity": {
+            "n": 400,
+            "rms": 0.006168867691142721,
+            "p95": 0.010935880967511299,
+            "maximum": 0.018778720301554593
+          }
+        }
+      },
+      "preprocess_bidirectional_s": {
+        "n": 401,
+        "rms": 0.007104206212673852,
+        "p95": 0.009052399778738618,
+        "maximum": 0.016919900197535753
+      },
+      "scope": "synthetic planar instantaneous rays; not original capture, driver, deskew, or flight validation"
+    },
+    {
+      "case": "xy",
+      "seed": 11,
+      "scans": 401,
+      "intervals": 400,
+      "accepted": 356,
+      "acceptance_fraction": 0.89,
+      "pair_accepted": 399,
+      "pair_unwrapped_yaw_deg": -0.07259182709394406,
+      "keyframes": 9,
+      "reasons": {
+        "new_segment": 1,
+        "not_converged": 15,
+        "reacquired_pose_only": 21,
+        "reverse_rejected": 8
+      },
+      "error": {
+        "pair": {
+          "xy": {
+            "n": 400,
+            "rms": 0.01119298560119861,
+            "p95": 0.020428149215128786,
+            "maximum": 0.021220895928895322
+          },
+          "yaw_deg": {
+            "n": 400,
+            "rms": 0.043236937284025105,
+            "p95": 0.07356996119472527,
+            "maximum": 0.08511400253041133
+          },
+          "velocity": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          }
+        },
+        "keyframe_imu": {
+          "xy": {
+            "n": 356,
+            "rms": 0.0005013862950903605,
+            "p95": 0.0008404364064107884,
+            "maximum": 0.0016435299645233864
+          },
+          "yaw_deg": {
+            "n": 356,
+            "rms": 0.006067384373079653,
+            "p95": 0.011681811074755601,
+            "maximum": 0.022582453016280497
+          },
+          "velocity": {
+            "n": 356,
+            "rms": 0.006333463679219901,
+            "p95": 0.011060339289687514,
+            "maximum": 0.019736546271241835
+          }
+        }
+      },
+      "preprocess_bidirectional_s": {
+        "n": 401,
+        "rms": 0.010985699791671933,
+        "p95": 0.02113870019093156,
+        "maximum": 0.06971059995703399
+      },
+      "scope": "synthetic planar instantaneous rays; not original capture, driver, deskew, or flight validation"
+    },
+    {
+      "case": "xy",
+      "seed": 22,
+      "scans": 401,
+      "intervals": 400,
+      "accepted": 370,
+      "acceptance_fraction": 0.925,
+      "pair_accepted": 398,
+      "pair_unwrapped_yaw_deg": -0.04995623365456537,
+      "keyframes": 9,
+      "reasons": {
+        "new_segment": 1,
+        "reverse_rejected": 8,
+        "reacquired_pose_only": 15,
+        "not_converged": 7
+      },
+      "error": {
+        "pair": {
+          "xy": {
+            "n": 400,
+            "rms": 0.009374338599868755,
+            "p95": 0.02086426935790299,
+            "maximum": 0.02163322053279022
+          },
+          "yaw_deg": {
+            "n": 400,
+            "rms": 0.05909263070281176,
+            "p95": 0.0979909350750526,
+            "maximum": 0.11647401012718571
+          },
+          "velocity": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          }
+        },
+        "keyframe_imu": {
+          "xy": {
+            "n": 370,
+            "rms": 0.0014087395491184014,
+            "p95": 0.002536598914624746,
+            "maximum": 0.003207342505684916
+          },
+          "yaw_deg": {
+            "n": 370,
+            "rms": 0.011098052472613423,
+            "p95": 0.02057517065945522,
+            "maximum": 0.03285783909574001
+          },
+          "velocity": {
+            "n": 370,
+            "rms": 0.006630443836154921,
+            "p95": 0.01157809605960022,
+            "maximum": 0.018096489645759276
+          }
+        }
+      },
+      "preprocess_bidirectional_s": {
+        "n": 401,
+        "rms": 0.00987707846693867,
+        "p95": 0.012310600141063333,
+        "maximum": 0.02380800014361739
+      },
+      "scope": "synthetic planar instantaneous rays; not original capture, driver, deskew, or flight validation"
+    },
+    {
+      "case": "xy",
+      "seed": 33,
+      "scans": 401,
+      "intervals": 400,
+      "accepted": 348,
+      "acceptance_fraction": 0.87,
+      "pair_accepted": 399,
+      "pair_unwrapped_yaw_deg": -0.16478354304057513,
+      "keyframes": 9,
+      "reasons": {
+        "new_segment": 1,
+        "reverse_rejected": 16,
+        "reacquired_pose_only": 26,
+        "not_converged": 11
+      },
+      "error": {
+        "pair": {
+          "xy": {
+            "n": 400,
+            "rms": 0.00681369361514937,
+            "p95": 0.016804590074159926,
+            "maximum": 0.019492134765062927
+          },
+          "yaw_deg": {
+            "n": 400,
+            "rms": 0.07487363251642416,
+            "p95": 0.1433802014173514,
+            "maximum": 0.17591555607835288
+          },
+          "velocity": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          }
+        },
+        "keyframe_imu": {
+          "xy": {
+            "n": 348,
+            "rms": 0.000897210481582105,
+            "p95": 0.001479094638014307,
+            "maximum": 0.002710264621131884
+          },
+          "yaw_deg": {
+            "n": 348,
+            "rms": 0.007678606820995496,
+            "p95": 0.016145837999883606,
+            "maximum": 0.02161600743168594
+          },
+          "velocity": {
+            "n": 348,
+            "rms": 0.006566909785953984,
+            "p95": 0.01155749834876238,
+            "maximum": 0.01740932233092673
+          }
+        }
+      },
+      "preprocess_bidirectional_s": {
+        "n": 401,
+        "rms": 0.010882066701447063,
+        "p95": 0.02171280002221465,
+        "maximum": 0.03411370003595948
+      },
+      "scope": "synthetic planar instantaneous rays; not original capture, driver, deskew, or flight validation"
+    },
+    {
+      "case": "xy",
+      "seed": 44,
+      "scans": 401,
+      "intervals": 400,
+      "accepted": 362,
+      "acceptance_fraction": 0.905,
+      "pair_accepted": 400,
+      "pair_unwrapped_yaw_deg": 0.10296209022925863,
+      "keyframes": 9,
+      "reasons": {
+        "new_segment": 1,
+        "not_converged": 14,
+        "reacquired_pose_only": 19,
+        "reverse_rejected": 5
+      },
+      "error": {
+        "pair": {
+          "xy": {
+            "n": 400,
+            "rms": 0.003464888655267115,
+            "p95": 0.004640557311970378,
+            "maximum": 0.005038445719408079
+          },
+          "yaw_deg": {
+            "n": 400,
+            "rms": 0.09025771493149026,
+            "p95": 0.1257339864545304,
+            "maximum": 0.14742571282226355
+          },
+          "velocity": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          }
+        },
+        "keyframe_imu": {
+          "xy": {
+            "n": 362,
+            "rms": 0.0005525075744201575,
+            "p95": 0.0009766591960611146,
+            "maximum": 0.0017277577555169963
+          },
+          "yaw_deg": {
+            "n": 362,
+            "rms": 0.015262685076759592,
+            "p95": 0.025626738279981288,
+            "maximum": 0.031837031243132946
+          },
+          "velocity": {
+            "n": 362,
+            "rms": 0.006226067850094944,
+            "p95": 0.01068552124046243,
+            "maximum": 0.017048145865489143
+          }
+        }
+      },
+      "preprocess_bidirectional_s": {
+        "n": 401,
+        "rms": 0.011495778729028487,
+        "p95": 0.021076800068840384,
+        "maximum": 0.08986809989437461
+      },
+      "scope": "synthetic planar instantaneous rays; not original capture, driver, deskew, or flight validation"
+    },
+    {
+      "case": "xy",
+      "seed": 55,
+      "scans": 401,
+      "intervals": 400,
+      "accepted": 358,
+      "acceptance_fraction": 0.895,
+      "pair_accepted": 400,
+      "pair_unwrapped_yaw_deg": 0.001312894734938315,
+      "keyframes": 9,
+      "reasons": {
+        "new_segment": 1,
+        "not_converged": 8,
+        "reverse_rejected": 15,
+        "reacquired_pose_only": 20
+      },
+      "error": {
+        "pair": {
+          "xy": {
+            "n": 400,
+            "rms": 0.003503062527644865,
+            "p95": 0.006850938791236215,
+            "maximum": 0.007621508788928974
+          },
+          "yaw_deg": {
+            "n": 400,
+            "rms": 0.03690372575831602,
+            "p95": 0.06564633450289317,
+            "maximum": 0.07780460499151276
+          },
+          "velocity": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          }
+        },
+        "keyframe_imu": {
+          "xy": {
+            "n": 358,
+            "rms": 0.0008062448427780235,
+            "p95": 0.0012995600606280574,
+            "maximum": 0.0016956037918793951
+          },
+          "yaw_deg": {
+            "n": 358,
+            "rms": 0.01063524380689169,
+            "p95": 0.019368385139383725,
+            "maximum": 0.02434304037594179
+          },
+          "velocity": {
+            "n": 358,
+            "rms": 0.006564040454846146,
+            "p95": 0.011716471831819023,
+            "maximum": 0.015088910875250482
+          }
+        }
+      },
+      "preprocess_bidirectional_s": {
+        "n": 401,
+        "rms": 0.010239586962673474,
+        "p95": 0.021144900005310774,
+        "maximum": 0.03525950014591217
+      },
+      "scope": "synthetic planar instantaneous rays; not original capture, driver, deskew, or flight validation"
+    },
+    {
+      "case": "yaw",
+      "seed": 11,
+      "scans": 401,
+      "intervals": 400,
+      "accepted": 327,
+      "acceptance_fraction": 0.8175,
+      "pair_accepted": 368,
+      "pair_unwrapped_yaw_deg": -0.6745475002181996,
+      "keyframes": 8,
+      "reasons": {
+        "new_segment": 1,
+        "not_converged": 24,
+        "reacquired_pose_only": 34,
+        "reverse_rejected": 23
+      },
+      "error": {
+        "pair": {
+          "xy": {
+            "n": 400,
+            "rms": 0.0034421299528100075,
+            "p95": 0.005636117615366106,
+            "maximum": 0.006918192228487727
+          },
+          "yaw_deg": {
+            "n": 400,
+            "rms": 2.6763020381431004,
+            "p95": 3.612704522931855,
+            "maximum": 3.656047401363171
+          },
+          "velocity": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          }
+        },
+        "keyframe_imu": {
+          "xy": {
+            "n": 327,
+            "rms": 0.0008546157543890714,
+            "p95": 0.0013903802029185152,
+            "maximum": 0.001741422972252259
+          },
+          "yaw_deg": {
+            "n": 327,
+            "rms": 0.008132646057355331,
+            "p95": 0.015998186079505546,
+            "maximum": 0.023676866349259026
+          },
+          "velocity": {
+            "n": 327,
+            "rms": 0.005857826087595006,
+            "p95": 0.010225507010723214,
+            "maximum": 0.015861139921086332
+          }
+        }
+      },
+      "preprocess_bidirectional_s": {
+        "n": 401,
+        "rms": 0.010316397909315031,
+        "p95": 0.02206710004247725,
+        "maximum": 0.036276499973610044
+      },
+      "scope": "synthetic planar instantaneous rays; not original capture, driver, deskew, or flight validation"
+    },
+    {
+      "case": "yaw",
+      "seed": 22,
+      "scans": 401,
+      "intervals": 400,
+      "accepted": 360,
+      "acceptance_fraction": 0.9,
+      "pair_accepted": 374,
+      "pair_unwrapped_yaw_deg": 2.620441659763732,
+      "keyframes": 8,
+      "reasons": {
+        "new_segment": 1,
+        "not_converged": 15,
+        "reverse_rejected": 13,
+        "reacquired_pose_only": 19
+      },
+      "error": {
+        "pair": {
+          "xy": {
+            "n": 400,
+            "rms": 0.00520710689437749,
+            "p95": 0.007841544451185704,
+            "maximum": 0.008504640369270768
+          },
+          "yaw_deg": {
+            "n": 400,
+            "rms": 3.655754780496467,
+            "p95": 5.611002651039044,
+            "maximum": 5.6338976404639665
+          },
+          "velocity": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          }
+        },
+        "keyframe_imu": {
+          "xy": {
+            "n": 360,
+            "rms": 0.00064603095406124,
+            "p95": 0.0011004173493456674,
+            "maximum": 0.0015041857711531287
+          },
+          "yaw_deg": {
+            "n": 360,
+            "rms": 0.014105573227568067,
+            "p95": 0.02608717071211379,
+            "maximum": 0.040998033465719744
+          },
+          "velocity": {
+            "n": 360,
+            "rms": 0.0059347023800860625,
+            "p95": 0.010203364901088544,
+            "maximum": 0.01680622806383869
+          }
+        }
+      },
+      "preprocess_bidirectional_s": {
+        "n": 401,
+        "rms": 0.009164862113964849,
+        "p95": 0.019453200045973063,
+        "maximum": 0.03809990012086928
+      },
+      "scope": "synthetic planar instantaneous rays; not original capture, driver, deskew, or flight validation"
+    },
+    {
+      "case": "yaw",
+      "seed": 33,
+      "scans": 401,
+      "intervals": 400,
+      "accepted": 353,
+      "acceptance_fraction": 0.8825,
+      "pair_accepted": 371,
+      "pair_unwrapped_yaw_deg": -0.3978122828810272,
+      "keyframes": 8,
+      "reasons": {
+        "new_segment": 1,
+        "reverse_rejected": 17,
+        "reacquired_pose_only": 23,
+        "not_converged": 13
+      },
+      "error": {
+        "pair": {
+          "xy": {
+            "n": 400,
+            "rms": 0.0024359630499518003,
+            "p95": 0.004764414162055234,
+            "maximum": 0.0059536256783410185
+          },
+          "yaw_deg": {
+            "n": 400,
+            "rms": 2.5492038944371287,
+            "p95": 3.4401789432837324,
+            "maximum": 3.458568506804901
+          },
+          "velocity": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          }
+        },
+        "keyframe_imu": {
+          "xy": {
+            "n": 353,
+            "rms": 0.0008181673053805212,
+            "p95": 0.001361170460380699,
+            "maximum": 0.00177715976273978
+          },
+          "yaw_deg": {
+            "n": 353,
+            "rms": 0.007455699117308816,
+            "p95": 0.014740689953527697,
+            "maximum": 0.0311313488356978
+          },
+          "velocity": {
+            "n": 353,
+            "rms": 0.005806086600938794,
+            "p95": 0.010653660459044399,
+            "maximum": 0.015210718865882359
+          }
+        }
+      },
+      "preprocess_bidirectional_s": {
+        "n": 401,
+        "rms": 0.009257886817395,
+        "p95": 0.020544799976050854,
+        "maximum": 0.034584200009703636
+      },
+      "scope": "synthetic planar instantaneous rays; not original capture, driver, deskew, or flight validation"
+    },
+    {
+      "case": "yaw",
+      "seed": 44,
+      "scans": 401,
+      "intervals": 400,
+      "accepted": 356,
+      "acceptance_fraction": 0.89,
+      "pair_accepted": 362,
+      "pair_unwrapped_yaw_deg": -3.7752456069997224,
+      "keyframes": 9,
+      "reasons": {
+        "new_segment": 1,
+        "not_converged": 14,
+        "reacquired_pose_only": 21,
+        "reverse_rejected": 13
+      },
+      "error": {
+        "pair": {
+          "xy": {
+            "n": 400,
+            "rms": 0.001138440064515084,
+            "p95": 0.001953648368096319,
+            "maximum": 0.002534191916237184
+          },
+          "yaw_deg": {
+            "n": 400,
+            "rms": 2.9444975324799887,
+            "p95": 4.375088089116688,
+            "maximum": 4.3899682146578565
+          },
+          "velocity": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          }
+        },
+        "keyframe_imu": {
+          "xy": {
+            "n": 356,
+            "rms": 0.000846721322101056,
+            "p95": 0.0014234824943736304,
+            "maximum": 0.0017892483752940192
+          },
+          "yaw_deg": {
+            "n": 356,
+            "rms": 0.013507067139261796,
+            "p95": 0.024656159123729118,
+            "maximum": 0.038342278729162724
+          },
+          "velocity": {
+            "n": 356,
+            "rms": 0.005766229739296677,
+            "p95": 0.009609763500549609,
+            "maximum": 0.015323393082826008
+          }
+        }
+      },
+      "preprocess_bidirectional_s": {
+        "n": 401,
+        "rms": 0.010246715967247166,
+        "p95": 0.022234899923205376,
+        "maximum": 0.04125109990127385
+      },
+      "scope": "synthetic planar instantaneous rays; not original capture, driver, deskew, or flight validation"
+    },
+    {
+      "case": "yaw",
+      "seed": 55,
+      "scans": 401,
+      "intervals": 400,
+      "accepted": 348,
+      "acceptance_fraction": 0.87,
+      "pair_accepted": 361,
+      "pair_unwrapped_yaw_deg": -1.3916517157390276,
+      "keyframes": 8,
+      "reasons": {
+        "new_segment": 1,
+        "not_converged": 22,
+        "reacquired_pose_only": 23,
+        "reverse_rejected": 16
+      },
+      "error": {
+        "pair": {
+          "xy": {
+            "n": 400,
+            "rms": 0.0076276225352303745,
+            "p95": 0.011653823633067899,
+            "maximum": 0.012915199036814828
+          },
+          "yaw_deg": {
+            "n": 400,
+            "rms": 3.2239551876740893,
+            "p95": 3.944486294768958,
+            "maximum": 3.9777913525270576
+          },
+          "velocity": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          }
+        },
+        "keyframe_imu": {
+          "xy": {
+            "n": 348,
+            "rms": 0.0009468395284866904,
+            "p95": 0.0015158970436885083,
+            "maximum": 0.0021505382370642138
+          },
+          "yaw_deg": {
+            "n": 348,
+            "rms": 0.020186898568636157,
+            "p95": 0.03035677165928133,
+            "maximum": 0.03630220317376288
+          },
+          "velocity": {
+            "n": 348,
+            "rms": 0.00593233557384693,
+            "p95": 0.011477302925802152,
+            "maximum": 0.020121035859726993
+          }
+        }
+      },
+      "preprocess_bidirectional_s": {
+        "n": 401,
+        "rms": 0.013495134773124334,
+        "p95": 0.030026499880477786,
+        "maximum": 0.06502740015275776
+      },
+      "scope": "synthetic planar instantaneous rays; not original capture, driver, deskew, or flight validation"
+    },
+    {
+      "case": "mixed",
+      "seed": 11,
+      "scans": 401,
+      "intervals": 400,
+      "accepted": 370,
+      "acceptance_fraction": 0.925,
+      "pair_accepted": 383,
+      "pair_unwrapped_yaw_deg": -0.49130202916851407,
+      "keyframes": 10,
+      "reasons": {
+        "new_segment": 1,
+        "reverse_rejected": 7,
+        "reacquired_pose_only": 15,
+        "not_converged": 8
+      },
+      "error": {
+        "pair": {
+          "xy": {
+            "n": 400,
+            "rms": 0.04746932140509301,
+            "p95": 0.06442404898859214,
+            "maximum": 0.06612130261900578
+          },
+          "yaw_deg": {
+            "n": 400,
+            "rms": 0.9698838298444017,
+            "p95": 1.5991318200293974,
+            "maximum": 1.6373633179823714
+          },
+          "velocity": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          }
+        },
+        "keyframe_imu": {
+          "xy": {
+            "n": 370,
+            "rms": 0.0008460579049568268,
+            "p95": 0.0013506586065559893,
+            "maximum": 0.0017150809653298613
+          },
+          "yaw_deg": {
+            "n": 370,
+            "rms": 0.013330749434722951,
+            "p95": 0.024242602802431023,
+            "maximum": 0.03257241270008897
+          },
+          "velocity": {
+            "n": 370,
+            "rms": 0.00637357393206884,
+            "p95": 0.011434707480742665,
+            "maximum": 0.016779772036575578
+          }
+        }
+      },
+      "preprocess_bidirectional_s": {
+        "n": 401,
+        "rms": 0.013820898036701577,
+        "p95": 0.01934280013665557,
+        "maximum": 0.050234399968758225
+      },
+      "scope": "synthetic planar instantaneous rays; not original capture, driver, deskew, or flight validation"
+    },
+    {
+      "case": "mixed",
+      "seed": 22,
+      "scans": 401,
+      "intervals": 400,
+      "accepted": 356,
+      "acceptance_fraction": 0.89,
+      "pair_accepted": 381,
+      "pair_unwrapped_yaw_deg": -0.2560753153928968,
+      "keyframes": 10,
+      "reasons": {
+        "new_segment": 1,
+        "reverse_rejected": 10,
+        "reacquired_pose_only": 22,
+        "not_converged": 12
+      },
+      "error": {
+        "pair": {
+          "xy": {
+            "n": 400,
+            "rms": 0.03848813354571336,
+            "p95": 0.06370461762895448,
+            "maximum": 0.07911487494607002
+          },
+          "yaw_deg": {
+            "n": 400,
+            "rms": 1.159579817208807,
+            "p95": 1.888878591828093,
+            "maximum": 1.9034964928626878
+          },
+          "velocity": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          }
+        },
+        "keyframe_imu": {
+          "xy": {
+            "n": 356,
+            "rms": 0.0010512858412851404,
+            "p95": 0.0019826463586139313,
+            "maximum": 0.0026485118669957457
+          },
+          "yaw_deg": {
+            "n": 356,
+            "rms": 0.00957032348560189,
+            "p95": 0.01883716836016148,
+            "maximum": 0.025872775847269006
+          },
+          "velocity": {
+            "n": 356,
+            "rms": 0.006523153119777535,
+            "p95": 0.011592238364533394,
+            "maximum": 0.01895655807770525
+          }
+        }
+      },
+      "preprocess_bidirectional_s": {
+        "n": 401,
+        "rms": 0.015402007738230281,
+        "p95": 0.029423499945551157,
+        "maximum": 0.04134829994291067
+      },
+      "scope": "synthetic planar instantaneous rays; not original capture, driver, deskew, or flight validation"
+    },
+    {
+      "case": "mixed",
+      "seed": 33,
+      "scans": 401,
+      "intervals": 400,
+      "accepted": 365,
+      "acceptance_fraction": 0.9125,
+      "pair_accepted": 385,
+      "pair_unwrapped_yaw_deg": 0.1742356700993536,
+      "keyframes": 10,
+      "reasons": {
+        "new_segment": 1,
+        "not_converged": 8,
+        "reacquired_pose_only": 17,
+        "reverse_rejected": 10
+      },
+      "error": {
+        "pair": {
+          "xy": {
+            "n": 400,
+            "rms": 0.031149788139491007,
+            "p95": 0.04546252367527887,
+            "maximum": 0.048509892394027775
+          },
+          "yaw_deg": {
+            "n": 400,
+            "rms": 0.874050452023794,
+            "p95": 1.4379146910865281,
+            "maximum": 1.4648878249307697
+          },
+          "velocity": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          }
+        },
+        "keyframe_imu": {
+          "xy": {
+            "n": 365,
+            "rms": 0.0010445888412902163,
+            "p95": 0.001595507677258108,
+            "maximum": 0.002045834849704588
+          },
+          "yaw_deg": {
+            "n": 365,
+            "rms": 0.011276886660384526,
+            "p95": 0.021391331815700566,
+            "maximum": 0.030557652771431895
+          },
+          "velocity": {
+            "n": 365,
+            "rms": 0.006306365771294501,
+            "p95": 0.011156136905740672,
+            "maximum": 0.01583817334756877
+          }
+        }
+      },
+      "preprocess_bidirectional_s": {
+        "n": 401,
+        "rms": 0.015728983183532202,
+        "p95": 0.029388299910351634,
+        "maximum": 0.11185360001400113
+      },
+      "scope": "synthetic planar instantaneous rays; not original capture, driver, deskew, or flight validation"
+    },
+    {
+      "case": "mixed",
+      "seed": 44,
+      "scans": 401,
+      "intervals": 400,
+      "accepted": 349,
+      "acceptance_fraction": 0.8725,
+      "pair_accepted": 388,
+      "pair_unwrapped_yaw_deg": 1.1712483579036475,
+      "keyframes": 10,
+      "reasons": {
+        "new_segment": 1,
+        "not_converged": 12,
+        "reacquired_pose_only": 24,
+        "reverse_rejected": 15
+      },
+      "error": {
+        "pair": {
+          "xy": {
+            "n": 400,
+            "rms": 0.03395618230451494,
+            "p95": 0.0516975791196127,
+            "maximum": 0.05451622919878214
+          },
+          "yaw_deg": {
+            "n": 400,
+            "rms": 1.1709526890830886,
+            "p95": 1.861047503945297,
+            "maximum": 1.8848791389238446
+          },
+          "velocity": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          }
+        },
+        "keyframe_imu": {
+          "xy": {
+            "n": 349,
+            "rms": 0.0007184597893756949,
+            "p95": 0.0012030491527223982,
+            "maximum": 0.0017978259799854145
+          },
+          "yaw_deg": {
+            "n": 349,
+            "rms": 0.012056600978800194,
+            "p95": 0.023035347265162834,
+            "maximum": 0.0346342305801394
+          },
+          "velocity": {
+            "n": 349,
+            "rms": 0.005999719398947958,
+            "p95": 0.010378797523510277,
+            "maximum": 0.014613874335066114
+          }
+        }
+      },
+      "preprocess_bidirectional_s": {
+        "n": 401,
+        "rms": 0.01531485301393351,
+        "p95": 0.030424199998378754,
+        "maximum": 0.04042460001073778
+      },
+      "scope": "synthetic planar instantaneous rays; not original capture, driver, deskew, or flight validation"
+    },
+    {
+      "case": "mixed",
+      "seed": 55,
+      "scans": 401,
+      "intervals": 400,
+      "accepted": 359,
+      "acceptance_fraction": 0.8975,
+      "pair_accepted": 385,
+      "pair_unwrapped_yaw_deg": -0.8885776107488292,
+      "keyframes": 10,
+      "reasons": {
+        "new_segment": 1,
+        "not_converged": 10,
+        "reacquired_pose_only": 20,
+        "reverse_rejected": 11
+      },
+      "error": {
+        "pair": {
+          "xy": {
+            "n": 400,
+            "rms": 0.0365625190458478,
+            "p95": 0.06692777207273466,
+            "maximum": 0.06778617998788414
+          },
+          "yaw_deg": {
+            "n": 400,
+            "rms": 0.6163933906706482,
+            "p95": 0.8963152373702743,
+            "maximum": 0.9286349205734483
+          },
+          "velocity": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          }
+        },
+        "keyframe_imu": {
+          "xy": {
+            "n": 359,
+            "rms": 0.0008947701501719065,
+            "p95": 0.001451078449941432,
+            "maximum": 0.002256045307726409
+          },
+          "yaw_deg": {
+            "n": 359,
+            "rms": 0.007649502351430008,
+            "p95": 0.01423942912630016,
+            "maximum": 0.02331740717691062
+          },
+          "velocity": {
+            "n": 359,
+            "rms": 0.006644249024190882,
+            "p95": 0.011784287572245289,
+            "maximum": 0.020529564992689986
+          }
+        }
+      },
+      "preprocess_bidirectional_s": {
+        "n": 401,
+        "rms": 0.015122023484131721,
+        "p95": 0.029210400069132447,
+        "maximum": 0.04236360010690987
+      },
+      "scope": "synthetic planar instantaneous rays; not original capture, driver, deskew, or flight validation"
+    },
+    {
+      "case": "corridor",
+      "seed": 11,
+      "scans": 401,
+      "intervals": 400,
+      "accepted": 0,
+      "acceptance_fraction": 0.0,
+      "pair_accepted": 0,
+      "pair_unwrapped_yaw_deg": 0.0,
+      "keyframes": 1,
+      "reasons": {
+        "degenerate_geometry": 401,
+        "not_converged": 401
+      },
+      "error": {
+        "pair": {
+          "xy": {
+            "n": 400,
+            "rms": 0.0,
+            "p95": 0.0,
+            "maximum": 0.0
+          },
+          "yaw_deg": {
+            "n": 400,
+            "rms": 0.0,
+            "p95": 0.0,
+            "maximum": 0.0
+          },
+          "velocity": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          }
+        },
+        "keyframe_imu": {
+          "xy": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          },
+          "yaw_deg": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          },
+          "velocity": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          }
+        }
+      },
+      "preprocess_bidirectional_s": {
+        "n": 401,
+        "rms": 0.002597115387600541,
+        "p95": 0.00319129996933043,
+        "maximum": 0.005234400043264031
+      },
+      "scope": "synthetic planar instantaneous rays; not original capture, driver, deskew, or flight validation"
+    },
+    {
+      "case": "corridor",
+      "seed": 22,
+      "scans": 401,
+      "intervals": 400,
+      "accepted": 0,
+      "acceptance_fraction": 0.0,
+      "pair_accepted": 0,
+      "pair_unwrapped_yaw_deg": 0.0,
+      "keyframes": 1,
+      "reasons": {
+        "degenerate_geometry": 401,
+        "not_converged": 401
+      },
+      "error": {
+        "pair": {
+          "xy": {
+            "n": 400,
+            "rms": 0.0,
+            "p95": 0.0,
+            "maximum": 0.0
+          },
+          "yaw_deg": {
+            "n": 400,
+            "rms": 0.0,
+            "p95": 0.0,
+            "maximum": 0.0
+          },
+          "velocity": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          }
+        },
+        "keyframe_imu": {
+          "xy": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          },
+          "yaw_deg": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          },
+          "velocity": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          }
+        }
+      },
+      "preprocess_bidirectional_s": {
+        "n": 401,
+        "rms": 0.0027639907056547478,
+        "p95": 0.0037648999132215977,
+        "maximum": 0.008293600054457784
+      },
+      "scope": "synthetic planar instantaneous rays; not original capture, driver, deskew, or flight validation"
+    },
+    {
+      "case": "corridor",
+      "seed": 33,
+      "scans": 401,
+      "intervals": 400,
+      "accepted": 0,
+      "acceptance_fraction": 0.0,
+      "pair_accepted": 0,
+      "pair_unwrapped_yaw_deg": 0.0,
+      "keyframes": 1,
+      "reasons": {
+        "degenerate_geometry": 401,
+        "not_converged": 401
+      },
+      "error": {
+        "pair": {
+          "xy": {
+            "n": 400,
+            "rms": 0.0,
+            "p95": 0.0,
+            "maximum": 0.0
+          },
+          "yaw_deg": {
+            "n": 400,
+            "rms": 0.0,
+            "p95": 0.0,
+            "maximum": 0.0
+          },
+          "velocity": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          }
+        },
+        "keyframe_imu": {
+          "xy": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          },
+          "yaw_deg": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          },
+          "velocity": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          }
+        }
+      },
+      "preprocess_bidirectional_s": {
+        "n": 401,
+        "rms": 0.002077986793707099,
+        "p95": 0.002716400194913149,
+        "maximum": 0.004600000102072954
+      },
+      "scope": "synthetic planar instantaneous rays; not original capture, driver, deskew, or flight validation"
+    },
+    {
+      "case": "corridor",
+      "seed": 44,
+      "scans": 401,
+      "intervals": 400,
+      "accepted": 0,
+      "acceptance_fraction": 0.0,
+      "pair_accepted": 0,
+      "pair_unwrapped_yaw_deg": 0.0,
+      "keyframes": 1,
+      "reasons": {
+        "degenerate_geometry": 401,
+        "not_converged": 401
+      },
+      "error": {
+        "pair": {
+          "xy": {
+            "n": 400,
+            "rms": 0.0,
+            "p95": 0.0,
+            "maximum": 0.0
+          },
+          "yaw_deg": {
+            "n": 400,
+            "rms": 0.0,
+            "p95": 0.0,
+            "maximum": 0.0
+          },
+          "velocity": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          }
+        },
+        "keyframe_imu": {
+          "xy": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          },
+          "yaw_deg": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          },
+          "velocity": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          }
+        }
+      },
+      "preprocess_bidirectional_s": {
+        "n": 401,
+        "rms": 0.001783797187333531,
+        "p95": 0.0020312999840825796,
+        "maximum": 0.0027725999243557453
+      },
+      "scope": "synthetic planar instantaneous rays; not original capture, driver, deskew, or flight validation"
+    },
+    {
+      "case": "corridor",
+      "seed": 55,
+      "scans": 401,
+      "intervals": 400,
+      "accepted": 0,
+      "acceptance_fraction": 0.0,
+      "pair_accepted": 0,
+      "pair_unwrapped_yaw_deg": 0.0,
+      "keyframes": 1,
+      "reasons": {
+        "degenerate_geometry": 401,
+        "not_converged": 401
+      },
+      "error": {
+        "pair": {
+          "xy": {
+            "n": 400,
+            "rms": 0.0,
+            "p95": 0.0,
+            "maximum": 0.0
+          },
+          "yaw_deg": {
+            "n": 400,
+            "rms": 0.0,
+            "p95": 0.0,
+            "maximum": 0.0
+          },
+          "velocity": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          }
+        },
+        "keyframe_imu": {
+          "xy": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          },
+          "yaw_deg": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          },
+          "velocity": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          }
+        }
+      },
+      "preprocess_bidirectional_s": {
+        "n": 401,
+        "rms": 0.001796829225771379,
+        "p95": 0.0019803999457508326,
+        "maximum": 0.003528999863192439
+      },
+      "scope": "synthetic planar instantaneous rays; not original capture, driver, deskew, or flight validation"
+    },
+    {
+      "case": "occlusion",
+      "seed": 11,
+      "scans": 401,
+      "intervals": 400,
+      "accepted": 349,
+      "acceptance_fraction": 0.8725,
+      "pair_accepted": 399,
+      "pair_unwrapped_yaw_deg": -0.07608348933449816,
+      "keyframes": 1,
+      "reasons": {
+        "new_segment": 1,
+        "reverse_rejected": 50,
+        "reacquired_pose_only": 1
+      },
+      "error": {
+        "pair": {
+          "xy": {
+            "n": 400,
+            "rms": 0.002594912485034136,
+            "p95": 0.005745283856820383,
+            "maximum": 0.007229882236402617
+          },
+          "yaw_deg": {
+            "n": 400,
+            "rms": 0.048692585235975534,
+            "p95": 0.08438386805277477,
+            "maximum": 0.09153749644467939
+          },
+          "velocity": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          }
+        },
+        "keyframe_imu": {
+          "xy": {
+            "n": 349,
+            "rms": 0.0004072364126771717,
+            "p95": 0.000672152895390448,
+            "maximum": 0.0010673050223375972
+          },
+          "yaw_deg": {
+            "n": 349,
+            "rms": 0.005340056954557118,
+            "p95": 0.010340489304084377,
+            "maximum": 0.019952604722639884
+          },
+          "velocity": {
+            "n": 349,
+            "rms": 0.005580915280884757,
+            "p95": 0.009960174301415915,
+            "maximum": 0.015834814604821234
+          }
+        }
+      },
+      "preprocess_bidirectional_s": {
+        "n": 401,
+        "rms": 0.006140530469461414,
+        "p95": 0.007707499898970127,
+        "maximum": 0.009920499986037612
+      },
+      "scope": "synthetic planar instantaneous rays; not original capture, driver, deskew, or flight validation"
+    },
+    {
+      "case": "occlusion",
+      "seed": 22,
+      "scans": 401,
+      "intervals": 400,
+      "accepted": 349,
+      "acceptance_fraction": 0.8725,
+      "pair_accepted": 399,
+      "pair_unwrapped_yaw_deg": -0.04625667242371252,
+      "keyframes": 1,
+      "reasons": {
+        "new_segment": 1,
+        "reverse_rejected": 50,
+        "reacquired_pose_only": 1
+      },
+      "error": {
+        "pair": {
+          "xy": {
+            "n": 400,
+            "rms": 0.009435328297855343,
+            "p95": 0.013581046292974347,
+            "maximum": 0.015282756449295056
+          },
+          "yaw_deg": {
+            "n": 400,
+            "rms": 0.0298887395912891,
+            "p95": 0.05008061052502037,
+            "maximum": 0.06600551424007085
+          },
+          "velocity": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          }
+        },
+        "keyframe_imu": {
+          "xy": {
+            "n": 349,
+            "rms": 0.0006609866370315978,
+            "p95": 0.0011247117508437576,
+            "maximum": 0.0014310408041370514
+          },
+          "yaw_deg": {
+            "n": 349,
+            "rms": 0.0052037496120469475,
+            "p95": 0.009869852972258892,
+            "maximum": 0.01982973319936223
+          },
+          "velocity": {
+            "n": 349,
+            "rms": 0.005881639896051826,
+            "p95": 0.011056641928031246,
+            "maximum": 0.016833173261634964
+          }
+        }
+      },
+      "preprocess_bidirectional_s": {
+        "n": 401,
+        "rms": 0.006652997637334885,
+        "p95": 0.008555399952456355,
+        "maximum": 0.02132020005956292
+      },
+      "scope": "synthetic planar instantaneous rays; not original capture, driver, deskew, or flight validation"
+    },
+    {
+      "case": "occlusion",
+      "seed": 33,
+      "scans": 401,
+      "intervals": 400,
+      "accepted": 349,
+      "acceptance_fraction": 0.8725,
+      "pair_accepted": 399,
+      "pair_unwrapped_yaw_deg": 0.016555624496761918,
+      "keyframes": 1,
+      "reasons": {
+        "new_segment": 1,
+        "reverse_rejected": 50,
+        "reacquired_pose_only": 1
+      },
+      "error": {
+        "pair": {
+          "xy": {
+            "n": 400,
+            "rms": 0.0019438228788186162,
+            "p95": 0.003667484370191165,
+            "maximum": 0.004871165639208076
+          },
+          "yaw_deg": {
+            "n": 400,
+            "rms": 0.05188075193975436,
+            "p95": 0.10467335398406025,
+            "maximum": 0.13156018486208468
+          },
+          "velocity": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          }
+        },
+        "keyframe_imu": {
+          "xy": {
+            "n": 349,
+            "rms": 0.0005222402129887173,
+            "p95": 0.0008890677378544322,
+            "maximum": 0.0011666495771015292
+          },
+          "yaw_deg": {
+            "n": 349,
+            "rms": 0.006880044155803887,
+            "p95": 0.012892364714703656,
+            "maximum": 0.025435573910546825
+          },
+          "velocity": {
+            "n": 349,
+            "rms": 0.005919403231614952,
+            "p95": 0.01034714820280804,
+            "maximum": 0.014342096042448887
+          }
+        }
+      },
+      "preprocess_bidirectional_s": {
+        "n": 401,
+        "rms": 0.006967386347148076,
+        "p95": 0.00886739999987185,
+        "maximum": 0.01668270002119243
+      },
+      "scope": "synthetic planar instantaneous rays; not original capture, driver, deskew, or flight validation"
+    },
+    {
+      "case": "occlusion",
+      "seed": 44,
+      "scans": 401,
+      "intervals": 400,
+      "accepted": 349,
+      "acceptance_fraction": 0.8725,
+      "pair_accepted": 399,
+      "pair_unwrapped_yaw_deg": -0.010541019426981822,
+      "keyframes": 1,
+      "reasons": {
+        "new_segment": 1,
+        "reverse_rejected": 50,
+        "reacquired_pose_only": 1
+      },
+      "error": {
+        "pair": {
+          "xy": {
+            "n": 400,
+            "rms": 0.002353895544753248,
+            "p95": 0.0033525697750097084,
+            "maximum": 0.004683755108357399
+          },
+          "yaw_deg": {
+            "n": 400,
+            "rms": 0.016195731140853997,
+            "p95": 0.031037326445123165,
+            "maximum": 0.03852629699988691
+          },
+          "velocity": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          }
+        },
+        "keyframe_imu": {
+          "xy": {
+            "n": 349,
+            "rms": 0.0004395235485601406,
+            "p95": 0.0007737882163549562,
+            "maximum": 0.0012053618521038032
+          },
+          "yaw_deg": {
+            "n": 349,
+            "rms": 0.005628850691151266,
+            "p95": 0.011041610161069111,
+            "maximum": 0.020050837925062397
+          },
+          "velocity": {
+            "n": 349,
+            "rms": 0.005516389869793764,
+            "p95": 0.010159698871844385,
+            "maximum": 0.01617406591994853
+          }
+        }
+      },
+      "preprocess_bidirectional_s": {
+        "n": 401,
+        "rms": 0.006409766642244902,
+        "p95": 0.0084585000295192,
+        "maximum": 0.013242499902844429
+      },
+      "scope": "synthetic planar instantaneous rays; not original capture, driver, deskew, or flight validation"
+    },
+    {
+      "case": "occlusion",
+      "seed": 55,
+      "scans": 401,
+      "intervals": 400,
+      "accepted": 349,
+      "acceptance_fraction": 0.8725,
+      "pair_accepted": 399,
+      "pair_unwrapped_yaw_deg": 0.03489079960391013,
+      "keyframes": 1,
+      "reasons": {
+        "new_segment": 1,
+        "reverse_rejected": 50,
+        "reacquired_pose_only": 1
+      },
+      "error": {
+        "pair": {
+          "xy": {
+            "n": 400,
+            "rms": 0.0021346968087535053,
+            "p95": 0.00390777271852251,
+            "maximum": 0.004709150498891787
+          },
+          "yaw_deg": {
+            "n": 400,
+            "rms": 0.0278271660008782,
+            "p95": 0.05345273384357674,
+            "maximum": 0.06936905028919463
+          },
+          "velocity": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          }
+        },
+        "keyframe_imu": {
+          "xy": {
+            "n": 349,
+            "rms": 0.00045774904362401046,
+            "p95": 0.0008205191586381949,
+            "maximum": 0.0015133514893683313
+          },
+          "yaw_deg": {
+            "n": 349,
+            "rms": 0.009355450604144933,
+            "p95": 0.01667932640780004,
+            "maximum": 0.02293973477605953
+          },
+          "velocity": {
+            "n": 349,
+            "rms": 0.006225034766815109,
+            "p95": 0.010987314445173972,
+            "maximum": 0.018778720301552084
+          }
+        }
+      },
+      "preprocess_bidirectional_s": {
+        "n": 401,
+        "rms": 0.0071413043401454225,
+        "p95": 0.009255100041627884,
+        "maximum": 0.017049700021743774
+      },
+      "scope": "synthetic planar instantaneous rays; not original capture, driver, deskew, or flight validation"
+    },
+    {
+      "case": "angular_perturbation",
+      "seed": 11,
+      "scans": 401,
+      "intervals": 400,
+      "accepted": 349,
+      "acceptance_fraction": 0.8725,
+      "pair_accepted": 400,
+      "pair_unwrapped_yaw_deg": 0.023206628085408458,
+      "keyframes": 1,
+      "reasons": {
+        "new_segment": 1,
+        "imu_rotation_inconsistent": 50,
+        "reacquired_pose_only": 1
+      },
+      "error": {
+        "pair": {
+          "xy": {
+            "n": 400,
+            "rms": 0.0033462309170696884,
+            "p95": 0.006239256808779517,
+            "maximum": 0.007250090699420483
+          },
+          "yaw_deg": {
+            "n": 400,
+            "rms": 1.0786320750574228,
+            "p95": 3.0585266881686017,
+            "maximum": 3.0731090321415313
+          },
+          "velocity": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          }
+        },
+        "keyframe_imu": {
+          "xy": {
+            "n": 349,
+            "rms": 0.0004072364126771717,
+            "p95": 0.000672152895390448,
+            "maximum": 0.0010673050223375972
+          },
+          "yaw_deg": {
+            "n": 349,
+            "rms": 0.005340056954557118,
+            "p95": 0.010340489304084377,
+            "maximum": 0.019952604722639884
+          },
+          "velocity": {
+            "n": 349,
+            "rms": 0.005580915280884757,
+            "p95": 0.009960174301415915,
+            "maximum": 0.015834814604821234
+          }
+        }
+      },
+      "preprocess_bidirectional_s": {
+        "n": 401,
+        "rms": 0.006681739930042879,
+        "p95": 0.009279099991545081,
+        "maximum": 0.01399720017798245
+      },
+      "scope": "synthetic planar instantaneous rays; not original capture, driver, deskew, or flight validation"
+    },
+    {
+      "case": "angular_perturbation",
+      "seed": 22,
+      "scans": 401,
+      "intervals": 400,
+      "accepted": 349,
+      "acceptance_fraction": 0.8725,
+      "pair_accepted": 400,
+      "pair_unwrapped_yaw_deg": -0.020414307477993766,
+      "keyframes": 1,
+      "reasons": {
+        "new_segment": 1,
+        "imu_rotation_inconsistent": 50,
+        "reverse_rejected": 1,
+        "not_converged": 1,
+        "reacquired_pose_only": 1
+      },
+      "error": {
+        "pair": {
+          "xy": {
+            "n": 400,
+            "rms": 0.006840642445473139,
+            "p95": 0.01038580592326319,
+            "maximum": 0.012088090641029232
+          },
+          "yaw_deg": {
+            "n": 400,
+            "rms": 1.078447859386878,
+            "p95": 3.0505977070192976,
+            "maximum": 3.066340123772475
+          },
+          "velocity": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          }
+        },
+        "keyframe_imu": {
+          "xy": {
+            "n": 349,
+            "rms": 0.0006609866370315978,
+            "p95": 0.0011247117508437576,
+            "maximum": 0.0014310408041370514
+          },
+          "yaw_deg": {
+            "n": 349,
+            "rms": 0.0052037496120469475,
+            "p95": 0.009869852972258892,
+            "maximum": 0.01982973319936223
+          },
+          "velocity": {
+            "n": 349,
+            "rms": 0.005881639896051826,
+            "p95": 0.011056641928031246,
+            "maximum": 0.016833173261634964
+          }
+        }
+      },
+      "preprocess_bidirectional_s": {
+        "n": 401,
+        "rms": 0.007171726648063974,
+        "p95": 0.0095875000115484,
+        "maximum": 0.022404699819162488
+      },
+      "scope": "synthetic planar instantaneous rays; not original capture, driver, deskew, or flight validation"
+    },
+    {
+      "case": "angular_perturbation",
+      "seed": 33,
+      "scans": 401,
+      "intervals": 400,
+      "accepted": 349,
+      "acceptance_fraction": 0.8725,
+      "pair_accepted": 400,
+      "pair_unwrapped_yaw_deg": -0.0877213984896256,
+      "keyframes": 1,
+      "reasons": {
+        "new_segment": 1,
+        "imu_rotation_inconsistent": 50,
+        "reacquired_pose_only": 1
+      },
+      "error": {
+        "pair": {
+          "xy": {
+            "n": 400,
+            "rms": 0.0018242905264921855,
+            "p95": 0.003239252136933248,
+            "maximum": 0.00365501499252764
+          },
+          "yaw_deg": {
+            "n": 400,
+            "rms": 1.0545346571251926,
+            "p95": 2.9813037051367,
+            "maximum": 2.995844224473291
+          },
+          "velocity": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          }
+        },
+        "keyframe_imu": {
+          "xy": {
+            "n": 349,
+            "rms": 0.0005222402129887173,
+            "p95": 0.0008890677378544322,
+            "maximum": 0.0011666495771015292
+          },
+          "yaw_deg": {
+            "n": 349,
+            "rms": 0.006880044155803887,
+            "p95": 0.012892364714703656,
+            "maximum": 0.025435573910546825
+          },
+          "velocity": {
+            "n": 349,
+            "rms": 0.005919403231614952,
+            "p95": 0.01034714820280804,
+            "maximum": 0.014342096042448887
+          }
+        }
+      },
+      "preprocess_bidirectional_s": {
+        "n": 401,
+        "rms": 0.007400425271787185,
+        "p95": 0.009571400005370378,
+        "maximum": 0.013803400099277496
+      },
+      "scope": "synthetic planar instantaneous rays; not original capture, driver, deskew, or flight validation"
+    },
+    {
+      "case": "angular_perturbation",
+      "seed": 44,
+      "scans": 401,
+      "intervals": 400,
+      "accepted": 349,
+      "acceptance_fraction": 0.8725,
+      "pair_accepted": 400,
+      "pair_unwrapped_yaw_deg": -0.0035403933560952945,
+      "keyframes": 1,
+      "reasons": {
+        "new_segment": 1,
+        "imu_rotation_inconsistent": 50,
+        "reverse_rejected": 5,
+        "reacquired_pose_only": 1
+      },
+      "error": {
+        "pair": {
+          "xy": {
+            "n": 400,
+            "rms": 0.003050439694616918,
+            "p95": 0.004529090034549536,
+            "maximum": 0.0057361681431376136
+          },
+          "yaw_deg": {
+            "n": 400,
+            "rms": 1.0583696185365339,
+            "p95": 2.997514907365645,
+            "maximum": 3.0198406042227908
+          },
+          "velocity": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          }
+        },
+        "keyframe_imu": {
+          "xy": {
+            "n": 349,
+            "rms": 0.0004395235485601406,
+            "p95": 0.0007737882163549562,
+            "maximum": 0.0012053618521038032
+          },
+          "yaw_deg": {
+            "n": 349,
+            "rms": 0.005628850691151266,
+            "p95": 0.011041610161069111,
+            "maximum": 0.020050837925062397
+          },
+          "velocity": {
+            "n": 349,
+            "rms": 0.005516389869793764,
+            "p95": 0.010159698871844385,
+            "maximum": 0.01617406591994853
+          }
+        }
+      },
+      "preprocess_bidirectional_s": {
+        "n": 401,
+        "rms": 0.007310952854944446,
+        "p95": 0.009673899970948696,
+        "maximum": 0.026902500074356794
+      },
+      "scope": "synthetic planar instantaneous rays; not original capture, driver, deskew, or flight validation"
+    },
+    {
+      "case": "angular_perturbation",
+      "seed": 55,
+      "scans": 401,
+      "intervals": 400,
+      "accepted": 349,
+      "acceptance_fraction": 0.8725,
+      "pair_accepted": 400,
+      "pair_unwrapped_yaw_deg": 0.0458272017584456,
+      "keyframes": 1,
+      "reasons": {
+        "new_segment": 1,
+        "imu_rotation_inconsistent": 50,
+        "not_converged": 3,
+        "reacquired_pose_only": 1
+      },
+      "error": {
+        "pair": {
+          "xy": {
+            "n": 400,
+            "rms": 0.0026449015243616603,
+            "p95": 0.004154870122494217,
+            "maximum": 0.004854734935406573
+          },
+          "yaw_deg": {
+            "n": 400,
+            "rms": 1.0646227111721447,
+            "p95": 3.0109573370886915,
+            "maximum": 3.0290812836305383
+          },
+          "velocity": {
+            "n": 0,
+            "rms": null,
+            "p95": null,
+            "maximum": null
+          }
+        },
+        "keyframe_imu": {
+          "xy": {
+            "n": 349,
+            "rms": 0.00045774904362401046,
+            "p95": 0.0008205191586381949,
+            "maximum": 0.0015133514893683313
+          },
+          "yaw_deg": {
+            "n": 349,
+            "rms": 0.009355450604144933,
+            "p95": 0.01667932640780004,
+            "maximum": 0.02293973477605953
+          },
+          "velocity": {
+            "n": 349,
+            "rms": 0.006225034766815109,
+            "p95": 0.010987314445173972,
+            "maximum": 0.018778720301552084
+          }
+        }
+      },
+      "preprocess_bidirectional_s": {
+        "n": 401,
+        "rms": 0.007525774225741577,
+        "p95": 0.009657999966293573,
+        "maximum": 0.02228350006043911
+      },
+      "scope": "synthetic planar instantaneous rays; not original capture, driver, deskew, or flight validation"
+    }
+  ]
+}

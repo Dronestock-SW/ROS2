@@ -1,0 +1,36 @@
+{
+  "schema": 1,
+  "all_stored_topic_counts_match_callback_counts": true,
+  "stored_raw_cycles": 90000,
+  "stored_topic_counts": {
+    "/uwb/raw": 98978,
+    "/uwb/received": 98978,
+    "/mavros/extended_state": 9000,
+    "/uwb/btf_decision": 90000,
+    "/uwb/status": 1800,
+    "/mavros/state": 1800,
+    "/uwb/btf_status": 1800
+  },
+  "observed_ground_states": [
+    [
+      true,
+      false,
+      "POSCTL"
+    ]
+  ],
+  "observed_landed_states": [
+    1
+  ],
+  "raw_gaps_at_least_100ms": [
+    {
+      "seq_before": 25878,
+      "seq_after": 25879,
+      "recorder_raw_interval_ms": 108.511727,
+      "tag_cycle_start_interval_ms": 20.005,
+      "uart_owner_interval_ms": 20.06324,
+      "received_recorder_interval_ms": 107.404275,
+      "received_delivery_ms": 90.155984
+    }
+  ],
+  "scope": "recording completeness and timing layers; not position or flight qualification"
+}

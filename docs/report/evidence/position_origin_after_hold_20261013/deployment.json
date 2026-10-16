@@ -1,0 +1,19 @@
+{
+  "source_commit": "b5ea7a46d6106fdd86d211ee016d537366542a7c",
+  "verified_utc": "2026-10-13T08:01:22.052282+00:00",
+  "total": 730,
+  "missing": [],
+  "mismatch": [],
+  "verified_symlinks": 20,
+  "physical_flight": false,
+  "excluded_packages": [
+    "src/drone_bringup"
+  ],
+  "binaries": {
+    "sangwon_field_executor": "48477b3a28ff20c7ae98f6bd44e7630e89503dc99f21ba92563ddf72951bc0a1",
+    "sangwon_field_executor_replay": "a46c77ca0877224e676f809466143424aa697f97c70a8e0d24750cb742faa086",
+    "sangwon_field_mission_ai": "ef2a71cc4f70d1fd1cdf63f4223550e67e50a3736588f99f8d4fa13cdd6ea3a3"
+  },
+  "line_endings_only_count": 659,
+  "full_manifest_sha256": "402f34e20ec5d76938aee09854c27be1cc2464e2c6a50bd1c6da5ee251c0246c"
+}

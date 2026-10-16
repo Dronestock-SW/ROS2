@@ -1,0 +1,117 @@
+{
+  "python_tests": 523,
+  "cpp_contracts": 53,
+  "ros_cases": [
+    {
+      "run": "independent-ros-v3",
+      "scenario": "separate_lidar_takeoff",
+      "state": "END",
+      "failure": null,
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "POSCTL",
+        "OFFBOARD",
+        "LAND"
+      ],
+      "binary_sha256": "0180218c2e30d0e36049c6bb759fde90772c70889d566f1b4dd2d44bd2e12feb",
+      "max_received_setpoint_gap_s": 0.059851641999557614,
+      "max_mock_fc_source_gap_s": 0.3557708529988304,
+      "max_sender_gap_s": 0.05496407799364533,
+      "physical_flight": false
+    },
+    {
+      "run": "independent-ros-v4",
+      "scenario": "separate_lidar_uwb_recovery",
+      "state": "END",
+      "failure": null,
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "POSCTL",
+        "OFFBOARD",
+        "LAND"
+      ],
+      "binary_sha256": "0180218c2e30d0e36049c6bb759fde90772c70889d566f1b4dd2d44bd2e12feb",
+      "max_received_setpoint_gap_s": 0.059487086997251026,
+      "max_mock_fc_source_gap_s": 0.0563260380004067,
+      "max_sender_gap_s": 0.054768271002103575,
+      "physical_flight": false
+    },
+    {
+      "run": "independent-ros-v4",
+      "scenario": "separate_lidar_loss",
+      "state": "FAILED",
+      "failure": "takeoff_lidar_lost:lidar_status_stale",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "binary_sha256": "0180218c2e30d0e36049c6bb759fde90772c70889d566f1b4dd2d44bd2e12feb",
+      "max_received_setpoint_gap_s": 0.05480541900033131,
+      "max_mock_fc_source_gap_s": 0.04122088300209725,
+      "max_sender_gap_s": 0.052589837003324647,
+      "physical_flight": false
+    },
+    {
+      "run": "independent-ros-v4",
+      "scenario": "separate_lidar_malformed",
+      "state": "FAILED",
+      "failure": "takeoff_lidar_lost:lidar_configuration_mismatch",
+      "commands": [
+        "OFFBOARD",
+        "ARM",
+        "LAND"
+      ],
+      "binary_sha256": "0180218c2e30d0e36049c6bb759fde90772c70889d566f1b4dd2d44bd2e12feb",
+      "max_received_setpoint_gap_s": 0.05649551099486416,
+      "max_mock_fc_source_gap_s": 0.1644964460065239,
+      "max_sender_gap_s": 0.051136228001269046,
+      "physical_flight": false
+    }
+  ],
+  "prior_failed_attempts": [
+    {
+      "run": "independent-final-checks/ros",
+      "reason": "test-99 lock owned by another login user"
+    },
+    {
+      "run": "independent-ros-v2",
+      "reason": "test source in private directory of another login user"
+    },
+    {
+      "run": "independent-ros-v3/separate_lidar_uwb_recovery",
+      "reason": "mock subscriber reception gap exceeded 0.2 seconds",
+      "max_received_setpoint_gap_s": 0.2317308120036614,
+      "max_sender_gap_s": 0.05118946299626259
+    },
+    {
+      "run": "independent-ros-web-v5",
+      "reason": "binary transfer still in progress; no FC commands"
+    }
+  ],
+  "scope": "ACTUAL_COMPANION_CODE_WITH_SYNTHETIC_FC_NO_PHYSICAL_FLIGHT",
+  "web_goal_cpp_contracts": {
+    "passed": 54,
+    "jetson_seconds": 15.382,
+    "wsl_seconds": 8.159
+  },
+  "web_goal_ros_case": {
+    "run": "independent-ros-web-v6",
+    "scenario": "separate_lidar_uwb_recovery",
+    "state": "END",
+    "failure": null,
+    "commands": [
+      "OFFBOARD",
+      "ARM",
+      "POSCTL",
+      "OFFBOARD",
+      "LAND"
+    ],
+    "binary_sha256": "efe62784ee83e207bd58bc263b10604c1662631c97f53f3604cea56fe05496fb",
+    "max_received_setpoint_gap_s": 0.07440030699945055,
+    "max_sender_gap_s": 0.05737984999723267,
+    "physical_flight": false
+  }
+}

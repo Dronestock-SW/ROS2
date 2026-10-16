@@ -1,0 +1,42 @@
+{
+  "manifest": {
+    "environment": "tag_b_release",
+    "board": "heltec_wifi_lora_32_V3",
+    "chip": "esp32s3",
+    "flash_mode": "dio",
+    "flash_frequency": "80m",
+    "flash_size": "8MB",
+    "application_offset": "0x10000",
+    "images": [
+      {
+        "offset": "0x0000",
+        "path": "bootloader.bin",
+        "sha256": "1776e4dd896a69d0a5c2e79957b0e2a88aa4129b1381d6478683515a1f6af343",
+        "bytes": 15104
+      },
+      {
+        "offset": "0x8000",
+        "path": "partitions.bin",
+        "sha256": "1d9cca96de0fe07ad7fc0648b9878ddecd9ce565e38b589ad20fea698ed4c80c",
+        "bytes": 3072
+      },
+      {
+        "offset": "0xe000",
+        "path": "boot_app0.bin",
+        "sha256": "f94c5d786a7a8fab06ac5d10e33bf37711a6697636dc037559ea19cc410a17f0",
+        "bytes": 8192
+      },
+      {
+        "offset": "0x10000",
+        "path": "firmware.bin",
+        "sha256": "4f90ddf758d86b750d7057a6030dcee86a3f4f84f0d0e184be6fb352f7b52df8",
+        "bytes": 364160
+      }
+    ],
+    "upload_performed": false,
+    "expected_mac": "e8:3d:c1:e3:48:2c"
+  },
+  "erase": true,
+  "verified": true,
+  "utc": "2026-10-15T14:57:19.017294+00:00"
+}

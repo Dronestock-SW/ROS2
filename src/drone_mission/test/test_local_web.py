@@ -13,6 +13,21 @@ from drone_mission.local_web import LocalPlatform
 from drone_mission.contracts import Settings, parse_request
 
 
+def test_separate_start_uses_captured_position_xy_and_keeps_return_home():
+    settings=Settings(command_frame='local_xy',execution_profile='anchor_trial',full_mission=True,
+        start_mode='takeoff_hold',takeoff_backend='local_position',mission_ai='cpp_bt',speed_m_s=.25)
+    p=LocalPlatform(settings=settings)
+    p.telemetry=dict(fc_connected=True,fc_armed=True,fc_landed=2,fc_mode='POSCTL',flight_state='HOLD_READY',
+        native_takeoff={'can_start':True},executor_backend='sangwon_cpp_executor',
+        px4_map_xy_m=[2.,2.08],home_xy_m=[2.,2.],mission_start_xy_m=[2.1,2.05],
+        preflight={'checks':[dict(code=k,passed=True) for k in ('layout_confirmed','transform','pose','estimator')]})
+    p.telemetry_received_s=time.monotonic()
+    assert p.automatic_start()==(2.1,2.05)
+    assert p.telemetry['home_xy_m']==[2.,2.]
+    del p.telemetry['mission_start_xy_m']
+    with pytest.raises(ValueError):p.automatic_start()
+
+
 @pytest.fixture
 def local_http():
     platform = LocalPlatform()
@@ -30,12 +45,15 @@ def local_http():
 
 
 def test_local_page_and_http_start_retry_preserve_one_request(local_http):
-    _, origin = local_http
+    platform, origin = local_http
     with urlopen(origin+'/', timeout=2) as response:
         assert '미션 START · ARM·이륙 포함' in response.read().decode('utf-8')
     body = json.dumps({'action':'start', 'client_request_id':'same-click-request', 'route_tasks':[{'id':'P1', 'x':2.3, 'y':2.}]}).encode()
     request = Request(origin+'/local/command', data=body,
                       headers={'Content-Type':'application/json'}, method='POST')
+    # Model a current telemetry heartbeat after the page request. Windows
+    # server startup can exceed the production one-second freshness limit.
+    platform.telemetry_received_s = time.monotonic()
     with urlopen(request, timeout=2) as response:
         first = json.load(response)
     with urlopen(request, timeout=2) as response:

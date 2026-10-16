@@ -1,0 +1,106 @@
+{
+  "firmware": {
+    "board_id": 56,
+    "magic": "PX4FWv1",
+    "description": "Firmware for the PX4FMUv6C board",
+    "build_time": 1791966637,
+    "summary": "PX4FMUv6C",
+    "version": "0.1",
+    "image_size": 1939132,
+    "image_maxsize": 1966080,
+    "git_identity": "v1.17.0",
+    "board_revision": 0,
+    "git_hash": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+    "parameter_xml_size": 976563,
+    "mav_autopilot": 12,
+    "airframe_xml_size": 19857,
+    "sha256": "0176a4365b0a55d905f37898577de17ff7b633a3ed28ac1aed2d12d0d09825c5",
+    "image_bytes": 1939132,
+    "remaining_flash_bytes": 26948
+  },
+  "parameter_changes": {
+    "EKF2_LID2_VER": [
+      1,
+      2
+    ],
+    "_HASH_CHECK": [
+      -782567237,
+      193081967
+    ]
+  },
+  "numeric_parameters_before": 1098,
+  "postreboot_parameter_check_passed": true,
+  "tof_samples": [
+    {
+      "range_rejects": 3306,
+      "read_time_us": 87213796
+    },
+    {
+      "range_rejects": 7111,
+      "read_time_us": 163313821
+    }
+  ],
+  "tof_rate_observation_seconds": 76.100025,
+  "tof_range_reject_rate_hz": 49.99998357424981,
+  "tof_valid_publications": 0,
+  "sensor_setup_ack": true,
+  "fc_reboot_test": true,
+  "sensor_power_cycle_test": false,
+  "physical_flight": false,
+  "lidar_dynamic_fusion_test": false,
+  "source_manifest": {
+    "base_commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+    "files": {
+      "boards/px4/fmu-v6c/lidar2d.px4board": "f42c4630d5a4632da0ab8378f6e5f830b36c8474160f8917da347c0d1cb2a5ee",
+      "msg/CMakeLists.txt": "9b63aa98e21192637952a49060e9ddcb1ed2e413934bbb2393a0a639f06f0d44",
+      "msg/LidarVelocity2d.msg": "020570d3b79fb8ff22a7c9d2dc22e86e502ec92f95648e1de5f202ba6f7b23c2",
+      "msg/LidarVelocity2dStatus.msg": "c504e27591cad6d63eb261f1ecce493ef414ca0911b5113e97a7c6f51c0fddd3",
+      "src/drivers/distance_sensor/tf02pro/TF02PRO.cpp": "6b1948eeb8b77fd35e6f39eef951f91e6ba71219a718852355cf106faf98a0ba",
+      "src/drivers/distance_sensor/tf02pro/TF02PRO.hpp": "7777d899a50b81f8ceae044db2199397700dd93f7d3b650b1b2b5397ce255ff1",
+      "src/drivers/distance_sensor/tf02pro/TFMiniPlus.hpp": "ca792236a7339dc6b08898599e66cf42464fef2111b16a56cf6508cace18509d",
+      "src/drivers/distance_sensor/tf02pro/tf02pro_main.cpp": "b40cd910c51ba5056a49c1cae0e776b801026fb9a6ffcdd2011319a63a72cee7",
+      "src/modules/ekf2/EKF/aid_sources/auxvel/auxvel_fusion.cpp": "68d17a67d27dff8e3493dd2b409aee7b59aee0589f1ef1ac7e9c2b4bcd31027f",
+      "src/modules/ekf2/EKF/common.h": "92ee966e2fa1d0b2be329382e2bae022eebc10b13567d705c1029d89d1429d85",
+      "src/modules/ekf2/EKF/ekf.h": "22d3d0090cab86b409edf08f57b7d1ac774f50f3a86b813845c21d9270363aba",
+      "src/modules/ekf2/EKF/ekf_helper.cpp": "303a191b14928653ca0383220e5007918cd559af1ee71642c37f1dd23adee871",
+      "src/modules/ekf2/EKF/estimator_interface.cpp": "c149173d89c11d2412ba8fb5fc43376f5ba696fccc245e6ce728881085db05b0",
+      "src/modules/ekf2/EKF2.cpp": "7251c1e1f8c5e0bbb5fcc6229b0f3bbb6fb6c408015e54845a8204de5fb50d17",
+      "src/modules/ekf2/EKF2.hpp": "7422752cfa17bb0eddba4d6c0169750c3e68361bad7ed34605eef992e9eb5f4b",
+      "src/modules/ekf2/params_aux_velocity.yaml": "8819da62369591fdb4b58e47742220b750f8c7479e1e6451c996604b3150f0be",
+      "src/modules/logger/logged_topics.cpp": "ab980fcaa35c99cdb70b6bb31bbd643f43f8e43f093e1e607edb83dc7fddef85",
+      "src/modules/mavlink/mavlink_receiver.cpp": "841ae990fc5b4f14313f9503e115dc2a28f3d41858d2d62361d803a839e006fa",
+      "src/modules/mavlink/mavlink_receiver.h": "3e602e7837fe90be4096e1e14c82ed645025e351b2159a668f3b2c0845330d76"
+    },
+    "tof_preserved": {
+      "src/drivers/distance_sensor/tf02pro/TF02PRO.cpp": true,
+      "src/drivers/distance_sensor/tf02pro/TF02PRO.hpp": true,
+      "src/drivers/distance_sensor/tf02pro/TFMiniPlus.hpp": true,
+      "src/drivers/distance_sensor/tf02pro/tf02pro_main.cpp": true
+    }
+  },
+  "raw_evidence_sha256": {
+    "after-config-inspect.json": "1fa03281c8cc40926ab02b0a1b05c82e8ebf3828e31783d82c2d87513ab458b3",
+    "after-params.json": "88fdd30c19c6904201c0d91afe97feab236c44c4ec0b8d1b7e8045137500ce61",
+    "before.params": "2918c5e6690687bd584854fdcaec496e6f97b558df797b14c1740d0b3409b063",
+    "boot-install.json": "5a237b2d31dc60acf3abcba889337ed87b36d31cdafc8113684cae486fe90feb",
+    "deployment-summary.json": "63bf20091a4ea466df1e4b962af90778fe797d3656ba4810080d77e1b954fd6d",
+    "firmware-manifest.json": "4ef5e773d008664eb6d9a8fd3d8bb078a98934c459369b7a3ee8af0a5d032c4e",
+    "flash.log": "05f1ef4baecd9b20a70792fbd9741f3721b0a28392a113a87f48d2faaf62823a",
+    "parameter-receipt.json": "3449b326621d8aa055aa5c13c6f3ee94169cbd2315bca411bddad66379f9208f",
+    "postflash-inspect.json": "56aada78427339f882776585b634775f7e585ebb2a818b653a6f1e032f806cbc",
+    "postreboot-inspect-1.json": "7440dae2dc1bc87a24f4a1650307b7230f2f2e1a4ede8b7948c54205f2b314bd",
+    "postreboot-inspect-2.json": "a44e937de9c4e42cd14e434f6a99d292a3d0632ca929b86887bf15ba45a80b13",
+    "source-manifest.json": "5966f83a26b0ee0df0b8324d06448a2b460a61621d2dc587dfe4abf2873c27b4",
+    "tof-configure.json": "1881d01d3eaa06a4860601be54aeca016dd40b1235573410291ce273cb1b4440"
+  },
+  "maintenance_actions": [
+    "firmware_upload_verified",
+    "tfmini_plus_normal_100hz_save_once_ack",
+    "extras_txt_T_profile",
+    "fc_reboot",
+    "sensor_service_stop_start"
+  ],
+  "flight_parameter_writes": false,
+  "service_active": true,
+  "remaining_disk_gib_rounded": 12
+}

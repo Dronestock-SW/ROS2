@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "layout_version": "warehouse-rectangle-6p3x4p6-z2p2-20261004",
+  "coordinate_unit": "m",
+  "coordinate_frame": "warehouse_local_xyz_z_up",
+  "origin_anchor": "A1",
+  "range_bias_status": "uncalibrated_zero_passthrough",
+  "anchors": [
+    {
+      "id": "A1",
+      "short_address": 161,
+      "x_m": 0.0,
+      "y_m": 0.0,
+      "z_m": 2.2,
+      "range_bias_m": 0.0,
+      "range_bias_calibrated": false
+    },
+    {
+      "id": "A2",
+      "short_address": 162,
+      "x_m": 6.3,
+      "y_m": 0.0,
+      "z_m": 2.2,
+      "range_bias_m": 0.0,
+      "range_bias_calibrated": false
+    },
+    {
+      "id": "A3",
+      "short_address": 163,
+      "x_m": 0.0,
+      "y_m": 4.6,
+      "z_m": 2.2,
+      "range_bias_m": 0.0,
+      "range_bias_calibrated": false
+    },
+    {
+      "id": "A4",
+      "short_address": 164,
+      "x_m": 6.3,
+      "y_m": 4.6,
+      "z_m": 2.2,
+      "range_bias_m": 0.0,
+      "range_bias_calibrated": false
+    }
+  ],
+  "source": "User confirmed field XY 6.3 x 4.6 m and equal anchor heights on 2026-10-06; independent survey not performed here."
+}

@@ -12,23 +12,25 @@ import sys
 import time
 
 from drone_uwb.integration.local_odometry import (
-    LocalObservationSettings, PARAMETERS, horizontal_odometry, parameter_gate,
-    trial_start_allowed)
+    LocalObservationSettings, PARAMETERS, guarded_horizontal_odometry, parameter_gate,
+    SenderStartGate, fresh_bridge_guard)
 from drone_uwb.integration.clock_readiness import ClockReadiness
-from drone_uwb.processing.observation_guard import ObservationGuard
 
 
 def main(args=None):
     sys.stdout.reconfigure(encoding='utf-8')
     parser = argparse.ArgumentParser()
     parser.add_argument('--config', required=True)
+    parser.add_argument('--same-user-dds', action='store_true',
+                        help='Use existing DDS settings when all nodes share one OS user')
     options = parser.parse_args(args)
     config = json.loads(Path(options.config).read_text(encoding='utf-8'))
     settings = LocalObservationSettings(**config['settings'])
     if Path('/proc/sys/kernel/random/boot_id').read_text().strip() != settings.host_boot_id:
         raise RuntimeError('host_reboot_requires_new_alignment_evidence')
     from .local_transport import configure_local_dds
-    configure_local_dds()
+    if not options.same_user_dds:
+        configure_local_dds()
     import rclpy
     from rclpy.node import Node
     from rclpy.qos import qos_profile_sensor_data as qos
@@ -49,11 +51,11 @@ def main(args=None):
             self.status = self.create_publisher(String, '/uwb/local_odometry_status', 10)
             self.encoder = mavutil.mavlink.MAVLink(None, srcSystem=255, srcComponent=196)
             self.clock = ClockReadiness()
-            self.guard = ObservationGuard(motion_recovery=True)
+            self.guard = fresh_bridge_guard()
             self.state = None
             self.landed = None
             self.landed_at = -float('inf')
-            self.trial_start_authorized = settings.jump_guard_enabled
+            self.start_gate = SenderStartGate()
             self.state_at = self.param_at = self.btf_at = self.request_at = -float('inf')
             self.params = {}
             self.future = None
@@ -117,13 +119,14 @@ def main(args=None):
                 if self.state is None or self.state.armed or time.monotonic()-self.state_at > 2.5:
                     self.frozen = 'btf_session_changed_requires_disarmed_review'
                 else:
-                    self.guard = ObservationGuard(motion_recovery=True)
+                    self.guard = fresh_bridge_guard()
                     self.reset_counter = (self.reset_counter+1) % 256
             self.session, self.btf, self.btf_at = session, row, time.monotonic()
 
         def inspect_source(self, msg):
             if (msg.msgid in (102, 104, 138, 331)
-                    and (msg.sysid, msg.compid) not in ((1, 1), (255, 196))):
+                    and (msg.sysid, msg.compid) not in ((1, 1), (255, 196))
+                    and not (msg.msgid == 331 and (msg.sysid, msg.compid) == (255, 198))):
                 self.frozen = 'another_external_observation_writer'
 
         def btf_decision(self, msg):
@@ -134,14 +137,13 @@ def main(args=None):
                 self.decision = {}
 
         def gate(self):
-            if not self.trial_start_authorized:
+            if not self.start_gate.authorized:
                 now = time.monotonic()
-                if self.state is None or not trial_start_allowed(
+                if self.state is None or not self.start_gate.check(
                         connected=self.state.connected, armed=self.state.armed,
                         landed_state=self.landed, state_age_s=now-self.state_at,
                         landed_age_s=now-self.landed_at):
-                    return 'sender_trial_requires_disarmed_ground_start'
-                self.trial_start_authorized = True
+                    return 'sender_requires_disarmed_ground_start'
             now = time.monotonic()
             if self.frozen:
                 return self.frozen
@@ -163,7 +165,8 @@ def main(args=None):
                     or self.output.get_subscription_count() != 1):
                 # Keep one router sink, including for guarded FC readback.
                 return 'ambiguous_or_missing_transport'
-            allowed = {'mavros', 'uwb_local_odometry_bridge', 'px4_fixed_sensor_readback'}
+            from drone_uwb.integration.lidar_velocity import RAW_WRITERS
+            allowed = RAW_WRITERS
             if any(info.node_name not in allowed for info in
                     self.get_publishers_info_by_topic('/uas1/mavlink_sink')):
                 return 'unrecognized_raw_route_writer'
@@ -183,8 +186,20 @@ def main(args=None):
                 self.future = self.client.call_async(GetParameters.Request(names=list(PARAMETERS)))
                 self.future.add_done_callback(self.parameters_received)
             row = {'gate': self.gate(), 'last_reason': self.last_reason,
+                'status_stamp_ns':self.get_clock().now().nanoseconds,
+                'status_monotonic_ns':round(now*1e9),
+                'last_input_stamp_ns':getattr(self,'last_input_stamp_ns',0),
+                'last_input_received_monotonic_ns':getattr(self,'last_input_received_monotonic_ns',0),
+                'last_send_monotonic_ns':round(self.last_send_at*1e9) if self.last_fields else None,
+                'last_odometry_time_usec':self.last_fields['time_usec'] if self.last_fields else None,
+                'jump_guard_enabled':False,
+                'observation_recovery_wait_s':self.guard.config.recover_s,
                 'counts': dict(self.counts), 'last_sample_stamp_ns': self.last_stamp,
                 'last_send_age_s': now-self.last_send_at if self.last_fields else None,
+                'last_sent_sample_age_s': (self.get_clock().now().nanoseconds-self.last_stamp)/1e9 if self.last_stamp else None,
+                'input_receive_age_s': (round(now*1e9)-getattr(self,'last_input_received_monotonic_ns',0))/1e9
+                    if getattr(self,'last_input_received_monotonic_ns',0) else None,
+                'fusion_verified':False, 'fusion_evidence_source':'FC_estimator_required',
                 'max_send_gap_s': self.max_send_gap_s, 'parameters': self.params,
                 'settings': asdict(settings), 'observation_session': self.session,
                 'reset_counter': self.reset_counter,
@@ -213,21 +228,22 @@ def main(args=None):
 
         def pose(self, msg):
             stamp = msg.header.stamp.sec*1_000_000_000+msg.header.stamp.nanosec
+            self.last_input_stamp_ns=stamp
+            self.last_input_received_monotonic_ns=time.monotonic_ns()
             reason = self.gate()
             if reason == 'ready':
                 try:
                     c = msg.pose.covariance
-                    fields = horizontal_odometry(settings, frame=msg.header.frame_id,
+                    reason, fields = guarded_horizontal_odometry(settings, self.guard,
+                        motion_eligible=(self.decision.get('height_source') == 'measured_tof_imu'
+                            and self.decision.get('height_ready') is True
+                            and time.monotonic()-self.decision_at <= .1
+                            and abs(stamp-self.decision.get('stamp_ns', 0)) <= 100_000_000),
+                        frame=msg.header.frame_id,
                         stamp_ns=stamp, now_ns=self.get_clock().now().nanoseconds,
                         last_stamp_ns=self.last_stamp, x=msg.pose.pose.position.x,
                         y=msg.pose.pose.position.y, covariance=[[c[0], c[1]], [c[6], c[7]]],
                         reset_counter=self.reset_counter)
-                    reason = self.guard.check((fields['x'], fields['y']), stamp,
-                        reject_jumps=settings.jump_guard_enabled,
-                        motion_eligible=(self.decision.get('height_source') == 'measured_tof_imu'
-                            and self.decision.get('height_ready') is True
-                            and time.monotonic()-self.decision_at <= .1
-                            and abs(stamp-self.decision.get('stamp_ns', 0)) <= 100_000_000))
                 except (ValueError, ArithmeticError) as exc:
                     reason = str(exc)
             self.last_reason = reason

@@ -46,15 +46,17 @@ class Dispatch:
     tdma: dict = None
     reset_history: bool = False
     clear_status: bool = False
+    diagnostics: dict = None
 
 
 class TdmaGate:
-    def __init__(self, tag_id, mode='auto', max_pair_age_s=.05):
+    def __init__(self, tag_id, mode='auto', max_pair_age_s=.05, allow_partial=False):
         if mode not in ('auto', 'required', 'disabled'):
             raise ValueError('invalid_tdma_mode')
         if not finite(max_pair_age_s) or not 0 < max_pair_age_s <= .15:
             raise ValueError('invalid_tdma_pair_age')
         self.tag_id, self.mode = tag_id, mode
+        self.allow_partial = allow_partial
         self.max_age_ns = int(max_pair_age_s*1e9)
         self.counts = Counter()
         self.disconnect()
@@ -139,16 +141,32 @@ class TdmaGate:
         reason = 'raw'
         if msg['local_overrun'] or not msg['deadline_valid']:
             reason = 'tdma_deadline_rejected'
+        if self.allow_partial:
+            reason = ('tdma_local_overrun' if msg['local_overrun'] else
+                      'tdma_slot_violation' if not in_slot else 'raw')
         drops = None if changed else self.last_log_drops
         if drops is not None and msg['log_drops'] != drops:
             reason = 'tdma_log_drop'
         # Check the physical sample span as well as sequence identity. RAW is
         # still validated independently by the existing measurement validator.
         samples = raw.get('sample_time_us')
-        if reason == 'raw' and (not isinstance(samples, list) or len(samples) != 4
-                or not all(integer(x) for x in samples)
-                or msg['epoch_span_us'] != max(samples)-min(samples)):
-            raise InvalidSample('tdma_sample_span_mismatch')
+        if reason == 'raw':
+            mask = raw.get('valid_mask')
+            if not integer(mask) or not 0 <= mask <= 15:
+                raise InvalidSample('invalid_valid_mask')
+            valid_times = ([samples[i] for i in range(4) if mask & (1 << i)]
+                           if isinstance(samples, list) and len(samples) == 4 else None)
+            if (valid_times is None or not all(integer(x) for x in valid_times)
+                    or any(not raw['cycle_start_us'] <= x <= raw['cycle_end_us'] for x in valid_times)):
+                raise InvalidSample('tdma_sample_span_mismatch')
+            span = max(valid_times)-min(valid_times) if valid_times else 0
+            # TDMA40 reports zero diagnostic span for incomplete epochs. The
+            # surviving RAW sample times still prove their actual span/slot.
+            allowed_spans = (0, span) if self.allow_partial and mask != 15 else (span,)
+            if msg['epoch_span_us'] not in allowed_spans or span > 10700:
+                raise InvalidSample('tdma_sample_span_mismatch')
+            if self.allow_partial and len(valid_times) < 3:
+                reason = 'tdma_insufficient_ranges'
         # Commit identity only after validating the pair. A malformed session
         # transition must not hide the reset needed by the next valid pair.
         if changed:
@@ -157,6 +175,9 @@ class TdmaGate:
         self.last_pair_ns, self.last_log_drops = mono_ns, msg['log_drops']
         if reason != 'raw':
             return Dispatch(reason, reset_history=changed,
-                            clear_status=boot_changed and not fresh_boot)
+                            clear_status=boot_changed and not fresh_boot,
+                            diagnostics=dict(seq=raw['seq'], valid_mask=raw.get('valid_mask'),
+                                failure=raw.get('failure'), tdma=dict(msg),
+                                raw_received_monotonic_ns=raw_mono, raw_received_ros_ns=raw_ros))
         return Dispatch('raw', raw, raw_mono, raw_ros, dict(msg), changed,
                         boot_changed and not fresh_boot)

@@ -1,0 +1,90 @@
+{
+  "passed": true,
+  "cases": 2763,
+  "outcomes": {
+    "ok": 2103,
+    "degenerate_geometry": 660
+  },
+  "max_numeric_error": 5.115907697472721e-12,
+  "actual_condition_boundaries": [
+    {
+      "side": "narrow",
+      "widths": [
+        0.17711977981765498,
+        0.17711977983536695,
+        0.17711977983536698,
+        0.17711977985307895
+      ],
+      "ratios": [
+        30.000000002997783,
+        30.000000000000014,
+        29.999999999999996,
+        29.999999997002227
+      ]
+    },
+    {
+      "side": "wide",
+      "widths": [
+        119.46717649238403,
+        119.46717650433075,
+        119.46717650433077,
+        119.46717651627749
+      ],
+      "ratios": [
+        29.999999997002227,
+        29.999999999999996,
+        30.000000000000004,
+        30.000000002997766
+      ]
+    }
+  ],
+  "lifecycle": {
+    "before": {
+      "xy": [
+        2.3846560846560836,
+        0.11594202898550711
+      ],
+      "residual": 0.17536231884057984,
+      "cache": {
+        "builds": 1,
+        "calls": 1,
+        "geometry_sha256": "f9611f2cfa0d5b935b13e8e3cc86fa9db2bc473aa4a75a1a03f2f7ac39ed5b59",
+        "usable": true,
+        "build_wall_ms": 1.432937,
+        "build_cpu_ms": 1.404096
+      }
+    },
+    "file_changed_same_process": {
+      "xy": [
+        2.3846560846560836,
+        0.11594202898550711
+      ],
+      "residual": 0.17536231884057984,
+      "cache": {
+        "builds": 1,
+        "calls": 2,
+        "geometry_sha256": "f9611f2cfa0d5b935b13e8e3cc86fa9db2bc473aa4a75a1a03f2f7ac39ed5b59",
+        "usable": true,
+        "build_wall_ms": 1.432937,
+        "build_cpu_ms": 1.404096
+      }
+    },
+    "restarted": {
+      "xy": [
+        4.454732510288065,
+        2.667948717948719
+      ],
+      "residual": 0.15512820512820444,
+      "cache": {
+        "builds": 1,
+        "calls": 1,
+        "geometry_sha256": "9f49ff9336dafa33e9de4d0d714dbacbc547de2cda488c08524b8be90e3dc3b7",
+        "usable": true,
+        "build_wall_ms": 1.418152,
+        "build_cpu_ms": 1.372736
+      }
+    }
+  },
+  "fixed_cache_survives_model_reset": true,
+  "scope": "finite ranges, fixed geometry per process; actual MeasuredBtf/native backend recreated on OS process restart"
+}

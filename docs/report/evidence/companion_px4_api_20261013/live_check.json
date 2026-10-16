@@ -1,0 +1,44 @@
+{
+  "checked_date": "2026-10-13",
+  "timezone": "Asia/Seoul",
+  "method": "read_only_ssh_process_list_and_ros_probe",
+  "duration_s": 8,
+  "counts": {
+    "/point_cloud": 81
+  },
+  "parameters": {},
+  "fc_state_received": false,
+  "fc_installation_reverified": false,
+  "fusion_reverified": false,
+  "disarmed_state_confirmed": false,
+  "completed_nsh_queries": 0,
+  "readback_error": "disarmed_FC_required",
+  "error_does_not_prove_armed": true,
+  "processes_observed": [
+    {
+      "pid": 2721,
+      "user": "arialhanho",
+      "name": "mavros_node"
+    },
+    {
+      "pid": 2725,
+      "user": "arialhanho",
+      "name": "uwb_btf_node"
+    }
+  ],
+  "processes_not_observed": [
+    "lidar_velocity_bridge",
+    "uwb_local_odometry_bridge"
+  ],
+  "raw_writers": [
+    "_NODE_NAME_UNKNOWN_"
+  ],
+  "flight_actions": false,
+  "parameter_writes": false,
+  "firmware_uploaded": false,
+  "services_restarted": false,
+  "remote_summary": "/home/pgyxn/lidar-physical-20261012/status-20261013-1305/summary.json",
+  "remote_topics": "/home/pgyxn/lidar-physical-20261012/status-20261013-1305/topics.jsonl",
+  "summary_sha256": "346c16e0de92728afc4a37926a221142086ab6736e4b5c7e94a977a24ffa34e7",
+  "limitation": "FC connectivity and cross-user DDS visibility were not distinguished; no current FC state or fusion conclusion."
+}

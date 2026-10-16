@@ -1,0 +1,67 @@
+{
+  "source": "2026-10-15 user-requested restructured review",
+  "base_commit": "87fc49a",
+  "scope": "documentation only; no new replay, deployment or flight",
+  "documents": [
+    {
+      "path": "docs/architecture/uwb_gap_recovery_20261015.md",
+      "source_sha256": "6996524889b76296184ddd4525ba9038a2915d89459826e26ef7bc1872e8b2d1",
+      "published_sha256": "0766b8453b1f9c70113177ea7bf6f0dab25e8e6c84d23e25933ff4d07fe41cad"
+    },
+    {
+      "path": "docs/reference/uwb_gap_review_basis_20261015.md",
+      "source_sha256": "f643c5fdbb5bcbc26a9c328a529b5953e018433510e9ff37663afa35c5446876",
+      "published_sha256": "7b50d151b50bdc77815c57b3984da7b359275588c838a144c0d790344819612b"
+    },
+    {
+      "path": "docs/report/btf_gc_latency_20261015.md",
+      "source_sha256": "102edc717b28698bc731fa8b82059cecdc15e56e1b65bb9a8e0cd7f482212322",
+      "published_sha256": "e33e701cc8cce74bdc660bbff0cee91504900e71d5706d231d19086722fe49c7"
+    },
+    {
+      "path": "docs/report/evidence/uwb_architecture_review_20261015/review-1.md",
+      "source_sha256": "5f9027e3e6e3475c5f715d48ba2ce150901c28ea4308e2f166e1cc1347bd56a5",
+      "published_sha256": "5f9027e3e6e3475c5f715d48ba2ce150901c28ea4308e2f166e1cc1347bd56a5"
+    },
+    {
+      "path": "docs/report/evidence/uwb_architecture_review_20261015/review-2.md",
+      "source_sha256": "71746b72f80db242ca2cc8267592edd9f4a6d8c682d7cefc3dfca0b8b80fe122",
+      "published_sha256": "71746b72f80db242ca2cc8267592edd9f4a6d8c682d7cefc3dfca0b8b80fe122"
+    },
+    {
+      "path": "docs/report/evidence/uwb_architecture_review_20261015/review-3.md",
+      "source_sha256": "3ebede27e0eefbe61a2f3a833cafb55e320f61f34b91e85e8d24065b59b0f23a",
+      "published_sha256": "3ebede27e0eefbe61a2f3a833cafb55e320f61f34b91e85e8d24065b59b0f23a"
+    },
+    {
+      "path": "docs/report/evidence/uwb_architecture_review_20261015/feedback-2.md",
+      "source_sha256": "4ff33992815815c1fffccfbc9d0236f752f79c6b2de950ebc86493e1aca47bc6",
+      "published_sha256": "1ec6e9f722eb77c38215725f48f1e2f6f1f6f6d31f16032f5e2409ed144a5d2e"
+    },
+    {
+      "path": "docs/report/evidence/uwb_architecture_review_20261015/feedback-3.md",
+      "source_sha256": "2e43799d2fc1ad67c7f2778225917fdcd04264bf05fe7f591d4853f35892cd2c",
+      "published_sha256": "87fca427ed0bccb8a66ab5d8765c988684651c6baceabe6cc82aa91276f65ecd"
+    },
+    {
+      "path": "docs/report/evidence/uwb_architecture_review_20261015/review_basis.md",
+      "source_sha256": "7e5624de504c5b406b32ced375e3616f0cb90ccf8c1d86ce126262192c152896",
+      "published_sha256": "bcd49f4fb08933af2b64c7dc2f2fc4ac2cd6ca2bbf99539f0db0993e0ecfc567"
+    },
+    {
+      "path": "docs/report/evidence/uwb_architecture_review_20261015/latest_corrections.md",
+      "source_sha256": "4468deacd36a90825dcabb19fda42e0a3334f9e48669e1b733261c23ac297b66",
+      "published_sha256": "2574ef6df678efb66a935dbef505577d5b915875868827d0ce3bbde389bcaa37"
+    },
+    {
+      "path": "docs/report/evidence/uwb_architecture_review_20261015/report_before_restructure.md",
+      "source_sha256": "8141b20ca65671be1dddf26c4f8b4980aacd763c699a0a0bb996746163636737",
+      "published_sha256": "898168a8e90bf00fed072c1e7dbf8ddc726f7ca959791270c07047e8905228d4"
+    },
+    {
+      "path": "docs/report/evidence/uwb_architecture_review_20261015/restructure_notes.md",
+      "source_sha256": "fa2f5f2064c6d1b6cc5059b166db7fe299db975c096f9bb7222926839de1d162",
+      "published_sha256": "6445e9dd7cdd317937a48b9f5f28f96d331c6d961dd63290a5dc713eaa3e8760"
+    }
+  ]
+}

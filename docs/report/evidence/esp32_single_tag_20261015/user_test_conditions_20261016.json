@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "user_confirmation_date": "2026-10-16",
+  "timezone": "Asia/Seoul",
+  "evidence_type": "direct user clarification after ground test",
+  "user_layout_answer": "책상 위 연결 상태",
+  "user_access_answer": "현재 장치에 접근할 수 없습니다",
+  "test_environment": "desk connection bench",
+  "old_6p3_by_4p6_m_layout_confirmed": false,
+  "measured_anchor_coordinates_provided": false,
+  "tag_stationary_condition_confirmed": false,
+  "single_tag_layout_confirmed": false,
+  "position_publish_gate": "remain blocked",
+  "raw_transport_results_scope": "desk connection bench only; no position accuracy or field performance qualification",
+  "physical_tag_power_cycle": "deferred; user cannot currently access devices",
+  "physical_usb_reconnect": "deferred; user cannot currently access devices",
+  "anchor_power_removal": "deferred; user cannot currently access devices",
+  "firmware_or_runtime_configuration_changed": false,
+  "prior_raw_records_modified": false
+}

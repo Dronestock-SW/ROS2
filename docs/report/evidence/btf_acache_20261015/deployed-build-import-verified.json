@@ -1,0 +1,27 @@
+{
+  "passed": true,
+  "module": "/home/arialhanho/btf-acache-release-20261015/source/src/drone_uwb/drone_uwb/processing/cached_xy.py",
+  "cache": {
+    "builds": 1,
+    "calls": 0,
+    "geometry_sha256": "f9611f2cfa0d5b935b13e8e3cc86fa9db2bc473aa4a75a1a03f2f7ac39ed5b59",
+    "usable": true,
+    "build_wall_ms": 1.581708,
+    "build_cpu_ms": 1.523488
+  },
+  "source_files_verified": 811,
+  "product_changes": [
+    "source/src/drone_uwb/drone_uwb/integration/ros/btf_node.py",
+    "source/src/drone_uwb/drone_uwb/processing/cached_xy.py",
+    "source/src/drone_uwb/drone_uwb/processing/measured_btf.py"
+  ],
+  "ignored_generated_directories": [
+    "__pycache__",
+    ".pytest_cache",
+    "*.egg-info"
+  ],
+  "tests": {
+    "contract": "6c6d06c848915d65b38ffbbe099cb1da1873e48601a9bcbe1639d0a7f9ec313c",
+    "regression_log": "7846115112507543fa548a41144d0bc0cc5d77ba6a58f4b28b6dac43e9e74353"
+  }
+}

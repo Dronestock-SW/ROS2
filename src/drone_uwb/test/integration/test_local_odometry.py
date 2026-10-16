@@ -7,7 +7,18 @@ import pytest
 
 from drone_uwb.integration.local_odometry import (
     LocalObservationSettings, horizontal_odometry, parameter_gate, alignment_yaw_deg,
-    trial_start_allowed)
+    trial_start_allowed, guarded_horizontal_odometry, SenderStartGate)
+from drone_uwb.processing.observation_guard import ObservationGuard
+from drone_uwb.integration.local_odometry import fresh_bridge_guard
+
+
+def test_validated_bridge_recovers_on_first_fresh_pose_without_extra_wait():
+    guard = fresh_bridge_guard()
+    assert guard.check((2., 2.), 1_000_000_000) == 'observation_acquiring'
+    assert guard.check((2., 2.), 1_250_000_000) == 'ready'
+    assert guard.check((2.01, 2.), 1_950_000_000) == 'ready'
+    assert guard.check((2.01, 2.), 1_950_000_000) == 'duplicate_or_backward_observation'
+    assert guard.check((float('nan'), 2.), 1_975_000_000) == 'invalid_observation'
 from drone_uwb.integration.planar import map_yaw_to_enu
 
 
@@ -18,12 +29,33 @@ def settings():
         alignment_method='operator_cardinal_and_stationary_px4_yaw')
 
 
-def test_sender_jump_policy_defaults_on_and_requires_an_explicit_boolean():
-    assert settings().jump_guard_enabled is True
+def test_sender_jump_policy_is_removed_and_migrates_legacy_boolean():
+    assert settings().jump_guard_enabled is False
+    assert replace(settings(), jump_guard_enabled=True).jump_guard_enabled is False
     assert replace(settings(), jump_guard_enabled=False).jump_guard_enabled is False
     for invalid in (0, 1, 'false', None):
         with pytest.raises(ValueError, match='invalid_confirmation:jump_guard_enabled'):
             replace(settings(), jump_guard_enabled=invalid)
+
+
+@pytest.mark.parametrize('reject_jumps', [True, False])
+def test_ros_sender_boundary_acquires_new_measurements_and_applies_jump_policy(reject_jumps):
+    config = replace(settings(), jump_guard_enabled=reject_jumps)
+    guard = ObservationGuard(motion_recovery=True)
+    def send(x, stamp):
+        return guarded_horizontal_odometry(config, guard, frame='uwb_map',
+            stamp_ns=stamp, now_ns=stamp+10_000_000, last_stamp_ns=None,
+            x=x, y=2., covariance=[[.09, 0.], [0., .09]], motion_eligible=False)
+    for i in range(20):
+        reason, fields = send(2., 1_000_000_000+i*25_000_000)
+    assert reason == 'ready'
+    assert fields['time_usec'] == 1_475_000
+    reason, fields = send(3., 1_500_000_000)
+    assert reason == 'ready'
+    assert fields['x'] == -2. and fields['y'] == 3.
+    assert send(3., 1_500_000_000)[0] == 'duplicate_or_backward_observation'
+    with pytest.raises(ValueError, match='invalid XY observation'):
+        send(float('nan'), 1_525_000_000)
 
 
 def test_sender_trial_starts_only_with_fresh_disarmed_ground_evidence():
@@ -35,6 +67,16 @@ def test_sender_trial_starts_only_with_fresh_disarmed_ground_evidence():
                        ('state_age_s',2.6),('landed_age_s',.6),
                        ('state_age_s',-.1),('landed_age_s',float('nan'))):
         assert not trial_start_allowed(**{**row, key:value})
+
+
+def test_new_sender_requires_ground_but_started_fusion_continues_through_arm():
+    state = dict(connected=True, armed=True, landed_state=2, state_age_s=.1, landed_age_s=.1)
+    gate = SenderStartGate()
+    assert not gate.check(**state)
+    assert not gate.check(**{**state, 'armed':False, 'landed_state':1, 'landed_age_s':.6})
+    assert gate.check(**{**state, 'armed':False, 'landed_state':1})
+    assert gate.check(**state)
+    assert not SenderStartGate().check(**state)
 
 
 @pytest.mark.parametrize('sign', [-1, 1])

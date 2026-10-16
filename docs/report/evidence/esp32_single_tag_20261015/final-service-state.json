@@ -1,0 +1,28 @@
+{
+  "checked_utc": "2026-10-15T15:42:23.529311+00:00",
+  "service": {
+    "exit_code": 0,
+    "stdout": "MainPID=37745\nNRestarts=0\nActiveState=active\nSubState=running\nUnitFileState=enabled",
+    "stderr": ""
+  },
+  "linger": {
+    "exit_code": 0,
+    "stdout": "Linger=yes",
+    "stderr": ""
+  },
+  "temporary_recovery_timers": {
+    "exit_code": 0,
+    "stdout": "NEXT LEFT LAST PASSED UNIT ACTIVATES\n\n0 timers listed.",
+    "stderr": ""
+  },
+  "test_units": {
+    "exit_code": 0,
+    "stdout": "UNIT LOAD ACTIVE SUB DESCRIPTION\n0 loaded units listed.\nTo show all installed unit files use 'systemctl list-unit-files'.",
+    "stderr": ""
+  },
+  "serial_owners": {
+    "exit_code": 0,
+    "stdout": "37771",
+    "stderr": "/dev/ttyUSB1:"
+  }
+}

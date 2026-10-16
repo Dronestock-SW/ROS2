@@ -26,7 +26,7 @@ def main():
     parser.add_argument('--apply', action='store_true')
     parser.add_argument('--disable-sender-jump-guard', '--disable-px4-jump-guard',
         dest='disable_sender_jump_guard', action='store_true',
-        help='Explicit trial setting: bypass sender displacement rejection only.')
+        help='Legacy accepted option; sender displacement rejection is removed. PX4 checks are unchanged.')
     parser.add_argument('--restore-from')
     options = parser.parse_args()
     output = Path(options.output)
@@ -102,7 +102,7 @@ def main():
             raise RuntimeError('stationary_heading_span_exceeds_3_deg')
         body_map = {'+X': 0., '-X': 180., '+Y': 90., '-Y': -90.}[options.heading]
         settings = LocalObservationSettings(enabled=True,
-            jump_guard_enabled=not options.disable_sender_jump_guard,
+            jump_guard_enabled=False,
             enu_yaw_deg=alignment_yaw_deg(math.degrees(mean), body_map, -1),
             host_boot_id=Path('/proc/sys/kernel/random/boot_id').read_text().strip(),
             fc_remote_ns_at_alignment=state['sync'][0].remote_timestamp_ns,

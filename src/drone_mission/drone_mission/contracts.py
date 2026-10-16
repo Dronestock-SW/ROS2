@@ -1,6 +1,6 @@
 """Validate local flight trials against the Platform v1 coordinate contract."""
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime
 import math
 from drone_uwb.integration.planar import y_axis_sign
@@ -15,6 +15,16 @@ def finite(*values):
 
 @dataclass(frozen=True)
 class Settings:
+    lidar_gap: dict = field(default_factory=dict)
+    takeoff_lidar_required: bool = False
+    takeoff_lidar_fusion_ref: str = ''
+    mission_ai: str = 'python_test'
+    start_mode: str = 'ground_takeoff'
+    takeoff_backend: str = 'native'
+    command_frame: str = 'global'
+    execution_profile: str = 'surveyed_mission'
+    bridge_topic: str = '/uwb/bridge_status'
+    bridge_host_boot_id: str = ''
     execute: bool = False
     full_mission: bool = False
     takeoff_settle_s: float = 2.0
@@ -45,6 +55,7 @@ class Settings:
     web_timeout_s: float = 2.0
     state_timeout_s: float = 2.5
     pose_timeout_s: float = .2
+    bridge_observation_timeout_s: float = .35
     command_timeout_s: float = 3.0
     takeoff_timeout_s: float = 30.0
     leg_timeout_s: float = 20.0
@@ -54,6 +65,38 @@ class Settings:
     layout_id: str = LAYOUT
 
     def __post_init__(self):
+        if type(self.takeoff_lidar_required) is not bool or not isinstance(self.takeoff_lidar_fusion_ref, str):
+            raise ValueError('invalid_takeoff_lidar_contract')
+        if self.takeoff_lidar_required and (self.mission_ai != 'cpp_bt' or self.start_mode != 'takeoff_hold' or self.takeoff_backend != 'local_position'):
+            raise ValueError('takeoff_lidar_requires_cpp_local_takeoff_hold')
+        if self.takeoff_backend not in ('native', 'local_position'):
+            raise ValueError('unsupported_takeoff_backend')
+        if self.takeoff_backend == 'local_position' and (self.start_mode != 'takeoff_hold' or not self.local_xy):
+            raise ValueError('local_position_takeoff_requires_separate_local_start')
+        if self.start_mode not in ('ground_takeoff', 'takeoff_hold'):
+            raise ValueError('unsupported_start_mode')
+        if self.start_mode == 'takeoff_hold' and not self.local_xy:
+            raise ValueError('takeoff_hold_requires_local_xy')
+        if not isinstance(self.lidar_gap, dict):
+            raise ValueError('lidar_gap_must_be_object')
+        if self.lidar_gap.get('enabled') is True and (self.mission_ai != 'cpp_bt' or not self.local_xy):
+            raise ValueError('lidar_gap_requires_cpp_local_xy')
+        if self.mission_ai not in ('python_test', 'cpp_bt'):
+            raise ValueError('unsupported_mission_ai')
+        if self.mission_ai == 'cpp_bt' and not self.local_xy:
+            raise ValueError('cpp_bt_requires_local_xy')
+        if self.command_frame not in ('global', 'local_xy'):
+            raise ValueError('unsupported_command_frame')
+        if self.command_frame == 'local_xy' and not self.anchor_trial:
+            raise ValueError('local_xy_requires_anchor_trial')
+        if self.execution_profile not in ('surveyed_mission', 'anchor_trial'):
+            raise ValueError('unsupported_execution_profile')
+        if self.execution_profile == 'anchor_trial' and not self.full_mission:
+            raise ValueError('anchor_trial_requires_full_mission')
+        if self.bridge_topic not in ('/uwb/bridge_status', '/uwb/local_odometry_status'):
+            raise ValueError('unsupported_bridge_topic')
+        if not isinstance(self.bridge_host_boot_id, str):
+            raise ValueError('invalid_bridge_host_boot_id')
         y_axis_sign(self)
         if type(self.expected_ekf2_mag_type) is not int or self.expected_ekf2_mag_type not in (0, 1, 6):
             raise ValueError('supported_native_heading_policy_required')
@@ -72,6 +115,9 @@ class Settings:
                      'observation_settle_s', 'scan_timeout_s', 'scan_speed_m_s'):
             if not finite(getattr(self, name)) or getattr(self, name) <= 0:
                 raise ValueError('positive_setting_required:' + name)
+        if (not finite(self.bridge_observation_timeout_s)
+                or not .001 <= self.bridge_observation_timeout_s <= .7):
+            raise ValueError('bridge_observation_timeout_s_must_be_0p001_to_0p7')
         if self.scan_speed_m_s > .1:
             raise ValueError('scan_speed_m_s_must_not_exceed_0p1')
         if not finite(self.enu_yaw_deg, self.enu_offset_x_m, self.enu_offset_y_m,
@@ -85,6 +131,22 @@ class Settings:
         return (len(xy) == 2 and finite(*xy)
                 and self.bounds_xy_m[0] <= xy[0] <= self.bounds_xy_m[1]
                 and self.bounds_xy_m[2] <= xy[1] <= self.bounds_xy_m[3])
+
+    @property
+    def anchor_trial(self):
+        return self.execution_profile == 'anchor_trial'
+
+    @property
+    def local_xy(self):
+        return self.command_frame == 'local_xy'
+
+    @property
+    def fc_owned_runtime(self):
+        return self.anchor_trial and self.local_xy
+
+    @property
+    def auto_takeoff_parameters_required(self):
+        return not self.local_xy or (self.start_mode == 'takeoff_hold' and self.takeoff_backend == 'native')
 
 
 def parse_request(payload, settings, wall_s):
@@ -139,6 +201,8 @@ def parse_request(payload, settings, wall_s):
         if not isinstance(point_id, str) or not point_id or point_id in ids:
             raise ValueError('unique_waypoint_ids_required')
         kind = item.get('type', 'waypoint')
+        if settings.anchor_trial and (kind not in ('waypoint', 'hover') or item.get('yaw_deg') is not None):
+            raise ValueError('anchor_trial_supports_xy_and_hover_only')
         if kind not in (('waypoint', 'hover', 'scan') if settings.full_mission else ('waypoint', 'hover')):
             raise ValueError('flight_trial_supports_waypoint_and_hover')
         xy = (item.get('x'), item.get('y'))

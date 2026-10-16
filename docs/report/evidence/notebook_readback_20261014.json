@@ -1,0 +1,42 @@
+{
+  "checked_at_kst": "2026-10-14 17:10–17:12 +09:00",
+  "flight_actions": false,
+  "parameter_writes": false,
+  "firmware_upload": false,
+  "service_restart": false,
+  "deletion": false,
+  "fc_build": "Oct 13 2026 19:30:32",
+  "lidar_version": 1,
+  "lidar_enabled": 1,
+  "aux_vel_last_fuse": [
+    0,
+    0
+  ],
+  "tof_timestamps_us": [
+    73335077010,
+    73335178510,
+    73335280111,
+    73335381638,
+    73335483142
+  ],
+  "tof_intervals_ms": [
+    101.5,
+    101.601,
+    101.527,
+    101.504
+  ],
+  "raw_files": [
+    {
+      "path": "C:\\Users\\USER\\Documents\\Codex\\2026-10-08\\dronestock-sw-ros2-codex-web-flight-4\\outputs\\notebook-fc-readback-20261014.json",
+      "sha256": "7c8e6f2b75c1cc5db9d8c63f096d564ba1bbf7d1c38faa5fa15209bf7dca688f"
+    },
+    {
+      "path": "C:\\Users\\USER\\Documents\\Codex\\2026-10-08\\dronestock-sw-ros2-codex-web-flight-4\\outputs\\notebook-tof-20261014.json",
+      "sha256": "0a8e39c03aea2a2c12322f558e019032e55646c73e057ae791f38bd87371180e"
+    },
+    {
+      "path": "C:\\Users\\USER\\Documents\\Codex\\2026-10-08\\dronestock-sw-ros2-codex-web-flight-4\\outputs\\lidar-current-readback-20261014.txt",
+      "sha256": "a42efa2f33dd77c76622693d95a8f2ab329fa12822d4a864ffb1e0811ea60e7e"
+    }
+  ]
+}

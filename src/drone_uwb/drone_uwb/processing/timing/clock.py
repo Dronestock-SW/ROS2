@@ -5,8 +5,41 @@ the lower envelope of (esp32, host) pairs. The unknown constant transport delay 
 is not corrected here.
 """
 from collections import deque
+import math
 
 import numpy as np
+
+
+def _sorted_finite(values):
+    # A few hundred clock samples: sorting Python floats avoids NumPy's small
+    # quantile dispatch/partition overhead and repeated GIL handoffs to ingress.
+    ordered = sorted(float(v) for v in values)
+    if not ordered or any(not math.isfinite(v) for v in ordered):
+        return None
+    return ordered
+
+
+def _median(values):
+    ordered = _sorted_finite(values)
+    if ordered is None:
+        return float(np.median(values))
+    middle = len(ordered)//2
+    return (ordered[middle] if len(ordered)%2 else
+            (ordered[middle-1]+ordered[middle])/2.)
+
+
+def _percentile95(values):
+    ordered = _sorted_finite(values)
+    if ordered is None:
+        return float(np.percentile(values, 95))
+    index = (len(ordered)-1)*.95
+    lower = int(index)
+    upper = min(lower+1, len(ordered)-1)
+    weight = index-lower
+    a, b = ordered[lower], ordered[upper]
+    # Match NumPy's default linear interpolation, including its upper-end
+    # arithmetic for weight >= .5. This is not an approximate quantile.
+    return b-(b-a)*(1.-weight) if weight >= .5 else a+(b-a)*weight
 
 
 class ClockMap:
@@ -43,14 +76,15 @@ class ClockMap:
         if span_s >= s.clock_alpha_min_span_s:
             design = np.column_stack([x, np.ones_like(x)])
             coef = np.linalg.lstsq(design, y, rcond=None)[0]
-            low = (y - design @ coef) <= np.median(y - design @ coef)
+            residual = y - design @ coef
+            low = residual <= _median(residual)
             self.slope = float(np.linalg.lstsq(design[low], y[low], rcond=None)[0][0])
         else:
             self.slope = 1000.0
         offset = y - self.slope * x
         self.beta = float(np.min(offset))
         delay = offset - self.beta
-        self.residual_p95_s = float(np.percentile(delay, 95)) / 1e9
+        self.residual_p95_s = _percentile95(delay) / 1e9
         scale_ok = abs(self.alpha - 1.0) <= s.clock_scale_tolerance
         self.state = 'ok' if scale_ok and self.residual_p95_s <= s.clock_residual_p95_max_s else 'clock_unsynced'
         self.reason = ('scale_out_of_bounds' if not scale_ok else

@@ -1,0 +1,2255 @@
+[
+  {
+    "run": "web-takeoff-gap-v2",
+    "scope": "SYNTHETIC_HTTP_CPP_CORE_ACTUAL_PX4_SIH_DYNAMICS",
+    "physical_flight": false,
+    "checks_passed": false,
+    "failures": [
+      "harness_goal_criteria_failed",
+      "web_takeoff_not_reached"
+    ],
+    "metrics": {},
+    "aiding": {},
+    "transitions": [
+      {
+        "phase": "IDLE",
+        "reason": "waiting_for_web_start",
+        "elapsed_s": 1.336,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    ],
+    "synthetic_parameters": {
+      "scenario": "uwb_gap",
+      "seed": 11,
+      "source_clock": "shared_sim_clock",
+      "lidar_noise_std_m_s": 0.01,
+      "lidar_reported_std_m_s": "not_recorded",
+      "height_reference": "not_recorded",
+      "mag_type": "not_recorded",
+      "imu_profile": "not_recorded",
+      "range_source": "not_recorded",
+      "synthetic_range_mount_z_ned_m": "not_recorded",
+      "range_noise_model": "not_recorded",
+      "output_tau_s": "not_recorded",
+      "velocity_feedback_cutoff_hz": "not_recorded"
+    },
+    "core_sha256": "99461f47d555002ae6174018cb76910c94f7a17c19ba64559c86f9615d3f6529",
+    "script_sha256": "99fed4675836938a57776a8e494c7df9b3aa243dd626e1ab41ef6a291625db47",
+    "ulog_sha256": "a281341166dbae9deb2c61beae7b1f3b3270bce14d48397693c049b78bc7546a",
+    "error_types": [
+      "TimeoutError"
+    ],
+    "terminal_reason": "waiting_for_web_start",
+    "commands": [],
+    "dropout_count": 0
+  },
+  {
+    "run": "web-takeoff-gap-v3",
+    "scope": "SYNTHETIC_HTTP_CPP_CORE_ACTUAL_PX4_SIH_DYNAMICS",
+    "physical_flight": false,
+    "checks_passed": false,
+    "failures": [
+      "harness_goal_criteria_failed",
+      "web_takeoff_not_reached"
+    ],
+    "metrics": {},
+    "aiding": {},
+    "transitions": [
+      {
+        "phase": "IDLE",
+        "reason": "waiting_for_web_start",
+        "elapsed_s": 1.32,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "PREPARING",
+        "reason": "local_setpoint_warmup",
+        "elapsed_s": 20.144,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "PILOT_OVERRIDE",
+        "reason": "manual_or_px4_failsafe_has_priority",
+        "elapsed_s": 21.92,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    ],
+    "synthetic_parameters": {
+      "scenario": "uwb_gap",
+      "seed": 11,
+      "source_clock": "shared_sim_clock",
+      "lidar_noise_std_m_s": 0.01,
+      "lidar_reported_std_m_s": "not_recorded",
+      "height_reference": "not_recorded",
+      "mag_type": "not_recorded",
+      "imu_profile": "not_recorded",
+      "range_source": "not_recorded",
+      "synthetic_range_mount_z_ned_m": "not_recorded",
+      "range_noise_model": "not_recorded",
+      "output_tau_s": "not_recorded",
+      "velocity_feedback_cutoff_hz": "not_recorded"
+    },
+    "core_sha256": "99461f47d555002ae6174018cb76910c94f7a17c19ba64559c86f9615d3f6529",
+    "script_sha256": "3e33415060c15bffe2e019beea959e67a35d4135c3f8f37b1268cb9090a9a445",
+    "ulog_sha256": "c402343b53e2726617f52fd49253c4b677969beb2480809c970fd68f7b1b19b4",
+    "error_types": [
+      "AssertionError"
+    ],
+    "terminal_reason": "manual_or_px4_failsafe_has_priority",
+    "commands": [
+      {
+        "kind": "offboard_mode",
+        "clock_us": 21580000,
+        "elapsed_s": 21.32
+      }
+    ],
+    "dropout_count": 0
+  },
+  {
+    "run": "web-takeoff-gap-v4",
+    "scope": "SYNTHETIC_HTTP_CPP_CORE_ACTUAL_PX4_SIH_DYNAMICS",
+    "physical_flight": false,
+    "checks_passed": false,
+    "failures": [
+      "harness_goal_criteria_failed",
+      "truth_xy_exceeds_0.25m",
+      "position_hold_not_reached"
+    ],
+    "metrics": {
+      "max_takeoff_and_hold_truth_xy_m": 0.3427179753780365,
+      "max_ascent_truth_height_m": 0.092529296875,
+      "reset_counts_after_web_takeoff": {
+        "xy_reset_counter": 0,
+        "vxy_reset_counter": 0,
+        "z_reset_counter": 0,
+        "vz_reset_counter": 0
+      }
+    },
+    "aiding": {
+      "uwb_absent_window_s": 6.24,
+      "lidar_fusion_updates": 52,
+      "lidar_active_fraction": 1.0,
+      "validity": {
+        "xy_valid": 1.0,
+        "v_xy_valid": 1.0,
+        "z_valid": 1.0,
+        "v_z_valid": 1.0
+      },
+      "other_horizontal": {
+        "cs_ev_pos": 0.0,
+        "cs_ev_vel": 0.0,
+        "cs_gnss_pos": 0.0,
+        "cs_gnss_vel": 0.0,
+        "cs_opt_flow": 0.0
+      }
+    },
+    "transitions": [
+      {
+        "phase": "IDLE",
+        "reason": "waiting_for_web_start",
+        "elapsed_s": 1.32,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "PREPARING",
+        "reason": "local_setpoint_warmup",
+        "elapsed_s": 20.08,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "ARMING",
+        "reason": "local_mode_confirmed",
+        "elapsed_s": 21.92,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "TAKING_OFF",
+        "reason": "px4_local_height_goal",
+        "elapsed_s": 22.904,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "LANDING",
+        "reason": "takeoff_hold_horizontal_drift",
+        "elapsed_s": 31.184,
+        "truth_xyz": [
+          0.3537614691998826,
+          -0.055597463181909265,
+          0.10200000000003229
+        ]
+      },
+      {
+        "phase": "FAILED",
+        "reason": "takeoff_hold_horizontal_drift",
+        "elapsed_s": 36.904,
+        "truth_xyz": [
+          0.5494593032452629,
+          -0.06671695597630861,
+          -0.0020000000000095497
+        ]
+      }
+    ],
+    "synthetic_parameters": {
+      "scenario": "uwb_gap",
+      "seed": 11,
+      "source_clock": "shared_sim_clock",
+      "lidar_noise_std_m_s": 0.01,
+      "lidar_reported_std_m_s": "not_recorded",
+      "height_reference": "not_recorded",
+      "mag_type": "not_recorded",
+      "imu_profile": "not_recorded",
+      "range_source": "not_recorded",
+      "synthetic_range_mount_z_ned_m": "not_recorded",
+      "range_noise_model": "not_recorded",
+      "output_tau_s": "not_recorded",
+      "velocity_feedback_cutoff_hz": "not_recorded"
+    },
+    "core_sha256": "6a70bf59ac61257b712804789fdbe1205aea7ab12f07583232598bcfd84d61fe",
+    "script_sha256": "0fddfecd429ba3a05ac0bf5f49e487e684cb88da3abda5c069389002e334c610",
+    "ulog_sha256": "79f4bf45ab4e8ee791ea2622952277fa194e883792077cc8453ac5f1bfd5925f",
+    "error_types": [
+      "AssertionError"
+    ],
+    "terminal_reason": "takeoff_hold_horizontal_drift",
+    "commands": [
+      {
+        "kind": "offboard_mode",
+        "clock_us": 21540000,
+        "elapsed_s": 21.28
+      },
+      {
+        "kind": "arm",
+        "clock_us": 22180000,
+        "elapsed_s": 21.92
+      },
+      {
+        "kind": "land",
+        "clock_us": 31444000,
+        "elapsed_s": 31.184
+      }
+    ],
+    "dropout_count": 0
+  },
+  {
+    "run": "web-takeoff-gap-v6",
+    "scope": "SYNTHETIC_HTTP_CPP_CORE_ACTUAL_PX4_SIH_DYNAMICS",
+    "physical_flight": false,
+    "checks_passed": false,
+    "failures": [
+      "harness_goal_criteria_failed",
+      "position_hold_not_reached"
+    ],
+    "metrics": {
+      "max_takeoff_and_hold_truth_xy_m": 0.10542324185371399,
+      "max_ascent_truth_height_m": 0.0262451171875,
+      "reset_counts_after_web_takeoff": {
+        "xy_reset_counter": 0,
+        "vxy_reset_counter": 0,
+        "z_reset_counter": 0,
+        "vz_reset_counter": 0
+      }
+    },
+    "aiding": {
+      "uwb_absent_window_s": 5.304,
+      "lidar_fusion_updates": 41,
+      "lidar_active_fraction": 1.0,
+      "validity": {
+        "xy_valid": 1.0,
+        "v_xy_valid": 1.0,
+        "z_valid": 1.0,
+        "v_z_valid": 1.0
+      },
+      "other_horizontal": {
+        "cs_ev_pos": 0.0,
+        "cs_ev_vel": 0.0,
+        "cs_gnss_pos": 0.0,
+        "cs_gnss_vel": 0.0,
+        "cs_opt_flow": 0.0
+      }
+    },
+    "transitions": [
+      {
+        "phase": "IDLE",
+        "reason": "waiting_for_web_start",
+        "elapsed_s": 1.336,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "PREPARING",
+        "reason": "local_setpoint_warmup",
+        "elapsed_s": 20.12,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "ARMING",
+        "reason": "local_mode_confirmed",
+        "elapsed_s": 21.936,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "TAKING_OFF",
+        "reason": "px4_local_height_goal",
+        "elapsed_s": 22.936,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "LANDING",
+        "reason": "cpp_ai:ESTIMATOR_UNAVAILABLE",
+        "elapsed_s": 30.28,
+        "truth_xyz": [
+          0.11290259653893024,
+          0.0,
+          0.03100000000000591
+        ]
+      },
+      {
+        "phase": "FAILED",
+        "reason": "cpp_ai:ESTIMATOR_UNAVAILABLE",
+        "elapsed_s": 39.96,
+        "truth_xyz": [
+          0.20322467377007444,
+          0.0,
+          -0.0009999999999763531
+        ]
+      }
+    ],
+    "synthetic_parameters": {
+      "scenario": "uwb_gap",
+      "seed": 11,
+      "source_clock": "shared_sim_clock",
+      "lidar_noise_std_m_s": 0.01,
+      "lidar_reported_std_m_s": 0.015,
+      "height_reference": "not_recorded",
+      "mag_type": "not_recorded",
+      "imu_profile": "not_recorded",
+      "range_source": "not_recorded",
+      "synthetic_range_mount_z_ned_m": "not_recorded",
+      "range_noise_model": "not_recorded",
+      "output_tau_s": "not_recorded",
+      "velocity_feedback_cutoff_hz": "not_recorded"
+    },
+    "core_sha256": "6a70bf59ac61257b712804789fdbe1205aea7ab12f07583232598bcfd84d61fe",
+    "script_sha256": "416796bb9c6aaef3c7f03f30bfc075f0c1fff08e6daf980bddd8324cdcc1dc80",
+    "ulog_sha256": "c9a91a34d805f302ca2f7cdf0f61c831ede000df7ae40ad63a558b3fd9fea263",
+    "error_types": [
+      "AssertionError"
+    ],
+    "terminal_reason": "cpp_ai:ESTIMATOR_UNAVAILABLE",
+    "commands": [
+      {
+        "kind": "offboard_mode",
+        "clock_us": 21540000,
+        "elapsed_s": 21.296
+      },
+      {
+        "kind": "arm",
+        "clock_us": 22180000,
+        "elapsed_s": 21.936
+      },
+      {
+        "kind": "land",
+        "clock_us": 30524000,
+        "elapsed_s": 30.28
+      }
+    ],
+    "dropout_count": 0
+  },
+  {
+    "run": "web-takeoff-gap-v7",
+    "scope": "SYNTHETIC_HTTP_CPP_CORE_ACTUAL_PX4_SIH_DYNAMICS",
+    "physical_flight": false,
+    "checks_passed": false,
+    "failures": [
+      "harness_goal_criteria_failed",
+      "truth_xy_exceeds_0.25m",
+      "position_hold_not_reached"
+    ],
+    "metrics": {
+      "max_takeoff_and_hold_truth_xy_m": 0.37435129284858704,
+      "max_ascent_truth_height_m": 0.06292724609375,
+      "reset_counts_after_web_takeoff": {
+        "xy_reset_counter": 0,
+        "vxy_reset_counter": 0,
+        "z_reset_counter": 0,
+        "vz_reset_counter": 0
+      }
+    },
+    "aiding": {
+      "uwb_absent_window_s": 6.304,
+      "lidar_fusion_updates": 52,
+      "lidar_active_fraction": 1.0,
+      "validity": {
+        "xy_valid": 1.0,
+        "v_xy_valid": 1.0,
+        "z_valid": 1.0,
+        "v_z_valid": 1.0
+      },
+      "other_horizontal": {
+        "cs_ev_pos": 0.0,
+        "cs_ev_vel": 0.0,
+        "cs_gnss_pos": 0.0,
+        "cs_gnss_vel": 0.0,
+        "cs_opt_flow": 0.0
+      }
+    },
+    "transitions": [
+      {
+        "phase": "IDLE",
+        "reason": "waiting_for_web_start",
+        "elapsed_s": 1.28,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "PREPARING",
+        "reason": "local_setpoint_warmup",
+        "elapsed_s": 20.144,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "ARMING",
+        "reason": "local_mode_confirmed",
+        "elapsed_s": 21.904,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "TAKING_OFF",
+        "reason": "px4_local_height_goal",
+        "elapsed_s": 22.88,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "LANDING",
+        "reason": "takeoff_hold_horizontal_drift",
+        "elapsed_s": 31.224,
+        "truth_xyz": [
+          0.39139566809076054,
+          0.055597463181909265,
+          0.07400000000001228
+        ]
+      },
+      {
+        "phase": "FAILED",
+        "reason": "takeoff_hold_horizontal_drift",
+        "elapsed_s": 38.904,
+        "truth_xyz": [
+          0.5494593032452629,
+          0.12231441915821789,
+          -0.0009999999999763531
+        ]
+      }
+    ],
+    "synthetic_parameters": {
+      "scenario": "uwb_gap",
+      "seed": 11,
+      "source_clock": "shared_sim_clock",
+      "lidar_noise_std_m_s": 0.01,
+      "lidar_reported_std_m_s": 0.1,
+      "height_reference": 2,
+      "mag_type": "not_recorded",
+      "imu_profile": "not_recorded",
+      "range_source": "not_recorded",
+      "synthetic_range_mount_z_ned_m": "not_recorded",
+      "range_noise_model": "not_recorded",
+      "output_tau_s": "not_recorded",
+      "velocity_feedback_cutoff_hz": "not_recorded"
+    },
+    "core_sha256": "6a70bf59ac61257b712804789fdbe1205aea7ab12f07583232598bcfd84d61fe",
+    "script_sha256": "97edde41224ce7551f04994b7391999ec02a53c043dd5b1cc109ba66cc62b6a0",
+    "ulog_sha256": "2396e154007f13aeb836850b8923747735ff842a67bd2389745c63f922bf257c",
+    "error_types": [
+      "AssertionError"
+    ],
+    "terminal_reason": "takeoff_hold_horizontal_drift",
+    "commands": [
+      {
+        "kind": "offboard_mode",
+        "clock_us": 21620000,
+        "elapsed_s": 21.32
+      },
+      {
+        "kind": "arm",
+        "clock_us": 22204000,
+        "elapsed_s": 21.904
+      },
+      {
+        "kind": "land",
+        "clock_us": 31524000,
+        "elapsed_s": 31.224
+      }
+    ],
+    "dropout_count": 0
+  },
+  {
+    "run": "web-takeoff-gap-v8",
+    "scope": "SYNTHETIC_HTTP_CPP_CORE_ACTUAL_PX4_SIH_DYNAMICS",
+    "physical_flight": false,
+    "checks_passed": false,
+    "failures": [
+      "harness_goal_criteria_failed",
+      "truth_xy_exceeds_0.25m",
+      "position_hold_not_reached"
+    ],
+    "metrics": {
+      "max_takeoff_and_hold_truth_xy_m": 0.4032443165779114,
+      "max_ascent_truth_height_m": 0.081939697265625,
+      "reset_counts_after_web_takeoff": {
+        "xy_reset_counter": 0,
+        "vxy_reset_counter": 0,
+        "z_reset_counter": 0,
+        "vz_reset_counter": 0
+      }
+    },
+    "aiding": {
+      "uwb_absent_window_s": 6.2,
+      "lidar_fusion_updates": 51,
+      "lidar_active_fraction": 1.0,
+      "validity": {
+        "xy_valid": 1.0,
+        "v_xy_valid": 1.0,
+        "z_valid": 1.0,
+        "v_z_valid": 1.0
+      },
+      "other_horizontal": {
+        "cs_ev_pos": 0.0,
+        "cs_ev_vel": 0.0,
+        "cs_gnss_pos": 0.0,
+        "cs_gnss_vel": 0.0,
+        "cs_opt_flow": 0.0
+      }
+    },
+    "transitions": [
+      {
+        "phase": "IDLE",
+        "reason": "waiting_for_web_start",
+        "elapsed_s": 1.336,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "PREPARING",
+        "reason": "local_setpoint_warmup",
+        "elapsed_s": 20.096,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "ARMING",
+        "reason": "local_mode_confirmed",
+        "elapsed_s": 21.92,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "TAKING_OFF",
+        "reason": "px4_local_height_goal",
+        "elapsed_s": 22.92,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "LANDING",
+        "reason": "takeoff_hold_horizontal_drift",
+        "elapsed_s": 31.16,
+        "truth_xyz": [
+          0.4215030271232407,
+          0.055597463181909265,
+          0.09199999999998454
+        ]
+      },
+      {
+        "phase": "FAILED",
+        "reason": "takeoff_hold_horizontal_drift",
+        "elapsed_s": 36.96,
+        "truth_xyz": [
+          0.5870935021361409,
+          0.11119492636381853,
+          -0.0020000000000095497
+        ]
+      }
+    ],
+    "synthetic_parameters": {
+      "scenario": "uwb_gap",
+      "seed": 11,
+      "source_clock": "shared_sim_clock",
+      "lidar_noise_std_m_s": 0.01,
+      "lidar_reported_std_m_s": 0.1,
+      "height_reference": 0,
+      "mag_type": 0,
+      "imu_profile": "not_recorded",
+      "range_source": "not_recorded",
+      "synthetic_range_mount_z_ned_m": "not_recorded",
+      "range_noise_model": "not_recorded",
+      "output_tau_s": "not_recorded",
+      "velocity_feedback_cutoff_hz": "not_recorded"
+    },
+    "core_sha256": "6a70bf59ac61257b712804789fdbe1205aea7ab12f07583232598bcfd84d61fe",
+    "script_sha256": "0ee85abecd4b27ae4c2266cb5ed537e9522320c3ccaee89edb46631d7cb92e80",
+    "ulog_sha256": "e0d3f7d25ee6fdcdcdbd24b4f96cbbefcc6ddef8d25b954e55733dbb6a0a793a",
+    "error_types": [
+      "AssertionError"
+    ],
+    "terminal_reason": "takeoff_hold_horizontal_drift",
+    "commands": [
+      {
+        "kind": "offboard_mode",
+        "clock_us": 21524000,
+        "elapsed_s": 21.28
+      },
+      {
+        "kind": "arm",
+        "clock_us": 22164000,
+        "elapsed_s": 21.92
+      },
+      {
+        "kind": "land",
+        "clock_us": 31404000,
+        "elapsed_s": 31.16
+      }
+    ],
+    "dropout_count": 0
+  },
+  {
+    "run": "web-takeoff-gap-v9",
+    "scope": "SYNTHETIC_HTTP_CPP_CORE_ACTUAL_PX4_SIH_DYNAMICS",
+    "physical_flight": false,
+    "checks_passed": false,
+    "failures": [
+      "harness_goal_criteria_failed",
+      "truth_xy_exceeds_0.25m",
+      "position_hold_not_reached"
+    ],
+    "metrics": {
+      "max_takeoff_and_hold_truth_xy_m": 0.2664381265640259,
+      "max_ascent_truth_height_m": 1.812103271484375,
+      "reset_counts_after_web_takeoff": {
+        "xy_reset_counter": 0,
+        "vxy_reset_counter": 0,
+        "z_reset_counter": 0,
+        "vz_reset_counter": 0
+      }
+    },
+    "aiding": {
+      "uwb_absent_window_s": 32.016,
+      "lidar_fusion_updates": 267,
+      "lidar_active_fraction": 1.0,
+      "validity": {
+        "xy_valid": 1.0,
+        "v_xy_valid": 1.0,
+        "z_valid": 1.0,
+        "v_z_valid": 1.0
+      },
+      "other_horizontal": {
+        "cs_ev_pos": 0.0,
+        "cs_ev_vel": 0.0,
+        "cs_gnss_pos": 0.0,
+        "cs_gnss_vel": 0.0,
+        "cs_opt_flow": 0.0
+      }
+    },
+    "transitions": [
+      {
+        "phase": "IDLE",
+        "reason": "waiting_for_web_start",
+        "elapsed_s": 1.28,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "PREPARING",
+        "reason": "local_setpoint_warmup",
+        "elapsed_s": 20.104,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "ARMING",
+        "reason": "local_mode_confirmed",
+        "elapsed_s": 21.88,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "TAKING_OFF",
+        "reason": "px4_local_height_goal",
+        "elapsed_s": 22.864,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "LANDING",
+        "reason": "takeoff_hold_horizontal_drift",
+        "elapsed_s": 56.944,
+        "truth_xyz": [
+          -0.26343939196873845,
+          -0.04447797038750992,
+          1.816000000000031
+        ]
+      },
+      {
+        "phase": "FAILED",
+        "reason": "takeoff_hold_horizontal_drift",
+        "elapsed_s": 70.864,
+        "truth_xyz": [
+          -0.39139566809076054,
+          -0.11119492636381853,
+          0.0
+        ]
+      }
+    ],
+    "synthetic_parameters": {
+      "scenario": "uwb_gap",
+      "seed": 11,
+      "source_clock": "shared_sim_clock",
+      "lidar_noise_std_m_s": 0.01,
+      "lidar_reported_std_m_s": 0.1,
+      "height_reference": 0,
+      "mag_type": 0,
+      "imu_profile": "sih_noisy",
+      "range_source": "not_recorded",
+      "synthetic_range_mount_z_ned_m": "not_recorded",
+      "range_noise_model": "not_recorded",
+      "output_tau_s": "not_recorded",
+      "velocity_feedback_cutoff_hz": "not_recorded"
+    },
+    "core_sha256": "6a70bf59ac61257b712804789fdbe1205aea7ab12f07583232598bcfd84d61fe",
+    "script_sha256": "b63fa8818ce662f0fbd7d2c196f77440e8659a6f24a903529aa98267f3b7eb73",
+    "ulog_sha256": "ff251ed7e4aba60d7790fcc8cb822b821f28ea764031c2d7c244010746e07117",
+    "error_types": [
+      "AssertionError"
+    ],
+    "terminal_reason": "takeoff_hold_horizontal_drift",
+    "commands": [
+      {
+        "kind": "offboard_mode",
+        "clock_us": 21580000,
+        "elapsed_s": 21.28
+      },
+      {
+        "kind": "arm",
+        "clock_us": 22180000,
+        "elapsed_s": 21.88
+      },
+      {
+        "kind": "land",
+        "clock_us": 57244000,
+        "elapsed_s": 56.944
+      }
+    ],
+    "dropout_count": 0
+  },
+  {
+    "run": "web-takeoff-gap-v10",
+    "scope": "SYNTHETIC_HTTP_CPP_CORE_ACTUAL_PX4_SIH_DYNAMICS",
+    "physical_flight": false,
+    "checks_passed": false,
+    "failures": [
+      "harness_goal_criteria_failed",
+      "truth_xy_exceeds_0.25m",
+      "position_hold_not_reached"
+    ],
+    "metrics": {
+      "max_takeoff_and_hold_truth_xy_m": 0.2842770218849182,
+      "max_ascent_truth_height_m": 1.567108154296875,
+      "reset_counts_after_web_takeoff": {
+        "xy_reset_counter": 0,
+        "vxy_reset_counter": 0,
+        "z_reset_counter": 0,
+        "vz_reset_counter": 0
+      }
+    },
+    "aiding": {
+      "uwb_absent_window_s": 32.136,
+      "lidar_fusion_updates": 268,
+      "lidar_active_fraction": 1.0,
+      "validity": {
+        "xy_valid": 1.0,
+        "v_xy_valid": 1.0,
+        "z_valid": 1.0,
+        "v_z_valid": 1.0
+      },
+      "other_horizontal": {
+        "cs_ev_pos": 0.0,
+        "cs_ev_vel": 0.0,
+        "cs_gnss_pos": 0.0,
+        "cs_gnss_vel": 0.0,
+        "cs_opt_flow": 0.0
+      }
+    },
+    "transitions": [
+      {
+        "phase": "IDLE",
+        "reason": "waiting_for_web_start",
+        "elapsed_s": 1.096,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "PREPARING",
+        "reason": "local_setpoint_warmup",
+        "elapsed_s": 20.12,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "ARMING",
+        "reason": "local_mode_confirmed",
+        "elapsed_s": 21.696,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "TAKING_OFF",
+        "reason": "px4_local_height_goal",
+        "elapsed_s": 22.68,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "LANDING",
+        "reason": "takeoff_hold_horizontal_drift",
+        "elapsed_s": 56.88,
+        "truth_xyz": [
+          -0.28601991127652443,
+          -0.03335847838319805,
+          1.424000000000035
+        ]
+      },
+      {
+        "phase": "FAILED",
+        "reason": "takeoff_hold_horizontal_drift",
+        "elapsed_s": 66.68,
+        "truth_xyz": [
+          -0.4064493475401489,
+          0.011119492794399348,
+          -0.0009999999999763531
+        ]
+      }
+    ],
+    "synthetic_parameters": {
+      "scenario": "uwb_gap",
+      "seed": 11,
+      "source_clock": "shared_sim_clock",
+      "lidar_noise_std_m_s": 0.01,
+      "lidar_reported_std_m_s": 0.1,
+      "height_reference": 2,
+      "mag_type": 0,
+      "imu_profile": "sih_noisy",
+      "range_source": "not_recorded",
+      "synthetic_range_mount_z_ned_m": "not_recorded",
+      "range_noise_model": "not_recorded",
+      "output_tau_s": "not_recorded",
+      "velocity_feedback_cutoff_hz": "not_recorded"
+    },
+    "core_sha256": "6a70bf59ac61257b712804789fdbe1205aea7ab12f07583232598bcfd84d61fe",
+    "script_sha256": "b63fa8818ce662f0fbd7d2c196f77440e8659a6f24a903529aa98267f3b7eb73",
+    "ulog_sha256": "4d324bf1190008eaf3b74e8aa517cc58393d88d53f776996672a5d98547c9958",
+    "error_types": [
+      "AssertionError"
+    ],
+    "terminal_reason": "takeoff_hold_horizontal_drift",
+    "commands": [
+      {
+        "kind": "offboard_mode",
+        "clock_us": 21780000,
+        "elapsed_s": 21.296
+      },
+      {
+        "kind": "arm",
+        "clock_us": 22180000,
+        "elapsed_s": 21.696
+      },
+      {
+        "kind": "land",
+        "clock_us": 57364000,
+        "elapsed_s": 56.88
+      }
+    ],
+    "dropout_count": 0
+  },
+  {
+    "run": "web-takeoff-gap-v11",
+    "scope": "SYNTHETIC_HTTP_CPP_CORE_ACTUAL_PX4_SIH_DYNAMICS",
+    "physical_flight": false,
+    "checks_passed": false,
+    "failures": [
+      "harness_goal_criteria_failed",
+      "position_hold_not_reached"
+    ],
+    "metrics": {
+      "max_takeoff_and_hold_truth_xy_m": 0.1942371129989624,
+      "max_ascent_truth_height_m": 1.597564697265625,
+      "reset_counts_after_web_takeoff": {
+        "xy_reset_counter": 0,
+        "vxy_reset_counter": 0,
+        "z_reset_counter": 0,
+        "vz_reset_counter": 0
+      }
+    },
+    "aiding": {
+      "uwb_absent_window_s": 41.4,
+      "lidar_fusion_updates": 345,
+      "lidar_active_fraction": 1.0,
+      "validity": {
+        "xy_valid": 1.0,
+        "v_xy_valid": 1.0,
+        "z_valid": 1.0,
+        "v_z_valid": 1.0
+      },
+      "other_horizontal": {
+        "cs_ev_pos": 0.0,
+        "cs_ev_vel": 0.0,
+        "cs_gnss_pos": 0.0,
+        "cs_gnss_vel": 0.0,
+        "cs_opt_flow": 0.0
+      }
+    },
+    "transitions": [
+      {
+        "phase": "IDLE",
+        "reason": "waiting_for_web_start",
+        "elapsed_s": 1.28,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "PREPARING",
+        "reason": "local_setpoint_warmup",
+        "elapsed_s": 20.12,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "ARMING",
+        "reason": "local_mode_confirmed",
+        "elapsed_s": 21.904,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "TAKING_OFF",
+        "reason": "px4_local_height_goal",
+        "elapsed_s": 22.88,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "LANDING",
+        "reason": "takeoff_stability_timeout",
+        "elapsed_s": 66.32,
+        "truth_xyz": [
+          0.17311731473759423,
+          0.06671695597630861,
+          1.4600000000000364
+        ]
+      },
+      {
+        "phase": "FAILED",
+        "reason": "takeoff_stability_timeout",
+        "elapsed_s": 75.88,
+        "truth_xyz": [
+          0.15806363515450234,
+          0.0889559415651073,
+          -0.0009999999999763531
+        ]
+      }
+    ],
+    "synthetic_parameters": {
+      "scenario": "uwb_gap",
+      "seed": 11,
+      "source_clock": "shared_sim_clock",
+      "lidar_noise_std_m_s": 0.01,
+      "lidar_reported_std_m_s": 0.015,
+      "height_reference": 2,
+      "mag_type": 0,
+      "imu_profile": "sih_noisy",
+      "range_source": "not_recorded",
+      "synthetic_range_mount_z_ned_m": "not_recorded",
+      "range_noise_model": "not_recorded",
+      "output_tau_s": "not_recorded",
+      "velocity_feedback_cutoff_hz": "not_recorded"
+    },
+    "core_sha256": "6a70bf59ac61257b712804789fdbe1205aea7ab12f07583232598bcfd84d61fe",
+    "script_sha256": "b63fa8818ce662f0fbd7d2c196f77440e8659a6f24a903529aa98267f3b7eb73",
+    "ulog_sha256": "57c7da00fc531face58cc694c9671039ed881a625396f5704c054d1688b86d4e",
+    "error_types": [
+      "AssertionError"
+    ],
+    "terminal_reason": "takeoff_stability_timeout",
+    "commands": [
+      {
+        "kind": "offboard_mode",
+        "clock_us": 21604000,
+        "elapsed_s": 21.304
+      },
+      {
+        "kind": "arm",
+        "clock_us": 22204000,
+        "elapsed_s": 21.904
+      },
+      {
+        "kind": "land",
+        "clock_us": 66620000,
+        "elapsed_s": 66.32
+      }
+    ],
+    "dropout_count": 0
+  },
+  {
+    "run": "web-takeoff-gap-v12",
+    "scope": "SYNTHETIC_HTTP_CPP_CORE_ACTUAL_PX4_SIH_DYNAMICS",
+    "physical_flight": false,
+    "checks_passed": false,
+    "failures": [
+      "harness_goal_criteria_failed",
+      "position_hold_not_reached"
+    ],
+    "metrics": {
+      "max_takeoff_and_hold_truth_xy_m": 0.15810060501098633,
+      "max_ascent_truth_height_m": 1.870269775390625,
+      "reset_counts_after_web_takeoff": {
+        "xy_reset_counter": 0,
+        "vxy_reset_counter": 0,
+        "z_reset_counter": 0,
+        "vz_reset_counter": 0
+      }
+    },
+    "aiding": {
+      "uwb_absent_window_s": 41.424,
+      "lidar_fusion_updates": 346,
+      "lidar_active_fraction": 1.0,
+      "validity": {
+        "xy_valid": 1.0,
+        "v_xy_valid": 1.0,
+        "z_valid": 1.0,
+        "v_z_valid": 1.0
+      },
+      "other_horizontal": {
+        "cs_ev_pos": 0.0,
+        "cs_ev_vel": 0.0,
+        "cs_gnss_pos": 0.0,
+        "cs_gnss_vel": 0.0,
+        "cs_opt_flow": 0.0
+      }
+    },
+    "transitions": [
+      {
+        "phase": "IDLE",
+        "reason": "waiting_for_web_start",
+        "elapsed_s": 1.336,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "PREPARING",
+        "reason": "local_setpoint_warmup",
+        "elapsed_s": 20.056,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "ARMING",
+        "reason": "local_mode_confirmed",
+        "elapsed_s": 21.936,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "TAKING_OFF",
+        "reason": "px4_local_height_goal",
+        "elapsed_s": 22.936,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "LANDING",
+        "reason": "takeoff_stability_timeout",
+        "elapsed_s": 66.4,
+        "truth_xyz": [
+          0.15806363515450234,
+          0.022238985588798697,
+          1.8500000000000227
+        ]
+      },
+      {
+        "phase": "FAILED",
+        "reason": "takeoff_stability_timeout",
+        "elapsed_s": 78.96,
+        "truth_xyz": [
+          0.12795627612202212,
+          0.06671695597630861,
+          -0.0009999999999763531
+        ]
+      }
+    ],
+    "synthetic_parameters": {
+      "scenario": "uwb_gap",
+      "seed": 11,
+      "source_clock": "shared_sim_clock",
+      "lidar_noise_std_m_s": 0.01,
+      "lidar_reported_std_m_s": 0.015,
+      "height_reference": 2,
+      "mag_type": 0,
+      "imu_profile": "sih_noisy",
+      "range_source": "mavlink",
+      "synthetic_range_mount_z_ned_m": -0.15,
+      "range_noise_model": "not_recorded",
+      "output_tau_s": "not_recorded",
+      "velocity_feedback_cutoff_hz": "not_recorded"
+    },
+    "core_sha256": "6a70bf59ac61257b712804789fdbe1205aea7ab12f07583232598bcfd84d61fe",
+    "script_sha256": "db9c48a883c1499508224f8ea739f953684e8e0cfe3ab434f69d147ccfebaaef",
+    "ulog_sha256": "9977e8cadfef07625f1b9fae2625768f0174947aa529250ce74810c8981bd64e",
+    "error_types": [
+      "AssertionError"
+    ],
+    "terminal_reason": "takeoff_stability_timeout",
+    "commands": [
+      {
+        "kind": "offboard_mode",
+        "clock_us": 21500000,
+        "elapsed_s": 21.256
+      },
+      {
+        "kind": "arm",
+        "clock_us": 22180000,
+        "elapsed_s": 21.936
+      },
+      {
+        "kind": "land",
+        "clock_us": 66644000,
+        "elapsed_s": 66.4
+      }
+    ],
+    "dropout_count": 0
+  },
+  {
+    "run": "web-takeoff-gap-v13",
+    "scope": "SYNTHETIC_HTTP_CPP_CORE_ACTUAL_PX4_SIH_DYNAMICS",
+    "physical_flight": false,
+    "checks_passed": false,
+    "failures": [
+      "harness_goal_criteria_failed",
+      "position_hold_not_reached"
+    ],
+    "metrics": {
+      "max_takeoff_and_hold_truth_xy_m": 0.228692427277565,
+      "max_ascent_truth_height_m": 1.911529541015625,
+      "reset_counts_after_web_takeoff": {
+        "xy_reset_counter": 0,
+        "vxy_reset_counter": 0,
+        "z_reset_counter": 0,
+        "vz_reset_counter": 0
+      }
+    },
+    "aiding": {
+      "uwb_absent_window_s": 41.44,
+      "lidar_fusion_updates": 346,
+      "lidar_active_fraction": 1.0,
+      "validity": {
+        "xy_valid": 1.0,
+        "v_xy_valid": 1.0,
+        "z_valid": 1.0,
+        "v_z_valid": 1.0
+      },
+      "other_horizontal": {
+        "cs_ev_pos": 0.0,
+        "cs_ev_vel": 0.0,
+        "cs_gnss_pos": 0.0,
+        "cs_gnss_vel": 0.0,
+        "cs_opt_flow": 0.0
+      }
+    },
+    "transitions": [
+      {
+        "phase": "IDLE",
+        "reason": "waiting_for_web_start",
+        "elapsed_s": 1.336,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "PREPARING",
+        "reason": "local_setpoint_warmup",
+        "elapsed_s": 20.096,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "ARMING",
+        "reason": "local_mode_confirmed",
+        "elapsed_s": 21.92,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "TAKING_OFF",
+        "reason": "px4_local_height_goal",
+        "elapsed_s": 22.92,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "LANDING",
+        "reason": "takeoff_stability_timeout",
+        "elapsed_s": 66.4,
+        "truth_xyz": [
+          0.08279523750645003,
+          -0.022238985588798697,
+          1.7789999999999964
+        ]
+      },
+      {
+        "phase": "FAILED",
+        "reason": "takeoff_stability_timeout",
+        "elapsed_s": 75.96,
+        "truth_xyz": [
+          0.052687878340266274,
+          -0.011119492794399348,
+          -0.0009999999999763531
+        ]
+      }
+    ],
+    "synthetic_parameters": {
+      "scenario": "uwb_gap",
+      "seed": 11,
+      "source_clock": "shared_sim_clock",
+      "lidar_noise_std_m_s": 0.01,
+      "lidar_reported_std_m_s": 0.015,
+      "height_reference": 2,
+      "mag_type": 0,
+      "imu_profile": "sih_noisy",
+      "range_source": "mavlink",
+      "synthetic_range_mount_z_ned_m": -0.15,
+      "range_noise_model": "not_recorded",
+      "output_tau_s": "not_recorded",
+      "velocity_feedback_cutoff_hz": "not_recorded"
+    },
+    "core_sha256": "6a70bf59ac61257b712804789fdbe1205aea7ab12f07583232598bcfd84d61fe",
+    "script_sha256": "8f98e352a246205c50b1c6cdf53b5f8ca1472c83579c1ef8c80e108885a12ced",
+    "ulog_sha256": "8aae52d0584a2767084ae2ab7ff50b8c2017c9791df44b5bef866e3cae08dcd2",
+    "error_types": [
+      "AssertionError"
+    ],
+    "terminal_reason": "takeoff_stability_timeout",
+    "commands": [
+      {
+        "kind": "offboard_mode",
+        "clock_us": 21532000,
+        "elapsed_s": 21.28
+      },
+      {
+        "kind": "arm",
+        "clock_us": 22172000,
+        "elapsed_s": 21.92
+      },
+      {
+        "kind": "land",
+        "clock_us": 66652000,
+        "elapsed_s": 66.4
+      }
+    ],
+    "dropout_count": 0
+  },
+  {
+    "run": "web-takeoff-gap-v14",
+    "scope": "SYNTHETIC_HTTP_CPP_CORE_ACTUAL_PX4_SIH_DYNAMICS",
+    "physical_flight": false,
+    "checks_passed": false,
+    "failures": [
+      "harness_goal_criteria_failed",
+      "position_hold_not_reached"
+    ],
+    "metrics": {
+      "max_takeoff_and_hold_truth_xy_m": 0.15027914941310883,
+      "max_ascent_truth_height_m": 0.051971435546875,
+      "reset_counts_after_web_takeoff": {
+        "xy_reset_counter": 0,
+        "vxy_reset_counter": 0,
+        "z_reset_counter": 0,
+        "vz_reset_counter": 0
+      }
+    },
+    "aiding": {
+      "uwb_absent_window_s": 4.744,
+      "lidar_fusion_updates": 36,
+      "lidar_active_fraction": 1.0,
+      "validity": {
+        "xy_valid": 1.0,
+        "v_xy_valid": 1.0,
+        "z_valid": 1.0,
+        "v_z_valid": 1.0
+      },
+      "other_horizontal": {
+        "cs_ev_pos": 0.0,
+        "cs_ev_vel": 0.0,
+        "cs_gnss_pos": 0.0,
+        "cs_gnss_vel": 0.0,
+        "cs_opt_flow": 0.0
+      }
+    },
+    "transitions": [
+      {
+        "phase": "IDLE",
+        "reason": "waiting_for_web_start",
+        "elapsed_s": 1.296,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "PREPARING",
+        "reason": "local_setpoint_warmup",
+        "elapsed_s": 20.08,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "ARMING",
+        "reason": "local_mode_confirmed",
+        "elapsed_s": 21.896,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "TAKING_OFF",
+        "reason": "px4_local_height_goal",
+        "elapsed_s": 22.896,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "LANDING",
+        "reason": "cpp_ai:ESTIMATOR_UNAVAILABLE",
+        "elapsed_s": 29.68,
+        "truth_xyz": [
+          0.15806363515450234,
+          0.0,
+          0.060000000000002274
+        ]
+      },
+      {
+        "phase": "FAILED",
+        "reason": "cpp_ai:ESTIMATOR_UNAVAILABLE",
+        "elapsed_s": 41.92,
+        "truth_xyz": [
+          0.3086004305843105,
+          0.022238985588798697,
+          -0.0020000000000095497
+        ]
+      }
+    ],
+    "synthetic_parameters": {
+      "scenario": "uwb_gap",
+      "seed": 11,
+      "source_clock": "shared_sim_clock",
+      "lidar_noise_std_m_s": 0.01,
+      "lidar_reported_std_m_s": 0.015,
+      "height_reference": 2,
+      "mag_type": 0,
+      "imu_profile": "stock",
+      "range_source": "mavlink",
+      "synthetic_range_mount_z_ned_m": -0.15,
+      "range_noise_model": "not_recorded",
+      "output_tau_s": "not_recorded",
+      "velocity_feedback_cutoff_hz": "not_recorded"
+    },
+    "core_sha256": "6a70bf59ac61257b712804789fdbe1205aea7ab12f07583232598bcfd84d61fe",
+    "script_sha256": "8f98e352a246205c50b1c6cdf53b5f8ca1472c83579c1ef8c80e108885a12ced",
+    "ulog_sha256": "a4d2245a306c391e0bbd4b7d90f3c7948832d40873741ab8264306b9f425e04e",
+    "error_types": [
+      "AssertionError"
+    ],
+    "terminal_reason": "cpp_ai:ESTIMATOR_UNAVAILABLE",
+    "commands": [
+      {
+        "kind": "offboard_mode",
+        "clock_us": 21540000,
+        "elapsed_s": 21.256
+      },
+      {
+        "kind": "arm",
+        "clock_us": 22180000,
+        "elapsed_s": 21.896
+      },
+      {
+        "kind": "land",
+        "clock_us": 29964000,
+        "elapsed_s": 29.68
+      }
+    ],
+    "dropout_count": 0
+  },
+  {
+    "run": "web-takeoff-gap-v15",
+    "scope": "SYNTHETIC_HTTP_CPP_CORE_ACTUAL_PX4_SIH_DYNAMICS",
+    "physical_flight": false,
+    "checks_passed": false,
+    "failures": [
+      "harness_goal_criteria_failed",
+      "position_hold_not_reached"
+    ],
+    "metrics": {
+      "max_takeoff_and_hold_truth_xy_m": 0.20525534451007843,
+      "max_ascent_truth_height_m": 1.845367431640625,
+      "reset_counts_after_web_takeoff": {
+        "xy_reset_counter": 0,
+        "vxy_reset_counter": 0,
+        "z_reset_counter": 0,
+        "vz_reset_counter": 0
+      }
+    },
+    "aiding": {
+      "uwb_absent_window_s": 41.456,
+      "lidar_fusion_updates": 346,
+      "lidar_active_fraction": 1.0,
+      "validity": {
+        "xy_valid": 1.0,
+        "v_xy_valid": 1.0,
+        "z_valid": 1.0,
+        "v_z_valid": 1.0
+      },
+      "other_horizontal": {
+        "cs_ev_pos": 0.0,
+        "cs_ev_vel": 0.0,
+        "cs_gnss_pos": 0.0,
+        "cs_gnss_vel": 0.0,
+        "cs_opt_flow": 0.0
+      }
+    },
+    "transitions": [
+      {
+        "phase": "IDLE",
+        "reason": "waiting_for_web_start",
+        "elapsed_s": 0.92,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "PREPARING",
+        "reason": "local_setpoint_warmup",
+        "elapsed_s": 20.08,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "ARMING",
+        "reason": "local_mode_confirmed",
+        "elapsed_s": 21.504,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "TAKING_OFF",
+        "reason": "px4_local_height_goal",
+        "elapsed_s": 22.504,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "LANDING",
+        "reason": "takeoff_stability_timeout",
+        "elapsed_s": 66.024,
+        "truth_xyz": [
+          0.15806363515450234,
+          0.04447797038750992,
+          1.728999999999985
+        ]
+      },
+      {
+        "phase": "FAILED",
+        "reason": "takeoff_stability_timeout",
+        "elapsed_s": 75.504,
+        "truth_xyz": [
+          0.12795627612202212,
+          0.055597463181909265,
+          -0.06700000000000728
+        ]
+      }
+    ],
+    "synthetic_parameters": {
+      "scenario": "uwb_gap",
+      "seed": 11,
+      "source_clock": "shared_sim_clock",
+      "lidar_noise_std_m_s": 0.01,
+      "lidar_reported_std_m_s": 0.015,
+      "height_reference": 2,
+      "mag_type": 0,
+      "imu_profile": "sih_noisy",
+      "range_source": "mavlink",
+      "synthetic_range_mount_z_ned_m": -0.15,
+      "range_noise_model": "stock",
+      "output_tau_s": 0.1,
+      "velocity_feedback_cutoff_hz": "not_recorded"
+    },
+    "core_sha256": "6a70bf59ac61257b712804789fdbe1205aea7ab12f07583232598bcfd84d61fe",
+    "script_sha256": "d82a119368ca4c80ae66f8c02335c7263fe5ef773dc92d5ad47949082d4eebb8",
+    "ulog_sha256": "bdc8012d649f76b4aa254b72109bb6a6ac851adfd21e1584201016206952e2a8",
+    "error_types": [
+      "AssertionError"
+    ],
+    "terminal_reason": "takeoff_stability_timeout",
+    "commands": [
+      {
+        "kind": "offboard_mode",
+        "clock_us": 21924000,
+        "elapsed_s": 21.264
+      },
+      {
+        "kind": "arm",
+        "clock_us": 22164000,
+        "elapsed_s": 21.504
+      },
+      {
+        "kind": "land",
+        "clock_us": 66684000,
+        "elapsed_s": 66.024
+      }
+    ],
+    "dropout_count": 0
+  },
+  {
+    "run": "web-takeoff-gap-v16",
+    "scope": "SYNTHETIC_HTTP_CPP_CORE_ACTUAL_PX4_SIH_DYNAMICS",
+    "physical_flight": false,
+    "checks_passed": false,
+    "failures": [
+      "harness_goal_criteria_failed",
+      "max_hold_truth_xy_m",
+      "max_hold_truth_speed_m_s",
+      "max_hold_truth_height_error_m",
+      "max_hold_estimated_height_error_m"
+    ],
+    "metrics": {
+      "max_takeoff_and_hold_truth_xy_m": 0.2438378483057022,
+      "max_ascent_truth_height_m": 1.8092041015625,
+      "reset_counts_after_web_takeoff": {
+        "xy_reset_counter": 1,
+        "vxy_reset_counter": 0,
+        "z_reset_counter": 0,
+        "vz_reset_counter": 0
+      },
+      "hold_duration_s": 24.224,
+      "max_hold_truth_xy_m": 0.2438378483057022,
+      "max_hold_truth_speed_m_s": 0.20224694907665253,
+      "max_hold_truth_height_error_m": 0.17610478401184082,
+      "max_hold_estimated_height_error_m": 0.162322617881,
+      "all_hold_rows_posctl": true,
+      "hold_uwb_absent": {
+        "duration_s": 9.664,
+        "max_truth_xy_m": 0.1857253909111023,
+        "max_truth_speed_m_s": 0.20224694907665253
+      },
+      "hold_uwb_restored": {
+        "duration_s": 14.504,
+        "max_truth_xy_m": 0.2438378483057022,
+        "max_truth_speed_m_s": 0.16333049535751343
+      }
+    },
+    "aiding": {
+      "uwb_absent_window_s": 32.68,
+      "lidar_fusion_updates": 273,
+      "lidar_active_fraction": 1.0,
+      "validity": {
+        "xy_valid": 1.0,
+        "v_xy_valid": 1.0,
+        "z_valid": 1.0,
+        "v_z_valid": 1.0
+      },
+      "other_horizontal": {
+        "cs_ev_pos": 0.0,
+        "cs_ev_vel": 0.0,
+        "cs_gnss_pos": 0.0,
+        "cs_gnss_vel": 0.0,
+        "cs_opt_flow": 0.0
+      }
+    },
+    "transitions": [
+      {
+        "phase": "IDLE",
+        "reason": "waiting_for_web_start",
+        "elapsed_s": 0.976,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "PREPARING",
+        "reason": "local_setpoint_warmup",
+        "elapsed_s": 20.096,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "ARMING",
+        "reason": "local_mode_confirmed",
+        "elapsed_s": 21.56,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "TAKING_OFF",
+        "reason": "px4_local_height_goal",
+        "elapsed_s": 22.56,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "POSITION_HANDOFF",
+        "reason": "height_and_xy_stable_request_position",
+        "elapsed_s": 46.536,
+        "truth_xyz": [
+          0.15806363515450234,
+          -0.055597463181909265,
+          1.6070000000000277
+        ]
+      },
+      {
+        "phase": "HOLD_READY",
+        "reason": "position_confirmed_wait_for_web_start",
+        "elapsed_s": 47.576,
+        "truth_xyz": [
+          0.07526839764805231,
+          -0.011119492794399348,
+          1.663000000000011
+        ]
+      },
+      {
+        "phase": "LANDING",
+        "reason": "operator_cancelled",
+        "elapsed_s": 71.84,
+        "truth_xyz": [
+          0.08279523750645003,
+          0.0,
+          1.531000000000006
+        ]
+      },
+      {
+        "phase": "FAILED",
+        "reason": "operator_cancelled",
+        "elapsed_s": 81.6,
+        "truth_xyz": [
+          0.15053679542980816,
+          0.0,
+          -0.0020000000000095497
+        ]
+      }
+    ],
+    "synthetic_parameters": {
+      "scenario": "uwb_gap",
+      "seed": 11,
+      "source_clock": "shared_sim_clock",
+      "lidar_noise_std_m_s": 0.01,
+      "lidar_reported_std_m_s": 0.015,
+      "height_reference": 2,
+      "mag_type": 0,
+      "imu_profile": "sih_noisy",
+      "range_source": "mavlink",
+      "synthetic_range_mount_z_ned_m": -0.15,
+      "range_noise_model": "synthetic_quantized",
+      "output_tau_s": 0.25,
+      "velocity_feedback_cutoff_hz": "not_recorded"
+    },
+    "core_sha256": "6a70bf59ac61257b712804789fdbe1205aea7ab12f07583232598bcfd84d61fe",
+    "script_sha256": "d82a119368ca4c80ae66f8c02335c7263fe5ef773dc92d5ad47949082d4eebb8",
+    "ulog_sha256": "ee703daf80c18eaf3f3f16860beb7a16de19dbf2221b9507f837b1fad22f2656",
+    "error_types": [],
+    "terminal_reason": "operator_cancelled",
+    "commands": [
+      {
+        "kind": "offboard_mode",
+        "clock_us": 21892000,
+        "elapsed_s": 21.28
+      },
+      {
+        "kind": "arm",
+        "clock_us": 22172000,
+        "elapsed_s": 21.56
+      },
+      {
+        "kind": "position_mode",
+        "clock_us": 47148000,
+        "elapsed_s": 46.536
+      },
+      {
+        "kind": "land",
+        "clock_us": 72452000,
+        "elapsed_s": 71.84
+      }
+    ],
+    "dropout_count": 0
+  },
+  {
+    "run": "web-takeoff-gap-v17",
+    "scope": "SYNTHETIC_HTTP_CPP_CORE_ACTUAL_PX4_SIH_DYNAMICS",
+    "physical_flight": false,
+    "checks_passed": false,
+    "failures": [
+      "harness_goal_criteria_failed",
+      "position_hold_not_reached"
+    ],
+    "metrics": {
+      "max_takeoff_and_hold_truth_xy_m": 0.1604461520910263,
+      "max_ascent_truth_height_m": 1.762664794921875,
+      "reset_counts_after_web_takeoff": {
+        "xy_reset_counter": 0,
+        "vxy_reset_counter": 0,
+        "z_reset_counter": 0,
+        "vz_reset_counter": 0
+      }
+    },
+    "aiding": {
+      "uwb_absent_window_s": 41.4,
+      "lidar_fusion_updates": 345,
+      "lidar_active_fraction": 1.0,
+      "validity": {
+        "xy_valid": 1.0,
+        "v_xy_valid": 1.0,
+        "z_valid": 1.0,
+        "v_z_valid": 1.0
+      },
+      "other_horizontal": {
+        "cs_ev_pos": 0.0,
+        "cs_ev_vel": 0.0,
+        "cs_gnss_pos": 0.0,
+        "cs_gnss_vel": 0.0,
+        "cs_opt_flow": 0.0
+      }
+    },
+    "transitions": [
+      {
+        "phase": "IDLE",
+        "reason": "waiting_for_web_start",
+        "elapsed_s": 1.296,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "PREPARING",
+        "reason": "local_setpoint_warmup",
+        "elapsed_s": 20.08,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "ARMING",
+        "reason": "local_mode_confirmed",
+        "elapsed_s": 21.92,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "TAKING_OFF",
+        "reason": "px4_local_height_goal",
+        "elapsed_s": 22.92,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "LANDING",
+        "reason": "takeoff_stability_timeout",
+        "elapsed_s": 66.376,
+        "truth_xyz": [
+          0.15806363515450234,
+          0.055597463181909265,
+          1.7420000000000186
+        ]
+      },
+      {
+        "phase": "FAILED",
+        "reason": "takeoff_stability_timeout",
+        "elapsed_s": 76.896,
+        "truth_xyz": [
+          0.1354831158467163,
+          0.06671695597630861,
+          -0.07900000000000773
+        ]
+      }
+    ],
+    "synthetic_parameters": {
+      "scenario": "uwb_gap",
+      "seed": 11,
+      "source_clock": "shared_sim_clock",
+      "lidar_noise_std_m_s": 0.01,
+      "lidar_reported_std_m_s": 0.015,
+      "height_reference": 2,
+      "mag_type": 0,
+      "imu_profile": "sih_noisy",
+      "range_source": "mavlink",
+      "synthetic_range_mount_z_ned_m": -0.15,
+      "range_noise_model": "synthetic_quantized",
+      "output_tau_s": 0.1,
+      "velocity_feedback_cutoff_hz": "not_recorded"
+    },
+    "core_sha256": "6a70bf59ac61257b712804789fdbe1205aea7ab12f07583232598bcfd84d61fe",
+    "script_sha256": "d82a119368ca4c80ae66f8c02335c7263fe5ef773dc92d5ad47949082d4eebb8",
+    "ulog_sha256": "e422c14fd5bd4e15fc9edb7901efd79bd7204c4c6e8ae40dd39045038a8965b1",
+    "error_types": [
+      "AssertionError"
+    ],
+    "terminal_reason": "takeoff_stability_timeout",
+    "commands": [
+      {
+        "kind": "offboard_mode",
+        "clock_us": 21564000,
+        "elapsed_s": 21.28
+      },
+      {
+        "kind": "arm",
+        "clock_us": 22204000,
+        "elapsed_s": 21.92
+      },
+      {
+        "kind": "land",
+        "clock_us": 66660000,
+        "elapsed_s": 66.376
+      }
+    ],
+    "dropout_count": 0
+  },
+  {
+    "run": "web-takeoff-gap-v18",
+    "scope": "SYNTHETIC_HTTP_CPP_CORE_ACTUAL_PX4_SIH_DYNAMICS",
+    "physical_flight": false,
+    "checks_passed": false,
+    "failures": [
+      "harness_goal_criteria_failed",
+      "position_hold_not_reached"
+    ],
+    "metrics": {
+      "max_takeoff_and_hold_truth_xy_m": 0.17166341841220856,
+      "max_ascent_truth_height_m": 1.760467529296875,
+      "reset_counts_after_web_takeoff": {
+        "xy_reset_counter": 0,
+        "vxy_reset_counter": 0,
+        "z_reset_counter": 0,
+        "vz_reset_counter": 0
+      }
+    },
+    "aiding": {
+      "uwb_absent_window_s": 41.416,
+      "lidar_fusion_updates": 346,
+      "lidar_active_fraction": 1.0,
+      "validity": {
+        "xy_valid": 1.0,
+        "v_xy_valid": 1.0,
+        "z_valid": 1.0,
+        "v_z_valid": 1.0
+      },
+      "other_horizontal": {
+        "cs_ev_pos": 0.0,
+        "cs_ev_vel": 0.0,
+        "cs_gnss_pos": 0.0,
+        "cs_gnss_vel": 0.0,
+        "cs_opt_flow": 0.0
+      }
+    },
+    "transitions": [
+      {
+        "phase": "IDLE",
+        "reason": "waiting_for_web_start",
+        "elapsed_s": 1.336,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "PREPARING",
+        "reason": "local_setpoint_warmup",
+        "elapsed_s": 20.096,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "ARMING",
+        "reason": "local_mode_confirmed",
+        "elapsed_s": 21.92,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "TAKING_OFF",
+        "reason": "px4_local_height_goal",
+        "elapsed_s": 22.92,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "LANDING",
+        "reason": "takeoff_stability_timeout",
+        "elapsed_s": 66.4,
+        "truth_xyz": [
+          0.1354831158467163,
+          0.06671695597630861,
+          1.7520000000000095
+        ]
+      },
+      {
+        "phase": "UNCONFIRMED",
+        "reason": "landing_completion_unverified",
+        "elapsed_s": 95.48,
+        "truth_xyz": [
+          0.08279523750645003,
+          0.06671695597630861,
+          -0.19299999999998363
+        ]
+      }
+    ],
+    "synthetic_parameters": {
+      "scenario": "uwb_gap",
+      "seed": 11,
+      "source_clock": "shared_sim_clock",
+      "lidar_noise_std_m_s": 0.01,
+      "lidar_reported_std_m_s": 0.015,
+      "height_reference": 2,
+      "mag_type": 0,
+      "imu_profile": "sih_noisy",
+      "range_source": "mavlink",
+      "synthetic_range_mount_z_ned_m": -0.15,
+      "range_noise_model": "synthetic_quantized",
+      "output_tau_s": 0.1,
+      "velocity_feedback_cutoff_hz": 2.0
+    },
+    "core_sha256": "6a70bf59ac61257b712804789fdbe1205aea7ab12f07583232598bcfd84d61fe",
+    "script_sha256": "0f8ad0a79975b86b302fb466f9f45ff904a1a6eceeb68ef8eb3a8612b53a1b25",
+    "ulog_sha256": "f487f3811d38978263e07cbef5fc47d2ef7771a12c883476c8ab9ea32fe0789a",
+    "error_types": [
+      "AssertionError"
+    ],
+    "terminal_reason": "landing_completion_unverified",
+    "commands": [
+      {
+        "kind": "offboard_mode",
+        "clock_us": 21524000,
+        "elapsed_s": 21.28
+      },
+      {
+        "kind": "arm",
+        "clock_us": 22164000,
+        "elapsed_s": 21.92
+      },
+      {
+        "kind": "land",
+        "clock_us": 66644000,
+        "elapsed_s": 66.4
+      }
+    ],
+    "dropout_count": 0
+  },
+  {
+    "run": "web-takeoff-nominal-v5",
+    "scope": "SYNTHETIC_HTTP_CPP_CORE_ACTUAL_PX4_SIH_DYNAMICS",
+    "physical_flight": false,
+    "checks_passed": false,
+    "failures": [
+      "harness_goal_criteria_failed",
+      "truth_xy_exceeds_0.25m",
+      "position_hold_not_reached"
+    ],
+    "metrics": {
+      "max_takeoff_and_hold_truth_xy_m": 0.3992692530155182,
+      "max_ascent_truth_height_m": 0.094818115234375,
+      "reset_counts_after_web_takeoff": {
+        "xy_reset_counter": 0,
+        "vxy_reset_counter": 0,
+        "z_reset_counter": 0,
+        "vz_reset_counter": 0
+      }
+    },
+    "aiding": {},
+    "transitions": [
+      {
+        "phase": "IDLE",
+        "reason": "waiting_for_web_start",
+        "elapsed_s": 1.216,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "PREPARING",
+        "reason": "local_setpoint_warmup",
+        "elapsed_s": 20.12,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "ARMING",
+        "reason": "local_mode_confirmed",
+        "elapsed_s": 21.8,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "TAKING_OFF",
+        "reason": "px4_local_height_goal",
+        "elapsed_s": 22.8,
+        "truth_xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "phase": "LANDING",
+        "reason": "takeoff_hold_horizontal_drift",
+        "elapsed_s": 31.136,
+        "truth_xyz": [
+          0.4139761873985466,
+          0.07783644877070797,
+          0.10900000000003729
+        ]
+      },
+      {
+        "phase": "FAILED",
+        "reason": "takeoff_hold_horizontal_drift",
+        "elapsed_s": 36.8,
+        "truth_xyz": [
+          0.5795666622777431,
+          0.1667923895457278,
+          -0.0009999999999763531
+        ]
+      }
+    ],
+    "synthetic_parameters": {
+      "scenario": "nominal",
+      "seed": 11,
+      "source_clock": "shared_sim_clock",
+      "lidar_noise_std_m_s": 0.01,
+      "lidar_reported_std_m_s": "not_recorded",
+      "height_reference": "not_recorded",
+      "mag_type": "not_recorded",
+      "imu_profile": "not_recorded",
+      "range_source": "not_recorded",
+      "synthetic_range_mount_z_ned_m": "not_recorded",
+      "range_noise_model": "not_recorded",
+      "output_tau_s": "not_recorded",
+      "velocity_feedback_cutoff_hz": "not_recorded"
+    },
+    "core_sha256": "6a70bf59ac61257b712804789fdbe1205aea7ab12f07583232598bcfd84d61fe",
+    "script_sha256": "0fddfecd429ba3a05ac0bf5f49e487e684cb88da3abda5c069389002e334c610",
+    "ulog_sha256": "b4229c9af49ed88bc2c638b4b1f7c9e1a778433c08b1650eb0c79f823c3c08a2",
+    "error_types": [
+      "AssertionError"
+    ],
+    "terminal_reason": "takeoff_hold_horizontal_drift",
+    "commands": [
+      {
+        "kind": "offboard_mode",
+        "clock_us": 21660000,
+        "elapsed_s": 21.296
+      },
+      {
+        "kind": "arm",
+        "clock_us": 22164000,
+        "elapsed_s": 21.8
+      },
+      {
+        "kind": "land",
+        "clock_us": 31500000,
+        "elapsed_s": 31.136
+      }
+    ],
+    "dropout_count": 0
+  }
+]

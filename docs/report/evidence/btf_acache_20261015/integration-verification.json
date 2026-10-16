@@ -1,0 +1,15 @@
+{
+  "base": "a029476ee68143089df6321857dc2e6c2efca6d3",
+  "syntax_passed": true,
+  "cache_matches_deployed": true,
+  "removed_import_no_remaining_uses": true,
+  "related_pytest_passed": 116,
+  "product_and_test_sha256": {
+    "src/drone_uwb/drone_uwb/processing/cached_xy.py": "20782ae8331a1190013319cbc3a8e689aa805e86d8f96cfb6f5415ddc011dd68",
+    "src/drone_uwb/drone_uwb/processing/measured_btf.py": "2ed1b4a78ae8a5cb01d3f080040363cbfc7c4aecb932280534568109ea1f60fa",
+    "src/drone_uwb/drone_uwb/integration/ros/btf_node.py": "f1302188b77ea001509a42ad18119cbe3589b691cb55d0e2208f1411596f6d44",
+    "src/drone_uwb/test/processing/test_cached_xy.py": "845448252c74209ee33d45a4a5d8b4fdc0e546a6a97651f2d860e7c1a4b20055"
+  },
+  "scope": "Windows Python; config symlinks materialized only in test copy; no new replay/deployment/native execution",
+  "hash_note": "Source hashes describe Windows verification worktree bytes; Git may normalize source line endings. Evidence is preserved with -text."
+}

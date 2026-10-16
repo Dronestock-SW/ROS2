@@ -1,0 +1,47 @@
+{
+  "method": "two_operator_placed_targets",
+  "yaw_deg": -91.50000000000001,
+  "front": {
+    "target_bins": 18,
+    "angle_deg": 90.5,
+    "median_range_m": 0.9444999891296381
+  },
+  "left": {
+    "target_bins": 14,
+    "angle_deg": -177.5,
+    "median_range_m": 0.8889999993330403
+  },
+  "raw": [
+    {
+      "path": "/home/pgyxn/lidar-physical-20261012/mount-baseline-01",
+      "scans": 77,
+      "imu_samples": 878,
+      "yaw_span_deg": 0.03583445728537088,
+      "first_received_ns": 1791803121072577195,
+      "last_received_ns": 1791803128855829889,
+      "raw_sha256": "dbea5b24c91d6df79f7db155a782fefec043903e5b97ce54946652d15c5e0f1b"
+    },
+    {
+      "path": "/home/pgyxn/lidar-physical-20261012/mount-front-01",
+      "scans": 100,
+      "imu_samples": 998,
+      "yaw_span_deg": 0.049838638199133055,
+      "first_received_ns": 1791803250108727841,
+      "last_received_ns": 1791803260011759198,
+      "raw_sha256": "29ebdcc130e21c73e092ddc2a215f3d8fec7d77561835cd04d52c53de35673d6"
+    },
+    {
+      "path": "/home/pgyxn/lidar-physical-20261012/mount-left-01",
+      "scans": 94,
+      "imu_samples": 776,
+      "yaw_span_deg": 0.058397359519361654,
+      "first_received_ns": 1791803400068158167,
+      "last_received_ns": 1791803409389983475,
+      "raw_sha256": "f90cbb714715c80231b29eab3e09fd7d4ba7fc3544b5538d5cccdcbb59468e09"
+    }
+  ],
+  "vertical_plane_verified": false,
+  "dynamic_timing_verified": false,
+  "physical_accuracy_verified": false,
+  "fc_parameter_writes": false
+}

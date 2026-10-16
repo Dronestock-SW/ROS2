@@ -1,0 +1,28 @@
+{
+  "date_kst": "2026-10-14",
+  "baseline_commit": "85c743d85ef08094800c675f0afab920cb89b4b3",
+  "branch": "이번에-상원-한거-통합-브랜치",
+  "jetson_focused_pytest_passed": 55,
+  "pc_clock_pytest_passed": 16,
+  "colcon_packages_succeeded": [
+    "drone_uwb"
+  ],
+  "comparison_order": [
+    "on",
+    "off",
+    "off",
+    "on"
+  ],
+  "comparisons": [
+    "baseline-abba-v2",
+    "candidate-abba",
+    "final-abba"
+  ],
+  "cpp_rebuilt": false,
+  "operational_deployed": false,
+  "fc_written": false,
+  "service_restarted": false,
+  "flight_tested": false,
+  "scope": "Recovered partial capture, isolated ROS replay; original collector delays retained",
+  "first_attempt_excluded": "Benchmark coordinator lacked optional /proc/pressure/cpu; partial run excluded, diagnostic collection fixed"
+}

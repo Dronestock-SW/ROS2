@@ -1,0 +1,158 @@
+[
+  {
+    "scenario": "separate_storage_land",
+    "physical_flight": false,
+    "commands": [
+      "OFFBOARD",
+      "ARM",
+      "LAND"
+    ],
+    "state": "FAILED",
+    "landing_verified": true,
+    "http_post_s": [
+      4.034541010001703,
+      0.008067677001236007,
+      0.0071067320022848435
+    ],
+    "http_timeout_count": 0,
+    "http_get_max_s": 0.12188337800034788,
+    "http_get_count": 591,
+    "storage_land_s": 0.27421198599768104,
+    "storage": {
+      "completion_sync_s": 0.0,
+      "journal_last_s": 4.017467883997597,
+      "journal_max_s": 4.017467883997597,
+      "observer": {
+        "evidence": {
+          "error": null,
+          "last_sync_s": 0.016440103001514217,
+          "max_sync_s": 4.019046374000027,
+          "pending": 0,
+          "submitted": 106,
+          "sync_count": 27,
+          "written": 105
+        },
+        "request_journal": {
+          "completed": 2,
+          "error": null,
+          "last_elapsed_s": 0.022940933999052504,
+          "max_elapsed_s": 4.367057739997108,
+          "pending": 0,
+          "running": null,
+          "running_age_s": 0.0
+        }
+      }
+    },
+    "max_native_sender_gap_s": 0.052878351001709234,
+    "max_receiver_gap_s": 0.06873280600120779,
+    "max_input_age_s": 0.10520427300070878,
+    "binary_sha256": "4e1d77b517fb06b66d7688301a9e53891c29d8181ea89851cf2d231a7f843d4c",
+    "original_evidence_sha256": "9622480a2d1671a38ac162f5b6535c45933f836ea98e266ea81e9169d9476afc"
+  },
+  {
+    "scenario": "separate_storage_wait",
+    "physical_flight": false,
+    "commands": [
+      "OFFBOARD",
+      "ARM",
+      "POSCTL",
+      "OFFBOARD",
+      "LAND"
+    ],
+    "state": "END",
+    "landing_verified": true,
+    "http_post_s": [
+      4.025181891000102,
+      0.008053043999098008,
+      0.022525641998072388,
+      0.0039336430018011015
+    ],
+    "http_timeout_count": 0,
+    "http_get_max_s": 0.15291352100030053,
+    "http_get_count": 1186,
+    "storage_land_s": null,
+    "storage": {
+      "completion_sync_s": 4.013582548999693,
+      "journal_last_s": 4.002925435001089,
+      "journal_max_s": 7.736356315002922,
+      "observer": {
+        "evidence": {
+          "error": null,
+          "last_sync_s": 0.016450046001409646,
+          "max_sync_s": 4.214419355997961,
+          "pending": 0,
+          "submitted": 262,
+          "sync_count": 50,
+          "written": 262
+        },
+        "request_journal": {
+          "completed": 2,
+          "error": null,
+          "last_elapsed_s": 0.02443563099950552,
+          "max_elapsed_s": 4.017726730002323,
+          "pending": 0,
+          "running": null,
+          "running_age_s": 0.0
+        }
+      }
+    },
+    "max_native_sender_gap_s": 0.05326254799729213,
+    "max_receiver_gap_s": 0.06505091500002891,
+    "max_input_age_s": 0.09256059600011213,
+    "binary_sha256": "4e1d77b517fb06b66d7688301a9e53891c29d8181ea89851cf2d231a7f843d4c",
+    "original_evidence_sha256": "9ef341ca65b63391c7082b90e9a366e1f7a4e7810c9fb85923cc04ab58024ace"
+  },
+  {
+    "scenario": "separate_mission_x",
+    "physical_flight": false,
+    "commands": [
+      "OFFBOARD",
+      "ARM",
+      "POSCTL",
+      "OFFBOARD",
+      "LAND"
+    ],
+    "state": "END",
+    "landing_verified": true,
+    "http_post_s": [
+      0.02765482399991015,
+      0.004493369997362606,
+      0.029263884000101825,
+      0.017473438998422353
+    ],
+    "http_timeout_count": 0,
+    "http_get_max_s": null,
+    "http_get_count": 0,
+    "storage_land_s": null,
+    "storage": {
+      "completion_sync_s": 0.043772509998234455,
+      "journal_last_s": 0.012689955001405906,
+      "journal_max_s": 0.01462749400161556,
+      "observer": {
+        "evidence": {
+          "error": null,
+          "last_sync_s": 0.016692213001078926,
+          "max_sync_s": 0.03833856500205002,
+          "pending": 0,
+          "submitted": 196,
+          "sync_count": 36,
+          "written": 196
+        },
+        "request_journal": {
+          "completed": 2,
+          "error": null,
+          "last_elapsed_s": 0.027619882999715628,
+          "max_elapsed_s": 0.027619882999715628,
+          "pending": 0,
+          "running": null,
+          "running_age_s": 0.0
+        }
+      }
+    },
+    "max_native_sender_gap_s": 0.05378207600006135,
+    "max_receiver_gap_s": 0.06393045499862637,
+    "max_input_age_s": 0.10431080499984091,
+    "binary_sha256": "4e1d77b517fb06b66d7688301a9e53891c29d8181ea89851cf2d231a7f843d4c",
+    "original_evidence_sha256": "fa7825e0e588025bf27340b3ab1b269e11fc742979d04a6663b5eb8ec0f6a6a6"
+  }
+]

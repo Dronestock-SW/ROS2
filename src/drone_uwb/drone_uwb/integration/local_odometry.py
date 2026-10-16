@@ -7,6 +7,16 @@ from dataclasses import dataclass
 import math
 
 from drone_uwb.integration.ros.frames import observation_xy
+from drone_uwb.processing.observation_guard import GuardConfig, ObservationGuard
+
+
+def fresh_bridge_guard():
+    """B_TF already qualifies each pose; do not hold its fresh recovery 150 ms.
+
+    Initial acquisition and timestamp/value/transport checks still apply.
+    No timer republishes an old pose and no source timestamp is changed.
+    """
+    return ObservationGuard(GuardConfig(recover_s=0.), motion_recovery=True)
 
 
 PARAMETERS = ('EKF2_GPS_CTRL', 'EKF2_EV_CTRL', 'EKF2_EV_DELAY',
@@ -26,7 +36,7 @@ class LocalObservationSettings:
     enu_offset_x_m: float = 0.
     enu_offset_y_m: float = 0.
     max_age_s: float = .15
-    jump_guard_enabled: bool = True
+    jump_guard_enabled: bool = False
     host_boot_id: str = ''
     fc_remote_ns_at_alignment: int = 0
     alignment_method: str = ''
@@ -52,6 +62,9 @@ class LocalObservationSettings:
                      'jump_guard_enabled'):
             if type(getattr(self, name)) is not bool:
                 raise ValueError('invalid_confirmation:' + name)
+        # Legacy private alignment files may contain true. Report the effective
+        # policy after migration instead of claiming that a removed gate is on.
+        object.__setattr__(self, 'jump_guard_enabled', False)
 
     @property
     def ros_domain_id(self):
@@ -83,12 +96,24 @@ def parameter_gate(settings, params):
 
 
 def trial_start_allowed(*, connected, armed, landed_state, state_age_s, landed_age_s):
-    """Authorize a sender bypass once, on fresh connected DISARM ground evidence."""
+    """Authorize a sender start on fresh connected DISARM ground evidence."""
     return (connected is True and armed is False
         and type(landed_state) is int and landed_state == 1
         and all(type(v) in (int, float) and math.isfinite(v)
                 for v in (state_age_s, landed_age_s))
         and 0 <= state_age_s <= 2.5 and 0 <= landed_age_s <= .5)
+
+
+@dataclass
+class SenderStartGate:
+    authorized: bool = False
+
+    def check(self, **state):
+        # A new sender needs ground evidence even with jump protection on.
+        # After that start, fusion continues through ARM and RC takeover.
+        if not self.authorized:
+            self.authorized = trial_start_allowed(**state)
+        return self.authorized
 
 
 def horizontal_odometry(settings, *, frame, stamp_ns, now_ns, last_stamp_ns,
@@ -108,6 +133,14 @@ def horizontal_odometry(settings, *, frame, stamp_ns, now_ns, last_stamp_ns,
         rollspeed=math.nan, pitchspeed=math.nan, yawspeed=math.nan,
         pose_covariance=packed, velocity_covariance=[math.nan] + [0.] * 20,
         reset_counter=reset_counter, quality=0)
+
+
+def guarded_horizontal_odometry(settings, guard, *, motion_eligible=True, **observation):
+    """Use the same measured-field/guard boundary in ROS and offline tests."""
+    fields = horizontal_odometry(settings, **observation)
+    reason = guard.check((fields['x'], fields['y']), observation['stamp_ns'],
+        reject_jumps=settings.jump_guard_enabled, motion_eligible=motion_eligible)
+    return reason, fields
 
 
 def alignment_yaw_deg(body_enu_yaw_deg, body_map_yaw_deg, map_y_axis_sign):

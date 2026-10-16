@@ -1,0 +1,222 @@
+{
+  "checked_at_utc": "2026-10-15T09:00:57.030596+00:00",
+  "service": {
+    "MainPID": "242064",
+    "NRestarts": "0",
+    "ExecMainStartTimestamp": "Thu 2026-10-15 17:47:06 KST",
+    "ExecStart": "{ path=/bin/bash ; argv[]=/bin/bash /home/arialhanho/btf-acache-release-20261015/source/src/drone_uwb/native_btf/run_observe_slot.sh ; ignore_errors=no ; start_time=[Thu 2026-10-15 17:47:06 KST] ; stop_time=[n/a] ; pid=242064 ; code=(null) ; status=0/0 }",
+    "ActiveState": "active",
+    "SubState": "running",
+    "FragmentPath": "/home/arialhanho/.config/systemd/user/dronestock-manual-observe.service"
+  },
+  "process_environment_allowlist": {
+    "MANUAL_PYTHON_DEPS": "/home/arialhanho/ROS2-integration-20261007/.test-deps",
+    "ROS2_WORKSPACE": "/home/arialhanho/ROS2-final-test1-sangwon",
+    "BTF_NATIVE_SLOT": "/home/arialhanho/btf-acache-release-20261015",
+    "MANUAL_ANCHORS": "/home/arialhanho/ROS2-review-20261008-codex/src/drone_uwb/config/anchors/anchors_20261007_z015.json",
+    "ROS_DOMAIN_ID": "2",
+    "ROS_LOCALHOST_ONLY": "1",
+    "MANUAL_TAG": "B"
+  },
+  "source_lock": {
+    "file_count": 811,
+    "changed": []
+  },
+  "config": {
+    "path": "/home/arialhanho/btf-acache-release-20261015/field-btf-cpp.json",
+    "sha256": "5842a0cb3e8e48d3746e9fc18713be7847c8836ba12d49363e0e2a49a3f9f3fc",
+    "values": {
+      "schema": 1,
+      "external_output_allowed": false,
+      "tag_id": "6",
+      "layout_id": "warehouse-rectangle-6p3x4p6-z0p15-20261007",
+      "anchors_xyz_m": [
+        [
+          0,
+          0,
+          0.15
+        ],
+        [
+          6.3,
+          0,
+          0.15
+        ],
+        [
+          0,
+          4.6,
+          0.15
+        ],
+        [
+          6.3,
+          4.6,
+          0.15
+        ]
+      ],
+      "bias_m": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "bias_calibrated": false,
+      "B": {
+        "window_s": 0.8,
+        "min_samples_per_anchor": 3,
+        "min_samples_total": 12,
+        "required_anchor_count": 4,
+        "sigma_r_m": 0.08,
+        "huber_m": 0.12,
+        "h80_irls_iterations": 8,
+        "max_scaled_condition": 1000000.0,
+        "reset_gap_s": 0.15,
+        "max_extrapolation_s": 0.04,
+        "max_range_m": 80.0
+      },
+      "tof_subset": {
+        "rms_limit_m": 0.06,
+        "score_margin_m": 0.015,
+        "max_speed_m_s": 1.0,
+        "continuity_margin_m": 0.1,
+        "max_prior_age_s": 0.1
+      },
+      "tof_topic": "/mavros/downward_0",
+      "imu_topic": "/mavros/imu/data",
+      "max_output_age_s": 0.15,
+      "xy_stddev_m": 0.3,
+      "height": {
+        "tof_to_tag_body_flu_m": [
+          0.0,
+          0.0,
+          0.15
+        ],
+        "mount_confirmed": true,
+        "flat_floor_confirmed": true,
+        "tof_bias_m": 0.0,
+        "ground_z_m": 0.0,
+        "min_downward_projection": 0.8,
+        "max_tof_age_s": 0.1,
+        "max_attitude_skew_s": 0.02
+      },
+      "provenance": {
+        "algorithm": "final108 B_TF with per-anchor physical sample times",
+        "anchors_and_downward_sensor": "Operator confirmed actual 6.3 x 4.6 m placement, all anchor antenna heights 0.15 m, flat floor 2026-10-09. Site changes invalidate this layout confirmation.",
+        "tof_to_tag_mount": "Operator ruler measurement 2026-10-09: reported up 0.14-0.15 m; nominal 0.15 m. Horizontal zero with reported possible 0.01-0.02 m deviation.",
+        "timing": "ESP32 lower-envelope host mapping and MAVROS TIMESYNC; physical delay uncalibrated",
+        "range_bias": "zero correction means uncalibrated, not zero physical bias",
+        "measurement_record": "/home/arialhanho/ROS2-review-20261008-codex/.review/field-20261009/measured-mount-052945/measurements.json"
+      },
+      "tdma_mode": "required",
+      "allow_ground_xy_without_tof": true,
+      "ground_antenna_height_m": 0.15,
+      "ground_subset_initialization": true,
+      "numerical_backend": "cpp",
+      "native_btf_library": "/home/arialhanho/evening-20261014-1815/btf-build/libbtf_native.so",
+      "fresh_b4_recovery_enabled": true
+    }
+  },
+  "native_library": {
+    "path": "/home/arialhanho/evening-20261014-1815/btf-build/libbtf_native.so",
+    "sha256": "e33e76d62e85ca707c7632a993825f9b359661e15924a18a7f17091edc3b266f"
+  },
+  "control_source_sha256": {
+    "src/sangwon_AI/include/sangwon_ai/field_mission.hpp": "665091dd440734bb856d863fa344fc7e564cf911270797155ac2f7f30e7d885a",
+    "src/sangwon_AI/include/sangwon_ai/field_executor.hpp": "b62dc148ff27541a30a9ab8cce3e9c0c20252c096dc41c21d5183cdd867f6311",
+    "src/sangwon_AI/src/field_executor_node.cpp": "f599a2626f6e3126fd125f2e79d0317ee60402c5546cf974305ccd3ec3f31192"
+  },
+  "release_json_names": [
+    "release.json",
+    "deployed-evidence-verification.json",
+    "source-lock.json",
+    "base-release.json",
+    "field-btf-cpp.json",
+    "contract-result.json"
+  ],
+  "integration_control_source_comparison": {
+    "src/sangwon_AI/include/sangwon_ai/field_mission.hpp": {
+      "git_blob_sha256": "a220b6ce10583583d58ab539ae17c237ae3bb89e7d64d350f0c918c6df2d4604",
+      "worktree_sha256": "665091dd440734bb856d863fa344fc7e564cf911270797155ac2f7f30e7d885a",
+      "remote_lf_sha256": "a220b6ce10583583d58ab539ae17c237ae3bb89e7d64d350f0c918c6df2d4604",
+      "content_matches_after_crlf_normalization": true,
+      "git_blob_matches_raw_remote": false
+    },
+    "src/sangwon_AI/include/sangwon_ai/field_executor.hpp": {
+      "git_blob_sha256": "5e2ef5b9fe680d9b100b9e882e84af6e7aea3a8c65bc53090c83594df360e7ec",
+      "worktree_sha256": "c6fddc52500e800489738590819c4143ea4bb641af6ca52e5b6b6cbe8d8b652e",
+      "remote_lf_sha256": "ed396669ceebc26636bfd377aba760c74ae23d26b66c1609f69a28df6f8ea07a",
+      "content_matches_after_crlf_normalization": false,
+      "git_blob_matches_raw_remote": false
+    },
+    "src/sangwon_AI/src/field_executor_node.cpp": {
+      "git_blob_sha256": "10afff112adc90de690e5041246f16ddcee1ef6b40696edcc069b7531f2d755f",
+      "worktree_sha256": "f599a2626f6e3126fd125f2e79d0317ee60402c5546cf974305ccd3ec3f31192",
+      "remote_lf_sha256": "10afff112adc90de690e5041246f16ddcee1ef6b40696edcc069b7531f2d755f",
+      "content_matches_after_crlf_normalization": true,
+      "git_blob_matches_raw_remote": false
+    }
+  },
+  "additional_readback": {
+    "source_base": {
+      "saved_utc": "2026-10-14T09:32:17.014428+00:00",
+      "source_commit": "0110da8d3022df95ceb5b77178ef63d998af895b",
+      "source_manifest_sha256": "27b51ea66d2e093d2a316290c125f17b065a0f12740c5a64bd865a5ac2919323",
+      "hashes": {
+        "source.tar": "69a0157c6b64fd95e479a0270a2dbd3cb184ce0e9a4ec3ce87c19bedfe1dad6c",
+        "field-btf-cpp.json": "5842a0cb3e8e48d3746e9fc18713be7847c8836ba12d49363e0e2a49a3f9f3fc",
+        "btf-build/libbtf_native.so": "e33e76d62e85ca707c7632a993825f9b359661e15924a18a7f17091edc3b266f",
+        "ai-build/sangwon_field_executor": "30da6b29c36636b326268a78d97ccfe8c920c2b0bcc13fc0ae9d45d4eebaaeb8",
+        "ai-build/sangwon_field_mission_ai": "dae8cfab775c5c91bd4879a2a5a1798164152b3929bfe97d95cc63da2c8eecfc"
+      },
+      "source_transforms": {
+        "file": "/home/arialhanho/evening-20261014-1815/source/src/drone_uwb/native_btf/run_observe_slot.sh",
+        "crlf_count": 17,
+        "before_sha256": "4d9dba5e0b624e37b2cafc098f8ec4b04e63a561b0d22e231b5c2d463b3b3f6a",
+        "after_sha256": "6d53b9ae1fdb64d58cdb1161b1f9ffb8803bc08c8374b6a25e1e95155a05eb71"
+      },
+      "sensor_service_active": true,
+      "mission_runtime_started": false,
+      "fc_output_enabled": false,
+      "flight_commands_sent": false,
+      "physical_flight_validated": false,
+      "source_slot": "/home/arialhanho/evening-20261014-1815",
+      "previous_sensor_slot": "/home/arialhanho/ROS2-review-20261008-codex/.review/btf-native-20261014",
+      "dependency_source": "/home/arialhanho/ROS2-review-20261008-codex/.review/behaviortree_cpp",
+      "observed_firmware_build": "2026-10-14 17:29:23",
+      "observed_lidar_contract_version": 2,
+      "remaining": [
+        "anchors and RC off",
+        "fresh ground alignment",
+        "mission origin policy differs when LiDAR is required",
+        "actual LiDAR fusion and dynamic validation",
+        "flight validation"
+      ]
+    },
+    "source_lf_sha256": {
+      "src/sangwon_AI/include/sangwon_ai/field_mission.hpp": "a220b6ce10583583d58ab539ae17c237ae3bb89e7d64d350f0c918c6df2d4604",
+      "src/sangwon_AI/include/sangwon_ai/field_executor.hpp": "ed396669ceebc26636bfd377aba760c74ae23d26b66c1609f69a28df6f8ea07a",
+      "src/sangwon_AI/src/field_executor_node.cpp": "10afff112adc90de690e5041246f16ddcee1ef6b40696edcc069b7531f2d755f"
+    },
+    "host_machine": "aarch64",
+    "device_tree_model": "NVIDIA Jetson Orin Nano Engineering Reference Developer Kit Super",
+    "sensor_nodes": [
+      "/manual_observation_streams",
+      "/mavros/cmd",
+      "/mavros/distance_sensor",
+      "/mavros/imu",
+      "/mavros/local_position",
+      "/mavros/mavros",
+      "/mavros/mavros_node",
+      "/mavros/mavros_router",
+      "/mavros/param",
+      "/mavros/rc",
+      "/mavros/setpoint_raw",
+      "/mavros/sys",
+      "/mavros/time",
+      "/mavros/transform_listener_impl_aaaadfa53c98",
+      "/uwb_btf_node",
+      "/uwb_btf_sensor_ingress",
+      "/uwb_node",
+      "/ydlidar_ros2_driver_node"
+    ]
+  },
+  "comparison_note": "Git blobs use LF; compare content_matches_after_crlf_normalization for source semantics. Raw hashes preserve byte identity."
+}

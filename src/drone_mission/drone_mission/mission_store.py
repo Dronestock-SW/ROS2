@@ -2,6 +2,8 @@
 
 This store cannot send aircraft commands or reset the companion flight session.
 """
+from contextlib import contextmanager
+import copy
 import hashlib
 import json
 from pathlib import Path
@@ -24,6 +26,11 @@ class MissionStore:
             Path(path).parent.mkdir(parents=True, exist_ok=True)
         self.db = sqlite3.connect(str(path) if path else ':memory:', check_same_thread=False)
         self.db.row_factory = sqlite3.Row
+        self.storage_pending = 0
+        self.last_commit_s = self.max_commit_s = 0.
+        self.commits = 0
+        if path:
+            self.db.execute('PRAGMA journal_mode=WAL')
         self.db.executescript('''
             PRAGMA synchronous=FULL;
             CREATE TABLE IF NOT EXISTS identity (id INTEGER PRIMARY KEY CHECK(id=1), body TEXT NOT NULL);
@@ -45,8 +52,9 @@ class MissionStore:
             self.db.execute('INSERT OR IGNORE INTO identity VALUES(1,?)', (identity,))
         if self.db.execute('SELECT body FROM identity').fetchone()[0] != identity:
             raise ValueError('미션 저장소의 기체·앵커 배치가 다릅니다.')
+        self._refresh()
 
-    def listing(self):
+    def _read_listing(self):
         drafts = [dict(r) for r in self.db.execute('SELECT * FROM drafts WHERE archived=0 ORDER BY updated DESC')]
         runs = [dict(r) for r in self.db.execute('SELECT * FROM runs ORDER BY id DESC LIMIT 100')]
         for row in drafts:
@@ -55,6 +63,32 @@ class MissionStore:
             row['result'] = json.loads(row['result'])
             row['assignment'] = json.loads(row['assignment'])
         return dict(drafts=drafts, runs=runs)
+
+    def _refresh(self):
+        row = self.db.execute('SELECT * FROM runs WHERE open=1').fetchone()
+        self._cache = (dict(row) if row else None, self._read_listing(),
+                       {r["id"]:dict(r) for r in self.db.execute("SELECT * FROM receipts")})
+
+    def listing(self):
+        return copy.deepcopy(self._cache[1])
+
+    @contextmanager
+    def transaction(self):
+        self.storage_pending += 1
+        started = time.monotonic()
+        try:
+            with self.db:
+                yield
+            self._refresh()
+        finally:
+            self.last_commit_s = time.monotonic()-started
+            self.max_commit_s = max(self.max_commit_s, self.last_commit_s)
+            self.commits += 1
+            self.storage_pending -= 1
+
+    def storage_status(self):
+        return dict(pending=self.storage_pending, last_commit_s=self.last_commit_s,
+                    max_commit_s=self.max_commit_s, commits=self.commits)
 
     def draft(self, key):
         row = self.db.execute('SELECT * FROM drafts WHERE id=? AND archived=0', (key,)).fetchone()
@@ -75,7 +109,7 @@ class MissionStore:
             if self.db.execute('SELECT 1 FROM runs WHERE draft_id=? AND open=1', (key,)).fetchone():
                 raise ValueError('실행 중인 미션 원본은 수정할 수 없습니다.')
         try:
-            with self.db:
+            with self.transaction():
                 if key:
                     if type(revision) is not int:
                         raise ValueError('미션 버전이 필요합니다.')
@@ -94,7 +128,7 @@ class MissionStore:
     def archive_draft(self, key, revision):
         if self.db.execute('SELECT 1 FROM runs WHERE draft_id=? AND open=1', (key,)).fetchone():
             raise ValueError('실행 중인 미션은 삭제할 수 없습니다.')
-        with self.db:
+        with self.transaction():
             cursor = self.db.execute('UPDATE drafts SET archived=1 WHERE id=? AND revision=? AND archived=0', (key, revision))
             if cursor.rowcount != 1:
                 raise ValueError('미션 버전이 바뀌었습니다. 목록을 다시 불러오세요.')
@@ -103,20 +137,20 @@ class MissionStore:
     def receipt(self, key, body):
         if not isinstance(key, str) or not 8 <= len(key) <= 128:
             raise ValueError('요청 식별자가 필요합니다.')
-        row = self.db.execute('SELECT * FROM receipts WHERE id=?', (key,)).fetchone()
+        row = self._cache[2].get(key)
         if row:
             if row['digest'] != digest(body):
                 raise ValueError('같은 요청 식별자로 다른 명령을 보낼 수 없습니다.')
             return json.loads(row['response'])
 
     def active(self):
-        row = self.db.execute('SELECT * FROM runs WHERE open=1').fetchone()
+        row = self._cache[0]
         return dict(row) if row else None
 
     def start(self, key, body, assignment, name, draft_id=None):
         # Reserve durably before exposing a START to the polling companion.
         try:
-            with self.db:
+            with self.transaction():
                 cursor = self.db.execute('INSERT INTO runs(draft_id,name,assignment,state,created) VALUES(?,?,?,?,?)',
                     (draft_id, name, '{}', 'REQUESTED', time.time()))
                 run_id = cursor.lastrowid
@@ -128,15 +162,30 @@ class MissionStore:
         return assignment
 
     def control(self, key, body, assignment):
-        with self.db:
+        with self.transaction():
             self.db.execute('UPDATE runs SET assignment=? WHERE id=? AND open=1',
                             (encoded(assignment), assignment['mission_db_id']))
             self.db.execute('INSERT INTO receipts VALUES(?,?,?)', (key, digest(body), encoded(assignment)))
 
+    def operator_receipt(self, key, body, assignment):
+        with self.transaction():
+            self.db.execute('INSERT INTO receipts VALUES(?,?,?)', (key, digest(body), encoded(assignment)))
+
     def acknowledge(self, assignment):
-        with self.db:
+        row = self.active()
+        if not row or json.loads(row['assignment']).get('control_request_id') != assignment.get('control_request_id'):
+            return  # A delayed ACK must not overwrite a newer LAND request.
+        with self.transaction():
             self.db.execute('UPDATE runs SET assignment=? WHERE id=?',
                             (encoded(assignment), assignment.get('mission_db_id')))
+
+    def cancel_unpublished(self, key, assignment, close_run=False):
+        result = dict(assignment, control_action=None, dispatch_cancelled=True)
+        with self.transaction():
+            self.db.execute('UPDATE receipts SET response=? WHERE id=?', (encoded(result), key))
+            if close_run:
+                self.db.execute("UPDATE runs SET open=0,state='CANCELLED',assignment=? WHERE id=?", (encoded(result), assignment['mission_db_id']))
+        return result
 
     def observe(self, telemetry):
         row = self.active()
@@ -150,12 +199,12 @@ class MissionStore:
         result = {k: telemetry.get(k) for k in keys}
         text = encoded(result)
         if text != row['result']:
-            with self.db:
+            with self.transaction():
                 self.db.execute('UPDATE runs SET state=?,result=? WHERE id=?',
                     (telemetry.get('flight_state') or 'UNKNOWN', text, row['id']))
 
     def close_run(self, key):
-        with self.db:
+        with self.transaction():
             self.db.execute('UPDATE runs SET open=0 WHERE id=?', (key,))
 
     def close(self):

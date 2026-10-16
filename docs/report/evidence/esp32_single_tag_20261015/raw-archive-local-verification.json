@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "verified_utc": "2026-10-15T15:57:00.516704+00:00",
+  "local_path": "C:\\Users\\A\\Documents\\ChatGPT\\DroneStock\\outputs\\esp32_single_tag_20261015\\esp32-single-tag-ground-records-20261016.tar.gz",
+  "archive_bytes": 273120601,
+  "archive_sha256": "fcba32fde7b69c0b68bec5746bfa6a9ab189b5fc43cd00831b9e3ecf07d5eeba",
+  "verified_original_files": 52,
+  "verified_original_bytes": 2078702684,
+  "archive_regular_files": 56,
+  "additional_metadata_files": [
+    "ground-records-manifest.json",
+    "final50-first600-summary.json",
+    "final50-recording-audit.json",
+    "final50-persistence.json"
+  ],
+  "missing_original_files": 0,
+  "hash_mismatches": 0,
+  "method": "17 individually verified SSH byte streams, atomic local rename, full gzip/tar stream hash validation"
+}

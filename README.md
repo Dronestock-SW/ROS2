@@ -2,6 +2,19 @@
 
 드론 자율이동 저장소의 설치·실행 안내다. 작업을 시작할 때 읽는다.
 
+## UWB 공백·복구 작업 전 필수 참조
+
+[공백 대응과 구조·설정 개선안](docs/architecture/uwb_gap_recovery_20261015.md)을 반드시 먼저 읽는다.
+현재 FREEZE, 실제 감속, 좌표 복구와 재출발을 구분한다.
+[하드웨어·운영 판본·Claude 검토 근거](docs/reference/uwb_gap_review_basis_20261015.md)를 함께 대조한다.
+이 문서의 제안은 배포·비행 검증 완료를 뜻하지 않는다.
+
+## 웹 제자리 이륙 검증 상태
+
+2026-10-14 [웹 수직 이륙·POSITION 호버링 진단](docs/report/web_vertical_takeoff_20261014.md).
+실제 PX4 SIH에서 웹 이륙·POSITION·웹 착륙 흐름을 확인했다.
+유지 중 이동량·속도 기준은 실패했다. 실기 비행 검증은 미실시다.
+
 ## 코드와 자료 찾기
 
 [단계별 위치표](docs/reference/repository_layout.md)에서 수정할 파일과 검증 방법을 찾는다.
@@ -22,6 +35,29 @@
 
 ## 현재 작업 상태
 
+- [LiDAR 독립 수평속도 융합 후보](docs/report/lidar_independent_aiding_20261014.md):
+  다른 수평 보조 없이 시작하는 R3 펌웨어를 준비했다.
+  어제 설치한 R2는 그대로이며 실제 R3 융합·이륙은 미실시다.
+  [재현·실기 확인 순서](docs/runbooks/lidar_independent_aiding.md)를 따른다.
+- [LiDAR 통합본 배치·실제 FC 지상 확인](docs/report/lidar_ground_deployment_20261014.md):
+  Jetson 새 작업 경로에 통합본과 빌드를 배치했다.
+  실제 FC 수용 카운터 56, EKF 융합 시각 0을 확인했다.
+  실제 설치된 R2 보조 속도는 다른 수평 보조를 먼저 요구한다.
+  LiDAR 단독 시작·UWB 복구 전 호버의 실기 조건은 미충족이다.
+- [B_TF IMU 수신 분리·원본 재생](docs/report/btf_sensor_timing_20261014.md):
+  IMU·ToF 큐 100개와 전용 실행기·내부 기록을 추가했다.
+  13일 원본에서 ToF 100·120·150ms를 비교했다.
+  0.700초 공백은 남았으며 실기 배포는 보류한다.
+  [ToF 주기별 수정 설계](docs/architecture/tof_rate_scenarios_20261014.md)를 따른다.
+- [LiDAR 제자리 이륙·UWB 복구 대기](docs/report/lidar_takeoff_hover_20261014.md):
+  최초 XY로 상승한 뒤 POSITION 호버링을 유지한다.
+  UWB가 안정되면 별도 임무 START를 허용한다.
+  ToF 차단 분리·12m scan 범위는 재생으로 확인했다.
+  실기 시간 보정·융합·제자리 이륙 검증은 남았다.
+- [13일 자동 이륙 공백 원인](docs/report/takeoff_gap_root_cause_20261014.md):
+  원시 수신 중 B_TF 27회 거부를 확인했다.
+  0.700초 공백과 0.150초 재개 대기가 FC 공백으로 이어졌다.
+  초기 물리적 밀림 원인과 수정 후보의 비행 검증은 남았다.
 - [기본 이착륙 시험](docs/runbooks/native_hover_test.md):
   C++ 실행기의 명령 확인·취소·결과 판정을 보완했다.
   전체 미션에 앞서 한 번의 이륙·2초 호버·착륙을 검증한다.
@@ -159,12 +195,17 @@ UWB 연동은 HW팀 정비로 보류했다.
 | /target_pose | 웹에서 들어온 목표 좌표 |
 | /target_valid | 목표 좌표 허용/거부 |
 | /cmd_vel | 이동 명령 (x, y 속도) |
-| /scan | YDLIDAR 전방 scan |
-| /tfmini_range | TFmini 하방 거리 (고도) |
+| /scan | YDLIDAR T-mini Pro의 360° 수평 scan |
+| /tfmini_range | TFmini Plus 하방 거리 (고도) |
 | /safety_stop | 장애물 정지 신호 |
 | /flight_state | Pixhawk 상태 |
 
 ## UWB 개발 자료
+
+수평 LiDAR의 [개선 후보·격리 진단](docs/report/lidar_keyframe_sitl_20261012.md)과
+[재실행 절차](docs/runbooks/lidar_keyframe_validation_20261012.md)를 추가했다.
+합성 평가와 정지 SIH 진단의 범위를 구분한다.
+원본 재현·동적 검증은 남았다. 현재 비행 입력 채택은 보류다.
 
 [활용 데이터](data/README.md)와 [코드·자료 분류 기준](docs/architecture/uwb_data_layout.md)을 따른다.
 수신은 `acquisition/`, 보정은 `processing/`, ROS 연결은 `integration/`에 둔다.

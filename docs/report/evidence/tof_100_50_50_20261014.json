@@ -1,0 +1,61 @@
+{
+  "date_kst": "2026-10-14",
+  "scope": "source modification and unit checks; subsequently complete ROS/PX4 build and build evidence review",
+  "px4_base_commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+  "ros2_base_commit": "d586e836402066269b1d7e85d4c803f2f748a724",
+  "px4_base_files_sha256": {
+    "src/drivers/distance_sensor/tf02pro/TF02PRO.cpp": "4617fd1a169d62664e0c553aa317a44630fd0b28952d074006acbc2d5e5b9dd2",
+    "src/drivers/distance_sensor/tf02pro/TF02PRO.hpp": "fb20fa388f5edbb978430774b92224644f75a6cc6aad149b8a9f36d6d92bec5d",
+    "src/drivers/distance_sensor/tf02pro/tf02pro_main.cpp": "8af0f269ec1be47e4ebb4bbcf25197e8ac0aa22a1b5cec9544fab582c6ab0b8c"
+  },
+  "px4_modified_files_sha256": {
+    "src/drivers/distance_sensor/tf02pro/TF02PRO.cpp": "6b1948eeb8b77fd35e6f39eef951f91e6ba71219a718852355cf106faf98a0ba",
+    "src/drivers/distance_sensor/tf02pro/TF02PRO.hpp": "7777d899a50b81f8ceae044db2199397700dd93f7d3b650b1b2b5397ce255ff1",
+    "src/drivers/distance_sensor/tf02pro/tf02pro_main.cpp": "b40cd910c51ba5056a49c1cae0e776b801026fb9a6ffcdd2011319a63a72cee7",
+    "src/drivers/distance_sensor/tf02pro/TFMiniPlus.hpp": "ca792236a7339dc6b08898599e66cf42464fef2111b16a56cf6508cace18509d"
+  },
+  "patch_sha256": "3df45b0bdb6e5d47a4086bb79e25b3713f8d360c0190d4c8210287c23ebc3f38",
+  "patch_apply_check": "passed on fresh baseline; all four resulting source files byte-identical",
+  "cpp_unit": {
+    "groups_passed": 6,
+    "actual_driver_source_compiled": true,
+    "cli_object_compiled": true,
+    "fixture": "mock PX4 API/I2C/clock",
+    "compiler": "Zig 0.13.0",
+    "flags": "-std=c++17 -Wall -Wextra -Werror"
+  },
+  "python_unit": {
+    "tests_passed": 5,
+    "pytest": "8.3.5",
+    "fixture": "fake ROS services; no ROS or DDS"
+  },
+  "not_performed": [
+    "13 October log replay",
+    "ROS/SITL replay",
+    "sensor commands on hardware",
+    "FC parameter changes",
+    "deployment",
+    "flight"
+  ],
+  "claude_review": {
+    "rounds": [
+      10,
+      11,
+      12,
+      13
+    ],
+    "status": "completed within source review scope; reviewer did not run code or inspect hardware"
+  },
+  "full_build_evidence": "tof_full_build_20261014.json",
+  "full_build_summary": {
+    "ros_packages": 7,
+    "px4_target": "px4_fmu-v6c_lidar2d",
+    "image_increase_bytes": 2920,
+    "candidate_flash_free_bytes": 28068,
+    "review_rounds": [
+      14,
+      15,
+      16
+    ]
+  }
+}

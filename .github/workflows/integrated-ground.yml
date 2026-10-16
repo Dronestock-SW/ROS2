@@ -1,0 +1,87 @@
+name: Integrated non-LiDAR ground checks
+on:
+  push:
+    branches: ['main', '이번에-상원-한거-통합-브랜치']
+    paths: ['src/**', '.github/workflows/integrated-ground.yml']
+  pull_request:
+    branches: ['main']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  ground:
+    runs-on: ubuntu-22.04
+    container: ros:humble-ros-base-jammy
+    timeout-minutes: 35
+    env:
+      ROS_DOMAIN_ID: '99'
+      ROS_LOCALHOST_ONLY: '1'
+      MAVLINK20: '1'
+      PYTHONDONTWRITEBYTECODE: '1'
+      OPENBLAS_NUM_THREADS: '1'
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Prepare ROS Humble build and test dependencies
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends build-essential cmake git nodejs libssl-dev libsqlite3-dev libeigen3-dev nlohmann-json3-dev python3-pip python3-pytest python3-numpy python3-scipy python3-yaml python3-colcon-common-extensions ros-humble-mavros ros-humble-mavros-msgs
+          python3 -m pip install -r src/drone_mission/requirements-field.txt
+      - name: Build ROS packages and actual C++ executor
+        run: |
+          source /opt/ros/humble/setup.bash
+          mkdir -p evidence
+          colcon build --symlink-install --packages-up-to drone_mission drone_platform_link > evidence/colcon.log 2>&1
+          source install/setup.bash
+          cmake -S src/sangwon_AI -B .review/integrated-build -DCMAKE_BUILD_TYPE=Release > evidence/cmake.log 2>&1
+          cmake --build .review/integrated-build --target sangwon_field_executor sangwon_field_executor_replay sangwon_field_mission_ai sangwon_lidar_relative_replay sangwon_core_tests -j2 > evidence/build.log 2>&1
+      - name: Native BTF kernel and real ROS adapter
+        run: |
+          source /opt/ros/humble/setup.bash
+          source install/setup.bash
+          export PYTHONPATH="$PWD/src/drone_uwb:${PYTHONPATH:-}"
+          cmake -S src/drone_uwb/native_btf -B .review/btf-native -DCMAKE_BUILD_TYPE=Release > evidence/btf-cmake.log 2>&1
+          cmake --build .review/btf-native -j2 > evidence/btf-build.log 2>&1
+          ctest --test-dir .review/btf-native --output-on-failure > evidence/btf-contracts.log 2>&1
+          python3 src/drone_uwb/native_btf/tests/parity.py --binary .review/btf-native/btf_replay --python-root src/drone_uwb --output evidence/btf-parity > evidence/btf-parity.log 2>&1
+          python3 src/drone_uwb/native_btf/tests/ros_adapter.py .review/btf-native/libbtf_native.so > evidence/btf-ros.log 2>&1
+          PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q src/drone_uwb/test/processing/test_clock_statistics.py src/drone_uwb/test/processing/test_clock_diagnostics.py src/drone_uwb/test/processing/test_measured_btf.py src/drone_uwb/test/integration/test_btf_trace.py src/drone_uwb/test/integration/test_recording_independence.py src/drone_uwb/test/integration/test_btf_sensor_executor.py > evidence/btf-recording-clock.log 2>&1
+      - name: Single-tag receiver and wire contracts
+        run: |
+          source /opt/ros/humble/setup.bash
+          source install/setup.bash
+          export PYTHONPATH="$PWD/src/drone_uwb:${PYTHONPATH:-}"
+          PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q src/drone_uwb/test/processing/test_single_tag.py src/drone_uwb/test/integration/test_local_odometry.py src/drone_uwb/test/processing/test_observation_guard.py src/uwb_single_tag_firmware/tag/tests --junitxml=evidence/single-tag.xml > evidence/single-tag.log 2>&1
+          PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q src/drone_uwb/test --junitxml=evidence/uwb-suite.xml > evidence/uwb-suite.log 2>&1
+          g++ -std=c++17 -Wall -Wextra -Werror src/uwb_single_tag_firmware/tools/test_single_protocol.cpp -o .review/single-tag-protocol
+          .review/single-tag-protocol > evidence/single-tag-protocol.log 2>&1
+      - name: Python and C++ contracts
+        run: |
+          source /opt/ros/humble/setup.bash
+          source install/setup.bash
+          export PYTHONPATH="$PWD/src/drone_mission:$PWD/src/drone_uwb:$PWD/src/drone_platform_link:$PWD/src/drone_demo:$PWD/src/sangwon_AI/tests:${PYTHONPATH:-}"
+          python3 -m pytest src/drone_mission/test/test_fc_owned_runtime.py src/drone_mission/test/test_recording.py src/drone_mission/test/test_mission_store.py src/drone_mission/test/test_persistence_isolation.py src/drone_mission/test/test_completion_record.py src/drone_mission/test/test_bridge_timeout.py src/drone_mission/test/test_native_takeoff.py src/drone_mission/test/test_local_takeoff.py src/drone_mission/test/test_local_xy.py src/drone_mission/test/test_local_web.py src/drone_mission/test/test_final_stack.py src/drone_mission/test/test_anchor_trial.py src/drone_mission/test/test_preflight.py src/drone_mission/test/test_session.py src/drone_mission/test/test_mission_chain.py src/drone_mission/test/test_operator_arm.py src/drone_mission/test/test_lidar_input.py src/drone_platform_link/test/test_observation_sources.py src/sangwon_AI/tests/test_integrated_launcher.py src/sangwon_AI/tests/test_mavros_readback.py -q --junitxml=evidence/python.xml > evidence/python.log 2>&1
+          ctest --test-dir .review/integrated-build -R '^(sangwon_core_tests|field_executor_contracts|field_mission_ai_contracts|lidar_relative_contracts)$' --output-on-failure > evidence/contracts.log 2>&1
+          export SANGWON_CPP_AI_BINARY="$PWD/.review/integrated-build/sangwon_field_mission_ai"
+          export SANGWON_CPP_AI_EVIDENCE="$PWD/evidence/http-cpp-python.json"
+          python3 -m pytest src/drone_mission/test/test_cpp_mission_ai.py -k "not lidar" -q --junitxml=evidence/cpp-python.xml > evidence/cpp-python.log 2>&1
+          node src/sangwon_AI/tests/test_web_command_concurrency.js > evidence/browser-command.log 2>&1
+          python3 -m pytest -q src/sangwon_AI/tests/test_jsonl_snapshot.py > evidence/jsonl-snapshot.log 2>&1
+          sha256sum .review/integrated-build/sangwon_field_executor .review/integrated-build/sangwon_field_executor_replay .review/integrated-build/sangwon_field_mission_ai > evidence/binaries.sha256
+      - name: HTTP ROS C++ synthetic FC and platform flow
+        run: |
+          source /opt/ros/humble/setup.bash
+          source install/setup.bash
+          export PYTHONPATH="$PWD/src/drone_mission:$PWD/src/drone_uwb:$PWD/src/drone_platform_link:$PWD/src/drone_demo:$PWD/src/sangwon_AI/tests:${PYTHONPATH:-}"
+          python3 src/sangwon_AI/tests/field_executor_ros.py .review/integrated-build/sangwon_field_executor "$PWD/evidence/ros-flow" nominal,python_pause,bridge_delay,report_delay,report_silence,report_malformed,uwb_gap,pose_gap,takeoff_pose_gap,target_silence,state_1hz,fc_estimator_silence,fc_estimator_loss,fc_pose_loss,pilot,platform_link,mission_x,mission_y,mission_xy,land_mode_delay,passive_recorder,separate_nominal,separate_report_delay,separate_takeoff_gap,separate_takeoff_pose_gap,separate_hold_gap,separate_resume_gap,separate_hold_land,separate_pilot,separate_left_error,separate_mission_x,separate_storage_wait,separate_storage_land,separate_position_origin,separate_position_origin_gap,separate_btf_rejection > evidence/ros-flow.log 2>&1
+      - name: Preserve logs and original outcomes
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: integrated-ground-${{ github.sha }}
+          path: evidence/
+          retention-days: 14

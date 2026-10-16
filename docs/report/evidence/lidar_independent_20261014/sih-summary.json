@@ -1,0 +1,1244 @@
+[
+  {
+    "run": "all_height_gap-seed11",
+    "scope": "SYNTHETIC_DISARM_SIH_NOT_PHYSICAL_FLIGHT",
+    "scenario": "all_height_gap",
+    "seed": 11,
+    "source_firmware": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+    "binary_sha256": "7c5df65cc6342042dfea507fa62bf79b2683ceebe72052a9fa24117d01403679",
+    "ulog_sha256": "922ff0a77b7702600e297fe00c0d52a595bc524f07c8ee8d27bf20362d0d782e",
+    "simulated_duration_s": 130.0,
+    "phases": {
+      "lidar_only": {
+        "samples": 1875,
+        "validity": {
+          "xy_valid": 1.0,
+          "v_xy_valid": 1.0,
+          "z_valid": 1.0,
+          "v_z_valid": 1.0
+        },
+        "flags": {
+          "cs_ev_pos": 0.0,
+          "cs_ev_vel": 0.0,
+          "cs_gnss_pos": 0.0,
+          "cs_gnss_vel": 0.0,
+          "cs_opt_flow": 0.0,
+          "cs_fake_pos": 0.0,
+          "cs_inertial_dead_reckoning": 0.0,
+          "cs_in_air": 0.0,
+          "cs_baro_hgt": 1.0,
+          "cs_rng_hgt": 1.0,
+          "cs_aux_vel": 1.0
+        },
+        "fuse_updates": {
+          "lidar": 150,
+          "uwb": 0
+        }
+      },
+      "uwb_added": {
+        "samples": 1250,
+        "validity": {
+          "xy_valid": 1.0,
+          "v_xy_valid": 1.0,
+          "z_valid": 0.0088,
+          "v_z_valid": 0.0088
+        },
+        "flags": {
+          "cs_ev_pos": 1.0,
+          "cs_ev_vel": 0.0,
+          "cs_gnss_pos": 0.0,
+          "cs_gnss_vel": 0.0,
+          "cs_opt_flow": 0.0,
+          "cs_fake_pos": 0.0,
+          "cs_inertial_dead_reckoning": 0.0,
+          "cs_in_air": 0.0,
+          "cs_baro_hgt": 0.0,
+          "cs_rng_hgt": 0.0,
+          "cs_aux_vel": 1.0
+        },
+        "fuse_updates": {
+          "lidar": 100,
+          "uwb": 100
+        }
+      },
+      "uwb_gap": {
+        "samples": 1625,
+        "validity": {
+          "xy_valid": 1.0,
+          "v_xy_valid": 1.0,
+          "z_valid": 0.0,
+          "v_z_valid": 0.0
+        },
+        "flags": {
+          "cs_ev_pos": 0.0,
+          "cs_ev_vel": 0.0,
+          "cs_gnss_pos": 0.0,
+          "cs_gnss_vel": 0.0,
+          "cs_opt_flow": 0.0,
+          "cs_fake_pos": 0.0,
+          "cs_inertial_dead_reckoning": 0.0,
+          "cs_in_air": 0.0,
+          "cs_baro_hgt": 0.0,
+          "cs_rng_hgt": 0.0,
+          "cs_aux_vel": 1.0
+        },
+        "fuse_updates": {
+          "lidar": 130,
+          "uwb": 0
+        }
+      },
+      "uwb_restored": {
+        "samples": 1250,
+        "validity": {
+          "xy_valid": 1.0,
+          "v_xy_valid": 1.0,
+          "z_valid": 0.0,
+          "v_z_valid": 0.0
+        },
+        "flags": {
+          "cs_ev_pos": 1.0,
+          "cs_ev_vel": 0.0,
+          "cs_gnss_pos": 0.0,
+          "cs_gnss_vel": 0.0,
+          "cs_opt_flow": 0.0,
+          "cs_fake_pos": 0.0,
+          "cs_inertial_dead_reckoning": 0.0,
+          "cs_in_air": 0.0,
+          "cs_baro_hgt": 0.0,
+          "cs_rng_hgt": 0.0,
+          "cs_aux_vel": 1.0
+        },
+        "fuse_updates": {
+          "lidar": 100,
+          "uwb": 100
+        }
+      },
+      "all_horizontal_gap": {
+        "samples": 750,
+        "validity": {
+          "xy_valid": 0.0,
+          "v_xy_valid": 0.0,
+          "z_valid": 1.0,
+          "v_z_valid": 1.0
+        },
+        "flags": {
+          "cs_ev_pos": 0.0,
+          "cs_ev_vel": 0.0,
+          "cs_gnss_pos": 0.0,
+          "cs_gnss_vel": 0.0,
+          "cs_opt_flow": 0.0,
+          "cs_fake_pos": 0.0,
+          "cs_inertial_dead_reckoning": 1.0,
+          "cs_in_air": 0.0,
+          "cs_baro_hgt": 1.0,
+          "cs_rng_hgt": 1.0,
+          "cs_aux_vel": 0.0
+        },
+        "fuse_updates": {
+          "lidar": 0,
+          "uwb": 0
+        }
+      },
+      "lidar_recovery": {
+        "samples": 250,
+        "validity": {
+          "xy_valid": 1.0,
+          "v_xy_valid": 1.0,
+          "z_valid": 1.0,
+          "v_z_valid": 1.0
+        },
+        "flags": {
+          "cs_ev_pos": 0.0,
+          "cs_ev_vel": 0.0,
+          "cs_gnss_pos": 0.0,
+          "cs_gnss_vel": 0.0,
+          "cs_opt_flow": 0.0,
+          "cs_fake_pos": 0.0,
+          "cs_inertial_dead_reckoning": 0.0,
+          "cs_in_air": 0.0,
+          "cs_baro_hgt": 1.0,
+          "cs_rng_hgt": 1.0,
+          "cs_aux_vel": 1.0
+        },
+        "fuse_updates": {
+          "lidar": 20,
+          "uwb": 0
+        }
+      },
+      "all_restored": {
+        "samples": 625,
+        "validity": {
+          "xy_valid": 1.0,
+          "v_xy_valid": 1.0,
+          "z_valid": 1.0,
+          "v_z_valid": 1.0
+        },
+        "flags": {
+          "cs_ev_pos": 1.0,
+          "cs_ev_vel": 0.0,
+          "cs_gnss_pos": 0.0,
+          "cs_gnss_vel": 0.0,
+          "cs_opt_flow": 0.0,
+          "cs_fake_pos": 0.0,
+          "cs_inertial_dead_reckoning": 0.0,
+          "cs_in_air": 0.0,
+          "cs_baro_hgt": 1.0,
+          "cs_rng_hgt": 1.0,
+          "cs_aux_vel": 1.0
+        },
+        "fuse_updates": {
+          "lidar": 50,
+          "uwb": 50
+        }
+      }
+    },
+    "reset_counts_25_to_120_s": {
+      "xy_reset_counter": 4,
+      "vxy_reset_counter": 1,
+      "z_reset_counter": 2,
+      "vz_reset_counter": 1
+    },
+    "admission": {
+      "accepted": 948,
+      "rejected": 0
+    },
+    "dropout_count": 0,
+    "checks_passed": true,
+    "failures": []
+  },
+  {
+    "run": "all_height_gap-seed22",
+    "scope": "SYNTHETIC_DISARM_SIH_NOT_PHYSICAL_FLIGHT",
+    "scenario": "all_height_gap",
+    "seed": 22,
+    "source_firmware": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+    "binary_sha256": "7c5df65cc6342042dfea507fa62bf79b2683ceebe72052a9fa24117d01403679",
+    "ulog_sha256": "4da4fa18fc002f18c6a6db8921dabeaccd6f6afba4eb4b0d74b1fb2d0f82f16d",
+    "simulated_duration_s": 130.0,
+    "phases": {
+      "lidar_only": {
+        "samples": 1875,
+        "validity": {
+          "xy_valid": 1.0,
+          "v_xy_valid": 1.0,
+          "z_valid": 1.0,
+          "v_z_valid": 1.0
+        },
+        "flags": {
+          "cs_ev_pos": 0.0,
+          "cs_ev_vel": 0.0,
+          "cs_gnss_pos": 0.0,
+          "cs_gnss_vel": 0.0,
+          "cs_opt_flow": 0.0,
+          "cs_fake_pos": 0.0,
+          "cs_inertial_dead_reckoning": 0.0,
+          "cs_in_air": 0.0,
+          "cs_baro_hgt": 1.0,
+          "cs_rng_hgt": 1.0,
+          "cs_aux_vel": 1.0
+        },
+        "fuse_updates": {
+          "lidar": 150,
+          "uwb": 0
+        }
+      },
+      "uwb_added": {
+        "samples": 1250,
+        "validity": {
+          "xy_valid": 1.0,
+          "v_xy_valid": 1.0,
+          "z_valid": 0.012,
+          "v_z_valid": 0.012
+        },
+        "flags": {
+          "cs_ev_pos": 1.0,
+          "cs_ev_vel": 0.0,
+          "cs_gnss_pos": 0.0,
+          "cs_gnss_vel": 0.0,
+          "cs_opt_flow": 0.0,
+          "cs_fake_pos": 0.0,
+          "cs_inertial_dead_reckoning": 0.0,
+          "cs_in_air": 0.0,
+          "cs_baro_hgt": 0.0,
+          "cs_rng_hgt": 0.0,
+          "cs_aux_vel": 1.0
+        },
+        "fuse_updates": {
+          "lidar": 100,
+          "uwb": 100
+        }
+      },
+      "uwb_gap": {
+        "samples": 1625,
+        "validity": {
+          "xy_valid": 1.0,
+          "v_xy_valid": 1.0,
+          "z_valid": 0.0,
+          "v_z_valid": 0.0
+        },
+        "flags": {
+          "cs_ev_pos": 0.0,
+          "cs_ev_vel": 0.0,
+          "cs_gnss_pos": 0.0,
+          "cs_gnss_vel": 0.0,
+          "cs_opt_flow": 0.0,
+          "cs_fake_pos": 0.0,
+          "cs_inertial_dead_reckoning": 0.0,
+          "cs_in_air": 0.0,
+          "cs_baro_hgt": 0.0,
+          "cs_rng_hgt": 0.0,
+          "cs_aux_vel": 1.0
+        },
+        "fuse_updates": {
+          "lidar": 130,
+          "uwb": 0
+        }
+      },
+      "uwb_restored": {
+        "samples": 1250,
+        "validity": {
+          "xy_valid": 1.0,
+          "v_xy_valid": 1.0,
+          "z_valid": 0.0,
+          "v_z_valid": 0.0
+        },
+        "flags": {
+          "cs_ev_pos": 1.0,
+          "cs_ev_vel": 0.0,
+          "cs_gnss_pos": 0.0,
+          "cs_gnss_vel": 0.0,
+          "cs_opt_flow": 0.0,
+          "cs_fake_pos": 0.0,
+          "cs_inertial_dead_reckoning": 0.0,
+          "cs_in_air": 0.0,
+          "cs_baro_hgt": 0.0,
+          "cs_rng_hgt": 0.0,
+          "cs_aux_vel": 1.0
+        },
+        "fuse_updates": {
+          "lidar": 100,
+          "uwb": 100
+        }
+      },
+      "all_horizontal_gap": {
+        "samples": 750,
+        "validity": {
+          "xy_valid": 0.0,
+          "v_xy_valid": 0.0,
+          "z_valid": 1.0,
+          "v_z_valid": 1.0
+        },
+        "flags": {
+          "cs_ev_pos": 0.0,
+          "cs_ev_vel": 0.0,
+          "cs_gnss_pos": 0.0,
+          "cs_gnss_vel": 0.0,
+          "cs_opt_flow": 0.0,
+          "cs_fake_pos": 0.0,
+          "cs_inertial_dead_reckoning": 1.0,
+          "cs_in_air": 0.0,
+          "cs_baro_hgt": 1.0,
+          "cs_rng_hgt": 1.0,
+          "cs_aux_vel": 0.0
+        },
+        "fuse_updates": {
+          "lidar": 0,
+          "uwb": 0
+        }
+      },
+      "lidar_recovery": {
+        "samples": 250,
+        "validity": {
+          "xy_valid": 1.0,
+          "v_xy_valid": 1.0,
+          "z_valid": 1.0,
+          "v_z_valid": 1.0
+        },
+        "flags": {
+          "cs_ev_pos": 0.0,
+          "cs_ev_vel": 0.0,
+          "cs_gnss_pos": 0.0,
+          "cs_gnss_vel": 0.0,
+          "cs_opt_flow": 0.0,
+          "cs_fake_pos": 0.0,
+          "cs_inertial_dead_reckoning": 0.0,
+          "cs_in_air": 0.0,
+          "cs_baro_hgt": 1.0,
+          "cs_rng_hgt": 1.0,
+          "cs_aux_vel": 1.0
+        },
+        "fuse_updates": {
+          "lidar": 20,
+          "uwb": 0
+        }
+      },
+      "all_restored": {
+        "samples": 625,
+        "validity": {
+          "xy_valid": 1.0,
+          "v_xy_valid": 1.0,
+          "z_valid": 1.0,
+          "v_z_valid": 1.0
+        },
+        "flags": {
+          "cs_ev_pos": 1.0,
+          "cs_ev_vel": 0.0,
+          "cs_gnss_pos": 0.0,
+          "cs_gnss_vel": 0.0,
+          "cs_opt_flow": 0.0,
+          "cs_fake_pos": 0.0,
+          "cs_inertial_dead_reckoning": 0.0,
+          "cs_in_air": 0.0,
+          "cs_baro_hgt": 1.0,
+          "cs_rng_hgt": 1.0,
+          "cs_aux_vel": 1.0
+        },
+        "fuse_updates": {
+          "lidar": 50,
+          "uwb": 50
+        }
+      }
+    },
+    "reset_counts_25_to_120_s": {
+      "xy_reset_counter": 4,
+      "vxy_reset_counter": 1,
+      "z_reset_counter": 2,
+      "vz_reset_counter": 1
+    },
+    "admission": {
+      "accepted": 948,
+      "rejected": 0
+    },
+    "dropout_count": 0,
+    "checks_passed": true,
+    "failures": []
+  },
+  {
+    "run": "all_height_gap-seed33",
+    "scope": "SYNTHETIC_DISARM_SIH_NOT_PHYSICAL_FLIGHT",
+    "scenario": "all_height_gap",
+    "seed": 33,
+    "source_firmware": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+    "binary_sha256": "7c5df65cc6342042dfea507fa62bf79b2683ceebe72052a9fa24117d01403679",
+    "ulog_sha256": "eb3796a711cb96b215be02b84b9103c35e128100f82bf54653412e39e070905d",
+    "simulated_duration_s": 130.0,
+    "phases": {
+      "lidar_only": {
+        "samples": 1875,
+        "validity": {
+          "xy_valid": 1.0,
+          "v_xy_valid": 1.0,
+          "z_valid": 1.0,
+          "v_z_valid": 1.0
+        },
+        "flags": {
+          "cs_ev_pos": 0.0,
+          "cs_ev_vel": 0.0,
+          "cs_gnss_pos": 0.0,
+          "cs_gnss_vel": 0.0,
+          "cs_opt_flow": 0.0,
+          "cs_fake_pos": 0.0,
+          "cs_inertial_dead_reckoning": 0.0,
+          "cs_in_air": 0.0,
+          "cs_baro_hgt": 1.0,
+          "cs_rng_hgt": 1.0,
+          "cs_aux_vel": 1.0
+        },
+        "fuse_updates": {
+          "lidar": 150,
+          "uwb": 0
+        }
+      },
+      "uwb_added": {
+        "samples": 1250,
+        "validity": {
+          "xy_valid": 1.0,
+          "v_xy_valid": 1.0,
+          "z_valid": 0.0128,
+          "v_z_valid": 0.0128
+        },
+        "flags": {
+          "cs_ev_pos": 1.0,
+          "cs_ev_vel": 0.0,
+          "cs_gnss_pos": 0.0,
+          "cs_gnss_vel": 0.0,
+          "cs_opt_flow": 0.0,
+          "cs_fake_pos": 0.0,
+          "cs_inertial_dead_reckoning": 0.0,
+          "cs_in_air": 0.0,
+          "cs_baro_hgt": 0.0,
+          "cs_rng_hgt": 0.0,
+          "cs_aux_vel": 1.0
+        },
+        "fuse_updates": {
+          "lidar": 100,
+          "uwb": 100
+        }
+      },
+      "uwb_gap": {
+        "samples": 1625,
+        "validity": {
+          "xy_valid": 1.0,
+          "v_xy_valid": 1.0,
+          "z_valid": 0.0,
+          "v_z_valid": 0.0
+        },
+        "flags": {
+          "cs_ev_pos": 0.0,
+          "cs_ev_vel": 0.0,
+          "cs_gnss_pos": 0.0,
+          "cs_gnss_vel": 0.0,
+          "cs_opt_flow": 0.0,
+          "cs_fake_pos": 0.0,
+          "cs_inertial_dead_reckoning": 0.0,
+          "cs_in_air": 0.0,
+          "cs_baro_hgt": 0.0,
+          "cs_rng_hgt": 0.0,
+          "cs_aux_vel": 1.0
+        },
+        "fuse_updates": {
+          "lidar": 130,
+          "uwb": 0
+        }
+      },
+      "uwb_restored": {
+        "samples": 1250,
+        "validity": {
+          "xy_valid": 1.0,
+          "v_xy_valid": 1.0,
+          "z_valid": 0.0,
+          "v_z_valid": 0.0
+        },
+        "flags": {
+          "cs_ev_pos": 1.0,
+          "cs_ev_vel": 0.0,
+          "cs_gnss_pos": 0.0,
+          "cs_gnss_vel": 0.0,
+          "cs_opt_flow": 0.0,
+          "cs_fake_pos": 0.0,
+          "cs_inertial_dead_reckoning": 0.0,
+          "cs_in_air": 0.0,
+          "cs_baro_hgt": 0.0,
+          "cs_rng_hgt": 0.0,
+          "cs_aux_vel": 1.0
+        },
+        "fuse_updates": {
+          "lidar": 100,
+          "uwb": 100
+        }
+      },
+      "all_horizontal_gap": {
+        "samples": 750,
+        "validity": {
+          "xy_valid": 0.0,
+          "v_xy_valid": 0.0,
+          "z_valid": 1.0,
+          "v_z_valid": 1.0
+        },
+        "flags": {
+          "cs_ev_pos": 0.0,
+          "cs_ev_vel": 0.0,
+          "cs_gnss_pos": 0.0,
+          "cs_gnss_vel": 0.0,
+          "cs_opt_flow": 0.0,
+          "cs_fake_pos": 0.0,
+          "cs_inertial_dead_reckoning": 1.0,
+          "cs_in_air": 0.0,
+          "cs_baro_hgt": 1.0,
+          "cs_rng_hgt": 1.0,
+          "cs_aux_vel": 0.0
+        },
+        "fuse_updates": {
+          "lidar": 0,
+          "uwb": 0
+        }
+      },
+      "lidar_recovery": {
+        "samples": 250,
+        "validity": {
+          "xy_valid": 1.0,
+          "v_xy_valid": 1.0,
+          "z_valid": 1.0,
+          "v_z_valid": 1.0
+        },
+        "flags": {
+          "cs_ev_pos": 0.0,
+          "cs_ev_vel": 0.0,
+          "cs_gnss_pos": 0.0,
+          "cs_gnss_vel": 0.0,
+          "cs_opt_flow": 0.0,
+          "cs_fake_pos": 0.0,
+          "cs_inertial_dead_reckoning": 0.0,
+          "cs_in_air": 0.0,
+          "cs_baro_hgt": 1.0,
+          "cs_rng_hgt": 1.0,
+          "cs_aux_vel": 1.0
+        },
+        "fuse_updates": {
+          "lidar": 20,
+          "uwb": 0
+        }
+      },
+      "all_restored": {
+        "samples": 625,
+        "validity": {
+          "xy_valid": 1.0,
+          "v_xy_valid": 1.0,
+          "z_valid": 1.0,
+          "v_z_valid": 1.0
+        },
+        "flags": {
+          "cs_ev_pos": 1.0,
+          "cs_ev_vel": 0.0,
+          "cs_gnss_pos": 0.0,
+          "cs_gnss_vel": 0.0,
+          "cs_opt_flow": 0.0,
+          "cs_fake_pos": 0.0,
+          "cs_inertial_dead_reckoning": 0.0,
+          "cs_in_air": 0.0,
+          "cs_baro_hgt": 1.0,
+          "cs_rng_hgt": 1.0,
+          "cs_aux_vel": 1.0
+        },
+        "fuse_updates": {
+          "lidar": 50,
+          "uwb": 50
+        }
+      }
+    },
+    "reset_counts_25_to_120_s": {
+      "xy_reset_counter": 4,
+      "vxy_reset_counter": 1,
+      "z_reset_counter": 2,
+      "vz_reset_counter": 1
+    },
+    "admission": {
+      "accepted": 948,
+      "rejected": 0
+    },
+    "dropout_count": 0,
+    "checks_passed": true,
+    "failures": []
+  },
+  {
+    "run": "nominal-seed11",
+    "scope": "SYNTHETIC_DISARM_SIH_NOT_PHYSICAL_FLIGHT",
+    "scenario": "nominal",
+    "seed": 11,
+    "source_firmware": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+    "binary_sha256": "7c5df65cc6342042dfea507fa62bf79b2683ceebe72052a9fa24117d01403679",
+    "ulog_sha256": "6b4faf6429890b1c090dccffa31d37450256b57cf192188ed78d99d21ce52c3c",
+    "simulated_duration_s": 130.0,
+    "phases": {
+      "lidar_only": {
+        "samples": 1875,
+        "validity": {
+          "xy_valid": 1.0,
+          "v_xy_valid": 1.0,
+          "z_valid": 1.0,
+          "v_z_valid": 1.0
+        },
+        "flags": {
+          "cs_ev_pos": 0.0,
+          "cs_ev_vel": 0.0,
+          "cs_gnss_pos": 0.0,
+          "cs_gnss_vel": 0.0,
+          "cs_opt_flow": 0.0,
+          "cs_fake_pos": 0.0,
+          "cs_inertial_dead_reckoning": 0.0,
+          "cs_in_air": 0.0,
+          "cs_baro_hgt": 1.0,
+          "cs_rng_hgt": 1.0,
+          "cs_aux_vel": 1.0
+        },
+        "fuse_updates": {
+          "lidar": 150,
+          "uwb": 0
+        }
+      },
+      "uwb_added": {
+        "samples": 1250,
+        "validity": {
+          "xy_valid": 1.0,
+          "v_xy_valid": 1.0,
+          "z_valid": 1.0,
+          "v_z_valid": 1.0
+        },
+        "flags": {
+          "cs_ev_pos": 1.0,
+          "cs_ev_vel": 0.0,
+          "cs_gnss_pos": 0.0,
+          "cs_gnss_vel": 0.0,
+          "cs_opt_flow": 0.0,
+          "cs_fake_pos": 0.0,
+          "cs_inertial_dead_reckoning": 0.0,
+          "cs_in_air": 0.0,
+          "cs_baro_hgt": 1.0,
+          "cs_rng_hgt": 1.0,
+          "cs_aux_vel": 1.0
+        },
+        "fuse_updates": {
+          "lidar": 100,
+          "uwb": 100
+        }
+      },
+      "uwb_gap": {
+        "samples": 1625,
+        "validity": {
+          "xy_valid": 1.0,
+          "v_xy_valid": 1.0,
+          "z_valid": 1.0,
+          "v_z_valid": 1.0
+        },
+        "flags": {
+          "cs_ev_pos": 0.0,
+          "cs_ev_vel": 0.0,
+          "cs_gnss_pos": 0.0,
+          "cs_gnss_vel": 0.0,
+          "cs_opt_flow": 0.0,
+          "cs_fake_pos": 0.0,
+          "cs_inertial_dead_reckoning": 0.0,
+          "cs_in_air": 0.0,
+          "cs_baro_hgt": 1.0,
+          "cs_rng_hgt": 1.0,
+          "cs_aux_vel": 1.0
+        },
+        "fuse_updates": {
+          "lidar": 130,
+          "uwb": 0
+        }
+      },
+      "uwb_restored": {
+        "samples": 1250,
+        "validity": {
+          "xy_valid": 1.0,
+          "v_xy_valid": 1.0,
+          "z_valid": 1.0,
+          "v_z_valid": 1.0
+        },
+        "flags": {
+          "cs_ev_pos": 1.0,
+          "cs_ev_vel": 0.0,
+          "cs_gnss_pos": 0.0,
+          "cs_gnss_vel": 0.0,
+          "cs_opt_flow": 0.0,
+          "cs_fake_pos": 0.0,
+          "cs_inertial_dead_reckoning": 0.0,
+          "cs_in_air": 0.0,
+          "cs_baro_hgt": 1.0,
+          "cs_rng_hgt": 1.0,
+          "cs_aux_vel": 1.0
+        },
+        "fuse_updates": {
+          "lidar": 100,
+          "uwb": 100
+        }
+      },
+      "all_horizontal_gap": {
+        "samples": 750,
+        "validity": {
+          "xy_valid": 0.0,
+          "v_xy_valid": 0.0,
+          "z_valid": 1.0,
+          "v_z_valid": 1.0
+        },
+        "flags": {
+          "cs_ev_pos": 0.0,
+          "cs_ev_vel": 0.0,
+          "cs_gnss_pos": 0.0,
+          "cs_gnss_vel": 0.0,
+          "cs_opt_flow": 0.0,
+          "cs_fake_pos": 0.0,
+          "cs_inertial_dead_reckoning": 1.0,
+          "cs_in_air": 0.0,
+          "cs_baro_hgt": 1.0,
+          "cs_rng_hgt": 1.0,
+          "cs_aux_vel": 0.0
+        },
+        "fuse_updates": {
+          "lidar": 0,
+          "uwb": 0
+        }
+      },
+      "lidar_recovery": {
+        "samples": 250,
+        "validity": {
+          "xy_valid": 1.0,
+          "v_xy_valid": 1.0,
+          "z_valid": 1.0,
+          "v_z_valid": 1.0
+        },
+        "flags": {
+          "cs_ev_pos": 0.0,
+          "cs_ev_vel": 0.0,
+          "cs_gnss_pos": 0.0,
+          "cs_gnss_vel": 0.0,
+          "cs_opt_flow": 0.0,
+          "cs_fake_pos": 0.0,
+          "cs_inertial_dead_reckoning": 0.0,
+          "cs_in_air": 0.0,
+          "cs_baro_hgt": 1.0,
+          "cs_rng_hgt": 1.0,
+          "cs_aux_vel": 1.0
+        },
+        "fuse_updates": {
+          "lidar": 20,
+          "uwb": 0
+        }
+      },
+      "all_restored": {
+        "samples": 625,
+        "validity": {
+          "xy_valid": 1.0,
+          "v_xy_valid": 1.0,
+          "z_valid": 1.0,
+          "v_z_valid": 1.0
+        },
+        "flags": {
+          "cs_ev_pos": 1.0,
+          "cs_ev_vel": 0.0,
+          "cs_gnss_pos": 0.0,
+          "cs_gnss_vel": 0.0,
+          "cs_opt_flow": 0.0,
+          "cs_fake_pos": 0.0,
+          "cs_inertial_dead_reckoning": 0.0,
+          "cs_in_air": 0.0,
+          "cs_baro_hgt": 1.0,
+          "cs_rng_hgt": 1.0,
+          "cs_aux_vel": 1.0
+        },
+        "fuse_updates": {
+          "lidar": 50,
+          "uwb": 50
+        }
+      }
+    },
+    "reset_counts_25_to_120_s": {
+      "xy_reset_counter": 4,
+      "vxy_reset_counter": 1,
+      "z_reset_counter": 0,
+      "vz_reset_counter": 0
+    },
+    "admission": {
+      "accepted": 948,
+      "rejected": 0
+    },
+    "dropout_count": 0,
+    "checks_passed": true,
+    "failures": []
+  },
+  {
+    "run": "nominal-seed22",
+    "scope": "SYNTHETIC_DISARM_SIH_NOT_PHYSICAL_FLIGHT",
+    "scenario": "nominal",
+    "seed": 22,
+    "source_firmware": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+    "binary_sha256": "7c5df65cc6342042dfea507fa62bf79b2683ceebe72052a9fa24117d01403679",
+    "ulog_sha256": "a0713fd1f2bb04c92e66b9fc612fbb7d8543e3b3d373db0b4ed6cbc4212d90b3",
+    "simulated_duration_s": 130.0,
+    "phases": {
+      "lidar_only": {
+        "samples": 1875,
+        "validity": {
+          "xy_valid": 1.0,
+          "v_xy_valid": 1.0,
+          "z_valid": 1.0,
+          "v_z_valid": 1.0
+        },
+        "flags": {
+          "cs_ev_pos": 0.0,
+          "cs_ev_vel": 0.0,
+          "cs_gnss_pos": 0.0,
+          "cs_gnss_vel": 0.0,
+          "cs_opt_flow": 0.0,
+          "cs_fake_pos": 0.0,
+          "cs_inertial_dead_reckoning": 0.0,
+          "cs_in_air": 0.0,
+          "cs_baro_hgt": 1.0,
+          "cs_rng_hgt": 1.0,
+          "cs_aux_vel": 1.0
+        },
+        "fuse_updates": {
+          "lidar": 150,
+          "uwb": 0
+        }
+      },
+      "uwb_added": {
+        "samples": 1250,
+        "validity": {
+          "xy_valid": 1.0,
+          "v_xy_valid": 1.0,
+          "z_valid": 1.0,
+          "v_z_valid": 1.0
+        },
+        "flags": {
+          "cs_ev_pos": 1.0,
+          "cs_ev_vel": 0.0,
+          "cs_gnss_pos": 0.0,
+          "cs_gnss_vel": 0.0,
+          "cs_opt_flow": 0.0,
+          "cs_fake_pos": 0.0,
+          "cs_inertial_dead_reckoning": 0.0,
+          "cs_in_air": 0.0,
+          "cs_baro_hgt": 1.0,
+          "cs_rng_hgt": 1.0,
+          "cs_aux_vel": 1.0
+        },
+        "fuse_updates": {
+          "lidar": 100,
+          "uwb": 100
+        }
+      },
+      "uwb_gap": {
+        "samples": 1625,
+        "validity": {
+          "xy_valid": 1.0,
+          "v_xy_valid": 1.0,
+          "z_valid": 1.0,
+          "v_z_valid": 1.0
+        },
+        "flags": {
+          "cs_ev_pos": 0.0,
+          "cs_ev_vel": 0.0,
+          "cs_gnss_pos": 0.0,
+          "cs_gnss_vel": 0.0,
+          "cs_opt_flow": 0.0,
+          "cs_fake_pos": 0.0,
+          "cs_inertial_dead_reckoning": 0.0,
+          "cs_in_air": 0.0,
+          "cs_baro_hgt": 1.0,
+          "cs_rng_hgt": 1.0,
+          "cs_aux_vel": 1.0
+        },
+        "fuse_updates": {
+          "lidar": 130,
+          "uwb": 0
+        }
+      },
+      "uwb_restored": {
+        "samples": 1250,
+        "validity": {
+          "xy_valid": 1.0,
+          "v_xy_valid": 1.0,
+          "z_valid": 1.0,
+          "v_z_valid": 1.0
+        },
+        "flags": {
+          "cs_ev_pos": 1.0,
+          "cs_ev_vel": 0.0,
+          "cs_gnss_pos": 0.0,
+          "cs_gnss_vel": 0.0,
+          "cs_opt_flow": 0.0,
+          "cs_fake_pos": 0.0,
+          "cs_inertial_dead_reckoning": 0.0,
+          "cs_in_air": 0.0,
+          "cs_baro_hgt": 1.0,
+          "cs_rng_hgt": 1.0,
+          "cs_aux_vel": 1.0
+        },
+        "fuse_updates": {
+          "lidar": 100,
+          "uwb": 100
+        }
+      },
+      "all_horizontal_gap": {
+        "samples": 750,
+        "validity": {
+          "xy_valid": 0.0,
+          "v_xy_valid": 0.0,
+          "z_valid": 1.0,
+          "v_z_valid": 1.0
+        },
+        "flags": {
+          "cs_ev_pos": 0.0,
+          "cs_ev_vel": 0.0,
+          "cs_gnss_pos": 0.0,
+          "cs_gnss_vel": 0.0,
+          "cs_opt_flow": 0.0,
+          "cs_fake_pos": 0.0,
+          "cs_inertial_dead_reckoning": 1.0,
+          "cs_in_air": 0.0,
+          "cs_baro_hgt": 1.0,
+          "cs_rng_hgt": 1.0,
+          "cs_aux_vel": 0.0
+        },
+        "fuse_updates": {
+          "lidar": 0,
+          "uwb": 0
+        }
+      },
+      "lidar_recovery": {
+        "samples": 250,
+        "validity": {
+          "xy_valid": 1.0,
+          "v_xy_valid": 1.0,
+          "z_valid": 1.0,
+          "v_z_valid": 1.0
+        },
+        "flags": {
+          "cs_ev_pos": 0.0,
+          "cs_ev_vel": 0.0,
+          "cs_gnss_pos": 0.0,
+          "cs_gnss_vel": 0.0,
+          "cs_opt_flow": 0.0,
+          "cs_fake_pos": 0.0,
+          "cs_inertial_dead_reckoning": 0.0,
+          "cs_in_air": 0.0,
+          "cs_baro_hgt": 1.0,
+          "cs_rng_hgt": 1.0,
+          "cs_aux_vel": 1.0
+        },
+        "fuse_updates": {
+          "lidar": 20,
+          "uwb": 0
+        }
+      },
+      "all_restored": {
+        "samples": 625,
+        "validity": {
+          "xy_valid": 1.0,
+          "v_xy_valid": 1.0,
+          "z_valid": 1.0,
+          "v_z_valid": 1.0
+        },
+        "flags": {
+          "cs_ev_pos": 1.0,
+          "cs_ev_vel": 0.0,
+          "cs_gnss_pos": 0.0,
+          "cs_gnss_vel": 0.0,
+          "cs_opt_flow": 0.0,
+          "cs_fake_pos": 0.0,
+          "cs_inertial_dead_reckoning": 0.0,
+          "cs_in_air": 0.0,
+          "cs_baro_hgt": 1.0,
+          "cs_rng_hgt": 1.0,
+          "cs_aux_vel": 1.0
+        },
+        "fuse_updates": {
+          "lidar": 50,
+          "uwb": 50
+        }
+      }
+    },
+    "reset_counts_25_to_120_s": {
+      "xy_reset_counter": 4,
+      "vxy_reset_counter": 1,
+      "z_reset_counter": 0,
+      "vz_reset_counter": 0
+    },
+    "admission": {
+      "accepted": 948,
+      "rejected": 0
+    },
+    "dropout_count": 0,
+    "checks_passed": true,
+    "failures": []
+  },
+  {
+    "run": "nominal-seed33",
+    "scope": "SYNTHETIC_DISARM_SIH_NOT_PHYSICAL_FLIGHT",
+    "scenario": "nominal",
+    "seed": 33,
+    "source_firmware": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+    "binary_sha256": "7c5df65cc6342042dfea507fa62bf79b2683ceebe72052a9fa24117d01403679",
+    "ulog_sha256": "6ad92988b4ea9315b0847bb7235584123cea531488f3a4c4af27ccc391b5488b",
+    "simulated_duration_s": 130.0,
+    "phases": {
+      "lidar_only": {
+        "samples": 1875,
+        "validity": {
+          "xy_valid": 1.0,
+          "v_xy_valid": 1.0,
+          "z_valid": 1.0,
+          "v_z_valid": 1.0
+        },
+        "flags": {
+          "cs_ev_pos": 0.0,
+          "cs_ev_vel": 0.0,
+          "cs_gnss_pos": 0.0,
+          "cs_gnss_vel": 0.0,
+          "cs_opt_flow": 0.0,
+          "cs_fake_pos": 0.0,
+          "cs_inertial_dead_reckoning": 0.0,
+          "cs_in_air": 0.0,
+          "cs_baro_hgt": 1.0,
+          "cs_rng_hgt": 1.0,
+          "cs_aux_vel": 1.0
+        },
+        "fuse_updates": {
+          "lidar": 150,
+          "uwb": 0
+        }
+      },
+      "uwb_added": {
+        "samples": 1250,
+        "validity": {
+          "xy_valid": 1.0,
+          "v_xy_valid": 1.0,
+          "z_valid": 1.0,
+          "v_z_valid": 1.0
+        },
+        "flags": {
+          "cs_ev_pos": 1.0,
+          "cs_ev_vel": 0.0,
+          "cs_gnss_pos": 0.0,
+          "cs_gnss_vel": 0.0,
+          "cs_opt_flow": 0.0,
+          "cs_fake_pos": 0.0,
+          "cs_inertial_dead_reckoning": 0.0,
+          "cs_in_air": 0.0,
+          "cs_baro_hgt": 1.0,
+          "cs_rng_hgt": 1.0,
+          "cs_aux_vel": 1.0
+        },
+        "fuse_updates": {
+          "lidar": 100,
+          "uwb": 100
+        }
+      },
+      "uwb_gap": {
+        "samples": 1625,
+        "validity": {
+          "xy_valid": 1.0,
+          "v_xy_valid": 1.0,
+          "z_valid": 1.0,
+          "v_z_valid": 1.0
+        },
+        "flags": {
+          "cs_ev_pos": 0.0,
+          "cs_ev_vel": 0.0,
+          "cs_gnss_pos": 0.0,
+          "cs_gnss_vel": 0.0,
+          "cs_opt_flow": 0.0,
+          "cs_fake_pos": 0.0,
+          "cs_inertial_dead_reckoning": 0.0,
+          "cs_in_air": 0.0,
+          "cs_baro_hgt": 1.0,
+          "cs_rng_hgt": 1.0,
+          "cs_aux_vel": 1.0
+        },
+        "fuse_updates": {
+          "lidar": 130,
+          "uwb": 0
+        }
+      },
+      "uwb_restored": {
+        "samples": 1250,
+        "validity": {
+          "xy_valid": 1.0,
+          "v_xy_valid": 1.0,
+          "z_valid": 1.0,
+          "v_z_valid": 1.0
+        },
+        "flags": {
+          "cs_ev_pos": 1.0,
+          "cs_ev_vel": 0.0,
+          "cs_gnss_pos": 0.0,
+          "cs_gnss_vel": 0.0,
+          "cs_opt_flow": 0.0,
+          "cs_fake_pos": 0.0,
+          "cs_inertial_dead_reckoning": 0.0,
+          "cs_in_air": 0.0,
+          "cs_baro_hgt": 1.0,
+          "cs_rng_hgt": 1.0,
+          "cs_aux_vel": 1.0
+        },
+        "fuse_updates": {
+          "lidar": 100,
+          "uwb": 100
+        }
+      },
+      "all_horizontal_gap": {
+        "samples": 750,
+        "validity": {
+          "xy_valid": 0.0,
+          "v_xy_valid": 0.0,
+          "z_valid": 1.0,
+          "v_z_valid": 1.0
+        },
+        "flags": {
+          "cs_ev_pos": 0.0,
+          "cs_ev_vel": 0.0,
+          "cs_gnss_pos": 0.0,
+          "cs_gnss_vel": 0.0,
+          "cs_opt_flow": 0.0,
+          "cs_fake_pos": 0.0,
+          "cs_inertial_dead_reckoning": 1.0,
+          "cs_in_air": 0.0,
+          "cs_baro_hgt": 1.0,
+          "cs_rng_hgt": 1.0,
+          "cs_aux_vel": 0.0
+        },
+        "fuse_updates": {
+          "lidar": 0,
+          "uwb": 0
+        }
+      },
+      "lidar_recovery": {
+        "samples": 250,
+        "validity": {
+          "xy_valid": 1.0,
+          "v_xy_valid": 1.0,
+          "z_valid": 1.0,
+          "v_z_valid": 1.0
+        },
+        "flags": {
+          "cs_ev_pos": 0.0,
+          "cs_ev_vel": 0.0,
+          "cs_gnss_pos": 0.0,
+          "cs_gnss_vel": 0.0,
+          "cs_opt_flow": 0.0,
+          "cs_fake_pos": 0.0,
+          "cs_inertial_dead_reckoning": 0.0,
+          "cs_in_air": 0.0,
+          "cs_baro_hgt": 1.0,
+          "cs_rng_hgt": 1.0,
+          "cs_aux_vel": 1.0
+        },
+        "fuse_updates": {
+          "lidar": 20,
+          "uwb": 0
+        }
+      },
+      "all_restored": {
+        "samples": 625,
+        "validity": {
+          "xy_valid": 1.0,
+          "v_xy_valid": 1.0,
+          "z_valid": 1.0,
+          "v_z_valid": 1.0
+        },
+        "flags": {
+          "cs_ev_pos": 1.0,
+          "cs_ev_vel": 0.0,
+          "cs_gnss_pos": 0.0,
+          "cs_gnss_vel": 0.0,
+          "cs_opt_flow": 0.0,
+          "cs_fake_pos": 0.0,
+          "cs_inertial_dead_reckoning": 0.0,
+          "cs_in_air": 0.0,
+          "cs_baro_hgt": 1.0,
+          "cs_rng_hgt": 1.0,
+          "cs_aux_vel": 1.0
+        },
+        "fuse_updates": {
+          "lidar": 50,
+          "uwb": 50
+        }
+      }
+    },
+    "reset_counts_25_to_120_s": {
+      "xy_reset_counter": 4,
+      "vxy_reset_counter": 1,
+      "z_reset_counter": 0,
+      "vz_reset_counter": 0
+    },
+    "admission": {
+      "accepted": 948,
+      "rejected": 0
+    },
+    "dropout_count": 0,
+    "checks_passed": true,
+    "failures": []
+  }
+]

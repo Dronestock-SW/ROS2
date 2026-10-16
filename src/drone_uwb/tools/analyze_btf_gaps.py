@@ -18,6 +18,17 @@ def gap_stats(times):
     return dict(samples=len(times), max_gap_s=max(gaps, default=None))
 
 
+def segmented_gap_stats(times, segments):
+    """Do not report an excluded LANDING/stale-state interval as sensor silence."""
+    gaps = []
+    for start, end in segments:
+        selected = [t for t in times if start <= t <= end]
+        gaps.extend((b-a)/1e9 for a,b in zip(selected, selected[1:]))
+    return dict(samples=len(times), max_gap_s=max(gaps, default=None),
+                gap_scope='within_fresh_airborne_segments',
+                cross_segment_intervals_omitted=max(0, len(times)-1-len(gaps)))
+
+
 def distribution(values):
     values=[v for v in values if type(v) in (int,float) and math.isfinite(v)]
     return dict(samples=len(values), minimum=min(values), median=statistics.median(values),
@@ -239,7 +250,7 @@ def analyze(capture):
     return dict(capture=capture.name, manifest_sha256=hashlib.sha256(manifest_bytes).hexdigest(),
         events_sha256=digest.hexdigest(), scope='fresh ARM and IN_AIR; receipt times; not ground truth',
         air_duration_s=sum((b-a)/1e9 for a,b in air_segments), air_segments=len(air_segments),
-        topics={k:gap_stats(v) for k,v in topic_times.items()},
+        topics={k:segmented_gap_stats(v,air_segments) for k,v in topic_times.items()},
         reasons=dict(Counter(d.get('pose_blocked_reason') or d['reason'] for _,d in decisions)),
         raw_anchor_missing=[sum(not usable_range(d,i) for _,d in raw_cycles) for i in range(4)],
         tof_source_interval_s=distribution([(b[1]-a[1])/1e9 for a,b in zip(tof_rows,tof_rows[1:]) if a[0]==b[0]]),

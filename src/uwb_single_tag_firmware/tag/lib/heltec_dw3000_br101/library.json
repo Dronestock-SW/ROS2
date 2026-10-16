@@ -1,0 +1,10 @@
+{
+  "name": "heltec_dw3000_br101",
+  "version": "0.1.0",
+  "description": "Heltec ESP32-S3 Arduino/PlatformIO port layer for br101/dw3000-decadriver-source",
+  "build": {
+    "srcDir": "src",
+    "includeDir": "include"
+  }
+}
+

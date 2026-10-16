@@ -14,12 +14,20 @@ from drone_uwb.integration.clock_readiness import ClockReadiness
 from drone_uwb.processing.measured_btf import MeasuredBtf, ground_xy_without_height, height_independent_b4
 
 
-def replay(capture, output):
+def replay(capture, output, *, enforce_b4_height_integrity=None, max_tof_age_s=None):
     manifest=json.loads((capture/'manifest.json').read_text(encoding='utf-8'))
     evidence=next(r for r in manifest['config_evidence'] if r['name']=='field-btf.json')
     assert hashlib.sha256(evidence['content_utf8'].encode()).hexdigest()==evidence['sha256']
     config=json.loads(evidence['content_utf8'])
+    if max_tof_age_s is not None:
+        if not math.isfinite(max_tof_age_s) or max_tof_age_s <= 0:
+            raise ValueError('positive_tof_age_required')
+        config['height']['max_tof_age_s'] = max_tof_age_s
     assert config['external_output_allowed'] is False
+    if enforce_b4_height_integrity is not None:
+        if type(enforce_b4_height_integrity) is not bool:
+            raise ValueError('boolean_b4_height_integrity_policy_required')
+        config['enforce_b4_height_integrity'] = enforce_b4_height_integrity
     processor=MeasuredBtf(config); clock=ClockReadiness()
     state={}; landed=None; state_at=landed_at=velocity_at=float('-inf')
     velocity_ok=False; landed_stamp=0; counts=Counter(); last=0
@@ -97,7 +105,13 @@ def replay(capture, output):
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('capture',type=Path);p.add_argument('--output',required=True,type=Path)
-    args=p.parse_args();print(json.dumps(replay(args.capture,args.output)))
+    p.add_argument('--enforce-b4-height-integrity', action='store_const', const=True, default=None,
+                   help='File-only research veto; otherwise follow recorded configuration/field default')
+    p.add_argument('--max-tof-age-s', type=float, default=None,
+                   help='File-only age sensitivity experiment; does not edit flight settings')
+    args=p.parse_args();print(json.dumps(replay(args.capture,args.output,
+        enforce_b4_height_integrity=args.enforce_b4_height_integrity,
+        max_tof_age_s=args.max_tof_age_s)))
 
 
 if __name__=='__main__':main()

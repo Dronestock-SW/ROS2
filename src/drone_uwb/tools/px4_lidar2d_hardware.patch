@@ -1,0 +1,391 @@
+diff --git a/boards/px4/fmu-v6c/lidar2d.px4board b/boards/px4/fmu-v6c/lidar2d.px4board
+new file mode 100644
+index 0000000000..63e0f2c909
+--- /dev/null
++++ b/boards/px4/fmu-v6c/lidar2d.px4board
+@@ -0,0 +1,96 @@
++CONFIG_BOARD_TOOLCHAIN="arm-none-eabi"
++CONFIG_BOARD_ARCHITECTURE="cortex-m7"
++CONFIG_BOARD_SERIAL_GPS1="/dev/ttyS0"
++CONFIG_BOARD_SERIAL_GPS2="/dev/ttyS6"
++CONFIG_BOARD_SERIAL_TEL1="/dev/ttyS5"
++CONFIG_BOARD_SERIAL_TEL2="/dev/ttyS3"
++CONFIG_BOARD_SERIAL_TEL3="/dev/ttyS1"
++CONFIG_DRIVERS_ACTUATORS_VERTIQ_IO=y
++CONFIG_USE_IFCI_CONFIGURATION=y
++CONFIG_DRIVERS_ADC_BOARD_ADC=y
++CONFIG_DRIVERS_BAROMETER_MS5611=y
++CONFIG_DRIVERS_BATT_SMBUS=y
++CONFIG_DRIVERS_CAMERA_CAPTURE=y
++CONFIG_DRIVERS_CAMERA_TRIGGER=y
++CONFIG_DRIVERS_CDCACM_AUTOSTART=y
++CONFIG_COMMON_DIFFERENTIAL_PRESSURE=y
++CONFIG_COMMON_DISTANCE_SENSOR=y
++CONFIG_DRIVERS_DSHOT=y
++CONFIG_DRIVERS_GNSS_SEPTENTRIO=y
++CONFIG_DRIVERS_GPS=y
++CONFIG_DRIVERS_HEATER=y
++CONFIG_DRIVERS_IMU_BOSCH_BMI055=y
++CONFIG_DRIVERS_IMU_BOSCH_BMI088=y
++CONFIG_DRIVERS_IMU_INVENSENSE_ICM42688P=y
++CONFIG_COMMON_LIGHT=y
++CONFIG_COMMON_MAGNETOMETER=y
++CONFIG_COMMON_OPTICAL_FLOW=y
++CONFIG_DRIVERS_POWER_MONITOR_INA226=y
++CONFIG_DRIVERS_POWER_MONITOR_INA228=y
++CONFIG_DRIVERS_POWER_MONITOR_INA238=y
++CONFIG_DRIVERS_PWM_OUT=y
++CONFIG_DRIVERS_PX4IO=y
++CONFIG_DRIVERS_RC_CRSF_RC=y
++CONFIG_COMMON_TELEMETRY=y
++CONFIG_DRIVERS_TONE_ALARM=y
++CONFIG_DRIVERS_UAVCAN=y
++CONFIG_BOARD_UAVCAN_TIMER_OVERRIDE=2
++CONFIG_MODULES_AIRSPEED_SELECTOR=y
++CONFIG_MODULES_BATTERY_STATUS=y
++CONFIG_MODULES_CAMERA_FEEDBACK=y
++CONFIG_MODULES_COMMANDER=y
++CONFIG_MODULES_CONTROL_ALLOCATOR=y
++CONFIG_MODULES_DATAMAN=y
++CONFIG_MODULES_EKF2=y
++CONFIG_MODULES_ESC_BATTERY=y
++CONFIG_MODULES_EVENTS=y
++CONFIG_MODULES_FLIGHT_MODE_MANAGER=y
++CONFIG_MODULES_FW_ATT_CONTROL=y
++CONFIG_MODULES_FW_AUTOTUNE_ATTITUDE_CONTROL=y
++CONFIG_MODULES_FW_MODE_MANAGER=y
++CONFIG_MODULES_FW_LATERAL_LONGITUDINAL_CONTROL=y
++CONFIG_MODULES_FW_RATE_CONTROL=y
++CONFIG_MODULES_GIMBAL=y
++CONFIG_MODULES_GYRO_CALIBRATION=y
++CONFIG_MODULES_LAND_DETECTOR=y
++CONFIG_MODULES_LANDING_TARGET_ESTIMATOR=y
++CONFIG_MODULES_LOAD_MON=y
++CONFIG_MODULES_LOGGER=y
++CONFIG_MODULES_MAG_BIAS_ESTIMATOR=y
++CONFIG_MODULES_MANUAL_CONTROL=y
++CONFIG_MODULES_MAVLINK=y
++CONFIG_MODULES_MC_ATT_CONTROL=y
++CONFIG_MODULES_MC_AUTOTUNE_ATTITUDE_CONTROL=y
++CONFIG_MODULES_MC_HOVER_THRUST_ESTIMATOR=y
++CONFIG_MODULES_MC_POS_CONTROL=y
++CONFIG_MODULES_MC_RATE_CONTROL=y
++CONFIG_MODULES_NAVIGATOR=y
++CONFIG_NUM_MISSION_ITMES_SUPPORTED=1000
++CONFIG_MODULES_RC_UPDATE=y
++CONFIG_MODULES_SENSORS=y
++CONFIG_MODULES_SIMULATION_SIMULATOR_SIH=y
++CONFIG_MODULES_TEMPERATURE_COMPENSATION=y
++CONFIG_MODULES_UXRCE_DDS_CLIENT=y
++CONFIG_MODULES_VTOL_ATT_CONTROL=y
++CONFIG_SYSTEMCMDS_ACTUATOR_TEST=y
++CONFIG_SYSTEMCMDS_BSONDUMP=y
++CONFIG_SYSTEMCMDS_DMESG=y
++CONFIG_SYSTEMCMDS_HARDFAULT_LOG=y
++CONFIG_SYSTEMCMDS_I2CDETECT=y
++CONFIG_SYSTEMCMDS_LED_CONTROL=y
++CONFIG_SYSTEMCMDS_MFT=y
++CONFIG_SYSTEMCMDS_MTD=y
++CONFIG_SYSTEMCMDS_NSHTERM=y
++CONFIG_SYSTEMCMDS_PARAM=y
++CONFIG_SYSTEMCMDS_PERF=y
++CONFIG_SYSTEMCMDS_REBOOT=y
++CONFIG_SYSTEMCMDS_SD_BENCH=y
++CONFIG_SYSTEMCMDS_SYSTEM_TIME=y
++CONFIG_SYSTEMCMDS_TOP=y
++CONFIG_SYSTEMCMDS_TOPIC_LISTENER=y
++CONFIG_SYSTEMCMDS_TUNE_CONTROL=y
++CONFIG_SYSTEMCMDS_UORB=y
++CONFIG_SYSTEMCMDS_VER=y
++CONFIG_SYSTEMCMDS_WORK_QUEUE=y
++
++CONFIG_EKF2_AUXVEL=y
+diff --git a/msg/CMakeLists.txt b/msg/CMakeLists.txt
+index 7eda1cc316..72f3e631d4 100644
+--- a/msg/CMakeLists.txt
++++ b/msg/CMakeLists.txt
+@@ -125,6 +125,8 @@ set(msg_files
+ 	LandingGearWheel.msg
+ 	LandingTargetInnovations.msg
+ 	LandingTargetPose.msg
++	LidarVelocity2d.msg
++	LidarVelocity2dStatus.msg
+ 	LaunchDetectionStatus.msg
+ 	LedControl.msg
+ 	LoggerStatus.msg
+diff --git a/msg/LidarVelocity2d.msg b/msg/LidarVelocity2d.msg
+new file mode 100644
+index 0000000000..7b6d4a153c
+--- /dev/null
++++ b/msg/LidarVelocity2d.msg
+@@ -0,0 +1,11 @@
++# Experimental independent horizontal LiDAR observation at the IMU origin.
++# No vertical position, velocity, attitude, or angular rate is observed.
++uint64 timestamp
++uint64 timestamp_sample
++float32[2] velocity_ne
++float32[3] covariance_ne # [var_n, cov_ne, var_e], (m/s)^2
++uint8 reset_counter
++int8 quality
++uint8 source_system
++uint8 source_component
++bool frame_valid
+diff --git a/msg/LidarVelocity2dStatus.msg b/msg/LidarVelocity2dStatus.msg
+new file mode 100644
+index 0000000000..8e520f4bbe
+--- /dev/null
++++ b/msg/LidarVelocity2dStatus.msg
+@@ -0,0 +1,6 @@
++# Admission status. Acceptance is not proof of actual EKF fusion.
++uint64 timestamp
++uint64 timestamp_sample
++uint32 accepted
++uint32 rejected
++uint8 reason # 0 disabled, 1 priming, 2 admitted, 3 value/covariance, 4 quality, 5 time, 6 duplicate, 7 source, 8 reset, 9 gap, 10 frame
+diff --git a/src/modules/ekf2/EKF/ekf.h b/src/modules/ekf2/EKF/ekf.h
+index 5c778ac613..a44d23c958 100644
+--- a/src/modules/ekf2/EKF/ekf.h
++++ b/src/modules/ekf2/EKF/ekf.h
+@@ -414,6 +414,7 @@ public:
+ 
+ #if defined(CONFIG_EKF2_AUXVEL)
+ 	const auto &aid_src_aux_vel() const { return _aid_src_aux_vel; }
++	void resetAuxVelData() { if (_auxvel_buffer) { _auxvel_buffer->reset(); } _aid_src_aux_vel.fused = false; }
+ #endif // CONFIG_EKF2_AUXVEL
+ 
+ 	bool resetGlobalPosToExternalObservation(double latitude, double longitude, float altitude, float eph, float epv,
+diff --git a/src/modules/ekf2/EKF2.cpp b/src/modules/ekf2/EKF2.cpp
+index f93f59085f..0558b911ab 100644
+--- a/src/modules/ekf2/EKF2.cpp
++++ b/src/modules/ekf2/EKF2.cpp
+@@ -2143,6 +2143,80 @@ void EKF2::UpdateAirspeedSample(ekf2_timestamps_s &ekf2_timestamps)
+ #if defined(CONFIG_EKF2_AUXVEL)
+ void EKF2::UpdateAuxVelSample(ekf2_timestamps_s &ekf2_timestamps)
+ {
++
++	if (_param_ekf2_lid2_en.get()) {
++		lidar_velocity2d_s sample{};
++		const hrt_abstime now = hrt_absolute_time();
++		const uint64_t max_age = static_cast<uint64_t>(_param_ekf2_lid2_age.get() * 1000.f);
++		auto report = [&](uint8_t reason, uint64_t stamp) {
++			lidar_velocity2d_status_s status{};
++			status.timestamp = now;
++			status.timestamp_sample = stamp;
++			status.reason = reason;
++			status.accepted = _lidar2d_accepted;
++			status.rejected = _lidar2d_rejected;
++			_lidar_velocity2d_status_pub.publish(status);
++		};
++		if (!_lidar_velocity2d_sub.update(&sample)) {
++			if (_lidar2d_primed && now - _lidar2d_last_rx > max_age) {
++				_ekf.resetAuxVelData();
++				_lidar2d_primed = false;
++				report(9, _lidar2d_last_sample);
++			}
++			return; // Never mix landing-target samples into the same buffer.
++		}
++		const float nn = sample.covariance_ne[0];
++		const float ne = sample.covariance_ne[1];
++		const float ee = sample.covariance_ne[2];
++		const uint16_t source = (static_cast<uint16_t>(sample.source_system) << 8) | sample.source_component;
++		uint8_t reason = 2;
++		if (sample.source_system != 255 || sample.source_component != 198) {
++			reason = 7;
++		} else if (!sample.frame_valid) {
++			reason = 10;
++		} else if (!PX4_ISFINITE(sample.velocity_ne[0]) || !PX4_ISFINITE(sample.velocity_ne[1])
++			   || !PX4_ISFINITE(nn) || !PX4_ISFINITE(ne) || !PX4_ISFINITE(ee)
++			   || nn <= 0.f || ee <= 0.f || nn * ee <= ne * ne) {
++			reason = 3;
++		} else if (sample.quality <= 0 || sample.quality > 100) {
++			reason = 4;
++		} else if (sample.timestamp_sample == 0 || sample.timestamp_sample > now
++			   || now - sample.timestamp_sample > max_age) {
++			reason = 5;
++		} else if (sample.timestamp_sample <= _lidar2d_last_sample) {
++			reason = 6;
++		} else if (_lidar2d_source != 0 && _lidar2d_source != source) {
++			reason = 7;
++		}
++		if (reason != 2) {
++			_ekf.resetAuxVelData();
++			_lidar2d_primed = false;
++			++_lidar2d_rejected;
++			report(reason, sample.timestamp_sample);
++			return;
++		}
++		const bool reset = _lidar2d_source != 0 && _lidar2d_reset != sample.reset_counter;
++		const bool gap = _lidar2d_last_rx != 0 && now - _lidar2d_last_rx > max_age;
++		_lidar2d_source = source;
++		_lidar2d_reset = sample.reset_counter;
++		_lidar2d_last_sample = sample.timestamp_sample;
++		_lidar2d_last_rx = now;
++		if (!_lidar2d_primed || reset || gap) {
++			_ekf.resetAuxVelData(); // Buffer only: never reset a state mean or covariance.
++			_lidar2d_primed = true;
++			report(reset ? 8 : gap ? 9 : 1, sample.timestamp_sample);
++			return;
++		}
++		// Conservative diagonal majorant D-C is PSD. Dropping C_ne silently is not valid.
++		const float cross = fabsf(ne);
++		auxVelSample aux{sample.timestamp_sample,
++			Vector2f{sample.velocity_ne[0], sample.velocity_ne[1]}, Vector2f{nn + cross, ee + cross}};
++		_ekf.setAuxVelData(aux);
++		++_lidar2d_accepted;
++		report(2, sample.timestamp_sample);
++		return;
++	}
++
+ 	// EKF auxiliary velocity sample
+ 	//  - use the landing target pose estimate as another source of velocity data
+ 	landing_target_pose_s landing_target_pose;
+diff --git a/src/modules/ekf2/EKF2.hpp b/src/modules/ekf2/EKF2.hpp
+index c95e3c3623..805408dd6d 100644
+--- a/src/modules/ekf2/EKF2.hpp
++++ b/src/modules/ekf2/EKF2.hpp
+@@ -95,6 +95,8 @@
+ 
+ #if defined(CONFIG_EKF2_AUXVEL)
+ # include <uORB/topics/landing_target_pose.h>
++# include <uORB/topics/lidar_velocity2d.h>
++# include <uORB/topics/lidar_velocity2d_status.h>
+ #endif // CONFIG_EKF2_AUXVEL
+ 
+ #if defined(CONFIG_EKF2_BAROMETER)
+@@ -335,6 +337,17 @@ private:
+ #if defined(CONFIG_EKF2_AUXVEL)
+ 	uORB::Subscription _landing_target_pose_sub {ORB_ID(landing_target_pose)};
+ 
++	uORB::Subscription _lidar_velocity2d_sub{ORB_ID(lidar_velocity2d)};
++	uORB::Publication<lidar_velocity2d_status_s> _lidar_velocity2d_status_pub{ORB_ID(lidar_velocity2d_status)};
++	hrt_abstime _lidar2d_last_rx{0};
++	uint64_t _lidar2d_last_sample{0};
++	uint16_t _lidar2d_source{0};
++	uint8_t _lidar2d_reset{0};
++	bool _lidar2d_primed{false};
++	uint32_t _lidar2d_accepted{0};
++	uint32_t _lidar2d_rejected{0};
++
++
+ 	uORB::PublicationMulti<estimator_aid_source2d_s> _estimator_aid_src_aux_vel_pub{ORB_ID(estimator_aid_src_aux_vel)};
+ 	hrt_abstime _status_aux_vel_pub_last{0};
+ #endif // CONFIG_EKF2_AUXVEL
+@@ -491,6 +504,9 @@ private:
+ 		(ParamExtFloat<px4::params::EKF2_VEL_LIM>) _param_ekf2_vel_lim,
+ 
+ #if defined(CONFIG_EKF2_AUXVEL)
++		(ParamInt<px4::params::EKF2_LID2_VER>) _param_ekf2_lid2_ver,
++		(ParamBool<px4::params::EKF2_LID2_EN>) _param_ekf2_lid2_en,
++		(ParamFloat<px4::params::EKF2_LID2_AGE>) _param_ekf2_lid2_age,
+ 		(ParamExtFloat<px4::params::EKF2_AVEL_DELAY>)
+ 		_param_ekf2_avel_delay,	///< auxiliary velocity measurement delay relative to the IMU (mSec)
+ #endif // CONFIG_EKF2_AUXVEL
+diff --git a/src/modules/ekf2/params_aux_velocity.yaml b/src/modules/ekf2/params_aux_velocity.yaml
+index 93b38587c0..e15c926539 100644
+--- a/src/modules/ekf2/params_aux_velocity.yaml
++++ b/src/modules/ekf2/params_aux_velocity.yaml
+@@ -12,3 +12,30 @@ parameters:
+       unit: ms
+       reboot_required: true
+       decimal: 1
++
++    EKF2_LID2_EN:
++      description:
++        short: Experimental independent horizontal LiDAR input
++        long: Replaces landing-target auxiliary velocity input. Requires another active horizontal aid source. No state reset or vertical observation.
++      type: boolean
++      default: false
++      reboot_required: true
++    EKF2_LID2_AGE:
++      description:
++        short: Maximum experimental LiDAR sample age and receive gap
++      type: float
++      default: 150
++      min: 20
++      max: 200
++      unit: ms
++      reboot_required: true
++
++    EKF2_LID2_VER:
++      description:
++        short: Dedicated horizontal LiDAR protocol version
++        long: Protocol 1 consumes only NE velocity at the IMU origin from component 198. Vertical velocity is unobserved. Use with the matched companion package.
++      type: int32
++      default: 1
++      min: 1
++      max: 1
++      reboot_required: true
+diff --git a/src/modules/logger/logged_topics.cpp b/src/modules/logger/logged_topics.cpp
+index bdca16eae3..002d8bc9b3 100644
+--- a/src/modules/logger/logged_topics.cpp
++++ b/src/modules/logger/logged_topics.cpp
+@@ -89,6 +89,9 @@ void LoggedTopics::add_default_topics()
+ 	add_optional_topic("landing_gear", 200);
+ 	add_optional_topic("landing_gear_wheel", 100);
+ 	add_optional_topic("landing_target_pose", 1000);
++	add_topic("lidar_velocity2d");
++	add_topic("lidar_velocity2d_status");
++	add_topic("estimator_aid_src_aux_vel");
+ 	add_optional_topic("launch_detection_status", 200);
+ 	add_optional_topic("magnetometer_bias_estimate", 200);
+ 	add_topic("manual_control_setpoint", 200);
+diff --git a/src/modules/mavlink/mavlink_receiver.cpp b/src/modules/mavlink/mavlink_receiver.cpp
+index 49ce052c01..70a5e48b8e 100644
+--- a/src/modules/mavlink/mavlink_receiver.cpp
++++ b/src/modules/mavlink/mavlink_receiver.cpp
+@@ -60,6 +60,7 @@
+ #include "mavlink_command_sender.h"
+ #include "mavlink_main.h"
+ #include "mavlink_receiver.h"
++#include <cmath>
+ 
+ #include <lib/drivers/device/Device.hpp> // For DeviceId union
+ #include <containers/LockGuard.hpp>
+@@ -1351,6 +1352,27 @@ MavlinkReceiver::handle_message_odometry(mavlink_message_t *msg)
+ 	mavlink_odometry_t odom_in;
+ 	mavlink_msg_odometry_decode(msg, &odom_in);
+ 
++	// Experimental 2D path: independent of the shared external-vision stream.
++	if (odom_in.estimator_type == MAV_ESTIMATOR_TYPE_LIDAR) {
++		lidar_velocity2d_s lidar{};
++		lidar.timestamp = hrt_absolute_time();
++		lidar.timestamp_sample = _mavlink_timesync.sync_stamp(odom_in.time_usec);
++		lidar.velocity_ne[0] = odom_in.vx;
++		lidar.velocity_ne[1] = odom_in.vy;
++		lidar.covariance_ne[0] = odom_in.velocity_covariance[0];
++		lidar.covariance_ne[1] = odom_in.velocity_covariance[1];
++		lidar.covariance_ne[2] = odom_in.velocity_covariance[6];
++		lidar.reset_counter = odom_in.reset_counter;
++		lidar.quality = odom_in.quality;
++		lidar.source_system = msg->sysid;
++		lidar.source_component = msg->compid;
++		lidar.frame_valid = odom_in.frame_id == MAV_FRAME_LOCAL_NED
++			&& odom_in.child_frame_id == MAV_FRAME_LOCAL_NED && std::isnan(odom_in.vz);
++		_lidar_velocity2d_pub.publish(lidar);
++		return;
++	}
++
++
+ 	// fill vehicle_odometry from Mavlink ODOMETRY
+ 	vehicle_odometry_s odom{vehicle_odometry_empty};
+ 
+diff --git a/src/modules/mavlink/mavlink_receiver.h b/src/modules/mavlink/mavlink_receiver.h
+index d1c477e1c7..ec37dc6ed9 100644
+--- a/src/modules/mavlink/mavlink_receiver.h
++++ b/src/modules/mavlink/mavlink_receiver.h
+@@ -108,6 +108,7 @@
+ #include <uORB/topics/vehicle_land_detected.h>
+ #include <uORB/topics/vehicle_local_position.h>
+ #include <uORB/topics/vehicle_odometry.h>
++#include <uORB/topics/lidar_velocity2d.h>
+ #include <uORB/topics/vehicle_rates_setpoint.h>
+ #include <uORB/topics/vehicle_status.h>
+ #include <uORB/topics/velocity_limits.h>
+@@ -327,6 +328,7 @@ private:
+ 	uORB::Publication<trajectory_setpoint_s>		_trajectory_setpoint_pub{ORB_ID(trajectory_setpoint)};
+ 	uORB::Publication<vehicle_odometry_s>			_mocap_odometry_pub{ORB_ID(vehicle_mocap_odometry)};
+ 	uORB::Publication<vehicle_odometry_s>			_visual_odometry_pub{ORB_ID(vehicle_visual_odometry)};
++	uORB::Publication<lidar_velocity2d_s> _lidar_velocity2d_pub{ORB_ID(lidar_velocity2d)};
+ 	uORB::Publication<vehicle_rates_setpoint_s>		_rates_sp_pub{ORB_ID(vehicle_rates_setpoint)};
+ 
+ #if !defined(CONSTRAINED_FLASH)

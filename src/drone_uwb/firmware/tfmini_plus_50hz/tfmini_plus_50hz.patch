@@ -1,0 +1,207 @@
+--- a/src/drivers/distance_sensor/tf02pro/TF02PRO.hpp
++++ b/src/drivers/distance_sensor/tf02pro/TF02PRO.hpp
+@@ -71,6 +71,8 @@
+ private:
+ 
+ 	void start();
++	int configure_tfmini_plus();
++	void run_tfmini_plus();
+ 	int collect();
+ 	int measure();
+ 
+@@ -87,6 +89,13 @@
+ 	int _interval{TF02PRO_CONVERSION_INTERVAL};
+ 
+ 	bool _collect_phase{false};
++	const bool _tfmini_plus;
++	const bool _configure_sensor;
++	hrt_abstime _request_time{0};
++	unsigned _read_attempts{0};
++	perf_counter_t _invalid_frames{perf_alloc(PC_COUNT, MODULE_NAME ": invalid_frame")};
++	perf_counter_t _quality_rejected{perf_alloc(PC_COUNT, MODULE_NAME ": quality_rejected")};
++	perf_counter_t _published{perf_alloc(PC_COUNT, MODULE_NAME ": published")};
+ 
+ 	perf_counter_t _comms_errors{perf_alloc(PC_COUNT, MODULE_NAME": com_err")};
+ 	perf_counter_t _sample_perf{perf_alloc(PC_ELAPSED,  MODULE_NAME": read")};
+--- a/src/drivers/distance_sensor/tf02pro/TF02PRO.cpp
++++ b/src/drivers/distance_sensor/tf02pro/TF02PRO.cpp
+@@ -41,13 +41,15 @@
+ TF02PRO::TF02PRO(const I2CSPIDriverConfig &config) :
+ 	I2C(config),
+ 	I2CSPIDriver(config),
+-	_px4_rangefinder(get_device_id(), config.rotation)
++	_px4_rangefinder(get_device_id(), config.rotation),
++	_tfmini_plus(config.custom1 == 1),
++	_configure_sensor(config.custom2 == 1)
+ {
+ 	_px4_rangefinder.set_device_type(DRV_DIST_DEVTYPE_TF02PRO);
+ 	_px4_rangefinder.set_rangefinder_type(distance_sensor_s::MAV_DISTANCE_SENSOR_LASER);
+-	_px4_rangefinder.set_max_distance(TF02PRO_MAX_DISTANCE);
++	_px4_rangefinder.set_max_distance(_tfmini_plus ? 12.0f : TF02PRO_MAX_DISTANCE);
+ 	_px4_rangefinder.set_min_distance(TF02PRO_MIN_DISTANCE);
+-	_px4_rangefinder.set_fov(math::radians(3.0f));
++	_px4_rangefinder.set_fov(math::radians(_tfmini_plus ? 3.6f : 3.0f));
+ }
+ 
+ /**
+@@ -58,6 +60,9 @@
+ {
+ 	perf_free(_sample_perf);
+ 	perf_free(_comms_errors);
++	perf_free(_invalid_frames);
++	perf_free(_quality_rejected);
++	perf_free(_published);
+ }
+ 
+ /**
+@@ -83,6 +88,11 @@
+ 	}
+ 
+ 	px4_usleep(100000);
++
++	if (_tfmini_plus && _configure_sensor && configure_tfmini_plus() != PX4_OK) {
++		PX4_ERR("TFmini Plus 100Hz configuration failed");
++		return PX4_ERROR;
++	}
+ 
+ 	int ret = measure();
+ 
+@@ -115,7 +125,9 @@
+ 	uint8_t recv_data[9] {};
+ 	perf_begin(_sample_perf);
+ 
+-	const hrt_abstime timestamp_sample = hrt_absolute_time();
++	// No hardware timestamp is available. Request time is a host-side proxy,
++	// with up to one sensor period of unknown sample age; not delay calibration.
++	const hrt_abstime timestamp_sample = _tfmini_plus ? _request_time : hrt_absolute_time();
+ 	int ret = transfer(nullptr, 0, recv_data, sizeof(recv_data));
+ 
+ 	if (ret < 0) {
+@@ -125,13 +137,30 @@
+ 		return ret;
+ 	}
+ 
++	if (_tfmini_plus) {
++		uint8_t sum = 0;
++		for (unsigned i = 0; i < 8; ++i) { sum += recv_data[i]; }
++		if (recv_data[0] != 0x59 || recv_data[1] != 0x59 || recv_data[8] != sum) {
++			perf_count(_invalid_frames);
++			perf_end(_sample_perf);
++			return PX4_ERROR;
++		}
++	}
++
+ 	uint16_t strength = recv_data[5] << 8 | recv_data[4];
+ 	uint16_t distance_mm = recv_data[3] << 8 | recv_data[2];
+ 
+-	if (strength >= 60u && distance_mm < 45000u) {
++	const bool valid = _tfmini_plus
++		? strength >= 100u && strength != 65535u && distance_mm >= 100u && distance_mm <= 12000u
++		: strength >= 60u && distance_mm < 45000u;
++	if (valid) {
+ 		float distance_m = float(distance_mm) * 1e-3f;
+ 
+ 		_px4_rangefinder.update(timestamp_sample, distance_m);
++		perf_count(_published);
++
++	} else {
++		perf_count(_quality_rejected);
+ 	}
+ 
+ 	perf_end(_sample_perf);
+@@ -164,6 +193,7 @@
+  */
+ void TF02PRO::RunImpl()
+ {
++	if (_tfmini_plus) { run_tfmini_plus(); return; }
+ 	if (_collect_phase) {
+ 		if (OK != collect()) {
+ 			PX4_DEBUG("collection error");
+@@ -192,4 +222,56 @@
+ 	I2CSPIDriverBase::print_status();
+ 	perf_print_counter(_sample_perf);
+ 	perf_print_counter(_comms_errors);
+-}
++	perf_print_counter(_invalid_frames);
++	perf_print_counter(_quality_rejected);
++	perf_print_counter(_published);
++	PX4_INFO("model=%s requested_poll_hz=%d sensor_sample_time=unavailable",
++		 _tfmini_plus ? "TFmini Plus" : "TF02-Pro", _tfmini_plus ? 50 : 10);
++}
++
++// Explicit -P -C maintenance startup only. No repeated EEPROM writes for -P.
++int TF02PRO::configure_tfmini_plus()
++{
++	const uint8_t commands[2][6] = {
++		{0x5A, 0x06, 0x35, 0x00, 0x00, 0x95}, // low-power mode off
++		{0x5A, 0x06, 0x03, 0x64, 0x00, 0xC7}  // internal measurement 100Hz
++	};
++	for (const auto &command : commands) {
++		uint8_t reply[6] {};
++		if (transfer(command, sizeof(command), nullptr, 0) != PX4_OK) { return PX4_ERROR; }
++		px4_usleep(100000); // configuration ACK delay, never the distance polling loop
++		if (transfer(nullptr, 0, reply, sizeof(reply)) != PX4_OK) { return PX4_ERROR; }
++		for (unsigned i = 0; i < sizeof(reply); ++i) {
++			if (reply[i] != command[i]) { return PX4_ERROR; }
++		}
++	}
++	const uint8_t save[] = {0x5A, 0x04, 0x11, 0x6F};
++	uint8_t reply[5] {};
++	if (transfer(save, sizeof(save), nullptr, 0) != PX4_OK) { return PX4_ERROR; }
++	px4_usleep(100000);
++	if (transfer(nullptr, 0, reply, sizeof(reply)) != PX4_OK
++	    || reply[0] != 0x5A || reply[1] != 5 || reply[2] != 0x11
++	    || reply[3] != 0 || reply[4] != 0x70) { return PX4_ERROR; }
++	px4_usleep(1000000); // manufacturer save-settling requirement, once with -C
++	return PX4_OK;
++}
++
++void TF02PRO::run_tfmini_plus()
++{
++	constexpr uint32_t poll_us = 20000;
++	if (!_collect_phase) {
++		_request_time = hrt_absolute_time();
++		if (measure() != PX4_OK) { ScheduleDelayed(poll_us); return; }
++		_collect_phase = true;
++		_read_attempts = 0;
++	}
++	// Distance request permits immediate read. A transient NACK/frame error
++	// gets at most two nonblocking 1ms retries, never a catch-up burst.
++	if (collect() != PX4_OK && ++_read_attempts < 3) {
++		ScheduleDelayed(1000);
++		return;
++	}
++	_collect_phase = false;
++	const hrt_abstime elapsed = hrt_absolute_time() - _request_time;
++	ScheduleDelayed(elapsed < poll_us ? poll_us - elapsed : poll_us);
++}
+--- a/src/drivers/distance_sensor/tf02pro/tf02pro_main.cpp
++++ b/src/drivers/distance_sensor/tf02pro/tf02pro_main.cpp
+@@ -45,6 +45,8 @@
+ 	PRINT_MODULE_USAGE_PARAMS_I2C_SPI_DRIVER(true, false);
+ 	PRINT_MODULE_USAGE_PARAMS_I2C_ADDRESS(0x10);
+ 	PRINT_MODULE_USAGE_PARAM_INT('R', 25, 0, 25, "Sensor rotation - downward facing by default", true);
++	PRINT_MODULE_USAGE_PARAM_FLAG('P', "TFmini Plus: read at 50Hz, validate 0.1-12m", true);
++	PRINT_MODULE_USAGE_PARAM_FLAG('C', "With -P: set normal power/100Hz and save once; ground maintenance only", true);
+ 	PRINT_MODULE_USAGE_DEFAULT_COMMANDS();
+ }
+ 
+@@ -57,13 +59,17 @@
+ 	cli.default_i2c_frequency = 400000;  // Fast speed (400Khz)
+ 	cli.i2c_address = TF02PRO_BASEADDR;
+ 
+-	while ((ch = cli.getOpt(argc, argv, "R:")) != EOF) {
++	while ((ch = cli.getOpt(argc, argv, "R:PC")) != EOF) {
+ 		switch (ch) {
++		case 'P': cli.custom1 = 1; break;
++		case 'C': cli.custom2 = 1; break;
+ 		case 'R':
+ 			cli.rotation = (Rotation)atoi(cli.optArg());
+ 			break;
+ 		}
+ 	}
++
++	if (cli.custom2 && !cli.custom1) { PX4_ERR("-C requires -P"); return -1; }
+ 
+ 	const char *verb = cli.optArg();
+ 

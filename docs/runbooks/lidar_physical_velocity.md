@@ -1,0 +1,113 @@
+# 실측 LiDAR 입력 실행 절차
+수동·OFFBOARD 공통 노드의 배포 절차다.
+현재 상태에서 다음 실측을 준비할 때 읽는다.
+
+현재 저장 설정은 `enabled=false`다.
+14일 [실제 FC 지상 확인](../report/lidar_ground_deployment_20261014.md)에서
+현재 펌웨어의 선행 수평 보조 요구를 확인했다.
+FC 수신 카운터 증가만으로 실제 융합을 판정하지 않는다.
+`estimator_aid_src_aux_vel.time_last_fuse` 증가가 필요하다.
+현재 설치본의 LiDAR 단독 시작은 미지원이다.
+14일 [제자리 이륙 경로](../report/lidar_takeoff_hover_20261014.md)를 추가했다.
+`metric_scan`은 하향 ToF와 XY 유효성을 분리한다.
+지상부터 이륙 높이까지 수직 구조물을 확인한다.
+그 근거를 `vertical_structure_ref`에 기록한다.
+예제 범위는 기존 드라이버와 같은 12m다.
+시간 보정·FC 융합 검증이 끝나기 전에는 비활성 상태를 유지한다.
+10월 13일 CRSF 유지 펌웨어를 FC에 설치했다.
+[설치·파라미터 검증 결과](../report/lidar2d_crsf_flash_20261013.md)를 먼저 읽는다.
+수평면은 사용자가 확인했다. 동적 시각 검증은 미완료다.
+후속 지상 시험 중 하방 센서 응답이 중단됐다.
+이후 bus 2 검사와 기존 드라이버 시작으로 복구했다.
+60초 표본 591개·통신 오류 0건을 확인했다.
+현재 하방 드라이버는 실행 중이다. 비행 검증은 별개다.
+설치 기록의 후속 bus 2 복구와 남은 검증을 읽는다.
+
+1. 기존 파라미터와 원시 기록을 보존한다.
+   이번 백업은 Jetson의 아래 경로에 있다.
+   `/home/pgyxn/lidar-physical-20261012/pre-firmware-backup/`
+2. FMUv6C용 펌웨어와 manifest SHA256을 확인한다.
+   파일은 `src/drone_uwb/firmware/`에 있다.
+   10월 12일 산출물은 그날 업로드하지 않았다.
+   현재 FC는 10월 13일 보고서의 R2 설치본이다.
+3. 펌웨어 설치 후 파라미터를 대조한다.
+   `EKF2_LID2_VER=1`, `EKF2_LID2_EN=1`이다.
+   `EKF2_LID2_AGE`는 180–200ms 범위다.
+   `EKF2_AVEL_DELAY=5`를 확인한다.
+   기본 펌웨어 설정은 EN=0, AGE=150이다.
+4. 실제 수평면과 동적 시각 근거를 기록한다.
+   복사한 설정에 확인값과 참조를 넣는다.
+   확인 없이 gate를 참으로 바꾸지 않는다.
+   실제 관측 정확도를 아직 측정하지 않았기 때문이다.
+5. `colcon build --symlink-install` 후 환경을 읽는다.
+   ROS Humble, numpy, scipy, pymavlink가 필요하다.
+6. 실행 중 센서 스택 위에 공통 노드를 하나만 띄운다.
+
+```bash
+source /opt/ros/humble/setup.bash
+source install/setup.bash
+export ROS_DOMAIN_ID=2 MAVLINK20=1
+ros2 launch drone_uwb shared_observation_fusion.launch.py \
+  uwb_config:=/absolute/path/uwb-local.json \
+  lidar_config:=/absolute/path/lidar-velocity.json
+```
+
+두 설정은 같은 tag_id여야 한다.
+tag 5는 domain 1, tag 6은 domain 2다.
+기존 UWB 송신 노드가 있으면 중복 실행하지 않는다.
+한 관측을 두 번 입력할 수 있기 때문이다.
+LiDAR만 추가할 때는 다음 명령을 쓴다.
+
+```bash
+ros2 launch drone_uwb lidar_velocity.launch.py \
+  config:=/absolute/path/lidar-velocity.json
+```
+
+수동 스택은 `lidar_velocity_config` 인자를 지원한다.
+`LIDAR_VELOCITY_CONFIG` 환경변수도 지원한다.
+별도 service 예시는 `deployment/`에 있다.
+이번 작업에서 service는 설치하지 않았다.
+
+OFFBOARD의 `final_field_session.py`에는
+`--external-observation-bridge`를 추가했다.
+공통 UWB 송신기가 이미 실행 중일 때 사용한다.
+기존 readiness 검사와 임무 인자는 유지한다.
+
+14일 이륙 예제에는 `--lidar-config`도 필요하다.
+검증한 LiDAR 설정 파일의 절대 경로를 넣는다.
+이 도구가 LiDAR 송신 노드를 하나 시작한다.
+이미 실행 중이면 `--external-lidar-bridge`도 넣는다.
+검증 설정과 실제 송신 설정의 일치도 확인한다.
+mission의 `takeoff_lidar_fusion_ref`는 융합 근거다.
+송신 횟수만으로 이 값을 채우지 않는다.
+FC 수신과 EKF 융합은 서로 다른 단계이기 때문이다.
+
+`/lidar/velocity_status`와 관측 기록을 확인한다.
+FC의 `lidar_velocity2d_status`도 함께 확인한다.
+송신과 융합, 정확도, 비행 검증을 각각 기록한다.
+관측 중지 시 재개 여부는 DISARM 지상에서 먼저 확인한다.
+
+## 높이 미관측 상태의 지상 전용 확인
+
+`ground_static`은 이륙 설정으로 사용할 수 없다.
+DISARM·지상 상태에서 최대 60초만 허용한다.
+장착·수평면·시각 근거와 모든 관측 검사는 유지한다.
+현재 높이의 정지 장면만 검사한다.
+상승 구간의 수직 구조물 검증을 대신하지 않는다.
+매 송신의 지상 확인과 ARM 뒤 재개 금지를 적용한다.
+
+실행 계정은 MAVROS와 같은 계정을 사용한다.
+해당 계정의 pymavlink 의존 환경을 먼저 읽는다.
+다음 도구는 45초 입력과 FC 조회를 기록한다.
+새 증거 디렉토리만 허용한다.
+
+```bash
+bash src/drone_uwb/tools/run_lidar_ground_check.sh \
+  /absolute/path/lidar-ground-only.json \
+  /absolute/path/new-ground-evidence
+```
+
+조회 도구의 `--same-user-dds`는 같은 계정용이다.
+다른 계정에서는 기존 loopback UDP 분리를 유지한다.
+관측값을 새 시각으로 바꾸거나 나이를 축소하지 않는다.
+지연 원인을 숨기면 FC의 지연 검사가 무효화되기 때문이다.

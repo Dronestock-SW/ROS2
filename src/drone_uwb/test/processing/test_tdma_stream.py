@@ -44,6 +44,39 @@ def event(msg, mono):
                 host_received_ros_ns=mono+1_700_000_000_000_000_000)
 
 
+@pytest.mark.parametrize('mask,reason', [(7,'raw'),(3,'tdma_insufficient_ranges'),(0,'tdma_insufficient_ranges')])
+def test_partial_epoch_checks_surviving_measurements_without_filling_missing_slots(mask,reason):
+    g=TdmaGate('5','required',allow_partial=True)
+    raw,diag=pair()
+    raw['valid_mask']=mask
+    for i in range(4):
+        if not mask & (1<<i):
+            raw['raw_slant_m'][i]=raw['sample_time_us'][i]=None
+            raw['failure'][i]='response_timeout'
+    diag.update(deadline_valid=False,epoch_span_us=0)
+    g.ingest(raw,100,1000)
+    out=g.ingest(diag,101,1001)
+    assert out.reason==reason
+    if mask==7:
+        assert out.message['raw_slant_m'][3] is None and out.ros_ns==1000
+    else:
+        assert out.message is None and out.diagnostics['valid_mask']==mask
+        assert out.diagnostics['raw_received_monotonic_ns']==100
+
+
+@pytest.mark.parametrize('edit,reason', [
+    ({'local_overrun':True},'tdma_local_overrun'),
+    ({'end_offset_us':11700},'tdma_slot_violation'),
+])
+def test_partial_policy_keeps_real_slot_violations_rejected(edit,reason):
+    g=TdmaGate('5','required',allow_partial=True)
+    raw,diag=pair();raw['valid_mask']=7
+    raw['raw_slant_m'][3]=raw['sample_time_us'][3]=None
+    diag.update(deadline_valid=False,epoch_span_us=0,**edit)
+    g.ingest(raw,100,1000)
+    assert g.ingest(diag,101,1001).reason==reason
+
+
 def warmed_measured_processor(tag):
     c=json.loads((ROOT/'config/runtime/uwb_btf_real.json').read_text(encoding='utf-8'))
     c.update(tag_id=tag,tdma_mode='required')

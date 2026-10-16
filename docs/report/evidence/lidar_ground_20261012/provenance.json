@@ -1,0 +1,148 @@
+{
+  "analysis_date_kst": "2026-10-12",
+  "base_repository_commit": "3e7f3ef1c855f60285d67ae1bed82ba8682ac71c",
+  "raw_capture_id": "capture-1791703092109574820-28f571f8",
+  "raw_sha256": "80f1c6c94ee0aa1d7ec392c8922a1676e5366c29d7b40642213c8f4ea620ac79",
+  "local_project_relative_raw": "work/lidar-archive-20261011/capture-1791703092109574820-28f571f8/events.jsonl",
+  "local_project_relative_analysis": "output/lidar-ground-analysis-20261012",
+  "raw_uploaded": false,
+  "analysis_scripts_uploaded": false,
+  "sitl_executed": false,
+  "flight_validated": false,
+  "reproduction_note": "Original analysis scripts depend on the local project directory layout. Locate raw data and scripts using the project-relative paths and verify hashes before rerunning. Clone alone does not include raw data or scripts.",
+  "local_artifacts": {
+    "01_scan_quality.png": {
+      "bytes": 170171,
+      "sha256": "028a85b01d228eff5914d89e3dc6ec4d13fd7e6b886a26f2fbc5cc9d1dc731c4"
+    },
+    "01_scan_quality.svg": {
+      "bytes": 107083,
+      "sha256": "fbcb1615bc74ee9c9f948a1797c9f0df0f5fbfd2c3e2a3811974723e0dca33be"
+    },
+    "02_motion_diagnostics.png": {
+      "bytes": 261902,
+      "sha256": "6b3975d6d6210f0da44ed09b3ceac63e531a3b7e0fbd0c9a2472e16cf7aff464"
+    },
+    "02_motion_diagnostics.svg": {
+      "bytes": 159740,
+      "sha256": "907eef07445648881ad92cfed6adc46421219d6c2ef71784304401725f682f9e"
+    },
+    "03_sensor_comparison.png": {
+      "bytes": 308925,
+      "sha256": "ff5823cd72349d67df4f3e7a84ebce77d65064c786d6680895108c26088b4c01"
+    },
+    "03_sensor_comparison.svg": {
+      "bytes": 1237267,
+      "sha256": "dd07efc9e959fae54c439a7311061962729bd14ef42fe25412805559a9a2dcea"
+    },
+    "04_scan_geometry.png": {
+      "bytes": 51174,
+      "sha256": "5441f65e17b68909afcb25c9d0cb9d39404c76066e8eb18b62192aacc43f62fa"
+    },
+    "04_scan_geometry.svg": {
+      "bytes": 78612,
+      "sha256": "4db309d3bd0eded97b541950f9a9957cacbad7ebd148cb944407576277a1ca91"
+    },
+    "05_gate_and_geometry.png": {
+      "bytes": 263882,
+      "sha256": "cfc28dd5c615e7fb9e0ad9b01aec0b1c7393db771d06334a563dde65a990798b"
+    },
+    "05_gate_and_geometry.svg": {
+      "bytes": 107277,
+      "sha256": "031660b1a4d6e69fb5456b6d9a58a3272be9690091ab2eea856215f52e0f696a"
+    },
+    "06_rotation_diagnostics.png": {
+      "bytes": 183126,
+      "sha256": "e516f3db0aa7294adad86ed76d070a7a9c55dbdf4319e40ffffdf06ba74e918e"
+    },
+    "06_rotation_diagnostics.svg": {
+      "bytes": 308158,
+      "sha256": "910f901a6d25fa93c766375025be928373799c7bbf8de4b89453741c3a07fedd"
+    },
+    "analyze.py": {
+      "bytes": 18246,
+      "sha256": "654bc5471f63e0685b8811236fc1fa122d36a5ba5c8a1c96fad34454f7c4ffc5"
+    },
+    "angular_return_quality.csv": {
+      "bytes": 19902,
+      "sha256": "06311bad98f2f015a9b51aac1201782d533c482d8460667a3a41a2985593194f"
+    },
+    "artifact_manifest.json": {
+      "bytes": 4136,
+      "sha256": "dc39708c121428a8b4836607c61815005218f66f9b107cfa2eac5d34f739ead0"
+    },
+    "bidirectional_diagnostic.csv": {
+      "bytes": 10685,
+      "sha256": "c61cdc4f88bb9b1757f6a71fed6e714326c7803e55b2260ad2b71d300a6877f0"
+    },
+    "fixed_reference.csv": {
+      "bytes": 279683,
+      "sha256": "01396a3b85eed4b7d6f585fa84eb64a9bc1fe655d95e363701ec7d6e19c1de2e"
+    },
+    "make_figures.py": {
+      "bytes": 6256,
+      "sha256": "56a915aa91fe4f9307cb12f4bde2157f84a0638ea6ba605fa592a4e8b7cb31fd"
+    },
+    "make_report.py": {
+      "bytes": 27871,
+      "sha256": "5d3ad35a9f10d85b9292fb8708a8d6f6b93836cc7b00811a505026fef12a6207"
+    },
+    "min_0.03_pairs.csv": {
+      "bytes": 649783,
+      "sha256": "317aa49d4d9f3edf84f86c95c324f77b31aae02137f60d5d8eea7251e96ae37e"
+    },
+    "min_0.20_pairs.csv": {
+      "bytes": 649792,
+      "sha256": "962ef713022f6d275df9d03da84be87aab91b26b43069a6ec5e5392b0f5dd5a9"
+    },
+    "min_0.35_pairs.csv": {
+      "bytes": 649967,
+      "sha256": "94c4545650aef7c58af087f43d5c4b9f337e3a8dd1770c2ebe3dcb11d3c5359b"
+    },
+    "min_0.50_pairs.csv": {
+      "bytes": 644512,
+      "sha256": "30d5498fc9235aac9eacb63cc1f5c8d8ac04b3eb67d94ed077f746c5e591546c"
+    },
+    "plot_data.npz": {
+      "bytes": 4256581,
+      "sha256": "ebc3e84871a1de9c826b7cc7f8da57616c9459d4acbfb8dbbf440003c05920e4"
+    },
+    "report.html": {
+      "bytes": 2023878,
+      "sha256": "83ac1e5d6f478e0d27e6f79f93619e08e46d324ce28b80a5d16e147fdfb38c2a"
+    },
+    "scan_quality.csv": {
+      "bytes": 138027,
+      "sha256": "9e0d4ff4225efa32f2eccddca94aa65f17cc2a405c559dd2e25f8830fb831e08"
+    },
+    "sitl_plan.json": {
+      "bytes": 6740,
+      "sha256": "f2855f7cc12db3b23694db4fff1a3bc3fe850aff69cde4ab86f4cd37a1f62c4c"
+    },
+    "summary.json": {
+      "bytes": 28238,
+      "sha256": "0436d4ac6b3e24ee6d03b73fa276833845eeac57233637f5c51dd914d95d3202"
+    },
+    "supplement.json": {
+      "bytes": 4435,
+      "sha256": "5988125cf3f982c1c125ef80b00b034c7dddfcb9ecb1105aaddad6784baadf43"
+    },
+    "supplement.py": {
+      "bytes": 3307,
+      "sha256": "ce0c47927cebccddbcf20962e85eb5f6f55a591289144374eaec61e20164258f"
+    },
+    "ten_second_blocks.csv": {
+      "bytes": 2743,
+      "sha256": "b4b99eb4f6def6017a713cd6d6054c6e5cf831230c71f331f5e7a42d1dc82dd2"
+    }
+  },
+  "published_evidence": {
+    "rotation_diagnostics.png": "e516f3db0aa7294adad86ed76d070a7a9c55dbdf4319e40ffffdf06ba74e918e",
+    "scan_quality.png": "028a85b01d228eff5914d89e3dc6ec4d13fd7e6b886a26f2fbc5cc9d1dc731c4",
+    "sitl_plan.json": "8011826055aec44f9c4fb6b8ae75b1d979c58946e58954234d41a039a44e1bd4",
+    "summary.json": "de24b49964cef7824ab8b9257c11118838f5b36804b1d871b8687d4210cf1e15",
+    "supplement.json": "bf52288e344a3790a3f4d104efad77ef3b10203fcdafa5329b62ebc7540deed0",
+    "ten_second_blocks.csv": "1a6c94f77b36a29b2de63ee3abba448ebf2f7e4f5155b49ded86af903e9f49b4"
+  },
+  "published_evidence_hash_basis": "Git index blob bytes after repository line-ending normalization"
+}

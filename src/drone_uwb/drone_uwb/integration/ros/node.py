@@ -1,11 +1,12 @@
 """Live receive-only UWB node. Publishes observations, never flight commands."""
-from collections import Counter
+from collections import Counter, deque
 from dataclasses import asdict
 from datetime import datetime, timezone
 import json
 from pathlib import Path
 import sys
 import time
+import threading
 
 from ament_index_python.packages import get_package_share_directory
 from geometry_msgs.msg import PoseWithCovarianceStamped
@@ -25,6 +26,8 @@ from drone_uwb.integration.manual_capture import monotonic_raw_ns
 from drone_uwb.acquisition.serial_io import SerialInput
 from drone_uwb.integration.ros.layout_selection import anchor_path
 from drone_uwb.integration.ros.qos import received_stream_qos
+from drone_uwb.acquisition.single_tag import SingleTagLink
+from drone_uwb.acquisition.validation import InvalidInput
 
 
 class UwbNode(Node):
@@ -37,6 +40,15 @@ class UwbNode(Node):
         self.declare_parameter('watchdog_timeout_s', 0.5, descriptor)
         self.declare_parameter('record_directory', '', descriptor)
         self.declare_parameter('stop_after_s', 0.0, descriptor)
+        self.declare_parameter('single_tag_mode', False, descriptor)
+        self.single_tag_mode = self.get_parameter('single_tag_mode').value
+        self.single_tag = SingleTagLink() if self.single_tag_mode else None
+        self.tx_queue = deque(maxlen=4)
+        self.tx_active = b''
+        self.last_pose_forward_ns = 0
+        self.serial_lock = threading.RLock()
+        self.serial_stop = threading.Event()
+        self.serial_thread = None
         for name, value in asdict(Settings()).items():
             self.declare_parameter(name, value, descriptor)
         values = {name: self.get_parameter(name).value for name in asdict(Settings())}
@@ -69,13 +81,69 @@ class UwbNode(Node):
                 'flight_state_estimator': 'PX4 EKF2 only',
             })
         self.recorder = AsyncRecording(self.record_files) if self.record_files else None
-        self.create_timer(0.005, self.poll)
+        if self.single_tag_mode:
+            self.create_subscription(String, '/uwb/tag_pose_feedback', self.single_tag_pose, qos_profile_sensor_data)
+            self.serial_thread = threading.Thread(target=self.single_tag_loop, name='single_tag_uart', daemon=True)
+            self.serial_thread.start()
+        else:
+            self.create_timer(0.005, self.poll)
         self.create_timer(1.0, self.publish_status)
         self.get_logger().info('UWB source=' + self.settings.source_mode + ', frame=' + self.layout['coordinate_frame'])
 
     def record(self, name, value):
         if name in self.record_files:
             self.recorder.write(name, json.dumps(value, ensure_ascii=False, allow_nan=False) + '\n')
+
+    def queue_command(self, command):
+        payload = (json.dumps(command, separators=(',', ':'), allow_nan=False)+'\n').encode('utf-8')
+        if len(payload) >= 768 or len(self.tx_queue) >= self.tx_queue.maxlen:
+            self.counts['serial_tx_queue_full'] += 1
+            return
+        self.tx_queue.append(payload)
+
+    def single_tag_pose(self, message):
+        with self.serial_lock:
+            self.single_tag_pose_locked(message)
+
+    def single_tag_pose_locked(self, message):
+        now = time.monotonic_ns()
+        if self.serial is None or now-self.last_pose_forward_ns < 100_000_000:
+            return
+        try:
+            command = self.single_tag.pose_command(decode_line(message.data), now)
+            self.queue_command(command)
+            self.last_pose_forward_ns = now
+        except (InvalidInput, InvalidSample, KeyError, TypeError, ValueError):
+            self.counts['pose_feedback_rejected'] += 1
+
+    def single_tag_loop(self):
+        # Frequent UART reads must not depend on ROS executor timer dispatch.
+        # The same lock owns receive, clock fitting and complete output lines.
+        try:
+            while not self.serial_stop.is_set() and not self.finished and rclpy.ok():
+                with self.serial_lock:
+                    self.poll()
+                self.serial_stop.wait(.001)
+        except Exception as exc:
+            self.counts['serial_worker_failed'] += 1
+            self.get_logger().error('Single-tag serial worker failed: '+str(exc))
+            self.finished = True
+
+    def service_output(self):
+        if not self.single_tag_mode:
+            return
+        if not self.tx_active:
+            if self.tx_queue:
+                self.tx_active = self.tx_queue.popleft()
+            else:
+                command = self.single_tag.request(time.monotonic_ns()//1000)
+                if command:
+                    self.queue_command(command)
+                    self.tx_active = self.tx_queue.popleft()
+        if self.tx_active:
+            written = self.serial.write(self.tx_active)
+            self.tx_active = self.tx_active[written:]
+            self.counts['serial_payload_bytes_written'] += written
 
     def poll(self):
         now = time.monotonic()
@@ -88,7 +156,8 @@ class UwbNode(Node):
                 return
             self.last_open_attempt = now
             try:
-                self.serial = SerialInput(self.get_parameter('port').value, self.get_parameter('baudrate').value)
+                self.serial = SerialInput(self.get_parameter('port').value, self.get_parameter('baudrate').value,
+                                          writable=self.single_tag_mode)
                 self.framer = LineFramer()
                 self.processor.disconnect()
                 self.last_decision = 'waiting_status'
@@ -97,6 +166,7 @@ class UwbNode(Node):
                 self.get_logger().warning(str(exc))
             return
         try:
+            self.service_output()
             chunk = self.serial.read()
         except OSError as exc:
             self.get_logger().warning(str(exc))
@@ -134,8 +204,25 @@ class UwbNode(Node):
             received = {'host_received_monotonic_ns': mono_ns,
                         'host_received_monotonic_raw_ns': raw_clock_ns,
                         'host_received_ros_ns': ros_ns, 'message': msg}
+            if self.single_tag_mode:
+                try:
+                    received, command = self.single_tag.ingest(msg, mono_ns, ros_ns)
+                    received['host_received_monotonic_raw_ns'] = raw_clock_ns
+                    if command:
+                        self.queue_command(command)
+                    if msg.get('type') == 'uwb_raw_cycle':
+                        self.counts['single_tag_validated_cycles'] += 1
+                except (InvalidInput, KeyError, TypeError, ValueError) as exc:
+                    self.counts[str(exc)] += 1
+                    self.last_decision = str(exc)
+                    self.record('decisions', dict(reason=str(exc), message=msg,
+                                                 host_received_monotonic_ns=mono_ns))
+                    continue
             self.record('received', received)
             self.received_pub.publish(String(data=json.dumps(received, ensure_ascii=False)))
+            if self.single_tag_mode:
+                self.last_decision = 'single_tag_mapped' if received['single_tag']['mapped'] else 'single_tag_sideband_or_unsynced'
+                continue
             result = self.processor.process(msg, mono_ns, ros_ns)
             if not result.reason.startswith('sideband_') and result.reason != 'awaiting_tdma':
                 self.last_decision = result.reason
@@ -158,9 +245,14 @@ class UwbNode(Node):
                 self.pose_pub.publish(pose)
 
     def publish_status(self):
+        with self.serial_lock:
+            self.publish_status_locked()
+
+    def publish_status_locked(self):
         age = ((time.monotonic_ns() - self.last_cycle_mono) / 1e9
                if self.last_cycle_mono is not None else None)
         value = {'counts': dict(self.counts), 'last_decision': self.last_decision,
+                 'status_monotonic_ns': time.monotonic_ns(),
                  'connected': self.serial is not None,
                  'cycle_age_s': age,
                  'watchdog_ok': age is not None and age <= self.get_parameter('watchdog_timeout_s').value,
@@ -174,6 +266,10 @@ class UwbNode(Node):
                  'framing_overflows': self.framer.overflows}
         value['tdma_required'] = self.processor.tdma.required
         value['tdma_counts'] = dict(self.processor.tdma.counts)
+        if self.single_tag_mode:
+            value.update(protocol='single_tag_schema_2', tdma_required=False,
+                         timestamp_method='rf_poll_final_midpoint',
+                         clock=self.single_tag.clock.diagnostics(time.monotonic_ns()//1000))
         if rclpy.ok():
             self.status_pub.publish(String(data=json.dumps(value, ensure_ascii=False)))
         self.record('status', value)
@@ -181,6 +277,10 @@ class UwbNode(Node):
             self.recorder.flush()
 
     def close_serial(self):
+        if self.single_tag is not None:
+            self.single_tag.disconnect()
+            self.tx_queue.clear()
+            self.tx_active = b''
         if self.serial is not None:
             try:
                 self.serial.close()
@@ -189,6 +289,11 @@ class UwbNode(Node):
             self.serial = None
 
     def destroy_node(self):
+        self.serial_stop.set()
+        if self.serial_thread is not None:
+            self.serial_thread.join(timeout=5.)
+            if self.serial_thread.is_alive():
+                raise RuntimeError('Single-tag UART worker did not stop; process must restart')
         self.publish_status()
         self.close_serial()
         if self.recorder:

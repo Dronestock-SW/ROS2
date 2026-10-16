@@ -1,0 +1,182 @@
+{
+  "revision": "tdma40-v0.3-radiofix3",
+  "created_at": "2026-10-06T20:07:40.460291+09:00",
+  "base_manifest_sha256": "12648af86dc89bc701df98a425dcd2e2b6f5f0324d3af8c8f82ece1537435c91",
+  "baseline_files_verified_unchanged": 685,
+  "schedule_id": "0x4001",
+  "period_us": 25000,
+  "tag_firmware_version": "uwb-tag-tdma40-v0.3-display-bench-radiofix3",
+  "source_changes": [
+    {
+      "path": "projects/anchor/src/anchor_nrf52dk_ref_1to1.c",
+      "before_sha256": "9b17fc6520f7d9e40e7c61ea4041adf78dba62f957d8503c86baa557fcdbf3c3",
+      "after_sha256": "4a3b286faa4b5e6e7a40673c4d9f0419183138a6de3226845ed9551c892ffb14"
+    },
+    {
+      "path": "projects/anchor/vendor/nrf52_dk_dwm3000_reference/platform/deca_spi.c",
+      "before_sha256": "5c2c5ea6e96f90a84dad35d366a16b9d21c630c87ea7abcc779dbc2dce426b39",
+      "after_sha256": "9d27212b4ed6c9aa242acaad05ff76a36b894e150c0580a6ece822c638389eed"
+    },
+    {
+      "path": "projects/anchor/zephyr/app.overlay",
+      "before_sha256": "ebdfe1dd8b586974f7d7e8ed3ce5b7809fb5bf24a4460fcb072551429c809d2c",
+      "after_sha256": "a8c2d165ef5611cae48d40b9ef6f4a00e5daf711f8e5ba66d31595b1dcbdd054"
+    },
+    {
+      "path": "projects/anchor/zephyr/prj.conf",
+      "before_sha256": "54f821d8bb64d8e7b9100298a00a4ed0073e764e9c278dfb9755cd6984f9f2d9",
+      "after_sha256": "41223ce0404308e64517af2aa490c2aa2a5a3720060178cbd1797fba8a0ebaee"
+    },
+    {
+      "path": "projects/tag/include/JetsonTagConfig.h",
+      "before_sha256": "12da756d34483d85c113c2440a705211874c8d56167938d55a03eb7937601ef6",
+      "after_sha256": "752adc0b22ae0af8de821b6e0dfa61a72556d2ffb36ecec343057b747f25305d"
+    },
+    {
+      "path": "projects/tag/jetson/uwb_serial_receiver.py",
+      "before_sha256": "d15f2f50177f7a51a2a746027b863aacd578479a912d822ba5b8755ccf8a198b",
+      "after_sha256": "41648bba3211dbfddbeb5ecfe5e5f671929af17bac79153d056a7e001004dfb7"
+    },
+    {
+      "path": "projects/tag/lib/heltec_dw3000_br101/src/Br101Dw3000Port.cpp",
+      "before_sha256": "687f1dfda994146fa8e22d87fe752bf59184c26f569550835e9cf682413684db",
+      "after_sha256": "26133c5e6b3ede0652f7edd4ee256506ea4bad09c8a5377a4807935bab914275"
+    },
+    {
+      "path": "projects/tag/lib/heltec_dw3000_br101/vendor/br101/dwt_uwb_driver/dw3000/dw3000_device.c",
+      "before_sha256": "ea4b1e41443907639600cfe84baccbee57e3fd1dc244e9c385aaa5a4d215feca",
+      "after_sha256": "103f0f4dd0a20c1ec11a3ed6c45bf4d3fd066a195c04074a07cdbc2ced182895"
+    },
+    {
+      "path": "projects/tag/PACKET_CONTRACT.md",
+      "before_sha256": "5bee4d2473876765e0462e66bc1ce666de109fa88fa443cc789d93c619e13964",
+      "after_sha256": "005ba2ca5365103d47a9f577a0db568b6a48e1963be99fe51d6a21cb6ca57d6b"
+    },
+    {
+      "path": "projects/tag/src/main.cpp",
+      "before_sha256": "07c096fdf0c8a8aa053098678573d33cf3db32e7e2bb4b3dc669c4c766530f02",
+      "after_sha256": "f4bd719e54cf382b02e01479b39caea12817c93655c607e375827b5e8a8b7e47"
+    },
+    {
+      "path": "projects/tag/tests/test_contract.py",
+      "before_sha256": "0c6904dfa9becc6e8a53f3bed746488a1a0cb0c3b6b9ab2b693a548005c50891",
+      "after_sha256": "a2eb8f781cd9ccaa18aa37a160b1cd1c475cc8c042b0e0a9ee7ae9ce9a3139ca"
+    },
+    {
+      "path": "scripts/analyze_capture.py",
+      "before_sha256": "3fa18b4fd0c42741197100cb4afec4d95147057ea7a0ed173e6a9435ea4b4c57",
+      "after_sha256": "6ecb6dfb9ce2b27933213ee1f631a9c33352ee0baec5e168836cb54daa6a8e97"
+    },
+    {
+      "path": "scripts/capture.py",
+      "before_sha256": "58c80ec035b8b5ef319bcf74c5283b94cf46b474d08044ba0c95a9fc60d3f89e",
+      "after_sha256": "df060885e6400c6521411cf336065eff8bbcde472512cc3a2a909fdb8b1220a4"
+    },
+    {
+      "path": "scripts/verify_receiver_replay.py",
+      "before_sha256": null,
+      "after_sha256": "424e898b6f73f45fce98a3df3a45153b6b9481bd7446e25e42c8af8a21bf9d1f"
+    },
+    {
+      "path": "jetson/README.md",
+      "before_sha256": "a276f20f1fd2a137863deb1467b7b74a78c33e928cd6fc1a9d8d371efa18b44c",
+      "after_sha256": "b271e757d4cc4cc618fe5f0e7df2bd5410d129f5ae7ab79d830dfa33f55f1672"
+    }
+  ],
+  "images": [
+    {
+      "role": "A1",
+      "file": "images/A1_tdma40.hex",
+      "sha256": "f84c788a7263da772724d3c82a8d6bc9b1ca8bbb97296e72687d10d13dfded44"
+    },
+    {
+      "role": "A2",
+      "file": "images/A2_tdma40.hex",
+      "sha256": "7e085cfa943cc7d30eea2e074d6999b9c473c4e7182f800f70de8890b4b19f6d"
+    },
+    {
+      "role": "A3",
+      "file": "images/A3_tdma40.hex",
+      "sha256": "33e622c043a4cc858596d97aa6d039ceb9a2a207c6a5041a0bcfcbe78ce38c1c"
+    },
+    {
+      "role": "A4",
+      "file": "images/A4_tdma40.hex",
+      "sha256": "76d026e1da61b8e79179d4839b1fade84b29f24782097b46c418250f4eba848b"
+    },
+    {
+      "role": "Tag A",
+      "tag_id": 5,
+      "layout": "images/tag_a/FLASH_LAYOUT.json"
+    },
+    {
+      "role": "Tag B",
+      "tag_id": 6,
+      "layout": "images/tag_b/FLASH_LAYOUT.json"
+    }
+  ],
+  "builds": {
+    "anchor": 4,
+    "tag": 2,
+    "success": true
+  },
+  "flash_verify": {
+    "anchors_readback": 4,
+    "tag_segments_hash_verified": 8
+  },
+  "host_tests": {
+    "capture_analysis": 6,
+    "schedule_model": 7,
+    "receiver_contract": 17,
+    "layout_contract": 2,
+    "ros2_patch_python": 35,
+    "listed_python_tests_passed": true,
+    "native_cpp_tests_status": "blocked: g++ unavailable on this Windows host"
+  },
+  "position_accuracy_assessed": false,
+  "lcd_user_observation": {
+    "tag_a": "TAG A normally displayed",
+    "tag_b": "TAG B normally displayed",
+    "confirmation_date": "2026-10-06",
+    "power_loss_transition_tested": false
+  },
+  "long_run_conditions": {
+    "user_confirmed_device_layout_or_power_change": true,
+    "specific_action": "user confirmed power off then on; device label not specified",
+    "observed_a2_response_loss_local": [
+      "2026-10-06T19:49:17+09:00",
+      "2026-10-06T19:49:20+09:00"
+    ],
+    "consecutive_a2_response_timeout_cycles_each_tag": 141,
+    "automatic_radio_recovery_observed": true,
+    "qualifies_as_uninterrupted_normal_10_minute_test": false
+  },
+  "devices": {
+    "A1": {
+      "jlink": "1050323475",
+      "console": "COM6"
+    },
+    "A2": {
+      "jlink": "1050337085",
+      "console": "COM8"
+    },
+    "A3": {
+      "jlink": "1050376327",
+      "console": "COM4"
+    },
+    "A4": {
+      "jlink": "1050326715",
+      "console": "COM10"
+    },
+    "TAG_A": {
+      "id": 5,
+      "mac": "ac:a7:04:39:96:84",
+      "port": "COM3"
+    },
+    "TAG_B": {
+      "id": 6,
+      "mac": "e8:3d:c1:e3:48:2c",
+      "port": "COM13"
+    }
+  }
+}

@@ -6,3 +6,31 @@ docs/report/evidence/multitag_web_20261007/** -text -whitespace
 docs/report/evidence/multitag_patch_20261007/** -text -whitespace
 # Unified diff context preserves PX4 tabs and blank lines.
 src/drone_mission/test/px4_sih_sensor_noise.patch -whitespace
+# Linux runtime scripts must also stay executable in Windows-made archives.
+src/sangwon_AI/**/*.sh text eol=lf
+src/drone_uwb/deployment/*.sh text eol=lf
+# The C++ REPLAY approval is a hash of these exact bytes.
+src/sangwon_AI/contracts/runtime_replay/waypoint_snapshot.json text eol=lf
+.gitattributes text eol=lf
+# The isolated Linux build helper must remain executable by Bash on WSL.
+src/drone_uwb/tools/build_lidar_sitl.sh text eol=lf
+# Follow-up manifests refer to exact diagnostic-source and evidence bytes.
+src/drone_uwb/tools/*lidar_vertical* text eol=lf
+src/drone_uwb/tools/analyze_lidar_state_output.py text eol=lf
+docs/report/evidence/lidar_vertical_followup_20261012/** -text -whitespace
+# Frozen LiDAR2D height-outage experiment sources and recorded evidence.
+src/drone_uwb/tools/*lidar2d_height* text eol=lf
+# Preserve the exact runner bytes hashed by all completed SIH manifests.
+src/drone_uwb/tools/lidar2d_height_outage.py -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/report/evidence/lidar2d_height_outage_20261012/** -text -whitespace
+
+# Physical LiDAR firmware and patch checksums refer to original bytes.
+src/drone_uwb/firmware/*.px4 -text -diff
+src/drone_uwb/tools/px4_lidar2d*.patch -text -whitespace
+src/drone_uwb/tools/run_lidar*.sh text eol=lf
+
+# Preserve the approved ToF patch and release manifest bytes.
+src/drone_uwb/tools/px4_tfmini_plus.patch -text -whitespace
+docs/report/evidence/tof_operational_baseline_20261014.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+# Historical unified diff also contains meaningful context whitespace.
+src/drone_uwb/firmware/tfmini_plus_50hz/tfmini_plus_50hz.patch -whitespace

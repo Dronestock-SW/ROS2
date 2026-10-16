@@ -1,0 +1,11 @@
+{
+  "release_files_verified": 17,
+  "manual_streams_built_bytes_match": true,
+  "patch_and_manifest_index_bytes_match": true,
+  "changed_vs_remote_files": 38,
+  "links_checked": 28,
+  "largest_changed_file": "docs/glossary.md",
+  "largest_changed_bytes": 116669,
+  "new_unit_tests": "27 passed in 0.29s; no ROS/replay/flight execution",
+  "remote_before_push": "85c743d85ef08094800c675f0afab920cb89b4b3"
+}

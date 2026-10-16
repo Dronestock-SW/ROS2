@@ -1,0 +1,46 @@
+{
+  "title": "단일 태그 UWB 관측 경로의 설계와 검증",
+  "revision": 1,
+  "date": "2026-10-16",
+  "source_snapshot": "88f08a094122fd51e07276b887de3c8b9f62103e",
+  "firmware_implementation": "b61f1b238f43fbb53f5342df4d2c9cd7eabf3dc2",
+  "capture_tools": "d1325c9fcd33be1a984c56e36038c43f2030e568",
+  "files": {
+    "observation_flow.png": {
+      "bytes": 87012,
+      "sha256": "f301f026ba58ea96588d0957a080b778529854c76e085166014692daf63b154b"
+    },
+    "report.docx": {
+      "bytes": 140268,
+      "sha256": "f0c88d1e9aa3ec9297623582332ab19d791172f3553d0d6e50ec656d064df52b"
+    },
+    "report.pdf": {
+      "bytes": 2825271,
+      "sha256": "e0d9581a2b98d2739ef7a6b50e24e0ddf7a7de0ac8dde0556dc74ca75cbdb3fe"
+    }
+  },
+  "pages": 16,
+  "reviewed_original_paragraphs": 75,
+  "revised_original_paragraphs": 42,
+  "preserved_tables": 14,
+  "preserved_native_equations": 4,
+  "preserved_external_links": 7,
+  "skill": "korean-thesis-audit 1.2.0",
+  "sentence_splitter": "regex",
+  "kss_available": false,
+  "semantic_review": "one model read logic, nonmajor-reader and technical-reader perspectives",
+  "validation": {
+    "docx_paragraphs_in_pdf": true,
+    "table_cells_in_pdf": true,
+    "all_pages_visually_reviewed": true,
+    "replacement_characters": 0
+  },
+  "meaning_review": {
+    "checklist": "주제와 심사 대상, 제약에서 선택으로 이어지는 구조, 첫 용어 설명, 시험 조건과 분모, 수식 및 출처를 확인했다.",
+    "redundancy": "시각 불확실성 및 시험 환경 설명을 평가 절로 이동하고 CPU 중단의 반복 조건과 전원 차단 경계를 인접 문단에서 정리했다.",
+    "nonmajor_reader": "거리 측정과 송신 순서의 계층 차이, 실패 상태 보존의 이유, 수신과 저장의 책임을 연결해 읽었다.",
+    "technical_reader": "90,000 원본 회차와 89,965 네 거리 유효 회차, 35 부분 실패, 1,800초 분모, 40Hz 비교의 비대칭 저장 조건을 보존했다. CPU 중단은 물리 전원 차단과 구분하고, LoRa 완료는 지상국 수신으로 확대하지 않았다. RAM 및 큐 변경의 개별 인과 효과나 위치 정확도 및 비행 성과를 새로 주장하지 않았다."
+  },
+  "markdown_derivative": "본문을 GitHub에서 읽을 수 있도록 동일 문단과 표를 옮겼다. 네 수식은 원본 Word 수식에 대응하는 LaTeX로 표기했다. PDF와 Word가 쪽 배치 기준이다.",
+  "scope": "원본 수집과 기록 완전성. 위치 정확도, 물리 전원 복구, 실물 지상국 수신 및 비행 검증과 구분한다."
+}

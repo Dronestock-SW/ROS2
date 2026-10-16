@@ -20,6 +20,7 @@ PX4 상태·자세·위치·시각도 함께 저장한다.
 | `/uwb/btf_decision` | 계산 XY·높이 근거·후보·거부·처리 시간 |
 | `/uwb/btf_pose`, `btf_xyz` | 발행 좌표·시각·공분산 |
 | `/uwb/btf_status`, `bridge_status` | 결측·발행 조건·거부 상태 |
+| `/uwb/local_odometry_status` | FINAL ODOMETRY 조건·거절 수·마지막 발행 나이 |
 | MAVROS IMU·odom·ToF | 자세·가속도·추정 위치·속도·거리 |
 | MAVROS RC·state·extended_state | 채널·모드·ARM·착륙 상태 |
 | MAVROS TIMESYNC·estimator_status | 시계 상태·위치 유효성 |

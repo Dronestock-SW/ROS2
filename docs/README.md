@@ -3,6 +3,9 @@
 작업에 필요한 기준·절차·확인 기록을 찾는 색인이다.
 작업을 시작하거나 다른 채팅에 인계할 때 읽는다.
 
+UWB·FREEZE·복구·속도 설정 작업은 [필수 설계 검토](architecture/uwb_gap_recovery_20261015.md)부터 읽는다.
+[전체 하드웨어와 판본 근거](reference/uwb_gap_review_basis_20261015.md)를 함께 확인한다.
+
 ## 먼저 찾을 위치
 
 단계별 수정 위치는 저장소 안내에서 찾는다.
@@ -10,6 +13,59 @@
 
 | 찾는 내용 | 위치 |
 |---|---|
+| 제약조건·설계 선택·병목 개선·평가를 잇는 심사 보고서 | [개정 보고서와 Word·PDF](report/uwb_design_review_20261016.md) |
+| 전체 통합본과 main의 충돌 해소·검증 범위 | [10월 16일 병합 검증](report/main_integration_20261016.md) |
+| 새 단일 태그 기록·실물 시험·백업·남은 검증 | [2026-10-15 실행 기록](report/esp32_single_tag_execution_20261015.md) |
+| 단일 태그 전체 기록·호환 조합·원본 복구 | [릴리스·복구 절차](runbooks/single_tag_release_and_recovery_20261015.md) |
+| schema 2 RAW·왕복 시각 교환·무선 v2 계약 | [단일 태그 통신 계약](reference/single_tag_protocol_v2.md) |
+| 멀티태그 제거·RAW 50Hz 목표·독립 LoRa 1Hz | [ESP32 재설계 기준](architecture/esp32_raw_rebuild_20261015.md) |
+| 기존 앵커 유지 조건의 40Hz 조사·RAW 39.98Hz 실측 | [이전 Tag B 주기 조사](report/esp32_tag_b_rate_audit_20261015.md) |
+| 태그·앵커·companion의 단일 태그 재작성 계획 | [최신 계획 프롬프트](runbooks/esp32_tag_b_rewrite_plan_prompt_20261015.md) |
+| 중단 상태·다른 PC 재개·실기기 재설정·보류한 LoRa 시험 안내 | [최신 실행 프롬프트](runbooks/esp32_tag_b_rebuild_execution_prompt_20261015.md) |
+| 실제 FC 1.0m/s 상한·flow 융합·운영 소스·미측정 항목 | [복구 개선 1단계 대조](reference/uwb_recovery_baseline_20261015.md) |
+| FC 입력 보강부터 감속·재출발까지 수정 위치와 완료 조건 | [복구 구현 단계](runbooks/uwb_recovery_stages_20261015.md) |
+| UWB 공백·감속·재출발·설정 변경 전 필수 참조 | [구조·설정 개선안](architecture/uwb_gap_recovery_20261015.md) |
+| 전체 하드웨어·운영 판본·Claude 3차 검토 | [상세 근거](reference/uwb_gap_review_basis_20261015.md) |
+| GC 직접 계측 두 사건과 발행 영향 | [GC 원인 확인 범위](report/btf_gc_latency_20261015.md) |
+| A-cache 실제 운영 조합·기동·센서 수신·남은 XY 확인 | [운영 적용 기록](report/btf_acache_deployment_20261015.md) |
+| 앵커 변경 뒤 캐시 재생성·슬롯 복귀 | [A-cache 재시작 절차](runbooks/btf_acache_restart.md) |
+| A-cache 후 남은 지연 7건·정상 대조·출력 공백 | [기존 기록 지연 분석](report/btf_acache_latency_20261015.md) |
+| A-cache 계약·재시작·국소 효과·기준별 검증 | [순간 XY 기하 캐시](architecture/btf_acache.md) |
+| 14일 20:36 수동비행 원본·ULog·전송 검증 | [수동 호버링 로그 확보](report/manual_hover_capture_20261014.md) |
+| C++ B_TF 부분 자료 ON/OFF 실측·지연 경량화·남은 공백 | [기록 ON/OFF 비교](report/btf_recording_ab_20261014.md) |
+| 최신 상원 통합·native B_TF/LiDAR 보존·ToF 충돌 해결 | [ToF 통합 병합 기록](report/tof_integration_merge_20261014.md) |
+| ToF 운영 기준본 r1·해시 고정·ON/OFF 원본 부재·시험 생략 | [운영 기준본 확정 기록](report/tof_operational_baseline_20261014.md) |
+| ToF 변경 전후·PX4/ROS 전체 빌드·크기·오류 처리 | [ToF 전체 빌드 기록](report/tof_full_build_20261014.md) |
+| TFmini Plus 100/50/50Hz·100ms 상한·시간차 오차40ms 목표 | [ToF 수집·지연 기준](architecture/tof_100_50_50.md) |
+| PX4 소스 패치·50Hz 전달 요청·로컬 검사·실기 보류 | [ToF 코드 수정 기록](report/tof_100_50_50_20261014.md) |
+| 외부 시험기 합성 확인·소스 고정·ABBA 진행 결과 | [B_TF 시험기 확인](report/btf_replay_harness_20261014.md) |
+| 외부 시험기·지연 정의·A–B–B–A 실행 순서 | [B_TF 독립 재생 절차](runbooks/btf_isolated_replay_20261014.md) |
+| 독립 재생 전 RAW·판정·pose 대응과 시각 경로 정정 | [B_TF 입력·출력 감사](report/btf_replay_identity_20261014.md) |
+| IMU 큐·전용 실행기·내부 기록·13일 원본 재생 | [B_TF 수신 수정 검증](report/btf_sensor_timing_20261014.md) |
+| TFmini Plus 실제 지원 주기·50Hz·10Hz·단절별 설계 | [ToF 주기 시나리오](architecture/tof_rate_scenarios_20261014.md) |
+| 같은 비행 RAW·B_TF 27회 거부·브리지 대기·PX4 리셋 | [14일 자동 이륙 공백 분석](report/takeoff_gap_root_cause_20261014.md) |
+| 보고 지연 LAND 제거·FC 기준 수행·연속 기록·중복 검사 정리 | [13일 실행·기록 보완](report/fc_owned_runtime_20261013.md) |
+| 시작 검사 35개·시간 정책 22종·자동 LAND·EV 시각 보정 구분 | [13일 실행 제한 검토](report/constraint_audit_20261013.md) |
+| 상원 작업 통합·전달 관측 제한 0.7초·FC 설정 구분 | [13일 통합 기록](report/sangwon_integration_20261013.md) |
+| 새 통합 브랜치 받기·실행 경로·FC 시각 파라미터 조회 | [통합 재개 절차](runbooks/sangwon_integration.md) |
+| 다른 채팅의 2D LiDAR 구현·높이 센서 실제 공백·45조합 검증 | [2D 높이 공백 결과](report/lidar2d_height_outage_20261012.md) |
+| 고정한 2D runtime·격리 SIH 센서 중단·복구 재실행 | [2D 공백 재현 절차](runbooks/lidar2d_height_outage_20261012.md) |
+| C++ 실행 단계·FC 송신 분리·Python 센서 유지 | [C++ 실행기 확인](report/cpp_executor_ground_20261012.md) |
+| 새 C++ 실행기의 빌드·웹 연결·격리 시험 | [지상 실행 절차](runbooks/cpp_executor_ground.md) |
+| LiDAR 개선·수직 위험 조사를 다른 세션에서 계속 | [다음 세션 프롬프트](runbooks/lidar_next_session_20261012.md) |
+| 기준 스캔·IMU 합성 평가·같은 PX4 진단·vz 리셋 위험 | [10월 12일 개선 후보 결과](report/lidar_keyframe_sitl_20261012.md) |
+| 원본 해시 replay·격리 SIH·실제 EKF probe 재실행 | [검증 재실행 절차](runbooks/lidar_keyframe_validation_20261012.md) |
+| 수평 LiDAR 지상 1,781스캔·장착 10cm 추정·정합 한계 | [10월 12일 분석](report/lidar_ground_analysis_20261012.md) |
+| LiDAR 후속 작업 프롬프트·같은 PX4 커밋의 SITL 14개 시험 | [작업 인계 절차](runbooks/lidar_uwb_sitl_handoff_20261012.md) |
+| 상단 LiDAR의 SDK 점별 시각·정지 대조 | [12일 지상 확인](report/lidar_ground_audit_20261012.md) |
+| LiDAR X·Y·Z·yaw 실측과 활성화 조건 | [지상 대조 절차](runbooks/lidar_ground_qualification.md) |
+| 실행 8 OFFBOARD의 자세 요구·추종·추정 변화 | [12일 FC 자세 분석](report/run8_offboard_attitude_20261012.md) |
+| 테스트 웹의 실제 C++ 판단·단일 실행기 연결 | [12일 C++ 통합](report/cpp_field_mission_integration_20261012.md) |
+| 상단 LiDAR 상대 이동·제한된 UWB 공백 대응 | [12일 LiDAR 연결](report/lidar_gap_support_20261012.md) |
+| 모든 브랜치 대조·관측 계약·새 FINAL 검증 | [12일 FINAL 정리](report/final_cleanup_20261012.md) |
+| FINAL 실행 8·추정 변화·관측 공백·영상·속도 검토 | [12일 로그·영상 분석](report/hover_run8_analysis_20261012.md) |
+| UWB 공백·계산 시간·이력 격리 비교·수집기 보완 | [12일 처리 경로 분석](report/uwb_gap_processing_20261012.md) |
+| 새 UWB 송신기·수동 ARM·START 연결 | [웹 명령 연결 기록](report/web_operator_commands_20261011.md) |
 | 점프 OFF 이후 실행 복구·융합·전송 공백·시작점 정정 | [18:27 재검증 기록](report/uwb_sender_dependency_recovery_20261011.md) |
 | 사용자 요청의 전달기 점프 차단 OFF 시험 | [10월11일 적용·융합 확인](report/uwb_sender_jump_off_20261011.md) |
 | QR 리더기 우선·카메라 폴백 | [QR 재고 판독 파이프라인](architecture/qr_inventory_pipeline.md) |
@@ -218,3 +274,17 @@ Windows에서는 심볼릭 링크를 지원하는 WSL 체크아웃을 쓴다.
 - [UWB·ToF·IMU 높인 상태 정지 실험](report/uwb_raised_20261010.md)
 
 - [B_TF 이력 격리와 오차 판정 검사](report/btf_history_audit_20261010.md)
+
+## 실측 LiDAR 공통 입력 (2026-10-12)
+
+- [구조](architecture/lidar_physical_velocity.md)
+- [배포 절차](runbooks/lidar_physical_velocity.md)
+- [측정 및 검증 기록](report/lidar_physical_20261012.md)
+
+- [13일 Jetson 현장 준비](report/jetson_field_preparation_20261013.md)
+- [13일 저녁 웹 비행 세션](runbooks/evening_web_flight_20261013.md)
+## Companion과 PX4 API
+
+- [로직 분석·수정 지점 API 명세](reference/companion_px4_api.md): 입력 → 계산 → 반환값 → 다음 소비자, 목적별 코드·파라미터 수정 위치.
+- [wire 상세 사전](reference/companion_px4_wire_reference.md): 필드·좌표·상태 코드의 최초 조사 기록.
+- [2026-10-13 실물 연결 확인](report/companion_px4_audit_20261013.md): 설치·융합 상태와 조회 한계.

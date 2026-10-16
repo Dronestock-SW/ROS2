@@ -141,7 +141,7 @@ def test_pilot_takeover_blocks_land_and_return_without_new_receipts():
 @pytest.mark.parametrize('action',['land','return_to_home'])
 def test_control_requires_current_run_and_connection_and_retries_do_not_reissue(action):
     p=LocalPlatform();ready(p);a=p.command('start',ROUTE)
-    p.telemetry.update(flight_state='MOVING')
+    p.telemetry.update(flight_state='MOVING', fc_armed=True)
     with pytest.raises(ValueError):p.command(action)
     p.telemetry.update({k:a[k] for k in ('mission_db_id','mission_code','route_revision')},fc_connected=False)
     with pytest.raises(ValueError):p.command(action)

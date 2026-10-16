@@ -1,0 +1,38 @@
+{
+  "http_get_max_s": 0.02513062300204183,
+  "http_get_samples": 20,
+  "storage": {
+    "database": {
+      "pending": 0,
+      "last_commit_s": 0.0,
+      "max_commit_s": 0.0,
+      "commits": 0
+    },
+    "writer": {
+      "pending": 0,
+      "running": null,
+      "running_age_s": 0.0,
+      "last_elapsed_s": 0.00011472199912532233,
+      "max_elapsed_s": 0.001019669998640893,
+      "completed": 238,
+      "error": null
+    }
+  },
+  "physical_flight": false,
+  "output_enabled": false,
+  "web_status_received": true,
+  "can_start": false,
+  "can_takeoff": false,
+  "start_mode": "takeoff_hold",
+  "takeoff_backend": "local_position",
+  "received_setpoints": 0,
+  "fc_state": {
+    "armed": false,
+    "connected": true,
+    "mode": "AUTO.LOITER",
+    "received": 19933.08459238
+  },
+  "commands_record_bytes": 0,
+  "private_mission_store_untouched": true,
+  "native_binary_sha256": "4e1d77b517fb06b66d7688301a9e53891c29d8181ea89851cf2d231a7f843d4c"
+}

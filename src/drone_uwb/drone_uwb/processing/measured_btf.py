@@ -1,4 +1,4 @@
-"""Measured RAW/ToF/attitude adapter for the frozen B_TF algorithm.
+"""Measured RAW/ToF/attitude adapter with B_TF observation integrity checks.
 
 Observation-only: no FC positions, simulator truth, control or MAVLink writes.
 Unknown mounting geometry blocks ToF use; missing height is never fabricated.
@@ -15,8 +15,8 @@ from drone_uwb.processing.gazebo_geometry import rotation_world_body
 from drone_uwb.processing.experiments.h80_b import H80Window, BSettings
 from drone_uwb.processing.experiments.tof_subset import ToFTrackedSubsetCandidate
 from drone_uwb.acquisition.tdma import TdmaGate
+from drone_uwb.acquisition.single_tag import MappedSingleTagInput
 from drone_uwb.contracts.protocol import InvalidSample
-from drone_uwb.processing.solvers.observations import solve_xy
 from drone_uwb.processing.observation_guard import ObservationGuard
 
 
@@ -30,7 +30,7 @@ def height_independent_b4(result, *, enabled=True):
     b = result.get('models', {}).get('B', {})
     xy = result.get('xy_m')
     return (enabled is True and result.get('ok') is True
-        and result.get('models', {}).get('B_TF', {}).get('source') == 'unchanged_B4'
+        and result.get('models', {}).get('B_TF', {}).get('source') in ('unchanged_B4', 'fresh_B4_recovery')
         and b.get('ok') is True and b.get('fresh_observation_count') == 4
         and b.get('newest_sample_us') == result.get('time_us')
         and type(result.get('time_us')) is int
@@ -43,12 +43,12 @@ def ground_xy_without_height(result, *, enabled, connected, landed, state_age_s,
     """Allow the already accepted four-anchor XY solution on a fresh ground state.
 
     No height is inserted into B_TF. The three-anchor ToF selection remains
-    unavailable without a measurement; only unchanged_B4 can pass this gate.
+    unavailable without a measurement; only qualified four-anchor B4 passes.
     """
     return (enabled is True and connected is True and type(landed) is int and landed == 1
             and 0 <= state_age_s <= 1.5 and 0 <= landed_age_s <= 1.5
             and result.get('ok') is True and result.get('xyz_m') is None
-            and result.get('models', {}).get('B_TF', {}).get('source') == 'unchanged_B4')
+            and result.get('models', {}).get('B_TF', {}).get('source') in ('unchanged_B4', 'fresh_B4_recovery'))
 
 
 class MeasuredHeight:
@@ -57,6 +57,17 @@ class MeasuredHeight:
         self.samples = {'tof': deque(maxlen=1000), 'imu': deque(maxlen=2000)}
         self.ground_reference = None
 
+    def snapshot(self):
+        """Copy buffer membership under the caller's ingress lock.
+
+        Samples are append-only dictionaries. The solver owns this snapshot;
+        new callbacks, eviction and clock resets cannot change a running fit.
+        """
+        result = MeasuredHeight(self.config)
+        result.samples = {k: deque(v, maxlen=v.maxlen) for k, v in self.samples.items()}
+        result.ground_reference = self.ground_reference
+        return result
+
     def add(self, kind, sample):
         target = self.samples[kind]
         if type(sample['stamp_ns']) is not int or sample['stamp_ns'] <= 0:
@@ -64,8 +75,8 @@ class MeasuredHeight:
         if target and sample['stamp_ns'] <= target[-1]['stamp_ns']:
             # A duplicate carries no new information. It must not erase all
             # earlier heights/attitudes used by asynchronous anchor samples.
-            if sample['stamp_ns'] < target[-1]['stamp_ns']:
-                target.clear()
+            # A delayed packet is not evidence of an FC reboot. The adapter
+            # clears both buffers only on an explicit clock/session change.
             return False
         target.append(dict(sample))
         return True
@@ -94,14 +105,26 @@ class MeasuredHeight:
             return None, {'reason': 'tof_unavailable'}
         meta = {'tof_stamp_ns': tof['stamp_ns'], 'range_m': tof.get('range_m'),
                 'tof_age_s': (stamp_ns-tof['stamp_ns'])/1e9}
+        meta.update(tof_receive_id=tof.get('receive_id'),
+                    tof_received_monotonic_ns=tof.get('received_monotonic_ns'))
         if meta['tof_age_s'] > c['max_tof_age_s']:
             return None, dict(meta, reason='tof_stale')
         if not tof['valid']:
             return None, dict(meta, reason='tof_invalid')
-        imu = next((r for r in reversed(self.samples['imu']) if r['stamp_ns'] <= tof['stamp_ns']), None)
+        # Both neighbours are already received measurements. The nearest one
+        # avoids rejecting a 20 ms match merely because it follows the range.
+        imu = None
+        for candidate in reversed(self.samples['imu']):
+            if imu is None or abs(candidate['stamp_ns']-tof['stamp_ns']) <= abs(imu['stamp_ns']-tof['stamp_ns']):
+                imu = candidate
+            if candidate['stamp_ns'] <= tof['stamp_ns']:
+                break
         if imu is None:
             return None, dict(meta, reason='attitude_unavailable')
-        meta.update(imu_stamp_ns=imu['stamp_ns'], attitude_skew_s=(tof['stamp_ns']-imu['stamp_ns'])/1e9)
+        meta.update(imu_stamp_ns=imu['stamp_ns'], attitude_skew_s=abs(tof['stamp_ns']-imu['stamp_ns'])/1e9,
+                    attitude_signed_skew_s=(tof['stamp_ns']-imu['stamp_ns'])/1e9)
+        meta.update(imu_receive_id=imu.get('receive_id'),
+                    imu_received_monotonic_ns=imu.get('received_monotonic_ns'))
         if meta['attitude_skew_s'] > c['max_attitude_skew_s']:
             return None, dict(meta, reason='attitude_stale')
         if not imu['valid']:
@@ -134,15 +157,27 @@ class MeasuredBtf:
         self.config = config
         self.input_settings = PreimuSettings(tag_id=config['tag_id'])
         self.validator = InputValidator(self.input_settings)
-        self.tdma = TdmaGate(config['tag_id'], config.get('tdma_mode', 'auto'))
+        self.tdma = TdmaGate(config['tag_id'], config.get('tdma_mode', 'auto'),
+            allow_partial=config.get('allow_partial_tdma', config.get('numerical_backend') == 'cpp'))
         self.clock = ClockMap(self.input_settings)
+        self.single_input = MappedSingleTagInput()
         self.height = MeasuredHeight(config['height'])
         self.last_host_ns = None
         self.last_ros_offset = None
         self.last_output_stamp_ns = None
         self.raw_guard = ObservationGuard(motion_recovery=True)
         self.observation_session = 0
+        self.backend = config.get('numerical_backend', 'python')
+        if self.backend not in ('python', 'cpp'):
+            raise ValueError('unknown_btf_numerical_backend')
+        self.native = None
+        if self.backend == 'cpp':
+            from drone_uwb.processing.native_btf import NativeBtf
+            self.native = NativeBtf(config)
         self.reset_models()
+
+        from drone_uwb.processing.cached_xy import CachedXY
+        self.instant_xy_cache = CachedXY(config['anchors_xyz_m'], (0, 1, 2, 3))
 
     def start_ground_session(self, *, connected, armed, landed, state_age_s,
                              landed_age_s, stationary, velocity_age_s):
@@ -158,14 +193,27 @@ class MeasuredBtf:
             return False, 'fresh_disarmed_stationary_ground_required'
         self.reset_models()
         self.raw_guard = ObservationGuard(motion_recovery=True)
+        if self.native is not None:
+            self.native.reset(preserve_height_conflict=False)
+        else:
+            self.candidate.b4_integrity.blocked = False
         self.observation_session += 1
         return True, 'ground_observation_history_reset'
 
     def reset_models(self, *, preserve_motion=False):
+        if self.native is not None:
+            self.native.reset(preserve_motion=preserve_motion)
+            if not preserve_motion and self.raw_guard.motion is not None:
+                self.raw_guard.motion.clear()
+            self.last_output_stamp_ns = None
+            return
         c = self.config
         old_candidate = getattr(self, 'candidate', None)
         self.window = H80Window(c['anchors_xyz_m'], c['bias_m'], BSettings(**c['B']))
         self.candidate = ToFTrackedSubsetCandidate(c, **c['tof_subset'])
+        if old_candidate is not None:
+            # Queue/clock/ToF gaps must not erase evidence of a height conflict.
+            self.candidate.b4_integrity.blocked = old_candidate.b4_integrity.blocked
         if preserve_motion and old_candidate is not None:
             # Missing ranges invalidate the fitting window, not the last
             # accepted track. Clock/session resets must still discard both.
@@ -197,8 +245,9 @@ class MeasuredBtf:
     def process(self, event):
         out = {'schema': 1, 'source': 'measured_uwb_btf', 'truth_used': False,
                'external_output_allowed': False, 'flight_valid': False,
-               'timestamp_calibrated': False, 'ok': False}
+               'timestamp_calibrated': False, 'jump_guard_enabled': False, 'ok': False}
         out['observation_session'] = self.observation_session
+        out['numerical_backend'] = self.native.identity if self.native is not None else {'backend': 'python'}
         try:
             msg = event['message']
             mono, ros = event['host_received_monotonic_ns'], event['host_received_ros_ns']
@@ -213,60 +262,85 @@ class MeasuredBtf:
                 self.last_host_ns, self.last_ros_offset = mono, offset
                 raise InvalidInput('host_clock_jump')
             self.last_host_ns, self.last_ros_offset = mono, offset
-            dispatch = self.tdma.ingest(msg, mono, ros)
-            if dispatch.reset_history:
-                self.validator.reset()
-                self.clock.reset()
-                self.reset_models()
-                self.raw_guard = ObservationGuard(motion_recovery=True)
-            if dispatch.clear_status:
-                self.validator.disconnect()
-            if dispatch.message is None:
-                return dict(out, reason=dispatch.reason)
-            msg, mono, ros = dispatch.message, dispatch.mono_ns, dispatch.ros_ns
-            offset = ros-mono
-            out['tdma_verified'] = dispatch.tdma is not None
-            if dispatch.tdma is not None:
-                out['tdma'] = dispatch.tdma
-            self.validator.check_common(msg)
-            if msg.get('type') == 'uwb_raw_status':
-                if msg.get('event') == 'boot':
-                    self.validator.disconnect()
+            single = msg.get('schema') == 2
+            if single:
+                if msg.get('type') not in ('uwb_raw_status', 'uwb_raw_cycle'):
+                    return dict(out, reason='sideband_single_tag')
+                cycle, changed = self.single_input.accept(event)
+                if changed:
+                    self.reset_models()
+                    self.raw_guard = ObservationGuard(motion_recovery=True)
+                if cycle is None:
+                    return dict(out, reason='status', tag_layout_id=msg.get('anchor_layout_id'))
+                meta = event['single_tag']
+                out.update(source_identity=[msg['boot_id'], msg['session']],
+                           host_session=meta['host_session'], protocol='single_tag_schema_2',
+                           clock=meta['clock'], tdma_verified=False)
+                mapped = {t: n for t, n in zip(cycle.sample_us, meta['sample_host_monotonic_ns']) if t is not None}
+                mapped[cycle.end_us] = meta['cycle_end_host_monotonic_ns']
+                host_ns = mapped.__getitem__  # Already converted by the sole serial owner.
+            else:
+                dispatch = self.tdma.ingest(msg, mono, ros)
+                if dispatch.reset_history:
+                    self.validator.reset()
                     self.clock.reset()
                     self.reset_models()
                     self.raw_guard = ObservationGuard(motion_recovery=True)
-                self.validator.on_status(msg, mono)
-                if msg.get('range_bias_applied') is True:
-                    raise InvalidInput('already_bias_corrected_input', reset=True)
-                return dict(out, reason='status', tag_layout_id=msg.get('anchor_layout_id'))
-            if msg.get('type') != 'uwb_raw_cycle':
-                raise InvalidInput('unsupported_type')
-            cycle = self.validator.on_cycle(msg, mono, ros)
+                if dispatch.clear_status:
+                    self.validator.disconnect()
+                if dispatch.message is None:
+                    return dict(out, reason=dispatch.reason, input_diagnostics=dispatch.diagnostics)
+                msg, mono, ros = dispatch.message, dispatch.mono_ns, dispatch.ros_ns
+                offset = ros-mono
+                out['tdma_verified'] = dispatch.tdma is not None
+                if dispatch.tdma is not None:
+                    out['tdma'] = dispatch.tdma
+                self.validator.check_common(msg)
+                if msg.get('type') == 'uwb_raw_status':
+                    if msg.get('event') == 'boot':
+                        self.validator.disconnect()
+                        self.clock.reset()
+                        self.reset_models()
+                        self.raw_guard = ObservationGuard(motion_recovery=True)
+                    self.validator.on_status(msg, mono)
+                    if msg.get('range_bias_applied') is True:
+                        raise InvalidInput('already_bias_corrected_input', reset=True)
+                    return dict(out, reason='status', tag_layout_id=msg.get('anchor_layout_id'))
+                if msg.get('type') != 'uwb_raw_cycle':
+                    raise InvalidInput('unsupported_type')
+                cycle = self.validator.on_cycle(msg, mono, ros)
             out.update(seq=cycle.seq, seq_gap=cycle.seq_gap, source_cycle_end_us=cycle.end_us,
                        sample_time_us=cycle.sample_us, raw_slant_m=msg['raw_slant_m'])
-            if len(cycle.indices) != 4:
-                self.reset_models(preserve_motion=True)
-                raise InvalidInput('four_valid_ranges_required')
-            self.clock.update(cycle.end_us, mono)
-            out['clock'] = self.clock.diagnostics()
-            if not self.clock.ready:
-                self.reset_models()
-                return dict(out, reason='clock_unsynced')
-            queue_age = (mono/1e9-self.clock.host_s(cycle.end_us))
+            partial = len(cycle.indices) != 4
+            if partial and (len(cycle.indices) != 3 or self.native is None):
+                # Missing ranges are not a clock/session reset. Do not erase
+                # still-fresh full-frame history while waiting for measurements.
+                raise InvalidInput('three_measured_ranges_required' if self.native else 'four_valid_ranges_required')
+            if not single:
+                self.clock.update(cycle.end_us, mono)
+                out['clock'] = self.clock.diagnostics()
+                if not self.clock.ready:
+                    self.reset_models()
+                    return dict(out, reason='clock_unsynced')
+                queue_age = (mono/1e9-self.clock.host_s(cycle.end_us))
+                host_ns = lambda value: round(self.clock.host_s(value)*1e9)
+            else:
+                queue_age = (mono-host_ns(cycle.end_us))/1e9
             out['queue_age_s'] = queue_age
             if not 0 <= queue_age <= self.input_settings.max_queue_s:
                 self.reset_models()
                 return dict(out, reason='queued_sample')
             # Fit at the newest actual anchor measurement, retaining all four times.
-            stamp = max(cycle.sample_us)
+            stamp = max(cycle.sample_us[i] for i in cycle.indices)
             cycle = replace(cycle, end_us=stamp)
-            stamp_ns = round(self.clock.host_s(stamp)*1e9)+offset
+            stamp_ns = host_ns(stamp)+offset
             if stamp_ns > ros or (self.last_output_stamp_ns is not None and stamp_ns <= self.last_output_stamp_ns):
                 self.reset_models()
                 return dict(out, reason='invalid_or_nonincreasing_stamp')
             heights, selections = [], []
-            for sample in cycle.sample_us:
-                height, selection = self.height.at(round(self.clock.host_s(sample)*1e9)+offset)
+            for i, sample in enumerate(cycle.sample_us):
+                height, selection = (self.height.at(host_ns(sample)+offset)
+                    if i in cycle.indices else (None, dict(reason='anchor_range_missing')))
                 heights.append(height)
                 selections.append(selection)
             latest_index = cycle.sample_us.index(stamp)
@@ -274,6 +348,18 @@ class MeasuredBtf:
             height_source = ('ground_antenna_reference' if any(s.get('estimated') for s in selections)
                              else 'measured_tof_imu') if height is not None else None
             corrected = cycle.raw-np.asarray(self.config['bias_m'])
+            if partial:
+                b, btf = self.native.process(cycle, heights, height_source)
+                self.last_output_stamp_ns = stamp_ns
+                ready = all(heights[i] is not None for i in cycle.indices)
+                return dict(out, ok=btf['ok'], reason=btf['reason'], xy_m=btf['xy_m'],
+                    xyz_m=[*btf['xy_m'], height] if btf['ok'] and ready else None,
+                    height_source=height_source, height_m=height, height_ready=ready,
+                    height_selection=selections, sample_height_m=heights,
+                    stamp_ns=stamp_ns, time_us=stamp, valid_mask=cycle.mask,
+                    models={'B':b, 'B_TF':btf}, receive_age_s=(ros-stamp_ns)/1e9,
+                    queue_age_s=queue_age, layout_id=self.config['layout_id'],
+                    position_reference='uwb_antenna')
             # Keep the inputs even when the raw jump guard returns early.
             # Without these, a rejected cycle cannot be audited against ToF.
             out.update(stamp_ns=stamp_ns, time_us=stamp,
@@ -283,7 +369,7 @@ class MeasuredBtf:
             # Detect coherent four-link steps before the 0.8s window can smear
             # them into a plausible slow trajectory. NLOS-inconsistent cycles
             # still go to the existing ToF/subset integrity calculation.
-            raw_xy, raw_residual = solve_xy(np.asarray(self.config['anchors_xyz_m']), corrected, list(range(4)))
+            raw_xy, raw_residual = self.instant_xy_cache.solve(corrected)
             out['raw_fit_rms_m'] = float(raw_residual)
             # Historical raw_fit_rms_m is a normalized maximum range-difference
             # residual, NOT a physical range RMS. Preserve the key for readers.
@@ -297,26 +383,26 @@ class MeasuredBtf:
             if raw_residual < .06:
                 if self.raw_guard.prior_stamp is not None:
                     age=(stamp_ns-self.raw_guard.prior_stamp)/1e9
-                    out['jump_check'] = dict(prior_age_s=age,
+                    out['jump_check'] = dict(enforced=False, prior_age_s=age,
                         step_m=math.dist(raw_xy,self.raw_guard.prior_xy),
                         limit_m=self.raw_guard.config.jump_margin_m+self.raw_guard.config.max_speed_m_s
                             *min(age,self.raw_guard.config.max_gap_s))
                 # Motion recovery requires physical range consistency as well
                 # as the four-link pair residual. Normal B4 XY stays height-free.
-                raw_reason = self.raw_guard.check(tuple(map(float, raw_xy)), stamp_ns,
+                self.raw_guard.check(tuple(map(float, raw_xy)), stamp_ns,
                     motion_eligible=(height_source in ('measured_tof_imu','gazebo_tof_imu')
                         and out.get('raw_height_rms_m', float('inf')) < .06))
                 if self.raw_guard.motion_evidence is not None:
                     out['raw_motion_reacquisition'] = self.raw_guard.motion_evidence
-                if raw_reason == 'observation_jump_quarantined':
-                    self.window.reset('coherent_raw_step')
-                    return dict(out, reason=raw_reason, stamp_ns=stamp_ns, raw_xy_m=raw_xy.tolist())
-            b = self.window.process(cycle, cycle.seq)
+            b = self.window.process(cycle, cycle.seq) if self.native is None else None
             candidate_input = {'time_us': stamp, 'sample_time_us': cycle.sample_us,
                  'cal_slant_m': corrected.tolist(), 'height_m': height,
                  'sample_height_m': heights, 'height_source': height_source,
                  'models': {'B': b}}
-            btf = self.candidate.process(candidate_input)
+            if self.native is not None:
+                b, btf = self.native.process(cycle, heights, height_source)
+            else:
+                btf = self.candidate.process(candidate_input)
             self.last_output_stamp_ns = stamp_ns
             return dict(out, ok=btf['ok'], reason=btf['reason'], xy_m=btf['xy_m'],
                 xyz_m=([*btf['xy_m'], height] if btf['ok'] and height is not None
@@ -324,7 +410,7 @@ class MeasuredBtf:
                 height_source=height_source,
                 stamp_ns=stamp_ns, time_us=stamp, cal_slant_m=corrected.tolist(),
                 height_m=height, height_selection=selections, height_ready=all(h is not None for h in heights),
-                models={'B': b, 'B_TF': btf}, clock_alpha=self.clock.alpha,
+                models={'B': b, 'B_TF': btf}, clock_alpha=meta['clock']['alpha'] if single else self.clock.alpha,
                 receive_age_s=(ros-stamp_ns)/1e9, queue_age_s=queue_age,
                 report_span_s=(max(cycle.sample_us)-min(cycle.sample_us))/1e6,
                 layout_id=self.config['layout_id'], position_reference='uwb_antenna')
@@ -334,6 +420,8 @@ class MeasuredBtf:
                 self.reset_models()
             return dict(out, reason=str(exc))
         except InvalidInput as exc:
+            if event.get('message', {}).get('schema') == 2 and 'clock' in exc.reason:
+                self.reset_models()
             if exc.reset:
                 self.reset()
             return dict(out, reason=exc.reason)

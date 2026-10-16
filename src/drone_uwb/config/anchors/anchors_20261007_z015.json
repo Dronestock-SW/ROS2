@@ -2,7 +2,7 @@
   "layout_id": "warehouse-rectangle-6p3x4p6-z0p15-20261007",
   "coordinate_frame": "uwb_map",
   "units": "m",
-  "source": "Temporary antenna stability test requested 2026-10-07: 6.3 x 4.6 m, anchor antenna centres 0.15 m above the common floor. Restore 2.2 m after this test. Physical layout not surveyed.",
+  "source": "Current Tag B layout reconfirmed by the operator on 2026-10-15: 6.3 x 4.6 m, all anchor antenna centres 0.15 m above the common floor. Also the baseline for the new Tag B single-tag firmware design. No automatic return to 2.2 m. Independent survey not completed.",
   "independently_verified": false,
   "anchor_order": [
     "A1",

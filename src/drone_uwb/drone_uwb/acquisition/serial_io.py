@@ -7,8 +7,8 @@ import termios
 
 
 class SerialInput:
-    def __init__(self, path, baud=921600):
-        self.fd = os.open(path, os.O_RDONLY | os.O_NOCTTY | os.O_NONBLOCK)
+    def __init__(self, path, baud=921600, *, writable=False):
+        self.fd = os.open(path, (os.O_RDWR if writable else os.O_RDONLY) | os.O_NOCTTY | os.O_NONBLOCK)
         self.original = None
         try:
             fcntl.flock(self.fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
@@ -42,3 +42,10 @@ class SerialInput:
             finally:
                 os.close(self.fd)
                 self.fd = None
+
+    def write(self, data):
+        """Nonblocking single-owner output; the caller retains an unfinished line."""
+        try:
+            return os.write(self.fd, data)
+        except BlockingIOError:
+            return 0

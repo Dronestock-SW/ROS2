@@ -44,7 +44,10 @@ class Rig:
         self.temp=tempfile.TemporaryDirectory(prefix="sangwon-it-")
         self.root=Path(self.temp.name); (self.root/"config").mkdir()
         self.procs=[]; self.handles=[]
-        self.env=dict(os.environ,PYTHONPATH=str(ROOT/"python"),PYTHONDONTWRITEBYTECODE="1")
+        # Keep isolated third-party dependencies available to every child.
+        inherited = os.environ.get("PYTHONPATH", "")
+        self.env=dict(os.environ,PYTHONPATH=str(ROOT/"python")+(os.pathsep+inherited if inherited else ""),
+                      PYTHONDONTWRITEBYTECODE="1")
         self.snapshot=snapshot if snapshot is not None else (ROOT/"contracts/runtime_replay/waypoint_snapshot.json").read_bytes()
         self.snapshot_ref=dict(snapshot_id=decode(self.snapshot)["snapshot_id"],sha256=hashlib.sha256(self.snapshot).hexdigest(),byte_length=len(self.snapshot))
         self.config=decode((ROOT/"config/companion.replay.json").read_bytes())
@@ -114,6 +117,9 @@ class Rig:
 
     def __enter__(self):return self
     def __exit__(self,kind,value,tb):
+        if kind:
+            status = self.root/".runtime/c/core_status.json"
+            if status.exists(): print("last_core_status", status.read_text()[-16000:])
         for proc in reversed(self.procs):stop(proc)
         for handle in self.handles:handle.close()
         if kind:

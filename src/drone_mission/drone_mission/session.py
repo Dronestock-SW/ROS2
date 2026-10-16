@@ -9,6 +9,7 @@ from drone_demo.mission import MissionConfig, MissionMonitor
 from drone_uwb.integration.sitl.sitl_target_contract import ned_to_global
 from drone_uwb.integration.planar import map_xy_to_enu
 from .contracts import finite, parse_request
+from .observation_policy import observation_status
 
 
 def native_estimator_valid(msg):
@@ -22,13 +23,17 @@ def native_estimator_valid(msg):
 
 @dataclass
 class Snapshot:
+    lidar_scan: object = None
+    lidar_input_error: str = ''
     yaw_deg: object = None
     battery: object = None
     battery_age_s: float = math.inf
     takeoff_action: object = None
+    native_takeoff_speeds: tuple = ()
     mag_type: object = None
     rc_required: bool = True
     rc_valid: bool = False
+    rc_sticks_centered: bool = False
     rc_age_s: float = math.inf
     rc_override: object = None
     rc_mode: object = None
@@ -45,6 +50,9 @@ class Snapshot:
     landed_age_s: float = math.inf
     estimator_age_s: float = math.inf
     estimator_valid: bool = False
+    vertical_estimator_valid: bool = False
+    altitude_enu_m: object = None
+    local_setpoint_ready: bool = False
     pose_stamp_ns: int = 0
     pose_age_s: float = math.inf
     xy: tuple = ()
@@ -58,6 +66,8 @@ class Snapshot:
     bridge_observation_age_s: float = math.inf
     bridge_ready: bool = False
     bridge_gate: str = ''
+    bridge_contract_error: str = ''
+    bridge_stamp_ns: int = 0
     bridge_published: int = 0
     alignment_matches: bool = False
     origin: object = None
@@ -161,42 +171,51 @@ class FlightSession:
         self.command_confirmed_s = None
         self.actions.append(dict(self.pending, **data))
 
-    def ready(self, s, now, *, ground=False):
+    def ready(self, s, now, *, ground=False, horizontal_support=False):
+        fc_owned = self.settings.fc_owned_runtime and not ground
         if not s.command_services_ready:
             return 'mavros_command_services_unavailable'
         for name in ('layout_confirmed', 'alignment_confirmed', 'fusion_confirmed', 'takeoff_settings_confirmed',
                      'timing_confirmed', 'sensor_mount_confirmed'):
+            if self.settings.anchor_trial and name in ('alignment_confirmed', 'fusion_confirmed', 'timing_confirmed'):
+                continue
             if not getattr(self.settings, name):
                 return name + '_required'
         if not s.connected or not 0 <= s.state_age_s <= self.settings.state_timeout_s:
             return 'fc_disconnected_or_stale'
         if not 0 <= s.landed_age_s <= self.settings.state_timeout_s:
             return 'landed_state_stale'
-        if not s.estimator_valid or not 0 <= s.estimator_age_s <= .5:
+        if not s.estimator_valid or (not fc_owned and not 0 <= s.estimator_age_s <= .5):
             return 'px4_estimator_unavailable'
-        if not s.xy or not self.settings.inside(s.xy) or not 0 <= s.pose_age_s <= self.settings.pose_timeout_s:
+        pose_current=bool(s.xy) and 0 <= s.pose_age_s <= self.settings.pose_timeout_s
+        if (not fc_owned and (not pose_current or not self.settings.inside(s.xy))) or (fc_owned and pose_current and not self.settings.inside(s.xy)):
             return 'px4_pose_unavailable_or_outside_bounds'
-        if not 0 <= s.uwb_age_s <= .25:
+        if not fc_owned and not 0 <= s.uwb_age_s <= .25 and not (horizontal_support and not ground):
             return 'uwb_unavailable'
-        if not 0 <= s.height_age_s <= .2:
+        if self.settings.anchor_trial and not s.vertical_estimator_valid:
+            return 'px4_vertical_estimator_unavailable'
+        if not self.settings.anchor_trial and not 0 <= s.height_age_s <= .2:
             return 'measured_height_unavailable'
-        if (not s.bridge_ready or s.bridge_published <= 0 or not 0 <= s.bridge_age_s <= 2.5
-                or not 0 <= s.bridge_observation_age_s <= .2):
+        if not fc_owned and (not s.bridge_ready or s.bridge_published <= 0 or not 0 <= s.bridge_age_s <= 2.5
+                or (not 0 <= s.bridge_observation_age_s <= self.settings.bridge_observation_timeout_s
+                    and not (horizontal_support and not ground))):
             return 'uwb_px4_bridge_unavailable'
-        if not s.alignment_matches:
+        if fc_owned and observation_status(self.settings, s)['contract_error']:
+            return observation_status(self.settings, s)['contract_error']
+        if not fc_owned and not s.alignment_matches:
             return 'observation_and_command_alignment_mismatch'
-        if s.origin is None:
+        if not self.settings.local_xy and s.origin is None:
             return 'px4_global_origin_required'
-        if self.origin is not None and s.origin != self.origin:
+        if not self.settings.local_xy and self.origin is not None and s.origin != self.origin:
             return 'px4_global_origin_changed'
-        if self.last_web_s is None or not 0 <= now-self.last_web_s <= self.settings.web_timeout_s:
+        if not fc_owned and (self.last_web_s is None or not 0 <= now-self.last_web_s <= self.settings.web_timeout_s):
             return 'web_assignment_stale'
         if ground:
             if s.armed or s.landed != 1:
                 return 'disarmed_ground_state_required'
             if s.mode not in ('POSCTL', 'AUTO.LOITER'):
                 return 'px4_position_mode_required'
-            if (not finite(s.takeoff_alt_m) or not 0 <= s.takeoff_param_age_s <= 5.
+            if self.settings.auto_takeoff_parameters_required and (not finite(s.takeoff_alt_m) or not 0 <= s.takeoff_param_age_s <= 5.
                     or abs(s.takeoff_alt_m-self.settings.expected_mis_takeoff_alt_m) > .01):
                 return 'px4_mis_takeoff_alt_mismatch_or_unavailable'
         return 'ready'

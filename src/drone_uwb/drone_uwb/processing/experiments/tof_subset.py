@@ -6,6 +6,7 @@ import numpy as np
 from drone_uwb.processing.h80 import fit_h80
 from drone_uwb.processing.experiments.h80_b import BSettings
 from drone_uwb.processing.motion_reacquisition import MotionReacquisition
+from drone_uwb.processing.b4_integrity import B4HeightIntegrity
 
 class ToFSubsetCandidate:
     def __init__(self,config,*,rms_limit_m=.06,score_margin_m=.015):
@@ -15,6 +16,13 @@ class ToFSubsetCandidate:
         self.settings=SimpleNamespace(**asdict(BSettings(**config['B'])))
         self.settings.required_anchor_count=3
         self.limit=rms_limit_m;self.margin=score_margin_m;self.history=deque();self.last_stamp=None
+        self.b4_integrity = B4HeightIntegrity(self.anchors, limit_m=self.limit,
+                                            window_s=self.settings.window_s)
+        # The height veto is documented as not deployed. A fresh FINAL install
+        # must retain the field observation contract until explicitly enabled.
+        self.enforce_b4_height_integrity = config.get('enforce_b4_height_integrity', False)
+        if type(self.enforce_b4_height_integrity) is not bool:
+            raise ValueError('boolean_b4_height_integrity_policy_required')
 
     def process(self,result):
         stamp=result['time_us'];b=result['models']['B'];height=result.get('height_m')
@@ -37,7 +45,17 @@ class ToFSubsetCandidate:
         if not valid:return output
         rms=(b.get('fit') or {}).get('rms_m')
         if type(rms) not in [int,float] or not np.isfinite(rms):return dict(output,reason='missing_fit_integrity')
-        if 0<=rms<self.limit:return dict(output,ok=True,xy_m=list(b['xy_m']),source='unchanged_B4',reason='original_fit_consistent')
+        if 0<=rms<self.limit:
+            allowed, integrity = self.b4_integrity.check(result)
+            integrity['enforced'] = self.enforce_b4_height_integrity
+            output['b4_height_check'] = integrity
+            if allowed or not self.enforce_b4_height_integrity:
+                return dict(output,ok=True,xy_m=list(b['xy_m']),source='unchanged_B4',reason='original_fit_consistent')
+            # Do not evade a failed B4 check by dropping ToF or by clearing the
+            # fit window. Only a fresh physically qualified B3 can be considered.
+            if integrity['state'] != 'inconsistent':
+                return dict(output, reason=integrity['reason'] if integrity['checked']
+                            else 'b4_height_conflict_unresolved')
         if type(height) not in [int,float] or not np.isfinite(height) or result.get('height_source') not in ('gazebo_tof_imu','measured_tof_imu','ground_antenna_reference'):return dict(output,reason='measured_height_unavailable')
         hist=list(self.history);t=np.array([(row['time_us']-stamp)/1e6 for row in hist]);ranges=np.array([row['ranges'] for row in hist]);z=np.array([np.nan if row['height'] is None else row['height'] for row in hist]);valid_height=np.isfinite(z)
         idx=np.tile(np.arange(4),len(hist));times=np.repeat(t,4);all_ranges=ranges.reshape(-1)

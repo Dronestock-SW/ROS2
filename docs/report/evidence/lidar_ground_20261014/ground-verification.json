@@ -1,0 +1,332 @@
+{
+  "scope": "ACTUAL_DISARM_GROUND_RECEIVE_TEST_NOT_SUCCESSFUL_FUSION_OR_FLIGHT",
+  "source_base_commit": "19cdb8b975b2d56107d7e470289da6e7779bec2a",
+  "firmware_base_commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+  "timing_range_comparison": [
+    {
+      "run": "rotation01-12m.json",
+      "source_sha256": "32106ec84ea3050390fea8693a22ce39bca28dacf30b5954d280c74d9f115495",
+      "range_max_m": 12.0,
+      "accepted_pairs": 95,
+      "yaw_delta_correlation": 0.9943346895116602,
+      "common_pairs": 92,
+      "best_offset_s": 6.938893903907228e-17,
+      "temporal_thirds_s": [
+        -0.00999999999999994,
+        6.938893903907228e-17,
+        0.005000000000000074
+      ],
+      "diagnostic_bootstrap_95_s": [
+        -0.014999999999999944,
+        0.005000000000000074
+      ],
+      "bootstrap_is_not_systematic_error_bound": true,
+      "imu_gaps_over_25ms": 4,
+      "imu_max_gap_s": 0.19200873374938965,
+      "all_states_disarmed": true,
+      "source_analysis_sha256": "f9e4c5efd4ed8ea7350fe85aac940a6ba124a0a3f2c5f011bf1f58f6c58257a6"
+    },
+    {
+      "run": "rotation01-4m.json",
+      "source_sha256": "32106ec84ea3050390fea8693a22ce39bca28dacf30b5954d280c74d9f115495",
+      "range_max_m": 4.0,
+      "accepted_pairs": 46,
+      "yaw_delta_correlation": -0.4127701666843507,
+      "common_pairs": 37,
+      "best_offset_s": -0.04499999999999997,
+      "temporal_thirds_s": [
+        -0.075,
+        0.07500000000000014,
+        -0.04499999999999997
+      ],
+      "diagnostic_bootstrap_95_s": [
+        -0.05499999999999998,
+        -0.01999999999999995
+      ],
+      "bootstrap_is_not_systematic_error_bound": true,
+      "imu_gaps_over_25ms": 4,
+      "imu_max_gap_s": 0.19200873374938965,
+      "all_states_disarmed": true,
+      "source_analysis_sha256": "c7cde3af06528c2b37de2015d04806e881c3f6d16f03374fdd7b0b1a7f1fea15"
+    },
+    {
+      "run": "rotation01-8m.json",
+      "source_sha256": "32106ec84ea3050390fea8693a22ce39bca28dacf30b5954d280c74d9f115495",
+      "range_max_m": 8.0,
+      "accepted_pairs": 96,
+      "yaw_delta_correlation": 0.9937291715264727,
+      "common_pairs": 84,
+      "best_offset_s": 0.005000000000000074,
+      "temporal_thirds_s": [
+        -0.00999999999999994,
+        0.005000000000000074,
+        6.938893903907228e-17
+      ],
+      "diagnostic_bootstrap_95_s": [
+        -0.014999999999999944,
+        0.005000000000000074
+      ],
+      "bootstrap_is_not_systematic_error_bound": true,
+      "imu_gaps_over_25ms": 4,
+      "imu_max_gap_s": 0.19200873374938965,
+      "all_states_disarmed": true,
+      "source_analysis_sha256": "7a812f5906966b71f9105d6407b8721bf8318b54275ecdd63b491415aa01772c"
+    },
+    {
+      "run": "rotation02-12m.json",
+      "source_sha256": "67df545a91b53336c35fb236090f66774c956454bd10f5f8bb07682f8e3703f8",
+      "range_max_m": 12.0,
+      "accepted_pairs": 76,
+      "yaw_delta_correlation": 0.9961019356762222,
+      "common_pairs": 64,
+      "best_offset_s": -0.004999999999999935,
+      "temporal_thirds_s": [
+        -0.004999999999999935,
+        -0.00999999999999994,
+        -0.004999999999999935
+      ],
+      "diagnostic_bootstrap_95_s": [
+        -0.014999999999999944,
+        6.938893903907228e-17
+      ],
+      "bootstrap_is_not_systematic_error_bound": true,
+      "imu_gaps_over_25ms": 20,
+      "imu_max_gap_s": 0.3380110263824463,
+      "all_states_disarmed": true,
+      "source_analysis_sha256": "feacc417a542c214f332b405130b1c1db1dee6cd1d5c258296e27a6b4f1b981b"
+    },
+    {
+      "run": "rotation02-4m.json",
+      "source_sha256": "67df545a91b53336c35fb236090f66774c956454bd10f5f8bb07682f8e3703f8",
+      "range_max_m": 4.0,
+      "accepted_pairs": 38,
+      "yaw_delta_correlation": 0.952362943277498,
+      "common_pairs": 24,
+      "best_offset_s": -0.00999999999999994,
+      "temporal_thirds_s": [
+        0.005000000000000074,
+        -0.014999999999999944,
+        -0.00999999999999994
+      ],
+      "diagnostic_bootstrap_95_s": [
+        -0.01999999999999995,
+        0.005000000000000074
+      ],
+      "bootstrap_is_not_systematic_error_bound": true,
+      "imu_gaps_over_25ms": 20,
+      "imu_max_gap_s": 0.3380110263824463,
+      "all_states_disarmed": true,
+      "source_analysis_sha256": "44e0bd9e9a0b06739cf3c58e01aaeb29cfcae02f00d2f8cd8b5d3db6e35be828"
+    },
+    {
+      "run": "rotation02-8m.json",
+      "source_sha256": "67df545a91b53336c35fb236090f66774c956454bd10f5f8bb07682f8e3703f8",
+      "range_max_m": 8.0,
+      "accepted_pairs": 76,
+      "yaw_delta_correlation": 0.9948412275601137,
+      "common_pairs": 56,
+      "best_offset_s": -0.00999999999999994,
+      "temporal_thirds_s": [
+        -0.00999999999999994,
+        -0.00999999999999994,
+        -0.00999999999999994
+      ],
+      "diagnostic_bootstrap_95_s": [
+        -0.014999999999999944,
+        6.938893903907228e-17
+      ],
+      "bootstrap_is_not_systematic_error_bound": true,
+      "imu_gaps_over_25ms": 20,
+      "imu_max_gap_s": 0.3380110263824463,
+      "all_states_disarmed": true,
+      "source_analysis_sha256": "efa11735fc0b3cc3bee8b56afeb329e581881e53a5264203a7b8523f7001cd1f"
+    }
+  ],
+  "ground_profile": {
+    "floor_policy": "ground_static",
+    "offset_s": -0.005,
+    "timing_uncertainty_s": 0.02,
+    "timing_uncertainty_type": "provisional_engineering_allowance",
+    "duration_limit_s": 45,
+    "not_for_takeoff": true
+  },
+  "sender_counts": {
+    "imu": 3656,
+    "imu_frame_or_validity": 13,
+    "cloud": 407,
+    "timesync_unavailable_or_unstable": 45,
+    "new_segment": 15,
+    "accepted": 277,
+    "published": 174,
+    "imu_gap": 25,
+    "reacquired_pose_only": 11,
+    "attitude_anchor_missing": 23,
+    "lidar_scan_stale_or_future": 7,
+    "queue_dropped": 3,
+    "ros_clock_or_processing_gap": 2
+  },
+  "processed_observations": 403,
+  "gate_counts": {
+    "ground_test_requires_fresh_disarmed_landed_state": 8,
+    "dedicated_lidar2d_firmware_required": 6,
+    "timesync_unavailable_or_unstable": 32,
+    "ready": 254,
+    "lidar_observation_stale_or_future": 103
+  },
+  "published_processing_ms": {
+    "n": 174,
+    "median": 37.38077599700773,
+    "p95": 46.37684055342106,
+    "max": 50.82677699829219
+  },
+  "published_measured_speed_m_s": {
+    "n": 174,
+    "median": 0.0077617074098166785,
+    "p95": 0.0162687276669668,
+    "max": 0.028434237341688814
+  },
+  "speed_distribution_is_not_accuracy": true,
+  "fc_snapshots": [
+    {
+      "file": "fc-before-lidar.json",
+      "sha256": "4d38afe9443654371976ddf2a1bb6f09badf3655fbdabd13a173a5ef399e3a38",
+      "all_queries_completed": true,
+      "status_never_published": true,
+      "admission": {},
+      "time_last_fuse_us": [],
+      "fused": [],
+      "innovation_rejected": [],
+      "reset_counters": {
+        "xy_reset_counter": 3,
+        "z_reset_counter": 3,
+        "vxy_reset_counter": 3,
+        "vz_reset_counter": 2
+      }
+    },
+    {
+      "file": "fc-during-01.json",
+      "sha256": "bf552f14e3821ae18f568d3a59218ad6fbe5c7e0fec901a24599ae24c4a59460",
+      "all_queries_completed": true,
+      "status_never_published": false,
+      "admission": {
+        "accepted": 17,
+        "rejected": 20,
+        "reason": 5
+      },
+      "time_last_fuse_us": [
+        0,
+        0
+      ],
+      "fused": [
+        false,
+        false
+      ],
+      "innovation_rejected": [
+        false,
+        false
+      ],
+      "reset_counters": {
+        "xy_reset_counter": 3,
+        "z_reset_counter": 3,
+        "vxy_reset_counter": 3,
+        "vz_reset_counter": 2
+      }
+    },
+    {
+      "file": "fc-during-02.json",
+      "sha256": "2d82edef738c55a5b065c744a41a90ef82666c0d7dddd1fa0b1949456214cfc5",
+      "all_queries_completed": true,
+      "status_never_published": false,
+      "admission": {
+        "accepted": 29,
+        "rejected": 43,
+        "reason": 2
+      },
+      "time_last_fuse_us": [
+        0,
+        0
+      ],
+      "fused": [
+        false,
+        false
+      ],
+      "innovation_rejected": [
+        false,
+        false
+      ],
+      "reset_counters": {
+        "xy_reset_counter": 3,
+        "z_reset_counter": 3,
+        "vxy_reset_counter": 3,
+        "vz_reset_counter": 2
+      }
+    },
+    {
+      "file": "fc-after-stop.json",
+      "sha256": "b1d4110cfa5d907ed40483b80c6b1b6627cedf1469fad531fa2e4dc98d2d54d6",
+      "all_queries_completed": true,
+      "status_never_published": false,
+      "admission": {
+        "accepted": 56,
+        "rejected": 51,
+        "reason": 9
+      },
+      "time_last_fuse_us": [
+        0,
+        0
+      ],
+      "fused": [
+        false,
+        false
+      ],
+      "innovation_rejected": [
+        false,
+        false
+      ],
+      "reset_counters": {
+        "xy_reset_counter": 3,
+        "z_reset_counter": 3,
+        "vxy_reset_counter": 3,
+        "vz_reset_counter": 2
+      }
+    }
+  ],
+  "actual_fusion_verified": false,
+  "ground_reason": "auxiliary_velocity_requires_another_active_horizontal_aid",
+  "flight_profile_enabled": false,
+  "field_service_switch_performed": false,
+  "firmware_changed": false,
+  "parameter_preservation": {
+    "parameter_count_before": 1099,
+    "parameter_count_after": 1099,
+    "parameter_differences": {},
+    "preserved_files": {
+      "/home/arialhanho/ROS2-review-20261008-codex/src/drone_uwb/drone_uwb/integration/ros/manual_capture.py": true,
+      "/home/arialhanho/ROS2-review-20261008-codex/src/drone_uwb/launch/manual_observe.launch.py": true,
+      "/home/arialhanho/ROS2-review-20261008-codex/src/sangwon_AI/ops/px4_log_download.py": true,
+      "/home/arialhanho/lidar2d-enable-20261013/lidar_velocity_enabled.json": true,
+      "/home/arialhanho/.config/systemd/user/dronestock-manual-capture.service": true,
+      "/home/arialhanho/.config/systemd/user/dronestock-manual-observe.service": true,
+      "/home/arialhanho/.config/systemd/user/dronestock-manual-lidar.service": true
+    }
+  },
+  "verification": {
+    "python_passed": 515,
+    "python_skipped": 8,
+    "python_seconds": 43.49,
+    "focused_deployment_tests_passed": 42,
+    "colcon_packages_built": 4,
+    "deployed_ros_scenario": "separate_lidar_uwb_recovery",
+    "deployed_ros_result": "END",
+    "deployed_ros_max_setpoint_gap_ms": 69.195,
+    "deployed_ros_uses_mock_FC": true,
+    "mission_ai_native_contracts": "PASS 7.99s"
+  },
+  "raw_archive_sha256": "f76a78b772a39256489acec21d2837ed4a458c747e279ec4dac58f7cb0b5729f",
+  "deployed_binaries": {
+    "sangwon_field_executor": "98edc294c09d2de6f2c1b1736ec0cff419c362cf6f4eee5f762ddeba31261780",
+    "sangwon_field_executor_replay": "8e4df9f67d0d6695381d17c81921dd0f9d142db9d72de8fdd3b87211356be2fd",
+    "sangwon_field_mission_ai": "5dd256e25ebbd111fb1d1622a21e3153510052d2404b1ff715512b2c9e22f452",
+    "libbehaviortree_cpp.so": "764a1e1c93079f8866514f8e0823e6fae81ba7043d584aefe29e53c9f4e5a34d"
+  }
+}

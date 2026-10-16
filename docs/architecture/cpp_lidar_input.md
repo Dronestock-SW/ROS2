@@ -2,9 +2,26 @@
 상단 LiDAR를 기존 C++ 설계에 연결하는 기준이다.
 동시 로그 수집과 후속 스캔매칭을 준비할 때 읽는다.
 
+2026-10-12 [지상 간이 정합 분석](../report/lidar_ground_analysis_20261012.md)을 추가했다.
+1,781스캔을 오프라인으로 분석했다. 운영 구현은 아니다.
+연속 누적 회전·광선 시간 불일치가 남아 있다.
+사용자 장착 추정은 UWB 아래 약 10cm다.
+하향 TFmini Plus와 구분한다. 실측 TF로 적용하지 않았다.
+[후속 SITL 절차](../runbooks/lidar_uwb_sitl_handoff_20261012.md)를 따른다.
+[개선 후보·격리 진단](../report/lidar_keyframe_sitl_20261012.md)을 추가했다.
+정지·DISARM SIH 140회는 표준 EV 입력 진단이다.
+운영 C++ LiDAR의 동적 융합 검증과 구분한다.
+수직 리셋·발산 위험으로 현재 자리값 후보는 보류다.
+
 ## 현재 구현
 
-C++ 관측 경계까지 준비했다. PX4 aiding은 미구현이다.
+12일 상대 관측과 제한된 미션 공백 대응을 추가했다.
+[후속 구현·검증](../report/lidar_gap_support_20261012.md)을 따른다.
+실기 기본값은 진단 모드다. PX4 aiding은 미구현이다.
+현재 상대 이동 입력은 /point_cloud의 SDK stamps다.
+/scan 각도 배열은 취득 시각 배열이 아니다.
+[지상 시각 확인](../report/lidar_ground_audit_20261012.md)을 따른다.
+아래는 11일까지의 수집 경계 기록이다.
 기존 `CaptureObservations`와 schema 1을 확장했다.
 별도 Python 임무 실행기나 companion EKF를 만들지 않았다.
 
@@ -82,6 +99,10 @@ UWB와 LiDAR가 같은 EV 토픽에 번갈아 발행하면 안 된다.
 위치 UWB와 속도 LiDAR를 조합하는 방안은 후보일 뿐이다.
 동일 측정 시각·frame·상관관계 처리가 필요하다.
 XY만 관측한 속도에서 vz를 만들어 넣지 않는다.
+실측으로 꾸민 수직 속도를 운영 입력으로 쓰지 않는 경계다.
+유한 자리값과 큰 분산의 body FRD 입력은 시험 후보로 둔다.
+시작·복구·기울기 리셋의 부수 효과를 격리 SITL에서 확인한다.
+이유: 큰 분산만으로 수직 영향이 완전히 사라지지 않는다.
 현재 PX4 펌웨어의 수용 조건부터 확인한다.
 필요하면 별도 aiding 경로의 펌웨어 변경을 검토한다.
 기존 roadmap의 PX4 EKF2 융합 책임을 유지한다.
@@ -120,7 +141,9 @@ python3 -m drone_uwb.integration.ros.manual_capture record \
 | colcon symlink 빌드 | 격리 Jetson drone_uwb 성공 |
 | WSL 전체 CMake 구성 | SQLite3 개발 의존성 부재로 미완료 |
 | 실제 상단 LiDAR 동시 기록 | 10월 11일 지상 약 10Hz 수신·UWB/FC 동시 저장 확인 |
-| 스캔매칭·SITL·FC 융합 | 미실시 |
+| 지상 스캔매칭 | 10월 12일 별도 간이 분석. 운영 구현·실제 이동 검증 아님 |
+| 표준 EV 격리 SIH | 140회 정지 진단. 위험 조건 포함. 전체 S01–S14 미완료 |
+| 운영 LiDAR·FC 융합 | 미검증. 현재 자리값 후보의 채택 보류 |
 
 기존 세 공중 기록에는 /scan이 없었다.
 이번 변경만으로 그 비행의 LiDAR 분석은 할 수 없다.
@@ -130,6 +153,9 @@ python3 -m drone_uwb.integration.ros.manual_capture record \
 기존 제조사 T-mini Pro 설정을 사용한다.
 제조사 launch의 임의 2cm 장착 TF는 발행하지 않는다.
 지상 표본에서 `scan_time=time_increment=0`을 확인했다.
+이는 당시 표본의 이력이다.
+16:18 기록은 두 값이 유한하지만 시간 합이 약 7.25% 다르다.
+10월 12일 분석에서 확인했다. 광선 시각 검증은 아직 남았다.
 ROS 노드는 SDK 값을 그대로 전달하고 있었다.
 10Hz 수신 주기를 광선 시각으로 임의 대입하지 않는다.
 장착·스캔 시각 확인 뒤 상대 이동을 분석한다.

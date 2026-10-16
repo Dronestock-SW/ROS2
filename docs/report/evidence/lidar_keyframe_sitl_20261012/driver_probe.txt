@@ -1,0 +1,14 @@
+4ef70d3f32a85704ade0be54b214f3763b1ab3e8
+69c5fe06f56a698a4b756f58cef1a51c501863dd6b0344de6b4251d4c71bca69  /home/arialhanho/ROS2-integration-20261007/src/ydlidar_ros2_driver/src/ydlidar_ros2_driver_node.cpp
+443a490d04a566136076fc4610fd7a31f0fabff3fca56e141ab303bb67b377ac  /usr/local/lib/libydlidar_sdk.a
+prefix=/usr/local
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: YDLIDAR_SDK
+Description: 
+Version: 1.2.20
+Cflags:   -I/usr/local/include/src -I/usr/local/include
+Libs: -L${libdir}  -lpthread -lrt -lydlidar_sdk
+

@@ -1,0 +1,33 @@
+{
+  "samples": 6,
+  "elapsed_s": 5.0000104369974,
+  "rates_hz": {
+    "tof": 49.99989563024386,
+    "tof_valid": 49.99989563024386,
+    "imu": 99.79979167796675,
+    "imu_valid": 99.79979167796675
+  },
+  "cache": {
+    "builds": 1,
+    "calls": 0,
+    "geometry_sha256": "f9611f2cfa0d5b935b13e8e3cc86fa9db2bc473aa4a75a1a03f2f7ac39ed5b59",
+    "usable": true,
+    "build_wall_ms": 2.217982,
+    "build_cpu_ms": 2.155136
+  },
+  "trace": {
+    "directory": "/home/arialhanho/.local/share/dronestock/btf-trace/domain-2",
+    "error": null,
+    "dropped": 0,
+    "pending": 0,
+    "written": 29230,
+    "max_disk_bytes": 134217728,
+    "session": "6c195490bb9540b7a36b2d0db77e3da3"
+  },
+  "fc_state": {
+    "connected": true,
+    "armed": false,
+    "mode": "AUTO.LOITER"
+  },
+  "fc_output_enabled": false
+}

@@ -21,6 +21,7 @@ class Observations:
         self.pose = None
         self.battery = None
         self.height = self.fc = self.position = self.mission = None
+        self.uwb_pipeline = {}
 
         self.last_stamp_ns = None
 
@@ -56,6 +57,16 @@ class Observations:
 
     def receive_fc(self, connected, armed, mode):
         self.fc = (connected, armed, mode, time.monotonic())
+
+    def receive_uwb_pipeline(self, stage, value):
+        if stage not in ('btf', 'sender') or not isinstance(value, dict):
+            return
+        # Only explicit booleans from a current process prove its policy.
+        enabled = value.get('jump_guard_enabled')
+        self.uwb_pipeline[stage] = (dict(
+            jump_guard_enabled=enabled if type(enabled) is bool else None,
+            reason=value.get('gate') or value.get('last_reason')),
+            time.monotonic())
 
     def receive_position(self, xyz, frame, stamp_ns):
         if frame == 'map' and all(map(math.isfinite, xyz)) and 0 <= time.time_ns()-stamp_ns <= 200_000_000:
@@ -118,9 +129,13 @@ class Observations:
                 for key in ('mission_db_id', 'mission_code', 'route_revision',
                             'active_waypoint_index', 'active_waypoint_id', 'flight_control_enabled',
                             'mission_complete', 'landing_verified', 'control_ack', 'target_applied',
-                            'px4_map_xy_m', 'home_verified', 'home_xy_m', 'flight_outcome', 'work_outcome',
+                            'px4_map_xy_m', 'home_verified', 'home_xy_m', 'mission_start_xy_m', 'mission_start_capture', 'flight_outcome', 'work_outcome',
                             'scan_results', 'scan_window', 'scan_failure_policy',
-                            'attempted_task_ids', 'remaining_task_ids', 'failed_scan_task_ids', 'route_complete', 'preflight', 'fc_landed'):
+                            'attempted_task_ids', 'remaining_task_ids', 'failed_scan_task_ids', 'route_complete', 'preflight', 'fc_landed',
+                            'native_takeoff', 'operator_session_id', 'arm_request_available', 'arm_request_blocker', 'operator_arm_result', 'mission_ai', 'horizontal_observation',
+                            'observation_status','recording_ok','record_pending','command_record_pending','storage','observer_metadata_delayed','web_report_delayed',
+                            'executor_backend','executor_owner','executor_session','setpoints_sent','max_sender_gap_s','position_tracking',
+                            'pilot_recovery','ground_reset_count','previous_flight'):
                     if key in value:
                         result[key] = value[key]
                 result.update(flight_state=value.get('state'), flight_reason=value.get('reason'),
@@ -135,4 +150,7 @@ class Observations:
                 current_z_source='ground_antenna_reference', current_z_reference='floor',
                 current_z_estimated=True, current_z_trusted=False, xyz_valid=False,
                 z_source='ground_antenna_reference')
+        result['uwb_pipeline'] = {
+            stage: dict(value, fresh=True) for stage, (value, received) in self.uwb_pipeline.items()
+            if 0 <= now-received <= 1.5}
         return result

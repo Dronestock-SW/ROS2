@@ -46,21 +46,22 @@ class MissionChain(FlightSession):
             return False
         return super().submit(payload, now, wall_s)
 
-    def ready(self, s, now, *, ground=False):
-        reason = super().ready(s, now, ground=ground)
+    def ready(self, s, now, *, ground=False, horizontal_support=False):
+        reason = super().ready(s, now, ground=ground, horizontal_support=horizontal_support)
         if reason != 'ready':
             return reason
-        if not self.settings.heading_control_confirmed:
+        if not self.settings.anchor_trial and not self.settings.heading_control_confirmed:
             return 'native_heading_control_not_confirmed'
-        if s.mag_type != self.settings.expected_ekf2_mag_type:
+        auto = self.settings.auto_takeoff_parameters_required
+        if auto and s.mag_type != self.settings.expected_ekf2_mag_type:
             return 'px4_heading_policy_mismatch_or_unavailable'
-        if ground and s.mag_type in (0, 1) and self.settings.expected_mis_takeoff_alt_m < 1.6:
+        if auto and ground and s.mag_type in (0, 1) and self.settings.expected_mis_takeoff_alt_m < 1.6:
             return 'native_mag_final_alignment_requires_verified_height'
-        if ground and (type(s.rc_override) is not int or not s.rc_override & 1):
+        if auto and ground and (type(s.rc_override) is not int or not s.rc_override & 1):
             return 'px4_auto_rc_override_required'
         if ground and s.rc_required and (not s.rc_valid or not 0 <= s.rc_age_s <= 1.):
             return 'live_rc_input_required'
-        if ground and s.rc_required and s.rc_mode != 0:
+        if ground and s.rc_required and not self.settings.anchor_trial and s.rc_mode != 0:
             return 'physical_rc_receiver_mode_required'
         if ground and s.rc_required and not s.rc_mapping_valid:
             return 'physical_rc_switch_mapping_required'
@@ -69,8 +70,10 @@ class MissionChain(FlightSession):
             return 'battery_unavailable'
         if ground and s.battery < .3:
             return 'battery_below_start_reserve'
-        if ground and s.takeoff_action != 0:
+        if auto and ground and s.takeoff_action != 0:
             return 'px4_takeoff_action_must_hold'
+        if self.settings.fc_owned_runtime and not ground and (not s.xy or s.pose_age_s>self.settings.pose_timeout_s):
+            return 'ready'  # Motion/height feedback is unavailable: hold, never credit progress.
         if len(s.velocity_xy) != 2 or not finite(*s.velocity_xy):
             return 'px4_velocity_unavailable'
         if not finite(s.vertical_speed_m_s):

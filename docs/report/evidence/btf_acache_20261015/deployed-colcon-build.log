@@ -1,0 +1,116 @@
+[0.950s] WARNING:colcon.colcon_core.package_selection:Some selected packages are already built in one or more underlay workspaces:
+	'drone_uwb' is in: /home/arialhanho/ROS2-final-test1-sangwon/install/drone_uwb
+If a package in a merged underlay workspace is overridden and it installs headers, then all packages in the overlay must sort their include directories by workspace order. Failure to do so may result in build failures or undefined behavior at run time.
+If the overridden package is used by another package in any underlay, then the overriding package in the overlay must be API and ABI compatible or undefined behavior at run time may occur.
+
+If you understand the risks and want to override a package anyways, add the following to the command line:
+	--allow-overriding drone_uwb
+
+This may be promoted to an error in a future release of colcon-override-check.
+Starting >>> drone_uwb
+running develop
+running egg_info
+creating drone_uwb.egg-info
+writing drone_uwb.egg-info/PKG-INFO
+writing dependency_links to drone_uwb.egg-info/dependency_links.txt
+writing entry points to drone_uwb.egg-info/entry_points.txt
+writing requirements to drone_uwb.egg-info/requires.txt
+writing top-level names to drone_uwb.egg-info/top_level.txt
+writing manifest file 'drone_uwb.egg-info/SOURCES.txt'
+reading manifest file 'drone_uwb.egg-info/SOURCES.txt'
+writing manifest file 'drone_uwb.egg-info/SOURCES.txt'
+running build_ext
+Creating /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/lib/python3.10/site-packages/drone-uwb.egg-link (link to .)
+Installing lidar_velocity_bridge script to /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/lib/drone_uwb
+Installing manual_observation_streams script to /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/lib/drone_uwb
+Installing uwb_baseline_a script to /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/lib/drone_uwb
+Installing uwb_bench_probe script to /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/lib/drone_uwb
+Installing uwb_btf_node script to /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/lib/drone_uwb
+Installing uwb_h80_b script to /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/lib/drone_uwb
+Installing uwb_local_odometry_bridge script to /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/lib/drone_uwb
+Installing uwb_manual_capture script to /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/lib/drone_uwb
+Installing uwb_node script to /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/lib/drone_uwb
+Installing uwb_pipeline script to /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/lib/drone_uwb
+Installing uwb_px4_bridge script to /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/lib/drone_uwb
+Installing uwb_replay script to /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/lib/drone_uwb
+Installing uwb_static_a script to /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/lib/drone_uwb
+Installing uwb_subset_compare script to /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/lib/drone_uwb
+
+Installed /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb
+running symlink_data
+creating /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/ament_index
+creating /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/ament_index/resource_index
+creating /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/ament_index/resource_index/packages
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/resource/drone_uwb -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/ament_index/resource_index/packages
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/package.xml -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb
+creating /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/launch
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/launch/uwb.launch.py -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/launch
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/launch/lidar_velocity.launch.py -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/launch
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/launch/uwb_btf_bench.launch.py -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/launch
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/launch/shared_observation_fusion.launch.py -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/launch
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/launch/manual_observe.launch.py -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/launch
+creating /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config
+creating /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config/anchors
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/anchors/anchors_20260906.json -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config/anchors
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/anchors/anchors_20261004.json -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config/anchors
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/anchors/anchors_20261007_z015.json -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config/anchors
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/anchors_20260906.json -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/baseline_a_reference_20260921.json -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/baseline_a_simulation_20260921.json -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/baseline_a_static_20260906.json -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/c_flight_inputs_20260927.json -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/gazebo_dynamic_path_20260928.json -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/gazebo_dynamic_path_eval_20260928.json -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/gazebo_equipment.json -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/gazebo_fault_bias_01.json -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/gazebo_fault_drop_01.json -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/gazebo_sensor_height_profile.json -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/gazebo_shadow.json -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/gazebo_sitl_observer.json -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/gazebo_sitl_odometry.json -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/gazebo_sitl_target.json -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/h80_b_static_20260906.json -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/mavros_uwb.yaml -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/preimu_pipeline.json -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/subsets_cd_static_20260906.json -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/uwb.yaml -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config
+creating /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config/gazebo
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/gazebo/gazebo_equipment.json -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config/gazebo
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/gazebo/gazebo_sensor_height_profile.json -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config/gazebo
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/gazebo/gazebo_shadow.json -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config/gazebo
+creating /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config/gazebo/scenarios
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/gazebo/scenarios/gazebo_dynamic_path_20260928.json -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config/gazebo/scenarios
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/gazebo/scenarios/gazebo_dynamic_path_eval_20260928.json -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config/gazebo/scenarios
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/gazebo/scenarios/gazebo_fault_bias_01.json -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config/gazebo/scenarios
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/gazebo/scenarios/gazebo_fault_drop_01.json -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config/gazebo/scenarios
+creating /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config/pipeline
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/pipeline/preimu_pipeline.json -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config/pipeline
+creating /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config/replay
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/replay/baseline_a_reference_20260921.json -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config/replay
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/replay/baseline_a_simulation_20260921.json -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config/replay
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/replay/baseline_a_static_20260906.json -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config/replay
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/replay/c_flight_inputs_20260927.json -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config/replay
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/replay/h80_b_static_20260906.json -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config/replay
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/replay/subsets_cd_static_20260906.json -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config/replay
+creating /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config/runtime
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/runtime/fastdds_loopback_udp.xml -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config/runtime
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/runtime/lidar_velocity_field.json -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config/runtime
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/runtime/mavros_btf_bench.yaml -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config/runtime
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/runtime/mavros_test_flight.yaml -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config/runtime
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/runtime/mavros_uwb.yaml -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config/runtime
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/runtime/uwb.yaml -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config/runtime
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/runtime/uwb_a123_bench.yaml -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config/runtime
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/runtime/uwb_btf_real.json -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config/runtime
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/runtime/uwb_btf_tag_a.json -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config/runtime
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/runtime/uwb_btf_tag_b.json -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config/runtime
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/runtime/uwb_btf_tag_b_z2p2.json -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config/runtime
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/runtime/uwb_tag_a.yaml -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config/runtime
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/runtime/uwb_tag_b.yaml -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config/runtime
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/runtime/uwb_tag_b_z2p2.yaml -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config/runtime
+creating /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config/sitl
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/sitl/gazebo_sitl_observer.json -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config/sitl
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/sitl/gazebo_sitl_odometry.json -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config/sitl
+symbolically linking /home/arialhanho/btf-acache-release-20261015/colcon-build/drone_uwb/config/sitl/gazebo_sitl_target.json -> /home/arialhanho/btf-acache-release-20261015/colcon-install/drone_uwb/share/drone_uwb/config/sitl
+Finished <<< drone_uwb [5.23s]
+
+Summary: 1 package finished [5.94s]

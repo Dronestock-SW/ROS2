@@ -18,10 +18,15 @@ TOPICS = {
     '/uwb/btf_xyz': 'geometry_msgs/msg/PoseStamped',
     '/uwb/bridge_status': 'std_msgs/msg/String',
     '/uwb/local_odometry_status': 'std_msgs/msg/String',
+    '/lidar/velocity_status': 'std_msgs/msg/String',
+    '/lidar/velocity_observation': 'std_msgs/msg/String',
+    '/flight_state': 'std_msgs/msg/String',
+    '/mavros/setpoint_raw/target_local': 'mavros_msgs/msg/PositionTarget',
     '/mavros/state': 'mavros_msgs/msg/State',
     '/mavros/extended_state': 'mavros_msgs/msg/ExtendedState',
     '/mavros/rc/in': 'mavros_msgs/msg/RCIn',
     '/mavros/imu/data': 'sensor_msgs/msg/Imu',
+    '/mavros/imu/data_raw': 'sensor_msgs/msg/Imu',
     '/mavros/local_position/odom': 'nav_msgs/msg/Odometry',
     '/mavros/downward_0': 'sensor_msgs/msg/Range',
     '/mavros/downward_1': 'sensor_msgs/msg/Range',
@@ -33,6 +38,8 @@ TOPICS = {
     # Do not subscribe to the command sink: fixed FC readback tools require
     # exactly one sink subscriber (the MAVROS router). EV intent is captured
     # at vision_pose/pose_cov and local_odometry_status; fusion needs the ULog.
+    # Outbound setpoint_raw/local also stays unobserved: its writer requires
+    # exactly one subscriber. target_local records FC feedback instead.
 }
 REQUIRED = ['/uwb/received', '/uwb/btf_decision', '/mavros/state',
             '/mavros/extended_state', '/mavros/imu/data', '/mavros/local_position/odom',
@@ -40,6 +47,7 @@ REQUIRED = ['/uwb/received', '/uwb/btf_decision', '/mavros/state',
             '/uas1/mavlink_source']
 
 LIDAR_TOPICS = {'/scan': 'sensor_msgs/msg/LaserScan',
+                '/point_cloud':'sensor_msgs/msg/PointCloud',
                 '/tf': 'tf2_msgs/msg/TFMessage', '/tf_static': 'tf2_msgs/msg/TFMessage'}
 
 

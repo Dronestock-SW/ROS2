@@ -1,0 +1,9 @@
+{
+  "archive": "lidar-sitl-raw-20261012.tar.gz",
+  "bytes": 1418169048,
+  "sha256": "ba3882a9a2198f634c18aea395ae0dbd2ecaabbfacaa275f9c49016ab6e106b5",
+  "verified_ulogs": 140,
+  "verified_record_files": 840,
+  "missing": [],
+  "scope": "Archive members verified against exported original log hashes; no extraction or raw edits"
+}

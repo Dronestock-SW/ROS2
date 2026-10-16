@@ -2,6 +2,7 @@
 
 No FC position, IMU integration, flow integration or truth input is permitted.
 The accepted positions remain measurements; PX4 owns sensor fusion.
+XY displacement is diagnostic only; it never quarantines an observation.
 """
 from dataclasses import dataclass
 import math
@@ -17,8 +18,9 @@ class GuardConfig:
     max_gap_s: float = .25
 
     def __post_init__(self):
-        if any(type(v) not in (int, float) or not math.isfinite(v) or v <= 0
-               for v in vars(self).values()):
+        if any(type(v) not in (int, float) or not math.isfinite(v)
+               or (v < 0 if k == 'recover_s' else v <= 0)
+               for k, v in vars(self).items()):
             raise ValueError('positive_integrity_limits_required')
 
 
@@ -31,7 +33,9 @@ class ObservationGuard:
         self.motion = MotionReacquisition() if motion_recovery else None
         self.motion_evidence = None
 
-    def check(self, xy, stamp_ns, *, motion_eligible=True, reject_jumps=True):
+    def check(self, xy, stamp_ns, *, motion_eligible=True, reject_jumps=False):
+        # Legacy keyword remains readable by old launchers, but cannot restore
+        # the removed displacement gate. Value/time validation is unchanged.
         if type(reject_jumps) is not bool:
             raise ValueError('boolean_jump_policy_required')
         c = self.config
@@ -48,27 +52,6 @@ class ObservationGuard:
         self.last_seen = stamp_ns
         if gap is not None and gap > c.max_gap_s:
             self.stable_since = None
-        if reject_jumps and self.prior_stamp is not None:
-            age = (stamp_ns-self.prior_stamp)/1e9
-            # During a gap, permit only physically reachable displacement.
-            # A coherent step cannot become a new origin after repeated rejection.
-            limit = c.jump_margin_m+c.max_speed_m_s*min(age, c.max_gap_s)
-            if math.dist(xy, self.prior_xy) > limit:
-                self.stable_since = None
-                recovered = False
-                if self.motion is not None:
-                    # An abrupt step in a continuous stream cannot become a
-                    # permissible gap by waiting through rejected observations.
-                    if age <= c.max_gap_s:
-                        self.motion.freeze('continuous_step_freeze')
-                    recovered, self.motion_evidence = self.motion.check(
-                        stamp_ns, xy, eligible=motion_eligible, key='raw_B4')
-                if not recovered:
-                    return 'observation_jump_quarantined'
-                self.prior_xy, self.prior_stamp = tuple(xy), stamp_ns
-                self.motion.observe(stamp_ns, xy)
-                self.stable_since = stamp_ns
-                return 'observation_motion_reacquired'
         self.prior_xy, self.prior_stamp = tuple(xy), stamp_ns
         if self.motion is not None:
             if motion_eligible:self.motion.observe(stamp_ns, xy)
