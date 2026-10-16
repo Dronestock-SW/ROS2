@@ -1,0 +1,94 @@
+{
+  "base_branch": "이번에-상원-한거-통합-브랜치",
+  "base_sha": "70da279f7b6beb2ffabe1ac7eb5642dfaf473f72",
+  "work_branch": "codex/tag-first-failure-diagnostics-20261016",
+  "date": "2026-10-16",
+  "firmware_versions": [
+    "uwb-single-tag-v2.0-r4-diag-bench-20261016",
+    "uwb-single-tag-v2.0-r4-diag-20261016"
+  ],
+  "native_tests": {
+    "passed": 36,
+    "total": 36,
+    "production_main": 31,
+    "production_usb_runtime": 5
+  },
+  "python_tests": {
+    "passed": 22,
+    "total": 22,
+    "diagnostic_summary": 13,
+    "schema2_receiver": 9
+  },
+  "builds": [
+    {
+      "environment": "tag_b_50",
+      "rate_hz": 50,
+      "bench_controls": true,
+      "status": "success",
+      "ram_bytes": 30956,
+      "flash_bytes": 366885,
+      "firmware_bin_bytes": 367760,
+      "firmware_bin_sha256": "c37fa78c5cf4487d24e36d22f6a1c75d939613084d12a827abd84ef099e1c445"
+    },
+    {
+      "environment": "tag_b_release",
+      "rate_hz": 50,
+      "bench_controls": false,
+      "status": "success",
+      "ram_bytes": 30948,
+      "flash_bytes": 366493,
+      "firmware_bin_bytes": 367360,
+      "firmware_bin_sha256": "42cff0d4e39ddff18d29cf37016241dc8f58fcc185665847195c710202ef678f"
+    }
+  ],
+  "unchanged": {
+    "period_us": 20000,
+    "cycle_budget_us": 18000,
+    "max_optional_retries": 1,
+    "natural_recovery_wait_ms": 1500,
+    "session_quiet_us": 100000,
+    "rf_protocol": 2
+  },
+  "validation_limits": [
+    "Host RF/SPI/clock adapters are deterministic models.",
+    "Host USB/queue adapters do not model actual FreeRTOS concurrency or UART timing.",
+    "No hardware access, firmware flashing, service replacement or flight test.",
+    "50 Hz configuration retained; instrumentation overhead on real hardware is unmeasured.",
+    "No same-toolchain baseline image size comparison was performed.",
+    "Diagnostic cause identifies a software exit, not a physical RF root cause."
+  ],
+  "build_environment": {
+    "platformio": "6.1.19",
+    "platform": "espressif32@7.0.1",
+    "framework": "arduinoespressif32@3.20017.241212+sha.dcc1105b",
+    "toolchain": "xtensa-esp32s3-elf 8.4.0+2021r2-patch5",
+    "workaround": "Short Windows junction for tool package paths; source configuration unchanged.",
+    "known_warnings": [
+      "GPIO_PIN_COUNT macro redefinition in bundled Arduino headers"
+    ]
+  },
+  "evidence_sha256": {
+    "native-all-final.json": "1990427ae142878baeb7a0fbcf9672e5eb9f2630617e54a32fe49dd05235c86c",
+    "pytest-diagnostics.xml": "543831e86b7112db08d254698102adbe1cc860740252d7416e378c29db9b2699",
+    "build-50hz-final.log": "4592b76bc8383deea9f86c08e8bf439e3811b337a20e3fdd7bb505af03c71b41"
+  },
+  "firmware_source_sha256": {
+    "tag/src/main.cpp": "7bd349763d733502a5d9c335c75227421fd320976d2a40f087a68e50b575fbf9",
+    "tag/src/SingleTagRuntime.cpp": "8ee26e95873feace6a5e474bb9d45eb8f7ec5f1c0aed1613ef83b2a058a2ca01",
+    "tag/include/SingleTagRuntime.h": "8f846115352d2e7607eeda68e82fe2352256be9404c004d8b87ff15c9e2617a0",
+    "tag/include/SingleTagDiagnostics.h": "46668067f8a1ba3a92b18682946909c68b48ae8d2be89bba37e60d077af69122",
+    "tag/include/SingleTagDiagnosticJson.h": "faca230f808dd6641ae7e0b284400ba29fcc0152be7143f24640d116812d29a9",
+    "common/SingleTagProtocol.h": "6d1017452b42c585c2e3563b5a35845dfb7fa48fe09196481bbe0682223bcca7",
+    "tag/platformio.ini": "6d2210baf6d775587971badec4c2b0259a7f9a0d64ba2f9ba92e16b8b737c370"
+  },
+  "actual_serialization_to_python_summary": {
+    "source_case": "runtime_raw_priority",
+    "message_count": 3,
+    "invalid_records": 0,
+    "first_successes": 3,
+    "final_successes": 4,
+    "opportunities": 4,
+    "ranging_attempts": 5,
+    "evidence_type": "synthetic_host_serialization_pipeline"
+  }
+}

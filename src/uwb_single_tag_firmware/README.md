@@ -4,6 +4,8 @@ Tag B ID 6과 nRF52832 앵커 A1~A4의 소스다.
 
 현재 실물 상태는 [실행 기록](../../docs/report/esp32_single_tag_execution_20261015.md)에 있다.
 메시지는 [통신 계약](../../docs/reference/single_tag_protocol_v2.md)을 따른다.
+최초 실패 추가 필드는 [진단 계약](../../docs/reference/tag_failure_diagnostics_20261016.md)을 따른다.
+로컬 검사와 미실시 실물 항목은 [진단 시험](../../docs/runbooks/tag_failure_diagnostics_tests_20261016.md)에 있다.
 빌드 산출물과 전체 플래시 백업은 Git 밖에 보관한다.
 
 ## 활성 소스
@@ -17,6 +19,7 @@ Tag B ID 6과 nRF52832 앵커 A1~A4의 소스다.
 | tag/src/JetsonTagDisplay.cpp | 별도 OLED 작업 |
 | anchor/src/anchor_nrf52dk_ref_1to1.c | 주소별 공통 응답기 |
 | tools/ | 원본 추출·백업·기록·검증·지상 수집 |
+| tools/summarize_tag_diagnostics.py | 원본 JSONL의 최초·최종 실패와 진단 손실 집계 |
 
 `platformio.ini`가 위 태그 파일만 선택한다.
 원본의 비활성 TDMA·bridge 파일은 출처 보존용이다.
