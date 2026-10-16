@@ -8,7 +8,7 @@ import time
 
 import numpy as np
 
-from .lidar_scanmatch import Config, KeyframeMatcher, compose, inverse, match, scan_cloud, wrap
+from drone_uwb.processing.experiments.lidar_scanmatch import Config, KeyframeMatcher, compose, inverse, match, scan_cloud, wrap
 
 ROOM = np.array([[[-4, -3], [4, -3]], [[4, -3], [4, 3]],
                  [[4, 3], [-4, 3]], [[-4, 3], [-4, -3]],

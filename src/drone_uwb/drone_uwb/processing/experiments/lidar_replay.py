@@ -12,7 +12,7 @@ from pathlib import Path
 
 import numpy as np
 
-from .lidar_scanmatch import Config, KeyframeMatcher, compose, match, scan_cloud
+from drone_uwb.processing.experiments.lidar_scanmatch import Config, KeyframeMatcher, compose, match, scan_cloud
 
 
 def file_sha256(path):

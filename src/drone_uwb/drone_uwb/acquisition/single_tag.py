@@ -9,7 +9,7 @@ import secrets
 
 import numpy as np
 
-from .validation import Cycle, InvalidInput
+from drone_uwb.acquisition.validation import Cycle, InvalidInput
 from drone_uwb.contracts.protocol import finite
 
 

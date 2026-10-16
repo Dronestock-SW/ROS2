@@ -172,11 +172,11 @@ class MeasuredBtf:
             raise ValueError('unknown_btf_numerical_backend')
         self.native = None
         if self.backend == 'cpp':
-            from .native_btf import NativeBtf
+            from drone_uwb.processing.native_btf import NativeBtf
             self.native = NativeBtf(config)
         self.reset_models()
 
-        from .cached_xy import CachedXY
+        from drone_uwb.processing.cached_xy import CachedXY
         self.instant_xy_cache = CachedXY(config['anchors_xyz_m'], (0, 1, 2, 3))
 
     def start_ground_session(self, *, connected, armed, landed, state_age_s,
