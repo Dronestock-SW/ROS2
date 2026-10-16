@@ -13,6 +13,7 @@ UWB·FREEZE·복구·속도 설정 작업은 [필수 설계 검토](architecture
 
 | 찾는 내용 | 위치 |
 |---|---|
+| 전체 통합본과 main의 충돌 해소·검증 범위 | [10월 16일 병합 검증](report/main_integration_20261016.md) |
 | 새 단일 태그 기록·실물 시험·백업·남은 검증 | [2026-10-15 실행 기록](report/esp32_single_tag_execution_20261015.md) |
 | 단일 태그 전체 기록·호환 조합·원본 복구 | [릴리스·복구 절차](runbooks/single_tag_release_and_recovery_20261015.md) |
 | schema 2 RAW·왕복 시각 교환·무선 v2 계약 | [단일 태그 통신 계약](reference/single_tag_protocol_v2.md) |
@@ -64,6 +65,14 @@ UWB·FREEZE·복구·속도 설정 작업은 [필수 설계 검토](architecture
 | FINAL 실행 8·추정 변화·관측 공백·영상·속도 검토 | [12일 로그·영상 분석](report/hover_run8_analysis_20261012.md) |
 | UWB 공백·계산 시간·이력 격리 비교·수집기 보완 | [12일 처리 경로 분석](report/uwb_gap_processing_20261012.md) |
 | 새 UWB 송신기·수동 ARM·START 연결 | [웹 명령 연결 기록](report/web_operator_commands_20261011.md) |
+| 점프 OFF 이후 실행 복구·융합·전송 공백·시작점 정정 | [18:27 재검증 기록](report/uwb_sender_dependency_recovery_20261011.md) |
+| 사용자 요청의 전달기 점프 차단 OFF 시험 | [10월11일 적용·융합 확인](report/uwb_sender_jump_off_20261011.md) |
+| QR 리더기 우선·카메라 폴백 | [QR 재고 판독 파이프라인](architecture/qr_inventory_pipeline.md) |
+| UWB 기능의 feature_uwb·main 병합 확인 | [10월 11일 병합 검증](report/uwb_main_merge_20261011.md) |
+| GPS·지리적 원점 없는 실제 UWB 수평 융합 | [10월 11일 적용·FC 확인](report/local_uwb_fusion_20261011.md) |
+| 실내 UWB의 부팅 정렬·실행·원복 | [로컬 수평 융합 절차](runbooks/local_uwb_fusion.md) |
+| 현재 환경 1m 이상 호버 확인·저고도 LiDAR 전략 | [10월 10일 조명·그림자 기록](report/optical_flow_environment_20261010.md) |
+| Position/Hold 전제의 UWB 최종 통합 측정 | [수동 비행 통합 관측 절차](runbooks/manual_uwb_final_trial_20261010.md) |
 | 자동 출발점·천장 명령·RC 인계·실물 상태 | [10월 9일 현장 준비 기록](report/field_readiness_20261009.md) |
 | 현장 웹 명령·출발점·RC 점검 순서 | [웹 현장 설정 절차](runbooks/field_web_settings.md) |
 | 스캔 실패 뒤 남은 작업 계속·후속 시험 | [스캔 후속 수행 기록](report/scan_continuation_20261008.md) |
@@ -88,7 +97,6 @@ UWB·FREEZE·복구·속도 설정 작업은 [필수 설계 검토](architecture
 | Wi-Fi/LoRa 역할·좌표 출처·ID·주기 | [멀티태그 연결 기준](reference/multitag_jetson_web_contract.md) |
 | TDMA·A/B·웹 패치 시험과 미검증 범위 | [2026-10-07 패치 검증](report/multitag_patch_validation_20261007.md) |
 | TDMA 호환·웹 좌표 소스 확인 근거 | [2026-10-07 검토 기록](report/multitag_web_compatibility_20261007.md) |
-| QR 리더기 우선·카메라 폴백 | [QR 재고 판독 파이프라인](architecture/qr_inventory_pipeline.md) |
 | A~H 단계, 패키지·설정·시험 대응표 | [저장소 구조와 작업 위치](reference/repository_layout.md) |
 | 현재 앵커 배치 | [6.3×4.6m 직사각형 좌표](reference/uwb_anchor_layout.md) |
 | 로컬 웹 이륙·이동·착륙 | [실물 연결·현장 절차](runbooks/web_test_flight.md) |
@@ -129,6 +137,8 @@ Windows에서는 심볼릭 링크를 지원하는 WSL 체크아웃을 쓴다.
 ## 기준과 절차
 
 설계 판단은 로드맵을 먼저 따른다.
+반복 진단 변경은 [DDS 식별자 기록](report/uwb_diagnostic_identity_20261011.md)을 읽는다.
+10월11일 비행은 [Position 두 축 왕복 기록](report/uwb_position_roundtrip_20261011.md)을 읽는다.
 
 | 문서 | 읽는 때 |
 |---|---|

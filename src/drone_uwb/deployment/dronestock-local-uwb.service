@@ -1,0 +1,19 @@
+[Unit]
+Description=Horizontal UWB observations through existing MAVROS
+After=network-online.target
+StartLimitIntervalSec=60
+StartLimitBurst=3
+
+[Service]
+Type=simple
+Environment=ROS_DOMAIN_ID=2
+Environment=ROS_LOCALHOST_ONLY=0
+Environment=MAVLINK20=1
+Environment=PYTHONUNBUFFERED=1
+EnvironmentFile=%h/.config/dronestock-local-uwb/environment
+ExecStart=/bin/bash -c 'source /opt/ros/humble/setup.bash && source "$UWB_WORKSPACE/install/setup.bash" && exec ros2 run drone_uwb uwb_local_odometry_bridge --config "$UWB_LOCAL_CONFIG"'
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=default.target

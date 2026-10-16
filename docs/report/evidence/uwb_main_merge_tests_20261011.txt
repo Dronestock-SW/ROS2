@@ -1,0 +1,6 @@
+Source: staged merge of feature_uwb 8d37380 into main 9efb764.
+Environment: connected ROS Humble host, separate /home/bluewak/uwb-main-merge-check-20261011 folder.
+Command: python3 -m pytest src/drone_uwb/test/integration/test_local_odometry.py src/drone_uwb/test/processing/test_observation_guard.py src/drone_uwb/test/processing/test_motion_reacquisition.py src/drone_bringup/test/test_qr_record_store.py src/drone_bringup/test/test_qr_fallback.py -q
+....................................................................     [100%]
+68 passed in 5.33s
+Scope: software regressions; does not validate flight continuity or protection appropriateness.

@@ -1,0 +1,296 @@
+{
+  "settings_evidence": {
+    "checked_at_utc": "2026-10-11T08:56:02.558931+00:00",
+    "operator_heading": "-Y",
+    "writes": [],
+    "flight_commands": false,
+    "settings": {
+      "enabled": true,
+      "tag_id": "6",
+      "source_frame": "uwb_map",
+      "enu_yaw_deg": -98.58238188884123,
+      "map_y_axis_sign": -1,
+      "enu_offset_x_m": 0.0,
+      "enu_offset_y_m": 0.0,
+      "max_age_s": 0.15,
+      "jump_guard_enabled": false,
+      "host_boot_id": "085cec07-db6b-4875-b41b-aa9878a7479f",
+      "fc_remote_ns_at_alignment": 182658973000,
+      "alignment_method": "operator_cardinal_and_stationary_px4_yaw",
+      "layout_confirmed": true,
+      "sensor_mount_confirmed": true,
+      "expected_ev_delay_ms": 0.0,
+      "antenna_body_frd_x_m": -0.1,
+      "antenna_body_frd_y_m": 0.0,
+      "antenna_body_frd_z_m": -0.1
+    },
+    "yaw_samples": 625,
+    "body_enu_yaw_deg": -8.58238188884122,
+    "yaw_span_deg": 0.023019089551714375,
+    "before": {
+      "EKF2_GPS_CTRL": 0,
+      "EKF2_EV_CTRL": 1,
+      "EKF2_EV_DELAY": 0.0,
+      "EKF2_EV_NOISE_MD": 0,
+      "EKF2_EV_POS_X": -0.10000000149011612,
+      "EKF2_EV_POS_Y": 0.0,
+      "EKF2_EV_POS_Z": -0.10000000149011612,
+      "EKF2_EV_QMIN": 0
+    },
+    "mount_evidence": "20261009 measured FC-to-tag FRD [-0.10,0,-0.10] m",
+    "layout_evidence": "operator confirmed 6.3 x 4.6 m / anchor z=0.15 m on 20261011",
+    "timing_calibrated": false,
+    "dynamic_alignment_verified": false,
+    "flight_verified": false
+  },
+  "fc_readback": {
+    "checked_at_utc": "2026-10-11T09:01:58.170713+00:00",
+    "host": "user-desktop",
+    "queries": [
+      {
+        "command": "commander status",
+        "complete": true,
+        "read_at_utc": "2026-10-11T09:02:00.487434+00:00",
+        "response": "\nNuttShell (NSH) NuttX-12.12.0\nnsh> commander status\nINFO  [commander] Disarmed\nINFO  [commander] navigation mode: Altitude\nINFO  [commander] user intended navigation mode: Altitude\nINFO  [commander] in failsafe: no\ncommander: cycle: 46556 events, 3243131us elapsed, 69.66us avg, min 35us max 1898us 91.211us rms\ncommander: preflight check: 4665 events, 742367us elapsed, 159.14us avg, min 112us max 1845us 119.345us rms\nnsh> "
+      },
+      {
+        "command": "param show COM_ARM_WO_GPS",
+        "complete": true,
+        "read_at_utc": "2026-10-11T09:02:00.497265+00:00",
+        "response": "param show COM_ARM_WO_GPS\nSymbols: x = used, + = saved, * = unsaved\nx   COM_ARM_WO_GPS [242,481] : 1\n\n 1095/2040 parameters used.\nnsh> "
+      },
+      {
+        "command": "param show COM_POSCTL_NAVL",
+        "complete": true,
+        "read_at_utc": "2026-10-11T09:02:00.508564+00:00",
+        "response": "param show COM_POSCTL_NAVL\nSymbols: x = used, + = saved, * = unsaved\n\n 1095/2040 parameters used.\nnsh> "
+      },
+      {
+        "command": "param show COM_POS_FS_DELAY",
+        "complete": true,
+        "read_at_utc": "2026-10-11T09:02:00.517301+00:00",
+        "response": "param show COM_POS_FS_DELAY\nSymbols: x = used, + = saved, * = unsaved\n\n 1095/2040 parameters used.\nnsh> "
+      },
+      {
+        "command": "param show NAV_RCL_ACT",
+        "complete": true,
+        "read_at_utc": "2026-10-11T09:02:00.526766+00:00",
+        "response": "param show NAV_RCL_ACT\nSymbols: x = used, + = saved, * = unsaved\nx + NAV_RCL_ACT [664,1117] : 3\n\n 1095/2040 parameters used.\nnsh> "
+      },
+      {
+        "command": "param show COM_RC_LOSS_T",
+        "complete": true,
+        "read_at_utc": "2026-10-11T09:02:00.538332+00:00",
+        "response": "param show COM_RC_LOSS_T\nSymbols: x = used, + = saved, * = unsaved\nx   COM_RC_LOSS_T [285,532] : 0.5000\n\n 1095/2040 parameters used.\nnsh> "
+      },
+      {
+        "command": "param show NAV_DLL_ACT",
+        "complete": true,
+        "read_at_utc": "2026-10-11T09:02:00.548289+00:00",
+        "response": "param show NAV_DLL_ACT\nSymbols: x = used, + = saved, * = unsaved\nx   NAV_DLL_ACT [656,1109] : 0\n\n 1095/2040 parameters used.\nnsh> "
+      },
+      {
+        "command": "param show COM_DLL_EXCEPT",
+        "complete": true,
+        "read_at_utc": "2026-10-11T09:02:00.555966+00:00",
+        "response": "param show COM_DLL_EXCEPT\nSymbols: x = used, + = saved, * = unsaved\nx   COM_DLL_EXCEPT [247,486] : 0\n\n 1095/2040 parameters used.\nnsh> "
+      },
+      {
+        "command": "param show RC_MAP_FLTMODE",
+        "complete": true,
+        "read_at_utc": "2026-10-11T09:02:00.568269+00:00",
+        "response": "param show RC_MAP_FLTMODE\nSymbols: x = used, + = saved, * = unsaved\nx + RC_MAP_FLTMODE [863,1326] : 5\n\n 1095/2040 parameters used.\nnsh> "
+      },
+      {
+        "command": "param show RC_MAP_KILL_SW",
+        "complete": true,
+        "read_at_utc": "2026-10-11T09:02:00.577303+00:00",
+        "response": "param show RC_MAP_KILL_SW\nSymbols: x = used, + = saved, * = unsaved\nx + RC_MAP_KILL_SW [866,1329] : 7\n\n 1095/2040 parameters used.\nnsh> "
+      },
+      {
+        "command": "param show RC_MAP_ARM_SW",
+        "complete": true,
+        "read_at_utc": "2026-10-11T09:02:00.586896+00:00",
+        "response": "param show RC_MAP_ARM_SW\nSymbols: x = used, + = saved, * = unsaved\nx + RC_MAP_ARM_SW [853,1316] : 8\n\n 1095/2040 parameters used.\nnsh> "
+      },
+      {
+        "command": "param show COM_FLTMODE1",
+        "complete": true,
+        "read_at_utc": "2026-10-11T09:02:00.595101+00:00",
+        "response": "param show COM_FLTMODE1\nSymbols: x = used, + = saved, * = unsaved\nx + COM_FLTMODE1 [251,490] : 1\n\n 1095/2040 parameters used.\nnsh> "
+      },
+      {
+        "command": "param show COM_FLTMODE2",
+        "complete": true,
+        "read_at_utc": "2026-10-11T09:02:00.606949+00:00",
+        "response": "param show COM_FLTMODE2\nSymbols: x = used, + = saved, * = unsaved\nx   COM_FLTMODE2 [252,491] : -1\n\n 1095/2040 parameters used.\nnsh> "
+      },
+      {
+        "command": "param show COM_FLTMODE3",
+        "complete": true,
+        "read_at_utc": "2026-10-11T09:02:00.617180+00:00",
+        "response": "param show COM_FLTMODE3\nSymbols: x = used, + = saved, * = unsaved\nx   COM_FLTMODE3 [253,492] : -1\n\n 1095/2040 parameters used.\nnsh> "
+      },
+      {
+        "command": "param show COM_FLTMODE4",
+        "complete": true,
+        "read_at_utc": "2026-10-11T09:02:00.633295+00:00",
+        "response": "param show COM_FLTMODE4\nSymbols: x = used, + = saved, * = unsaved\nx + COM_FLTMODE4 [254,493] : 2\n\n 1095/2040 parameters used.\nnsh> "
+      },
+      {
+        "command": "param show COM_FLTMODE5",
+        "complete": true,
+        "read_at_utc": "2026-10-11T09:02:00.643863+00:00",
+        "response": "param show COM_FLTMODE5\nSymbols: x = used, + = saved, * = unsaved\nx   COM_FLTMODE5 [255,494] : -1\n\n 1095/2040 parameters used.\nnsh> "
+      },
+      {
+        "command": "param show COM_FLTMODE6",
+        "complete": true,
+        "read_at_utc": "2026-10-11T09:02:00.655757+00:00",
+        "response": "param show COM_FLTMODE6\nSymbols: x = used, + = saved, * = unsaved\nx + COM_FLTMODE6 [256,495] : 11\n\n 1095/2040 parameters used.\nnsh> "
+      },
+      {
+        "command": "listener vehicle_status -n 1",
+        "complete": true,
+        "read_at_utc": "2026-10-11T09:02:00.726675+00:00",
+        "response": "listener vehicle_status -n 1\n\nTOPIC: vehicle_status\n vehicle_status\n    timestamp: 533587651 (0.182430 seconds ago)\n    armed_time: 0\n    takeoff_time: 0\n    nav_state_timestamp: 39524691\n    valid_nav_states_mask: 2147411327\n    can_set_nav_states_mask: 8308095\n    failure_detector_status: 0\n    arming_state: 1\n    latest_arming_reason: 0\n    latest_disarming_reason: 0\n    nav_state_user_intention: 1\n    nav_state: 1\n    executor_in_charge: 0\n    hil_state: 0\n    vehicle_type: 1\n    failsafe: False\n    failsafe_and_user_took_over: False\n    failsafe_defer_state: 0\n    gcs_connection_lost: True\n    gcs_connection_lost_counter: 0\n    high_latency_data_link_lost: False\n    is_vtol: False\n    is_vtol_tailsitter: False\n    in_transition_mode: False\n    in_transition_to_fw: False\n    system_type: 2\n    system_id: 1\n    component_id: 1\n    safety_button_available: True\n    safety_off: True\n    power_input_valid: True\n    usb_connected: True\n    open_drone_id_system_present: False\n    open_drone_id_system_healthy: False\n    parachute_system_present: False\n    parachute_system_healthy: False\n    rc_calibration_in_progress: False\n    calibration_enabled: False\n    pre_flight_checks_pass: True\n\nnsh> "
+      },
+      {
+        "command": "listener health_report -n 1",
+        "complete": true,
+        "read_at_utc": "2026-10-11T09:02:00.759080+00:00",
+        "response": "listener health_report -n 1\n\nTOPIC: health_report\n health_report\n    timestamp: 436402999 (97.434807 seconds ago)\n    can_arm_mode_flags: 8372167 (0b111'1111'1011'1111'1100'0111)\n    can_run_mode_flags: 8372167 (0b111'1111'1011'1111'1100'0111)\n    health_is_present_flags: 939658370 (0b11'1000'0000'0010'0000'1100'1000'0010)\n    health_warning_flags: 0\n    health_error_flags: 0\n    arming_check_warning_flags: 0\n    arming_check_error_flags: 17825792 (0b1'0001'0000'0000'0000'0000'0000)\nnsh> "
+      },
+      {
+        "command": "listener failsafe_flags -n 1",
+        "complete": true,
+        "read_at_utc": "2026-10-11T09:02:00.839537+00:00",
+        "response": "listener failsafe_flags -n 1\n\nTOPIC: failsafe_flags\n failsafe_flags\n    timestamp: 533851799 (0.020067 seconds ago)\n    mode_req_angular_velocity: 8312190\n    mode_req_attitude: 8311166\n    mode_req_local_alt: 8257918\n    mode_req_local_position: 7995448\n    mode_req_local_position_relaxed: 262212\n    mode_req_global_position: 56\n    mode_req_global_position_relaxed: 0\n    mode_req_mission: 8\n    mode_req_offboard_signal: 16384\n    mode_req_home_position: 32\n    mode_req_wind_and_flight_time_compliance: 2621464\n    mode_req_prevent_arming: 3944480\n    mode_req_manual_control: 34119\n    mode_req_other: 2139095040\n    angular_velocity_invalid: False\n    attitude_invalid: False\n    local_altitude_invalid: False\n    local_position_invalid: False\n    local_position_invalid_relaxed: False\n    local_velocity_invalid: False\n    global_position_invalid: True\n    global_position_invalid_relaxed: True\n    auto_mission_missing: True\n    offboard_control_signal_lost: True\n    home_position_invalid: True\n    manual_control_signal_lost: False\n    gcs_connection_lost: True\n    battery_warning: 0\n    battery_low_remaining_time: False\n    battery_unhealthy: False\n    geofence_breached: False\n    mission_failure: False\n    vtol_fixed_wing_system_failure: False\n    wind_limit_exceeded: False\n    flight_time_limit_exceeded: False\n    position_accuracy_low: False\n    navigator_failure: False\n    fd_critical_failure: False\n    fd_esc_arming_failure: False\n    fd_imbalanced_prop: False\n    fd_motor_failure: False\n\nnsh> "
+      },
+      {
+        "command": "listener manual_control_switches -n 1",
+        "complete": true,
+        "read_at_utc": "2026-10-11T09:02:00.872007+00:00",
+        "response": "listener manual_control_switches -n 1\n\nTOPIC: manual_control_switches\n manual_control_switches\n    timestamp: 533361294 (0.591489 seconds ago)\n    timestamp_sample: 533341529 (19765 us before timestamp)\n    switch_changes: 1\n    mode_slot: 1\n    arm_switch: 3\n    return_switch: 0\n    loiter_switch: 0\n    offboard_switch: 0\n    kill_switch: 3\n    termination_switch: 0\n    gear_switch: 0\n    transition_switch: 0\n    photo_switch: 0\n    video_switch: 0\n    engage_main_motor_switch: 0\n    payload_power_switch: 0\n\nnsh> "
+      },
+      {
+        "command": "listener battery_status -n 1",
+        "complete": true,
+        "read_at_utc": "2026-10-11T09:02:00.930224+00:00",
+        "response": "listener battery_status -n 1\n\nTOPIC: battery_status\n battery_status\n    timestamp: 533976159 (0.008019 seconds ago)\n    voltage_v: 25.46687\n    current_a: 0.00000\n    current_average_a: 15.00000\n    discharged_mah: 0.05241\n    remaining: 0.99998\n    scale: 1.00000\n    time_remaining_s: 623.98737\n    temperature: nan\n    voltage_cell_v: [0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000, 0.00000]\n    max_cell_voltage_delta: 0.00000\n    full_charge_capacity_wh: 0.00000\n    remaining_capacity_wh: 0.00000\n    nominal_voltage: 0.00000\n    internal_resistance_estimate: 0.00512\n    ocv_estimate: 25.46687\n    ocv_estimate_filtered: 25.62759\n    volt_based_soc_estimate: 1.00000\n    voltage_prediction: 25.50407\n    prediction_error: 0.03460\n    estimation_covariance_norm: 0.77268\n    capacity: 2600\n    cycle_count: 0\n    average_time_to_empty: 0\n    manufacture_date: 0\n    state_of_health: 0\n    max_error: 0\n    interface_error: 0\n    faults: 0\n    over_discharge_count: 0\n    connected: True\n    cell_count: 6\n    source: 0\n    priority: 0\n    id: 1\n    is_powering_off: False\n    is_required: False\n    warning: 0\n\nnsh> "
+      },
+      {
+        "command": "listener vehicle_land_detected -n 1",
+        "complete": true,
+        "read_at_utc": "2026-10-11T09:02:00.954761+00:00",
+        "response": "listener vehicle_land_detected -n 1\n\nTOPIC: vehicle_land_detected\n vehicle_land_detected\n    timestamp: 533433429 (0.609366 seconds ago)\n    freefall: False\n    ground_contact: True\n    maybe_landed: True\n    landed: True\n    in_ground_effect: False\n    in_descend: False\n    has_low_throttle: True\n    vertical_movement: False\n    horizontal_movement: False\n    rotational_movement: False\n    close_to_ground_or_skipped_check: True\n    at_rest: True\n\nnsh> "
+      },
+      {
+        "command": "listener estimator_selector_status -n 1",
+        "complete": true,
+        "read_at_utc": "2026-10-11T09:02:01.007207+00:00",
+        "response": "listener estimator_selector_status -n 1\n\nTOPIC: estimator_selector_status\n estimator_selector_status\n    timestamp: 533453179 (0.613825 seconds ago)\n    last_instance_change: 2682111\n    instance_changed_count: 2\n    accel_device_id: 2490378 (Type: 0x26, SPI:1 (0x00))\n    baro_device_id: 4028193 (Type: 0x3D, I2C:4 (0x77))\n    gyro_device_id: 2490378 (Type: 0x26, SPI:1 (0x00))\n    mag_device_id: 396321 (Type: 0x06, I2C:4 (0x0C))\n    combined_test_ratio: [0.50236, 0.50144, nan, nan, nan, nan, nan, nan, nan]\n    relative_test_ratio: [1.00000, 0.00000, nan, nan, nan, nan, nan, nan, nan]\n    accumulated_gyro_error: [0.00000, 0.00000, nan, nan]\n    accumulated_accel_error: [0.00000, 0.00000, nan, nan]\n    primary_instance: 1\n    instances_available: 2\n    healthy: [True, True, False, False, False, False, False, False, False]\n    gyro_fault_detected: False\n    accel_fault_detected: False\n\nnsh> "
+      },
+      {
+        "command": "listener estimator_status_flags -i 0 -n 1",
+        "complete": true,
+        "read_at_utc": "2026-10-11T09:02:01.113256+00:00",
+        "response": "listener estimator_status_flags -i 0 -n 1\n\nTOPIC: estimator_status_flags instance 0 #1\n estimator_status_flags\n    timestamp: 533196508 (0.923830 seconds ago)\n    timestamp_sample: 533005425 (191083 us before timestamp)\n    control_status_changes: 21\n    fault_status_changes: 0\n    innovation_fault_status_changes: 2\n    cs_tilt_align: True\n    cs_yaw_align: True\n    cs_gnss_pos: False\n    cs_opt_flow: False\n    cs_mag_hdg: True\n    cs_mag_3d: False\n    cs_mag_dec: True\n    cs_in_air: False\n    cs_wind: False\n    cs_baro_hgt: True\n    cs_rng_hgt: True\n    cs_gps_hgt: False\n    cs_ev_pos: True\n    cs_ev_yaw: False\n    cs_ev_hgt: False\n    cs_fuse_beta: False\n    cs_mag_field_disturbed: False\n    cs_fixed_wing: False\n    cs_mag_fault: False\n    cs_fuse_aspd: False\n    cs_gnd_effect: False\n    cs_rng_stuck: False\n    cs_gnss_yaw: False\n    cs_mag_aligned_in_flight: False\n    cs_ev_vel: False\n    cs_synthetic_mag_z: False\n    cs_vehicle_at_rest: True\n    cs_gnss_yaw_fault: False\n    cs_rng_fault: False\n    cs_inertial_dead_reckoning: False\n    cs_wind_dead_reckoning: False\n    cs_rng_kin_consistent: True\n    cs_fake_pos: False\n    cs_fake_hgt: False\n    cs_gravity_vector: False\n    cs_mag: True\n    cs_ev_yaw_fault: False\n    cs_mag_heading_consistent: True\n    cs_aux_gpos: False\n    cs_rng_terrain: True\n    cs_opt_flow_terrain: False\n    cs_valid_fake_pos: False\n    cs_constant_pos: False\n    cs_baro_fault: False\n    cs_gnss_vel: False\n    cs_gnss_fault: False\n    cs_yaw_manual: False\n    cs_gnss_hgt_fault: False\n    fs_bad_mag_x: False\n    fs_bad_mag_y: False\n    fs_bad_mag_z: False\n    fs_bad_hdg: False\n    fs_bad_mag_decl: False\n    fs_bad_airspeed: False\n    fs_bad_sideslip: False\n    fs_bad_optflow_x: False\n    fs_bad_optflow_y: False\n    fs_bad_acc_vertical: False\n    fs_bad_acc_clipping: False\n    reject_hor_vel: False\n    reject_ver_vel: False\n    reject_hor_pos: False\n    reject_ver_pos: False\n    reject_yaw: False\n    reject_airspeed: False\n    reject_sideslip: False\n    reject_hagl: False\n    reject_optflow_x: False\n    reject_optflow_y: False\n\nnsh> "
+      },
+      {
+        "command": "listener estimator_status_flags -i 1 -n 1",
+        "complete": true,
+        "read_at_utc": "2026-10-11T09:02:01.217123+00:00",
+        "response": "listener estimator_status_flags -i 1 -n 1\n\nTOPIC: estimator_status_flags instance 1 #1\n estimator_status_flags\n    timestamp: 533950194 (0.274629 seconds ago)\n    timestamp_sample: 533760702 (189492 us before timestamp)\n    control_status_changes: 21\n    fault_status_changes: 0\n    innovation_fault_status_changes: 2\n    cs_tilt_align: True\n    cs_yaw_align: True\n    cs_gnss_pos: False\n    cs_opt_flow: False\n    cs_mag_hdg: True\n    cs_mag_3d: False\n    cs_mag_dec: True\n    cs_in_air: False\n    cs_wind: False\n    cs_baro_hgt: True\n    cs_rng_hgt: True\n    cs_gps_hgt: False\n    cs_ev_pos: True\n    cs_ev_yaw: False\n    cs_ev_hgt: False\n    cs_fuse_beta: False\n    cs_mag_field_disturbed: False\n    cs_fixed_wing: False\n    cs_mag_fault: False\n    cs_fuse_aspd: False\n    cs_gnd_effect: False\n    cs_rng_stuck: False\n    cs_gnss_yaw: False\n    cs_mag_aligned_in_flight: False\n    cs_ev_vel: False\n    cs_synthetic_mag_z: False\n    cs_vehicle_at_rest: True\n    cs_gnss_yaw_fault: False\n    cs_rng_fault: False\n    cs_inertial_dead_reckoning: False\n    cs_wind_dead_reckoning: False\n    cs_rng_kin_consistent: True\n    cs_fake_pos: False\n    cs_fake_hgt: False\n    cs_gravity_vector: False\n    cs_mag: True\n    cs_ev_yaw_fault: False\n    cs_mag_heading_consistent: True\n    cs_aux_gpos: False\n    cs_rng_terrain: True\n    cs_opt_flow_terrain: False\n    cs_valid_fake_pos: False\n    cs_constant_pos: False\n    cs_baro_fault: False\n    cs_gnss_vel: False\n    cs_gnss_fault: False\n    cs_yaw_manual: False\n    cs_gnss_hgt_fault: False\n    fs_bad_mag_x: False\n    fs_bad_mag_y: False\n    fs_bad_mag_z: False\n    fs_bad_hdg: False\n    fs_bad_mag_decl: False\n    fs_bad_airspeed: False\n    fs_bad_sideslip: False\n    fs_bad_optflow_x: False\n    fs_bad_optflow_y: False\n    fs_bad_acc_vertical: False\n    fs_bad_acc_clipping: False\n    reject_hor_vel: False\n    reject_ver_vel: False\n    reject_hor_pos: False\n    reject_ver_pos: False\n    reject_yaw: False\n    reject_airspeed: False\n    reject_sideslip: False\n    reject_hagl: False\n    reject_optflow_x: False\n    reject_optflow_y: False\n\nnsh> "
+      },
+      {
+        "command": "listener estimator_aid_src_ev_pos -n 1",
+        "complete": true,
+        "read_at_utc": "2026-10-11T09:02:01.291883+00:00",
+        "response": "listener estimator_aid_src_ev_pos -n 1\n\nTOPIC: estimator_aid_src_ev_pos 2 instances\n\nInstance 0:\n estimator_aid_src_ev_pos\n    timestamp: 534329570 (0.000444 seconds ago)\n    timestamp_sample: 534137282 (192288 us before timestamp)\n    time_last_fuse: 534142843\n    observation: [-2.983134, -2.549064]\n    device_id: 0 (Type: 0x00, UNKNOWN:0 (0x00))\n    observation_variance: [0.09000, 0.09000]\n    innovation: [-0.00400, 0.00432]\n    innovation_filtered: [-0.00046, -0.00020]\n    innovation_variance: [0.09301, 0.09302]\n    test_ratio: [0.00001, 0.00001]\n    test_ratio_filtered: [-0.00000, -0.00000]\n    estimator_instance: 0\n    innovation_rejected: False\n    fused: True\n\n\nInstance 1:\n estimator_aid_src_ev_pos\n    timestamp: 534357652 (0.006312 seconds ago)\n    timestamp_sample: 534162200 (195452 us before timestamp)\n    time_last_fuse: 534168193\n    observation: [-2.981936, -2.549352]\n    device_id: 0 (Type: 0x00, UNKNOWN:0 (0x00))\n    observation_variance: [0.09000, 0.09000]\n    innovation: [-0.00529, 0.00317]\n    innovation_filtered: [-0.00066, -0.00285]\n    innovation_variance: [0.09304, 0.09305]\n    test_ratio: [0.00001, 0.00000]\n    test_ratio_filtered: [-0.00000, -0.00001]\n    estimator_instance: 1\n    innovation_rejected: False\n    fused: True\n\nnsh> "
+      },
+      {
+        "command": "listener vehicle_visual_odometry -n 1",
+        "complete": true,
+        "read_at_utc": "2026-10-11T09:02:01.324999+00:00",
+        "response": "listener vehicle_visual_odometry -n 1\n\nTOPIC: vehicle_visual_odometry\n vehicle_visual_odometry\n    timestamp: 534389549 (0.015385 seconds ago)\n    timestamp_sample: 534367168 (22381 us before timestamp)\n    position: [-2.97246, -2.65163, 0.00000]\n    q: [nan, nan, nan, nan] (Roll: nan deg, Pitch: nan deg, Yaw: nan deg)\n    velocity: [nan, nan, nan]\n    angular_velocity: [nan, nan, nan]\n    position_variance: [0.09000, 0.09000, 1000000.00000]\n    orientation_variance: [nan, nan, nan]\n    velocity_variance: [nan, nan, nan]\n    pose_frame: 1\n    velocity_frame: 0\n    reset_counter: 0\n    quality: 0\n\nnsh> "
+      },
+      {
+        "command": "listener estimator_aid_src_optical_flow -n 1",
+        "complete": true,
+        "read_at_utc": "2026-10-11T09:02:01.406682+00:00",
+        "response": "listener estimator_aid_src_optical_flow -n 1\n\nTOPIC: estimator_aid_src_optical_flow 2 instances\n\nInstance 0:\n estimator_aid_src_optical_flow\n    timestamp: 534427208 (0.013668 seconds ago)\n    timestamp_sample: 534237612 (189596 us before timestamp)\n    time_last_fuse: 0\n    observation: [0.000065, 0.000552]\n    device_id: 0 (Type: 0x00, UNKNOWN:0 (0x00))\n    observation_variance: [0.14871, 0.14871]\n    innovation: [-0.14173, -0.05957]\n    innovation_filtered: [-0.07538, -0.09269]\n    innovation_variance: [7.06903, 7.01066]\n    test_ratio: [0.00031, 0.00005]\n    test_ratio_filtered: [-0.00010, -0.00019]\n    estimator_instance: 0\n    innovation_rejected: False\n    fused: False\n\n\nInstance 1:\n estimator_aid_src_optical_flow\n    timestamp: 534466896 (0.006002 seconds ago)\n    timestamp_sample: 534274590 (192306 us before timestamp)\n    time_last_fuse: 0\n    observation: [-0.001805, -0.000873]\n    device_id: 0 (Type: 0x00, UNKNOWN:0 (0x00))\n    observation_variance: [0.15084, 0.15084]\n    innovation: [0.00313, 0.06885]\n    innovation_filtered: [0.03891, 0.07732]\n    innovation_variance: [7.57781, 7.58843]\n    test_ratio: [0.00000, 0.00006]\n    test_ratio_filtered: [0.00002, 0.00012]\n    estimator_instance: 1\n    innovation_rejected: False\n    fused: False\n\nnsh> "
+      },
+      {
+        "command": "listener estimator_aid_src_rng_hgt -n 1",
+        "complete": true,
+        "read_at_utc": "2026-10-11T09:02:01.475603+00:00",
+        "response": "listener estimator_aid_src_rng_hgt -n 1\n\nTOPIC: estimator_aid_src_rng_hgt 2 instances\n\nInstance 0:\n estimator_aid_src_rng_hgt\n    timestamp: 534451195 (0.067952 seconds ago)\n    timestamp_sample: 534251690 (199505 us before timestamp)\n    time_last_fuse: 534260090\n    device_id: 0 (Type: 0x00, UNKNOWN:0 (0x00))\n    observation: 0.02000\n    observation_variance: 0.01304\n    innovation: 0.00033\n    innovation_filtered: 0.00001\n    innovation_variance: 0.01481\n    test_ratio: 0.00000\n    test_ratio_filtered: 0.00000\n    estimator_instance: 0\n    innovation_rejected: False\n    fused: True\n\n\nInstance 1:\n estimator_aid_src_rng_hgt\n    timestamp: 534546510 (0.003423 seconds ago)\n    timestamp_sample: 534353232 (193278 us before timestamp)\n    time_last_fuse: 534357030\n    device_id: 0 (Type: 0x00, UNKNOWN:0 (0x00))\n    observation: 0.02000\n    observation_variance: 0.01305\n    innovation: -0.00053\n    innovation_filtered: -0.00054\n    innovation_variance: 0.01482\n    test_ratio: 0.00000\n    test_ratio_filtered: -0.00000\n    estimator_instance: 1\n    innovation_rejected: False\n    fused: True\n\nnsh> "
+      },
+      {
+        "command": "listener estimator_aid_src_baro_hgt -n 1",
+        "complete": true,
+        "read_at_utc": "2026-10-11T09:02:01.546338+00:00",
+        "response": "listener estimator_aid_src_baro_hgt -n 1\n\nTOPIC: estimator_aid_src_baro_hgt 2 instances\n\nInstance 0:\n estimator_aid_src_baro_hgt\n    timestamp: 534562489 (0.027349 seconds ago)\n    timestamp_sample: 534367501 (194988 us before timestamp)\n    time_last_fuse: 534368231\n    device_id: 0 (Type: 0x00, UNKNOWN:0 (0x00))\n    observation: -17.74324\n    observation_variance: 12.35966\n    innovation: -0.12249\n    innovation_filtered: -0.02015\n    innovation_variance: 12.36252\n    test_ratio: 0.00004\n    test_ratio_filtered: -0.00001\n    estimator_instance: 0\n    innovation_rejected: False\n    fused: True\n\n\nInstance 1:\n estimator_aid_src_baro_hgt\n    timestamp: 534615998 (0.003054 seconds ago)\n    timestamp_sample: 534424290 (191708 us before timestamp)\n    time_last_fuse: 534426602\n    device_id: 0 (Type: 0x00, UNKNOWN:0 (0x00))\n    observation: -17.89000\n    observation_variance: 12.35967\n    innovation: 0.02429\n    innovation_filtered: -0.01556\n    innovation_variance: 12.36263\n    test_ratio: 0.00000\n    test_ratio_filtered: -0.00001\n    estimator_instance: 1\n    innovation_rejected: False\n    fused: True\n\nnsh> "
+      },
+      {
+        "command": "listener vehicle_local_position -n 1",
+        "complete": true,
+        "read_at_utc": "2026-10-11T09:02:01.613778+00:00",
+        "response": "listener vehicle_local_position -n 1\n\nTOPIC: vehicle_local_position\n vehicle_local_position\n    timestamp: 534655820 (0.004413 seconds ago)\n    timestamp_sample: 534655194 (626 us before timestamp)\n    ref_timestamp: 0\n    ref_lat: nan\n    ref_lon: nan\n    x: -2.98736\n    y: -2.54736\n    z: -0.01408\n    delta_xy: [-0.00299, 0.00115]\n    delta_z: -17.84879\n    vx: -0.00055\n    vy: -0.00214\n    vz: 0.00014\n    z_deriv: -0.00061\n    delta_vxy: [-0.00177, -0.00044]\n    delta_vz: -0.00391\n    ax: 0.00693\n    ay: -0.00485\n    az: 0.00567\n    heading: 1.71742\n    heading_var: 0.01573\n    unaided_heading: -0.03083\n    delta_heading: 1.69972\n    tilt_var: 0.00003\n    ref_alt: nan\n    dist_bottom: 0.01953\n    dist_bottom_var: 0.00128\n    delta_dist_bottom: -17.84879\n    eph: 0.07579\n    epv: 0.05328\n    evh: 0.07848\n    evv: 0.03940\n    vxy_max: inf\n    vz_max: inf\n    hagl_min: inf\n    hagl_max_z: inf\n    hagl_max_xy: inf\n    xy_valid: True\n    z_valid: True\n    v_xy_valid: True\n    v_z_valid: True\n    xy_reset_counter: 8\n    z_reset_counter: 3\n    vxy_reset_counter: 5\n    vz_reset_counter: 2\n    heading_reset_counter: 2\n    heading_good_for_control: False\n    xy_global: False\n    z_global: False\n    dist_bottom_valid: True\n    dist_bottom_reset_counter: 3\n    dist_bottom_sensor_bitfield: 1\n    dead_reckoning: False\nnsh> "
+      },
+      {
+        "command": "logger status",
+        "complete": true,
+        "read_at_utc": "2026-10-11T09:02:01.643947+00:00",
+        "response": "logger status\nINFO  [logger] Running in mode: all\nINFO  [logger] Number of subscriptions: 179 (5728 bytes)\nINFO  [logger] Full File Logging Running:\nINFO  [logger] Log file: /fs/microsd/log/2026-10-10/16_31_29.ulg\nINFO  [logger] Wrote 20.07 MiB (avg 40.03 KiB/s)\nINFO  [logger] Since last status: dropouts: 0 (max len: 0.000 s), max used buffer: 7721 / 65536 B\nnsh> "
+      },
+      {
+        "command": "listener health_report -n 1",
+        "complete": true,
+        "read_at_utc": "2026-10-11T09:02:01.683320+00:00",
+        "response": "listener health_report -n 1\n\nTOPIC: health_report\n health_report\n    timestamp: 436402999 (98.352798 seconds ago)\n    can_arm_mode_flags: 8372167 (0b111'1111'1011'1111'1100'0111)\n    can_run_mode_flags: 8372167 (0b111'1111'1011'1111'1100'0111)\n    health_is_present_flags: 939658370 (0b11'1000'0000'0010'0000'1100'1000'0010)\n    health_warning_flags: 0\n    health_error_flags: 0\n    arming_check_warning_flags: 0\n    arming_check_error_flags: 17825792 (0b1'0001'0000'0000'0000'0000'0000)\nnsh> "
+      }
+    ],
+    "fc_parameter_writes": false,
+    "flight_commands": false,
+    "profile": "position-ready",
+    "initial_state": {
+      "connected": true,
+      "armed": false,
+      "mode": "ALTCTL"
+    },
+    "finished_at_utc": "2026-10-11T09:02:01.716959+00:00"
+  },
+  "reference": {
+    "midpoint_xy_m": [
+      3.15,
+      2.3
+    ],
+    "y_point_xy_m": [
+      3.15,
+      3.3
+    ],
+    "x_point_xy_m": [
+      4.15,
+      2.3
+    ]
+  },
+  "windows_tests": {
+    "passed": 51,
+    "skipped": 1
+  },
+  "ros_tests": ".....................                                                    [100%]\n21 passed in 0.51s\n",
+  "mirror_snapshot": {
+    "complete": false,
+    "sha256_verified": false,
+    "fc_commands_sent": 0,
+    "connect_address": null,
+    "source_bytes": 330907852,
+    "backlog_bytes": 0,
+    "source_recording_error": null,
+    "updated_utc": "2026-10-11T09:08:12.968563+00:00",
+    "copied_bytes": 330907852
+  },
+  "next_flight_verified": false
+}

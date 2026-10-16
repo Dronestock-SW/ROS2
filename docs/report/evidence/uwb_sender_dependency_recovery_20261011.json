@@ -1,0 +1,1759 @@
+{
+  "active_alignment": {
+    "checked_at_utc": "2026-10-11T09:03:40.382599+00:00",
+    "operator_heading": "-Y",
+    "writes": [],
+    "flight_commands": false,
+    "settings": {
+      "enabled": true,
+      "tag_id": "6",
+      "source_frame": "uwb_map",
+      "enu_yaw_deg": -98.40564507110611,
+      "map_y_axis_sign": -1,
+      "enu_offset_x_m": 0.0,
+      "enu_offset_y_m": 0.0,
+      "max_age_s": 0.15,
+      "jump_guard_enabled": false,
+      "host_boot_id": "085cec07-db6b-4875-b41b-aa9878a7479f",
+      "fc_remote_ns_at_alignment": 640450875000,
+      "alignment_method": "operator_cardinal_and_stationary_px4_yaw",
+      "layout_confirmed": true,
+      "sensor_mount_confirmed": true,
+      "expected_ev_delay_ms": 0.0,
+      "antenna_body_frd_x_m": -0.1,
+      "antenna_body_frd_y_m": 0.0,
+      "antenna_body_frd_z_m": -0.1
+    },
+    "yaw_samples": 593,
+    "body_enu_yaw_deg": -8.4056450711061,
+    "yaw_span_deg": 0.029757795382311415,
+    "before": {
+      "EKF2_GPS_CTRL": 0,
+      "EKF2_EV_CTRL": 1,
+      "EKF2_EV_DELAY": 0.0,
+      "EKF2_EV_NOISE_MD": 0,
+      "EKF2_EV_POS_X": -0.10000000149011612,
+      "EKF2_EV_POS_Y": 0.0,
+      "EKF2_EV_POS_Z": -0.10000000149011612,
+      "EKF2_EV_QMIN": 0
+    },
+    "mount_evidence": "20261009 measured FC-to-tag FRD [-0.10,0,-0.10] m",
+    "layout_evidence": "operator confirmed 6.3 x 4.6 m / anchor z=0.15 m on 20261011",
+    "timing_calibrated": false,
+    "dynamic_alignment_verified": false,
+    "flight_verified": false
+  },
+  "parameter_comparison": {
+    "before": {
+      "EKF2_GPS_CTRL": "0",
+      "EKF2_OF_CTRL": "1",
+      "EKF2_RNG_CTRL": "1",
+      "EKF2_BARO_CTRL": "1",
+      "EKF2_HGT_REF": "0",
+      "EKF2_EV_CTRL": "1",
+      "EKF2_EV_DELAY": "0.0000",
+      "EKF2_EV_NOISE_MD": "0",
+      "EKF2_EVP_NOISE": "0.1000",
+      "EKF2_EVV_NOISE": "0.1000",
+      "EKF2_EVA_NOISE": "0.1000",
+      "EKF2_EV_POS_X": "-0.1000",
+      "EKF2_EV_POS_Y": "0.0000",
+      "EKF2_EV_POS_Z": "-0.1000",
+      "EKF2_MAG_TYPE": "0",
+      "EKF2_MAG_CHECK": "1",
+      "EKF2_MAG_DECL": "0.0000",
+      "EKF2_ACC_NOISE": "0.3500",
+      "EKF2_GYR_NOISE": "0.0150",
+      "EKF2_ABIAS_P_NSE": null,
+      "EKF2_GBIAS_P_NSE": null,
+      "SENS_FLOW_ROT": "4",
+      "SENS_FLOW_SCALE": "1.0000",
+      "EKF2_OF_QMIN": "1",
+      "EKF2_OF_QMIN_GND": "0",
+      "EKF2_OF_N_MIN": "0.1500",
+      "EKF2_OF_N_MAX": "0.5000",
+      "EKF2_OF_GATE": "3.0000",
+      "EKF2_OF_DELAY": "20.0000",
+      "EKF2_RNG_A_HMAX": "5.0000",
+      "EKF2_RNG_A_VMAX": "2.0000",
+      "EKF2_RNG_QLTY_T": "1.0000",
+      "EKF2_RNG_GATE": "5.0000",
+      "EKF2_RNG_NOISE": "0.1000",
+      "EKF2_RNG_DELAY": "5.0000",
+      "COM_POS_FS_EPH": "5.0000",
+      "COM_VEL_FS_EVH": "1.0000",
+      "COM_POS_FS_DELAY": null,
+      "COM_POS_LOW_EPH": "-1.0000",
+      "COM_POS_LOW_ACT": "3",
+      "EKF2_NOAID_TOUT": "5000000"
+    },
+    "after": {
+      "EKF2_GPS_CTRL": "0",
+      "EKF2_OF_CTRL": "1",
+      "EKF2_RNG_CTRL": "1",
+      "EKF2_BARO_CTRL": "1",
+      "EKF2_HGT_REF": "0",
+      "EKF2_EV_CTRL": "1",
+      "EKF2_EV_DELAY": "0.0000",
+      "EKF2_EV_NOISE_MD": "0",
+      "EKF2_EVP_NOISE": "0.1000",
+      "EKF2_EVV_NOISE": "0.1000",
+      "EKF2_EVA_NOISE": "0.1000",
+      "EKF2_EV_POS_X": "-0.1000",
+      "EKF2_EV_POS_Y": "0.0000",
+      "EKF2_EV_POS_Z": "-0.1000",
+      "EKF2_MAG_TYPE": "0",
+      "EKF2_MAG_CHECK": "1",
+      "EKF2_MAG_DECL": "0.0000",
+      "EKF2_ACC_NOISE": "0.3500",
+      "EKF2_GYR_NOISE": "0.0150",
+      "EKF2_ABIAS_P_NSE": null,
+      "EKF2_GBIAS_P_NSE": null,
+      "SENS_FLOW_ROT": "4",
+      "SENS_FLOW_SCALE": "1.0000",
+      "EKF2_OF_QMIN": "1",
+      "EKF2_OF_QMIN_GND": "0",
+      "EKF2_OF_N_MIN": "0.1500",
+      "EKF2_OF_N_MAX": "0.5000",
+      "EKF2_OF_GATE": "3.0000",
+      "EKF2_OF_DELAY": "20.0000",
+      "EKF2_RNG_A_HMAX": "5.0000",
+      "EKF2_RNG_A_VMAX": "2.0000",
+      "EKF2_RNG_QLTY_T": "1.0000",
+      "EKF2_RNG_GATE": "5.0000",
+      "EKF2_RNG_NOISE": "0.1000",
+      "EKF2_RNG_DELAY": "5.0000",
+      "COM_POS_FS_EPH": "5.0000",
+      "COM_VEL_FS_EVH": "1.0000",
+      "COM_POS_FS_DELAY": null,
+      "COM_POS_LOW_EPH": "-1.0000",
+      "COM_POS_LOW_ACT": "3",
+      "EKF2_NOAID_TOUT": "5000000"
+    },
+    "changed": {},
+    "queried_count": 41,
+    "available_count": 38
+  },
+  "fc_readbacks": {
+    "recovered": {
+      "checked_at_utc": "2026-10-11T09:13:10.111643+00:00",
+      "host": "user-desktop",
+      "queries": [
+        {
+          "command": "ver all",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:12.507257+00:00",
+          "response": "\nNuttShell (NSH) NuttX-12.12.0\nnsh> ver all\nHW arch: PX4_FMU_V6C\nHW type: V6C002002\nHW version: 0x002\nHW revision: 0x002\nPX4 git-hash: d6f12ad1c4f70ad3230afd7d86e971421e02fef4\nPX4 version: Release 1.17.0 (17891583)\nOS: NuttX\nOS version: Release 12.12.0 (202113279)\nOS git-hash: fb2fadf6f599c1406f052db013efd00a2518e72c\nBuild datetime: Sep 19 2026 11:17:24\nBuild uri: localhost\nBuild variant: default\nToolchain: GNU GCC, 10.3.1 20210621 (release)\nPX4GUID: 0006000000003132343830345115001e0031\nMCU: STM32H7[4|5]xxx, rev. V\nnsh> "
+        },
+        {
+          "command": "param show EKF2_GPS_CTRL",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:12.517351+00:00",
+          "response": "param show EKF2_GPS_CTRL\nSymbols: x = used, + = saved, * = unsaved\nx + EKF2_GPS_CTRL [354,601] : 0\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_OF_CTRL",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:12.528661+00:00",
+          "response": "param show EKF2_OF_CTRL\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_OF_CTRL [394,642] : 1\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_RNG_CTRL",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:12.536258+00:00",
+          "response": "param show EKF2_RNG_CTRL\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_RNG_CTRL [422,670] : 1\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_BARO_CTRL",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:12.547826+00:00",
+          "response": "param show EKF2_BARO_CTRL\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_BARO_CTRL [323,570] : 1\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_HGT_REF",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:12.558190+00:00",
+          "response": "param show EKF2_HGT_REF\nSymbols: x = used, + = saved, * = unsaved\nx + EKF2_HGT_REF [372,619] : 0\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_EV_CTRL",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:12.565730+00:00",
+          "response": "param show EKF2_EV_CTRL\nSymbols: x = used, + = saved, * = unsaved\nx + EKF2_EV_CTRL [342,589] : 1\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_EV_DELAY",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:12.580206+00:00",
+          "response": "param show EKF2_EV_DELAY\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_EV_DELAY [343,590] : 0.0000\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_EV_NOISE_MD",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:12.590847+00:00",
+          "response": "param show EKF2_EV_NOISE_MD\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_EV_NOISE_MD [344,591] : 0\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_EVP_NOISE",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:12.601772+00:00",
+          "response": "param show EKF2_EVP_NOISE\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_EVP_NOISE [339,586] : 0.1000\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_EVV_NOISE",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:12.613267+00:00",
+          "response": "param show EKF2_EVV_NOISE\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_EVV_NOISE [341,588] : 0.1000\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_EVA_NOISE",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:12.626263+00:00",
+          "response": "param show EKF2_EVA_NOISE\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_EVA_NOISE [337,584] : 0.1000\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_EV_POS_X",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:12.638048+00:00",
+          "response": "param show EKF2_EV_POS_X\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_EV_POS_X [345,592] : -0.1000\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_EV_POS_Y",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:12.657874+00:00",
+          "response": "param show EKF2_EV_POS_Y\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_EV_POS_Y [346,593] : 0.0000\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_EV_POS_Z",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:12.668339+00:00",
+          "response": "param show EKF2_EV_POS_Z\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_EV_POS_Z [347,594] : -0.1000\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_MAG_TYPE",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:12.678509+00:00",
+          "response": "param show EKF2_MAG_TYPE\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_MAG_TYPE [388,635] : 0\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_MAG_CHECK",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:12.686885+00:00",
+          "response": "param show EKF2_MAG_CHECK\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_MAG_CHECK [380,627] : 1\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_MAG_DECL",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:12.698130+00:00",
+          "response": "param show EKF2_MAG_DECL\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_MAG_DECL [383,630] : 0.0000\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_ACC_NOISE",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:12.707529+00:00",
+          "response": "param show EKF2_ACC_NOISE\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_ACC_NOISE [312,559] : 0.3500\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_GYR_NOISE",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:12.716177+00:00",
+          "response": "param show EKF2_GYR_NOISE\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_GYR_NOISE [369,616] : 0.0150\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_ABIAS_P_NSE",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:12.728353+00:00",
+          "response": "param show EKF2_ABIAS_P_NSE\nSymbols: x = used, + = saved, * = unsaved\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_GBIAS_P_NSE",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:12.735275+00:00",
+          "response": "param show EKF2_GBIAS_P_NSE\nSymbols: x = used, + = saved, * = unsaved\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show SENS_FLOW_ROT",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:12.747142+00:00",
+          "response": "param show SENS_FLOW_ROT\nSymbols: x = used, + = saved, * = unsaved\nx + SENS_FLOW_ROT [936,1434] : 4\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show SENS_FLOW_SCALE",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:12.768599+00:00",
+          "response": "param show SENS_FLOW_SCALE\nSymbols: x = used, + = saved, * = unsaved\nx   SENS_FLOW_SCALE [937,1435] : 1.0000\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_OF_QMIN",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:12.778527+00:00",
+          "response": "param show EKF2_OF_QMIN\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_OF_QMIN [403,651] : 1\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_OF_QMIN_GND",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:12.798433+00:00",
+          "response": "param show EKF2_OF_QMIN_GND\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_OF_QMIN_GND [404,652] : 0\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_OF_N_MIN",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:12.816126+00:00",
+          "response": "param show EKF2_OF_N_MIN\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_OF_N_MIN [399,647] : 0.1500\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_OF_N_MAX",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:12.829326+00:00",
+          "response": "param show EKF2_OF_N_MAX\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_OF_N_MAX [398,646] : 0.5000\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_OF_GATE",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:12.846253+00:00",
+          "response": "param show EKF2_OF_GATE\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_OF_GATE [396,644] : 3.0000\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_OF_DELAY",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:12.859400+00:00",
+          "response": "param show EKF2_OF_DELAY\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_OF_DELAY [395,643] : 20.0000\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_RNG_A_HMAX",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:12.873547+00:00",
+          "response": "param show EKF2_RNG_A_HMAX\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_RNG_A_HMAX [420,668] : 5.0000\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_RNG_A_VMAX",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:12.889334+00:00",
+          "response": "param show EKF2_RNG_A_VMAX\nSymbols: x = used, + = saved, * = unsaved\nx + EKF2_RNG_A_VMAX [421,669] : 2.0000\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_RNG_QLTY_T",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:12.906125+00:00",
+          "response": "param show EKF2_RNG_QLTY_T\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_RNG_QLTY_T [432,680] : 1.0000\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_RNG_GATE",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:12.919570+00:00",
+          "response": "param show EKF2_RNG_GATE\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_RNG_GATE [425,673] : 5.0000\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_RNG_NOISE",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:12.928452+00:00",
+          "response": "param show EKF2_RNG_NOISE\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_RNG_NOISE [427,675] : 0.1000\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_RNG_DELAY",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:12.935999+00:00",
+          "response": "param show EKF2_RNG_DELAY\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_RNG_DELAY [423,671] : 5.0000\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show COM_POS_FS_EPH",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:12.948883+00:00",
+          "response": "param show COM_POS_FS_EPH\nSymbols: x = used, + = saved, * = unsaved\nx   COM_POS_FS_EPH [275,522] : 5.0000\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show COM_VEL_FS_EVH",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:12.957382+00:00",
+          "response": "param show COM_VEL_FS_EVH\nSymbols: x = used, + = saved, * = unsaved\nx   COM_VEL_FS_EVH [292,539] : 1.0000\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show COM_POS_FS_DELAY",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:12.965956+00:00",
+          "response": "param show COM_POS_FS_DELAY\nSymbols: x = used, + = saved, * = unsaved\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show COM_POS_LOW_EPH",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:12.977925+00:00",
+          "response": "param show COM_POS_LOW_EPH\nSymbols: x = used, + = saved, * = unsaved\nx   COM_POS_LOW_EPH [277,524] : -1.0000\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show COM_POS_LOW_ACT",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:12.987788+00:00",
+          "response": "param show COM_POS_LOW_ACT\nSymbols: x = used, + = saved, * = unsaved\nx   COM_POS_LOW_ACT [276,523] : 3\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_NOAID_TOUT",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:13.008938+00:00",
+          "response": "param show EKF2_NOAID_TOUT\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_NOAID_TOUT [393,641] : 5000000\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "listener estimator_selector_status -n 1",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:13.067828+00:00",
+          "response": "listener estimator_selector_status -n 1\n\nTOPIC: estimator_selector_status\n estimator_selector_status\n    timestamp: 1206014672 (0.086188 seconds ago)\n    last_instance_change: 2682111\n    instance_changed_count: 2\n    accel_device_id: 2490378 (Type: 0x26, SPI:1 (0x00))\n    baro_device_id: 4028193 (Type: 0x3D, I2C:4 (0x77))\n    gyro_device_id: 2490378 (Type: 0x26, SPI:1 (0x00))\n    mag_device_id: 396321 (Type: 0x06, I2C:4 (0x0C))\n    combined_test_ratio: [0.50149, 0.50106, nan, nan, nan, nan, nan, nan, nan]\n    relative_test_ratio: [1.00000, 0.00000, nan, nan, nan, nan, nan, nan, nan]\n    accumulated_gyro_error: [0.00000, 0.00000, nan, nan]\n    accumulated_accel_error: [0.00000, 0.00000, nan, nan]\n    primary_instance: 1\n    instances_available: 2\n    healthy: [True, True, False, False, False, False, False, False, False]\n    gyro_fault_detected: False\n    accel_fault_detected: False\n\nnsh> "
+        },
+        {
+          "command": "listener estimator_status_flags -i 0 -n 1",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:13.173678+00:00",
+          "response": "listener estimator_status_flags -i 0 -n 1\n\nTOPIC: estimator_status_flags instance 0 #1\n estimator_status_flags\n    timestamp: 1206149986 (0.009979 seconds ago)\n    timestamp_sample: 1205960331 (189655 us before timestamp)\n    control_status_changes: 25\n    fault_status_changes: 0\n    innovation_fault_status_changes: 2\n    cs_tilt_align: True\n    cs_yaw_align: True\n    cs_gnss_pos: False\n    cs_opt_flow: False\n    cs_mag_hdg: True\n    cs_mag_3d: False\n    cs_mag_dec: True\n    cs_in_air: False\n    cs_wind: False\n    cs_baro_hgt: True\n    cs_rng_hgt: True\n    cs_gps_hgt: False\n    cs_ev_pos: True\n    cs_ev_yaw: False\n    cs_ev_hgt: False\n    cs_fuse_beta: False\n    cs_mag_field_disturbed: False\n    cs_fixed_wing: False\n    cs_mag_fault: False\n    cs_fuse_aspd: False\n    cs_gnd_effect: False\n    cs_rng_stuck: False\n    cs_gnss_yaw: False\n    cs_mag_aligned_in_flight: False\n    cs_ev_vel: False\n    cs_synthetic_mag_z: False\n    cs_vehicle_at_rest: True\n    cs_gnss_yaw_fault: False\n    cs_rng_fault: False\n    cs_inertial_dead_reckoning: False\n    cs_wind_dead_reckoning: False\n    cs_rng_kin_consistent: True\n    cs_fake_pos: False\n    cs_fake_hgt: False\n    cs_gravity_vector: False\n    cs_mag: True\n    cs_ev_yaw_fault: False\n    cs_mag_heading_consistent: True\n    cs_aux_gpos: False\n    cs_rng_terrain: True\n    cs_opt_flow_terrain: False\n    cs_valid_fake_pos: False\n    cs_constant_pos: False\n    cs_baro_fault: False\n    cs_gnss_vel: False\n    cs_gnss_fault: False\n    cs_yaw_manual: False\n    cs_gnss_hgt_fault: False\n    fs_bad_mag_x: False\n    fs_bad_mag_y: False\n    fs_bad_mag_z: False\n    fs_bad_hdg: False\n    fs_bad_mag_decl: False\n    fs_bad_airspeed: False\n    fs_bad_sideslip: False\n    fs_bad_optflow_x: False\n    fs_bad_optflow_y: False\n    fs_bad_acc_vertical: False\n    fs_bad_acc_clipping: False\n    reject_hor_vel: False\n    reject_ver_vel: False\n    reject_hor_pos: False\n    reject_ver_pos: False\n    reject_yaw: False\n    reject_airspeed: False\n    reject_sideslip: False\n    reject_hagl: False\n    reject_optflow_x: False\n    reject_optflow_y: False\n\nnsh> "
+        },
+        {
+          "command": "listener estimator_status_flags -i 1 -n 1",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:13.272779+00:00",
+          "response": "listener estimator_status_flags -i 1 -n 1\n\nTOPIC: estimator_status_flags instance 1 #1\n estimator_status_flags\n    timestamp: 1206074243 (0.191664 seconds ago)\n    timestamp_sample: 1205884790 (189453 us before timestamp)\n    control_status_changes: 25\n    fault_status_changes: 0\n    innovation_fault_status_changes: 2\n    cs_tilt_align: True\n    cs_yaw_align: True\n    cs_gnss_pos: False\n    cs_opt_flow: False\n    cs_mag_hdg: True\n    cs_mag_3d: False\n    cs_mag_dec: True\n    cs_in_air: False\n    cs_wind: False\n    cs_baro_hgt: True\n    cs_rng_hgt: True\n    cs_gps_hgt: False\n    cs_ev_pos: True\n    cs_ev_yaw: False\n    cs_ev_hgt: False\n    cs_fuse_beta: False\n    cs_mag_field_disturbed: False\n    cs_fixed_wing: False\n    cs_mag_fault: False\n    cs_fuse_aspd: False\n    cs_gnd_effect: False\n    cs_rng_stuck: False\n    cs_gnss_yaw: False\n    cs_mag_aligned_in_flight: False\n    cs_ev_vel: False\n    cs_synthetic_mag_z: False\n    cs_vehicle_at_rest: True\n    cs_gnss_yaw_fault: False\n    cs_rng_fault: False\n    cs_inertial_dead_reckoning: False\n    cs_wind_dead_reckoning: False\n    cs_rng_kin_consistent: True\n    cs_fake_pos: False\n    cs_fake_hgt: False\n    cs_gravity_vector: False\n    cs_mag: True\n    cs_ev_yaw_fault: False\n    cs_mag_heading_consistent: True\n    cs_aux_gpos: False\n    cs_rng_terrain: True\n    cs_opt_flow_terrain: False\n    cs_valid_fake_pos: False\n    cs_constant_pos: False\n    cs_baro_fault: False\n    cs_gnss_vel: False\n    cs_gnss_fault: False\n    cs_yaw_manual: False\n    cs_gnss_hgt_fault: False\n    fs_bad_mag_x: False\n    fs_bad_mag_y: False\n    fs_bad_mag_z: False\n    fs_bad_hdg: False\n    fs_bad_mag_decl: False\n    fs_bad_airspeed: False\n    fs_bad_sideslip: False\n    fs_bad_optflow_x: False\n    fs_bad_optflow_y: False\n    fs_bad_acc_vertical: False\n    fs_bad_acc_clipping: False\n    reject_hor_vel: False\n    reject_ver_vel: False\n    reject_hor_pos: False\n    reject_ver_pos: False\n    reject_yaw: False\n    reject_airspeed: False\n    reject_sideslip: False\n    reject_hagl: False\n    reject_optflow_x: False\n    reject_optflow_y: False\n\nnsh> "
+        },
+        {
+          "command": "listener estimator_aid_src_optical_flow -n 1",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:13.347784+00:00",
+          "response": "listener estimator_aid_src_optical_flow -n 1\n\nTOPIC: estimator_aid_src_optical_flow 2 instances\n\nInstance 0:\n estimator_aid_src_optical_flow\n    timestamp: 1206348632 (0.020134 seconds ago)\n    timestamp_sample: 1206146190 (202442 us before timestamp)\n    time_last_fuse: 0\n    observation: [0.000026, -0.002325]\n    device_id: 0 (Type: 0x00, UNKNOWN:0 (0x00))\n    observation_variance: [0.19547, 0.19547]\n    innovation: [-0.07390, 0.22029]\n    innovation_filtered: [-0.04257, 0.20612]\n    innovation_variance: [8.40846, 8.55413]\n    test_ratio: [0.00007, 0.00063]\n    test_ratio_filtered: [-0.00006, 0.00058]\n    estimator_instance: 0\n    innovation_rejected: False\n    fused: False\n\n\nInstance 1:\n estimator_aid_src_optical_flow\n    timestamp: 1206372451 (0.027315 seconds ago)\n    timestamp_sample: 1206182673 (189778 us before timestamp)\n    time_last_fuse: 0\n    observation: [-0.000893, -0.000291]\n    device_id: 0 (Type: 0x00, UNKNOWN:0 (0x00))\n    observation_variance: [0.14553, 0.14553]\n    innovation: [0.00222, 0.10450]\n    innovation_filtered: [0.02870, 0.03614]\n    innovation_variance: [7.69177, 7.72613]\n    test_ratio: [0.00000, 0.00015]\n    test_ratio_filtered: [0.00002, 0.00003]\n    estimator_instance: 1\n    innovation_rejected: False\n    fused: False\n\nnsh> "
+        },
+        {
+          "command": "listener estimator_aid_src_rng_hgt -n 1",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:13.416208+00:00",
+          "response": "listener estimator_aid_src_rng_hgt -n 1\n\nTOPIC: estimator_aid_src_rng_hgt 2 instances\n\nInstance 0:\n estimator_aid_src_rng_hgt\n    timestamp: 1206415902 (0.025096 seconds ago)\n    timestamp_sample: 1206216558 (199344 us before timestamp)\n    time_last_fuse: 1206217275\n    device_id: 0 (Type: 0x00, UNKNOWN:0 (0x00))\n    observation: 0.02000\n    observation_variance: 0.01228\n    innovation: -0.00133\n    innovation_filtered: -0.00117\n    innovation_variance: 0.01399\n    test_ratio: 0.00001\n    test_ratio_filtered: -0.00000\n    estimator_instance: 0\n    innovation_rejected: False\n    fused: True\n\n\nInstance 1:\n estimator_aid_src_rng_hgt\n    timestamp: 1206412372 (0.061579 seconds ago)\n    timestamp_sample: 1206216632 (195740 us before timestamp)\n    time_last_fuse: 1206222711\n    device_id: 0 (Type: 0x00, UNKNOWN:0 (0x00))\n    observation: 0.02000\n    observation_variance: 0.01228\n    innovation: -0.00040\n    innovation_filtered: -0.00043\n    innovation_variance: 0.01399\n    test_ratio: 0.00000\n    test_ratio_filtered: -0.00000\n    estimator_instance: 1\n    innovation_rejected: False\n    fused: True\n\nnsh> "
+        },
+        {
+          "command": "listener estimator_aid_src_baro_hgt -n 1",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:13.493404+00:00",
+          "response": "listener estimator_aid_src_baro_hgt -n 1\n\nTOPIC: estimator_aid_src_baro_hgt 2 instances\n\nInstance 0:\n estimator_aid_src_baro_hgt\n    timestamp: 1206465454 (0.043551 seconds ago)\n    timestamp_sample: 1206263968 (201486 us before timestamp)\n    time_last_fuse: 1206266906\n    device_id: 0 (Type: 0x00, UNKNOWN:0 (0x00))\n    observation: -17.82884\n    observation_variance: 12.35968\n    innovation: -0.02692\n    innovation_filtered: -0.03226\n    innovation_variance: 12.36184\n    test_ratio: 0.00000\n    test_ratio_filtered: -0.00002\n    estimator_instance: 0\n    innovation_rejected: False\n    fused: True\n\n\nInstance 1:\n estimator_aid_src_baro_hgt\n    timestamp: 1206521523 (0.019876 seconds ago)\n    timestamp_sample: 1206323464 (198059 us before timestamp)\n    time_last_fuse: 1206332038\n    device_id: 0 (Type: 0x00, UNKNOWN:0 (0x00))\n    observation: -17.87291\n    observation_variance: 12.35982\n    innovation: 0.01542\n    innovation_filtered: -0.02720\n    innovation_variance: 12.36190\n    test_ratio: 0.00000\n    test_ratio_filtered: -0.00002\n    estimator_instance: 1\n    innovation_rejected: False\n    fused: True\n\nnsh> "
+        },
+        {
+          "command": "listener estimator_aid_src_ev_pos -n 1",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:13.571351+00:00",
+          "response": "listener estimator_aid_src_ev_pos -n 1\n\nTOPIC: estimator_aid_src_ev_pos 2 instances\n\nInstance 0:\n estimator_aid_src_ev_pos\n    timestamp: 1206569248 (0.016832 seconds ago)\n    timestamp_sample: 1206381046 (188202 us before timestamp)\n    time_last_fuse: 1206382561\n    observation: [-2.986867, -2.538476]\n    device_id: 0 (Type: 0x00, UNKNOWN:0 (0x00))\n    observation_variance: [0.09000, 0.09000]\n    innovation: [-0.00422, -0.00218]\n    innovation_filtered: [-0.00262, -0.00039]\n    innovation_variance: [0.09300, 0.09300]\n    test_ratio: [0.00001, 0.00000]\n    test_ratio_filtered: [-0.00001, -0.00000]\n    estimator_instance: 0\n    innovation_rejected: False\n    fused: True\n\n\nInstance 1:\n estimator_aid_src_ev_pos\n    timestamp: 1206601047 (0.018730 seconds ago)\n    timestamp_sample: 1206406037 (195010 us before timestamp)\n    time_last_fuse: 1206411549\n    observation: [-2.985758, -2.538260]\n    device_id: 0 (Type: 0x00, UNKNOWN:0 (0x00))\n    observation_variance: [0.09000, 0.09000]\n    innovation: [-0.00576, 0.00025]\n    innovation_filtered: [-0.00399, 0.00143]\n    innovation_variance: [0.09302, 0.09303]\n    test_ratio: [0.00001, 0.00000]\n    test_ratio_filtered: [-0.00001, 0.00000]\n    estimator_instance: 1\n    innovation_rejected: False\n    fused: True\n\nnsh> "
+        },
+        {
+          "command": "listener vehicle_visual_odometry -n 1",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:13.603300+00:00",
+          "response": "listener vehicle_visual_odometry -n 1\n\nTOPIC: vehicle_visual_odometry\n vehicle_visual_odometry\n    timestamp: 1206658442 (0.005340 seconds ago)\n    timestamp_sample: 1206635947 (22495 us before timestamp)\n    position: [-2.97474, -2.63791, 0.00000]\n    q: [nan, nan, nan, nan] (Roll: nan deg, Pitch: nan deg, Yaw: nan deg)\n    velocity: [nan, nan, nan]\n    angular_velocity: [nan, nan, nan]\n    position_variance: [0.09000, 0.09000, 1000000.00000]\n    orientation_variance: [nan, nan, nan]\n    velocity_variance: [nan, nan, nan]\n    pose_frame: 1\n    velocity_frame: 0\n    reset_counter: 0\n    quality: 0\n\nnsh> "
+        },
+        {
+          "command": "listener vehicle_local_position -n 1",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:13.669690+00:00",
+          "response": "listener vehicle_local_position -n 1\n\nTOPIC: vehicle_local_position\n vehicle_local_position\n    timestamp: 1206690332 (0.006832 seconds ago)\n    timestamp_sample: 1206689837 (495 us before timestamp)\n    ref_timestamp: 0\n    ref_lat: nan\n    ref_lon: nan\n    x: -2.99227\n    y: -2.53867\n    z: -0.00573\n    delta_xy: [-0.00641, 0.00672]\n    delta_z: -17.84879\n    vx: 0.00159\n    vy: -0.00266\n    vz: 0.00113\n    z_deriv: 0.00057\n    delta_vxy: [0.00127, -0.00270]\n    delta_vz: -0.00391\n    ax: 0.00516\n    ay: 0.00250\n    az: 0.00869\n    heading: 1.71868\n    heading_var: 0.01557\n    unaided_heading: -0.03095\n    delta_heading: 1.69972\n    tilt_var: 0.00003\n    ref_alt: nan\n    dist_bottom: 0.01964\n    dist_bottom_var: 0.00058\n    delta_dist_bottom: -17.84879\n    eph: 0.07637\n    epv: 0.04700\n    evh: 0.07847\n    evv: 0.03985\n    vxy_max: inf\n    vz_max: inf\n    hagl_min: inf\n    hagl_max_z: inf\n    hagl_max_xy: inf\n    xy_valid: True\n    z_valid: True\n    v_xy_valid: True\n    v_z_valid: True\n    xy_reset_counter: 10\n    z_reset_counter: 3\n    vxy_reset_counter: 6\n    vz_reset_counter: 2\n    heading_reset_counter: 2\n    heading_good_for_control: False\n    xy_global: False\n    z_global: False\n    dist_bottom_valid: True\n    dist_bottom_reset_counter: 3\n    dist_bottom_sensor_bitfield: 1\n    dead_reckoning: False\nnsh> "
+        },
+        {
+          "command": "listener vehicle_global_position -n 1",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:13.681618+00:00",
+          "response": "listener vehicle_global_position -n 1\n\nTOPIC: vehicle_global_position\nnsh> "
+        },
+        {
+          "command": "listener vehicle_attitude -n 1",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:13.701079+00:00",
+          "response": "listener vehicle_attitude -n 1\n\nTOPIC: vehicle_attitude\n vehicle_attitude\n    timestamp: 1206769632 (0.002372 seconds ago)\n    timestamp_sample: 1206769348 (284 us before timestamp)\n    q: [0.65293, -0.00241, 0.00530, 0.75739] (Roll: 0.2 deg, Pitch: 0.6 deg, Yaw: 98.5 deg)\n    delta_q_reset: [0.66008, -0.00000, 0.00000, 0.75118]\n    quat_reset_counter: 1\n\nnsh> "
+        },
+        {
+          "command": "listener vehicle_angular_velocity -n 1",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:13.723143+00:00",
+          "response": "listener vehicle_angular_velocity -n 1\n\nTOPIC: vehicle_angular_velocity\n vehicle_angular_velocity\n    timestamp: 1206793080 (0.000851 seconds ago)\n    timestamp_sample: 1206792953 (127 us before timestamp)\n    xyz: [-0.00026, -0.00088, 0.00096]\n    xyz_derivative: [-0.10789, -0.10116, 0.01997]\nnsh> "
+        },
+        {
+          "command": "listener failsafe_flags -n 1",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:13:13.811338+00:00",
+          "response": "listener failsafe_flags -n 1\n\nTOPIC: failsafe_flags\n failsafe_flags\n    timestamp: 1206776826 (0.037310 seconds ago)\n    mode_req_angular_velocity: 8312190\n    mode_req_attitude: 8311166\n    mode_req_local_alt: 8257918\n    mode_req_local_position: 7995448\n    mode_req_local_position_relaxed: 262212\n    mode_req_global_position: 56\n    mode_req_global_position_relaxed: 0\n    mode_req_mission: 8\n    mode_req_offboard_signal: 16384\n    mode_req_home_position: 32\n    mode_req_wind_and_flight_time_compliance: 2621464\n    mode_req_prevent_arming: 3944480\n    mode_req_manual_control: 34119\n    mode_req_other: 2139095040\n    angular_velocity_invalid: False\n    attitude_invalid: False\n    local_altitude_invalid: False\n    local_position_invalid: False\n    local_position_invalid_relaxed: False\n    local_velocity_invalid: False\n    global_position_invalid: True\n    global_position_invalid_relaxed: True\n    auto_mission_missing: True\n    offboard_control_signal_lost: True\n    home_position_invalid: True\n    manual_control_signal_lost: False\n    gcs_connection_lost: True\n    battery_warning: 0\n    battery_low_remaining_time: False\n    battery_unhealthy: False\n    geofence_breached: False\n    mission_failure: False\n    vtol_fixed_wing_system_failure: False\n    wind_limit_exceeded: False\n    flight_time_limit_exceeded: False\n    position_accuracy_low: False\n    navigator_failure: False\n    fd_critical_failure: False\n    fd_esc_arming_failure: False\n    fd_imbalanced_prop: False\n    fd_motor_failure: False\n\nnsh> "
+        }
+      ],
+      "fc_parameter_writes": false,
+      "flight_commands": false,
+      "profile": "estimator",
+      "initial_state": {
+        "connected": true,
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      "finished_at_utc": "2026-10-11T09:13:13.856095+00:00"
+    },
+    "steady": {
+      "checked_at_utc": "2026-10-11T09:18:07.005611+00:00",
+      "host": "user-desktop",
+      "queries": [
+        {
+          "command": "ver all",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:10.608545+00:00",
+          "response": "\nNuttShell (NSH) NuttX-12.12.0\nnsh> ver all\nHW arch: PX4_FMU_V6C\nHW type: V6C002002\nHW version: 0x002\nHW revision: 0x002\nPX4 git-hash: d6f12ad1c4f70ad3230afd7d86e971421e02fef4\nPX4 version: Release 1.17.0 (17891583)\nOS: NuttX\nOS version: Release 12.12.0 (202113279)\nOS git-hash: fb2fadf6f599c1406f052db013efd00a2518e72c\nBuild datetime: Sep 19 2026 11:17:24\nBuild uri: localhost\nBuild variant: default\nToolchain: GNU GCC, 10.3.1 20210621 (release)\nPX4GUID: 0006000000003132343830345115001e0031\nMCU: STM32H7[4|5]xxx, rev. V\nnsh> "
+        },
+        {
+          "command": "param show EKF2_GPS_CTRL",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:10.649572+00:00",
+          "response": "param show EKF2_GPS_CTRL\nSymbols: x = used, + = saved, * = unsaved\nx + EKF2_GPS_CTRL [354,601] : 0\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_OF_CTRL",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:10.669208+00:00",
+          "response": "param show EKF2_OF_CTRL\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_OF_CTRL [394,642] : 1\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_RNG_CTRL",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:10.683026+00:00",
+          "response": "param show EKF2_RNG_CTRL\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_RNG_CTRL [422,670] : 1\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_BARO_CTRL",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:10.702542+00:00",
+          "response": "param show EKF2_BARO_CTRL\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_BARO_CTRL [323,570] : 1\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_HGT_REF",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:10.723084+00:00",
+          "response": "param show EKF2_HGT_REF\nSymbols: x = used, + = saved, * = unsaved\nx + EKF2_HGT_REF [372,619] : 0\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_EV_CTRL",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:10.743554+00:00",
+          "response": "param show EKF2_EV_CTRL\nSymbols: x = used, + = saved, * = unsaved\nx + EKF2_EV_CTRL [342,589] : 1\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_EV_DELAY",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:10.770280+00:00",
+          "response": "param show EKF2_EV_DELAY\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_EV_DELAY [343,590] : 0.0000\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_EV_NOISE_MD",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:10.789376+00:00",
+          "response": "param show EKF2_EV_NOISE_MD\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_EV_NOISE_MD [344,591] : 0\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_EVP_NOISE",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:10.799970+00:00",
+          "response": "param show EKF2_EVP_NOISE\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_EVP_NOISE [339,586] : 0.1000\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_EVV_NOISE",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:10.815292+00:00",
+          "response": "param show EKF2_EVV_NOISE\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_EVV_NOISE [341,588] : 0.1000\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_EVA_NOISE",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:10.832784+00:00",
+          "response": "param show EKF2_EVA_NOISE\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_EVA_NOISE [337,584] : 0.1000\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_EV_POS_X",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:10.851491+00:00",
+          "response": "param show EKF2_EV_POS_X\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_EV_POS_X [345,592] : -0.1000\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_EV_POS_Y",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:10.866662+00:00",
+          "response": "param show EKF2_EV_POS_Y\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_EV_POS_Y [346,593] : 0.0000\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_EV_POS_Z",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:10.891704+00:00",
+          "response": "param show EKF2_EV_POS_Z\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_EV_POS_Z [347,594] : -0.1000\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_MAG_TYPE",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:10.918939+00:00",
+          "response": "param show EKF2_MAG_TYPE\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_MAG_TYPE [388,635] : 0\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_MAG_CHECK",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:10.931512+00:00",
+          "response": "param show EKF2_MAG_CHECK\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_MAG_CHECK [380,627] : 1\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_MAG_DECL",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:10.962397+00:00",
+          "response": "param show EKF2_MAG_DECL\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_MAG_DECL [383,630] : 0.0000\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_ACC_NOISE",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:10.991510+00:00",
+          "response": "param show EKF2_ACC_NOISE\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_ACC_NOISE [312,559] : 0.3500\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_GYR_NOISE",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:11.026968+00:00",
+          "response": "param show EKF2_GYR_NOISE\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_GYR_NOISE [369,616] : 0.0150\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_ABIAS_P_NSE",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:11.083422+00:00",
+          "response": "param show EKF2_ABIAS_P_NSE\nSymbols: x = used, + = saved, * = unsaved\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_GBIAS_P_NSE",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:11.133158+00:00",
+          "response": "param show EKF2_GBIAS_P_NSE\nSymbols: x = used, + = saved, * = unsaved\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show SENS_FLOW_ROT",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:11.175441+00:00",
+          "response": "param show SENS_FLOW_ROT\nSymbols: x = used, + = saved, * = unsaved\nx + SENS_FLOW_ROT [936,1434] : 4\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show SENS_FLOW_SCALE",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:11.186772+00:00",
+          "response": "param show SENS_FLOW_SCALE\nSymbols: x = used, + = saved, * = unsaved\nx   SENS_FLOW_SCALE [937,1435] : 1.0000\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_OF_QMIN",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:11.200804+00:00",
+          "response": "param show EKF2_OF_QMIN\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_OF_QMIN [403,651] : 1\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_OF_QMIN_GND",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:11.219136+00:00",
+          "response": "param show EKF2_OF_QMIN_GND\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_OF_QMIN_GND [404,652] : 0\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_OF_N_MIN",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:11.236459+00:00",
+          "response": "param show EKF2_OF_N_MIN\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_OF_N_MIN [399,647] : 0.1500\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_OF_N_MAX",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:11.255216+00:00",
+          "response": "param show EKF2_OF_N_MAX\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_OF_N_MAX [398,646] : 0.5000\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_OF_GATE",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:11.274411+00:00",
+          "response": "param show EKF2_OF_GATE\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_OF_GATE [396,644] : 3.0000\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_OF_DELAY",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:11.291652+00:00",
+          "response": "param show EKF2_OF_DELAY\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_OF_DELAY [395,643] : 20.0000\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_RNG_A_HMAX",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:11.311967+00:00",
+          "response": "param show EKF2_RNG_A_HMAX\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_RNG_A_HMAX [420,668] : 5.0000\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_RNG_A_VMAX",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:11.327391+00:00",
+          "response": "param show EKF2_RNG_A_VMAX\nSymbols: x = used, + = saved, * = unsaved\nx + EKF2_RNG_A_VMAX [421,669] : 2.0000\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_RNG_QLTY_T",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:11.356664+00:00",
+          "response": "param show EKF2_RNG_QLTY_T\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_RNG_QLTY_T [432,680] : 1.0000\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_RNG_GATE",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:11.378063+00:00",
+          "response": "param show EKF2_RNG_GATE\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_RNG_GATE [425,673] : 5.0000\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_RNG_NOISE",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:11.398926+00:00",
+          "response": "param show EKF2_RNG_NOISE\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_RNG_NOISE [427,675] : 0.1000\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_RNG_DELAY",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:11.415606+00:00",
+          "response": "param show EKF2_RNG_DELAY\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_RNG_DELAY [423,671] : 5.0000\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show COM_POS_FS_EPH",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:11.429991+00:00",
+          "response": "param show COM_POS_FS_EPH\nSymbols: x = used, + = saved, * = unsaved\nx   COM_POS_FS_EPH [275,522] : 5.0000\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show COM_VEL_FS_EVH",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:11.444773+00:00",
+          "response": "param show COM_VEL_FS_EVH\nSymbols: x = used, + = saved, * = unsaved\nx   COM_VEL_FS_EVH [292,539] : 1.0000\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show COM_POS_FS_DELAY",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:11.455776+00:00",
+          "response": "param show COM_POS_FS_DELAY\nSymbols: x = used, + = saved, * = unsaved\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show COM_POS_LOW_EPH",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:11.470656+00:00",
+          "response": "param show COM_POS_LOW_EPH\nSymbols: x = used, + = saved, * = unsaved\nx   COM_POS_LOW_EPH [277,524] : -1.0000\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show COM_POS_LOW_ACT",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:11.479703+00:00",
+          "response": "param show COM_POS_LOW_ACT\nSymbols: x = used, + = saved, * = unsaved\nx   COM_POS_LOW_ACT [276,523] : 3\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "param show EKF2_NOAID_TOUT",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:11.500980+00:00",
+          "response": "param show EKF2_NOAID_TOUT\nSymbols: x = used, + = saved, * = unsaved\nx   EKF2_NOAID_TOUT [393,641] : 5000000\n\n 1095/2040 parameters used.\nnsh> "
+        },
+        {
+          "command": "listener estimator_selector_status -n 1",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:11.559123+00:00",
+          "response": "listener estimator_selector_status -n 1\n\nTOPIC: estimator_selector_status\n estimator_selector_status\n    timestamp: 1504150729 (0.425133 seconds ago)\n    last_instance_change: 2682111\n    instance_changed_count: 2\n    accel_device_id: 2490378 (Type: 0x26, SPI:1 (0x00))\n    baro_device_id: 4028193 (Type: 0x3D, I2C:4 (0x77))\n    gyro_device_id: 2490378 (Type: 0x26, SPI:1 (0x00))\n    mag_device_id: 396321 (Type: 0x06, I2C:4 (0x0C))\n    combined_test_ratio: [0.50074, 0.50102, nan, nan, nan, nan, nan, nan, nan]\n    relative_test_ratio: [1.00000, 0.00000, nan, nan, nan, nan, nan, nan, nan]\n    accumulated_gyro_error: [0.00000, 0.00000, nan, nan]\n    accumulated_accel_error: [0.00000, 0.00000, nan, nan]\n    primary_instance: 1\n    instances_available: 2\n    healthy: [True, True, False, False, False, False, False, False, False]\n    gyro_fault_detected: False\n    accel_fault_detected: False\n\nnsh> "
+        },
+        {
+          "command": "listener estimator_status_flags -i 0 -n 1",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:11.691762+00:00",
+          "response": "listener estimator_status_flags -i 0 -n 1\n\nTOPIC: estimator_status_flags instance 0 #1\n estimator_status_flags\n    timestamp: 1504425608 (0.208991 seconds ago)\n    timestamp_sample: 1504235771 (189837 us before timestamp)\n    control_status_changes: 33\n    fault_status_changes: 0\n    innovation_fault_status_changes: 2\n    cs_tilt_align: True\n    cs_yaw_align: True\n    cs_gnss_pos: False\n    cs_opt_flow: False\n    cs_mag_hdg: True\n    cs_mag_3d: False\n    cs_mag_dec: True\n    cs_in_air: False\n    cs_wind: False\n    cs_baro_hgt: True\n    cs_rng_hgt: True\n    cs_gps_hgt: False\n    cs_ev_pos: True\n    cs_ev_yaw: False\n    cs_ev_hgt: False\n    cs_fuse_beta: False\n    cs_mag_field_disturbed: False\n    cs_fixed_wing: False\n    cs_mag_fault: False\n    cs_fuse_aspd: False\n    cs_gnd_effect: False\n    cs_rng_stuck: False\n    cs_gnss_yaw: False\n    cs_mag_aligned_in_flight: False\n    cs_ev_vel: False\n    cs_synthetic_mag_z: False\n    cs_vehicle_at_rest: True\n    cs_gnss_yaw_fault: False\n    cs_rng_fault: False\n    cs_inertial_dead_reckoning: False\n    cs_wind_dead_reckoning: False\n    cs_rng_kin_consistent: True\n    cs_fake_pos: False\n    cs_fake_hgt: False\n    cs_gravity_vector: False\n    cs_mag: True\n    cs_ev_yaw_fault: False\n    cs_mag_heading_consistent: True\n    cs_aux_gpos: False\n    cs_rng_terrain: True\n    cs_opt_flow_terrain: False\n    cs_valid_fake_pos: False\n    cs_constant_pos: False\n    cs_baro_fault: False\n    cs_gnss_vel: False\n    cs_gnss_fault: False\n    cs_yaw_manual: False\n    cs_gnss_hgt_fault: False\n    fs_bad_mag_x: False\n    fs_bad_mag_y: False\n    fs_bad_mag_z: False\n    fs_bad_hdg: False\n    fs_bad_mag_decl: False\n    fs_bad_airspeed: False\n    fs_bad_sideslip: False\n    fs_bad_optflow_x: False\n    fs_bad_optflow_y: False\n    fs_bad_acc_vertical: False\n    fs_bad_acc_clipping: False\n    reject_hor_vel: False\n    reject_ver_vel: False\n    reject_hor_pos: False\n    reject_ver_pos: False\n    reject_yaw: False\n    reject_airspeed: False\n    reject_sideslip: False\n    reject_hagl: False\n    reject_optflow_x: False\n    reject_optflow_y: False\n\nnsh> "
+        },
+        {
+          "command": "listener estimator_status_flags -i 1 -n 1",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:11.839553+00:00",
+          "response": "listener estimator_status_flags -i 1 -n 1\n\nTOPIC: estimator_status_flags instance 1 #1\n estimator_status_flags\n    timestamp: 1503802946 (0.964658 seconds ago)\n    timestamp_sample: 1503613602 (189344 us before timestamp)\n    control_status_changes: 33\n    fault_status_changes: 0\n    innovation_fault_status_changes: 2\n    cs_tilt_align: True\n    cs_yaw_align: True\n    cs_gnss_pos: False\n    cs_opt_flow: False\n    cs_mag_hdg: True\n    cs_mag_3d: False\n    cs_mag_dec: True\n    cs_in_air: False\n    cs_wind: False\n    cs_baro_hgt: True\n    cs_rng_hgt: True\n    cs_gps_hgt: False\n    cs_ev_pos: True\n    cs_ev_yaw: False\n    cs_ev_hgt: False\n    cs_fuse_beta: False\n    cs_mag_field_disturbed: False\n    cs_fixed_wing: False\n    cs_mag_fault: False\n    cs_fuse_aspd: False\n    cs_gnd_effect: False\n    cs_rng_stuck: False\n    cs_gnss_yaw: False\n    cs_mag_aligned_in_flight: False\n    cs_ev_vel: False\n    cs_synthetic_mag_z: False\n    cs_vehicle_at_rest: True\n    cs_gnss_yaw_fault: False\n    cs_rng_fault: False\n    cs_inertial_dead_reckoning: False\n    cs_wind_dead_reckoning: False\n    cs_rng_kin_consistent: True\n    cs_fake_pos: False\n    cs_fake_hgt: False\n    cs_gravity_vector: False\n    cs_mag: True\n    cs_ev_yaw_fault: False\n    cs_mag_heading_consistent: True\n    cs_aux_gpos: False\n    cs_rng_terrain: True\n    cs_opt_flow_terrain: False\n    cs_valid_fake_pos: False\n    cs_constant_pos: False\n    cs_baro_fault: False\n    cs_gnss_vel: False\n    cs_gnss_fault: False\n    cs_yaw_manual: False\n    cs_gnss_hgt_fault: False\n    fs_bad_mag_x: False\n    fs_bad_mag_y: False\n    fs_bad_mag_z: False\n    fs_bad_hdg: False\n    fs_bad_mag_decl: False\n    fs_bad_airspeed: False\n    fs_bad_sideslip: False\n    fs_bad_optflow_x: False\n    fs_bad_optflow_y: False\n    fs_bad_acc_vertical: False\n    fs_bad_acc_clipping: False\n    reject_hor_vel: False\n    reject_ver_vel: False\n    reject_hor_pos: False\n    reject_ver_pos: False\n    reject_yaw: False\n    reject_airspeed: False\n    reject_sideslip: False\n    reject_hagl: False\n    reject_optflow_x: False\n    reject_optflow_y: False\n\nnsh> "
+        },
+        {
+          "command": "listener estimator_aid_src_optical_flow -n 1",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:11.942640+00:00",
+          "response": "listener estimator_aid_src_optical_flow -n 1\n\nTOPIC: estimator_aid_src_optical_flow 2 instances\n\nInstance 0:\n estimator_aid_src_optical_flow\n    timestamp: 1504904896 (0.021535 seconds ago)\n    timestamp_sample: 1504712376 (192520 us before timestamp)\n    time_last_fuse: 0\n    observation: [0.000776, 0.000301]\n    device_id: 0 (Type: 0x00, UNKNOWN:0 (0x00))\n    observation_variance: [0.14553, 0.14553]\n    innovation: [0.24926, -0.16791]\n    innovation_filtered: [0.17609, -0.15377]\n    innovation_variance: [8.42813, 8.29024]\n    test_ratio: [0.00081, 0.00037]\n    test_ratio_filtered: [0.00047, -0.00036]\n    estimator_instance: 0\n    innovation_rejected: False\n    fused: False\n\n\nInstance 1:\n estimator_aid_src_optical_flow\n    timestamp: 1504945985 (0.012252 seconds ago)\n    timestamp_sample: 1504754652 (191333 us before timestamp)\n    time_last_fuse: 0\n    observation: [-0.000324, -0.001770]\n    device_id: 0 (Type: 0x00, UNKNOWN:0 (0x00))\n    observation_variance: [0.14871, 0.14871]\n    innovation: [0.13603, -0.06058]\n    innovation_filtered: [0.09468, -0.07753]\n    innovation_variance: [7.01571, 6.95479]\n    test_ratio: [0.00029, 0.00005]\n    test_ratio_filtered: [0.00016, -0.00010]\n    estimator_instance: 1\n    innovation_rejected: False\n    fused: False\n\nnsh> "
+        },
+        {
+          "command": "listener estimator_aid_src_rng_hgt -n 1",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:12.018065+00:00",
+          "response": "listener estimator_aid_src_rng_hgt -n 1\n\nTOPIC: estimator_aid_src_rng_hgt 2 instances\n\nInstance 0:\n estimator_aid_src_rng_hgt\n    timestamp: 1504978338 (0.043937 seconds ago)\n    timestamp_sample: 1504786292 (192046 us before timestamp)\n    time_last_fuse: 1504787227\n    device_id: 0 (Type: 0x00, UNKNOWN:0 (0x00))\n    observation: 0.02000\n    observation_variance: 0.01215\n    innovation: -0.00119\n    innovation_filtered: -0.00041\n    innovation_variance: 0.01384\n    test_ratio: 0.00000\n    test_ratio_filtered: -0.00000\n    estimator_instance: 0\n    innovation_rejected: False\n    fused: True\n\n\nInstance 1:\n estimator_aid_src_rng_hgt\n    timestamp: 1504975820 (0.078216 seconds ago)\n    timestamp_sample: 1504786311 (189509 us before timestamp)\n    time_last_fuse: 1504786390\n    device_id: 0 (Type: 0x00, UNKNOWN:0 (0x00))\n    observation: 0.02000\n    observation_variance: 0.01213\n    innovation: 0.00022\n    innovation_filtered: 0.00044\n    innovation_variance: 0.01379\n    test_ratio: 0.00000\n    test_ratio_filtered: 0.00000\n    estimator_instance: 1\n    innovation_rejected: False\n    fused: True\n\nnsh> "
+        },
+        {
+          "command": "listener estimator_aid_src_baro_hgt -n 1",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:12.122863+00:00",
+          "response": "listener estimator_aid_src_baro_hgt -n 1\n\nTOPIC: estimator_aid_src_baro_hgt 2 instances\n\nInstance 0:\n estimator_aid_src_baro_hgt\n    timestamp: 1505042945 (0.052495 seconds ago)\n    timestamp_sample: 1504853993 (188952 us before timestamp)\n    time_last_fuse: 1504854844\n    device_id: 0 (Type: 0x00, UNKNOWN:0 (0x00))\n    observation: -17.84907\n    observation_variance: 12.35984\n    innovation: -0.00573\n    innovation_filtered: -0.01877\n    innovation_variance: 12.36191\n    test_ratio: 0.00000\n    test_ratio_filtered: -0.00001\n    estimator_instance: 0\n    innovation_rejected: False\n    fused: True\n\n\nInstance 1:\n estimator_aid_src_baro_hgt\n    timestamp: 1505105325 (0.022438 seconds ago)\n    timestamp_sample: 1504910684 (194641 us before timestamp)\n    time_last_fuse: 1504915595\n    device_id: 0 (Type: 0x00, UNKNOWN:0 (0x00))\n    observation: -17.97445\n    observation_variance: 12.35972\n    innovation: 0.11752\n    innovation_filtered: -0.00543\n    innovation_variance: 12.36172\n    test_ratio: 0.00004\n    test_ratio_filtered: -0.00000\n    estimator_instance: 1\n    innovation_rejected: False\n    fused: True\n\nnsh> "
+        },
+        {
+          "command": "listener estimator_aid_src_ev_pos -n 1",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:12.218826+00:00",
+          "response": "listener estimator_aid_src_ev_pos -n 1\n\nTOPIC: estimator_aid_src_ev_pos 2 instances\n\nInstance 0:\n estimator_aid_src_ev_pos\n    timestamp: 1505139156 (0.070724 seconds ago)\n    timestamp_sample: 1504942309 (196847 us before timestamp)\n    time_last_fuse: 1504945000\n    observation: [-2.992789, -2.536229]\n    device_id: 0 (Type: 0x00, UNKNOWN:0 (0x00))\n    observation_variance: [0.09000, 0.09000]\n    innovation: [-0.00465, -0.00116]\n    innovation_filtered: [0.00018, 0.00096]\n    innovation_variance: [0.09305, 0.09305]\n    test_ratio: [0.00001, 0.00000]\n    test_ratio_filtered: [0.00000, 0.00000]\n    estimator_instance: 0\n    innovation_rejected: False\n    fused: True\n\n\nInstance 1:\n estimator_aid_src_ev_pos\n    timestamp: 1505134909 (0.109444 seconds ago)\n    timestamp_sample: 1504942304 (192605 us before timestamp)\n    time_last_fuse: 1504945412\n    observation: [-2.992405, -2.535091]\n    device_id: 0 (Type: 0x00, UNKNOWN:0 (0x00))\n    observation_variance: [0.09000, 0.09000]\n    innovation: [-0.00358, -0.00175]\n    innovation_filtered: [0.00099, 0.00064]\n    innovation_variance: [0.09294, 0.09295]\n    test_ratio: [0.00001, 0.00000]\n    test_ratio_filtered: [0.00000, 0.00000]\n    estimator_instance: 1\n    innovation_rejected: False\n    fused: True\n\nnsh> "
+        },
+        {
+          "command": "listener vehicle_visual_odometry -n 1",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:12.304303+00:00",
+          "response": "listener vehicle_visual_odometry -n 1\n\nTOPIC: vehicle_visual_odometry\n vehicle_visual_odometry\n    timestamp: 1505101898 (0.194925 seconds ago)\n    timestamp_sample: 1504947273 (154625 us before timestamp)\n    position: [-2.97828, -2.63515, 0.00000]\n    q: [nan, nan, nan, nan] (Roll: nan deg, Pitch: nan deg, Yaw: nan deg)\n    velocity: [nan, nan, nan]\n    angular_velocity: [nan, nan, nan]\n    position_variance: [0.09000, 0.09000, 1000000.00000]\n    orientation_variance: [nan, nan, nan]\n    velocity_variance: [nan, nan, nan]\n    pose_frame: 1\n    velocity_frame: 0\n    reset_counter: 0\n    quality: 0\n\nnsh> "
+        },
+        {
+          "command": "listener vehicle_local_position -n 1",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:12.397954+00:00",
+          "response": "listener vehicle_local_position -n 1\n\nTOPIC: vehicle_local_position\n vehicle_local_position\n    timestamp: 1505373223 (0.007667 seconds ago)\n    timestamp_sample: 1505372784 (439 us before timestamp)\n    ref_timestamp: 0\n    ref_lat: nan\n    ref_lon: nan\n    x: -2.99735\n    y: -2.53637\n    z: -0.00523\n    delta_xy: [-0.00526, 0.00674]\n    delta_z: -17.84879\n    vx: -0.00317\n    vy: 0.00125\n    vz: 0.00002\n    z_deriv: 0.00060\n    delta_vxy: [0.00015, -0.00198]\n    delta_vz: -0.00391\n    ax: -0.00058\n    ay: 0.00139\n    az: 0.00291\n    heading: 1.71592\n    heading_var: 0.01555\n    unaided_heading: -0.03062\n    delta_heading: 1.69972\n    tilt_var: 0.00003\n    ref_alt: nan\n    dist_bottom: 0.02003\n    dist_bottom_var: 0.00046\n    delta_dist_bottom: -17.84879\n    eph: 0.08802\n    epv: 0.04594\n    evh: 0.08419\n    evv: 0.03998\n    vxy_max: inf\n    vz_max: inf\n    hagl_min: inf\n    hagl_max_z: inf\n    hagl_max_xy: inf\n    xy_valid: True\n    z_valid: True\n    v_xy_valid: True\n    v_z_valid: True\n    xy_reset_counter: 14\n    z_reset_counter: 3\n    vxy_reset_counter: 8\n    vz_reset_counter: 2\n    heading_reset_counter: 2\n    heading_good_for_control: False\n    xy_global: False\n    z_global: False\n    dist_bottom_valid: True\n    dist_bottom_reset_counter: 3\n    dist_bottom_sensor_bitfield: 1\n    dead_reckoning: False\nnsh> "
+        },
+        {
+          "command": "listener vehicle_global_position -n 1",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:12.414360+00:00",
+          "response": "listener vehicle_global_position -n 1\n\nTOPIC: vehicle_global_position\nnsh> "
+        },
+        {
+          "command": "listener vehicle_attitude -n 1",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:12.444047+00:00",
+          "response": "listener vehicle_attitude -n 1\n\nTOPIC: vehicle_attitude\n vehicle_attitude\n    timestamp: 1505487395 (0.001722 seconds ago)\n    timestamp_sample: 1505487083 (312 us before timestamp)\n    q: [0.65399, -0.00231, 0.00533, 0.75647] (Roll: 0.2 deg, Pitch: 0.6 deg, Yaw: 98.3 deg)\n    delta_q_reset: [0.66008, -0.00000, 0.00000, 0.75118]\n    quat_reset_counter: 1\n\nnsh> "
+        },
+        {
+          "command": "listener vehicle_angular_velocity -n 1",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:12.474417+00:00",
+          "response": "listener vehicle_angular_velocity -n 1\n\nTOPIC: vehicle_angular_velocity\n vehicle_angular_velocity\n    timestamp: 1505518247 (0.000612 seconds ago)\n    timestamp_sample: 1505518140 (107 us before timestamp)\n    xyz: [0.00102, 0.00080, 0.00014]\n    xyz_derivative: [0.07557, 0.17296, 0.03450]\nnsh> "
+        },
+        {
+          "command": "listener failsafe_flags -n 1",
+          "complete": true,
+          "read_at_utc": "2026-10-11T09:18:12.614557+00:00",
+          "response": "listener failsafe_flags -n 1\n\nTOPIC: failsafe_flags\n failsafe_flags\n    timestamp: 1505085502 (0.463003 seconds ago)\n    mode_req_angular_velocity: 8312190\n    mode_req_attitude: 8311166\n    mode_req_local_alt: 8257918\n    mode_req_local_position: 7995448\n    mode_req_local_position_relaxed: 262212\n    mode_req_global_position: 56\n    mode_req_global_position_relaxed: 0\n    mode_req_mission: 8\n    mode_req_offboard_signal: 16384\n    mode_req_home_position: 32\n    mode_req_wind_and_flight_time_compliance: 2621464\n    mode_req_prevent_arming: 3944480\n    mode_req_manual_control: 34119\n    mode_req_other: 2139095040\n    angular_velocity_invalid: False\n    attitude_invalid: False\n    local_altitude_invalid: False\n    local_position_invalid: False\n    local_position_invalid_relaxed: False\n    local_velocity_invalid: False\n    global_position_invalid: True\n    global_position_invalid_relaxed: True\n    auto_mission_missing: True\n    offboard_control_signal_lost: True\n    home_position_invalid: True\n    manual_control_signal_lost: False\n    gcs_connection_lost: True\n    battery_warning: 0\n    battery_low_remaining_time: False\n    battery_unhealthy: False\n    geofence_breached: False\n    mission_failure: False\n    vtol_fixed_wing_system_failure: False\n    wind_limit_exceeded: False\n    flight_time_limit_exceeded: False\n    position_accuracy_low: False\n    navigator_failure: False\n    fd_critical_failure: False\n    fd_esc_arming_failure: False\n    fd_imbalanced_prop: False\n    fd_motor_failure: False\n\nnsh> "
+        }
+      ],
+      "fc_parameter_writes": false,
+      "flight_commands": false,
+      "profile": "estimator",
+      "initial_state": {
+        "connected": true,
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      "finished_at_utc": "2026-10-11T09:18:12.781625+00:00"
+    }
+  },
+  "steady_sender": {
+    "begin": {
+      "gate": "ready",
+      "last_reason": "ready",
+      "counts": {
+        "timesync_unavailable_or_unstable": 86,
+        "observation_acquiring": 10,
+        "published": 7178
+      },
+      "last_sample_stamp_ns": 1791710236275297580,
+      "last_send_age_s": 0.016951228000152696,
+      "max_send_gap_s": 0.17934367699990617,
+      "parameters": {
+        "EKF2_GPS_CTRL": 0,
+        "EKF2_EV_CTRL": 1,
+        "EKF2_EV_DELAY": 0.0,
+        "EKF2_EV_NOISE_MD": 0,
+        "EKF2_EV_POS_X": -0.10000000149011612,
+        "EKF2_EV_POS_Y": 0.0,
+        "EKF2_EV_POS_Z": -0.10000000149011612,
+        "EKF2_EV_QMIN": 0
+      },
+      "settings": {
+        "enabled": true,
+        "tag_id": "6",
+        "source_frame": "uwb_map",
+        "enu_yaw_deg": -98.40564507110611,
+        "map_y_axis_sign": -1,
+        "enu_offset_x_m": 0.0,
+        "enu_offset_y_m": 0.0,
+        "max_age_s": 0.15,
+        "jump_guard_enabled": false,
+        "host_boot_id": "085cec07-db6b-4875-b41b-aa9878a7479f",
+        "fc_remote_ns_at_alignment": 640450875000,
+        "alignment_method": "operator_cardinal_and_stationary_px4_yaw",
+        "layout_confirmed": true,
+        "sensor_mount_confirmed": true,
+        "expected_ev_delay_ms": 0.0,
+        "antenna_body_frd_x_m": -0.1,
+        "antenna_body_frd_y_m": 0.0,
+        "antenna_body_frd_z_m": -0.1
+      },
+      "observation_session": 0,
+      "reset_counter": 0,
+      "last_position_ned_xy_m": [
+        -2.9797257887268476,
+        -2.6423070062566754
+      ],
+      "timesync_ready": true,
+      "frozen": null,
+      "position_reference": "uwb_antenna",
+      "lever_arm_owner": "PX4_EKF2",
+      "z_observed": false,
+      "attitude_observed": false,
+      "velocity_observed": false,
+      "geographic_origin_required": false,
+      "flight_commands_enabled": false,
+      "timing_calibrated": false,
+      "dynamic_alignment_verified": false,
+      "flight_verified": false
+    },
+    "end": {
+      "gate": "ready",
+      "last_reason": "ready",
+      "counts": {
+        "timesync_unavailable_or_unstable": 86,
+        "observation_acquiring": 10,
+        "published": 8208
+      },
+      "last_sample_stamp_ns": 1791710262075481721,
+      "last_send_age_s": 0.012793979999969451,
+      "max_send_gap_s": 0.17934367699990617,
+      "parameters": {
+        "EKF2_GPS_CTRL": 0,
+        "EKF2_EV_CTRL": 1,
+        "EKF2_EV_DELAY": 0.0,
+        "EKF2_EV_NOISE_MD": 0,
+        "EKF2_EV_POS_X": -0.10000000149011612,
+        "EKF2_EV_POS_Y": 0.0,
+        "EKF2_EV_POS_Z": -0.10000000149011612,
+        "EKF2_EV_QMIN": 0
+      },
+      "settings": {
+        "enabled": true,
+        "tag_id": "6",
+        "source_frame": "uwb_map",
+        "enu_yaw_deg": -98.40564507110611,
+        "map_y_axis_sign": -1,
+        "enu_offset_x_m": 0.0,
+        "enu_offset_y_m": 0.0,
+        "max_age_s": 0.15,
+        "jump_guard_enabled": false,
+        "host_boot_id": "085cec07-db6b-4875-b41b-aa9878a7479f",
+        "fc_remote_ns_at_alignment": 640450875000,
+        "alignment_method": "operator_cardinal_and_stationary_px4_yaw",
+        "layout_confirmed": true,
+        "sensor_mount_confirmed": true,
+        "expected_ev_delay_ms": 0.0,
+        "antenna_body_frd_x_m": -0.1,
+        "antenna_body_frd_y_m": 0.0,
+        "antenna_body_frd_z_m": -0.1
+      },
+      "observation_session": 0,
+      "reset_counter": 0,
+      "last_position_ned_xy_m": [
+        -2.9739929916243213,
+        -2.640783082975778
+      ],
+      "timesync_ready": true,
+      "frozen": null,
+      "position_reference": "uwb_antenna",
+      "lever_arm_owner": "PX4_EKF2",
+      "z_observed": false,
+      "attitude_observed": false,
+      "velocity_observed": false,
+      "geographic_origin_required": false,
+      "flight_commands_enabled": false,
+      "timing_calibrated": false,
+      "dynamic_alignment_verified": false,
+      "flight_verified": false
+    },
+    "duration_s": 25.02706818799993,
+    "at_utc": "2026-10-11T09:17:42.682285+00:00",
+    "source": "service-recovery-diagnostic.log",
+    "fc_parameter_writes": false,
+    "flight_commands": false
+  },
+  "steady_published_delta": 1030,
+  "steady_sample_interval_s": 25.800184141,
+  "steady_hz": 39.922195685541254,
+  "dependency_failure_check": {
+    "exit_code": 1,
+    "error": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\nModuleNotFoundError: No module named 'pymavlink'",
+    "environment_unchanged": true,
+    "service_active": "active"
+  },
+  "ground_restart_log": "● dronestock-local-uwb.service - Horizontal UWB observations through existing MAVROS\n     Loaded: loaded (/home/bluewak/.config/systemd/user/dronestock-local-uwb.service; enabled; vendor preset: enabled)\n    Drop-In: /home/bluewak/.config/systemd/user/dronestock-local-uwb.service.d\n             └─diagnostic.conf\n     Active: active (running) since Sun 2026-10-11 18:12:36 KST; 20ms ago\n   Main PID: 15685 (bash)\n      Tasks: 3 (limit: 8809)\n     Memory: 728.0K\n        CPU: 6ms\n     CGroup: /user.slice/user-1001.slice/user@1001.service/app.slice/dronestock-local-uwb.service\n             ├─15685 /bin/bash -c \"source /opt/ros/humble/setup.bash && source \\\"\\$UWB_WORKSPACE/install/setup.bash\\\" && exec ros2 run drone_uwb uwb_local_odometry_bridge --config \\\"\\$UWB_LOCAL_CONFIG\\\"\"\n             ├─15690 /bin/bash -c \"source /opt/ros/humble/setup.bash && source \\\"\\$UWB_WORKSPACE/install/setup.bash\\\" && exec ros2 run drone_uwb uwb_local_odometry_bridge --config \\\"\\$UWB_LOCAL_CONFIG\\\"\"\n             └─15691 \"[bash]\"\n{\"at_utc\": \"2026-10-11T09:12:29.498530+00:00\", \"before\": {\"connected\": true, \"armed\": false, \"mode\": \"ALTCTL\", \"landed_state\": 1, \"state_age_s\": 0.1426725769999848, \"landed_age_s\": 0.00011328699997648073}, \"fc_parameter_writes\": false, \"flight_commands\": false, \"restart_guard\": {\"connected\": true, \"armed\": false, \"mode\": \"ALTCTL\", \"landed_state\": 1, \"state_age_s\": 0.7967063359999429, \"landed_age_s\": 0.05104242099992007}, \"restart_completed\": true}\n",
+  "live_diagnostic_summary": {
+    "utc": "2026-10-11T09:13:40.928348+00:00",
+    "duration_s": 25.00551431399981,
+    "counts": {
+      "/uwb/btf_pose": 948,
+      "/uwb/btf_decision": 949,
+      "/mavros/imu/data": 2335,
+      "/mavros/local_position/odom": 701,
+      "/mavros/downward_0": 230,
+      "/mavros/rc/in": 233,
+      "/mavros/timesync_status": 233,
+      "/mavros/extended_state": 116,
+      "/uwb/btf_status": 24,
+      "/mavros/state": 23,
+      "/uwb/received": 1806,
+      "/uwb/status": 22
+    },
+    "timing": {
+      "/uwb/btf_pose": {
+        "last_age_s": 0.036500189999969734,
+        "max_gap_s": 0.05252072999996926
+      },
+      "/uwb/btf_decision": {
+        "last_age_s": 0.010436470999820813,
+        "max_gap_s": 0.05553990299995348
+      },
+      "/mavros/imu/data": {
+        "last_age_s": 0.022059310000031473,
+        "max_gap_s": 0.030915927000023657
+      },
+      "/mavros/local_position/odom": {
+        "last_age_s": 0.01972299099998054,
+        "max_gap_s": 0.05561648299999433
+      },
+      "/mavros/downward_0": {
+        "last_age_s": 0.07137757100008457,
+        "max_gap_s": 0.11674899599984201
+      },
+      "/mavros/rc/in": {
+        "last_age_s": 0.08037057199999253,
+        "max_gap_s": 0.11718361199996252
+      },
+      "/mavros/timesync_status": {
+        "last_age_s": 0.06275495999989289,
+        "max_gap_s": 0.1150780279999708
+      },
+      "/mavros/extended_state": {
+        "last_age_s": 0.21207989899994573,
+        "max_gap_s": 0.21319758799995725
+      },
+      "/uwb/btf_status": {
+        "last_age_s": 0.07330375600008665,
+        "max_gap_s": 1.0154832749999514
+      },
+      "/mavros/state": {
+        "last_age_s": 0.5478158879998318,
+        "max_gap_s": 1.006584372000134
+      },
+      "/uwb/received": {
+        "last_age_s": 0.02727034399981676,
+        "max_gap_s": 0.04084405300000071
+      },
+      "/uwb/status": {
+        "last_age_s": 0.9817778269998598,
+        "max_gap_s": 1.004456332000018
+      }
+    },
+    "nodes": [
+      [
+        "ydlidar_ros2_driver_node",
+        "/"
+      ],
+      [
+        "mavros_node",
+        "/mavros"
+      ],
+      [
+        "mavros_router",
+        "/mavros"
+      ],
+      [
+        "mavros",
+        "/mavros"
+      ],
+      [
+        "transform_listener_impl_aaaac7864078",
+        "/mavros"
+      ],
+      [
+        "cmd",
+        "/mavros"
+      ],
+      [
+        "distance_sensor",
+        "/mavros"
+      ],
+      [
+        "imu",
+        "/mavros"
+      ],
+      [
+        "local_position",
+        "/mavros"
+      ],
+      [
+        "param",
+        "/mavros"
+      ],
+      [
+        "rc",
+        "/mavros"
+      ],
+      [
+        "sys",
+        "/mavros"
+      ],
+      [
+        "time",
+        "/mavros"
+      ],
+      [
+        "uwb_node",
+        "/"
+      ],
+      [
+        "uwb_btf_node",
+        "/"
+      ],
+      [
+        "manual_observation_streams",
+        "/"
+      ],
+      [
+        "uwb_live_readonly_diagnostic",
+        "/"
+      ]
+    ],
+    "raw_sink_publishers": [
+      {
+        "name": "mavros",
+        "namespace": "/mavros"
+      }
+    ]
+  },
+  "source_files_sha256": {
+    "alignment-nojump-boot085cec07.json": "64bdae71eff3ea54e5706324bc74808c2a6c49549af3687c586301b9845990a9",
+    "jump-disable-before-px4.json": "70e96d03d3407b005b90b339a31a0facbec2fef342daa95c2938f44f8f0040b8",
+    "jump-disable-recovered-px4.json": "cae218a18de11539a8fa178e2c8875e5312ddbdea61a1677b7551550e0964274",
+    "jump-disable-steady-px4.json": "ca8f7ad2e249778ec2f1463ec910e4fe5e55faa2a59e76d614463242f98d1acf",
+    "jump-disable-recovered-live.json": "5878232baf19fe8851017feed756699b5553c4889a0dcbb0c6a940dc4d3ed039",
+    "jump-disable-steady-service.json": "c72de5169c3660979f0acdd58dd3f1b51bc21a06b0bbc76118ad383b5717c09c",
+    "jump-disable-dependency-repair.log": "a98e6d338d969da7ba5e716696b8ffe7c29f54876b4abf096050d559e719ac37",
+    "jump-disable-installer-missing-dependency.json": "836305eb68c1071ddb04ae4cc6d777b0489f23e50a2818f898ad18b9ce704262",
+    "installed-reference-backup-check.json": "ad75473da60cba5e7cfa4f323deaa62267c0214825c007405067cdff8705928e",
+    "jump-disable-final-service.json": "6f39748a7dbfb859551b7672494de7a95ea21506691c1bcacd75a0f0fff850dd",
+    "jump-disable-final-gap-trace.json": "48c97f02af609a0079e1c9da62a854923e57806c5f8c5470e3a33a547bba08c7",
+    "jump-disable-final-px4.json": "876719258d5cf2c42cdc4f466628380aa31607c2ecd8a693ec842fe895188cde",
+    "sender-trial-ground-prefix-1815.corrected.analysis.json": "975141ecf72aff6f43eec94a26a6e530257985bd2747084a62522dc07982a9a1"
+  },
+  "tests": {
+    "windows_related": "51 passed, 1 skipped (pymavlink unavailable)",
+    "host_related": "52 passed",
+    "host_earlier_subset": "21 passed",
+    "capture_mirror_windows": "23 passed, other task report"
+  },
+  "fc_parameter_writes": false,
+  "flight_commands": false,
+  "flight_verified": false,
+  "installed_source": {
+    "source_files": {
+      "src/drone_uwb/drone_uwb/integration/local_odometry.py": "71526a2f4306841066ab4a18604d78175e09f7bc6e46424069d24042d536602a",
+      "src/drone_uwb/drone_uwb/integration/ros/local_odometry_bridge.py": "6ea478b18b987d1515ac524cddb6d7554306ee545d8f3844c5fee046e6999074",
+      "src/drone_uwb/drone_uwb/integration/ros/manual_capture.py": "258802511f03d12fd52d4be1e9f6e663da2cd38f0a6b283c863efb98eb814ed4",
+      "src/drone_uwb/drone_uwb/processing/observation_guard.py": "ed593b19ec611502c27877119abd5cc291819fb99ac188d41d5864c910e39ab8",
+      "src/drone_uwb/tools/configure_local_uwb.py": "5571b6a23cfc21d3329e4ce5d58562137abaad09fedd12854f3f48961aa5da74",
+      "src/drone_uwb/test/integration/test_local_odometry.py": "ecb0722ee5b84484376fdfc2a405dabd9c6a53abfb106333b429ec02812b7d43",
+      "src/drone_uwb/test/processing/test_observation_guard.py": "f6e27591220f80b4b96a0dfffe08113a483cba49be8ccafbd31114f4712a77e8",
+      "src/drone_uwb/deployment/install_local_uwb_user_service.sh": "172477fd0265b84644316c394730ea0273a4052d32a2ca15af3a2f9a69a1eb40"
+    },
+    "installed_git_head": "4ead14ef4cb05d18cc28e7e4601ab30e1c6aacf8",
+    "normalized_lf_hashes": {
+      "src/drone_uwb/drone_uwb/integration/local_odometry.py": "71526a2f4306841066ab4a18604d78175e09f7bc6e46424069d24042d536602a",
+      "src/drone_uwb/drone_uwb/integration/ros/local_odometry_bridge.py": "6ea478b18b987d1515ac524cddb6d7554306ee545d8f3844c5fee046e6999074",
+      "src/drone_uwb/drone_uwb/integration/ros/manual_capture.py": "86ae5765754da71e6d55534ab1ac2a0b9d3992f3936b79c97e3ad9f3efca62df",
+      "src/drone_uwb/drone_uwb/processing/observation_guard.py": "936b2b760509265d63c5f0a6934c2081fdd0de5131a009ee742a4db9fffecaf2",
+      "src/drone_uwb/tools/configure_local_uwb.py": "5571b6a23cfc21d3329e4ce5d58562137abaad09fedd12854f3f48961aa5da74",
+      "src/drone_uwb/test/integration/test_local_odometry.py": "ecb0722ee5b84484376fdfc2a405dabd9c6a53abfb106333b429ec02812b7d43",
+      "src/drone_uwb/test/processing/test_observation_guard.py": "65fd69732f649b6d6b0901490d4f902630f9525ba8b959abaa8bac4af5b4b587",
+      "src/drone_uwb/deployment/install_local_uwb_user_service.sh": "172477fd0265b84644316c394730ea0273a4052d32a2ca15af3a2f9a69a1eb40"
+    },
+    "normalized_lf_match": true
+  },
+  "final_service": {
+    "service": "active",
+    "current_log_age_s": 5.05326509475708,
+    "sample_wall_age_s": 5.0986244678497314,
+    "jump_guard_enabled": false,
+    "gate": "ready",
+    "last_reason": "ready",
+    "published": 27780,
+    "last_send_age_s": 0.022514119000106803,
+    "max_send_gap_s": 3.40155287399989,
+    "frozen": null,
+    "z_observed": false,
+    "attitude_observed": false,
+    "parameters": {
+      "EKF2_GPS_CTRL": 0,
+      "EKF2_EV_CTRL": 1,
+      "EKF2_EV_DELAY": 0.0,
+      "EKF2_EV_NOISE_MD": 0,
+      "EKF2_EV_POS_X": -0.10000000149011612,
+      "EKF2_EV_POS_Y": 0.0,
+      "EKF2_EV_POS_Z": -0.10000000149011612,
+      "EKF2_EV_QMIN": 0
+    }
+  },
+  "final_gap_trace": {
+    "current_start": {
+      "gate": "sender_trial_requires_disarmed_ground_start",
+      "last_reason": "starting",
+      "counts": {},
+      "last_sample_stamp_ns": null,
+      "last_send_age_s": null,
+      "max_send_gap_s": 0.0,
+      "parameters": {},
+      "settings": {
+        "enabled": true,
+        "tag_id": "6",
+        "source_frame": "uwb_map",
+        "enu_yaw_deg": -98.40564507110611,
+        "map_y_axis_sign": -1,
+        "enu_offset_x_m": 0.0,
+        "enu_offset_y_m": 0.0,
+        "max_age_s": 0.15,
+        "jump_guard_enabled": false,
+        "host_boot_id": "085cec07-db6b-4875-b41b-aa9878a7479f",
+        "fc_remote_ns_at_alignment": 640450875000,
+        "alignment_method": "operator_cardinal_and_stationary_px4_yaw",
+        "layout_confirmed": true,
+        "sensor_mount_confirmed": true,
+        "expected_ev_delay_ms": 0.0,
+        "antenna_body_frd_x_m": -0.1,
+        "antenna_body_frd_y_m": 0.0,
+        "antenna_body_frd_z_m": -0.1
+      },
+      "observation_session": null,
+      "reset_counter": 0,
+      "last_position_ned_xy_m": null,
+      "timesync_ready": false,
+      "frozen": null,
+      "position_reference": "uwb_antenna",
+      "lever_arm_owner": "PX4_EKF2",
+      "z_observed": false,
+      "attitude_observed": false,
+      "velocity_observed": false,
+      "geographic_origin_required": false,
+      "flight_commands_enabled": false,
+      "timing_calibrated": false,
+      "dynamic_alignment_verified": false,
+      "flight_verified": false
+    },
+    "latest": {
+      "gate": "ready",
+      "last_reason": "ready",
+      "counts": {
+        "timesync_unavailable_or_unstable": 93,
+        "observation_acquiring": 10,
+        "published": 30845,
+        "observation_recovering": 80,
+        "invalid_frame_or_timestamp": 10,
+        "fcu_disconnected_or_stale": 2
+      },
+      "last_sample_stamp_ns": 1791710849870735511,
+      "last_send_age_s": 0.00983251399998153,
+      "max_send_gap_s": 3.40155287399989,
+      "parameters": {
+        "EKF2_GPS_CTRL": 0,
+        "EKF2_EV_CTRL": 1,
+        "EKF2_EV_DELAY": 0.0,
+        "EKF2_EV_NOISE_MD": 0,
+        "EKF2_EV_POS_X": -0.10000000149011612,
+        "EKF2_EV_POS_Y": 0.0,
+        "EKF2_EV_POS_Z": -0.10000000149011612,
+        "EKF2_EV_QMIN": 0
+      },
+      "settings": {
+        "enabled": true,
+        "tag_id": "6",
+        "source_frame": "uwb_map",
+        "enu_yaw_deg": -98.40564507110611,
+        "map_y_axis_sign": -1,
+        "enu_offset_x_m": 0.0,
+        "enu_offset_y_m": 0.0,
+        "max_age_s": 0.15,
+        "jump_guard_enabled": false,
+        "host_boot_id": "085cec07-db6b-4875-b41b-aa9878a7479f",
+        "fc_remote_ns_at_alignment": 640450875000,
+        "alignment_method": "operator_cardinal_and_stationary_px4_yaw",
+        "layout_confirmed": true,
+        "sensor_mount_confirmed": true,
+        "expected_ev_delay_ms": 0.0,
+        "antenna_body_frd_x_m": -0.1,
+        "antenna_body_frd_y_m": 0.0,
+        "antenna_body_frd_z_m": -0.1
+      },
+      "observation_session": 0,
+      "reset_counter": 0,
+      "last_position_ned_xy_m": [
+        -2.9785522609424264,
+        -2.6342217661088676
+      ],
+      "timesync_ready": true,
+      "frozen": null,
+      "position_reference": "uwb_antenna",
+      "lever_arm_owner": "PX4_EKF2",
+      "z_observed": false,
+      "attitude_observed": false,
+      "velocity_observed": false,
+      "geographic_origin_required": false,
+      "flight_commands_enabled": false,
+      "timing_calibrated": false,
+      "dynamic_alignment_verified": false,
+      "flight_verified": false
+    },
+    "gap_increases": [
+      {
+        "last_sample_stamp_ns": 1791710077872276394,
+        "max_send_gap_s": 0.17934367699990617,
+        "last_send_age_s": 0.014502794999998514,
+        "last_reason": "ready",
+        "gate": "ready",
+        "counts": {
+          "timesync_unavailable_or_unstable": 86,
+          "observation_acquiring": 10,
+          "published": 848
+        },
+        "frozen": null
+      },
+      {
+        "last_sample_stamp_ns": 1791710293076005950,
+        "max_send_gap_s": 0.9375866530001531,
+        "last_send_age_s": 0.009783660000039163,
+        "last_reason": "ready",
+        "gate": "ready",
+        "counts": {
+          "timesync_unavailable_or_unstable": 86,
+          "observation_acquiring": 10,
+          "published": 9405,
+          "observation_recovering": 6
+        },
+        "frozen": null
+      },
+      {
+        "last_sample_stamp_ns": 1791710298050860114,
+        "max_send_gap_s": 1.223952473999816,
+        "last_send_age_s": 0.01234427899998991,
+        "last_reason": "ready",
+        "gate": "ready",
+        "counts": {
+          "timesync_unavailable_or_unstable": 86,
+          "observation_acquiring": 10,
+          "published": 9515,
+          "observation_recovering": 20
+        },
+        "frozen": null
+      },
+      {
+        "last_sample_stamp_ns": 1791710405475848501,
+        "max_send_gap_s": 1.8467096909998872,
+        "last_send_age_s": 0.014797733000023072,
+        "last_reason": "ready",
+        "gate": "ready",
+        "counts": {
+          "timesync_unavailable_or_unstable": 87,
+          "observation_acquiring": 10,
+          "published": 13733,
+          "observation_recovering": 26
+        },
+        "frozen": null
+      },
+      {
+        "last_sample_stamp_ns": 1791710747872015049,
+        "max_send_gap_s": 3.40155287399989,
+        "last_send_age_s": 0.009899913000026572,
+        "last_reason": "ready",
+        "gate": "ready",
+        "counts": {
+          "timesync_unavailable_or_unstable": 93,
+          "observation_acquiring": 10,
+          "published": 26775,
+          "observation_recovering": 80,
+          "invalid_frame_or_timestamp": 7,
+          "fcu_disconnected_or_stale": 2
+        },
+        "frozen": null
+      }
+    ]
+  },
+  "final_fc_readback": {
+    "checked_at_utc": "2026-10-11T09:27:21.655522+00:00",
+    "host": "user-desktop",
+    "queries": [
+      {
+        "command": "listener estimator_status_flags -i 0 -n 1",
+        "complete": true,
+        "read_at_utc": "2026-10-11T09:27:25.664506+00:00",
+        "response": "\nNuttShell (NSH) NuttX-12.12.0\nnsh> listener estimator_status_flags -i 0 -n 1\n\nTOPIC: estimator_status_flags instance 0 #1\n estimator_status_flags\n    timestamp: 2057970103 (0.610663 seconds ago)\n    timestamp_sample: 2057783411 (186692 us before timestamp)\n    control_status_changes: 83\n    fault_status_changes: 0\n    innovation_fault_status_changes: 2\n    cs_tilt_align: True\n    cs_yaw_align: True\n    cs_gnss_pos: False\n    cs_opt_flow: False\n    cs_mag_hdg: True\n    cs_mag_3d: False\n    cs_mag_dec: True\n    cs_in_air: False\n    cs_wind: False\n    cs_baro_hgt: True\n    cs_rng_hgt: True\n    cs_gps_hgt: False\n    cs_ev_pos: True\n    cs_ev_yaw: False\n    cs_ev_hgt: False\n    cs_fuse_beta: False\n    cs_mag_field_disturbed: False\n    cs_fixed_wing: False\n    cs_mag_fault: False\n    cs_fuse_aspd: False\n    cs_gnd_effect: False\n    cs_rng_stuck: False\n    cs_gnss_yaw: False\n    cs_mag_aligned_in_flight: False\n    cs_ev_vel: False\n    cs_synthetic_mag_z: False\n    cs_vehicle_at_rest: True\n    cs_gnss_yaw_fault: False\n    cs_rng_fault: False\n    cs_inertial_dead_reckoning: False\n    cs_wind_dead_reckoning: False\n    cs_rng_kin_consistent: True\n    cs_fake_pos: False\n    cs_fake_hgt: False\n    cs_gravity_vector: False\n    cs_mag: True\n    cs_ev_yaw_fault: False\n    cs_mag_heading_consistent: True\n    cs_aux_gpos: False\n    cs_rng_terrain: True\n    cs_opt_flow_terrain: False\n    cs_valid_fake_pos: False\n    cs_constant_pos: False\n    cs_baro_fault: False\n    cs_gnss_vel: False\n    cs_gnss_fault: False\n    cs_yaw_manual: False\n    cs_gnss_hgt_fault: False\n    fs_bad_mag_x: False\n    fs_bad_mag_y: False\n    fs_bad_mag_z: False\n    fs_bad_hdg: False\n    fs_bad_mag_decl: False\n    fs_bad_airspeed: False\n    fs_bad_sideslip: False\n    fs_bad_optflow_x: False\n    fs_bad_optflow_y: False\n    fs_bad_acc_vertical: False\n    fs_bad_acc_clipping: False\n    reject_hor_vel: False\n    reject_ver_vel: False\n    reject_hor_pos: False\n    reject_ver_pos: False\n    reject_yaw: False\n    reject_airspeed: False\n    reject_sideslip: False\n    reject_hagl: False\n    reject_optflow_x: False\n    reject_optflow_y: False\n\nnsh> "
+      },
+      {
+        "command": "listener estimator_status_flags -i 1 -n 1",
+        "complete": true,
+        "read_at_utc": "2026-10-11T09:27:25.843926+00:00",
+        "response": "listener estimator_status_flags -i 1 -n 1\n\nTOPIC: estimator_status_flags instance 1 #1\n estimator_status_flags\n    timestamp: 2057729255 (0.989855 seconds ago)\n    timestamp_sample: 2057539895 (189360 us before timestamp)\n    control_status_changes: 83\n    fault_status_changes: 0\n    innovation_fault_status_changes: 2\n    cs_tilt_align: True\n    cs_yaw_align: True\n    cs_gnss_pos: False\n    cs_opt_flow: False\n    cs_mag_hdg: True\n    cs_mag_3d: False\n    cs_mag_dec: True\n    cs_in_air: False\n    cs_wind: False\n    cs_baro_hgt: True\n    cs_rng_hgt: True\n    cs_gps_hgt: False\n    cs_ev_pos: True\n    cs_ev_yaw: False\n    cs_ev_hgt: False\n    cs_fuse_beta: False\n    cs_mag_field_disturbed: False\n    cs_fixed_wing: False\n    cs_mag_fault: False\n    cs_fuse_aspd: False\n    cs_gnd_effect: False\n    cs_rng_stuck: False\n    cs_gnss_yaw: False\n    cs_mag_aligned_in_flight: False\n    cs_ev_vel: False\n    cs_synthetic_mag_z: False\n    cs_vehicle_at_rest: True\n    cs_gnss_yaw_fault: False\n    cs_rng_fault: False\n    cs_inertial_dead_reckoning: False\n    cs_wind_dead_reckoning: False\n    cs_rng_kin_consistent: True\n    cs_fake_pos: False\n    cs_fake_hgt: False\n    cs_gravity_vector: False\n    cs_mag: True\n    cs_ev_yaw_fault: False\n    cs_mag_heading_consistent: True\n    cs_aux_gpos: False\n    cs_rng_terrain: True\n    cs_opt_flow_terrain: False\n    cs_valid_fake_pos: False\n    cs_constant_pos: False\n    cs_baro_fault: False\n    cs_gnss_vel: False\n    cs_gnss_fault: False\n    cs_yaw_manual: False\n    cs_gnss_hgt_fault: False\n    fs_bad_mag_x: False\n    fs_bad_mag_y: False\n    fs_bad_mag_z: False\n    fs_bad_hdg: False\n    fs_bad_mag_decl: False\n    fs_bad_airspeed: False\n    fs_bad_sideslip: False\n    fs_bad_optflow_x: False\n    fs_bad_optflow_y: False\n    fs_bad_acc_vertical: False\n    fs_bad_acc_clipping: False\n    reject_hor_vel: False\n    reject_ver_vel: False\n    reject_hor_pos: False\n    reject_ver_pos: False\n    reject_yaw: False\n    reject_airspeed: False\n    reject_sideslip: False\n    reject_hagl: False\n    reject_optflow_x: False\n    reject_optflow_y: False\n\nnsh> "
+      },
+      {
+        "command": "listener estimator_aid_src_ev_pos -n 1",
+        "complete": true,
+        "read_at_utc": "2026-10-11T09:27:25.937682+00:00",
+        "response": "listener estimator_aid_src_ev_pos -n 1\n\nTOPIC: estimator_aid_src_ev_pos 2 instances\n\nInstance 0:\n estimator_aid_src_ev_pos\n    timestamp: 2058880736 (0.022288 seconds ago)\n    timestamp_sample: 2058692983 (187753 us before timestamp)\n    time_last_fuse: 2058693993\n    observation: [-2.994939, -2.539692]\n    device_id: 0 (Type: 0x00, UNKNOWN:0 (0x00))\n    observation_variance: [0.09000, 0.09000]\n    innovation: [0.00438, 0.00320]\n    innovation_filtered: [0.00015, 0.00254]\n    innovation_variance: [0.09299, 0.09300]\n    test_ratio: [0.00001, 0.00000]\n    test_ratio_filtered: [0.00000, 0.00001]\n    estimator_instance: 0\n    innovation_rejected: False\n    fused: True\n\n\nInstance 1:\n estimator_aid_src_ev_pos\n    timestamp: 2058912460 (0.026305 seconds ago)\n    timestamp_sample: 2058718006 (194454 us before timestamp)\n    time_last_fuse: 2058722629\n    observation: [-2.995030, -2.538934]\n    device_id: 0 (Type: 0x00, UNKNOWN:0 (0x00))\n    observation_variance: [0.09000, 0.09000]\n    innovation: [0.00559, 0.00127]\n    innovation_filtered: [0.00082, 0.00102]\n    innovation_variance: [0.09305, 0.09305]\n    test_ratio: [0.00001, 0.00000]\n    test_ratio_filtered: [0.00000, 0.00000]\n    estimator_instance: 1\n    innovation_rejected: False\n    fused: True\n\nnsh> "
+      },
+      {
+        "command": "listener vehicle_visual_odometry -n 1",
+        "complete": true,
+        "read_at_utc": "2026-10-11T09:27:25.982052+00:00",
+        "response": "listener vehicle_visual_odometry -n 1\n\nTOPIC: vehicle_visual_odometry\n vehicle_visual_odometry\n    timestamp: 2058986767 (0.008111 seconds ago)\n    timestamp_sample: 2058947836 (38931 us before timestamp)\n    position: [-2.97499, -2.63989, 0.00000]\n    q: [nan, nan, nan, nan] (Roll: nan deg, Pitch: nan deg, Yaw: nan deg)\n    velocity: [nan, nan, nan]\n    angular_velocity: [nan, nan, nan]\n    position_variance: [0.09000, 0.09000, 1000000.00000]\n    orientation_variance: [nan, nan, nan]\n    velocity_variance: [nan, nan, nan]\n    pose_frame: 1\n    velocity_frame: 0\n    reset_counter: 0\n    quality: 0\n\nnsh> "
+      },
+      {
+        "command": "listener vehicle_local_position -n 1",
+        "complete": true,
+        "read_at_utc": "2026-10-11T09:27:26.061906+00:00",
+        "response": "listener vehicle_local_position -n 1\n\nTOPIC: vehicle_local_position\n vehicle_local_position\n    timestamp: 2059031195 (0.005630 seconds ago)\n    timestamp_sample: 2059030736 (459 us before timestamp)\n    ref_timestamp: 0\n    ref_lat: nan\n    ref_lon: nan\n    x: -2.98930\n    y: -2.53854\n    z: -0.00379\n    delta_xy: [0.02517, 0.02537]\n    delta_z: -17.84879\n    vx: 0.00092\n    vy: -0.00170\n    vz: -0.00147\n    z_deriv: -0.00113\n    delta_vxy: [0.00121, 0.00072]\n    delta_vz: -0.00391\n    ax: 0.00180\n    ay: -0.00947\n    az: -0.00501\n    heading: 1.71379\n    heading_var: 0.01534\n    unaided_heading: -0.03201\n    delta_heading: 1.69972\n    tilt_var: 0.00003\n    ref_alt: nan\n    dist_bottom: 0.02058\n    dist_bottom_var: 0.00034\n    delta_dist_bottom: -17.84879\n    eph: 0.07710\n    epv: 0.04368\n    evh: 0.07973\n    evv: 0.03974\n    vxy_max: inf\n    vz_max: inf\n    hagl_min: inf\n    hagl_max_z: inf\n    hagl_max_xy: inf\n    xy_valid: True\n    z_valid: True\n    v_xy_valid: True\n    v_z_valid: True\n    xy_reset_counter: 37\n    z_reset_counter: 3\n    vxy_reset_counter: 19\n    vz_reset_counter: 2\n    heading_reset_counter: 2\n    heading_good_for_control: False\n    xy_global: False\n    z_global: False\n    dist_bottom_valid: True\n    dist_bottom_reset_counter: 3\n    dist_bottom_sensor_bitfield: 1\n    dead_reckoning: False\nnsh> "
+      },
+      {
+        "command": "listener vehicle_status -n 1",
+        "complete": true,
+        "read_at_utc": "2026-10-11T09:27:26.143377+00:00",
+        "response": "listener vehicle_status -n 1\n\nTOPIC: vehicle_status\n vehicle_status\n    timestamp: 2059083685 (0.033689 seconds ago)\n    armed_time: 0\n    takeoff_time: 0\n    nav_state_timestamp: 39524691\n    valid_nav_states_mask: 2147411327\n    can_set_nav_states_mask: 8308095\n    failure_detector_status: 0\n    arming_state: 1\n    latest_arming_reason: 0\n    latest_disarming_reason: 0\n    nav_state_user_intention: 1\n    nav_state: 1\n    executor_in_charge: 0\n    hil_state: 0\n    vehicle_type: 1\n    failsafe: False\n    failsafe_and_user_took_over: False\n    failsafe_defer_state: 0\n    gcs_connection_lost: True\n    gcs_connection_lost_counter: 0\n    high_latency_data_link_lost: False\n    is_vtol: False\n    is_vtol_tailsitter: False\n    in_transition_mode: False\n    in_transition_to_fw: False\n    system_type: 2\n    system_id: 1\n    component_id: 1\n    safety_button_available: True\n    safety_off: True\n    power_input_valid: True\n    usb_connected: True\n    open_drone_id_system_present: False\n    open_drone_id_system_healthy: False\n    parachute_system_present: False\n    parachute_system_healthy: False\n    rc_calibration_in_progress: False\n    calibration_enabled: False\n    pre_flight_checks_pass: True\n\nnsh> "
+      }
+    ],
+    "fc_parameter_writes": false,
+    "flight_commands": false,
+    "profile": "estimator",
+    "initial_state": {
+      "connected": true,
+      "armed": false,
+      "mode": "ALTCTL"
+    },
+    "finished_at_utc": "2026-10-11T09:27:26.237334+00:00"
+  },
+  "corrected_ground_start_analysis": {
+    "analysis_kind": "ground_received_prefix_corrected_start_comparison",
+    "reference_xy_m": [
+      3.32,
+      2.17
+    ],
+    "reference": "Operator corrected actual start at anchor-map (3.32,2.17) m",
+    "initial_reference_xy_m": [
+      3.15,
+      2.3
+    ],
+    "reference_corrected_at_utc": "2026-10-11T09:26:59.256764+00:00",
+    "correction": "Initial 22.2cm compared with old midpoint, not actual start error. Preserve original report as superseded reference.",
+    "relative_trial_waypoints": {
+      "start_and_returns": [
+        0,
+        0
+      ],
+      "Y_out": [
+        0,
+        1
+      ],
+      "X_out": [
+        1,
+        0
+      ]
+    },
+    "anchor_map_trial_waypoints": {
+      "start_and_returns": [
+        3.32,
+        2.17
+      ],
+      "Y_out": [
+        3.32,
+        3.17
+      ],
+      "X_out": [
+        4.32,
+        2.17
+      ]
+    },
+    "px4_settings_changed": false,
+    "reference_point_on_aircraft_verified": false,
+    "lever_arm_correction_applied": false,
+    "limitation": "Offsets relative to operator-corrected actual start, not proven antenna/body-corrected absolute accuracy. Raw fits are available decisions, not all raw cycles. Flight fusion continuity not assessed.",
+    "source_bytes_snapshot": 348127232,
+    "complete_capture_sha256_verified": false,
+    "start_utc": "2026-10-11T09:19:23.362710+00:00",
+    "end_utc": "2026-10-11T09:20:23.362710+00:00",
+    "btf_selected_xy": {
+      "count": 2398,
+      "mean_xy_m": [
+        3.3310642226712996,
+        2.172101091160408
+      ],
+      "mean_offset_xy_m": [
+        0.011064222671299806,
+        0.0021010911604082416
+      ],
+      "mean_offset_norm_m": 0.011261953977194645,
+      "rmse_to_start_m": 0.01355385928139743,
+      "p95_offset_to_start_m": 0.019328596911075194,
+      "std_xy_m": [
+        0.004419857037808021,
+        0.00611067572374872
+      ],
+      "max_receipt_gap_s": 0.08381305
+    },
+    "raw_fit_xy_from_decision": {
+      "count": 2398,
+      "mean_xy_m": [
+        3.321994332468562,
+        2.155207626863782
+      ],
+      "mean_offset_xy_m": [
+        0.0019943324685622876,
+        -0.01479237313621784
+      ],
+      "mean_offset_norm_m": 0.01492620732122735,
+      "rmse_to_start_m": 0.022557722975759417,
+      "p95_offset_to_start_m": 0.03876116876666516,
+      "std_xy_m": [
+        0.009197411941255068,
+        0.014193900606869755
+      ],
+      "max_receipt_gap_s": 0.083711671
+    },
+    "fc_state_samples": [
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      },
+      {
+        "armed": false,
+        "mode": "ALTCTL"
+      }
+    ],
+    "landed_states": {
+      "1": 300
+    },
+    "decision_reasons": {
+      "original_fit_consistent": 2398,
+      "tdma_deadline_rejected": 2
+    },
+    "flight_commands_sent": 0
+  },
+  "operating_limits": {
+    "max_completed_send_gap_s_observed": 3.40155287399989,
+    "gap_root_cause": "not determined; recovery/time synchronization/stale-input counts exist",
+    "heading_good_for_control": false,
+    "flight_continuity_verified": false
+  }
+}
